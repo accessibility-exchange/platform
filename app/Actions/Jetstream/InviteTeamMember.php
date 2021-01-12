@@ -3,17 +3,18 @@
 namespace App\Actions\Jetstream;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Jetstream\Contracts\AddsTeamMembers;
-use Laravel\Jetstream\Events\AddingTeamMember;
-use Laravel\Jetstream\Events\TeamMemberAdded;
+use Laravel\Jetstream\Contracts\InvitesTeamMembers;
+use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
+use Laravel\Jetstream\Mail\TeamInvitation;
 use Laravel\Jetstream\Rules\Role;
 
-class AddTeamMember implements AddsTeamMembers
+class InviteTeamMember implements InvitesTeamMembers
 {
     /**
-     * Add a new team member to the given team.
+     * Invite a new team member to the given team.
      *
      * @param  mixed  $user
      * @param  mixed  $team
@@ -21,25 +22,24 @@ class AddTeamMember implements AddsTeamMembers
      * @param  string|null  $role
      * @return void
      */
-    public function add($user, $team, string $email, string $role = null)
+    public function invite($user, $team, string $email, string $role = null)
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
         $this->validate($team, $email, $role);
 
-        $newTeamMember = Jetstream::findUserByEmailOrFail($email);
+        InvitingTeamMember::dispatch($team, $email, $role);
 
-        AddingTeamMember::dispatch($team, $newTeamMember);
+        $invitation = $team->teamInvitations()->create([
+            'email' => $email,
+            'role' => $role,
+        ]);
 
-        $team->users()->attach(
-            $newTeamMember, ['role' => $role]
-        );
-
-        TeamMemberAdded::dispatch($team, $newTeamMember);
+        Mail::to($email)->send(new TeamInvitation($invitation));
     }
 
     /**
-     * Validate the add member operation.
+     * Validate the invite member operation.
      *
      * @param  mixed  $team
      * @param  string  $email
@@ -52,21 +52,21 @@ class AddTeamMember implements AddsTeamMembers
             'email' => $email,
             'role' => $role,
         ], $this->rules(), [
-            'email.exists' => __('We were unable to find a registered user with this email address.'),
+            'email.unique' => __('This user has already been invited to the team.'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
         )->validateWithBag('addTeamMember');
     }
 
     /**
-     * Get the validation rules for adding a team member.
+     * Get the validation rules for inviting a team member.
      *
      * @return array
      */
     protected function rules()
     {
         return array_filter([
-            'email' => ['required', 'email', 'exists:users'],
+            'email' => ['required', 'email', 'unique:team_invitations'],
             'role' => Jetstream::hasRoles()
                             ? ['required', 'string', new Role]
                             : null,

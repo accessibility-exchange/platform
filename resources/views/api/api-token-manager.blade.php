@@ -25,7 +25,7 @@
                     <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach (Laravel\Jetstream\Jetstream::$permissions as $permission)
                             <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox" value="{{ $permission }}" wire:model.defer="createApiTokenForm.permissions">
+                                <x-jet-checkbox wire:model.defer="createApiTokenForm.permissions" :value="$permission"/>
                                 <span class="ml-2 text-sm text-gray-600">{{ $permission }}</span>
                             </label>
                         @endforeach
@@ -76,12 +76,12 @@
                                     @endif
 
                                     @if (Laravel\Jetstream\Jetstream::hasPermissions())
-                                        <button class="cursor-pointer ml-6 text-sm text-gray-400 underline focus:outline-none" wire:click="manageApiTokenPermissions({{ $token->id }})">
+                                        <button class="cursor-pointer ml-6 text-sm text-gray-400 underline" wire:click="manageApiTokenPermissions({{ $token->id }})">
                                             {{ __('Permissions') }}
                                         </button>
                                     @endif
 
-                                    <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" wire:click="confirmApiTokenDeletion({{ $token->id }})">
+                                    <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmApiTokenDeletion({{ $token->id }})">
                                         {{ __('Delete') }}
                                     </button>
                                 </div>
@@ -126,7 +126,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach (Laravel\Jetstream\Jetstream::$permissions as $permission)
                     <label class="flex items-center">
-                        <input type="checkbox" class="form-checkbox" value="{{ $permission }}" wire:model.defer="updateApiTokenForm.permissions">
+                        <x-jet-checkbox wire:model.defer="updateApiTokenForm.permissions" :value="$permission"/>
                         <span class="ml-2 text-sm text-gray-600">{{ $permission }}</span>
                     </label>
                 @endforeach
