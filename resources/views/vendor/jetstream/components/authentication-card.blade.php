@@ -8,6 +8,6 @@
     </div>
 
     <div class="w-full px-6 mt-6 text-left sm:max-w-md">
-        <a href="/"><span class="aria-hidden">&larr;</span> Back to Home</a>
+        <a href="{{ url('/') }}"><span class="aria-hidden">&larr;</span> Back to Home</a>
     </div>
 </div>

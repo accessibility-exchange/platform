@@ -17,8 +17,21 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.js" defer></script>
     </head>
     <body>
-        <div class="font-sans text-gray-900 antialiased">
-            {{ $slot }}
-        </div>
+        <header>
+            @if (Route::has('login'))
+                <nav class="px-6 py-4 antialiased">
+                    <a href="{{ route('login') }}">Login</a>
+
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}">Register</a>
+                    @endif
+                </nav>
+            @endif
+        </header>
+        <main>
+            <div class="px-6 py-4 antialiased">
+                {{ $slot }}
+            </div>
+        </main>
     </body>
 </html>
