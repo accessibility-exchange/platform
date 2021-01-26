@@ -11,27 +11,14 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>
-        <header>
-            @if (Route::has('login'))
-                <nav class="px-6 py-4 antialiased">
-                    <a href="{{ route('login') }}">Login</a>
-
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}">Register</a>
-                    @endif
-                </nav>
-            @endif
-        </header>
-        <main>
-            <div class="px-6 py-4 antialiased">
-                {{ $slot }}
-            </div>
-        </main>
+        <div class="font-sans text-gray-900 antialiased">
+            {{ $slot }}
+        </div>
     </body>
 </html>

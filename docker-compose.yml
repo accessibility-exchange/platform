@@ -19,6 +19,7 @@ services:
             - sail
         depends_on:
             - mysql
+            # - pgsql
             - redis
             # - selenium
     # selenium:
@@ -27,12 +28,10 @@ services:
     #         - '/dev/shm:/dev/shm'
     #     networks:
     #         - sail
-    #     depends_on:
-    #         - laravel.test
     mysql:
         image: 'mysql:8.0'
         ports:
-            - '${DB_PORT}:3306'
+            - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_DATABASE: '${DB_DATABASE}'
@@ -43,14 +42,31 @@ services:
             - 'sailmysql:/var/lib/mysql'
         networks:
             - sail
+        healthcheck:
+          test: ["CMD", "mysqladmin", "ping"]
+#    pgsql:
+#        image: postgres:13
+#        ports:
+#            - '${FORWARD_DB_PORT:-5432}:5432'
+#        environment:
+#            PGPASSWORD: '${DB_PASSWORD:-secret}'
+#            POSTGRES_DB: '${DB_DATABASE}'
+#            POSTGRES_USER: '${DB_USERNAME}'
+#            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+#        volumes:
+#            - 'sailpostgresql:/var/lib/postgresql/data'
+#        networks:
+#            - sail
     redis:
         image: 'redis:alpine'
         ports:
-            - '${REDIS_PORT}:6379'
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
             - 'sailredis:/data'
         networks:
             - sail
+        healthcheck:
+          test: ["CMD", "redis-cli", "ping"]
     # memcached:
     #     image: 'memcached:alpine'
     #     ports:
@@ -60,8 +76,8 @@ services:
     mailhog:
         image: 'mailhog/mailhog:latest'
         ports:
-            - 1025:1025
-            - 8025:8025
+            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
 networks:
@@ -70,5 +86,7 @@ networks:
 volumes:
     sailmysql:
         driver: local
+#    sailpostgresql:
+#        driver: local
     sailredis:
         driver: local
