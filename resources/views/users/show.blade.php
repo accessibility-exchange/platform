@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>
-            {{ __('Dashboard') }}
+            {{ $user->name }}
         </h1>
     </x-slot>
 
     <div>
-        <p>You're logged in!</p>
+        TODO.
     </div>
 </x-app-layout>
