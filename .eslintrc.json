@@ -1,0 +1,12 @@
+{
+    "extends": "fluid",
+    "ignorePatterns": ["public/**/*.js"],
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "strict": ["error", "never"]
+    }
+}
