@@ -1,4 +1,4 @@
-name: Lint JS and Sass
+name: Lint JS and Sass assets
 
 on:
   push:
@@ -7,8 +7,10 @@ on:
     branches: [ dev ]
 
 jobs:
-  test:
+  asset-lint:
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v2
