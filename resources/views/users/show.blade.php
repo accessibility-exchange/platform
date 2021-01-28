@@ -6,6 +6,11 @@
     </x-slot>
 
     <div>
-        TODO.
+        @auth
+        @if(Auth::user()->id === $user->id)
+        {{-- <a href="{{ route('users.edit', $user->id) }}">Edit Profile</a> --}}
+        <a href="#">Edit Profile</a>
+        @endif
+        @endauth
     </div>
 </x-app-layout>

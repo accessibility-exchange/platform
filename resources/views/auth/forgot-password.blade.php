@@ -20,17 +20,15 @@
             @csrf
 
             <!-- Email Address -->
-            <div>
+            <div class="field">
                 <x-label for="email" :value="__('Email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
-            <div>
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
+            <x-button>
+                {{ __('Email Password Reset Link') }}
+            </x-button>
         </form>
     </x-auth-card>
 </x-guest-layout>

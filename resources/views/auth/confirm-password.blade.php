@@ -17,7 +17,7 @@
             @csrf
 
             <!-- Password -->
-            <div>
+            <div class="field">
                 <x-label for="password" :value="__('Password')" />
 
                 <x-input id="password"
@@ -26,11 +26,9 @@
                                 required autocomplete="current-password" />
             </div>
 
-            <div>
-                <x-button>
-                    {{ __('Confirm') }}
-                </x-button>
-            </div>
+            <x-button>
+                {{ __('Confirm') }}
+            </x-button>
         </form>
     </x-auth-card>
 </x-guest-layout>

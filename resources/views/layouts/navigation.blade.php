@@ -1,16 +1,16 @@
 <nav x-data="{ open: false }">
     <!-- Primary Navigation Menu -->
-    <div>
-            <div>
-                <!-- Logo -->
-                <div>
-                    <a href="{{ route('dashboard') }}">
+    <div class="wrapper">
+            <div div class="flow">
+                <!-- Brand -->
+                <div class="brand">
+                    <a class="h3" href="/">
                         Accessibility in Action
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div>
+                <ul role="list" class="nav flow">
                     @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
@@ -25,34 +25,35 @@
                     </x-nav-link>
                     @endif
                     @endauth
-                </div>
-            </div>
+                </ul>
 
-            @auth
-            <!-- Settings Dropdown -->
-            <div>
-                <x-dropdown>
-                    <x-slot name="trigger">
-                        {{ Auth::user()->name }}
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link href="{{ route('users.show', Auth::user()) }}">
+                @auth
+                <!-- Settings Dropdown -->
+                <div class="settings">
+                    <x-dropdown>
+                        <x-slot name="trigger">
                             {{ Auth::user()->name }}
-                        </x-dropdown-link>
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                        </x-slot>
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Logout') }}
+                        <x-slot name="content">
+                            <x-dropdown-link href="{{ route('users.show', Auth::user()) }}">
+                                {{ __('Your Profile') }}
                             </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    {{ __('Logout') }}
+                                </x-dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+                @endauth
             </div>
-            @endauth
+
     </div>
 </nav>

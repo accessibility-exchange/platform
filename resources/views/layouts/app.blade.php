@@ -8,8 +8,11 @@
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
 
         <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap">
 
         <!-- Styles -->
+        <link rel="stylesheet" href="https://unpkg.com/@accessibility-in-action/looseleaf@prerelease/style.min.css">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
@@ -21,12 +24,16 @@
 
             <!-- Page Heading -->
             <header>
-                {{ $header }}
+                <div class="wrapper">
+                    {{ $header }}
+                </div>
             </header>
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="wrapper">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </body>

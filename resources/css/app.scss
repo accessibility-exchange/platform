@@ -1,10 +1,41 @@
 @import "modern-css-reset";
 
-.dropdown button {
-    appearance: none;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    font-size: 100%;
-    padding: 0;
+.auth-card {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.auth-card > * {
+    max-width: calc(65ch / 2);
+    width: 100%;
+}
+
+.auth-card__logo {
+    text-align: center;
+}
+
+.nav {
+    padding-left: 0;
+}
+
+button.link {
+    all: unset;
+    text-decoration: underline;
+}
+
+button.link:focus {
+    background-color: var(--ll-accent-color);
+    border-radius: var(--ll-border-radius);
+    box-shadow: var(--ll-link-focus-box-shadow);
+    color: var(--ll-background-color);
+    outline: none;
+}
+
+.dropdown__content {
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    padding: var(--step--5) var(--step--4);
 }

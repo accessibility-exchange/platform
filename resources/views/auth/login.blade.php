@@ -16,14 +16,14 @@
             @csrf
 
             <!-- Email Address -->
-            <div>
+            <div class="field">
                 <x-label for="email" :value="__('Email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <!-- Password -->
-            <div>
+            <div class="field">
                 <x-label for="password" :value="__('Password')" />
 
                 <x-input id="password"
@@ -33,24 +33,21 @@
             </div>
 
             <!-- Remember Me -->
-            <div class="block mt-4">
+            <div class="field">
+                <input id="remember_me" type="checkbox" name="remember">
                 <label for="remember_me">
-                    <input id="remember_me" type="checkbox" name="remember">
                     <span>{{ __('Remember me') }}</span>
                 </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+                <a href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
                 @endif
-
-                <x-button>
-                    {{ __('Login') }}
-                </x-button>
             </div>
+
+            <x-button>
+                {{ __('Login') }}
+            </x-button>
         </form>
     </x-auth-card>
 </x-guest-layout>
