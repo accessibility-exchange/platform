@@ -7,16 +7,12 @@
 
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&display=swap">
-
         <!-- Styles -->
-        <link rel="stylesheet" href="https://unpkg.com/@accessibility-in-action/looseleaf@prerelease/style.min.css">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="https://unpkg.com/@accessibility-in-action/looseleaf@1.0.0-alpha.3/style.min.css">
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body>
         <div>

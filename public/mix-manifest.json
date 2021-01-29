@@ -1,4 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/fonts/atkinson-hyperlegible-bold.woff": "/fonts/atkinson-hyperlegible-bold.woff",
+    "/fonts/atkinson-hyperlegible-bold.woff2": "/fonts/atkinson-hyperlegible-bold.woff2",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff": "/fonts/atkinson-hyperlegible-bolditalic.woff",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff2": "/fonts/atkinson-hyperlegible-bolditalic.woff2",
+    "/fonts/atkinson-hyperlegible-italic.woff": "/fonts/atkinson-hyperlegible-italic.woff",
+    "/fonts/atkinson-hyperlegible-italic.woff2": "/fonts/atkinson-hyperlegible-italic.woff2",
+    "/fonts/atkinson-hyperlegible-regular.woff": "/fonts/atkinson-hyperlegible-regular.woff",
+    "/fonts/atkinson-hyperlegible-regular.woff2": "/fonts/atkinson-hyperlegible-regular.woff2"
 }

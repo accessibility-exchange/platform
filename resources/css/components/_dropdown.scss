@@ -1,0 +1,8 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the dropdown component.
+// -----------------------------------------------------------------------------
+.dropdown__content {
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    padding: var(--step--5) var(--step--4);
+}

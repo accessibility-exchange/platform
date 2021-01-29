@@ -1,0 +1,15 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+button.link {
+    all: unset;
+    text-decoration: underline;
+}
+
+button.link:focus {
+    background-color: var(--ll-accent-color);
+    border-radius: var(--ll-border-radius);
+    box-shadow: var(--ll-link-focus-box-shadow);
+    color: var(--ll-background-color);
+    outline: none;
+}

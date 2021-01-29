@@ -1,41 +1,39 @@
-@import "modern-css-reset";
+// 1. Configuration and helpers
+@import
+    'abstracts/variables',
+    'abstracts/functions',
+    'abstracts/mixins';
 
-.auth-card {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-}
+// 2. Vendors
+@import
+    'vendors/modern-css-reset';
 
-.auth-card > * {
-    max-width: calc(65ch / 2);
-    width: 100%;
-}
+// 3. Base stuff
+@import
+    'base/base',
+    'base/fonts',
+    'base/typography',
+    'base/helpers';
 
-.auth-card__logo {
-    text-align: center;
-}
+// 4. Layout-related sections
+@import
+    'layouts/app',
+    'layouts/guest',
+    'layouts/navigation';
 
-.nav {
-    padding-left: 0;
-}
+// 5. Components
+@import
+    'components/auth-card',
+    'components/button',
+    'components/dropdown';
 
-button.link {
-    all: unset;
-    text-decoration: underline;
-}
+// 6. Route-specific styles
+@import
+    'routes/dashboard',
+    'routes/users/show',
+    'routes/welcome';
 
-button.link:focus {
-    background-color: var(--ll-accent-color);
-    border-radius: var(--ll-border-radius);
-    box-shadow: var(--ll-link-focus-box-shadow);
-    color: var(--ll-background-color);
-    outline: none;
-}
-
-.dropdown__content {
-    border: var(--ll-border-thin);
-    border-radius: var(--ll-border-radius);
-    padding: var(--step--5) var(--step--4);
-}
+// 7. Themes
+@import
+    'themes/dark',
+    'themes/default';
