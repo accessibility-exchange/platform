@@ -1,4 +1,5 @@
 const mix = require("laravel-mix");
+const chokidar = require("chokidar");
 
 /*
  |--------------------------------------------------------------------------
@@ -28,6 +29,13 @@ mix.options({
 mix.webpackConfig({
     devServer: {
         host: "0.0.0.0",
-        port: 8080
+        port: 8080,
+        onBeforeSetupMiddleware(server) {
+            chokidar.watch([
+                "./resources/views/**/*.blade.php"
+            ]).on("all", function () {
+                server.sockWrite(server.sockets, "content-changed");
+            });
+        }
     }
 });
