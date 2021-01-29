@@ -17,4 +17,15 @@ class UserController extends Controller
     {
         return view('users.show', ['user' => $user]);
     }
+
+    /**
+     * Show the edit view for a given user.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function edit(User $user)
+    {
+        return view('users.edit', ['user' => $user]);
+    }
 }
