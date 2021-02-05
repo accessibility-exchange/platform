@@ -20,7 +20,7 @@ class UserController extends Controller
     /**
      * Show the profile for a given user.
      *
-     * @param  int  $id
+     * @param  User  $user
      * @return \Illuminate\View\View
      */
     public function show(User $user)
@@ -31,11 +31,29 @@ class UserController extends Controller
     /**
      * Show the edit view for a given user.
      *
-     * @param  int  $id
+     * @param  User  $user
      * @return \Illuminate\View\View
      */
     public function edit(User $user)
     {
         return view('users.edit', ['user' => $user]);
+    }
+
+    /**
+     * Update a given user.
+     *
+     * @param  User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(User $user)
+    {
+        $user->update(request()->validate([
+            'name' => 'required',
+            'locality' => 'nullable',
+            'region' => 'nullable',
+            'about' => 'nullable'
+        ]));
+
+        return redirect('/people/' . $user->id);
     }
 }

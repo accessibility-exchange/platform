@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'locality',
+        'region',
+        'about'
     ];
 
     /**
@@ -47,5 +50,5 @@ class User extends Authenticatable
      *
      * @var array
      */
-    public $translatable = ['bio'];
+    public $translatable = ['about'];
 }

@@ -10,9 +10,9 @@
     </x-slot>
 
     <div class="flow">
-        @if($user->bio)
+        @if($user->about)
         <div itemprop="description">
-            {{ Illuminate\Mail\Markdown::parse($user->bio) }}
+            {{ $user->about }}
         </div>
         @endif
         @auth
