@@ -23,9 +23,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-
+Route::get('/people', [UserController::class, 'index'])->name('users.index');
+Route::get('/people/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/people/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 
 require __DIR__.'/auth.php';
