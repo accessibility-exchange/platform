@@ -14,8 +14,8 @@ class AddLocationColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('locality');
-            $table->string('region');
+            $table->string('locality')->nullable();
+            $table->string('region')->nullable();
         });
     }
 
