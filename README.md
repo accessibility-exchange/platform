@@ -16,7 +16,7 @@ at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
 
-The platform is built as a progressive web application using the [Laravel](https://laravel.com/) framework.
+The platform is built as a progressive web application using the [Laravel 8](https://laravel.com/docs/8.x) framework.
 
 ## Installation
 
