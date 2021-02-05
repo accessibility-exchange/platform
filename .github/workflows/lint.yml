@@ -3,8 +3,14 @@ name: Lint JS and Sass assets
 on:
   push:
     branches: [ dev ]
+    paths:
+    - '**.js'
+    - '**.scss'
   pull_request:
     branches: [ dev ]
+    paths:
+    - '**.js'
+    - '**.scss'
 
 jobs:
   asset-lint:

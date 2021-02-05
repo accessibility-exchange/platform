@@ -3,8 +3,18 @@ name: Run Laravel tests
 on:
   push:
     branches: [ dev ]
+    paths:
+    - 'composer.json'
+    - 'composer.lock'
+    - '**.php'
+    - '**.blade.php'
   pull_request:
     branches: [ dev ]
+    paths:
+    - 'composer.json'
+    - 'composer.lock'
+    - '**.php'
+    - '**.blade.php'
 
 jobs:
   laravel-tests:
