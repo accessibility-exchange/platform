@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
+     * List all users.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        return view('users.index', ['users' => User::all()]);
+    }
+
+    /**
      * Show the profile for a given user.
      *
      * @param  int  $id
