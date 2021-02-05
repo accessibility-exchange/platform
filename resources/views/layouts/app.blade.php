@@ -18,7 +18,7 @@
 
         <!-- Main Content -->
         <main>
-            <article class="wrapper flow">
+            <article class="wrapper flow" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Page Heading -->
                 <header class="flow">
                     {{ $header }}
