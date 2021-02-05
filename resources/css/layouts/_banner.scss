@@ -1,0 +1,12 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the banner layout.
+// -----------------------------------------------------------------------------
+@media (min-width: 768px) {
+    [role="banner"] .wrapper {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-block: var(--step-2);
+    }
+}

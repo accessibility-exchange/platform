@@ -45,6 +45,7 @@
         "stylelint-config-fluid": "^0.1.0"
     },
     "dependencies": {
+        "@accessibility-in-action/looseleaf": "^1.0.0-alpha.4",
         "alpinejs": "^2.7.3",
         "axios": "^0.21",
         "modern-css-reset": "^1.4.0"

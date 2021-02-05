@@ -6,7 +6,8 @@
 
 // 2. Vendors
 @import
-    'vendors/modern-css-reset';
+    'vendors/modern-css-reset',
+    'vendors/looseleaf';
 
 // 3. Base stuff
 @import
@@ -18,14 +19,16 @@
 // 4. Layout-related sections
 @import
     'layouts/app',
-    'layouts/guest',
-    'layouts/navigation';
+    'layouts/banner',
+    'layouts/guest';
 
 // 5. Components
 @import
     'components/auth-card',
+    'components/brand',
     'components/button',
-    'components/dropdown';
+    'components/dropdown',
+    'components/navigation';
 
 // 6. Route-specific styles
 @import

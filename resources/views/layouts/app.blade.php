@@ -8,29 +8,27 @@
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
 
         <!-- Styles -->
-        <link rel="stylesheet" href="https://unpkg.com/@accessibility-in-action/looseleaf@1.0.0-alpha.4/style.min.css">
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body>
-        <div>
-            @include('layouts.navigation')
+        @include('layouts.banner')
 
-            <!-- Page Heading -->
-            <header>
-                <div class="wrapper">
+        <!-- Main Content -->
+        <main>
+            <article class="wrapper flow">
+                <!-- Page Heading -->
+                <header class="flow">
                     {{ $header }}
-                </div>
-            </header>
+                </header>
 
-            <!-- Page Content -->
-            <main>
-                <div class="wrapper">
+                <!-- Page Content -->
+                <div class="content flow">
                     {{ $slot }}
                 </div>
-            </main>
-        </div>
+            </article>
+        </main>
     </body>
 </html>

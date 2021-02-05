@@ -8,7 +8,6 @@
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
 
         <!-- Styles -->
-        <link rel="stylesheet" href="https://unpkg.com/@accessibility-in-action/looseleaf@1.0.0-alpha.4/style.min.css">
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         <!-- Scripts -->

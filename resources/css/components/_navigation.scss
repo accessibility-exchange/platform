@@ -1,0 +1,39 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the navigation component.
+// -----------------------------------------------------------------------------
+nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--step-2);
+}
+
+nav ul {
+    margin: 0;
+    padding-left: 0;
+}
+
+nav > * + * {
+    margin-top: var(--step--2);
+}
+
+@media (min-width: 768px) {
+    nav {
+        flex-direction: row;
+        margin-left: auto;
+        margin-top: 0;
+    }
+
+    nav > * + * {
+        margin-left: var(--step--2);
+        margin-top: 0;
+    }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown .dropdown__content {
+        position: absolute;
+        text-align: left;
+    }
+}
