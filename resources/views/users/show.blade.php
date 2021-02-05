@@ -2,9 +2,11 @@
     <x-slot name="itemtype">Person</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">{{ $user->name }}</h1>
+        @if($user->locality && $user->region)
         <p itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
             <span itemprop="addressLocality">{{ $user->locality }}</span>, <span itemprop="addressRegion">{{ $user->region }}</span>
         </p>
+        @endif
     </x-slot>
 
     <div class="flow">
