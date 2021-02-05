@@ -3,6 +3,7 @@
 [![Project license](https://badgen.net/github/license/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
 [![Latest release](https://badgen.net/github/release/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
 [![Check status](https://badgen.net/github/checks/accessibility-in-action/platform/dev)](https://github.com/accessibility-in-action/platform/releases/latest)
+[![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
 
 Accessibility in Action is a two-year initiative managed by the
 [Institute for Research and Development on Inclusion and Society](https://irisinstitute.ca/) that sets out to create an

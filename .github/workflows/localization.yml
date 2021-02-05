@@ -1,0 +1,31 @@
+name: Localization
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  synchronize-with-crowdin:
+    name: Synchronize with Crowdin
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Synchronize with Crowdin
+      uses: crowdin/github-action@master
+      with:
+        upload_sources: true
+        upload_translations: true
+        download_translations: true
+        skip_untranslated_files: true
+        source: 'resources/lang/en/*.php'
+        translation: 'resources/lang/%locale%/%original_file_name%'
+        localization_branch_name: 'localization'
+        commit_message: 'chore(l10n): update localizations'
+        pull_request_title: 'chore(l10n): update localizations'
+        pull_request_body: 'https://crowdin.com/project/accessibility-in-action'
+        pull_request_labels: 'Localization'
+        project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+        token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
