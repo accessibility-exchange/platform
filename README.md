@@ -6,8 +6,8 @@
 [![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
 
 Accessibility in Action is a two-year initiative managed by the
-[Institute for Research and Development on Inclusion and Society](https://irisinstitute.ca/) that sets out to create an
-online platform which will support processes where people with disabilities have the power to make sure that policies,
+[Institute for Research and Development on Inclusion and Society (IRIS)](https://irisinstitute.ca/) that sets out to
+create an online platform which will support processes where people with disabilities have the power to make sure that policies,
 programs, and services by federally regulated entities are accessible to them and respect their human rights. Current
 consultation processes are built on a foundation of systemic ableism—they lack accountability, follow-through, and don't
 honour the expertise of people with disabilities.
