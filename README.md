@@ -21,8 +21,81 @@ The platform is built as a progressive web application using the [Laravel 8](htt
 
 ## Installation
 
-TODO.
+For general deployment information, please see the Laravel 8.x [deployment documentation](https://laravel.com/docs/8.x/deployment).
+
+The platform requires the following:
+
+- [PHP](https://www.php.net/supported-versions.php) >= 7.4 (PHP 8.0 recommended) with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
+- [MySQL](https://dev.mysql.com/downloads/) >= 5.7
+- [Composer](https://getcomposer.org) >= 2.0
+
+The deployment process should follow all of the recommended [optimization processes](https://laravel.com/docs/8.x/deployment#optimization).
+
+## Development and prototyping environments
+
+In development and prototyping environments, a deployment should be followed by dropping the database tables, running all
+migrations and seeding the database:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+**NOTE: This will drop all existing database tables. [See the documentation](https://laravel.com/docs/8.x/migrations#drop-all-tables-migrate)
+for details.**
+
+## Production environments
+
+In production environments, a deployment should be followed by running all available migrations:
+
+```bash
+php artisan migrate
+```
 
 ## Development
 
-TODO.
+Local development uses the [Laravel Sail](https://laravel.com/docs/8.x/sail) Docker environment.
+
+### Local development setup
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
+2. Add an alias to your shell [as described here](https://laravel.com/docs/8.x/sail#configuring-a-bash-alias).
+3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
+
+   ```bash
+   gh repo fork accessibility-in-action/platform --clone
+   ```
+
+4. Start the development environment by running the following command from within the project directory:
+
+   ```bash
+   sail up -d
+   ```
+
+### Working on the platform
+
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/8.x). Here's an overview
+of how some key tasks can be carried out using Sail:
+
+- [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
+
+### Development workflow
+
+- This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
+All commit messages and pull request titles must follow these standards.
+- The [`prototype`](https://github.com/accessibility-in-action/platform/tree/prototype) branch contains
+  prototyped features for use in co-design sessions. It must be regularly updated with changes from the [`dev`](https://github.com/accessibility-in-action/platform/tree/dev)
+  branch.
+- Feature prototyping must take place in a feature branch forked from the `prototype` branch. Feature prototype branches
+  must be named according to the format `prototype/<feature>`. Once a feature prototype is ready to merge into
+  `prototype`, the merge must be performed using a [merge commit](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges).
+- The [`dev`](https://github.com/accessibility-in-action/platform/tree/dev) branch contains refined features
+  that have been prototyped and gone through one or more co-design sessions.
+- Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
+  must be named according to the format `feature/<feature>`. Once a refined feature is ready to merge into `dev`, the
+  merge must be performed using a [merge commit](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges).
+- The [`main`](https://github.com/accessibility-in-action/platform/tree/main) branch contains refined features that
+  are considered production-ready.
+- Prereleases must be tagged from the `dev` branch.
+- Releases must be tagged from the `main` branch.
