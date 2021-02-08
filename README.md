@@ -65,10 +65,28 @@ Local development uses the [Laravel Sail](https://laravel.com/docs/8.x/sail) Doc
    gh repo fork accessibility-in-action/platform --clone
    ```
 
-4. Start the development environment by running the following command from within the project directory:
+4. Create a `.env` file from the included example file:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+5. Start the development environment by running the following command from within the project directory:
 
    ```bash
    sail up -d
+   ```
+
+6. Generate an application key:
+
+   ```bash
+   sail artisan key:generate
+   ```
+
+7. Run the required database migrations:
+
+    ```bash
+   sail artisan migrate
    ```
 
 ### Working on the platform
