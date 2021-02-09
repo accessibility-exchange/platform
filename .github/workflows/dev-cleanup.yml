@@ -30,10 +30,10 @@ jobs:
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
           envs:     PROJECT_ID
           script: |
-            cd /srv/$PROJECT_ID               && \
-            git checkout dev                  && \
-            git pull                          && \
-            sail artisan migrate:fresh --seed
+            cd /srv/$PROJECT_ID                            && \
+            git checkout dev                               && \
+            git pull                                       && \
+            ./vendor/bin/sail artisan migrate:fresh --seed
 
       - name: Wait
         run: sleep 15
