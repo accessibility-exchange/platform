@@ -2,12 +2,12 @@ name: Lint JS and Sass assets
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, prototype ]
     paths:
     - '**.js'
     - '**.scss'
   pull_request:
-    branches: [ dev ]
+    branches: [ dev, prototype ]
     paths:
     - '**.js'
     - '**.scss'
