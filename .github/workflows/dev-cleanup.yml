@@ -1,0 +1,42 @@
+name: Prototype cleanup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  PROJECT_ID: aina-dev
+  PROJECT_SMOKETEST_URL: https://aina-dev.inclusivedesign.ca
+
+jobs:
+  deploy:
+    if: github.repository == 'accessibility-in-action/platform'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy stack
+        uses: appleboy/ssh-action@master
+        with:
+          host:           ${{ secrets.SSH_HOSTNAME }}
+          username:       ${{ secrets.SSH_USERNAME }}
+          key:            ${{ secrets.SSH_PRIVATE_KEY }}
+          port:           ${{ secrets.SSH_PORT }}
+          proxy_host:     ${{ secrets.SSH_PROXY_HOSTNAME }}
+          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
+          proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
+          proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
+          envs:     PROJECT_ID
+          script: |
+            cd /srv/$PROJECT_ID               && \
+            git checkout dev                  && \
+            git pull                          && \
+            sail artisan migrate:fresh --seed
+
+      - name: Wait
+        run: sleep 15
+
+      - name: Smoke test
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
