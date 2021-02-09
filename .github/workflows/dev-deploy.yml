@@ -31,10 +31,11 @@ jobs:
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
           envs:     PROJECT_ID
           script: |
-            cd /srv/$PROJECT_ID          && \
-            git checkout dev             && \
-            git pull                     && \
-            sail up -d --force-recreate
+            cd /srv/$PROJECT_ID                       && \
+            git checkout dev                          && \
+            git pull                                  && \
+            ./vendor/bin/sail up -d --force-recreate  && \
+            ./vendor/bin/sail artisan migrate
 
       - name: Wait
         run: sleep 15
