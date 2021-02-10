@@ -17,7 +17,7 @@
         @endif
         @auth
         @if(Auth::user()->id === $user->id)
-        <p><a href="{{ route('users.edit', $user->id) }}">{{ __('Edit Profile') }}</a></p>
+        <p><a href="{{ route('users.edit', $user) }}">{{ __('Edit Profile') }}</a></p>
         @endif
         @endauth
     </div>
