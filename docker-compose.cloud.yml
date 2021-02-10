@@ -8,6 +8,7 @@ services:
       - ${APP_PORT}:80
     volumes:
       - .:/var/www/html
+      - ${APP_STORAGE_DIR}:/var/www/html/storage
     depends_on:
       - mysql
       - redis
