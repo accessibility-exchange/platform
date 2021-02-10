@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 itemprop="name">{{ __('Users') }}</h1>
+        <h1 itemprop="name">{{ __('People') }}</h1>
     </x-slot>
 
     <div class="flow">
