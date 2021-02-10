@@ -28,6 +28,15 @@ nav > * + * {
         margin-top: 0;
     }
 
+    nav ul {
+        display: flex;
+        flex-direction: row;
+    }
+
+    nav ul > li + li {
+        margin-left: var(--step--2);
+    }
+
     .dropdown {
         position: relative;
     }
