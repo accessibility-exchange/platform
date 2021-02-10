@@ -54,6 +54,6 @@ class UserController extends Controller
             'about' => 'nullable'
         ]));
 
-        return redirect('/people/' . $user->id);
+        return redirect('/people/' . $user->slug);
     }
 }

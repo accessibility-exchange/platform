@@ -4,8 +4,12 @@
     </x-slot>
 
     <div class="flow">
-        @foreach($users as $user)
-        <p><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a></p>
-        @endforeach
+        @if($users)
+            @foreach($users as $user)
+            <p><a href="{{ route('users.show', $user) }}">{{ $user->name }}</a></p>
+            @endforeach
+        @else
+            <p>{{ __('No people found.') }}</p>
+        @endif
     </div>
 </x-app-layout>
