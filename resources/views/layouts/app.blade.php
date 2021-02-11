@@ -7,6 +7,14 @@
 
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
 
+        <!-- Manifest -->
+        <link rel="manifest" href="/manifest.webmanifest">
+
+        <!-- Icons -->
+        <link rel="icon" href="/favicon.ico">
+        <link rel="icon" href="/icon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
