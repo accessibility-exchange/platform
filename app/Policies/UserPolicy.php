@@ -56,6 +56,8 @@ class UserPolicy
         return $user->id === $model->id
             ? Response::allow()
             : Response::deny('You cannot edit this profile.');
+
+        // TODO: Are there some circumstances where administrative users should be able to modify others' profiles?
     }
 
     /**
