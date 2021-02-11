@@ -3,6 +3,7 @@
 [![Project license](https://badgen.net/github/license/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
 [![Latest release](https://badgen.net/github/release/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
 [![Check status](https://badgen.net/github/checks/accessibility-in-action/platform/dev)](https://github.com/accessibility-in-action/platform/releases/latest)
+[![Code coverage](https://badgen.net/codecov/c/github/accessibility-in-action/platform)](https://codecov.io/gh/accessibility-in-action/platform/)
 [![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
 
 Accessibility in Action is a two-year initiative managed by the
