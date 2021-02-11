@@ -15,10 +15,8 @@
             {{ $user->about }}
         </div>
         @endif
-        @auth
-        @if(Auth::user()->id === $user->id)
+        @can('update', $user)
         <p><a href="{{ route('users.edit', $user) }}">{{ __('Edit Profile') }}</a></p>
-        @endif
-        @endauth
+        @endcan
     </div>
 </x-app-layout>

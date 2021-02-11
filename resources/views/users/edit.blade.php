@@ -5,8 +5,6 @@
         </h1>
     </x-slot>
 
-    @auth
-    @if(Auth::user()->id === $user->id)
     <form action="{{ route('users.update', $user) }}" method="POST">
         @csrf
         @method('PUT')
@@ -28,9 +26,4 @@
         </div>
         <button type="submit">Save changes</button>
     </form>
-    @endif
-    {{-- TODO: redirect to access denied. --}}
-    @else
-    {{-- TODO: redirect to access denied. --}}
-    @endauth
 </x-app-layout>
