@@ -5,7 +5,7 @@
 
     <div class="flow">
         @if($users)
-            <filter-container class="flow">
+            <filter-container class="filterable flow">
             <div class="field">
                 <label for="region">{{ __('Province or territory') }}</label>
                 <x-region-select />
