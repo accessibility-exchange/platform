@@ -43,7 +43,7 @@ class UserController extends Controller
      * Update a given user.
      *
      * @param  User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(User $user)
     {
