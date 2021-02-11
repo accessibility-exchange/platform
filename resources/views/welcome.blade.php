@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js">
+{{-- TODO: Add RTL support based on user language preferences. --}}
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr" class="no-js">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
