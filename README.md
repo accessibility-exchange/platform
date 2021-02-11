@@ -117,3 +117,7 @@ All commit messages and pull request titles must follow these standards.
   are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `main` branch.
+
+## License
+
+The Accessibility in Action platform is available under the [BSD 3-Clause License](https://github.com/accessibility-in-action/platform/blob/main/LICENSE.md).
