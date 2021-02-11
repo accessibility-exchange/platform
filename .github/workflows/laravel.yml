@@ -42,4 +42,6 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --coverage-clover coverage.xml
+    - name: Upload coverage to Codecov
+      run: bash <(curl -s https://codecov.io/bash)
