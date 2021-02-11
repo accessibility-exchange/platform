@@ -24,9 +24,6 @@
         ],
         "*.js": [
             "eslint"
-        ],
-        "*.php": [
-            "vendor/bin/phpcs"
         ]
     },
     "devDependencies": {
