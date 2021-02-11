@@ -46,6 +46,7 @@
     },
     "dependencies": {
         "@accessibility-in-action/looseleaf": "^1.0.0-alpha.5",
+        "@zachleat/filter-container": "1.0.3",
         "alpinejs": "^2.7.3",
         "axios": "^0.21",
         "modern-css-reset": "^1.4.0"

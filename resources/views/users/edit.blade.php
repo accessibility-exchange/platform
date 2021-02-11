@@ -20,10 +20,9 @@
         </div>
         <div class="field">
             <label for="region">{{ __('Province or territory') }}</label>
-            <input type="text" id="region" name="region" value="{{ $user->region }}" />
+            <x-region-select :selected="$user->region" />
         </div>
         <div class="field">
-            {{-- TODO: figure out why this isn't working. --}}
             <label for="about">{{ __('About') }}</label>
             <textarea id="about" name="about">{{ $user->about }}</textarea>
         </div>
