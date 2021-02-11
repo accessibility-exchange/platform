@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="ltr" class="no-js">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,12 +30,13 @@
             <article class="wrapper flow">
                 <!-- Page Heading -->
                 <header class="flow">
-                    <h1>{{ config('app.name', 'Accessibility in Action') }}</h1>
+                    <h1>@yield('code'): @yield('title')</h1>
                 </header>
 
                 <!-- Page Content -->
                 <div class="content flow">
-                    <p>{{ __('Welcome!') }}</p>
+                    <p>@yield('message')</p>
+                    <p><a href="/" rel="home">{{ __('Return to home page') }}</a></p>
                 </div>
             </article>
         </main>
