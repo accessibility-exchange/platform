@@ -26,7 +26,10 @@
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "nunomaduro/larastan": "^0.7.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.3.3",
+        "psalm/plugin-laravel": "^1.4",
+        "squizlabs/php_codesniffer": "^3.5",
+        "vimeo/psalm": "^4.5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -65,6 +68,9 @@
         ],
         "analyze": [
             "vendor/bin/phpstan analyse"
+        ],
+        "lint": [
+            "vendor/bin/phpcs"
         ]
     }
 }
