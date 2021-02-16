@@ -4,15 +4,15 @@
 <ul role="list" class="nav">
     @auth
     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-        {{ __('Dashboard') }}
+        {{ __('dashboard.title') }}
     </x-nav-link>
     @else
     <x-nav-link :href="route('login')">
-        {{ __('Login') }}
+        {{ __('auth.login') }}
     </x-nav-link>
     @if (Route::has('register'))
     <x-nav-link :href="route('register')">
-        {{ __('Register') }}
+        {{ __('auth.register') }}
     </x-nav-link>
     @endif
     @endauth
@@ -28,7 +28,7 @@
 
         <x-slot name="content">
             <x-dropdown-link href="{{ route('users.show', Auth::user()) }}">
-                {{ __('Your Profile') }}
+                {{ __('user.your_profile') }}
             </x-dropdown-link>
 
             <!-- Authentication -->
@@ -38,7 +38,7 @@
                 <x-dropdown-link :href="route('logout')"
                         onclick="event.preventDefault();
                                     this.closest('form').submit();">
-                    {{ __('Logout') }}
+                    {{ __('auth.logout') }}
                 </x-dropdown-link>
             </form>
         </x-slot>

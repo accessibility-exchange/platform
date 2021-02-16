@@ -17,21 +17,21 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('Email')" />
+                <x-label for="email" :value="__('forms.label_email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email', $request->email)" required autofocus />
             </div>
 
             <!-- Password -->
             <div class="field">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" :value="__('auth.label_password')" />
 
                 <x-input id="password" type="password" name="password" required />
             </div>
 
             <!-- Confirm Password -->
             <div class="field">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-label for="password_confirmation" :value="__('auth.label_password_confirmation')" />
 
                 <x-input id="password_confirmation"
                                     type="password"
@@ -39,7 +39,7 @@
             </div>
 
             <x-button>
-                {{ __('Reset Password') }}
+                {{ __('auth.reset_submit') }}
             </x-button>
         </form>
     </x-auth-card>

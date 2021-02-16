@@ -36,7 +36,7 @@ class ConfirmablePasswordController extends Controller
             ])
         ) {
             throw ValidationException::withMessages([
-                'password' => __('auth.password'),
+                'password' => __('auth.wrong_password'),
             ]);
         }
 

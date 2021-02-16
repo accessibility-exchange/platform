@@ -21,14 +21,14 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('Email')" />
+                <x-label for="email" :value="__('forms.label_email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email')" required />
             </div>
 
             <!-- Password -->
             <div class="field">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" :value="__('auth.label_password')" />
 
                 <x-input id="password"
                                 type="password"
@@ -38,7 +38,7 @@
 
             <!-- Confirm Password -->
             <div class="field">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-label for="password_confirmation" :value="__('auth.label_password_confirmation')" />
 
                 <x-input id="password_confirmation"
                                 type="password"

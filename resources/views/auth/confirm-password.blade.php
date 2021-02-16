@@ -7,7 +7,7 @@
         </x-slot>
 
         <div>
-            {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+            {{ __('auth.confirm_intro') }}
         </div>
 
         <!-- Validation Errors -->
@@ -18,7 +18,7 @@
 
             <!-- Password -->
             <div class="field">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" :value="__('auth.label_password')" />
 
                 <x-input id="password"
                                 type="password"

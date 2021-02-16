@@ -17,14 +17,14 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('Email')" />
+                <x-label for="email" :value="__('forms.label_email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <!-- Password -->
             <div class="field">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" :value="__('auth.label_password')" />
 
                 <x-input id="password"
                                 type="password"
@@ -36,11 +36,11 @@
             <div class="field">
                 <input id="remember_me" type="checkbox" name="remember">
                 <label for="remember_me">
-                    <span>{{ __('Remember me') }}</span>
+                    <span>{{ __('auth.label_remember_me') }}</span>
                 </label>
                 @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+                    {{ __('auth.forget_prompt') }}
                 </a>
                 @endif
             </div>
