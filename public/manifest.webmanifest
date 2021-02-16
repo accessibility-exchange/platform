@@ -1,4 +1,11 @@
 {
+    "name": "Accessibility in Action",
+    "short_name": "AinA",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#000",
+    "description": "A readable Hacker News app.",
     "icons": [
         {
             "src": "/icon-192.png",
