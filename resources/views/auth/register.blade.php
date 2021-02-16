@@ -47,7 +47,7 @@
 
             <div class="field">
                 <a href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+                    {{ __('Already have an account?') }}
                 </a>
             </div>
 

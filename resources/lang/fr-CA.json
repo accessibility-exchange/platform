@@ -1,0 +1,11 @@
+{
+    "Name": "Nom",
+    "Email": "E-mail",
+    "Password": "Mot de passe",
+    "Confirm Password": "Confirmez le mot de passe",
+    "Forgot your password?": "Mot de passe oublié?",
+    "Login": "S'identifier",
+    "Remember me": "Souvenez-vous de moi",
+    "Register": "S'inscrire",
+    "Already have an account?": "Vous avez déjà un compte?"
+}

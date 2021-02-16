@@ -30,6 +30,7 @@
             <x-dropdown-link href="{{ route('users.show', Auth::user()) }}">
                 {{ __('Your Profile') }}
             </x-dropdown-link>
+
             <!-- Authentication -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

@@ -24,6 +24,6 @@
             <label for="about">{{ __('About') }}</label>
             <textarea id="about" name="about">{{ $user->about }}</textarea>
         </div>
-        <button type="submit">Save changes</button>
+        <button type="submit">{{ __('Save changes') }}</button>
     </form>
 </x-app-layout>
