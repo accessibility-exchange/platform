@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                Accessibility in Action
+                {{ config('app.name', 'Accessibility in Action') }}
             </a>
         </x-slot>
 
