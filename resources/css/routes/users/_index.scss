@@ -1,3 +1,12 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the users.index route.
 // -----------------------------------------------------------------------------
+
+.no-js .filterable .field,
+.no-js .filterable [data-filter-results] {
+    display: none;
+}
+
+.filter-region--hide {
+    display: none;
+}

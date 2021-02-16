@@ -4,28 +4,28 @@
 nav {
     display: flex;
     flex-direction: column;
-    margin-top: var(--step-2);
+    margin-block-start: var(--step-2);
 }
 
 nav ul {
     margin: 0;
-    padding-left: 0;
+    padding-inline-start: 0;
 }
 
 nav > * + * {
-    margin-top: var(--step--2);
+    margin-block-start: var(--step--2);
 }
 
 @media (min-width: 768px) {
     nav {
         flex-direction: row;
-        margin-left: auto;
-        margin-top: 0;
+        margin-block-start: 0;
+        margin-inline-start: auto;
     }
 
     nav > * + * {
-        margin-left: var(--step--2);
-        margin-top: 0;
+        margin-block-start: 0;
+        margin-inline-start: var(--step--2);
     }
 
     nav ul {
@@ -34,7 +34,7 @@ nav > * + * {
     }
 
     nav ul > li + li {
-        margin-left: var(--step--2);
+        margin-inline-start: var(--step--2);
     }
 
     .dropdown {
@@ -43,6 +43,6 @@ nav > * + * {
 
     .dropdown .dropdown__content {
         position: absolute;
-        text-align: left;
+        text-align: start;
     }
 }

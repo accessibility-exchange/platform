@@ -5,8 +5,6 @@
         </h1>
     </x-slot>
 
-    @auth
-    @if(Auth::user()->id === $user->id)
     <form action="{{ route('users.update', $user) }}" method="POST">
         @csrf
         @method('PUT')
@@ -20,18 +18,12 @@
         </div>
         <div class="field">
             <label for="region">{{ __('Province or territory') }}</label>
-            <input type="text" id="region" name="region" value="{{ $user->region }}" />
+            <x-region-select :selected="$user->region" />
         </div>
         <div class="field">
-            {{-- TODO: figure out why this isn't working. --}}
             <label for="about">{{ __('About') }}</label>
             <textarea id="about" name="about">{{ $user->about }}</textarea>
         </div>
         <button type="submit">Save changes</button>
     </form>
-    @endif
-    {{-- TODO: redirect to access denied. --}}
-    @else
-    {{-- TODO: redirect to access denied. --}}
-    @endauth
 </x-app-layout>

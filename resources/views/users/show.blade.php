@@ -4,7 +4,7 @@
         <h1 itemprop="name">{{ $user->name }}</h1>
         @if($user->locality && $user->region)
         <p itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
-            <span itemprop="addressLocality">{{ $user->locality }}</span>, <span itemprop="addressRegion">{{ $user->region }}</span>
+            <span itemprop="addressLocality">{{ $user->locality }}</span>, <span itemprop="addressRegion">{{ __("geography.$user->region") }}</span>
         </p>
         @endif
     </x-slot>
@@ -15,10 +15,8 @@
             {{ $user->about }}
         </div>
         @endif
-        @auth
-        @if(Auth::user()->id === $user->id)
+        @can('update', $user)
         <p><a href="{{ route('users.edit', $user) }}">{{ __('Edit Profile') }}</a></p>
-        @endif
-        @endauth
+        @endcan
     </div>
 </x-app-layout>

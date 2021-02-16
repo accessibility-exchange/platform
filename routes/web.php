@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +27,10 @@ Route::get('/people', [UserController::class, 'index'])
 Route::get('/people/{user}', [UserController::class, 'show'])
     ->name('users.show');
 Route::get('/people/{user}/edit', [UserController::class, 'edit'])
-    ->middleware('auth')
+    ->middleware('can:update,user')
     ->name('users.edit');
 Route::put('/people/{user}', [UserController::class, 'update'])
-    ->middleware('auth')
+    ->middleware('can:update,user')
     ->name('users.update');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
