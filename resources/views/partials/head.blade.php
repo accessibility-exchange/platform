@@ -1,9 +1,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#000"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
+        <meta name="description" content="Accessibility in Action supports processes where people with disabilities have the power to make sure that policies, programs, and services by federally regulated entities are accessible to them and respect their human rights.">
+        <meta name="theme-color" content="#000"/>
 
         <!-- Manifest -->
         <link rel="manifest" href="/manifest.webmanifest">
