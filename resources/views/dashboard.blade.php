@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 itemprop="name">{{ __('Dashboard') }}</h1>
+        <h1 itemprop="name">{{ __('dashboard.title') }}</h1>
     </x-slot>
 
-    <p>{{ __('You\'re logged in!') }}</p>
+    <p>This is the dashboard.</p>
 </x-app-layout>

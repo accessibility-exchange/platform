@@ -5,4 +5,20 @@
     border: var(--ll-border-thin);
     border-radius: var(--ll-border-radius);
     padding: var(--step--5) var(--step--4);
+    text-align: start;
+}
+
+@media (min-width: 768px) {
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown .dropdown__content {
+        height: auto;
+        inset-inline-end: 0;
+        position: absolute;
+        text-align: end;
+        white-space: nowrap;
+        width: auto;
+    }
 }

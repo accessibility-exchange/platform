@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -13,29 +14,37 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
-        $response = $this->get('/login');
+        $this->refreshApplicationWithLocale('en-CA');
+
+        $response = $this->get('/en/login');
 
         $response->assertStatus(200);
     }
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
-        $user = User::factory()->create();
+        $this->refreshApplicationWithLocale('en-CA');
 
-        $response = $this->post('/login', [
+        $user = User::factory()->create();
+        $home = LaravelLocalization::getLocalizedURL($user->locale, RouteServiceProvider::HOME);
+
+
+        $response = $this->post('/en/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect($home);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
-        $this->post('/login', [
+        $this->post('/en/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
@@ -45,36 +54,42 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_edit_own_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/en/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $response = $this->get("/people/{$user->slug}/edit");
+        $response = $this->get("/en/people/{$user->slug}/edit");
         $response->assertStatus(200);
     }
 
     public function test_users_can_not_edit_others_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/en/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $response = $this->get("/people/{$other_user->slug}/edit");
+        $response = $this->get("/en/people/{$other_user->slug}/edit");
         $response->assertStatus(403);
     }
 
     public function test_guests_can_not_edit_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
-        $response = $this->get("/people/{$user->slug}/edit");
+        $response = $this->get("/en/people/{$user->slug}/edit");
         $response->assertStatus(403);
     }
 }

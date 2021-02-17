@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,7 +33,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect(RouteServiceProvider::HOME);
+        $url = LaravelLocalization::getLocalizedURL(Auth::user()->pluck('locale')->first(), RouteServiceProvider::HOME);
+
+        return redirect($url);
     }
 
     /**
