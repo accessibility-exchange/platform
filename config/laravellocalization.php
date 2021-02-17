@@ -237,9 +237,9 @@ return [
         //     'regional' => 'en_GB'
         // ],
         'en-CA' => [
-            'name' => 'Canadian English',
+            'name' => 'English',
             'script' => 'Latn',
-            'native' => 'Canadian English',
+            'native' => 'English',
             'regional' => 'en_CA'
         ],
         // 'en-US' => [
@@ -291,9 +291,9 @@ return [
         //     'regional' => 'fr_FR'
         // ],
         'fr-CA' => [
-            'name' => 'Canadian French',
+            'name' => 'French',
             'script' => 'Latn',
-            'native' => 'français canadien',
+            'native' => 'Français',
             'regional' => 'fr_CA'
         ],
         // 'fy' => [
@@ -410,12 +410,12 @@ return [
         //     'native' => 'interlingua',
         //     'regional' => 'ia_FR'
         // ],
-        'iu-Latn' => [
-            'name' => 'Inuktitut (Latin)',
-            'script' => 'Latn',
-            'native' => 'Inuktitut',
-            'regional' => 'iu_CA'
-        ],
+        // 'iu-Latn' => [
+        //     'name' => 'Inuktitut (Latin)',
+        //     'script' => 'Latn',
+        //     'native' => 'Inuktitut',
+        //     'regional' => 'iu_CA'
+        // ],
         // 'sbp' => [
         //     'name' => 'Sileibi',
         //     'script' => 'Latn',
@@ -1652,24 +1652,24 @@ return [
         //     'native' => 'ᏣᎳᎩ',
         //     'regional' => ''
         // ],
-        'iu' => [
-            'name' => 'Inuktitut (Canadian Aboriginal Syllabics)',
-            'script' => 'Cans',
-            'native' => 'ᐃᓄᒃᑎᑐᑦ',
-            'regional' => 'iu_CA'
-        ],
-        'oj' => [
-            'name' => 'Ojibwa',
-            'script' => 'Cans',
-            'native' => 'ᐊᓂᔑᓈᐯᒧᐎᓐ',
-            'regional' => ''
-        ],
-        'cr' => [
-            'name' => 'Cree',
-            'script' => 'Cans',
-            'native' => 'ᓀᐦᐃᔭᐍᐏᐣ',
-            'regional' => ''
-        ],
+        // 'iu' => [
+        //     'name' => 'Inuktitut (Canadian Aboriginal Syllabics)',
+        //     'script' => 'Cans',
+        //     'native' => 'ᐃᓄᒃᑎᑐᑦ',
+        //     'regional' => 'iu_CA'
+        // ],
+        // 'oj' => [
+        //     'name' => 'Ojibwa',
+        //     'script' => 'Cans',
+        //     'native' => 'ᐊᓂᔑᓈᐯᒧᐎᓐ',
+        //     'regional' => ''
+        // ],
+        // 'cr' => [
+        //     'name' => 'Cree',
+        //     'script' => 'Cans',
+        //     'native' => 'ᓀᐦᐃᔭᐍᐏᐣ',
+        //     'regional' => ''
+        // ],
         // 'km' => [
         //     'name' => 'Khmer',
         //     'script' => 'Khmr',

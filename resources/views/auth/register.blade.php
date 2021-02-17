@@ -14,7 +14,7 @@
 
             <!-- Name -->
             <div class="field">
-                <x-label for="name" :value="__('Name')" />
+                <x-label for="name" :value="__('user.label_name')" />
 
                 <x-input id="name" type="text" name="name" :value="old('name')" required autofocus />
             </div>
@@ -47,12 +47,12 @@
 
             <div class="field">
                 <a href="{{ route('login') }}">
-                    {{ __('Already have an account?') }}
+                    {{ __('auth.existing_account_prompt') }}
                 </a>
             </div>
 
             <x-button>
-                {{ __('Register') }}
+                {{ __('auth.register') }}
             </x-button>
         </form>
     </x-auth-card>

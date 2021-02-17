@@ -46,7 +46,7 @@
             </div>
 
             <x-button>
-                {{ __('Login') }}
+                {{ __('auth.login') }}
             </x-button>
         </form>
     </x-auth-card>
