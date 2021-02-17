@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -25,6 +26,8 @@ class AuthenticationTest extends TestCase
         $this->refreshApplicationWithLocale('en-CA');
 
         $user = User::factory()->create();
+        $home = LaravelLocalization::getLocalizedURL($user->locale, RouteServiceProvider::HOME);
+
 
         $response = $this->post('/en/login', [
             'email' => $user->email,
@@ -32,7 +35,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect($home);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
