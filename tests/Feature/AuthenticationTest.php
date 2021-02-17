@@ -15,7 +15,7 @@ class AuthenticationTest extends TestCase
     {
         $this->refreshApplicationWithLocale('en-CA');
 
-        $response = $this->get('/login');
+        $response = $this->get('/en/login');
 
         $response->assertStatus(200);
     }
