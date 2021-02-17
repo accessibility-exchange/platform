@@ -16,17 +16,21 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_verification_screen_can_be_rendered()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->get('/verify-email');
+        $response = $this->actingAs($user)->get('/en/verify-email');
 
         $response->assertStatus(200);
     }
 
     public function test_email_can_be_verified()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         Event::fake();
 
         $user = User::factory()->create([
@@ -48,6 +52,8 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_is_not_verified_with_invalid_hash()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
