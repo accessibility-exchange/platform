@@ -13,6 +13,8 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $response = $this->get('/login');
 
         $response->assertStatus(200);
@@ -20,6 +22,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
         $response = $this->post('/login', [
@@ -33,6 +37,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
         $this->post('/login', [
@@ -45,6 +51,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_edit_own_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
         $response = $this->post('/login', [
@@ -58,6 +66,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_edit_others_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -72,6 +82,8 @@ class AuthenticationTest extends TestCase
 
     public function test_guests_can_not_edit_profiles()
     {
+        $this->refreshApplicationWithLocale('en-CA');
+
         $user = User::factory()->create();
 
         $response = $this->get("/people/{$user->slug}/edit");
