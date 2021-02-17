@@ -2,11 +2,9 @@
 
 @if ($errors->any())
     <div {{ $attributes }}>
-        <div class="">
-            {{ __('Whoops! Something went wrong.') }}
-        </div>
+        <p class="center">{{ __('auth.error_intro') }}</p>
 
-        <ul class="">
+        <ul role="list">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach

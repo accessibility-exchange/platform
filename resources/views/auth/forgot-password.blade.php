@@ -2,12 +2,12 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                Accessibility in Action
+                {{ config('app.name', 'Accessibility in Action') }}
             </a>
         </x-slot>
 
         <div>
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            {{ __('auth.forgot_intro') }}
         </div>
 
         <!-- Session Status -->
@@ -21,13 +21,13 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('Email')" />
+                <x-label for="email" :value="__('forms.label_email')" />
 
                 <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <x-button>
-                {{ __('Email Password Reset Link') }}
+                {{ __('auth.forgot_submit') }}
             </x-button>
         </form>
     </x-auth-card>

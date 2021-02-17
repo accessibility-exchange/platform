@@ -33,7 +33,8 @@ jobs:
             cd /srv/$PROJECT_ID && \
             git checkout dev && \
             git pull && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:trans:clear
 
       - name: Wait
         run: sleep 15

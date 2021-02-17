@@ -1,13 +1,13 @@
 @props(['active'])
 
 @php
-$classes = ($active ?? false)
-            ? 'active'
-            : '';
+$current = ($active ?? false)
+            ? ['aria-current' => 'page']
+            : [];
 @endphp
 
 <li>
-    <a {{ $attributes->merge(['class' => $classes]) }}>
+    <a {{ $attributes->merge($current) }}>
         {{ $slot }}
     </a>
 </li>

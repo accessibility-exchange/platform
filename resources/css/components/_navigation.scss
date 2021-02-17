@@ -16,6 +16,18 @@ nav > * + * {
     margin-block-start: var(--step--2);
 }
 
+nav .link {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+nav .icon {
+    height: 1em;
+    margin-inline-end: 0.125em;
+    width: 1em;
+}
+
 @media (min-width: 768px) {
     nav {
         flex-direction: row;
@@ -35,14 +47,5 @@ nav > * + * {
 
     nav ul > li + li {
         margin-inline-start: var(--step--2);
-    }
-
-    .dropdown {
-        position: relative;
-    }
-
-    .dropdown .dropdown__content {
-        position: absolute;
-        text-align: start;
     }
 }
