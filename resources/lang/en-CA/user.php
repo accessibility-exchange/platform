@@ -11,5 +11,6 @@ return [
     'label_name' => 'Full name',
     'label_locality' => 'City or town',
     'label_region' => 'Province or territory',
+    'label_locale' => 'Preferred language',
     'label_about' => 'About',
 ];

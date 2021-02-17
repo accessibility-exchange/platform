@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class UserController extends Controller
 {
@@ -49,11 +50,12 @@ class UserController extends Controller
     {
         $user->update(request()->validate([
             'name' => 'required',
+            'locale' => 'required',
             'locality' => 'nullable',
             'region' => 'nullable',
             'about' => 'nullable'
         ]));
 
-        return redirect('/people/' . $user->slug);
+        return redirect(LaravelLocalization::getLocalizedURL($user->locale, '/people/' . $user->slug));
     }
 }

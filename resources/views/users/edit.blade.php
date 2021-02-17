@@ -24,6 +24,11 @@
             <label for="about">{{ __('user.label_about') }}</label>
             <textarea id="about" name="about">{{ $user->about }}</textarea>
         </div>
+
+        <div class="field">
+            <label for="locale">{{ __('user.label_locale') }}</label>
+            <x-locale-select :selected="$user->locale" />
+        </div>
         <button type="submit">{{ __('forms.save_changes') }}</button>
     </form>
 </x-app-layout>

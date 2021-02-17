@@ -12,6 +12,8 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
+            <x-input id="locale" type="hidden" name="locale" value="{{ LaravelLocalization::getCurrentLocale() ?: 'en-CA' }}" />
+
             <!-- Name -->
             <div class="field">
                 <x-label for="name" :value="__('user.label_name')" />
