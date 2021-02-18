@@ -41,10 +41,10 @@
         "stylelint-use-logical": "^1.1.0"
     },
     "dependencies": {
-        "@accessibility-in-action/looseleaf": "^1.0.0-alpha.5",
-        "@zachleat/filter-container": "1.0.3",
-        "alpinejs": "^2.7.3",
-        "axios": "^0.21",
+        "@accessibility-in-action/looseleaf": "^1.0.0",
+        "@zachleat/filter-container": "^1.0.3",
+        "alpinejs": "^2.8.0",
+        "axios": "^0.21.1",
         "modern-css-reset": "^1.4.0"
     }
 }
