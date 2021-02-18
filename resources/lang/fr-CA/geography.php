@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'ab' => 'Alberta',
+    'ab' => 'L\'Alberta',
     'bc' => 'Colombie-Britannique',
     'mb' => 'Manitoba',
     'nb' => 'Nouveau-Brunswick',
