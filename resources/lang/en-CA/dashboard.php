@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'title' => 'Dashboard'
+    'title' => 'Dashboard',
+    'welcome' => 'Welcome, :name!'
 ];
