@@ -21,14 +21,14 @@ Route::multilingual('/', function () {
 
 Route::multilingual('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified:' . locale() . '.verification.notice'])->name('dashboard');
 
 Route::multilingual('/people', [UserController::class, 'index'])
     ->name('users.index');
 Route::multilingual('/people/{user}', [UserController::class, 'show'])
     ->name('users.show');
 Route::multilingual('/people/{user}/edit', [UserController::class, 'edit'])
-    ->middleware('can:update,user')
+    ->middleware(['can:update,user', 'password.confirm:' . locale() . '.password.confirm'])
     ->name('users.edit');
 Route::multilingual('/people/{user}', [UserController::class, 'update'])
     ->method('put')

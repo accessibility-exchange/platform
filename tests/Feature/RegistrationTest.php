@@ -28,6 +28,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/en/' . RouteServiceProvider::HOME);
+        $response->assertRedirect('/en/dashboard');
     }
 }

@@ -6,5 +6,6 @@ return [
     'users.edit' => 'people/{user}/edit',
     'logout' => 'logout',
     'login' => 'login',
-    'register' => 'register'
+    'register' => 'register',
+    'verification.verify' => '/verify-email/{id}/{hash}'
 ];
