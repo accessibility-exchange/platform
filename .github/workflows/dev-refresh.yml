@@ -1,4 +1,4 @@
-name: Prototype cleanup
+name: Prototype refresh
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ env:
   PROJECT_SMOKETEST_URL: https://aina-dev.inclusivedesign.ca
 
 jobs:
-  deploy:
+  refresh:
     if: github.repository == 'accessibility-in-action/platform'
 
     runs-on: ubuntu-latest
