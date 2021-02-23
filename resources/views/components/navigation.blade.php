@@ -3,15 +3,15 @@
     <!-- Navigation Links -->
     <ul role="list" class="nav">
         @auth
-        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+        <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs('dashboard')">
             {{ __('dashboard.title') }}
         </x-nav-link>
         @else
-        <x-nav-link :href="route('login')">
+        <x-nav-link :href="localized_route('login')">
             {{ __('auth.login') }}
         </x-nav-link>
-        @if (Route::has('register'))
-        <x-nav-link :href="route('register')">
+        @if (Route::has(locale() . '.register'))
+        <x-nav-link :href="localized_route('register')">
             {{ __('auth.register') }}
         </x-nav-link>
         @endif
@@ -28,16 +28,16 @@
 
             <x-slot name="content">
                 <p>
-                    <x-dropdown-link href="{{ route('users.show', Auth::user()) }}">
+                    <x-dropdown-link href="{{ localized_route('users.show', Auth::user()) }}">
                         {{ __('user.your_profile') }}
                     </x-dropdown-link>
                 </p>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ localized_route('logout') }}">
                     @csrf
 
-                    <x-dropdown-link :href="route('logout')"
+                    <x-dropdown-link :href="localized_route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('auth.logout') }}
@@ -48,22 +48,6 @@
     </div>
     @endauth
 
-    <!-- Locales Dropdown -->
-    <div class="locales">
-        <x-dropdown>
-            <x-slot name="trigger">
-                <x-heroicon-s-globe-alt aria-hidden="true" /> {{ LaravelLocalization::getCurrentLocaleNative() }}
-            </x-slot>
-
-            <x-slot name="content">
-                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                <p>
-                    <x-dropdown-link rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode) }}">
-                        {{ $properties['native'] }}
-                    </x-dropdown-link>
-                </p>
-                @endforeach
-            </x-slot>
-        </x-dropdown>
-    </div>
+    <!-- Language Switcher -->
+    <x-language-switcher />
 </nav>

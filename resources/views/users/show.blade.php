@@ -16,7 +16,7 @@
         </div>
         @endif
         @can('update', $user)
-        <p><a href="{{ route('users.edit', $user) }}">{{ __('user.edit_link') }}</a></p>
+        <p><a href="{{ localized_route('users.edit', $user) }}">{{ __('user.edit_link') }}</a></p>
         @endcan
     </div>
 </x-app-layout>

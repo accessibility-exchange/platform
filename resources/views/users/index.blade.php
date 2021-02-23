@@ -13,7 +13,7 @@
             <p aria-live="polite" data-filter-results="{{ __('user.singular') }}/{{ __('user.plural') }}"></p>
             @foreach($users as $user)
             <div data-filter-region="{{ $user->region }}">
-                <a href="{{ route('users.show', $user) }}">{{ $user->name }}</a>
+                <a href="{{ localized_route('users.show', $user) }}">{{ $user->name }}</a>
             </div>
             @endforeach
             </filter-container>

@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class LocaleSelect extends Component
+class LanguageSwitcher extends Component
 {
     /**
      * The list of locales.
@@ -14,25 +14,22 @@ class LocaleSelect extends Component
     public $locales;
 
     /**
-     * The selected locale.
-     *
-     * @var string
-     */
-    public $selected;
-
-    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($selected = "")
+    public function __construct()
     {
         $this->locales = [
-            'en' => 'English',
-            'fr' => 'Français',
+            'en' => [
+                'code' => 'en-CA',
+                'name' => 'English',
+            ],
+            'fr' => [
+                'code' => 'fr-CA',
+                'name' => 'Français',
+            ]
         ];
-
-        $this->selected = $selected;
     }
 
     /**
@@ -42,6 +39,6 @@ class LocaleSelect extends Component
      */
     public function render()
     {
-        return view('components.locale-select');
+        return view('components.language-switcher');
     }
 }

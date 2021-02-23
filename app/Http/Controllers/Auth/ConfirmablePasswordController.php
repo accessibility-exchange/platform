@@ -7,7 +7,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ConfirmablePasswordController extends Controller
 {
@@ -43,7 +42,7 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        $url = LaravelLocalization::getLocalizedURL($request->user()->pluck('locale')->first(), RouteServiceProvider::HOME);
+        $url = '/' . $request->user()->pluck('locale')->first() . RouteServiceProvider::HOME;
 
         return redirect()->intended($url);
     }

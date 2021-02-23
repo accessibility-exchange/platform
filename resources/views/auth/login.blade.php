@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <a href="{{ localized_route('welcome') }}">
                 {{ config('app.name', 'Accessibility in Action') }}
             </a>
         </x-slot>
@@ -12,7 +12,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors :errors="$errors" />
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ localized_route('login') }}">
             @csrf
 
             <!-- Email Address -->
@@ -39,7 +39,7 @@
                     <span>{{ __('auth.label_remember_me') }}</span>
                 </label>
                 @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}">
+                <a href="{{ localized_route('password.request') }}">
                     {{ __('auth.forget_prompt') }}
                 </a>
                 @endif

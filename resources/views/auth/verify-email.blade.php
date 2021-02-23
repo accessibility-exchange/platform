@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <a href="{{ localized_route('welcome') }}">
                 {{ config('app.name', 'Accessibility in Action') }}
             </a>
         </x-slot>
@@ -17,7 +17,7 @@
         @endif
 
         <div>
-            <form method="POST" action="{{ route('verification.send') }}">
+            <form method="POST" action="{{ localized_route('verification.send') }}">
                 @csrf
 
                 <div>
@@ -27,7 +27,7 @@
                 </div>
             </form>
 
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ localized_route('logout') }}">
                 @csrf
 
                 <button type="submit">

@@ -5,7 +5,7 @@
         </h1>
     </x-slot>
 
-    <form action="{{ route('users.update', $user) }}" method="POST">
+    <form action="{{ localized_route('users.update', $user) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="field">

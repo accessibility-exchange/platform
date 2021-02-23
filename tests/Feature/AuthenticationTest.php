@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -14,8 +13,6 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $response = $this->get('/en/login');
 
         $response->assertStatus(200);
@@ -23,11 +20,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $user = User::factory()->create();
-        $home = LaravelLocalization::getLocalizedURL($user->locale, RouteServiceProvider::HOME);
-
 
         $response = $this->post('/en/login', [
             'email' => $user->email,
@@ -35,13 +28,11 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect($home);
+        $response->assertRedirect('/en' . RouteServiceProvider::HOME);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $user = User::factory()->create();
 
         $this->post('/en/login', [
@@ -54,8 +45,6 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_edit_own_profiles()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $user = User::factory()->create();
 
         $response = $this->post('/en/login', [
@@ -69,8 +58,6 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_edit_others_profiles()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -85,8 +72,6 @@ class AuthenticationTest extends TestCase
 
     public function test_guests_can_not_edit_profiles()
     {
-        $this->refreshApplicationWithLocale('en-CA');
-
         $user = User::factory()->create();
 
         $response = $this->get("/en/people/{$user->slug}/edit");
