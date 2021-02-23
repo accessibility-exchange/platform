@@ -31,8 +31,6 @@ class VerifyEmailController extends Controller
             event(new Verified($request->user()));
         }
 
-        ray($url);
-
         return redirect()->intended($url);
     }
 }
