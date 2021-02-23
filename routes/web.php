@@ -28,7 +28,7 @@ Route::multilingual('/people', [UserController::class, 'index'])
 Route::multilingual('/people/{user}', [UserController::class, 'show'])
     ->name('users.show');
 Route::multilingual('/people/{user}/edit', [UserController::class, 'edit'])
-    ->middleware(['can:update,user', 'password.confirm:' . locale() . '.password.confirm'])
+    ->middleware(['can:update,user'])
     ->name('users.edit');
 Route::multilingual('/people/{user}', [UserController::class, 'update'])
     ->method('put')
