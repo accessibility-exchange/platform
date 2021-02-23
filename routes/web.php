@@ -14,28 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group([
-    'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
-], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
+Route::redirect('/', locale());
+Route::multilingual('/', function () {
+    return view('welcome');
+})->name('welcome');
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+Route::multilingual('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified:' . locale() . '.verification.notice'])->name('dashboard');
 
-    Route::get('/people', [UserController::class, 'index'])
-        ->name('users.index');
-    Route::get('/people/{user}', [UserController::class, 'show'])
-        ->name('users.show');
-    Route::get('/people/{user}/edit', [UserController::class, 'edit'])
-        ->middleware('can:update,user')
-        ->name('users.edit');
-    Route::put('/people/{user}', [UserController::class, 'update'])
-        ->middleware('can:update,user')
-        ->name('users.update');
-});
+Route::multilingual('/people', [UserController::class, 'index'])
+    ->name('users.index');
+Route::multilingual('/people/{user}', [UserController::class, 'show'])
+    ->name('users.show');
+Route::multilingual('/people/{user}/edit', [UserController::class, 'edit'])
+    ->middleware(['can:update,user'])
+    ->name('users.edit');
+Route::multilingual('/people/{user}', [UserController::class, 'update'])
+    ->method('put')
+    ->middleware('can:update,user')
+    ->name('users.update');
 
 require __DIR__ . '/auth.php';
