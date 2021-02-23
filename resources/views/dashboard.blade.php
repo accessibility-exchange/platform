@@ -3,5 +3,5 @@
         <h1 itemprop="name">{{ __('dashboard.title') }}</h1>
     </x-slot>
 
-    <p>This is the dashboard.</p>
+    <p>{{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}</p>
 </x-app-layout>
