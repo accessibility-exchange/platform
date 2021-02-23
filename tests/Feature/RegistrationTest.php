@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RegistrationTest extends TestCase
 {
@@ -32,6 +33,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $response->assertRedirect(LaravelLocalization::getLocalizedURL('en-CA', RouteServiceProvider::HOME));
     }
 }

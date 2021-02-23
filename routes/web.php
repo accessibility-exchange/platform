@@ -24,7 +24,7 @@ Route::group([
 
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->middleware(['auth'])->name('dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::get('/people', [UserController::class, 'index'])
         ->name('users.index');
