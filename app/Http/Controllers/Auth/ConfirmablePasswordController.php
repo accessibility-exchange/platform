@@ -42,7 +42,7 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        $url = '/' . $request->user()->pluck('locale')->first() . RouteServiceProvider::HOME;
+        $url = localized_route(RouteServiceProvider::HOME, [], $request->user()->pluck('locale')->first());
 
         return redirect()->intended($url);
     }

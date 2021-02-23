@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        $url = '/' . $request->locale . RouteServiceProvider::HOME;
+        $url = localized_route(RouteServiceProvider::HOME, [], $request->locale);
 
         return redirect($url);
     }

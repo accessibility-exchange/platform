@@ -43,7 +43,7 @@ class EmailVerificationTest extends TestCase
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect('/en' . RouteServiceProvider::HOME . '?verified=1');
+        $response->assertRedirect(localized_route(RouteServiceProvider::HOME, ['verified' => 1], 'en'));
     }
 
     public function test_email_is_not_verified_with_invalid_hash()
