@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <a href="{{ localized_route('welcome') }}">
                 {{ config('app.name', 'Accessibility in Action') }}
             </a>
         </x-slot>
@@ -9,10 +9,10 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors :errors="$errors" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ localized_route('register') }}">
             @csrf
 
-            <x-input id="locale" type="hidden" name="locale" value="{{ LaravelLocalization::getCurrentLocale() ?: 'en-CA' }}" />
+            <x-input id="locale" type="hidden" name="locale" value="{{ locale() ?: 'en' }}" />
 
             <!-- Name -->
             <div class="field">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="field">
-                <a href="{{ route('login') }}">
+                <a href="{{ localized_route('login') }}">
                     {{ __('auth.existing_account_prompt') }}
                 </a>
             </div>

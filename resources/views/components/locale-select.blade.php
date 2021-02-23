@@ -1,10 +1,10 @@
-<select id="locale" name="locale" >
-    @foreach($locales as $value => $label)
+<select id="locale" name="locale">
+    @foreach($locales as $key => $locale)
     <option
-        value="{{ $value }}"
-        @if ($value === $selected)
+        value="{{ $key }}"
+        @if ($key === $selected)
         selected
         @endif
-    >{{ $label['native'] }}</option>
+    >{{ $locale }}</option>
     @endforeach
 </select>

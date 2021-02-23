@@ -9,7 +9,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class RegisteredUserController extends Controller
 {
@@ -49,7 +48,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        $url = LaravelLocalization::getLocalizedURL($request->locale, RouteServiceProvider::HOME);
+        $url = '/' . $request->locale . RouteServiceProvider::HOME;
 
         return redirect($url);
     }
