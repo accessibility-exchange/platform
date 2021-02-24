@@ -32,12 +32,12 @@ class Alert extends Component
      *
      * @return void
      */
-    public function __construct($title, $type = "info")
+    public function __construct($title = false, $type = "notice")
     {
         $this->type = $type;
 
         switch ($type) {
-            case "danger":
+            case "error":
                 $this->icon = "heroicon-s-x-circle";
                 break;
             case "warning":
@@ -46,12 +46,12 @@ class Alert extends Component
             case "success":
                 $this->icon = "heroicon-s-check-circle";
                 break;
-            case "info":
+            case "notice":
             default:
                 $this->icon = "heroicon-s-information-circle";
         }
 
-        $this->title = $title;
+        $this->title = $title ? $title : __("alert." . $type);
     }
 
     /**

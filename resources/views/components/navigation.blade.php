@@ -7,14 +7,14 @@
             {{ __('dashboard.title') }}
         </x-nav-link>
         @else
-        <x-nav-link :href="localized_route('login')">
-            {{ __('auth.login') }}
-        </x-nav-link>
         @if (Route::has(locale() . '.register'))
         <x-nav-link :href="localized_route('register')">
-            {{ __('auth.register') }}
+            {{ __('auth.create_account') }}
         </x-nav-link>
         @endif
+        <x-nav-link :href="localized_route('login')">
+            {{ __('auth.sign_in') }}
+        </x-nav-link>
         @endauth
     </ul>
 
@@ -40,7 +40,7 @@
                     <x-dropdown-link :href="localized_route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('auth.logout') }}
+                        {{ __('auth.sign_out') }}
                     </x-dropdown-link>
                 </form>
             </x-slot>

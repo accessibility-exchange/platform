@@ -31,7 +31,7 @@
                 @csrf
 
                 <button type="submit">
-                    {{ __('auth.logout') }}
+                    {{ __('auth.sign_out') }}
                 </button>
             </form>
         </div>

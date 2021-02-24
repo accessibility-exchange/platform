@@ -13,9 +13,8 @@ return [
     |
     */
 
-    'login' => 'S’identifier',
-    'logout' => 'Se déconnecter',
-    'register' => 'S’inscrire',
+    'sign_in' => 'S’identifier',
+    'sign_out' => 'Se déconnecter',
     'existing_account_prompt' => 'Vous avez déjà un compte?',
     'label_password' => 'Mot de passe',
     'label_password_confirmation' => 'Confirmez le mot de passe',
