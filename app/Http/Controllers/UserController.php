@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -56,5 +57,20 @@ class UserController extends Controller
         ]));
 
         return redirect($user->locale . '/people/' . $user->slug);
+    }
+
+    /**
+     * Destroy a given user.
+     *
+     * @param  User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(User $user)
+    {
+        Auth::guard('web')->logout();
+
+        $user->delete();
+
+        return redirect(localized_route('welcome'));
     }
 }

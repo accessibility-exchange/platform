@@ -34,5 +34,9 @@ Route::multilingual('/people/{user}', [UserController::class, 'update'])
     ->method('put')
     ->middleware('can:update,user')
     ->name('users.update');
+Route::multilingual('/people/{user}', [UserController::class, 'destroy'])
+    ->method('delete')
+    ->middleware(['can:delete,user'])
+    ->name('users.destroy');
 
 require __DIR__ . '/auth.php';

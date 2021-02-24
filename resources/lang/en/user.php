@@ -13,4 +13,5 @@ return [
     'label_region' => 'Province or territory',
     'label_locale' => 'Preferred language',
     'label_about' => 'About',
+    'delete_account' => 'Delete my account'
 ];
