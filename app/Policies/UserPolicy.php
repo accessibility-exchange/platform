@@ -69,7 +69,9 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        // TODO
+        return $user->id === $model->id
+            ? Response::allow()
+            : Response::deny('You cannot delete this account.');
     }
 
     /**
