@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $url = '/' . Auth::user()->pluck('locale')->first() . RouteServiceProvider::HOME;
+        $url = localized_route(RouteServiceProvider::HOME, [], Auth::user()->pluck('locale')->first());
 
         return redirect($url);
     }

@@ -13,10 +13,11 @@ return [
     |
     */
 
-    'login' => 'Log in',
-    'logout' => 'Log out',
-    'register' => 'Register',
-    'existing_account_prompt' => 'Already have an account?',
+    'sign_in' => 'Sign in',
+    'sign_out' => 'Sign out',
+    'create_account' => 'Create an account',
+    'create_your_account' => 'Create your account',
+    'existing_account_prompt' => 'Do you already have an account?',
     'label_password' => 'Password',
     'label_password_confirmation' => 'Confirm password',
     'label_remember_me' => 'Remember me',

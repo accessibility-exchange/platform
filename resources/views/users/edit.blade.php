@@ -31,4 +31,10 @@
         </div>
         <button type="submit">{{ __('forms.save_changes') }}</button>
     </form>
+
+    <form action="{{ localized_route('users.destroy', $user) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit">{{ __('user.delete_account') }}</button>
+    </form>
 </x-app-layout>

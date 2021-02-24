@@ -54,7 +54,7 @@
             </div>
 
             <x-button>
-                {{ __('auth.register') }}
+                {{ __('auth.create_your_account') }}
             </x-button>
         </form>
     </x-auth-card>

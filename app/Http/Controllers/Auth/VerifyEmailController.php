@@ -17,7 +17,7 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request)
     {
-        $url = '/' . $request->user()->pluck('locale')->first() . RouteServiceProvider::HOME . '?verified=1';
+        $url = localized_route(RouteServiceProvider::HOME, ['verified' => 1], $request->user()->pluck('locale')->first());
 
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended($url);

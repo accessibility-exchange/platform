@@ -17,7 +17,7 @@ class EmailVerificationNotificationController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            $url =  '/' . $request->user()->pluck('locale')->first() . RouteServiceProvider::HOME;
+            $url = localized_route(RouteServiceProvider::HOME, [], $request->user()->pluck('locale')->first());
 
             return redirect()->intended($url);
         }
