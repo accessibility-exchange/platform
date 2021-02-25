@@ -38,6 +38,8 @@ RUN apt-get update \
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
 
+RUN composer install --no-dev --optimize-autoloader
+
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/php.ini /etc/php/8.0/cli/conf.d/99-sail.ini
 
