@@ -13,13 +13,13 @@
             @csrf
 
             <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+            <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
             <!-- Email Address -->
             <div class="field">
                 <x-label for="email" :value="__('forms.label_email')" />
 
-                <x-input id="email" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+                <x-input id="email" type="email" name="email" :value="old('email', request()->get('email'))" required autofocus />
             </div>
 
             <!-- Password -->

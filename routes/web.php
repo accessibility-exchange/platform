@@ -23,8 +23,6 @@ Route::multilingual('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified:' . locale() . '.verification.notice'])->name('dashboard');
 
-Route::redirect('/dashboard', localized_route('dashboard'));
-
 Route::multilingual('/people', [UserController::class, 'index'])
     ->name('users.index');
 Route::multilingual('/people/{user}', [UserController::class, 'show'])

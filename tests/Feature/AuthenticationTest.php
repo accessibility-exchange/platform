@@ -28,7 +28,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(localized_route(RouteServiceProvider::HOME, [], 'en'));
+        $response->assertRedirect('/en/dashboard');
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()

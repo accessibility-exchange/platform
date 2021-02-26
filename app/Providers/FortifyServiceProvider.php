@@ -6,12 +6,18 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Responses\LoginResponse;
+use App\Http\Responses\TwoFactorLoginResponse;
+use App\Http\Responses\RegisterResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -22,6 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerResponseBindings();
     }
 
     /**
@@ -50,8 +57,10 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(fn () => view('auth.register'));
         Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
+        Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
     }
+
     /**
      * Configure routes for Fortify.
      */
@@ -64,5 +73,28 @@ class FortifyServiceProvider extends ServiceProvider
         ], function () {
             $this->loadRoutesFrom(base_path('routes/fortify.php'));
         });
+    }
+
+    /**
+     * Register response bindings.
+     */
+    protected function registerResponseBindings()
+    {
+        $this->app->singleton(
+            LoginResponseContract::class,
+            LoginResponse::class
+        );
+        $this->app->singleton(
+            TwoFactorLoginResponseContract::class,
+            TwoFactorLoginResponse::class
+        );
+        $this->app->singleton(
+            RegisterResponseContract::class,
+            RegisterResponse::class
+        );
+        $this->app->singleton(
+            VerifyEmailViewResponseContract::class,
+            VerifyEmailViewResponse::class
+        );
     }
 }
