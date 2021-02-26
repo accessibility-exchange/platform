@@ -23,6 +23,8 @@ Route::multilingual('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified:' . locale() . '.verification.notice'])->name('dashboard');
 
+Route::redirect('/dashboard', localized_route('dashboard'));
+
 Route::multilingual('/people', [UserController::class, 'index'])
     ->name('users.index');
 Route::multilingual('/people/{user}', [UserController::class, 'show'])
@@ -38,5 +40,3 @@ Route::multilingual('/people/{user}', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['can:delete,user'])
     ->name('users.destroy');
-
-require __DIR__ . '/auth.php';
