@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Http\Responses\LoginResponse;
 use App\Http\Responses\TwoFactorLoginResponse;
 use App\Http\Responses\RegisterResponse;
+use App\Http\Responses\PasswordResetResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -18,6 +19,7 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
+use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -79,8 +81,8 @@ class FortifyServiceProvider extends ServiceProvider
             RegisterResponse::class
         );
         $this->app->singleton(
-            VerifyEmailViewResponseContract::class,
-            VerifyEmailViewResponse::class
+            PasswordResetResponseContract::class,
+            PasswordResetResponse::class
         );
     }
 }

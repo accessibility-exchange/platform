@@ -51,13 +51,12 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
                 ->name('password.request');
 
 
-            Route::multilingual('/reset-password/{token}', [NewPasswordController::class, 'create'])
+            Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->middleware('guest')
                 ->name('password.reset');
         }
 
-        Route::multilingual('/forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->method('post')
+        Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
         ->middleware('guest')
         ->name('password.email');
 
@@ -74,12 +73,11 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
                 ->name('verification.notice');
         }
 
-        Route::multilingual('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+        Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
             ->middleware(['auth', 'signed', 'throttle:6,1'])
             ->name('verification.verify');
 
-        Route::multilingual('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-            ->method('post')
+        Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
             ->middleware(['auth', 'throttle:6,1'])
             ->name('verification.send');
     }
