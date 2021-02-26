@@ -38,3 +38,5 @@ Route::multilingual('/people/{user}', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['can:delete,user'])
     ->name('users.destroy');
+
+require __DIR__ . '/fortify.php';

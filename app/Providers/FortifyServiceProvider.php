@@ -29,6 +29,8 @@ class FortifyServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerResponseBindings();
+
+        Fortify::ignoreRoutes();
     }
 
     /**
@@ -42,8 +44,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-
-        $this->configureRoutes();
 
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->email . $request->ip());
@@ -59,20 +59,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
         Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
-    }
-
-    /**
-     * Configure routes for Fortify.
-     */
-    protected function configureRoutes()
-    {
-        Route::group([
-            'namespace' => 'Laravel\Fortify\Http\Controllers',
-            'domain' => config('fortify.domain', null),
-            'prefix' => config('fortify.prefix'),
-        ], function () {
-            $this->loadRoutesFrom(base_path('routes/fortify.php'));
-        });
     }
 
     /**
