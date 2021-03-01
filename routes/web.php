@@ -23,20 +23,13 @@ Route::multilingual('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified:' . locale() . '.verification.notice'])->name('dashboard');
 
-Route::multilingual('/people', [UserController::class, 'index'])
-    ->name('users.index');
-Route::multilingual('/people/{user}', [UserController::class, 'show'])
-    ->name('users.show');
-Route::multilingual('/people/{user}/edit', [UserController::class, 'edit'])
-    ->middleware(['can:update,user'])
+Route::multilingual('/account/edit', [UserController::class, 'edit'])
+    ->middleware(['auth'])
     ->name('users.edit');
-Route::multilingual('/people/{user}', [UserController::class, 'update'])
-    ->method('put')
-    ->middleware('can:update,user')
-    ->name('users.update');
-Route::multilingual('/people/{user}', [UserController::class, 'destroy'])
+
+Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
-    ->middleware(['can:delete,user'])
+    ->middleware(['auth'])
     ->name('users.destroy');
 
 require __DIR__ . '/fortify.php';

@@ -21,7 +21,7 @@ class AccountDeletionTest extends TestCase
 
         $this->assertAuthenticated();
 
-        $response = $this->delete("/en/people/{$user->slug}");
+        $response = $this->delete('/en/account/delete');
 
         $this->assertGuest();
 
@@ -32,22 +32,8 @@ class AccountDeletionTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->delete("/en/people/{$user->slug}");
+        $response = $this->delete('/en/account/delete');
 
-        $response->assertStatus(403);
-    }
-
-    public function test_users_cannot_delete_other_users_accounts()
-    {
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
-
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->delete("/en/people/{$other_user->slug}");
-        $response->assertStatus(403);
+        $response->assertRedirect('/en/login');
     }
 }

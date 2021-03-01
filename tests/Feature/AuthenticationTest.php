@@ -52,29 +52,15 @@ class AuthenticationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get("/en/people/{$user->slug}/edit");
+        $response = $this->get('/en/account/edit');
         $response->assertStatus(200);
-    }
-
-    public function test_users_can_not_edit_others_profiles()
-    {
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
-
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get("/en/people/{$other_user->slug}/edit");
-        $response->assertStatus(403);
     }
 
     public function test_guests_can_not_edit_profiles()
     {
         $user = User::factory()->create();
 
-        $response = $this->get("/en/people/{$user->slug}/edit");
-        $response->assertStatus(403);
+        $response = $this->get('/en/account/edit');
+        $response->assertRedirect('/en/login');
     }
 }

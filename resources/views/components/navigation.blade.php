@@ -3,7 +3,7 @@
     <!-- Navigation Links -->
     <ul role="list" class="nav">
         @auth
-        <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs('dashboard')">
+        <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
             {{ __('dashboard.title') }}
         </x-nav-link>
         @else
@@ -28,8 +28,8 @@
 
             <x-slot name="content">
                 <p>
-                    <x-dropdown-link href="{{ localized_route('users.show', Auth::user()) }}">
-                        {{ __('user.your_profile') }}
+                    <x-dropdown-link href="{{ localized_route('users.edit') }}" :active="request()->routeIs(locale() . '.users.edit')">
+                        {{ __('user.my_profile') }}
                     </x-dropdown-link>
                 </p>
 

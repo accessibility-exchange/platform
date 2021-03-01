@@ -29,10 +29,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'name',
         'email',
         'password',
-        'locale',
-        'locality',
-        'region',
-        'about'
+        'locale'
     ];
 
     /**
@@ -59,7 +56,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      *
      * @var array
      */
-    public $translatable = ['about'];
+    public $translatable = [];
 
     /**
      * Get the options for generating the slug.
