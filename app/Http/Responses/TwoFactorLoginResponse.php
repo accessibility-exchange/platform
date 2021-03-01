@@ -3,9 +3,9 @@
 namespace App\Http\Responses;
 
 use Illuminate\Support\Facades\Auth;
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
 
-class LoginResponse implements LoginResponseContract
+class TwoFactorLoginResponse implements TwoFactorLoginResponseContract
 {
 
     /**
