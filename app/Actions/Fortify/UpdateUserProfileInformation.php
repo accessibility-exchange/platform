@@ -20,7 +20,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'string',
@@ -28,6 +27,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+            'locale' => ['required', Rule::in(['en', 'fr'])],
         ])->validateWithBag('updateProfileInformation');
 
         if (

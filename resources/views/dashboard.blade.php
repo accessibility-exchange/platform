@@ -3,7 +3,7 @@
         <h1 itemprop="name">{{ __('dashboard.title') }}</h1>
     </x-slot>
 
-    @if(session('verified'))
+    @if(session('status') === 'email-verified')
         <x-alert type="success" :title="__('auth.verification_completed')">
             <p>{{ __('auth.verification_completed_message') }}</p>
         </x-alert>
