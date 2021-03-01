@@ -11,7 +11,7 @@ class RegisterResponse implements RegisterResponseContract
     /**
      * Redirect to the appropriately localized dashboard for the registered user.
      *
-     * @param $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function toResponse($request)

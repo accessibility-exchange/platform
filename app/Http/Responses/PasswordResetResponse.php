@@ -10,7 +10,7 @@ class PasswordResetResponse implements PasswordResetResponseContract
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
-     * @param $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function toResponse($request)
