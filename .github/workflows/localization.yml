@@ -19,7 +19,7 @@ jobs:
         download_translations: true
         skip_untranslated_files: true
         source: 'resources/lang/en/*.php'
-        translation: 'resources/lang/%two_letters_code%/%original_file_name%'
+        translation: 'resources/lang/%locale%/%original_file_name%'
         localization_branch_name: 'localization'
         commit_message: 'chore(l10n): update localizations'
         pull_request_title: 'chore(l10n): update localizations'

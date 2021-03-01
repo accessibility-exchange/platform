@@ -16,7 +16,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors :errors="$errors" />
 
-        <form method="POST" action="{{ localized_route('password.email') }}">
+        <form method="POST" action="{{ route('password.email') }}">
             @csrf
 
             <!-- Email Address -->

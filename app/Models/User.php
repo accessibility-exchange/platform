@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmailNotification;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

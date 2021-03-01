@@ -17,7 +17,7 @@
         @endif
 
         <div>
-            <form method="POST" action="{{ localized_route('verification.send') }}">
+            <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
                 <div>

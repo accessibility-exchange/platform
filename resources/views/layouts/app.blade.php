@@ -14,6 +14,9 @@
                     {{ $header }}
                 </header>
 
+                <!-- Flash Messages -->
+                @include('partials.flash')
+
                 <!-- Page Content -->
                 <div class="content flow">
                     {{ $slot }}

@@ -38,7 +38,7 @@
                 <label for="remember_me">
                     <span>{{ __('auth.label_remember_me') }}</span>
                 </label>
-                @if (Route::has('password.request'))
+                @if (Route::has('en.password.request'))
                 <a href="{{ localized_route('password.request') }}">
                     {{ __('auth.forget_prompt') }}
                 </a>
