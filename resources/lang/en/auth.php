@@ -18,6 +18,8 @@ return [
     'create_account' => 'Create an account',
     'create_your_account' => 'Create your account',
     'existing_account_prompt' => 'Do you already have an account?',
+    'label_current_password' => 'Current password',
+    'change_password' => 'Change password',
     'label_password' => 'Password',
     'label_password_confirmation' => 'Confirm password',
     'label_remember_me' => 'Remember me',

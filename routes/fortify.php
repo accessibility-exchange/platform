@@ -92,7 +92,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
     }
 
     if (Features::enabled(Features::updatePasswords())) {
-        Route::multilingual('/user/password', [PasswordController::class, 'update'])
+        Route::multilingual('/account/update-password', [PasswordController::class, 'update'])
             ->method('put')
             ->middleware(['auth'])
             ->name('user-password.update');
