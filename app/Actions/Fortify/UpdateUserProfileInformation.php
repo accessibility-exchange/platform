@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -28,6 +29,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 Rule::unique('users')->ignore($user->id),
             ],
             'locale' => ['required', Rule::in(['en', 'fr'])],
+            'theme' => ['required', Rule::in(['system', 'light', 'dark'])],
         ])->validateWithBag('updateProfileInformation');
 
         if (
@@ -39,8 +41,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'locale' => $input['locale'],
+                'theme' => $input['theme']
             ])->save();
         }
+
+        Cookie::queue('theme', $input['theme']);
     }
 
     /**
@@ -56,6 +62,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => $input['name'],
             'email' => $input['email'],
             'email_verified_at' => null,
+            'locale' => $input['locale'],
+            'theme' => $input['theme']
         ])->save();
 
         $user->sendEmailVerificationNotification();

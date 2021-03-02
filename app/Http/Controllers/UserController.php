@@ -9,13 +9,23 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
-     * Show the edit view for a given user.
+     * Show the profile edit view for the logged-in user.
      *
      * @return \Illuminate\View\View
      */
     public function edit()
     {
-        return view('users.edit', ['user' => request()->user()]);
+        return view('users.edit', ['user' => Auth::user()]);
+    }
+
+    /**
+     * Show the account admin view for the logged-in user.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function admin()
+    {
+        return view('users.admin', ['user' => Auth::user()]);
     }
 
     /**

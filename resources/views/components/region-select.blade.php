@@ -1,4 +1,4 @@
-<select id="region" name="region" data-filter-bind="region">
+<select id="region" name="region">
     <option value=""></option>
     @foreach ($regions as $value => $region)
     <option

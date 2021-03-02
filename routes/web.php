@@ -27,6 +27,10 @@ Route::multilingual('/account/edit', [UserController::class, 'edit'])
     ->middleware(['auth'])
     ->name('users.edit');
 
+Route::multilingual('/account/admin', [UserController::class, 'admin'])
+    ->middleware(['auth'])
+    ->name('users.admin');
+
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['auth'])
