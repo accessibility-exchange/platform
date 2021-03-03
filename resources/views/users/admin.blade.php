@@ -51,7 +51,7 @@
         <div class="field">
             <x-label for="current_password" :value="__('auth.label_current_password')" />
             <x-input id="current_password" type="password" name="current_password" required novalidated />
-            @error('current_password', 'updatePassword')
+            @error('current_password', 'destroyAccount')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror
         </div>

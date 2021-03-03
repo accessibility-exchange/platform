@@ -26,6 +26,12 @@
 @endunless
 @endauth
 
+@if(session('status') === 'destroy-succeeded')
+<x-alert type="success" :title="__('user.account_deletion_succeeded')">
+    <p>{{ __('user.account_deletion_succeeded_message') }}</p>
+</x-alert>
+@endif
+
 @if(session('status') === 'profile-information-updated')
 <x-alert type="success" :title="__('user.profile_updated')">
     <p>{{ __('user.profile_updated_message') }}</p>
@@ -42,4 +48,17 @@
     <x-alert type="success">
         {{ Session::get('success') }}
     </x-alert>
+@endif
+
+@if($errors->getBags())
+    @foreach($errors->getBags() as $bag)
+        <x-alert type="error" :title="__('forms.errors_found')">
+            <p>{{ __('forms.errors_found_message') }}</p>
+            <ul>
+            @foreach ($bag->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
+        </x-alert>
+    @endforeach
 @endif
