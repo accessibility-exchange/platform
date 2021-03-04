@@ -33,6 +33,12 @@
                     </x-dropdown-link>
                 </p>
 
+                <p>
+                    <x-dropdown-link href="{{ localized_route('users.admin') }}" :active="request()->routeIs(locale() . '.users.admin')">
+                        {{ __('user.my_account') }}
+                    </x-dropdown-link>
+                </p>
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ localized_route('logout') }}">
                     @csrf
