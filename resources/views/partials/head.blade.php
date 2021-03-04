@@ -15,8 +15,10 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" integrity="{{ Sri::hash('css/app.css') }}" crossorigin="anonymous" />
 
         <!-- Scripts -->
         <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ mix('js/manifest.js') }}" integrity="{{ Sri::hash('js/manifest.js') }}" crossorigin="anonymous" defer></script>
+        <script src="{{ mix('js/vendor.js') }}" integrity="{{ Sri::hash('js/vendor.js') }}" crossorigin="anonymous" defer></script>
+        <script src="{{ mix('js/app.js') }}" integrity="{{ Sri::hash('js/app.js') }}" crossorigin="anonymous" defer></script>

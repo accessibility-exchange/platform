@@ -1,11 +1,19 @@
 const mix = require("laravel-mix");
 const chokidar = require("chokidar");
 
+require("laravel-mix-sri");
+
 mix.copyDirectory("resources/fonts", "public/fonts");
 
-mix.js("resources/js/app.js", "public/js");
+mix.js("resources/js/app.js", "public/js").extract();
 
 mix.sass("resources/css/app.scss", "public/css");
+
+mix.generateIntegrityHash();
+
+if (mix.inProduction()) {
+    mix.version();
+}
 
 mix.options({
     hmrOptions: {

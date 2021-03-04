@@ -13,6 +13,7 @@
         "blade-ui-kit/blade-icons": "^0.5.1",
         "chinleung/laravel-locales": "^1.2",
         "chinleung/laravel-multilingual-routes": "^2.7",
+        "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",

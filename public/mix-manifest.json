@@ -1,12 +1,14 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/fonts/atkinson-hyperlegible-bold.woff": "/fonts/atkinson-hyperlegible-bold.woff",
-    "/fonts/atkinson-hyperlegible-bold.woff2": "/fonts/atkinson-hyperlegible-bold.woff2",
-    "/fonts/atkinson-hyperlegible-bolditalic.woff": "/fonts/atkinson-hyperlegible-bolditalic.woff",
-    "/fonts/atkinson-hyperlegible-bolditalic.woff2": "/fonts/atkinson-hyperlegible-bolditalic.woff2",
-    "/fonts/atkinson-hyperlegible-italic.woff": "/fonts/atkinson-hyperlegible-italic.woff",
-    "/fonts/atkinson-hyperlegible-italic.woff2": "/fonts/atkinson-hyperlegible-italic.woff2",
-    "/fonts/atkinson-hyperlegible-regular.woff": "/fonts/atkinson-hyperlegible-regular.woff",
-    "/fonts/atkinson-hyperlegible-regular.woff2": "/fonts/atkinson-hyperlegible-regular.woff2"
+    "/js/app.js": "/js/app.js?id=a3e161ba7adf0f683c4d",
+    "/js/manifest.js": "/js/manifest.js?id=b3bc0c342bcfc88b4460",
+    "/css/app.css": "/css/app.css?id=d7c3dc2e310645fecf20",
+    "/js/vendor.js": "/js/vendor.js?id=b8fa7e988b96159ac493",
+    "/fonts/atkinson-hyperlegible-bold.woff": "/fonts/atkinson-hyperlegible-bold.woff?id=7949ba2c4a03d3a76eef",
+    "/fonts/atkinson-hyperlegible-bold.woff2": "/fonts/atkinson-hyperlegible-bold.woff2?id=83fbaf49c81f05c146c1",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff": "/fonts/atkinson-hyperlegible-bolditalic.woff?id=fd40aa8ee415de3dbe4f",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff2": "/fonts/atkinson-hyperlegible-bolditalic.woff2?id=02e3b33432a8f3e07938",
+    "/fonts/atkinson-hyperlegible-italic.woff": "/fonts/atkinson-hyperlegible-italic.woff?id=b4b69cd636335c03ad03",
+    "/fonts/atkinson-hyperlegible-italic.woff2": "/fonts/atkinson-hyperlegible-italic.woff2?id=8cd4a4efe2f3da8ee9b0",
+    "/fonts/atkinson-hyperlegible-regular.woff": "/fonts/atkinson-hyperlegible-regular.woff?id=2d9ac1921fce2a7ad25c",
+    "/fonts/atkinson-hyperlegible-regular.woff2": "/fonts/atkinson-hyperlegible-regular.woff2?id=a8c35e3a66c3cd09cc88"
 }
