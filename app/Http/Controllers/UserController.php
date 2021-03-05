@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Http\Requests\DestroyAccountRequest;
+use App\Http\Requests\DestroyUserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,10 +32,10 @@ class UserController extends Controller
     /**
      * Destroy a given user.
      *
-     * @param  \App\Http\Requests\DestroyAccountRequest  $request
+     * @param  \App\Http\Requests\DestroyUserRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyAccountRequest $request)
+    public function destroy(DestroyUserRequest $request)
     {
         $user = $request->user();
 
@@ -43,6 +43,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect(localized_route('welcome'))->with('status', 'destroy-succeeded');
+        return redirect(localized_route('welcome'))->with('status', 'user-destroy-succeeded');
     }
 }

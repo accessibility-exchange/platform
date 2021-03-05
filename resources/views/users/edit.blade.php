@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>
-            {{ __('user.my_profile') }}
+            {{ __('user.my_settings') }}
         </h1>
     </x-slot>
 
-    <form action="{{ localized_route('user-profile-information.update') }}" method="POST">
+    <form action="{{ localized_route('user-profile-information.update') }}" method="POST" novalidate>
         @csrf
         @method('PUT')
         <div class="field">
             <x-label for="name" :value="__('user.label_name')" />
-            <x-input id="name" type="name" name="name" :value="$user->name" required novalidated />
+            <x-input id="name" type="name" name="name" :value="old('name', $user->name)" required />
             @error('name', 'updateProfileInformation')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror
@@ -18,7 +18,7 @@
 
         <div class="field">
             <x-label for="email" :value="__('forms.label_email')" />
-            <x-input id="email" type="email" name="email" :value="$user->email" required novalidated />
+            <x-input id="email" type="email" name="email" :value="old('email', $user->email)" required />
             @error('email', 'updateProfileInformation')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror
@@ -26,12 +26,12 @@
 
         <div class="field">
             <x-label for="locale" :value="__('user.label_locale')" />
-            <x-locale-select :selected="$user->locale" />
+            <x-locale-select :selected="old('locale', $user->locale)" />
         </div>
 
         <div class="field" x-data="previewHandler()">
             <x-label for="theme" :value="__('themes.label_theme')" />
-            <x-select x-model.string="theme" id="theme" name="theme" :options="['system' => __('themes.system'), 'light' => __('themes.light'), 'dark' => __('themes.dark')]" :selected="$user->theme" @change="preview()" />
+            <x-select x-model.string="theme" id="theme" name="theme" :options="['system' => __('themes.system'), 'light' => __('themes.light'), 'dark' => __('themes.dark')]" :selected="old('theme', $user->theme)" @change="preview()" />
             <script>
                 function previewHandler() {
                     return {
