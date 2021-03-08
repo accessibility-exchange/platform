@@ -28,21 +28,7 @@ class RegionSelect extends Component
      */
     public function __construct($selected = "")
     {
-        $this->regions = [
-            'ab' => __('geography.ab'),
-            'bc' => __('geography.bc'),
-            'mb' => __('geography.mb'),
-            'nb' => __('geography.nb'),
-            'nl' => __('geography.nl'),
-            'ns' => __('geography.ns'),
-            'nt' => __('geography.nt'),
-            'nu' => __('geography.nu'),
-            'on' => __('geography.on'),
-            'pe' => __('geography.pe'),
-            'qc' => __('geography.qc'),
-            'sk' => __('geography.sk'),
-            'yt' => __('geography.yt')
-        ];
+        $this->regions = config('regions');
 
         $this->selected = $selected;
     }

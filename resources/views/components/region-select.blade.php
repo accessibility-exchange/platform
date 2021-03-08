@@ -1,11 +1,11 @@
 <select id="region" name="region">
     <option value=""></option>
-    @foreach ($regions as $value => $region)
+    @foreach ($regions as $region)
     <option
-        value="{{ $value }}"
-        @if ($value === $selected)
+        value="{{ $region }}"
+        @if ($region === $selected)
         selected
         @endif
-    >{{ $region }}</option>
+    >{{ __('regions.' . $region) }}</option>
     @endforeach
 </select>

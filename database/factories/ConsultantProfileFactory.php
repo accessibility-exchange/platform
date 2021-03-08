@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\ConsultantProfile;
 use App\Models\User;
+use App\Services\RegionService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConsultantProfileFactory extends Factory
@@ -22,21 +23,7 @@ class ConsultantProfileFactory extends Factory
      */
     public function definition()
     {
-        $regions = [
-            'ab',
-            'bc',
-            'mb',
-            'nb',
-            'nl',
-            'ns',
-            'nt',
-            'nu',
-            'on',
-            'pe',
-            'qc',
-            'sk',
-            'yt'
-        ];
+        $regions = config('regions');
 
         return [
             'name' => $this->faker->company(),
