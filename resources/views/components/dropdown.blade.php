@@ -3,7 +3,7 @@
         {{ $trigger }}
     </button>
 
-    <div class="dropdown__content flow" x-show="open"
+    <div class="dropdown__content" x-show="open"
         @click="open = false">
         {{ $content }}
     </div>

@@ -26,15 +26,21 @@
 @endunless
 @endauth
 
-@if(session('status') === 'destroy-succeeded')
+@if(session('status') === 'user-destroy-succeeded')
 <x-alert type="success" :title="__('user.account_deletion_succeeded')">
     <p>{{ __('user.account_deletion_succeeded_message') }}</p>
 </x-alert>
 @endif
 
+@if(session('status') === 'consultant-profile-destroy-succeeded')
+<x-alert type="success" :title="__('consultant-profile.deletion_succeeded')">
+    <p>{{ __('consultant-profile.deletion_succeeded_message') }}</p>
+</x-alert>
+@endif
+
 @if(session('status') === 'profile-information-updated')
-<x-alert type="success" :title="__('user.profile_updated')">
-    <p>{{ __('user.profile_updated_message') }}</p>
+<x-alert type="success" :title="__('user.settings_saved')">
+    <p>{{ __('user.settings_saved_message') }}</p>
 </x-alert>
 @endif
 

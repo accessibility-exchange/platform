@@ -27,9 +27,16 @@
             </x-slot>
 
             <x-slot name="content">
+                @if(Auth::user()->consultantProfile)
+                <p>
+                    <x-dropdown-link href="{{ localized_route('consultant-profiles.show', ['consultantProfile' => Auth::user()->consultantProfile]) }}" :active="request()->routeIs(locale() . '.consultant-profiles.show', ['consultantProfile' => Auth::user()->consultantProfile])">
+                        {{ __('consultant-profile.my_profile') }}
+                    </x-dropdown-link>
+                </p>
+                @endif
                 <p>
                     <x-dropdown-link href="{{ localized_route('users.edit') }}" :active="request()->routeIs(locale() . '.users.edit')">
-                        {{ __('user.my_profile') }}
+                        {{ __('user.my_settings') }}
                     </x-dropdown-link>
                 </p>
 

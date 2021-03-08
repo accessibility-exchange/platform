@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -58,8 +57,6 @@ class AuthenticationTest extends TestCase
 
     public function test_guests_can_not_edit_profiles()
     {
-        $user = User::factory()->create();
-
         $response = $this->get('/en/account/edit');
         $response->assertRedirect('/en/login');
     }

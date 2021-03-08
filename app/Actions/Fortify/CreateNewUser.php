@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -37,6 +38,8 @@ class CreateNewUser implements CreatesNewUsers
 
             ]
         )->validate();
+
+        Cookie::queue('theme', 'system');
 
         return User::create([
             'name' => $input['name'],

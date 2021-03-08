@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ConsultantProfile;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class DestroyAccountRequest extends FormRequest
+class DestroyConsultantProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +16,9 @@ class DestroyAccountRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $consultantProfile = $this->route('consultantProfile');
+
+        return $consultantProfile && $this->user()->can('delete', $consultantProfile);
     }
 
     /**
@@ -45,7 +48,7 @@ class DestroyAccountRequest extends FormRequest
                     __('The provided password does not match your current password.')
                 );
             }
-        })->validateWithBag('destroyAccount');
+        })->validateWithBag('destroyConsultantProfile');
 
         return;
     }
