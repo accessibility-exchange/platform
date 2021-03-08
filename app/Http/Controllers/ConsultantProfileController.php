@@ -40,9 +40,7 @@ class ConsultantProfileController extends Controller
      */
     public function store(CreateConsultantProfileRequest $request)
     {
-        $validated = $request->validated();
-
-        $consultantProfile = ConsultantProfile::create($validated);
+        $consultantProfile = ConsultantProfile::create($request->validated());
 
         return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]))
             ->with('status', 'consultant-profile-create-success');
@@ -79,9 +77,7 @@ class ConsultantProfileController extends Controller
      */
     public function update(UpdateConsultantProfileRequest $request, ConsultantProfile $consultantProfile)
     {
-        $validated = $request->validated();
-
-        $consultantProfile->fill($validated);
+        $consultantProfile->fill($request->validated());
         $consultantProfile->save();
 
         return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]))

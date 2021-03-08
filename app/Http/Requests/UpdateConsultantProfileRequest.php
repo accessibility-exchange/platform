@@ -42,21 +42,7 @@ class UpdateConsultantProfileRequest extends FormRequest
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
-                Rule::in([
-                    'ab',
-                    'bc',
-                    'mb',
-                    'nb',
-                    'nl',
-                    'ns',
-                    'nt',
-                    'nu',
-                    'on',
-                    'pe',
-                    'qc',
-                    'sk',
-                    'yt'
-                ])
+                Rule::in(config('regions'))
             ]
         ];
     }
