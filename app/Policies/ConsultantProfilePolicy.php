@@ -42,7 +42,7 @@ class ConsultantProfilePolicy
      */
     public function create(User $user)
     {
-        return property_exists($user, 'consultantProfile')
+        return $user->consultantProfile
             ? Response::deny(__('You already have a consultant profile.'))
             : Response::allow();
     }

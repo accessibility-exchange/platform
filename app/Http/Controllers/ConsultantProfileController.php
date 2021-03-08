@@ -99,6 +99,6 @@ class ConsultantProfileController extends Controller
     {
         $consultantProfile->delete();
 
-        return redirect(localized_route('welcome'))->with('status', 'consultant-profile-destroy-succeeded');
+        return redirect(localized_route('dashboard'))->with('status', 'consultant-profile-destroy-succeeded');
     }
 }

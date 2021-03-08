@@ -42,12 +42,12 @@ Route::multilingual('/consultants', [ConsultantProfileController::class, 'index'
     ->name('consultant-profiles.index');
 
 Route::multilingual('/consultants/create', [ConsultantProfileController::class, 'create'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:create,App\Models\ConsultantProfile'])
     ->name('consultant-profiles.create');
 
 Route::multilingual('/consultants/create', [ConsultantProfileController::class, 'store'])
     ->method('post')
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:create,App\Models\ConsultantProfile'])
     ->name('consultant-profiles.store');
 
 Route::multilingual('/consultants/{consultantProfile}', [ConsultantProfileController::class, 'show'])
@@ -58,12 +58,12 @@ Route::multilingual('/consultants/{consultantProfile}/edit', [ConsultantProfileC
     ->name('consultant-profiles.edit');
 
 Route::multilingual('/consultants/{consultantProfile}/edit', [ConsultantProfileController::class, 'update'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:update,consultantProfile'])
     ->method('put')
     ->name('consultant-profiles.update');
 
     Route::multilingual('/consultants/{consultantProfile}/delete', [ConsultantProfileController::class, 'destroy'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:delete,consultantProfile'])
     ->method('delete')
     ->name('consultant-profiles.destroy');
 

@@ -16,7 +16,7 @@ class CreateConsultantProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->id == $this->user_id;
     }
 
     /**
