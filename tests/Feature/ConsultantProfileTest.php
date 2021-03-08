@@ -98,15 +98,15 @@ class ConsultantProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get('/en/consultants/' . $consultantProfile->slug . '/edit');
+        $response = $this->get(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]));
         $response->assertStatus(200);
 
-        $response = $this->put('/en/consultants/' . $consultantProfile->slug . '/edit', [
+        $response = $this->put(localized_route('consultant-profiles.update', ['consultantProfile' => $consultantProfile]), [
             'name' => $consultantProfile->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
         ]);
-        $response->assertRedirect('/en/consultants/' . $consultantProfile->slug);
+        $response->assertRedirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]));
     }
 
     public function test_users_can_not_edit_others_consultant_profiles()
@@ -123,10 +123,10 @@ class ConsultantProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get('/en/consultants/' . $consultantProfile->slug . '/edit');
+        $response = $this->get(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]));
         $response->assertStatus(403);
 
-        $response = $this->put('/en/consultants/' . $consultantProfile->slug . '/edit', [
+        $response = $this->put(localized_route('consultant-profiles.update', ['consultantProfile' => $consultantProfile]), [
             'name' => $consultantProfile->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
@@ -146,7 +146,7 @@ class ConsultantProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from('/en/consultants/' . $consultantProfile->slug . '/edit')->delete('/en/consultants/' . $consultantProfile->slug . '/delete', [
+        $response = $this->from(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]))->delete(localized_route('consultant-profiles.destroy', ['consultantProfile' => $consultantProfile]), [
             'current_password' => 'password'
         ]);
         $response->assertRedirect('/en/dashboard');
@@ -164,12 +164,12 @@ class ConsultantProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from('/en/consultants/' . $consultantProfile->slug . '/edit')->delete('/en/consultants/' . $consultantProfile->slug . '/delete', [
+        $response = $this->from(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]))->delete(localized_route('consultant-profiles.destroy', ['consultantProfile' => $consultantProfile]), [
             'current_password' => 'wrong_password'
         ]);
 
         $response->assertSessionHasErrors();
-        $response->assertRedirect('/en/consultants/' . $consultantProfile->slug . '/edit');
+        $response->assertRedirect(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]));
 
     }
 
@@ -187,7 +187,7 @@ class ConsultantProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from('/en/consultants/' . $consultantProfile->slug . '/edit')->delete('/en/consultants/' . $consultantProfile->slug . '/delete', [
+        $response = $this->from(localized_route('consultant-profiles.edit', ['consultantProfile' => $consultantProfile]))->delete(localized_route('consultant-profiles.destroy', ['consultantProfile' => $consultantProfile]), [
             'current_password' => 'password'
         ]);
         $response->assertStatus(403);
