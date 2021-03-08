@@ -167,8 +167,8 @@ class ConsultantProfileTest extends TestCase
         $response = $this->from('/en/consultants/' . $consultantProfile->slug . '/edit')->delete('/en/consultants/' . $consultantProfile->slug . '/delete', [
             'current_password' => 'wrong_password'
         ]);
-        ray($response);
-        // $response->assertSessionHasErrors();
+
+        $response->assertSessionHasErrors();
         $response->assertRedirect('/en/consultants/' . $consultantProfile->slug . '/edit');
 
     }

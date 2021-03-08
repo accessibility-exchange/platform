@@ -92,6 +92,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the consultant profile associated with the user.
+     *
+     * @return mixed
      */
     public function consultantProfile()
     {
