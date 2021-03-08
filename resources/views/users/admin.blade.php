@@ -42,7 +42,7 @@
 
     <h2>{{ __('user.delete_account') }}</h2>
 
-    <p>{{ __('user.delete_account_message') }}</p>
+    <p>{{ __('user.delete_account_intro') }}</p>
 
     <form action="{{ localized_route('users.destroy') }}" method="POST" novalidate>
         @csrf
@@ -57,7 +57,7 @@
         </div>
 
         <x-button>
-            {{ __('user.delete_account') }}
+            {{ __('user.action_delete_account') }}
         </x-button>
     </form>
 </x-app-layout>

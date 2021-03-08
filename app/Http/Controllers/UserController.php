@@ -43,6 +43,8 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect(localized_route('welcome'))->with('status', 'user-destroy-succeeded');
+        flash(__('user.destroy_succeeded'), 'success');
+
+        return redirect(localized_route('welcome'));
     }
 }

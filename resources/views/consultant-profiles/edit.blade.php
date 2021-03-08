@@ -22,14 +22,14 @@
             <x-region-select :selected="old('region', $consultantProfile->region)" required />
         </div>
 
-        <x-button>{{ __('consultant-profile.save_changes') }}</x-button>
+        <x-button>{{ __('forms.save_changes') }}</x-button>
     </form>
 
     <h2>
         {{ __('consultant-profile.delete_title') }}
     </h2>
 
-    <p>{{ __('consultant-profile.delete_message') }}</p>
+    <p>{{ __('consultant-profile.delete_intro') }}</p>
 
     <form action="{{ localized_route('consultant-profiles.destroy', $consultantProfile) }}" method="POST" novalidate>
         @csrf

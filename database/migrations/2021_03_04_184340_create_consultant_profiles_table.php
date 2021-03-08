@@ -20,8 +20,8 @@ class CreateConsultantProfilesTable extends Migration
             $table->string('locality');
             $table->string('region');
             $table->foreignId('user_id')
-                ->onDelete('cascade')
-                ->constrained();
+                ->constrained()
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

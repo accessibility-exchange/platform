@@ -22,6 +22,6 @@
             <x-region-select required />
         </div>
 
-        <x-button>{{ __('consultant-profile.create_profile') }}</x-button>
+        <x-button>{{ __('consultant-profile.action_create') }}</x-button>
     </form>
 </x-app-layout>

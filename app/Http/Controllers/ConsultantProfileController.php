@@ -42,8 +42,9 @@ class ConsultantProfileController extends Controller
     {
         $consultantProfile = ConsultantProfile::create($request->validated());
 
-        return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]))
-            ->with('status', 'consultant-profile-create-success');
+        flash(__('consultant-profile.create_succeeded'), 'success');
+
+        return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]));
     }
 
     /**
@@ -80,8 +81,9 @@ class ConsultantProfileController extends Controller
         $consultantProfile->fill($request->validated());
         $consultantProfile->save();
 
-        return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]))
-            ->with('status', 'consultant-profile-update-success');
+        flash(__('consultant-profile.update_succeeded'), 'success');
+
+        return redirect(localized_route('consultant-profiles.show', ['consultantProfile' => $consultantProfile]));
     }
 
     /**
@@ -95,6 +97,8 @@ class ConsultantProfileController extends Controller
     {
         $consultantProfile->delete();
 
-        return redirect(localized_route('dashboard'))->with('status', 'consultant-profile-destroy-succeeded');
+        flash(__('consultant-profile.destroy_succeeded'), 'success');
+
+        return redirect(localized_route('dashboard'));
     }
 }

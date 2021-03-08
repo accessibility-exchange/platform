@@ -15,7 +15,10 @@
                 </header>
 
                 <!-- Flash Messages -->
-                @include('partials.flash')
+                @include('partials.flash-messages')
+
+                <!-- Form Validation Errors -->
+                @include('partials.validation-errors')
 
                 <!-- Page Content -->
                 <div class="content flow">
