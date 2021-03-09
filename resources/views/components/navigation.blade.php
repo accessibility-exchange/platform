@@ -19,18 +19,18 @@
     </ul>
 
     @auth
-    <!-- Settings Dropdown -->
-    <div class="settings">
+    <!-- User Dropdown -->
+    <div class="user">
         <x-dropdown>
             <x-slot name="trigger">
                 <x-heroicon-s-user-circle aria-hidden="true" /> {{ Auth::user()->name }}
             </x-slot>
 
             <x-slot name="content">
-                @if(Auth::user()->consultantProfile)
+                @if(Auth::user()->profile)
                 <p>
-                    <x-dropdown-link href="{{ localized_route('consultant-profiles.show', ['consultantProfile' => Auth::user()->consultantProfile]) }}" :active="request()->routeIs(locale() . '.consultant-profiles.show', ['consultantProfile' => Auth::user()->consultantProfile])">
-                        {{ __('consultant-profile.my_profile') }}
+                    <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', ['profile' => Auth::user()->profile])">
+                        {{ __('profile.my_profile') }}
                     </x-dropdown-link>
                 </p>
                 @endif

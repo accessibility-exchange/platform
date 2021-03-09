@@ -10,7 +10,11 @@ return [
     'action_delete_account' => 'Delete my account',
     'settings_update_succeeded' => 'Your settings have been saved.',
     'destroy_succeeded' => 'Your account has been deleted.',
-    'consultant_profile_title' => 'Your consultant profile',
-    'no_consultant_profile' => 'You don’t have a consultant profile. If you want, you can :link.',
-    'create_consultant_profile' => 'create one'
+    'profile_title' => 'Your consultant profile',
+    'no_profile' => 'You don’t have a consultant profile. If you want, you can :link.',
+    'create_profile' => 'create a profile',
+    'organizations_title' => 'Your organizations',
+    'no_organization' => 'You aren’t part of any organizations. If you want, you can :create_link or :join_link.',
+    'create_organization' => 'create an organization',
+    'join_organization' => 'join an existing organization'
 ];

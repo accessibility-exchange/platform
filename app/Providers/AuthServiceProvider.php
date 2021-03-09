@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\ConsultantProfile;
+use App\Models\Profile;
+use App\Models\Organization;
 use App\Models\User;
-use App\Policies\ConsultantProfilePolicy;
+use App\Policies\ProfilePolicy;
+use App\Policies\OrganizationPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -16,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Models\ConsultantProfile' => 'App\Policies\ConsultantProfilePolicy',
+        'App\Models\Profile' => 'App\Policies\ProfilePolicy',
+        'App\Models\Organization' => 'App\Policies\OrganizationPolicy',
         'App\Models\User' => 'App\Policies\UserPolicy',
     ];
 

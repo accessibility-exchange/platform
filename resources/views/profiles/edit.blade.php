@@ -2,36 +2,36 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>
-            {{ __('consultant-profile.edit_title') }}
+            {{ __('profile.edit_title') }}
         </h1>
     </x-slot>
 
-    <form action="{{ localized_route('consultant-profiles.update', $consultantProfile) }}" method="POST" novalidate>
+    <form action="{{ localized_route('profiles.update', $profile) }}" method="POST" novalidate>
         @csrf
         @method('PUT')
         <div class="field">
-            <x-label for="name" :value="__('consultant-profile.label_name')" />
-            <x-input id="name" type="name" name="name" :value="old('name', $consultantProfile->name)" required />
+            <x-label for="name" :value="__('profile.label_name')" />
+            <x-input id="name" type="name" name="name" :value="old('name', $profile->name)" required />
             </div>
         <div class="field">
             <x-label for="locality" :value="__('forms.label_locality')" />
-            <x-input id="locality" type="locality" name="locality" :value="old('locality', $consultantProfile->locality)" required />
+            <x-input id="locality" type="locality" name="locality" :value="old('locality', $profile->locality)" required />
         </div>
         <div class="field">
             <x-label for="region" :value="__('forms.label_region')" />
-            <x-region-select :selected="old('region', $consultantProfile->region)" required />
+            <x-region-select :selected="old('region', $profile->region)" required />
         </div>
 
         <x-button>{{ __('forms.save_changes') }}</x-button>
     </form>
 
     <h2>
-        {{ __('consultant-profile.delete_title') }}
+        {{ __('profile.delete_title') }}
     </h2>
 
-    <p>{{ __('consultant-profile.delete_intro') }}</p>
+    <p>{{ __('profile.delete_intro') }}</p>
 
-    <form action="{{ localized_route('consultant-profiles.destroy', $consultantProfile) }}" method="POST" novalidate>
+    <form action="{{ localized_route('profiles.destroy', $profile) }}" method="POST" novalidate>
         @csrf
         @method('DELETE')
 
@@ -44,7 +44,7 @@
         </div>
 
         <x-button>
-            {{ __('consultant-profile.delete_title') }}
+            {{ __('profile.delete_title') }}
         </x-button>
     </form>
 </x-app-layout>

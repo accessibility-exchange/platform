@@ -5,14 +5,29 @@
 
     <p>{{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}</p>
 
-    <h2>{{ __('user.consultant_profile_title') }}</h2>
+    <h2>{{ __('user.profile_title') }}</h2>
 
-    @if(Auth::user()->consultantProfile)
+    @if(Auth::user()->profile)
     <p>
-        <a href="{{ localized_route('consultant-profiles.show', ['consultantProfile' => Auth::user()->consultantProfile]) }}"><strong>{{ Auth::user()->consultantProfile->name }}</strong></a><br />
-        <a href="{{ localized_route('consultant-profiles.edit', ['consultantProfile' => Auth::user()->consultantProfile]) }}">{{ __('consultant-profile.edit_title') }}</a>
+        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />
+        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_title') }}</a>
     </p>
     @else
-    <p>{!! __('user.no_consultant_profile', ['link' => '<a href="' . localized_route('consultant-profiles.create') . '">' . __('user.create_consultant_profile') . '</a>']) !!}</p>
+    <p>{!! __('user.no_profile', ['link' => '<a href="' . localized_route('profiles.create') . '">' . __('user.create_profile') . '</a>']) !!}</p>
+    @endif
+
+    <h2>{{ __('user.organizations_title') }}</h2>
+
+    @if(!Auth::user()->organizations->isEmpty())
+        @foreach(Auth::user()->organizations as $organization)
+        <p>
+            <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a><br />
+            @if(Auth::user()->can('update', $organization))
+            <a href="{{ localized_route('organizations.edit', $organization) }}">{{ __('organization.edit_title') }}</a>
+            @endif
+        </p>
+        @endforeach
+    @else
+    <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>', 'join_link' => '<a href="' . localized_route('organizations.index') . '">' . __('user.join_organization') . '</a>']) !!}</p>
     @endif
 </x-app-layout>
