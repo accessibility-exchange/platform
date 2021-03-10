@@ -93,4 +93,9 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->method('put')
     ->name('organizations.update');
 
+Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,organization'])
+    ->method('delete')
+    ->name('organizations.destroy');
+
 require __DIR__ . '/fortify.php';

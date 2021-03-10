@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DestroyOrganizationRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class DestroyOrganizationRequest extends FormRequest
      */
     public function authorize()
     {
-        $organization = $this->route('Organization');
+        $organization = $this->route('organization');
 
         return $organization && $this->user()->can('delete', $organization);
     }
@@ -26,7 +29,27 @@ class DestroyOrganizationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'current_password' => 'required|string'
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!Hash::check($this->current_password, $this->user()->password)) {
+                $validator->errors()->add(
+                    'current_password',
+                    __('The provided password does not match your current password.')
+                );
+            }
+        })->validateWithBag('destroyOrganization');
+
+        return;
     }
 }

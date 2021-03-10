@@ -112,7 +112,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Determine if the user is a member of a given organization.
      *
-     * @param \App\Models\Organization
+     * @param \App\Models\Organization $organization
      * @return bool
      */
     public function isMemberOf(Organization $organization)
@@ -125,7 +125,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Determine if the user is an administrator of a given organization.
      *
-     * @param \App\Models\Organization
+     * @param \App\Models\Organization $organization
      * @return bool
      */
     public function isAdministratorOf(Organization $organization)

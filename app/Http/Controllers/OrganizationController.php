@@ -36,7 +36,7 @@ class OrganizationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\CreateOrganizationRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateOrganizationRequest $request)
     {
@@ -67,7 +67,7 @@ class OrganizationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Organization $organization)
     {
@@ -79,7 +79,7 @@ class OrganizationController extends Controller
      *
      * @param  \App\Http\Requests\UpdateOrganizationRequest  $request
      * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateOrganizationRequest $request, Organization $organization)
     {
@@ -94,11 +94,16 @@ class OrganizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Http\Requests\DestroyOrganizationRequest  $request
      * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Organization $organization)
+    public function destroy(DestroyOrganizationRequest $request, Organization $organization)
     {
-        //
+        $organization->delete();
+
+        flash(__('organization.destroy_succeeded'), 'success');
+
+        return redirect(localized_route('dashboard'));
     }
 }
