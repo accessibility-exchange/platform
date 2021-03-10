@@ -6,6 +6,9 @@
         </h1>
     </x-slot>
 
+    <!-- Form Validation Errors -->
+    @include('partials.validation-errors')
+
     <form action="{{ localized_route('profiles.store') }}" method="POST" novalidate>
         @csrf
         <x-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />

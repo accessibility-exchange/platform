@@ -6,6 +6,9 @@
         </h1>
     </x-slot>
 
+    <!-- Form Validation Errors -->
+    @include('partials.validation-errors')
+
     <form action="{{ localized_route('profiles.update', $profile) }}" method="POST" novalidate>
         @csrf
         @method('PUT')

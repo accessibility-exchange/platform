@@ -5,6 +5,9 @@
         </h1>
     </x-slot>
 
+    <!-- Form Validation Errors -->
+    @include('partials.validation-errors')
+
     <h2>{{ __('auth.change_password') }}</h2>
 
     <form action="{{ localized_route('user-password.update') }}" method="POST" novalidate>

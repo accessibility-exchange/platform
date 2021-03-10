@@ -6,17 +6,15 @@
     </x-slot>
 
    <div class="flow">
-    @if($profiles)
-        @foreach($profiles as $profile)
+        @forelse($profiles as $profile)
         <article>
             <h2>
                 <a href="{{ localized_route('profiles.show', $profile) }}">{{ $profile->name }}</a>
             </h2>
             <p>{{ $profile->locality }}, {{ __('regions.' . $profile->region) }}</p>
         </article>
-        @endforeach
-    @else
+        @empty
         <p>{{ __('profile.none_found') }}</p>
-    @endif
+        @endforelse
     </div>
 </x-app-layout>

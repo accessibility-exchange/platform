@@ -27,16 +27,14 @@
 
     <h2>{{ __('user.organizations_title') }}</h2>
 
-    @if(!Auth::user()->organizations->isEmpty())
-        @foreach(Auth::user()->organizations as $organization)
-        <p>
-            <a href="{{ localized_route('organizations.show', $organization) }}"><strong>{{ $organization->name }}</strong></a><br />
-            @if(Auth::user()->isAdministratorOf($organization))
-            <a href="{{ localized_route('organizations.edit', $organization) }}">{{ __('organization.edit_title') }}</a>
-            @endif
-        </p>
-        @endforeach
-    @else
+    @forelse(Auth::user()->organizations as $organization)
+    <p>
+        <a href="{{ localized_route('organizations.show', $organization) }}"><strong>{{ $organization->name }}</strong></a><br />
+        @if(Auth::user()->isAdministratorOf($organization))
+        <a href="{{ localized_route('organizations.edit', $organization) }}">{{ __('organization.edit_title') }}</a>
+        @endif
+    </p>
+    @empty
     <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>']) !!}</p>
-    @endif
+    @endforelse
 </x-app-layout>

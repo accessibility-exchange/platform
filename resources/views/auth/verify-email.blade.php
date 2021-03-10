@@ -11,9 +11,9 @@
         </div>
 
         @if (session('status') == 'verification-link-sent')
-            <div>
+            <x-alert type="success">
                 {{ __('auth.verification_sent') }}
-            </div>
+            </x-alert>
         @endif
 
         <div>

@@ -38,12 +38,15 @@
                 <label for="remember_me">
                     <span>{{ __('auth.label_remember_me') }}</span>
                 </label>
-                @if (Route::has('en.password.request'))
+            </div>
+
+            @if (Route::has('en.password.request'))
+            <p>
                 <a href="{{ localized_route('password.request') }}">
                     {{ __('auth.forget_prompt') }}
                 </a>
-                @endif
-            </div>
+            </p>
+            @endif
 
             <x-button>
                 {{ __('auth.sign_in') }}

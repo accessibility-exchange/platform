@@ -3,7 +3,7 @@
         {{ $logo }}
     </div>
 
-    <div class="auth-card__form">
+    <div class="auth-card__form flow">
         {{ $slot }}
     </div>
 </div>
