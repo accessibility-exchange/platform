@@ -7,7 +7,7 @@
         <x-slot name="content">
             @foreach ($locales as $key => $locale )
             <p>
-                <x-dropdown-link rel="alternate" hreflang="{{ $locale['code'] }}" href="{{ $getLocalizedRoute($key) }}">
+                <x-dropdown-link rel="alternate" hreflang="{{ $locale['code'] }}" :href="current_route($key)" :active="request()->routeIs($key . '.*')">
                     {{ $locale['name'] }}
                 </x-dropdown-link>
             </p>

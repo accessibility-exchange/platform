@@ -29,20 +29,20 @@
             <x-slot name="content">
                 @if(Auth::user()->profile)
                 <p>
-                    <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', ['profile' => Auth::user()->profile])">
+                    <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', Auth::user()->profile)">
                         {{ __('profile.my_profile') }}
                     </x-dropdown-link>
                 </p>
                 @endif
                 <p>
                     <x-dropdown-link href="{{ localized_route('users.edit') }}" :active="request()->routeIs(locale() . '.users.edit')">
-                        {{ __('user.my_settings') }}
+                        {{ __('user.settings') }}
                     </x-dropdown-link>
                 </p>
 
                 <p>
                     <x-dropdown-link href="{{ localized_route('users.admin') }}" :active="request()->routeIs(locale() . '.users.admin')">
-                        {{ __('user.my_account') }}
+                        {{ __('user.account') }}
                     </x-dropdown-link>
                 </p>
 

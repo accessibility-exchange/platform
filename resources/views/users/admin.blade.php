@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>
-            {{ __('user.my_account') }}
+            {{ __('user.account') }}
         </h1>
     </x-slot>
 

@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'my_settings' => 'My settings',
-    'my_account' => 'My account',
+    'settings' => 'Settings',
+    'account' => 'Account',
     'label_name' => 'Full name',
     'label_locale' => 'Preferred language',
     'delete_account' => 'Delete account',
