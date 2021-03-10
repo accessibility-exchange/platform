@@ -21,8 +21,12 @@ class OrganizationFactory extends Factory
      */
     public function definition()
     {
+        $regions = config('regions');
+
         return [
-            //
+            'name' => $this->faker->company(),
+            'locality' => $this->faker->city(),
+            'region' => $regions[$this->faker->numberBetween(0, 12)]
         ];
     }
 }

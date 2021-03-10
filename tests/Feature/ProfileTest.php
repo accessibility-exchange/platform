@@ -98,15 +98,15 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.edit', ['profile' => $profile]));
+        $response = $this->get(localized_route('profiles.edit', $profile));
         $response->assertStatus(200);
 
-        $response = $this->put(localized_route('profiles.update', ['profile' => $profile]), [
+        $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
         ]);
-        $response->assertRedirect(localized_route('profiles.show', ['profile' => $profile]));
+        $response->assertRedirect(localized_route('profiles.show', $profile));
     }
 
     public function test_users_can_not_edit_others_profiles()
@@ -123,10 +123,10 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.edit', ['profile' => $profile]));
+        $response = $this->get(localized_route('profiles.edit', $profile));
         $response->assertStatus(403);
 
-        $response = $this->put(localized_route('profiles.update', ['profile' => $profile]), [
+        $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
@@ -146,7 +146,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', ['profile' => $profile]))->delete(localized_route('profiles.destroy', ['profile' => $profile]), [
+        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
             'current_password' => 'password'
         ]);
         $response->assertRedirect('/en/dashboard');
@@ -164,12 +164,12 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', ['profile' => $profile]))->delete(localized_route('profiles.destroy', ['profile' => $profile]), [
+        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
             'current_password' => 'wrong_password'
         ]);
 
         $response->assertSessionHasErrors();
-        $response->assertRedirect(localized_route('profiles.edit', ['profile' => $profile]));
+        $response->assertRedirect(localized_route('profiles.edit', $profile));
 
     }
 
@@ -187,7 +187,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', ['profile' => $profile]))->delete(localized_route('profiles.destroy', ['profile' => $profile]), [
+        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
             'current_password' => 'password'
         ]);
         $response->assertStatus(403);
@@ -211,7 +211,15 @@ class ProfileTest extends TestCase
 
     public function test_guests_can_not_view_profiles()
     {
+        $user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
         $response = $this->get('/en/consultants');
+        $response->assertRedirect('/en/login');
+
+        $response = $this->get(localized_route('profiles.show', $profile));
         $response->assertRedirect('/en/login');
     }
 }

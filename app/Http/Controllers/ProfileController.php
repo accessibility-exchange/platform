@@ -83,7 +83,7 @@ class ProfileController extends Controller
 
         flash(__('profile.update_succeeded'), 'success');
 
-        return redirect(localized_route('profiles.show', ['profile' => $profile]));
+        return redirect(localized_route('profiles.show', $profile));
     }
 
     /**

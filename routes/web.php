@@ -52,6 +52,7 @@ Route::multilingual('/consultants/create', [ProfileController::class, 'store'])
     ->name('profiles.store');
 
 Route::multilingual('/consultants/{profile}', [ProfileController::class, 'show'])
+    ->middleware(['auth'])
     ->name('profiles.show');
 
 Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'edit'])
@@ -82,6 +83,7 @@ Route::multilingual('/organizations/create', [OrganizationController::class, 'st
     ->name('organizations.store');
 
 Route::multilingual('/organizations/{organization}', [OrganizationController::class, 'show'])
+    ->middleware(['auth'])
     ->name('organizations.show');
 
 Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])

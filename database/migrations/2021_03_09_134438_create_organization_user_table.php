@@ -15,8 +15,12 @@ class CreateOrganizationUserTable extends Migration
     {
         Schema::create('organization_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('organization_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->string('role')->default('member');
             $table->timestamps();
 
