@@ -22,7 +22,7 @@
         @foreach(Auth::user()->organizations as $organization)
         <p>
             <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a><br />
-            @if(Auth::user()->can('update', $organization))
+            @if(Auth::user()->isAdministratorOf($organization))
             <a href="{{ localized_route('organizations.edit', $organization) }}">{{ __('organization.edit_title') }}</a>
             @endif
         </p>

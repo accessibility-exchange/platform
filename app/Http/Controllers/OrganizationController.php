@@ -44,7 +44,7 @@ class OrganizationController extends Controller
 
         $organization->users()->attach(
             $request->user(),
-            ['admin' => true]
+            ['role' => 'admin']
         );
 
         flash(__('organization.create_succeeded'), 'success');

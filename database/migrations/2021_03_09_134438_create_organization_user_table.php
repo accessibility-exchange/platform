@@ -17,7 +17,7 @@ class CreateOrganizationUserTable extends Migration
             $table->id();
             $table->foreignId('organization_id');
             $table->foreignId('user_id');
-            $table->boolean('admin')->default(false);
+            $table->string('role')->default('member');
             $table->timestamps();
 
             $table->unique(['organization_id', 'user_id']);

@@ -106,7 +106,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function organizations()
     {
-        return $this->belongsToMany(Organization::class)->withPivot('admin');
+        return $this->belongsToMany(Organization::class)->withPivot('role');
     }
 
     /**
@@ -132,7 +132,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     {
         return $this->organizations()
             ->where('organization_id', $organization->id)
-            ->where('admin', true)
+            ->where('role', 'admin')
             ->exists();
     }
 }

@@ -26,6 +26,29 @@
         <x-button>{{ __('forms.save_changes') }}</x-button>
     </form>
 
+    <h2 id="members">
+        {{ __('organization.members_title') }}
+    </h2>
+
+    <div role="region" aria-labelledby="members" tabindex="0">
+        <table>
+            <thead>
+                <tr>
+                  <th>{{ __('organization.member_name') }}</th>
+                  <th>{{ __('organization.member_status') }}</th>
+                  <th>{{ __('organization.member_role') }}</th>
+                </tr>
+            </thead>
+            @foreach ($organization->users as $user)
+            <tr>
+                <td>{{ $user->name }}</td>
+                <td>{{ __('organization.member_active') }}</td>
+                <td>{{ __('roles.' . $user->pivot->role) }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+
     <h2>
         {{ __('organization.delete_title') }}
     </h2>
