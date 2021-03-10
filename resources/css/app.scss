@@ -30,12 +30,13 @@
     'components/button',
     'components/dropdown',
     'components/navigation',
+    'components/table',
     'components/validation-error';
 
 // 6. Route-specific styles
 @import
     'routes/dashboard',
-    'routes/consultant-profiles/index',
+    'routes/profiles/index',
     'routes/users/show',
     'routes/welcome';
 

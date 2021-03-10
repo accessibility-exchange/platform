@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\ConsultantProfile;
+use App\Models\Profile;
+use App\Models\Organization;
 use App\Notifications\VerifyEmailNotification;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -95,8 +96,46 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      *
      * @return mixed
      */
-    public function consultantProfile()
+    public function profile()
     {
-        return $this->hasOne(ConsultantProfile::class);
+        return $this->hasOne(Profile::class);
+    }
+
+    /**
+     * Get the consulting organizations that belong to this user.
+     */
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class)
+            ->as('membership')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    /**
+     * Determine if the user is a member of a given organization.
+     *
+     * @param \App\Models\Organization $organization
+     * @return bool
+     */
+    public function isMemberOf(Organization $organization)
+    {
+        return $this->organizations()
+            ->where('organization_id', $organization->id)
+            ->exists();
+    }
+
+    /**
+     * Determine if the user is an administrator of a given organization.
+     *
+     * @param \App\Models\Organization $organization
+     * @return bool
+     */
+    public function isAdministratorOf(Organization $organization)
+    {
+        return $this->organizations()
+            ->where('organization_id', $organization->id)
+            ->where('role', 'admin')
+            ->exists();
     }
 }

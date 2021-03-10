@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +10,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class ConsultantProfile extends Model
+class Organization extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -24,8 +25,7 @@ class ConsultantProfile extends Model
     protected $fillable = [
         'name',
         'locality',
-        'region',
-        'user_id'
+        'region'
     ];
 
     /**
@@ -56,10 +56,13 @@ class ConsultantProfile extends Model
     }
 
     /**
-     * Get the user that has this consultant profile.
+     * Get the users that are associated with this organization.
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class)
+            ->as('membership')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 }

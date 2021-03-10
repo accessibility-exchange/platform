@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ConsultantProfile;
-use App\Models\User;
+use App\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateConsultantProfileRequest extends FormRequest
+class UpdateOrganizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +15,9 @@ class CreateConsultantProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->id == $this->user_id;
+        $organization = $this->route('organization');
+
+        return $organization && $this->user()->can('update', $organization);
     }
 
     /**
@@ -26,35 +27,21 @@ class CreateConsultantProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $organization = $this->route('organization');
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(ConsultantProfile::class),
+                Rule::unique(Organization::class)->ignore($organization->id),
 
             ],
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
                 Rule::in(config('regions'))
-            ],
-            'user_id' => [
-                Rule::unique(ConsultantProfile::class)
             ]
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.unique' => 'A consultant profile with this name already exists.',
-            'user_id.unique' => 'You already have a consultant profile. Would you like to edit it instead?',
         ];
     }
 }

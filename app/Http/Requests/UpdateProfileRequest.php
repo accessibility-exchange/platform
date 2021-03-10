@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ConsultantProfile;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateConsultantProfileRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,9 +16,9 @@ class UpdateConsultantProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        $consultantProfile = $this->route('consultantProfile');
+        $profile = $this->route('profile');
 
-        return $consultantProfile && $this->user()->can('update', $consultantProfile);
+        return $profile && $this->user()->can('update', $profile);
     }
 
 
@@ -29,14 +29,14 @@ class UpdateConsultantProfileRequest extends FormRequest
      */
     public function rules()
     {
-        $consultantProfile = $this->route()->parameter('consultantProfile');
+        $profile = $this->route('profile');
 
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(ConsultantProfile::class)->ignore($this->route()->parameter('consultantProfile')->id),
+                Rule::unique(Profile::class)->ignore($profile->id),
 
             ],
             'locality' => ['required', 'string', 'max:255'],

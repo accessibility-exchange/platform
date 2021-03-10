@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ConsultantProfileController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,34 +38,66 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('users.destroy');
 
-Route::multilingual('/consultants', [ConsultantProfileController::class, 'index'])
+Route::multilingual('/consultants', [ProfileController::class, 'index'])
     ->middleware(['auth'])
-    ->name('consultant-profiles.index');
+    ->name('profiles.index');
 
-Route::multilingual('/consultants/create', [ConsultantProfileController::class, 'create'])
-    ->middleware(['auth', 'can:create,App\Models\ConsultantProfile'])
-    ->name('consultant-profiles.create');
+Route::multilingual('/consultants/create', [ProfileController::class, 'create'])
+    ->middleware(['auth', 'can:create,App\Models\Profile'])
+    ->name('profiles.create');
 
-Route::multilingual('/consultants/create', [ConsultantProfileController::class, 'store'])
+Route::multilingual('/consultants/create', [ProfileController::class, 'store'])
     ->method('post')
-    ->middleware(['auth', 'can:create,App\Models\ConsultantProfile'])
-    ->name('consultant-profiles.store');
+    ->middleware(['auth', 'can:create,App\Models\Profile'])
+    ->name('profiles.store');
 
-Route::multilingual('/consultants/{consultantProfile}', [ConsultantProfileController::class, 'show'])
-    ->name('consultant-profiles.show');
+Route::multilingual('/consultants/{profile}', [ProfileController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('profiles.show');
 
-Route::multilingual('/consultants/{consultantProfile}/edit', [ConsultantProfileController::class, 'edit'])
-    ->middleware(['auth', 'can:update,consultantProfile'])
-    ->name('consultant-profiles.edit');
+Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'edit'])
+    ->middleware(['auth', 'can:update,profile'])
+    ->name('profiles.edit');
 
-Route::multilingual('/consultants/{consultantProfile}/edit', [ConsultantProfileController::class, 'update'])
-    ->middleware(['auth', 'can:update,consultantProfile'])
+Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'update'])
+    ->middleware(['auth', 'can:update,profile'])
     ->method('put')
-    ->name('consultant-profiles.update');
+    ->name('profiles.update');
 
-    Route::multilingual('/consultants/{consultantProfile}/delete', [ConsultantProfileController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,consultantProfile'])
+Route::multilingual('/consultants/{profile}/delete', [ProfileController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,profile'])
     ->method('delete')
-    ->name('consultant-profiles.destroy');
+    ->name('profiles.destroy');
+
+Route::multilingual('/organizations', [OrganizationController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('organizations.index');
+
+Route::multilingual('/organizations/create', [OrganizationController::class, 'create'])
+    ->middleware(['auth', 'can:create,App\Models\Organization'])
+    ->name('organizations.create');
+
+Route::multilingual('/organizations/create', [OrganizationController::class, 'store'])
+    ->method('post')
+    ->middleware(['auth', 'can:create,App\Models\Organization'])
+    ->name('organizations.store');
+
+Route::multilingual('/organizations/{organization}', [OrganizationController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('organizations.show');
+
+Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->name('organizations.edit');
+
+Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'update'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->method('put')
+    ->name('organizations.update');
+
+Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,organization'])
+    ->method('delete')
+    ->name('organizations.destroy');
 
 require __DIR__ . '/fortify.php';
