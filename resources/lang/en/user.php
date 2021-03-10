@@ -14,7 +14,6 @@ return [
     'no_profile' => 'You don’t have a consultant profile. If you want, you can :link.',
     'create_profile' => 'create a profile',
     'organizations_title' => 'Your organizations',
-    'no_organization' => 'You aren’t part of any organizations. If you want, you can :create_link or :join_link.',
-    'create_organization' => 'create an organization',
-    'join_organization' => 'join an existing organization'
+    'no_organization' => 'You aren’t part of any organizations. If you want, you can :create_link.',
+    'create_organization' => 'create an organization'
 ];

@@ -10,7 +10,7 @@
     @if(Auth::user()->profile)
     <p>
         <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />
-        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_title') }}</a>
+        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_link') }}</a>
     </p>
     @else
     <p>{!! __('user.no_profile', ['link' => '<a href="' . localized_route('profiles.create') . '">' . __('user.create_profile') . '</a>']) !!}</p>
@@ -28,6 +28,6 @@
         </p>
         @endforeach
     @else
-    <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>', 'join_link' => '<a href="' . localized_route('organizations.index') . '">' . __('user.join_organization') . '</a>']) !!}</p>
+    <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>']) !!}</p>
     @endif
 </x-app-layout>

@@ -44,7 +44,7 @@
         </div>
 
         <x-button>
-            {{ __('profile.delete_title') }}
+            {{ __('profile.action_delete') }}
         </x-button>
     </form>
 </x-app-layout>

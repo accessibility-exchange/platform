@@ -43,7 +43,7 @@
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ __('organization.member_active') }}</td>
-                <td>{{ __('roles.' . $user->pivot->role) }}</td>
+                <td>{{ __('roles.' . $user->membership->role) }}</td>
             </tr>
             @endforeach
         </table>
@@ -68,7 +68,7 @@
         </div>
 
         <x-button>
-            {{ __('organization.delete_title') }}
+            {{ __('organization.action_delete') }}
         </x-button>
     </form>
 </x-app-layout>
