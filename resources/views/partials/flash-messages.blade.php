@@ -24,7 +24,7 @@
 
 @auth
 @unless(Auth::user()->hasVerifiedEmail())
-    <x-alert type="info">
+    <x-alert type="notice">
         <p>{{ __('auth.verification_intro') }}</p>
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
