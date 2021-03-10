@@ -11,7 +11,7 @@
         <x-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
         <div class="field">
             <x-label for="name" :value="__('profile.label_name')" />
-            <x-input id="name" type="name" name="name" required />
+            <x-input id="name" type="name" name="name" :value="Auth::user()->name" required />
             </div>
         <div class="field">
             <x-label for="locality" :value="__('forms.label_locality')" />
