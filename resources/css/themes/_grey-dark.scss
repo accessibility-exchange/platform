@@ -1,0 +1,12 @@
+// -----------------------------------------------------------------------------
+// This file contains everything related to the grey on dark grey theme.
+// -----------------------------------------------------------------------------
+
+[data-theme="grey-dark"] {
+    --ll-theme-border-color: #888;
+    --ll-theme-text-color: #888;
+    --ll-theme-accent-color: #8080ff;
+    --ll-theme-link-color: #8080ff;
+    --ll-theme-background-color: #222;
+    --ll-theme-select-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+}
