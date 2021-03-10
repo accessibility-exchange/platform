@@ -30,7 +30,7 @@
                 @if(Auth::user()->profile)
                 <p>
                     <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', Auth::user()->profile)">
-                        {{ __('profile.my_profile') }}
+                        {{ __('profile.profile') }}
                     </x-dropdown-link>
                 </p>
                 @endif

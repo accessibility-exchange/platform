@@ -6,6 +6,7 @@ return [
     'label_name' => 'Organization name',
     'action_create' => 'Create organization',
     'members_title' => 'Organization members',
+    'browse_all' => 'Browse all organizations',
     'member_name' => 'Name',
     'member_status' => 'Status',
     'member_role' => 'Role',
