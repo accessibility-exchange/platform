@@ -47,6 +47,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
 
         Cookie::queue('theme', $input['theme']);
+        Cookie::queue('locale', $input['locale']);
     }
 
     /**

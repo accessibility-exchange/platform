@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('localize')->only('edit');
+    }
+
+    /**
      * Show the profile edit view for the logged-in user.
      *
      * @return \Illuminate\View\View
