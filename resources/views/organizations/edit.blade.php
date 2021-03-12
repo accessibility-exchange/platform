@@ -46,7 +46,15 @@
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ __('organization.member_active') }}</td>
-                <td>{{ __('roles.' . $user->membership->role) }}</td>
+                <td>
+                    <form action="{{ localized_route('organization-user.update', $organization) }}" method="POST" novalidate>
+                        @csrf
+                        @method('PUT')
+                        <x-input name="userId" type="hidden" :value="$user->id" />
+                        <x-select name="role" :aria-label="__('organization.member_role')" :options="['member' => __('roles.member'), 'admin' => __('roles.admin')]" :selected="old('role', $user->membership->role)" required />
+                        <x-button>{{ __('Update Role') }}</x-button>
+                    </form
+                </td>
             </tr>
             @endforeach
         </table>

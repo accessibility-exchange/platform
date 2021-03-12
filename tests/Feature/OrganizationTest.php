@@ -114,6 +114,48 @@ class OrganizationTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_users_with_admin_role_can_update_other_member_roles()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->hasAttached($other_user, ['role' => 'member'])
+            ->create();
+
+        $response = $this->post('/en/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->from(localized_route('organizations.edit', $organization))->put(localized_route('organization-user.update', $organization), [
+            'userId' => $other_user->id,
+            'role' => 'admin'
+        ]);
+        $response->assertRedirect(localized_route('organizations.edit', $organization));
+    }
+
+    public function test_users_without_admin_role_can_not_update_member_roles()
+    {
+        $user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+
+        $response = $this->post('/en/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->from(localized_route('organizations.edit', $organization))->put(localized_route('organization-user.update', $organization), [
+            'userId' => $user->id,
+            'role' => 'admin'
+        ]);
+        $response->assertStatus(403);
+    }
+
     public function test_users_with_admin_role_can_delete_organizations()
     {
         $user = User::factory()->create();

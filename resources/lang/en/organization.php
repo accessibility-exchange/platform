@@ -21,5 +21,6 @@ return [
     'update_succeeded' => 'Your organization has been updated.',
     'destroy_succeeded' => 'Your organization has been deleted.',
     'edit_title' => 'Edit organization',
-    'edit_organization' => 'Edit organization'
+    'edit_organization' => 'Edit organization',
+    'role_update_succeeded' => ':user’s role has been updated.'
 ];

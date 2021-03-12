@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OrganizationUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -94,6 +95,11 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->middleware(['auth', 'can:update,organization'])
     ->method('put')
     ->name('organizations.update');
+
+Route::multilingual('/organizations/{organization}/membership/update', [OrganizationUserController::class, 'update'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->method('put')
+    ->name('organization-user.update');
 
 Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,organization'])
