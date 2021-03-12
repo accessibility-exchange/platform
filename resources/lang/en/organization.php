@@ -22,5 +22,8 @@ return [
     'destroy_succeeded' => 'Your organization has been deleted.',
     'edit_title' => 'Edit organization',
     'edit_organization' => 'Edit organization',
-    'role_update_succeeded' => ':user’s role has been updated.'
+    'role_update_succeeded' => ':user’s role has been updated.',
+    'edit_user_role_link' => 'Edit',
+    'edit_user_role_title' => 'Edit member role',
+    'action_update_user_role' => 'Update Role',
 ];

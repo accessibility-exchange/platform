@@ -14,26 +14,26 @@ class UpdateOrganizationUserRole
      *
      * @param  mixed  $user
      * @param  mixed  $organization
-     * @param  int  $organizationUserId
+     * @param  mixed  $member
      * @param  string  $role
      * @return void
      */
-    public function update($user, $organization, $userId, string $role)
+    public function update($user, $organization, $member, string $role)
     {
         Gate::forUser($user)->authorize('update', $organization);
 
         Validator::make([
             'role' => $role,
         ], [
-            'role' => ['required', 'string', Rule::in(['member', 'admin'])],
+            'role' => ['required', 'string', Rule::in(config('roles'))],
         ])->validate();
 
-        $organization->users()->updateExistingPivot($userId, [
+        $organization->users()->updateExistingPivot($member->id, [
             'role' => $role,
         ]);
 
         flash(__('organization.role_update_succeeded', [
-            'user' => User::where('id', $userId)->first()->name
+            'user' => $member->name
         ]), 'success');
     }
 }

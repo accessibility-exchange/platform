@@ -71,7 +71,16 @@ class OrganizationController extends Controller
      */
     public function edit(Organization $organization)
     {
-        return view('organizations.edit', ['organization' => $organization]);
+        $roles = [];
+
+        foreach (config('roles') as $role) {
+            $roles[$role] = __('roles.' . $role);
+        }
+
+        return view('organizations.edit', [
+            'organization' => $organization,
+            'roles' => $roles
+        ]);
     }
 
     /**

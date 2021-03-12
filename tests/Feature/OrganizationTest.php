@@ -129,8 +129,7 @@ class OrganizationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('organizations.edit', $organization))->put(localized_route('organization-user.update', $organization), [
-            'userId' => $other_user->id,
+        $response = $this->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
             'role' => 'admin'
         ]);
         $response->assertRedirect(localized_route('organizations.edit', $organization));
@@ -149,8 +148,7 @@ class OrganizationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('organizations.edit', $organization))->put(localized_route('organization-user.update', $organization), [
-            'userId' => $user->id,
+        $response = $this->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
             'role' => 'admin'
         ]);
         $response->assertStatus(403);

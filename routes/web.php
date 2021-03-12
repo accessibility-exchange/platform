@@ -96,7 +96,11 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->method('put')
     ->name('organizations.update');
 
-Route::multilingual('/organizations/{organization}/membership/update', [OrganizationUserController::class, 'update'])
+    Route::multilingual('/organizations/{organization}/members/{user}/edit', [OrganizationUserController::class, 'edit'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->name('organization-user.edit');
+
+Route::multilingual('/organizations/{organization}/members/{user}/update', [OrganizationUserController::class, 'update'])
     ->middleware(['auth', 'can:update,organization'])
     ->method('put')
     ->name('organization-user.update');

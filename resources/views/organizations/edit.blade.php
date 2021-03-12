@@ -40,21 +40,15 @@
                   <th>{{ __('organization.member_name') }}</th>
                   <th>{{ __('organization.member_status') }}</th>
                   <th>{{ __('organization.member_role') }}</th>
+                  <th></th>
                 </tr>
             </thead>
             @foreach ($organization->users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ __('organization.member_active') }}</td>
-                <td>
-                    <form action="{{ localized_route('organization-user.update', $organization) }}" method="POST" novalidate>
-                        @csrf
-                        @method('PUT')
-                        <x-input name="userId" type="hidden" :value="$user->id" />
-                        <x-select name="role" :aria-label="__('organization.member_role')" :options="['member' => __('roles.member'), 'admin' => __('roles.admin')]" :selected="old('role', $user->membership->role)" required />
-                        <x-button>{{ __('Update Role') }}</x-button>
-                    </form
-                </td>
+                <td>{{ __('roles.' . $user->membership->role) }}</td>
+                <td><a href="{{ localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]) }}">{{ __('organization.edit_user_role_link') }}</a></td>
             </tr>
             @endforeach
         </table>
