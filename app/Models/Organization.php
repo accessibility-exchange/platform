@@ -65,4 +65,12 @@ class Organization extends Model
             ->withPivot('role')
             ->withTimestamps();
     }
+
+    /**
+     * Does the organization have more than one administrator?
+     */
+    public function administrators()
+    {
+        return $this->belongsToMany(User::class)->wherePivot('role', 'admin');
+    }
 }

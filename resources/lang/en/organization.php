@@ -24,6 +24,8 @@ return [
     'edit_organization' => 'Edit organization',
     'role_update_succeeded' => ':user’s role has been updated.',
     'edit_user_role_link' => 'Edit',
-    'edit_user_role_title' => 'Edit member role',
+    'edit_user_role_title' => 'Edit :user’s role',
+    'edit_user_role_intro' => 'Modifying the role will change :user’s privileges within the :organization team.',
+    'label_user_role' => 'Role',
     'action_update_user_role' => 'Update Role',
 ];

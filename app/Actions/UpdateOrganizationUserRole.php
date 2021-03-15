@@ -2,7 +2,9 @@
 
 namespace App\Actions;
 
+use App\Models\OrganizationUser;
 use App\Models\User;
+use App\Rules\NotLastAdmin;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -22,11 +24,30 @@ class UpdateOrganizationUserRole
     {
         Gate::forUser($user)->authorize('update', $organization);
 
-        Validator::make([
-            'role' => $role,
-        ], [
-            'role' => ['required', 'string', Rule::in(config('roles'))],
-        ])->validate();
+        $validator = Validator::make(
+            [
+                'role' => $role,
+                'organization_user' => OrganizationUser::where('organization_id', $organization->id)
+                    ->where('user_id', $user->id)->first()
+            ],
+            [
+                'role' => [
+                    'required',
+                    'string',
+                    Rule::in(config('roles'))
+                ],
+            ]
+        );
+
+        $validator->sometimes(
+            'organization_user',
+            [new NotLastAdmin()],
+            function ($input) {
+                return $input->role != 'admin';
+            }
+        );
+
+        $validator->validate();
 
         $organization->users()->updateExistingPivot($member->id, [
             'role' => $role,

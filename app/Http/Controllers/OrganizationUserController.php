@@ -49,6 +49,10 @@ class OrganizationUserController extends Controller
             $request->input('role')
         );
 
+        if ($request->user()->id === $user->id && $request->input('role') !== 'admin') {
+            return redirect(localized_route('organizations.show', $organization));
+        }
+
         return redirect(localized_route('organizations.edit', $organization));
     }
 }

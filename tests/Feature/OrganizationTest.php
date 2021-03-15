@@ -129,9 +129,11 @@ class OrganizationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
-            'role' => 'admin'
-        ]);
+        $response = $this
+            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $other_user]))
+            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+                'role' => 'admin'
+            ]);
         $response->assertRedirect(localized_route('organizations.edit', $organization));
     }
 
@@ -148,12 +150,39 @@ class OrganizationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
-            'role' => 'admin'
-        ]);
+        $response = $this
+            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
+            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+                'role' => 'admin'
+            ]);
+
         $response->assertStatus(403);
     }
 
+    public function test_only_administrator_can_not_downgrade_their_role()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->hasAttached($other_user, ['role' => 'member'])
+            ->create();
+
+        $response = $this->post('/en/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this
+            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
+            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+                'role' => 'member'
+            ]);
+
+        $response->assertSessionHasErrors(['organization_user']);
+        $response->assertRedirect(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]));
+    }
     public function test_users_with_admin_role_can_delete_organizations()
     {
         $user = User::factory()->create();
