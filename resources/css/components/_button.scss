@@ -13,3 +13,28 @@ button.link:focus {
     color: var(--ll-background-color);
     outline: none;
 }
+
+a.button {
+    appearance: none;
+    background: var(--ll-background-color);
+    border: var(--ll-border-medium);
+    border-radius: var(--ll-border-radius);
+    color: var(--ll-text-color);
+    display: inline-block;
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: 700;
+    line-height: inherit;
+    padding: var(--step--5) var(--step--4);
+    text-decoration: none;
+}
+
+a.button:focus {
+    box-shadow: var(--ll-input-focus-box-shadow);
+    outline: none;
+}
+
+a.button:active {
+    background: var(--ll-text-color);
+    color: var(--ll-background-color);
+}

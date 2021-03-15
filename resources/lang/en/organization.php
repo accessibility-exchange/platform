@@ -28,4 +28,5 @@ return [
     'edit_user_role_intro' => 'Modifying the role will change :user’s privileges within the :organization team.',
     'label_user_role' => 'Role',
     'action_update_user_role' => 'Update Role',
+    'action_cancel_user_role_update' => 'Cancel'
 ];
