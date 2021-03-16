@@ -28,5 +28,13 @@ return [
     'edit_user_role_intro' => 'Modifying the role will change :user’s privileges within the :organization team.',
     'label_user_role' => 'Role',
     'action_update_user_role' => 'Update Role',
-    'action_cancel_user_role_update' => 'Cancel'
+    'action_cancel_user_role_update' => 'Cancel',
+    'invite_title' => 'Invite new member',
+    'action_send_invitation' => 'Send invitation',
+    'cancel_member_invitation_link' => 'Cancel invitation',
+    'create_invitation_succeeded' => 'Your invitation has been sent.',
+    'invited_user_already_in_organization' => 'This user already belongs to the organization.',
+    'cancel_invitation_succeeded' => 'The invitation has been cancelled.',
+    'user_with_email_not_found' => 'We were unable to find a registered user with this email address.',
+    'accept_invitation_succeeded' => 'You have joined :organization.'
 ];

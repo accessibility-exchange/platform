@@ -51,8 +51,46 @@
                 <td><a href="{{ localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]) }}">{{ __('organization.edit_user_role_link') }}</a></td>
             </tr>
             @endforeach
+            @foreach ($organization->organizationInvitations as $invitation)
+            <tr>
+                <td>{{ $invitation->email }}</td>
+                <td>{{ __('organization.member_invited') }}</td>
+                <td>{{ __('roles.' . $invitation->role) }}</td>
+                <td>
+                    <form action="{{ route('organization-invitations.destroy', ['organization' => $organization, 'invitation' => $invitation]) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <x-button class="link">{{ __('organization.cancel_member_invitation_link') }}</x-button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
         </table>
     </div>
+
+    <h3>{{ __('organization.invite_title') }}</h3>
+
+    <form action="{{ localized_route('organization-invitations.create', $organization) }}" method="POST" novalidate>
+        @csrf
+        <div class="field">
+            <x-label for="email" :value="__('forms.label_email')" />
+            <x-input id="email" type="email" name="email" :value="old('email')" required />
+            @error('email', 'inviteOrganizationMember')
+            <x-validation-error>{{ $message }}</x-validation-error>
+            @enderror
+        </div>
+        <div class="field">
+            <x-label for="role" :value="__('organization.member_role')" />
+            <x-select id="role" type="role" name="role" :options="$roles" :selected="old('role')" required />
+            @error('role', 'inviteOrganizationMember')
+            <x-validation-error>{{ $message }}</x-validation-error>
+            @enderror
+        </div>
+
+        <x-button>
+            {{ __('organization.action_send_invitation') }}
+        </x-button>
+    </form>
 
     <h2>
         {{ __('organization.delete_title') }}
