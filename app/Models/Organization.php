@@ -30,13 +30,6 @@ class Organization extends Model
     ];
 
     /**
-     * The users associated with this organization.
-     *
-     * @var \Illuminate\Database\Eloquent\Collection
-     */
-    public $users;
-
-    /**
      * The attributes that are translatable.
      *
      * @var array
@@ -90,6 +83,7 @@ class Organization extends Model
      */
     public function hasUserWithEmail(string $email)
     {
+        /** @phpstan-ignore-next-line */
         return $this->users->contains(function ($user) use ($email) {
             return $user->email === $email;
         });

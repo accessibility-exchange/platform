@@ -51,20 +51,22 @@
                 <td><a href="{{ localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]) }}">{{ __('organization.edit_user_role_link') }}</a></td>
             </tr>
             @endforeach
-            @foreach ($organization->organizationInvitations as $invitation)
-            <tr>
-                <td>{{ $invitation->email }}</td>
-                <td>{{ __('organization.member_invited') }}</td>
-                <td>{{ __('roles.' . $invitation->role) }}</td>
-                <td>
-                    <form action="{{ route('organization-invitations.destroy', ['organization' => $organization, 'invitation' => $invitation]) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <x-button class="link">{{ __('organization.cancel_member_invitation_link') }}</x-button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
+            @if($organization->organizationInvitations)
+                @foreach ($organization->organizationInvitations as $invitation)
+                <tr>
+                    <td>{{ $invitation->email }}</td>
+                    <td>{{ __('organization.member_invited') }}</td>
+                    <td>{{ __('roles.' . $invitation->role) }}</td>
+                    <td>
+                        <form action="{{ route('organization-invitations.destroy', ['organization' => $organization, 'invitation' => $invitation]) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <x-button class="link">{{ __('organization.cancel_member_invitation_link') }}</x-button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            @endif
         </table>
     </div>
 
