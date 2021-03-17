@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OrganizationInvitationController;
+use App\Http\Controllers\OrganizationUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -95,9 +97,34 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->method('put')
     ->name('organizations.update');
 
+    Route::multilingual('/organizations/{organization}/members/{user}/edit', [OrganizationUserController::class, 'edit'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->name('organization-user.edit');
+
+Route::multilingual('/organizations/{organization}/members/{user}/update', [OrganizationUserController::class, 'update'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->method('put')
+    ->name('organization-user.update');
+
+Route::delete('/organizations/{organization}/members/{user}/delete', [OrganizationUserController::class, 'destroy'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->name('organization-user.destroy');
+
 Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,organization'])
     ->method('delete')
     ->name('organizations.destroy');
+
+Route::multilingual('/organizations/{organization}/members/invite', [OrganizationInvitationController::class, 'create'])
+    ->method('post')
+    ->name('organization-invitations.create');
+
+Route::get('/invitations/{invitation}', [OrganizationInvitationController::class, 'accept'])
+    ->middleware(['signed'])
+    ->name('organization-invitations.accept');
+
+Route::delete('/invitations/{invitation}/cancel', [OrganizationInvitationController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('organization-invitations.destroy');
 
 require __DIR__ . '/fortify.php';

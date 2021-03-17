@@ -140,8 +140,10 @@ return [
             'length-uppercase-numeric-specialcharacter' => 'The :attribute must be at least :length characters and contain at least one uppercase character, one number, and one special character.',
             'length-numeric-specialcharacter' => 'The :attribute must be at least :length characters and contain at least one special character and one number.',
             'length' => 'The :attribute must be at least :length characters.'
-
         ],
+        'organization_user' => [
+            'not_last_admin' => 'There must be at least one administrator in this organization.'
+        ]
     ],
 
     /*

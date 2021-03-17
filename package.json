@@ -42,7 +42,7 @@
         "stylelint-use-logical": "^1.1.0"
     },
     "dependencies": {
-        "@accessibility-in-action/looseleaf": "^1.1.0",
+        "@accessibility-in-action/looseleaf": "^1.2.0",
         "alpinejs": "^2.8.1",
         "axios": "^0.21.1",
         "modern-css-reset": "^1.4.0"

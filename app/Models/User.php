@@ -138,4 +138,15 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->where('role', 'admin')
             ->exists();
     }
+
+    /**
+     * Get the role for the user in a given organization.
+     *
+     * @param \App\Models\Organization $organization
+     * @return string
+     */
+    public function getRoleFor(Organization $organization)
+    {
+        return $this->organizations()->where('organization_id', $organization->id)->first()->membership->role;
+    }
 }

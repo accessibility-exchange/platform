@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\OrganizationInvitation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -64,5 +65,35 @@ class Organization extends Model
             ->as('membership')
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    /**
+     * Does the organization have more than one administrator?
+     */
+    public function administrators()
+    {
+        return $this->belongsToMany(User::class)->wherePivot('role', 'admin');
+    }
+
+    /**
+     * Determine if the given email address belongs to a user in the organization.
+     *
+     * @param  string  $email
+     * @return bool
+     */
+    public function hasUserWithEmail(string $email)
+    {
+        /** @phpstan-ignore-next-line */
+        return $this->users->contains(function ($user) use ($email) {
+            return $user->email === $email;
+        });
+    }
+
+    /**
+     * Get the invitations associated with this organization.
+     */
+    public function organizationInvitations()
+    {
+        return $this->hasMany(OrganizationInvitation::class);
     }
 }
