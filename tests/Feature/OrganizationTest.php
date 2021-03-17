@@ -19,15 +19,10 @@ class OrganizationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get('/en/organizations/create');
+        $response = $this->actingAs($user)->get('/en/organizations/create');
         $response->assertStatus(200);
 
-        $response = $this->post('/en/organizations/create', [
+        $response = $this->actingAs($user)->post('/en/organizations/create', [
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
             'region' => 'ns'
@@ -47,15 +42,10 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('organizations.edit', $organization));
+        $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
         $response->assertStatus(200);
 
-        $response = $this->put(localized_route('organizations.update', $organization), [
+        $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
             'name' => $organization->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
@@ -70,15 +60,10 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('organizations.edit', $organization));
+        $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
         $response->assertStatus(403);
 
-        $response = $this->put(localized_route('organizations.update', $organization), [
+        $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
             'name' => $organization->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
@@ -99,15 +84,10 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('organizations.edit', $other_organization));
+        $response = $this->actingAs($user)->get(localized_route('organizations.edit', $other_organization));
         $response->assertStatus(403);
 
-        $response = $this->put(localized_route('organizations.update', $other_organization), [
+        $response = $this->actingAs($user)->put(localized_route('organizations.update', $other_organization), [
             'name' => $other_organization->name,
             'locality' => 'St John\'s',
             'region' => 'nl'
@@ -125,12 +105,8 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $other_user]))
             ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
                 'role' => 'admin'
@@ -146,12 +122,8 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
             ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
                 'role' => 'admin'
@@ -170,12 +142,8 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
             ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
                 'role' => 'member'
@@ -193,12 +161,8 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
             ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
                 'email' => 'newuser@here.com',
@@ -216,17 +180,52 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
             ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
                 'email' => 'newuser@here.com',
                 'role' => 'member'
             ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_users_with_admin_role_can_cancel_invitations()
+    {
+        $user = User::factory()->create();
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $invitation = OrganizationInvitation::factory()->create([
+            'email' => 'me@here.com',
+            'organization_id' => $organization->id
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(localized_route('organizations.edit', ['organization' => $organization]))
+            ->delete(route('organization-invitations.destroy', ['invitation' => $invitation]));
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('organizations.edit', $organization));
+    }
+
+    public function test_users_without_admin_role_can_not_cancel_invitations()
+    {
+        $user = User::factory()->create();
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $invitation = OrganizationInvitation::factory()->create([
+            'email' => 'me@here.com',
+            'organization_id' => $organization->id
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(localized_route('organizations.edit', ['organization' => $organization]))
+            ->delete(route('organization-invitations.destroy', ['invitation' => $invitation]));
 
         $response->assertStatus(403);
     }
@@ -241,12 +240,8 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
         $response = $this
+            ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
             ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
                 'email' => $other_user->email,
@@ -287,6 +282,60 @@ class OrganizationTest extends TestCase
         $response = $this->get($acceptUrl);
 
         $response->assertSessionHasErrors();
+    }
+
+    public function test_users_with_admin_role_can_remove_members()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->hasAttached($other_user, ['role' => 'member'])
+            ->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(localized_route('organizations.edit', ['organization' => $organization]))
+            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $other_user]));
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('organizations.edit', $organization));
+    }
+
+    public function test_users_without_admin_role_can_not_remove_members()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->hasAttached($other_user, ['role' => 'admin'])
+            ->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(localized_route('organizations.edit', ['organization' => $organization]))
+            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $other_user]));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_only_administrator_can_not_remove_themself()
+    {
+        $user = User::factory()->create();
+
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from(localized_route('organizations.edit', ['organization' => $organization]))
+            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $user]));
+
+        $response->assertSessionHasErrors();
+        $response->assertRedirect(localized_route('organizations.edit', $organization));
     }
 
     public function test_users_with_admin_role_can_delete_organizations()

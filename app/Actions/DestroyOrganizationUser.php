@@ -24,7 +24,8 @@ class DestroyOrganizationUser
         Gate::forUser($user)->authorize('update', $organization);
 
         $organizationUser = OrganizationUser::where('organization_id', $organization->id)
-        ->where('user_id', $member->id)->first();
+            ->where('user_id', $member->id)
+            ->first();
 
         $validator = Validator::make(
             [
