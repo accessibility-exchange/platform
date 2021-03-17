@@ -7,12 +7,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class Organization extends Model
 {
+    use CascadesDeletes;
     use HasFactory;
     use HasSlug;
     use HasTranslations;
@@ -35,6 +37,8 @@ class Organization extends Model
      * @var array
      */
     public $translatable = [];
+
+    protected $cascadeDeletes = ['users'];
 
     /**
      * Get the options for generating the slug.
@@ -61,7 +65,7 @@ class Organization extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(User::class)
+        return $this->morphToMany(User::class, 'membership')
             ->as('membership')
             ->withPivot('role')
             ->withTimestamps();
@@ -72,7 +76,8 @@ class Organization extends Model
      */
     public function administrators()
     {
-        return $this->belongsToMany(User::class)->wherePivot('role', 'admin');
+        return $this->morphToMany(User::class, 'membership')
+            ->wherePivot('role', 'admin');
     }
 
     /**

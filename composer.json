@@ -20,6 +20,7 @@
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "shiftonelabs/laravel-cascade-deletes": "^1.0",
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
         "spatie/laravel-flash": "^1.8",

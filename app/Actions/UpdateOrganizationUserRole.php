@@ -2,7 +2,7 @@
 
 namespace App\Actions;
 
-use App\Models\OrganizationUser;
+use App\Models\Membership;
 use App\Models\User;
 use App\Rules\NotLastAdmin;
 use Illuminate\Support\Facades\Gate;
@@ -27,7 +27,8 @@ class UpdateOrganizationUserRole
         $validator = Validator::make(
             [
                 'role' => $role,
-                'organization_user' => OrganizationUser::where('organization_id', $organization->id)
+                'membership' => Membership::where('membership_id', $organization->id)
+                    ->where('membership_type', 'organization')
                     ->where('user_id', $member->id)->first()
             ],
             [
@@ -40,7 +41,7 @@ class UpdateOrganizationUserRole
         );
 
         $validator->sometimes(
-            'organization_user',
+            'membership',
             [new NotLastAdmin()],
             function ($input) {
                 return $input->role != 'admin';

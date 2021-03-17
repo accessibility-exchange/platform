@@ -11,12 +11,14 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
+    use CascadesDeletes;
     use HasFactory;
     use HasSlug;
     use HasTranslations;
@@ -60,6 +62,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      * @var array
      */
     public $translatable = [];
+
+    protected $cascadeDeletes = ['organizations'];
 
     /**
      * Get the options for generating the slug.
@@ -106,11 +110,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function organizations()
     {
-        return $this->belongsToMany(Organization::class)
-            ->as('membership')
+        return $this->morphedByMany(Organization::class, 'membership')
             ->withPivot('role')
             ->withTimestamps();
     }
+
 
     /**
      * Determine if the user is a member of a given organization.
@@ -121,7 +125,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function isMemberOf(Organization $organization)
     {
         return $this->organizations()
-            ->where('organization_id', $organization->id)
+            ->where('membership_id', $organization->id)
             ->exists();
     }
 
@@ -134,7 +138,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function isAdministratorOf(Organization $organization)
     {
         return $this->organizations()
-            ->where('organization_id', $organization->id)
+            ->where('membership_id', $organization->id)
             ->where('role', 'admin')
             ->exists();
     }

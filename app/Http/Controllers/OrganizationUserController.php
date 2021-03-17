@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\DestroyOrganizationUser;
 use App\Actions\UpdateOrganizationUserRole;
 use App\Models\Organization;
-use App\Models\OrganizationUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 

@@ -2,7 +2,7 @@
 
 namespace App\Actions;
 
-use App\Models\OrganizationUser;
+use App\Models\Membership;
 use App\Models\User;
 use App\Rules\NotLastAdmin;
 use Illuminate\Support\Facades\Gate;
@@ -23,22 +23,23 @@ class DestroyOrganizationUser
     {
         Gate::forUser($user)->authorize('update', $organization);
 
-        $organizationUser = OrganizationUser::where('organization_id', $organization->id)
+        $membership = Membership::where('membership_id', $organization->id)
+            ->where('membership_type', 'organization')
             ->where('user_id', $member->id)
             ->first();
 
         $validator = Validator::make(
             [
-                'organization_user' => $organizationUser
+                'membership' => $membership
             ],
             []
         );
 
         $validator->sometimes(
-            'organization_user',
+            'membership',
             [new NotLastAdmin()],
             function ($input) {
-                return $input['organization_user']->role === 'admin';
+                return $input['membership']->role === 'admin';
             }
         );
 
