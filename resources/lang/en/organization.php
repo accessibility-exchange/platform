@@ -44,4 +44,6 @@ return [
     'invitation_status' => 'Status',
     'invitation_role' => 'Role',
     'member_invited' => 'Invited',
+    'action_remove_member' => 'Remove',
+    'action_remove_member_with_name' => 'Remove :user from :organization'
 ];

@@ -106,6 +106,10 @@ Route::multilingual('/organizations/{organization}/members/{user}/update', [Orga
     ->method('put')
     ->name('organization-user.update');
 
+Route::delete('/organizations/{organization}/members/{user}/delete', [OrganizationUserController::class, 'destroy'])
+    ->middleware(['auth', 'can:update,organization'])
+    ->name('organization-user.destroy');
+
 Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,organization'])
     ->method('delete')

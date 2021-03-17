@@ -39,6 +39,7 @@
                   <th>{{ __('organization.member_status') }}</th>
                   <th>{{ __('organization.member_role') }}</th>
                   <th></th>
+                  <th></th>
                 </tr>
             </thead>
             @foreach ($organization->users as $user)
@@ -47,6 +48,15 @@
                 <td>{{ __('organization.member_active') }}</td>
                 <td>{{ __('roles.' . $user->membership->role) }}</td>
                 <td><a aria-label="{{ __('organization.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]) }}">{{ __('organization.edit_user_role_link') }}</a></td>
+                <td>
+                    <form action="{{ route('organization-user.destroy', ['organization' => $organization, 'user' => $user]) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <x-button class="link" :aria-label="__('organization.action_remove_member_with_name', ['user' => $user->name, 'organization' => $organization->name])">
+                            {{ __('organization.action_remove_member') }}
+                        </x-button>
+                    </form>
+                </td>
             </tr>
             @endforeach
         </table>
