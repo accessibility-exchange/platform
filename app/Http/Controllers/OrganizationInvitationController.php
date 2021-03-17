@@ -18,7 +18,7 @@ class OrganizationInvitationController extends Controller
      * Create an invitation.
      *
      * @param  \App\Http\Requests\CreateOrganizationInvitationRequest  $request
-     * @param  \App\Models\OrganizationInvitation  $invitation
+     * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Http\RedirectResponse
      */
     public function create(CreateOrganizationInvitationRequest $request, Organization $organization)

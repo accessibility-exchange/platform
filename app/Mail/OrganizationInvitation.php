@@ -15,6 +15,13 @@ class OrganizationInvitation extends Mailable
     use SerializesModels;
 
     /**
+     * The invitation.
+     *
+     * @var \App\Models\OrganizationInvitation
+     */
+    protected $invitation;
+
+    /**
      * Create a new message instance.
      *
      * @param  \App\Models\OrganizationInvitation  $invitation

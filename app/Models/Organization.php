@@ -30,6 +30,13 @@ class Organization extends Model
     ];
 
     /**
+     * The users associated with this organization.
+     *
+     * @var \Illuminate\Database\Eloquent\Collection
+     */
+    public $users;
+
+    /**
      * The attributes that are translatable.
      *
      * @var array
