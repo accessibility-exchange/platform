@@ -38,12 +38,13 @@ return [
     'invited_user_already_in_organization' => 'This user already belongs to the organization.',
     'cancel_invitation_succeeded' => 'The invitation has been cancelled.',
     'user_with_email_not_found' => 'We were unable to find a registered user with this email address.',
-    'accept_invitation_succeeded' => 'You have joined :organization.',
+    'accept_invitation_succeeded' => 'You have joined the :organization organization.',
     'invitations_title' => 'Member invitations',
     'invitation_email' => 'Email',
     'invitation_status' => 'Status',
     'invitation_role' => 'Role',
     'member_invited' => 'Invited',
     'action_remove_member' => 'Remove',
-    'action_remove_member_with_name' => 'Remove :user from :organization'
+    'action_remove_member_with_name' => 'Remove :user from :organization',
+    'remove_member_succeeded' => ':user has been removed from the organization.'
 ];

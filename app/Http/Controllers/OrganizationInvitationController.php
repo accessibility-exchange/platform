@@ -51,7 +51,10 @@ class OrganizationInvitationController extends Controller
 
         $invitation->delete();
 
-        flash(__('organization.accept_invitation_succeeded', ['organization' => $invitation->organization]), 'success');
+        flash(
+            __('organization.accept_invitation_succeeded', ['organization' => $invitation->organization->name]),
+            'success'
+        );
 
         return redirect(localized_route('organizations.show', $invitation->organization));
     }

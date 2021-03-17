@@ -37,7 +37,6 @@ class DestroyOrganizationUser
             'organization_user',
             [new NotLastAdmin()],
             function ($input) {
-                ray($input['organization_user']->role);
                 return $input['organization_user']->role === 'admin';
             }
         );

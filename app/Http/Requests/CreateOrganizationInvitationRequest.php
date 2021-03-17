@@ -15,7 +15,9 @@ class CreateOrganizationInvitationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $organization = $this->route('organization');
+
+        return $organization && $this->user()->can('update', $organization);
     }
 
     /**
