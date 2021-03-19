@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Entity;
 use App\Models\Profile;
 use App\Models\Organization;
 use App\Models\User;
+use App\Policies\EntityPolicy;
 use App\Policies\ProfilePolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\UserPolicy;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        'App\Models\Entity' => 'App\Policies\EntityPolicy',
         'App\Models\Profile' => 'App\Policies\ProfilePolicy',
         'App\Models\Organization' => 'App\Policies\OrganizationPolicy',
         'App\Models\User' => 'App\Policies\UserPolicy',

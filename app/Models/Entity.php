@@ -5,15 +5,15 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class Organization extends Model
+class Entity extends Model
 {
     use CascadesDeletes;
     use HasFactory;
@@ -68,7 +68,7 @@ class Organization extends Model
      */
     public function getModelClass()
     {
-        return 'App\Models\Organization';
+        return 'App\Models\Entity';
     }
 
     /**
@@ -78,7 +78,7 @@ class Organization extends Model
      */
     public function getRouteKeyPlaceholder()
     {
-        return 'organization';
+        return 'entity';
     }
 
     /**
@@ -88,11 +88,11 @@ class Organization extends Model
      */
     public function getRoutePrefix()
     {
-        return 'organizations';
+        return 'entities';
     }
 
     /**
-     * Get the users that are associated with this organization.
+     * Get the users that are associated with this entity.
      */
     public function users(): MorphToMany
     {
@@ -105,7 +105,7 @@ class Organization extends Model
     }
 
     /**
-     * Does the organization have more than one administrator?
+     * Does the entity have more than one administrator?
      */
     public function administrators(): MorphToMany
     {
@@ -115,7 +115,7 @@ class Organization extends Model
     }
 
     /**
-     * Determine if the given email address belongs to a user in the organization.
+     * Determine if the given email address belongs to a user in the entity.
      *
      * @param  string  $email
      * @return bool
@@ -128,7 +128,7 @@ class Organization extends Model
     }
 
     /**
-     * Determine if the given email address belongs to an administrator in the organization.
+     * Determine if the given email address belongs to an administrator in the entity.
      *
      * @param  string  $email
      * @return bool
@@ -141,7 +141,7 @@ class Organization extends Model
     }
 
     /**
-     * Get the invitations associated with this organization.
+     * Get the invitations associated with this entity.
      */
     public function invitations(): MorphMany
     {

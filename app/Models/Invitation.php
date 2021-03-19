@@ -5,8 +5,9 @@ namespace App\Models;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class OrganizationInvitation extends Model
+class Invitation extends Model
 {
     use HasFactory;
 
@@ -21,12 +22,10 @@ class OrganizationInvitation extends Model
     ];
 
     /**
-     * Get the organization that the invitation belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get the parent inviteable model.
      */
-    public function organization()
+    public function inviteable(): MorphTo
     {
-        return $this->belongsTo(Organization::class);
+        return $this->morphTo();
     }
 }

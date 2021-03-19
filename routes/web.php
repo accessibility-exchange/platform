@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\OrganizationInvitationController;
-use App\Http\Controllers\OrganizationUserController;
+use App\Http\Controllers\EntityController;
+use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -97,34 +98,63 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->method('put')
     ->name('organizations.update');
 
-    Route::multilingual('/organizations/{organization}/members/{user}/edit', [OrganizationUserController::class, 'edit'])
-    ->middleware(['auth', 'can:update,organization'])
-    ->name('organization-user.edit');
-
-Route::multilingual('/organizations/{organization}/members/{user}/update', [OrganizationUserController::class, 'update'])
-    ->middleware(['auth', 'can:update,organization'])
-    ->method('put')
-    ->name('organization-user.update');
-
-Route::delete('/organizations/{organization}/members/{user}/delete', [OrganizationUserController::class, 'destroy'])
-    ->middleware(['auth', 'can:update,organization'])
-    ->name('organization-user.destroy');
-
 Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,organization'])
     ->method('delete')
     ->name('organizations.destroy');
 
-Route::multilingual('/organizations/{organization}/members/invite', [OrganizationInvitationController::class, 'create'])
-    ->method('post')
-    ->name('organization-invitations.create');
-
-Route::get('/invitations/{invitation}', [OrganizationInvitationController::class, 'accept'])
-    ->middleware(['signed'])
-    ->name('organization-invitations.accept');
-
-Route::delete('/invitations/{invitation}/cancel', [OrganizationInvitationController::class, 'destroy'])
+Route::multilingual('/entities', [EntityController::class, 'index'])
     ->middleware(['auth'])
-    ->name('organization-invitations.destroy');
+    ->name('entities.index');
+
+Route::multilingual('/entities/create', [EntityController::class, 'create'])
+    ->middleware(['auth', 'can:create,App\Models\Entity'])
+    ->name('entities.create');
+
+Route::multilingual('/entities/create', [EntityController::class, 'store'])
+    ->method('post')
+    ->middleware(['auth', 'can:create,App\Models\Entity'])
+    ->name('entities.store');
+
+Route::multilingual('/entities/{entity}', [EntityController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('entities.show');
+
+Route::multilingual('/entities/{entity}/edit', [EntityController::class, 'edit'])
+    ->middleware(['auth', 'can:update,entity'])
+    ->name('entities.edit');
+
+Route::multilingual('/entities/{entity}/edit', [EntityController::class, 'update'])
+    ->middleware(['auth', 'can:update,entity'])
+    ->method('put')
+    ->name('entities.update');
+
+Route::multilingual('/entities/{entity}/delete', [EntityController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,entity'])
+    ->method('delete')
+    ->name('entities.destroy');
+
+Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])
+    ->name('memberships.edit');
+
+Route::multilingual('/memberships/{membership}/update', [MembershipController::class, 'update'])
+    ->method('put')
+    ->name('memberships.update');
+
+Route::delete('/memberships/{membership}/delete', [MembershipController::class, 'destroy'])
+    ->name('memberships.destroy');
+
+
+Route::multilingual('/invitations/create', [InvitationController::class, 'create'])
+    ->method('post')
+    ->name('invitations.create');
+
+Route::get('/invitations/{invitation}', [InvitationController::class, 'accept'])
+    ->middleware(['signed'])
+    ->name('invitations.accept');
+
+Route::delete('/invitations/{invitation}/cancel', [InvitationController::class, 'destroy'])
+    ->middleware(['auth'])
+    ->name('invitations.destroy');
 
 require __DIR__ . '/fortify.php';

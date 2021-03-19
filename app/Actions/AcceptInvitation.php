@@ -8,23 +8,23 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class AcceptOrganizationInvitation
+class AcceptInvitation
 {
     /**
      * Add a new organization member to the given organization.
      *
-     * @param  mixed  $organization
+     * @param  mixed  $inviteable
      * @param  string  $email
      * @param  string|null  $role
      * @return void
      */
-    public function accept($organization, string $email, string $role = null)
+    public function accept($inviteable, string $email, string $role = null)
     {
-        $this->validate($organization, $email, $role);
+        $this->validate($inviteable, $email, $role);
 
         $newMember = User::where('email', $email)->first();
 
-        $organization->users()->attach(
+        $inviteable->users()->attach(
             $newMember,
             ['role' => $role]
         );
@@ -33,21 +33,21 @@ class AcceptOrganizationInvitation
     /**
      * Validate the add member operation.
      *
-     * @param  mixed  $organization
+     * @param  mixed  $inviteable
      * @param  string  $email
      * @param  string|null  $role
      * @return void
      */
-    protected function validate($organization, string $email, ?string $role)
+    protected function validate($inviteable, string $email, ?string $role)
     {
         Validator::make([
             'email' => $email,
             'role' => $role,
         ], $this->rules(), [
-            'email.exists' => __('organization.user_with_email_not_found'),
+            'email.exists' => __('invitation.user_with_email_not_found'),
         ])->after(
-            $this->ensureUserIsNotAlreadyInOrganization($organization, $email)
-        )->validateWithBag('acceptOrganizationInvitation');
+            $this->ensureUserIsNotAlreadyAMember($inviteable, $email)
+        )->validateWithBag('acceptInvitation');
     }
 
     /**
@@ -66,17 +66,17 @@ class AcceptOrganizationInvitation
     /**
      * Ensure that the user is not already on the organization.
      *
-     * @param  mixed  $organization
+     * @param  mixed  $inviteable
      * @param  string  $email
      * @return \Closure
      */
-    protected function ensureUserIsNotAlreadyInOrganization($organization, string $email)
+    protected function ensureUserIsNotAlreadyAMember($inviteable, string $email)
     {
-        return function ($validator) use ($organization, $email) {
+        return function ($validator) use ($inviteable, $email) {
             $validator->errors()->addIf(
-                $organization->hasUserWithEmail($email),
+                $inviteable->hasUserWithEmail($email),
                 'email',
-                __('organization.invited_user_already_in_organization')
+                __('invitation.invited_user_already_belongs_to_team')
             );
         };
     }

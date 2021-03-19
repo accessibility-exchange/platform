@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Profile;
+use App\Models\Entity;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProfilePolicy
+class EntityPolicy
 {
     use HandlesAuthorization;
 
@@ -19,36 +19,34 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        return $user->profile
-            ? Response::deny(__('You already have a consultant profile.'))
-            : Response::allow();
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Profile  $profile
+     * @param  \App\Models\Entity  $entity
      * @return mixed
      */
-    public function update(User $user, Profile $profile)
+    public function update(User $user, Entity $entity)
     {
-        return $user->id === $profile->user_id
+        return $user->isAdministratorOf($entity)
             ? Response::allow()
-            : Response::deny('You cannot edit this consultant profile.');
+            : Response::deny('You cannot edit this entity.');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Profile  $profile
+     * @param  \App\Models\Entity  $entity
      * @return mixed
      */
-    public function delete(User $user, Profile $profile)
+    public function delete(User $user, Entity $entity)
     {
-        return $user->id === $profile->user_id
+        return $user->isAdministratorOf($entity)
             ? Response::allow()
-            : Response::deny('You cannot delete this consultant profile.');
+            : Response::deny('You cannot delete this entity.');
     }
 }

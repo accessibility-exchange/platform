@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrganizationInvitationsTable extends Migration
+class CreateEntitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateOrganizationInvitationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organization_invitations', function (Blueprint $table) {
+        Schema::create('entities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organization_id')->constrained()->cascadeOnDelete();
-            $table->string('email');
-            $table->string('role');
+            $table->string('name');
+            $table->string('slug');
+            $table->string('locality');
+            $table->string('region');
             $table->timestamps();
-
-            $table->unique(['organization_id', 'email']);
         });
     }
 
@@ -31,6 +30,6 @@ class CreateOrganizationInvitationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organization_invitations');
+        Schema::dropIfExists('entities');
     }
 }

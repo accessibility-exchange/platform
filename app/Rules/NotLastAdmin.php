@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\Organization;
+use App\Models\Membership;
 use Illuminate\Contracts\Validation\Rule;
 
 class NotLastAdmin implements Rule
@@ -17,7 +17,7 @@ class NotLastAdmin implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Organization::find($value->organization_id)->administrators()->count() > 1;
+        return $value->memberable()->administrators()->count() > 1;
     }
 
     /**

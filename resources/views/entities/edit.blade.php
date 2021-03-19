@@ -2,60 +2,60 @@
 <x-app-layout>
     <x-slot name="header">
         <h1>
-            {{ __('organization.edit_title') }}
+            {{ __('entity.edit_title') }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('organizations.update', $organization) }}" method="POST" novalidate>
+    <form action="{{ localized_route('entities.update', $entity) }}" method="POST" novalidate>
         @csrf
         @method('PUT')
 
         <div class="field">
-            <x-label for="name" :value="__('organization.label_name')" />
-            <x-input id="name" type="name" name="name" :value="old('name', $organization->name)" required />
+            <x-label for="name" :value="__('entity.label_name')" />
+            <x-input id="name" type="name" name="name" :value="old('name', $entity->name)" required />
             </div>
         <div class="field">
             <x-label for="locality" :value="__('forms.label_locality')" />
-            <x-input id="locality" type="locality" name="locality" :value="old('locality', $organization->locality)" required />
+            <x-input id="locality" type="locality" name="locality" :value="old('locality', $entity->locality)" required />
         </div>
         <div class="field">
             <x-label for="region" :value="__('forms.label_region')" />
-            <x-region-select :selected="old('region', $organization->region)" required />
+            <x-region-select :selected="old('region', $entity->region)" required />
         </div>
 
         <x-button>{{ __('forms.save_changes') }}</x-button>
     </form>
 
-    <h2>{{ __('organization.members_title') }}</h2>
+    <h2>{{ __('entity.members_title') }}</h2>
 
-    <div role="region" aria-label="{{ __('organization.members_title') }}" tabindex="0">
+    <div role="region" aria-label="{{ __('entity.members_title') }}" tabindex="0">
         <table>
             <thead>
                 <tr>
-                  <th>{{ __('organization.member_name') }}</th>
-                  <th>{{ __('organization.member_status') }}</th>
-                  <th>{{ __('organization.member_role') }}</th>
+                  <th>{{ __('entity.member_name') }}</th>
+                  <th>{{ __('entity.member_status') }}</th>
+                  <th>{{ __('entity.member_role') }}</th>
                   <th></th>
                   <th></th>
                 </tr>
             </thead>
-            @foreach ($organization->users as $user)
+            @foreach ($entity->users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
-                <td>{{ __('organization.member_active') }}</td>
+                <td>{{ __('entity.member_active') }}</td>
                 <td>{{ __('roles.' . $user->membership->role) }}</td>
                 <td>
-                    <a aria-label="{{ __('organization.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('memberships.edit', $user->membership->id) }}">{{ __('organization.edit_user_role_link') }}</a>
+                    <a aria-label="{{ __('entity.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('memberships.edit', $user->membership->id) }}">{{ __('entity.edit_user_role_link') }}</a>
                 </td>
                 <td>
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-button class="link" :aria-label="__('organization.action_remove_member_with_name', ['user' => $user->name, 'organization' => $organization->name])">
-                            {{ __('organization.action_remove_member') }}
+                        <x-button class="link" :aria-label="__('entity.action_remove_member_with_name', ['user' => $user->name, 'entity' => $entity->name])">
+                            {{ __('entity.action_remove_member') }}
                         </x-button>
                     </form>
                 </td>
@@ -66,7 +66,7 @@
 
     <h2>{{ __('invitation.invitations_title') }}</h2>
 
-    @if($organization->invitations->count() > 0)
+    @if($entity->invitations->count() > 0)
     <div role="region" aria-label="{{ __('invitation.invitations_title') }}" tabindex="0">
         <table>
             <thead>
@@ -77,7 +77,7 @@
                   <th></th>
                 </tr>
             </thead>
-            @foreach ($organization->invitations as $invitation)
+            @foreach ($entity->invitations as $invitation)
             <tr>
                 <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
                 <td>{{ __('invitation.member_invited') }}</td>
@@ -103,8 +103,8 @@
 
     <form action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
-        <x-input type="hidden" name="inviteable_id" :value="$organization->id"></x-input>
-        <x-input type="hidden" name="inviteable_type" :value="$organization->getModelClass()"></x-input>
+        <x-input type="hidden" name="inviteable_id" :value="$entity->id"></x-input>
+        <x-input type="hidden" name="inviteable_type" :value="$entity->getModelClass()"></x-input>
         <div class="field">
             <x-label for="email" :value="__('forms.label_email')" />
             <x-input id="email" type="email" name="email" :value="old('email')" required />
@@ -113,7 +113,7 @@
             @enderror
         </div>
         <div class="field">
-            <x-label for="role" :value="__('organization.member_role')" />
+            <x-label for="role" :value="__('entity.member_role')" />
             <x-select id="role" type="role" name="role" :options="$roles" :selected="old('role')" required />
             @error('role', 'inviteOrganizationMember')
             <x-validation-error>{{ $message }}</x-validation-error>
@@ -126,12 +126,12 @@
     </form>
 
     <h2>
-        {{ __('organization.delete_title') }}
+        {{ __('entity.delete_title') }}
     </h2>
 
-    <p>{{ __('organization.delete_intro') }}</p>
+    <p>{{ __('entity.delete_intro') }}</p>
 
-    <form action="{{ localized_route('organizations.destroy', $organization) }}" method="POST" novalidate>
+    <form action="{{ localized_route('entities.destroy', $entity) }}" method="POST" novalidate>
         @csrf
         @method('DELETE')
 
@@ -144,7 +144,7 @@
         </div>
 
         <x-button>
-            {{ __('organization.action_delete') }}
+            {{ __('entity.action_delete') }}
         </x-button>
     </form>
 </x-app-layout>

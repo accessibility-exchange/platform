@@ -37,4 +37,17 @@
     @empty
     <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>']) !!}</p>
     @endforelse
+
+    <h2>{{ __('user.entities_title') }}</h2>
+
+    @forelse(Auth::user()->entities as $entity)
+    <p>
+        <a href="{{ localized_route('entities.show', $entity) }}"><strong>{{ $entity->name }}</strong></a><br />
+        @if(Auth::user()->isAdministratorOf($entity))
+        <a href="{{ localized_route('entities.edit', $entity) }}">{{ __('entity.edit_title') }}</a>
+        @endif
+    </p>
+    @empty
+    <p>{!! __('user.no_entity', ['create_link' => '<a href="' . localized_route('entities.create') . '">' . __('user.create_entity') . '</a>']) !!}</p>
+    @endforelse
 </x-app-layout>
