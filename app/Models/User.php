@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Profile;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Notifications\VerifyEmailNotification;
 use App\Notifications\ResetPasswordNotification;
@@ -105,12 +106,19 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return $this->hasOne(Profile::class);
     }
 
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
+
     /**
      * Get the consulting organizations that belong to this user.
      */
     public function organizations()
     {
         return $this->morphedByMany(Organization::class, 'membership')
+            ->using('\App\Models\Membership')
+            ->withPivot('id')
             ->withPivot('role')
             ->withTimestamps();
     }
@@ -151,6 +159,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function getRoleFor(Organization $organization)
     {
-        return $this->organizations()->where('organization_id', $organization->id)->first()->membership->role;
+        return $this->organizations()->where('membership_id', $organization->id)->first()->membership->role;
     }
 }

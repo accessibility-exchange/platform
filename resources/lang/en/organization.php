@@ -21,11 +21,8 @@ return [
     'destroy_succeeded' => 'Your organization has been deleted.',
     'edit_title' => 'Edit organization',
     'edit_organization' => 'Edit organization',
-    'role_update_succeeded' => ':user’s role has been updated.',
     'edit_user_role_link' => 'Edit',
     'edit_user_role_link_with_name' => 'Edit :user’s role',
-    'edit_user_role_title' => 'Edit :user’s role',
-    'edit_user_role_intro' => 'Modifying the role will change :user’s privileges within the :organization team.',
     'label_user_role' => 'Role',
     'action_update_user_role' => 'Update Role',
     'action_cancel_user_role_update' => 'Cancel',
@@ -45,6 +42,5 @@ return [
     'invitation_role' => 'Role',
     'member_invited' => 'Invited',
     'action_remove_member' => 'Remove',
-    'action_remove_member_with_name' => 'Remove :user from :organization',
-    'remove_member_succeeded' => ':user has been removed from the organization.'
+    'action_remove_member_with_name' => 'Remove :user from :organization'
 ];

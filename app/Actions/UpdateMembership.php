@@ -9,27 +9,24 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class UpdateOrganizationUserRole
+class UpdateMembership
 {
     /**
-     * Update the role for the given organization user.
+     * Update the role for the given user in a memberable.
      *
      * @param  mixed  $user
-     * @param  mixed  $organization
-     * @param  mixed  $member
+     * @param  \App\Models\Membership  $membership
      * @param  string  $role
      * @return void
      */
-    public function update($user, $organization, $member, string $role)
+    public function update($user, Membership $membership, string $role)
     {
-        Gate::forUser($user)->authorize('update', $organization);
+        Gate::forUser($user)->authorize('update', $membership->memberable());
 
         $validator = Validator::make(
             [
                 'role' => $role,
-                'membership' => Membership::where('membership_id', $organization->id)
-                    ->where('membership_type', 'organization')
-                    ->where('user_id', $member->id)->first()
+                'membership' => $membership
             ],
             [
                 'role' => [
@@ -50,12 +47,12 @@ class UpdateOrganizationUserRole
 
         $validator->validate();
 
-        $organization->users()->updateExistingPivot($member->id, [
+        $membership->memberable()->users()->updateExistingPivot($membership->user->id, [
             'role' => $role,
         ]);
 
-        flash(__('organization.role_update_succeeded', [
-            'user' => $member->name
+        flash(__('membership.role_update_succeeded', [
+            'user' => $membership->user->name
         ]), 'success');
     }
 }

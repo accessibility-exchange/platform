@@ -61,12 +61,44 @@ class Organization extends Model
     }
 
     /**
+     * Get the full namespaced class for the model.
+     *
+     * @return string
+     */
+    public function getModelClass()
+    {
+        return 'App\Models\Organization';
+    }
+
+    /**
+     * Get the route placeholder for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyPlaceholder()
+    {
+        return 'organization';
+    }
+
+    /**
+     * Get the route prefix for the model.
+     *
+     * @return string
+     */
+    public function getRoutePrefix()
+    {
+        return 'organizations';
+    }
+
+    /**
      * Get the users that are associated with this organization.
      */
     public function users()
     {
         return $this->morphToMany(User::class, 'membership')
+            ->using('\App\Models\Membership')
             ->as('membership')
+            ->withPivot('id')
             ->withPivot('role')
             ->withTimestamps();
     }
@@ -77,6 +109,7 @@ class Organization extends Model
     public function administrators()
     {
         return $this->morphToMany(User::class, 'membership')
+            ->using('\App\Models\Membership')
             ->wherePivot('role', 'admin');
     }
 

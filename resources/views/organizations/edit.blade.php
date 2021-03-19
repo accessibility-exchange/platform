@@ -47,9 +47,11 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ __('organization.member_active') }}</td>
                 <td>{{ __('roles.' . $user->membership->role) }}</td>
-                <td><a aria-label="{{ __('organization.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]) }}">{{ __('organization.edit_user_role_link') }}</a></td>
                 <td>
-                    <form action="{{ route('organization-user.destroy', ['organization' => $organization, 'user' => $user]) }}" method="POST">
+                    <a aria-label="{{ __('organization.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('memberships.edit', $user->membership->id) }}">{{ __('organization.edit_user_role_link') }}</a>
+                </td>
+                <td>
+                    <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
                         <x-button class="link" :aria-label="__('organization.action_remove_member_with_name', ['user' => $user->name, 'organization' => $organization->name])">

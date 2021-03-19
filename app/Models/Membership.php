@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
-class Membership extends Pivot
+class Membership extends MorphPivot
 {
     /**
      * The table associated with the pivot model.
@@ -12,4 +13,20 @@ class Membership extends Pivot
      * @var string
      */
     protected $table = 'memberships';
+
+    /**
+     * Get the user who has this membership.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the belonged-to model.
+     */
+    public function memberable()
+    {
+        return $this->membership_type::where('id', $this->membership_id)->first();
+    }
 }

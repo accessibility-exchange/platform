@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Models\OrganizationInvitation;
 use App\Models\User;
@@ -105,10 +106,15 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
+        $membership = Membership::where('user_id', $other_user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
-            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $other_user]))
-            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+            ->from(localized_route('memberships.edit', $membership))
+            ->put(localized_route('memberships.update', $membership), [
                 'role' => 'admin'
             ]);
         $response->assertRedirect(localized_route('organizations.edit', $organization));
@@ -122,10 +128,15 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
+        $membership = Membership::where('user_id', $user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
-            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
-            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+            ->from(localized_route('memberships.edit', $membership))
+            ->put(localized_route('memberships.update', $membership), [
                 'role' => 'admin'
             ]);
 
@@ -142,15 +153,20 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
+        $membership = Membership::where('user_id', $user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
-            ->from(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]))
-            ->put(localized_route('organization-user.update', ['organization' => $organization, 'user' => $user]), [
+            ->from(localized_route('memberships.edit', $membership))
+            ->put(localized_route('memberships.update', $membership), [
                 'role' => 'member'
             ]);
 
-        $response->assertSessionHasErrors(['organization_user']);
-        $response->assertRedirect(localized_route('organization-user.edit', ['organization' => $organization, 'user' => $user]));
+        $response->assertSessionHasErrors(['membership']);
+        $response->assertRedirect(localized_route('memberships.edit', $membership));
     }
 
     public function test_users_with_admin_role_can_invite_members()
@@ -294,10 +310,15 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'member'])
             ->create();
 
+        $membership = Membership::where('user_id', $other_user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $other_user]));
+            ->delete(route('memberships.destroy', $membership));
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route('organizations.edit', $organization));
@@ -313,10 +334,15 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
 
+        $membership = Membership::where('user_id', $other_user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $other_user]));
+            ->delete(route('memberships.destroy', $membership));
 
         $response->assertStatus(403);
     }
@@ -329,10 +355,15 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
+        $membership = Membership::where('user_id', $user->id)
+            ->where('membership_type', 'App\Models\Organization')
+            ->where('membership_id', $organization->id)
+            ->first();
+
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->delete(route('organization-user.destroy', ['organization' => $organization, 'user' => $user]));
+            ->delete(route('memberships.destroy', $membership));
 
         $response->assertSessionHasErrors();
         $response->assertRedirect(localized_route('organizations.edit', $organization));
