@@ -11,6 +11,9 @@ use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphedByMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
@@ -99,15 +102,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     /**
      * Get the consultant profile associated with the user.
-     *
-     * @return mixed
      */
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
 
-    public function memberships()
+    /**
+     * Get the user's memberships.
+     */
+    public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
     }

@@ -19,7 +19,6 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-         /** @phpstan-ignore-next-line */
         return $user->profile
             ? Response::deny(__('You already have a consultant profile.'))
             : Response::allow();

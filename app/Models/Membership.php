@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Membership extends MorphPivot
 {
@@ -17,7 +18,7 @@ class Membership extends MorphPivot
     /**
      * Get the user who has this membership.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

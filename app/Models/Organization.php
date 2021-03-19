@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasSlug;
@@ -92,7 +94,7 @@ class Organization extends Model
     /**
      * Get the users that are associated with this organization.
      */
-    public function users()
+    public function users(): MorphToMany
     {
         return $this->morphToMany(User::class, 'membership')
             ->using('\App\Models\Membership')
@@ -105,7 +107,7 @@ class Organization extends Model
     /**
      * Does the organization have more than one administrator?
      */
-    public function administrators()
+    public function administrators(): MorphToMany
     {
         return $this->morphToMany(User::class, 'membership')
             ->using('\App\Models\Membership')
@@ -120,7 +122,6 @@ class Organization extends Model
      */
     public function hasUserWithEmail(string $email)
     {
-        /** @phpstan-ignore-next-line */
         return $this->users->contains(function ($user) use ($email) {
             return $user->email === $email;
         });
@@ -134,7 +135,6 @@ class Organization extends Model
      */
     public function hasAdministratorWithEmail(string $email)
     {
-        /** @phpstan-ignore-next-line */
         return $this->administrators->contains(function ($user) use ($email) {
             return $user->email === $email;
         });
@@ -143,7 +143,7 @@ class Organization extends Model
     /**
      * Get the invitations associated with this organization.
      */
-    public function invitations()
+    public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'inviteable');
     }
