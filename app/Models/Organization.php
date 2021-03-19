@@ -130,8 +130,8 @@ class Organization extends Model
     /**
      * Get the invitations associated with this organization.
      */
-    public function organizationInvitations()
+    public function invitations()
     {
-        return $this->hasMany(OrganizationInvitation::class);
+        return $this->morphMany(Invitation::class, 'inviteable');
     }
 }

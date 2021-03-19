@@ -2,14 +2,14 @@
 
 namespace App\Mail;
 
-use App\Models\OrganizationInvitation as OrganizationInvitationModel;
+use App\Models\Invitation as InvitationModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class OrganizationInvitation extends Mailable
+class Invitation extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -17,17 +17,17 @@ class OrganizationInvitation extends Mailable
     /**
      * The invitation.
      *
-     * @var \App\Models\OrganizationInvitation
+     * @var \App\Models\Invitation
      */
     protected $invitation;
 
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\OrganizationInvitation  $invitation
+     * @param  \App\Models\Invitation  $invitation
      * @return void
      */
-    public function __construct(OrganizationInvitationModel $invitation)
+    public function __construct(InvitationModel $invitation)
     {
         $this->invitation = $invitation;
     }
@@ -40,11 +40,11 @@ class OrganizationInvitation extends Mailable
     public function build()
     {
         return $this->markdown(
-            'mail.organization-invitation',
+            'mail.invitation',
             [
-                'acceptUrl' => URL::signedRoute('organization-invitations.accept', ['invitation' => $this->invitation]),
+                'acceptUrl' => URL::signedRoute('invitations.accept', $this->invitation),
                 'invitation' => $this->invitation,
             ]
-        )->subject(__('Organization Invitation'));
+        )->subject(__('Team Invitation'));
     }
 }

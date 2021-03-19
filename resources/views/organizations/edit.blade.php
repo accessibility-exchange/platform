@@ -64,30 +64,30 @@
         </table>
     </div>
 
-    <h2>{{ __('organization.invitations_title') }}</h2>
+    <h2>{{ __('invitation.invitations_title') }}</h2>
 
-    @if($organization->organizationInvitations->count() > 0)
-    <div role="region" aria-label="{{ __('organization.invitations_title') }}" tabindex="0">
+    @if($organization->invitations->count() > 0)
+    <div role="region" aria-label="{{ __('invitation.invitations_title') }}" tabindex="0">
         <table>
             <thead>
                 <tr>
-                  <th>{{ __('organization.invitation_email') }}</th>
-                  <th>{{ __('organization.invitation_status') }}</th>
-                  <th>{{ __('organization.invitation_role') }}</th>
+                  <th>{{ __('invitation.invitation_email') }}</th>
+                  <th>{{ __('invitation.invitation_status') }}</th>
+                  <th>{{ __('invitation.invitation_role') }}</th>
                   <th></th>
                 </tr>
             </thead>
-            @foreach ($organization->organizationInvitations as $invitation)
+            @foreach ($organization->invitations as $invitation)
             <tr>
                 <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
-                <td>{{ __('organization.member_invited') }}</td>
+                <td>{{ __('invitation.member_invited') }}</td>
                 <td>{{ __('roles.' . $invitation->role) }}</td>
                 <td>
-                    <form action="{{ route('organization-invitations.destroy', ['organization' => $organization, 'invitation' => $invitation]) }}" method="POST">
+                    <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-button class="link" :aria-label="__('organization.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
-                            {{ __('organization.cancel_member_invitation_link') }}
+                        <x-button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
+                            {{ __('invitation.cancel_member_invitation_link') }}
                         </x-button>
                     </form>
                 </td>
@@ -97,12 +97,14 @@
     </div>
     @endif
 
-    <h3>{{ __('organization.invite_title') }}</h3>
+    <h3>{{ __('invitation.invite_title') }}</h3>
 
-    <p>{{ __('organization.invite_intro') }}</p>
+    <p>{{ __('invitation.invite_intro') }}</p>
 
-    <form action="{{ localized_route('organization-invitations.create', $organization) }}" method="POST" novalidate>
+    <form action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
+        <x-input type="hidden" name="inviteable_id" :value="$organization->id"></x-input>
+        <x-input type="hidden" name="inviteable_type" :value="$organization->getModelClass()"></x-input>
         <div class="field">
             <x-label for="email" :value="__('forms.label_email')" />
             <x-input id="email" type="email" name="email" :value="old('email')" required />
@@ -119,7 +121,7 @@
         </div>
 
         <x-button>
-            {{ __('organization.action_send_invitation') }}
+            {{ __('invitation.action_send_invitation') }}
         </x-button>
     </form>
 

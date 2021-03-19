@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Membership;
 use App\Models\Organization;
-use App\Models\OrganizationInvitation;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -180,7 +180,9 @@ class OrganizationTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
+            ->post(localized_route('invitations.create'), [
+                'inviteable_id' => $organization->id,
+                'inviteable_type' => $organization->getModelClass(),
                 'email' => 'newuser@here.com',
                 'role' => 'member'
             ]);
@@ -199,7 +201,9 @@ class OrganizationTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
+            ->post(localized_route('invitations.create'), [
+                'inviteable_id' => $organization->id,
+                'inviteable_type' => $organization->getModelClass(),
                 'email' => 'newuser@here.com',
                 'role' => 'member'
             ]);
@@ -213,15 +217,16 @@ class OrganizationTest extends TestCase
         $organization = Organization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
-        $invitation = OrganizationInvitation::factory()->create([
+        $invitation = Invitation::factory()->create([
+            'inviteable_id' => $organization->id,
+            'inviteable_type' => $organization->getModelClass(),
             'email' => 'me@here.com',
-            'organization_id' => $organization->id
         ]);
 
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->delete(route('organization-invitations.destroy', ['invitation' => $invitation]));
+            ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route('organizations.edit', $organization));
@@ -233,15 +238,16 @@ class OrganizationTest extends TestCase
         $organization = Organization::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
-        $invitation = OrganizationInvitation::factory()->create([
-            'email' => 'me@here.com',
-            'organization_id' => $organization->id
+        $invitation = Invitation::factory()->create([
+            'inviteable_id' => $organization->id,
+            'inviteable_type' => $organization->getModelClass(),
+            'email' => 'me@here.com'
         ]);
 
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->delete(route('organization-invitations.destroy', ['invitation' => $invitation]));
+            ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
         $response->assertStatus(403);
     }
@@ -259,12 +265,14 @@ class OrganizationTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
-            ->post(localized_route('organization-invitations.create', ['organization' => $organization]), [
+            ->post(localized_route('invitations.create'), [
+                'inviteable_id' => $organization->id,
+                'inviteable_type' => $organization->getModelClass(),
                 'email' => $other_user->email,
                 'role' => 'member'
             ]);
 
-        $response->assertSessionHasErrorsIn('inviteOrganizationMember', ['email']);
+        $response->assertSessionHasErrorsIn('inviteMember', ['email']);
         $response->assertRedirect(localized_route('organizations.edit', $organization));
     }
 
@@ -272,12 +280,13 @@ class OrganizationTest extends TestCase
     {
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
-        $invitation = OrganizationInvitation::factory()->create([
-            'email' => $user->email,
-            'organization_id' => $organization->id
+        $invitation = Invitation::factory()->create([
+            'inviteable_id' => $organization->id,
+            'inviteable_type' => $organization->getModelClass(),
+            'email' => $user->email
         ]);
 
-        $acceptUrl = URL::signedRoute('organization-invitations.accept', ['invitation' => $invitation]);
+        $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
         $response = $this->actingAs($user)->get($acceptUrl);
 
@@ -288,12 +297,13 @@ class OrganizationTest extends TestCase
     public function test_invitation_cannot_be_accepted_unless_account_exists()
     {
         $organization = Organization::factory()->create();
-        $invitation = OrganizationInvitation::factory()->create([
-            'email' => 'me@here.com',
-            'organization_id' => $organization->id
+        $invitation = Invitation::factory()->create([
+            'inviteable_id' => $organization->id,
+            'inviteable_type' => $organization->getModelClass(),
+            'email' => 'me@here.com'
         ]);
 
-        $acceptUrl = URL::signedRoute('organization-invitations.accept', ['invitation' => $invitation]);
+        $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
         $response = $this->get($acceptUrl);
 

@@ -1,6 +1,6 @@
 
 @component('mail::message')
-{{ __('You have been invited to join the :organization organization!', ['organization' => $invitation->organization->name]) }}
+{{ __('You have been invited to join the :inviteable team!', ['inviteable' => $invitation->inviteable->name]) }}
 
 {{ __('If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the invitation:') }}
 
@@ -14,5 +14,5 @@
 {{ __('Accept Invitation') }}
 @endcomponent
 
-{{ __('If you did not expect to receive an invitation to this organization, you may discard this email.') }}
+{{ __('If you did not expect to receive an invitation to this team, you may discard this email.') }}
 @endcomponent
