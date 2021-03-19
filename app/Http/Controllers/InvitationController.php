@@ -28,10 +28,6 @@ class InvitationController extends Controller
 
         $invitation = $inviteable->invitations()->create($validated);
 
-        ray($invitation);
-
-        ray($validated['email']);
-
         Mail::to($validated['email'])->send(new InvitationMessage($invitation));
 
         flash(__('invitation.create_invitation_succeeded'), 'success');

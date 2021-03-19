@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\EntityController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -97,6 +98,42 @@ Route::multilingual('/organizations/{organization}/edit', [OrganizationControlle
     ->method('put')
     ->name('organizations.update');
 
+Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,organization'])
+    ->method('delete')
+    ->name('organizations.destroy');
+
+Route::multilingual('/entities', [EntityController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('entities.index');
+
+Route::multilingual('/entities/create', [EntityController::class, 'create'])
+    ->middleware(['auth', 'can:create,App\Models\Entity'])
+    ->name('entities.create');
+
+Route::multilingual('/entities/create', [EntityController::class, 'store'])
+    ->method('post')
+    ->middleware(['auth', 'can:create,App\Models\Entity'])
+    ->name('entities.store');
+
+Route::multilingual('/entities/{entity}', [EntityController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('entities.show');
+
+Route::multilingual('/entities/{entity}/edit', [EntityController::class, 'edit'])
+    ->middleware(['auth', 'can:update,entity'])
+    ->name('entities.edit');
+
+Route::multilingual('/entities/{entity}/edit', [EntityController::class, 'update'])
+    ->middleware(['auth', 'can:update,entity'])
+    ->method('put')
+    ->name('entities.update');
+
+Route::multilingual('/entities/{entity}/delete', [EntityController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,entity'])
+    ->method('delete')
+    ->name('entities.destroy');
+
 Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])
     ->name('memberships.edit');
 
@@ -107,10 +144,6 @@ Route::multilingual('/memberships/{membership}/update', [MembershipController::c
 Route::delete('/memberships/{membership}/delete', [MembershipController::class, 'destroy'])
     ->name('memberships.destroy');
 
-Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,organization'])
-    ->method('delete')
-    ->name('organizations.destroy');
 
 Route::multilingual('/invitations/create', [InvitationController::class, 'create'])
     ->method('post')

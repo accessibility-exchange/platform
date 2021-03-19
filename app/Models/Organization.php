@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\OrganizationInvitation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -123,6 +122,20 @@ class Organization extends Model
     {
         /** @phpstan-ignore-next-line */
         return $this->users->contains(function ($user) use ($email) {
+            return $user->email === $email;
+        });
+    }
+
+    /**
+     * Determine if the given email address belongs to an administrator in the organization.
+     *
+     * @param  string  $email
+     * @return bool
+     */
+    public function hasAdministratorWithEmail(string $email)
+    {
+        /** @phpstan-ignore-next-line */
+        return $this->administrators->contains(function ($user) use ($email) {
             return $user->email === $email;
         });
     }

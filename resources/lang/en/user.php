@@ -15,5 +15,8 @@ return [
     'create_profile' => 'create a profile',
     'organizations_title' => 'Your organizations',
     'no_organization' => 'You aren’t part of any organizations. If you want, you can :create_link.',
-    'create_organization' => 'create an organization'
+    'create_organization' => 'create an organization',
+    'entities_title' => 'Your regulated entities',
+    'no_entity' => 'You aren’t part of any regulated entities. If you want, you can :create_link.',
+    'create_entity' => 'create a regulated entity',
 ];

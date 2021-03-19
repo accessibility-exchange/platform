@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Profile;
 use App\Models\Membership;
 use App\Models\Organization;
+use App\Models\Entity;
 use App\Notifications\VerifyEmailNotification;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -123,42 +124,37 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->withTimestamps();
     }
 
-
     /**
-     * Determine if the user is a member of a given organization.
-     *
-     * @param \App\Models\Organization $organization
-     * @return bool
+     * Get the regulated entities that belong to this user.
      */
-    public function isMemberOf(Organization $organization)
+    public function entities()
     {
-        return $this->organizations()
-            ->where('membership_id', $organization->id)
-            ->exists();
+        return $this->morphedByMany(Entity::class, 'membership')
+            ->using('\App\Models\Membership')
+            ->withPivot('id')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     /**
-     * Determine if the user is an administrator of a given organization.
+     * Determine if the user is a member of a given memberable.
      *
-     * @param \App\Models\Organization $organization
+     * @param mixed $memberable
      * @return bool
      */
-    public function isAdministratorOf(Organization $organization)
+    public function isMemberOf($memberable)
     {
-        return $this->organizations()
-            ->where('membership_id', $organization->id)
-            ->where('role', 'admin')
-            ->exists();
+        return $memberable->hasUserWithEmail($this->email);
     }
 
     /**
-     * Get the role for the user in a given organization.
+     * Determine if the user is an administrator of a given memberable.
      *
-     * @param \App\Models\Organization $organization
-     * @return string
+     * @param mixed $memberable
+     * @return bool
      */
-    public function getRoleFor(Organization $organization)
+    public function isAdministratorOf($memberable)
     {
-        return $this->organizations()->where('membership_id', $organization->id)->first()->membership->role;
+        return $memberable->hasAdministratorWithEmail($this->email);
     }
 }
