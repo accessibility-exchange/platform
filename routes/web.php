@@ -5,6 +5,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -133,6 +134,14 @@ Route::multilingual('/entities/{entity}/delete', [EntityController::class, 'dest
     ->middleware(['auth', 'can:delete,entity'])
     ->method('delete')
     ->name('entities.destroy');
+
+Route::multilingual('/projects', [ProjectController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('projects.index');
+
+Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show');
 
 Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])
     ->name('memberships.edit');

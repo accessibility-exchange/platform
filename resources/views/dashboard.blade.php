@@ -13,6 +13,13 @@
         <a href="{{ localized_route('organizations.index') }}">{{ __('organization.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
     </p>
 
+    <p>
+        <a href="{{ localized_route('entities.index') }}">{{ __('entity.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
+    </p>
+
+    <p>
+        <a href="{{ localized_route('projects.index') }}">{{ __('project.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
+    </p>
 
     <h2>{{ __('user.profile_title') }}</h2>
 
