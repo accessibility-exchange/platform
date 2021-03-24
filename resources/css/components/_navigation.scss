@@ -12,6 +12,14 @@ nav ul {
     padding-inline-start: 0;
 }
 
+nav ul > li {
+    padding-inline-start: 0;
+}
+
+nav ul > li::before {
+    display: none;
+}
+
 nav > * + * {
     margin-block-start: var(--step--2);
 }
