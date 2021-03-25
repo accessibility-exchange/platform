@@ -15,7 +15,7 @@
 
     <div class="projects flow">
         @forelse ($entity->projects as $project)
-        <x-project-card :project="$project" />
+        <x-project-card :project="$project" :showEntity="false" />
         @empty
         <p>{{ __('project.none_found') }}</p>
         @endforelse
