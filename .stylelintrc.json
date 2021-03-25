@@ -5,6 +5,6 @@
     ],
     "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
     "rules": {
-        "csstools/use-logical": "always"
+        "csstools/use-logical": ["always", {"except": ["float"]}]
     }
 }

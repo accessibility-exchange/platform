@@ -5,13 +5,9 @@
         </h1>
     </x-slot>
 
-   <div class="flow">
+   <div class="projects flow">
         @forelse($projects as $project)
-        <article>
-            <h2>
-                <a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a>
-            </h2>
-        </article>
+        <x-project-card :project="$project" :level="2" />
         @empty
         <p>{{ __('project.none_found') }}</p>
         @endforelse

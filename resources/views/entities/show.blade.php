@@ -11,13 +11,17 @@
     <p><a href="{{ localized_route('entities.edit', $entity) }}">{{ __('entity.edit_entity') }}</a></p>
     @endcan
 
-    <h3>{{ __('entity.active_projects') }}</h3>
+    <h2>{{ __('entity.active_projects') }}</h2>
 
-    @forelse ($entity->projects as $project)
-    <p><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></p>
-    @empty
-    <p>{{ __('project.none_found') }}</p>
-    @endforelse
+    <div class="projects flow">
+        @forelse ($entity->projects as $project)
+        <x-project-card :project="$project" />
+        @empty
+        <p>{{ __('project.none_found') }}</p>
+        @endforelse
+    </div>
+
+    <p><a href="{{ localized_route('projects.entity-index', $entity) }}">{{ __('entity.browse_all_projects', ['entity' => $entity->name]) }} <span class="aria-hidden">&rarr;</span></a></p>
 
     @can('update', $entity)
     <p><a href="{{ localized_route('projects.create', $entity) }}">{{ __('entity.create_project') }}</a></p>
