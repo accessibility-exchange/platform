@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity;
 use App\Models\Project;
+use App\Http\Requests\CreateProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -14,6 +16,49 @@ class ProjectController extends Controller
     public function index()
     {
         return view('projects.index', ['projects' => Project::orderBy('name')->get()]);
+    }
+
+    /**
+     * Display a listing of the resource within a specific entity.
+     *
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\View\View
+     */
+    public function entityIndex(Entity $entity)
+    {
+        return view('projects.entity-index', [
+            'projects' => Project::orderBy('name')
+                ->where('entity_id', $entity->id)
+                ->get(),
+            'entity' => $entity
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\View\View
+     */
+    public function create(Entity $entity)
+    {
+        return view('projects.create', ['entity' => $entity]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \App\Http\Requests\CreateProjectRequest  $request
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(CreateProjectRequest $request, Entity $entity)
+    {
+        $project = Project::create($request->validated());
+
+        flash(__('project.create_succeeded'), 'success');
+
+        return redirect(localized_route('projects.show', ['project' => $project]));
     }
 
     /**

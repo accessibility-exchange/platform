@@ -28,5 +28,6 @@ return [
     'action_cancel_user_role_update' => 'Cancel',
     'action_remove_member' => 'Remove',
     'action_remove_member_with_name' => 'Remove :user from :regulated entity',
-    'active_projects' => 'Active projects'
+    'active_projects' => 'Active projects',
+    'create_project' => 'Create a project'
 ];

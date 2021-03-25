@@ -11,7 +11,7 @@ return [
     'action_create' => 'Create profile',
     'edit_profile' => 'Edit profile',
     'edit_title' => 'Edit my consultant profile',
-    'edit_link' => 'Edit  profile',
+    'edit_link' => 'Edit profile',
     'delete_title' => 'Delete my consultant profile',
     'action_delete' => 'Delete profile',
     'delete_intro' => 'Your consultant profile will be deleted and cannot be recovered. If you still want to delete your consultant profile, please enter your current password to proceed.',

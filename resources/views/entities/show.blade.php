@@ -7,6 +7,10 @@
 
     <p>{{ $entity->locality }}, {{ __('regions.' . $entity->region) }}</p>
 
+    @can('update', $entity)
+    <p><a href="{{ localized_route('entities.edit', $entity) }}">{{ __('entity.edit_entity') }}</a></p>
+    @endcan
+
     <h3>{{ __('entity.active_projects') }}</h3>
 
     @forelse ($entity->projects as $project)
@@ -16,6 +20,6 @@
     @endforelse
 
     @can('update', $entity)
-    <p><a href="{{ localized_route('entities.edit', $entity) }}">{{ __('entity.edit_entity') }}</a></p>
+    <p><a href="{{ localized_route('projects.create', $entity) }}">{{ __('entity.create_project') }}</a></p>
     @endcan
 </x-app-layout>
