@@ -35,6 +35,14 @@ class CreateProjectRequest extends FormRequest
                 'max:255',
                 Rule::unique(Project::class),
             ],
+            'start_date' => [
+                'required',
+                'date'
+            ],
+            'end_date' => [
+                'date',
+                'nullable'
+            ],
             'entity_id' => [
                 'required'
             ]

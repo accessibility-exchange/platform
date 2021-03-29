@@ -1,0 +1,28 @@
+.date {
+    .hint {
+        font-size: var(--step--1);
+    }
+
+    label {
+        float: left;
+    }
+
+    label + label {
+        margin-inline-start: var(--step-0);
+    }
+
+    .year input {
+        width: 6ch;
+    }
+
+    .month input,
+    .day input {
+        width: 4ch;
+    }
+
+    output {
+        clear: both;
+        display: block;
+        padding-block-start: var(--step-0);
+    }
+}

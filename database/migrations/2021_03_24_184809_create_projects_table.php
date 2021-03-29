@@ -17,6 +17,8 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->foreignId('entity_id')
                 ->constrained()
                 ->onDelete('cascade');

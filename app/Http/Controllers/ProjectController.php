@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Http\Requests\CreateProjectRequest;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -54,7 +55,13 @@ class ProjectController extends Controller
      */
     public function store(CreateProjectRequest $request, Entity $entity)
     {
-        $project = Project::create($request->validated());
+        $data = $request->validated();
+        $data['start_date'] = Carbon::createFromFormat('Y-m-d', $data['start_date']);
+        $data['end_date'] = $data['end_date']
+            ? Carbon::createFromFormat('Y-m-d', $data['end_date'])
+            : $data['end_date'];
+
+        $project = Project::create($data);
 
         flash(__('project.create_succeeded'), 'success');
 

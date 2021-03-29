@@ -14,7 +14,7 @@
         @method('PUT')
         <div class="field">
             <x-label for="name" :value="__('profile.label_name')" />
-            <x-input id="name" type="name" name="name" :value="old('name', $profile->name)" required />
+            <x-input id="name" type="text" name="name" :value="old('name', $profile->name)" required />
             </div>
         <div class="field">
             <x-label for="locality" :value="__('forms.label_locality')" />

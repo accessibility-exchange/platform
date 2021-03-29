@@ -25,7 +25,19 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'entity_id'
+        'entity_id',
+        'start_date',
+        'end_date'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d',
     ];
 
     /**

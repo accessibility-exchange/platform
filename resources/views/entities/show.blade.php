@@ -21,7 +21,9 @@
         @endforelse
     </div>
 
+    @if(count($entity->projects) > 0)
     <p><a href="{{ localized_route('projects.entity-index', $entity) }}">{{ __('entity.browse_all_projects', ['entity' => $entity->name]) }} <span class="aria-hidden">&rarr;</span></a></p>
+    @endif
 
     @can('update', $entity)
     <p><a href="{{ localized_route('projects.create', $entity) }}">{{ __('entity.create_project') }}</a></p>
