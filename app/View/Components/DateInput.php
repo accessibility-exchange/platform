@@ -32,7 +32,7 @@ class DateInput extends Component
      *
      * @return void
      */
-    public function __construct($label, $name, $value = '')
+    public function __construct($label, $name, $value)
     {
         $this->label = $label;
         $this->name = $name;

@@ -20,9 +20,9 @@
             <x-input id="name" type="text" name="name" required />
         </div>
 
-        <x-date-input :label="__('project.label_start_date')" name="start_date" :value="old('start_date')" />
+        <x-date-input :label="__('project.label_start_date')" name="start_date" :value="old('start_date', '')" />
 
-        <x-date-input :label="__('project.label_end_date')" name="end_date" :value="old('end_date')" />
+        <x-date-input :label="__('project.label_end_date')" name="end_date" :value="old('end_date', '')" />
 
         <x-button>{{ __('project.action_create') }}</x-button>
     </form>

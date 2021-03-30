@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Http\Requests\CreateProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use Carbon\Carbon;
 
 class ProjectController extends Controller
@@ -77,5 +78,49 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         return view('projects.show', ['project' => $project]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function edit(Project $project)
+    {
+        return view('projects.edit', ['project' => $project]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateProjectRequest  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateProjectRequest $request, Project $project)
+    {
+        $project->fill($request->validated());
+        $project->save();
+
+        flash(__('project.update_succeeded'), 'success');
+
+        return redirect(localized_route('projects.show', $project));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Http\Requests\DestroyProjectRequest
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(DestroyProjectRequest $request, Project $project)
+    {
+        $project->delete();
+
+        flash(__('project.destroy_succeeded'), 'success');
+
+        return redirect(localized_route('dashboard'));
     }
 }

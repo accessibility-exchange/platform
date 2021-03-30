@@ -154,6 +154,16 @@ Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->middleware(['auth'])
     ->name('projects.show');
 
+Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
+    ->name('projects.edit');
+
+Route::multilingual('/projects/{project}/update', [ProjectController::class, 'update'])
+    ->method('put')
+    ->name('projects.update');
+
+Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'destroy'])
+    ->name('projects.destroy');
+
 Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])
     ->name('memberships.edit');
 

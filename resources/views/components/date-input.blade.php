@@ -1,4 +1,4 @@
-<fieldset id="{{ $name }}" class="date" aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="dateInput()" x-init="dateToComponents('{{ $attributes['value'] }}')">
+<fieldset id="{{ $name }}" class="date" aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="dateInput()" x-init="dateToComponents('{{ $value }}')">
     <legend>
         {{ $label ?? __('forms.label_date') }}
     </legend>

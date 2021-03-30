@@ -3,7 +3,5 @@
     @if($showEntity)
     <p>{!! __('project.initiated_by', ['entity' => '<strong>' . $project->entity->name . '</strong>']) !!}</p>
     @endif
-    <p>
-        {!! $project->timespan() !!}
-    </p>
+    <p>{!! $project->timespan() !!}</p>
 </article>
