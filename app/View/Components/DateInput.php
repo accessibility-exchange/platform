@@ -21,14 +21,22 @@ class DateInput extends Component
     public $name;
 
     /**
+     * The input value.
+     *
+     * @var string
+     */
+    public $value;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label, $name)
+    public function __construct($label, $name, $value = '')
     {
         $this->label = $label;
         $this->name = $name;
+        $this->value = $value;
     }
 
     /**

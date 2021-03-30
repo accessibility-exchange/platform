@@ -21,7 +21,7 @@ window.dateInput = function () {
             }
             return "";
         },
-        updateDate() {
+        componentsToDate() {
             if (this.year && this.month && this.day) {
                 const dt = DateTime.fromObject({ month: this.month, day: this.day, year: this.year });
                 if (dt.isValid) {
@@ -34,6 +34,23 @@ window.dateInput = function () {
             } else {
                 this.dateTime = false;
                 this.date = "";
+            }
+        },
+        dateToComponents(date) {
+            if (date) {
+                let year, month, day;
+                [year, month, day] = date.split("-");
+                const dt = DateTime.fromObject({ month, day, year });
+                if (dt.isValid) {
+                    this.date = date;
+                    this.dateTime = dt;
+                    this.year = year;
+                    this.month = month;
+                    this.day = day;
+                } else {
+                    this.date = "";
+                    this.dateTime = false;
+                }
             }
         }
     };
