@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Entity;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -65,6 +66,26 @@ class Project extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Get the project's timespan.
+     *
+     * @return string
+     */
+    public function timespan()
+    {
+        if ($this->start_date && $this->end_date) {
+            if ($this->start_date->format('Y') === $this->end_date->format('Y')) {
+                return $this->start_date->format('F') . '&mdash;' . $this->end_date->format('F Y');
+            } else {
+                return $this->start_date->format('F Y') . '&mdash;' . $this->end_date->format('F Y');
+            }
+        }
+
+        return $this->start_date > Carbon::now()
+            ? __('project.starting', ['date' => $this->start_date->format('F Y')])
+            : __('project.started', ['date' => $this->start_date->format('F Y')]);
     }
 
     /**
