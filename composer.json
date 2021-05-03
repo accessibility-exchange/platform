@@ -24,8 +24,8 @@
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
         "spatie/laravel-flash": "^1.8",
-        "spatie/laravel-sluggable": "^2.6",
-        "spatie/laravel-translatable": "^4.6"
+        "spatie/laravel-sluggable": "^3.0",
+        "spatie/laravel-translatable": "^5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
