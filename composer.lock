@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5d53bce5f9c7a04bd6727f65b0bed13",
+    "content-hash": "be6c3a9429682e4471ae97d3309d92ca",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3543,26 +3543,27 @@
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "4.6.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "5900d6002a5795712058a04c7ca7c2c44b3e0850"
+                "reference": "dee1a11a7bff406976337d4cae66f53816637e73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/5900d6002a5795712058a04c7ca7c2c44b3e0850",
-                "reference": "5900d6002a5795712058a04c7ca7c2c44b3e0850",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/dee1a11a7bff406976337d4cae66f53816637e73",
+                "reference": "dee1a11a7bff406976337d4cae66f53816637e73",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^6.0|^7.0|^8.0",
-                "illuminate/support": "^6.0|^7.0|^8.0",
-                "php": "^7.2|^8.0"
+                "illuminate/database": "^7.0|^8.0",
+                "illuminate/support": "^7.0|^8.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.6"
             },
             "require-dev": {
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^4.0|^5.0|^6.0"
+                "orchestra/testbench": "^5.0|^6.0"
             },
             "type": "library",
             "extra": {
@@ -3613,7 +3614,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/4.6.0"
+                "source": "https://github.com/spatie/laravel-translatable/tree/5.0.0"
             },
             "funding": [
                 {
@@ -3621,7 +3622,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-11-19T14:19:29+00:00"
+            "time": "2021-03-26T16:54:50+00:00"
         },
         {
             "name": "spatie/temporary-directory",
