@@ -162,6 +162,8 @@ Route::multilingual('/projects/{project}/update', [ProjectController::class, 'up
     ->name('projects.update');
 
 Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'destroy'])
+    ->middleware(['auth', 'can:delete,project'])
+    ->method('delete')
     ->name('projects.destroy');
 
 Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])

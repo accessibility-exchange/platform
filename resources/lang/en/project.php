@@ -16,5 +16,9 @@ return [
     'starting' => 'Starting :date',
     'started' => 'Started :date',
     'edit_project' => 'Edit project',
-    'edit_title' => 'Edit project'
+    'edit_title' => 'Edit project',
+    'delete_title' => 'Delete project',
+    'delete_intro' => 'Your project will be deleted and cannot be recovered. If you still want to delete your project, please enter your current password to proceed.',
+    'action_delete' => 'Delete project',
+    'destroy_succeeded' => 'Your project has been deleted.',
 ];

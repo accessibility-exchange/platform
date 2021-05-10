@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Http\Requests\CreateProjectRequest;
+use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Carbon\Carbon;
 
