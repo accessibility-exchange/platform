@@ -112,7 +112,7 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\DestroyProjectRequest
+     * @param \App\Http\Requests\DestroyProjectRequest  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
