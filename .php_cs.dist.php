@@ -3,7 +3,6 @@
 $finder = Symfony\Component\Finder\Finder::create()
     ->in([
         __DIR__ . '/app',
-        __DIR__ . '/bootstrap',
         __DIR__ . '/config',
         __DIR__ . '/database',
         __DIR__ . '/routes',
