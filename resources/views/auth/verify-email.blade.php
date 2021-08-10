@@ -7,13 +7,13 @@
         </x-slot>
 
         <div>
-            {{ __('auth.verification_intro') }}
+            {{ __('hearth::auth.verification_intro') }}
         </div>
 
         @if (session('status') == 'verification-link-sent')
-            <x-alert type="success">
-                {{ __('auth.verification_sent') }}
-            </x-alert>
+            <x-hearth-alert type="success">
+                {{ __('hearth::auth.verification_sent') }}
+            </x-hearth-alert>
         @endif
 
         <div>
@@ -21,9 +21,9 @@
                 @csrf
 
                 <div>
-                    <x-button>
-                        {{ __('auth.resend_verification_email') }}
-                    </x-button>
+                    <x-hearth-button>
+                        {{ __('hearth::auth.resend_verification_email') }}
+                    </x-hearth-button>
                 </div>
             </form>
 
@@ -31,7 +31,7 @@
                 @csrf
 
                 <button type="submit">
-                    {{ __('auth.sign_out') }}
+                    {{ __('hearth::auth.sign_out') }}
                 </button>
             </form>
         </div>

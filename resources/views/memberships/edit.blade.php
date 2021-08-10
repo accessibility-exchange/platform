@@ -23,6 +23,6 @@
             @endforeach
         </fieldset>
         <a class="button" href="{{ localized_route($memberable->getRoutePrefix() . '.edit', $memberable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>
-        <x-button>{{ __('organization.action_update_user_role') }}</x-button>
+        <x-hearth-button>{{ __('organization.action_update_user_role') }}</x-hearth-button>
     </form>
 </x-app-layout>

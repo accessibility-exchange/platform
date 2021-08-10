@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -29,7 +28,7 @@ class Entity extends Model
     protected $fillable = [
         'name',
         'locality',
-        'region'
+        'region',
     ];
 
     /**
@@ -59,16 +58,6 @@ class Entity extends Model
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    /**
-     * Get the full namespaced class for the model.
-     *
-     * @return string
-     */
-    public function getModelClass()
-    {
-        return 'App\Models\Entity';
     }
 
     /**

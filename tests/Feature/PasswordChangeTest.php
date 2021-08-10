@@ -14,38 +14,38 @@ class PasswordChangeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->from('/en/account/admin')->actingAs($user)->put('/en/account/update-password', [
+        $response = $this->from(localized_route('users.admin'))->actingAs($user)->put(localized_route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
         ]);
 
-        $response->assertRedirect('/en/account/admin');
+        $response->assertRedirect(localized_route('users.admin'));
     }
 
     public function test_password_cannot_be_updated_with_incorrect_current_password()
     {
         $user = User::factory()->create();
 
-        $response = $this->from('/en/account/admin')->actingAs($user)->put('/en/account/update-password', [
+        $response = $this->from(localized_route('users.admin'))->actingAs($user)->put(localized_route('user-password.update'), [
             'current_password' => 'wrong_password',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
         ]);
 
-        $response->assertRedirect('/en/account/admin');
+        $response->assertRedirect(localized_route('users.admin'));
     }
 
     public function test_password_cannot_be_updated_with_password_that_do_not_match()
     {
         $user = User::factory()->create();
 
-        $response = $this->from('/en/account/admin')->actingAs($user)->put('/en/account/update-password', [
+        $response = $this->from(localized_route('users.admin'))->actingAs($user)->put(localized_route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'new_password',
             'password_confirmation' => 'different_new_password',
         ]);
 
-        $response->assertRedirect('/en/account/admin');
+        $response->assertRedirect(localized_route('users.admin'));
     }
 }

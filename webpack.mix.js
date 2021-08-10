@@ -9,7 +9,11 @@ mix.js("resources/js/app.js", "public/js").extract();
 
 mix.sass("resources/css/app.scss", "public/css");
 
-mix.purgeCss();
+mix.purgeCss({
+    extend: {
+        safelist: { deep: [/data-theme/, /modal/] }
+    }
+});
 
 mix.generateIntegrityHash();
 

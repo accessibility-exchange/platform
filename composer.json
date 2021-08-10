@@ -7,29 +7,31 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/greatislander/hearth"
+        }
+    ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "blade-ui-kit/blade-heroicons": "^0.3.1",
         "blade-ui-kit/blade-icons": "^0.5.1",
-        "chinleung/laravel-locales": "^1.2",
-        "chinleung/laravel-multilingual-routes": "^2.7",
         "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
+        "fluid-project/hearth": "dev-feat/organization-membership",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "shiftonelabs/laravel-cascade-deletes": "^1.0",
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
-        "spatie/laravel-flash": "^1.8",
-        "spatie/laravel-sluggable": "^3.0",
         "spatie/laravel-translatable": "^5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "laravel/dusk": "^6.13",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
@@ -37,7 +39,7 @@
         "nunomaduro/larastan": "^0.7.1",
         "phpunit/phpunit": "^9.3.3",
         "psalm/plugin-laravel": "^1.4",
-        "squizlabs/php_codesniffer": "^3.5",
+        "squizlabs/php_codesniffer": "^3.6",
         "vimeo/psalm": "^4.5"
     },
     "config": {
@@ -76,10 +78,11 @@
             "@php artisan key:generate --ansi"
         ],
         "analyze": [
-            "vendor/bin/phpstan analyse"
+            "vendor/bin/phpstan analyse",
+            "vendor/bin/psalm"
         ],
-        "lint": [
-            "vendor/bin/phpcs"
+        "fix": [
+            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
         ]
     }
 }

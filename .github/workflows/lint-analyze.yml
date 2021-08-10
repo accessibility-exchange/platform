@@ -28,7 +28,5 @@ jobs:
         key: php-${{ hashFiles('**/composer.lock') }}
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Lint files
-      run: composer lint
     - name: Perform static analysis
       run: composer analyze

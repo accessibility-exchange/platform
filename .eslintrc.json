@@ -6,6 +6,9 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "strict": ["error", "never"]
     }

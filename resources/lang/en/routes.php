@@ -5,5 +5,5 @@ return [
     'logout' => 'logout',
     'login' => 'login',
     'register' => 'register',
-    'verification.verify' => '/verify-email/{id}/{hash}'
+    'verification.verify' => '/verify-email/{id}/{hash}',
 ];

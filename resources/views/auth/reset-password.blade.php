@@ -17,30 +17,30 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('forms.label_email')" />
+                <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
 
-                <x-input id="email" type="email" name="email" :value="old('email', request()->get('email'))" required autofocus />
+                <x-hearth-input id="email" type="email" name="email" :value="old('email', request()->get('email'))" required autofocus />
             </div>
 
             <!-- Password -->
             <div class="field">
-                <x-label for="password" :value="__('auth.label_password')" />
+                <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
 
-                <x-input id="password" type="password" name="password" required />
+                <x-hearth-input id="password" type="password" name="password" required />
             </div>
 
             <!-- Confirm Password -->
             <div class="field">
-                <x-label for="password_confirmation" :value="__('auth.label_password_confirmation')" />
+                <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
 
-                <x-input id="password_confirmation"
+                <x-hearth-input id="password_confirmation"
                                     type="password"
                                     name="password_confirmation" required />
             </div>
 
-            <x-button>
-                {{ __('auth.reset_submit') }}
-            </x-button>
+            <x-hearth-button>
+                {{ __('hearth::auth.reset_submit') }}
+            </x-hearth-button>
         </form>
     </x-auth-card>
 </x-guest-layout>

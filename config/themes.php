@@ -9,5 +9,5 @@ return [
     'light-dark',
     'grey-white',
     'grey-dark',
-    'black-brown'
+    'black-brown',
 ];

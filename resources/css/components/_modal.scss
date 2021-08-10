@@ -1,0 +1,41 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the modal component.
+// -----------------------------------------------------------------------------
+.modal-wrapper {
+    background: rgba(0, 0, 0, 0.75);
+    height: 100vh;
+    left: 0;
+    margin-block-start: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 999;
+}
+
+.modal {
+    background: white;
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    display: block;
+    left: var(--step-0);
+    margin-block-start: 0;
+    padding: var(--step-0);
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: calc(100vw - (2 * var(--step-0)));
+    z-index: 999;
+}
+
+.modal > * + * {
+    margin-block-start: 2em;
+}
+
+@media (min-width: 768px) {
+    .modal {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+    }
+}

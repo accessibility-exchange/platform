@@ -11,20 +11,20 @@
 
     <form action="{{ localized_route('entities.store') }}" method="POST" novalidate>
         @csrf
-        <x-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
+        <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
         <div class="field">
-            <x-label for="name" :value="__('entity.label_name')" />
-            <x-input id="name" type="name" name="name" required />
+            <x-hearth-label for="name" :value="__('entity.label_name')" />
+            <x-hearth-input id="name" type="name" name="name" required />
             </div>
         <div class="field">
-            <x-label for="locality" :value="__('forms.label_locality')" />
-            <x-input id="locality" type="locality" name="locality" required />
+            <x-hearth-label for="locality" :value="__('forms.label_locality')" />
+            <x-hearth-input id="locality" type="locality" name="locality" required />
         </div>
         <div class="field">
-            <x-label for="region" :value="__('forms.label_region')" />
-            <x-region-select required />
+            <x-hearth-label for="region" :value="__('forms.label_region')" />
+            <x-hearth-select id="region" name="region" required :options="$regions"/>
         </div>
 
-        <x-button>{{ __('entity.action_create') }}</x-button>
+        <x-hearth-button>{{ __('entity.action_create') }}</x-hearth-button>
     </form>
 </x-app-layout>

@@ -4,16 +4,16 @@
     <ul role="list" class="nav">
         @auth
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
-            {{ __('dashboard.title') }}
+            {{ __('hearth::dashboard.title') }}
         </x-nav-link>
         @else
         @if (Route::has(locale() . '.register'))
         <x-nav-link :href="localized_route('register')">
-            {{ __('auth.create_account') }}
+            {{ __('hearth::auth.create_account') }}
         </x-nav-link>
         @endif
         <x-nav-link :href="localized_route('login')">
-            {{ __('auth.sign_in') }}
+            {{ __('hearth::auth.sign_in') }}
         </x-nav-link>
         @endauth
     </ul>
@@ -34,15 +34,16 @@
                     </x-dropdown-link>
                 </p>
                 @endif
+
                 <p>
                     <x-dropdown-link href="{{ localized_route('users.edit') }}" :active="request()->routeIs(locale() . '.users.edit')">
-                        {{ __('user.settings') }}
+                        {{ __('hearth::user.settings') }}
                     </x-dropdown-link>
                 </p>
 
                 <p>
                     <x-dropdown-link href="{{ localized_route('users.admin') }}" :active="request()->routeIs(locale() . '.users.admin')">
-                        {{ __('user.account') }}
+                        {{ __('hearth::user.account') }}
                     </x-dropdown-link>
                 </p>
 
@@ -53,7 +54,7 @@
                     <x-dropdown-link :href="localized_route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('auth.sign_out') }}
+                        {{ __('hearth::auth.sign_out') }}
                     </x-dropdown-link>
                 </form>
             </x-slot>
@@ -62,5 +63,5 @@
     @endauth
 
     <!-- Language Switcher -->
-    <x-language-switcher />
+    <x-hearth-language-switcher />
 </nav>

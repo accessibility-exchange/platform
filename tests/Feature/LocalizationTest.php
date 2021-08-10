@@ -14,27 +14,27 @@ class LocalizationTest extends TestCase
     {
         $user = User::factory()->create(['locale' => 'fr']);
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/fr/tableau-de-bord');
+        $response->assertRedirect(localized_route('dashboard', [], 'fr'));
     }
 
     public function test_user_is_redirected_to_preferred_locale_when_editing_profile()
     {
         $user = User::factory()->create(['locale' => 'fr']);
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
 
-        $response = $this->withCookie('locale', 'fr')->get('/en/account/edit');
+        $response = $this->withCookie('locale', 'fr')->get(localized_route('users.edit'));
         $response->assertRedirect(localized_route('users.edit', [], 'fr'));
     }
 }

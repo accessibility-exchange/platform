@@ -6,7 +6,6 @@
 
 // 2. Vendors
 @import
-    'vendors/modern-css-reset',
     'vendors/looseleaf';
 
 // 3. Base stuff
@@ -28,6 +27,7 @@
     'components/auth-card',
     'components/brand',
     'components/dropdown',
+    'components/modal',
     'components/navigation',
     'components/table',
     'components/validation-error';

@@ -11,7 +11,7 @@
         <h2>
             <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a>
         </h2>
-        <p>{{ $organization->locality }}, {{ __('regions.' . $organization->region) }}</p>
+        <p>{{ $organization->locality }}, {{ get_region_name($organization->region, ["CA"], locale()) }}</p>
     </article>
     @empty
     <p>{{ __('organization.none_found') }}</p>

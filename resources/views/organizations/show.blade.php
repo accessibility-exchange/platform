@@ -5,7 +5,7 @@
         </h1>
     </x-slot>
 
-    <p>{{ $organization->locality }}, {{ __('regions.' . $organization->region) }}</p>
+    <p>{{ $organization->locality }}, {{ get_region_name($organization->region, ["CA"], locale()) }}</p>
 
     @can('update', $organization)
     <p><a href="{{ localized_route('organizations.edit', $organization) }}">{{ __('organization.edit_organization') }}</a></p>

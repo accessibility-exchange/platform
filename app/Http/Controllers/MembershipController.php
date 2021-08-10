@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\DestroyMembership;
 use App\Actions\UpdateMembership;
 use App\Models\Membership;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class MembershipController extends Controller
@@ -20,7 +19,7 @@ class MembershipController extends Controller
     {
         $roles = [];
 
-        foreach (config('roles') as $role) {
+        foreach (config('hearth.organizations.roles') as $role) {
             $roles[$role] = __('roles.' . $role);
         }
 
@@ -28,7 +27,7 @@ class MembershipController extends Controller
             'membership' => $membership,
             'user' => $membership->user,
             'memberable' => $membership->memberable(),
-            'roles' => $roles
+            'roles' => $roles,
         ]);
     }
 
@@ -49,12 +48,12 @@ class MembershipController extends Controller
 
         if ($request->user()->id === $membership->user->id && $request->input('role') !== 'admin') {
             return redirect(
-                localized_route($membership->memberable()->getRoutePrefix() . '.show', $membership->memberable())
+                \localized_route($membership->memberable()->getRoutePrefix() . '.show', $membership->memberable())
             );
         }
 
         return redirect(
-            localized_route($membership->memberable()->getRoutePrefix() . '.edit', $membership->memberable())
+            \localized_route($membership->memberable()->getRoutePrefix() . '.edit', $membership->memberable())
         );
     }
 
@@ -74,12 +73,12 @@ class MembershipController extends Controller
 
         if ($request->user()->id === $membership->user->id) {
             return redirect(
-                localized_route($membership->memberable()->getRoutePrefix() . '.show', $membership->memberable())
+                \localized_route($membership->memberable()->getRoutePrefix() . '.show', $membership->memberable())
             );
         }
 
         return redirect(
-            localized_route($membership->memberable()->getRoutePrefix() . '.edit', $membership->memberable())
+            \localized_route($membership->memberable()->getRoutePrefix() . '.edit', $membership->memberable())
         );
     }
 }
