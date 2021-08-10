@@ -49,6 +49,7 @@ jobs:
         DB_HOST: localhost
       run: |
         php artisan migrate
+        php artisan storage:link
         vendor/bin/phpunit --coverage-clover coverage.xml
     - name: Upload coverage to Codecov
       run: bash <(curl -s https://codecov.io/bash)
