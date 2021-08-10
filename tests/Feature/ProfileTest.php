@@ -27,7 +27,7 @@ class ProfileTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns',
+            'region' => 'NS',
         ]);
 
         $profile = Profile::where('name', $user->name . ' Consulting')->get()->first();
@@ -54,7 +54,7 @@ class ProfileTest extends TestCase
             'user_id' => $other_user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns',
+            'region' => 'NS',
         ]);
 
         $response->assertStatus(403);
@@ -79,7 +79,7 @@ class ProfileTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns',
+            'region' => 'NS',
         ]);
 
         $response->assertStatus(403);
@@ -103,7 +103,7 @@ class ProfileTest extends TestCase
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
-            'region' => 'nl',
+            'region' => 'NL',
         ]);
         $response->assertRedirect(localized_route('profiles.show', $profile));
     }
@@ -128,7 +128,7 @@ class ProfileTest extends TestCase
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
-            'region' => 'nl',
+            'region' => 'NL',
         ]);
         $response->assertStatus(403);
     }

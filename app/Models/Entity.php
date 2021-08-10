@@ -61,16 +61,6 @@ class Entity extends Model
     }
 
     /**
-     * Get the full namespaced class for the model.
-     *
-     * @return string
-     */
-    public function getModelClass()
-    {
-        return 'App\Models\Entity';
-    }
-
-    /**
      * Get the route placeholder for the model.
      *
      * @return string

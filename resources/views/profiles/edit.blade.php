@@ -22,10 +22,10 @@
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
-            <x-region-select :selected="old('region', $profile->region)" required />
+            <x-hearth-select id="region" name="region" :selected="old('region', $profile->region)" required :options="$regions"/>
         </div>
 
-        <x-button>{{ __('forms.save_changes') }}</x-button>
+        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
     </form>
 
     <h2>
@@ -46,8 +46,8 @@
             @enderror
         </div>
 
-        <x-button>
+        <x-hearth-button>
             {{ __('profile.action_delete') }}
-        </x-button>
+        </x-hearth-button>
     </form>
 </x-app-layout>

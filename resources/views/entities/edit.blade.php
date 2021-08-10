@@ -23,10 +23,10 @@
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
-            <x-region-select :selected="old('region', $entity->region)" required />
-        </div>
+            <x-hearth-select id="region" name="region" :selected="old('region', $entity->region)" required :options="$regions"/>
+            </div>
 
-        <x-button>{{ __('forms.save_changes') }}</x-button>
+        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
     </form>
 
     <h2>{{ __('entity.members_title') }}</h2>
@@ -54,9 +54,9 @@
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-button class="link" :aria-label="__('entity.action_remove_member_with_name', ['user' => $user->name, 'entity' => $entity->name])">
+                        <x-hearth-button class="link" :aria-label="__('entity.action_remove_member_with_name', ['user' => $user->name, 'entity' => $entity->name])">
                             {{ __('entity.action_remove_member') }}
-                        </x-button>
+                        </x-hearth-button>
                     </form>
                 </td>
             </tr>
@@ -86,9 +86,9 @@
                     <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
+                        <x-hearth-button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
                             {{ __('invitation.cancel_member_invitation_link') }}
-                        </x-button>
+                        </x-hearth-button>
                     </form>
                 </td>
             </tr>
@@ -104,7 +104,7 @@
     <form action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
         <x-hearth-input type="hidden" name="inviteable_id" :value="$entity->id"></x-hearth-input>
-        <x-hearth-input type="hidden" name="inviteable_type" :value="$entity->getModelClass()"></x-hearth-input>
+        <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($entity)"></x-hearth-input>
         <div class="field">
             <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
             <x-hearth-input id="email" type="email" name="email" :value="old('email')" required />
@@ -120,9 +120,9 @@
             @enderror
         </div>
 
-        <x-button>
+        <x-hearth-button>
             {{ __('invitation.action_send_invitation') }}
-        </x-button>
+        </x-hearth-button>
     </form>
 
     <h2>
@@ -143,8 +143,8 @@
             @enderror
         </div>
 
-        <x-button>
+        <x-hearth-button>
             {{ __('entity.action_delete') }}
-        </x-button>
+        </x-hearth-button>
     </form>
 </x-app-layout>

@@ -22,9 +22,9 @@
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
-            <x-region-select required />
+            <x-hearth-select id="region" name="region" required :options="$regions"/>
         </div>
 
-        <x-button>{{ __('profile.action_create') }}</x-button>
+        <x-hearth-button>{{ __('profile.action_create') }}</x-hearth-button>
     </form>
 </x-app-layout>

@@ -28,7 +28,9 @@ class EntityController extends Controller
     {
         $this->authorize('create', Entity::class);
 
-        return view('entities.create');
+        return view('entities.create', [
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -73,12 +75,13 @@ class EntityController extends Controller
     {
         $roles = [];
 
-        foreach (config('roles') as $role) {
+        foreach (config('hearth.organizations.roles') as $role) {
             $roles[$role] = __('roles.' . $role);
         }
 
         return view('entities.edit', [
             'entity' => $entity,
+            'regions' => get_regions(['CA'], \locale()),
             'roles' => $roles,
         ]);
     }

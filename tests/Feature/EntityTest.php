@@ -8,7 +8,7 @@ use App\Models\Membership;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
-
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class EntityTest extends TestCase
@@ -17,6 +17,10 @@ class EntityTest extends TestCase
 
     public function test_users_can_create_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(localized_route('entities.create'));
@@ -25,18 +29,22 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns',
+            'region' => 'NS',
         ]);
 
-        $entity = Entity::where('name', $user->name . ' Consulting')->get()->first();
+        $url = localized_route('entities.show', ['entity' => Str::slug($user->name . ' Consulting')]);
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertRedirect(localized_route('entities.show', $entity));
+        $response->assertRedirect($url);
     }
 
     public function test_users_with_admin_role_can_edit_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -48,13 +56,17 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl',
+            'region' => 'NL',
         ]);
         $response->assertRedirect(localized_route('entities.show', $entity));
     }
 
     public function test_users_without_admin_role_can_not_edit_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
@@ -66,13 +78,17 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl',
+            'region' => 'NL',
         ]);
         $response->assertStatus(403);
     }
 
     public function test_non_members_can_not_edit_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -90,13 +106,17 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $other_entity), [
             'name' => $other_entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl',
+            'region' => 'NL',
         ]);
         $response->assertStatus(403);
     }
 
     public function test_users_with_admin_role_can_update_other_member_roles()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -121,6 +141,10 @@ class EntityTest extends TestCase
 
     public function test_users_without_admin_role_can_not_update_member_roles()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
 
         $entity = Entity::factory()
@@ -144,6 +168,10 @@ class EntityTest extends TestCase
 
     public function test_only_administrator_can_not_downgrade_their_role()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -170,6 +198,10 @@ class EntityTest extends TestCase
 
     public function test_users_with_admin_role_can_invite_members()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
 
         $entity = Entity::factory()
@@ -181,7 +213,7 @@ class EntityTest extends TestCase
             ->from(localized_route('entities.edit', ['entity' => $entity]))
             ->post(localized_route('invitations.create'), [
                 'inviteable_id' => $entity->id,
-                'inviteable_type' => $entity->getModelClass(),
+                'inviteable_type' => get_class($entity),
                 'email' => 'newuser@here.com',
                 'role' => 'member',
             ]);
@@ -191,6 +223,10 @@ class EntityTest extends TestCase
 
     public function test_users_without_admin_role_can_not_invite_members()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
 
         $entity = Entity::factory()
@@ -202,7 +238,7 @@ class EntityTest extends TestCase
             ->from(localized_route('entities.edit', ['entity' => $entity]))
             ->post(localized_route('invitations.create'), [
                 'inviteable_id' => $entity->id,
-                'inviteable_type' => $entity->getModelClass(),
+                'inviteable_type' => get_class($entity),
                 'email' => 'newuser@here.com',
                 'role' => 'member',
             ]);
@@ -212,13 +248,17 @@ class EntityTest extends TestCase
 
     public function test_users_with_admin_role_can_cancel_invitations()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
-            'inviteable_type' => $entity->getModelClass(),
+            'inviteable_type' => get_class($entity),
             'email' => 'me@here.com',
         ]);
 
@@ -233,13 +273,17 @@ class EntityTest extends TestCase
 
     public function test_users_without_admin_role_can_not_cancel_invitations()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
-            'inviteable_type' => $entity->getModelClass(),
+            'inviteable_type' => get_class($entity),
             'email' => 'me@here.com',
         ]);
 
@@ -253,6 +297,10 @@ class EntityTest extends TestCase
 
     public function test_existing_members_cannot_be_invited()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -266,7 +314,7 @@ class EntityTest extends TestCase
             ->from(localized_route('entities.edit', ['entity' => $entity]))
             ->post(localized_route('invitations.create'), [
                 'inviteable_id' => $entity->id,
-                'inviteable_type' => $entity->getModelClass(),
+                'inviteable_type' => get_class($entity),
                 'email' => $other_user->email,
                 'role' => 'member',
             ]);
@@ -277,11 +325,15 @@ class EntityTest extends TestCase
 
     public function test_invitation_can_be_accepted()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
-            'inviteable_type' => $entity->getModelClass(),
+            'inviteable_type' => get_class($entity),
             'email' => $user->email,
         ]);
 
@@ -295,10 +347,14 @@ class EntityTest extends TestCase
 
     public function test_invitation_cannot_be_accepted_unless_account_exists()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $entity = Entity::factory()->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
-            'inviteable_type' => $entity->getModelClass(),
+            'inviteable_type' => get_class($entity),
             'email' => 'me@here.com',
         ]);
 
@@ -311,6 +367,10 @@ class EntityTest extends TestCase
 
     public function test_users_with_admin_role_can_remove_members()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -335,6 +395,10 @@ class EntityTest extends TestCase
 
     public function test_users_without_admin_role_can_not_remove_members()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -358,6 +422,10 @@ class EntityTest extends TestCase
 
     public function test_only_administrator_can_not_remove_themself()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
 
         $entity = Entity::factory()
@@ -380,6 +448,10 @@ class EntityTest extends TestCase
 
     public function test_users_with_admin_role_can_delete_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -399,6 +471,10 @@ class EntityTest extends TestCase
 
     public function test_users_with_admin_role_can_not_delete_entities_with_wrong_password()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -419,6 +495,10 @@ class EntityTest extends TestCase
 
     public function test_users_without_admin_role_can_not_delete_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
@@ -438,6 +518,10 @@ class EntityTest extends TestCase
 
     public function test_non_members_can_not_delete_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
@@ -463,6 +547,10 @@ class EntityTest extends TestCase
 
     public function test_users_can_view_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $user = User::factory()->create();
         $entity = Entity::factory()->create();
 
@@ -480,6 +568,10 @@ class EntityTest extends TestCase
 
     public function test_guests_can_not_view_entities()
     {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
         $entity = Entity::factory()->create();
 
         $response = $this->get(localized_route('entities.index'));

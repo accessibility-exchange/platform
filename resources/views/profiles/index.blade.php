@@ -11,7 +11,7 @@
             <h2>
                 <a href="{{ localized_route('profiles.show', $profile) }}">{{ $profile->name }}</a>
             </h2>
-            <p>{{ $profile->locality }}, {{ __('regions.' . $profile->region) }}</p>
+            <p>{{ $profile->locality }}, {{ get_region_name($profile->region, ["CA"], locale()) }}</p>
         </article>
         @empty
         <p>{{ __('profile.none_found') }}</p>

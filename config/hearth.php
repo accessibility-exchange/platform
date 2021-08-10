@@ -9,4 +9,7 @@ return [
             'admin',
         ],
     ],
+    'entities' => [
+        'enabled' => true,
+    ],
 ];

@@ -11,7 +11,7 @@
         <h2>
             <a href="{{ localized_route('entities.show', $entity) }}">{{ $entity->name }}</a>
         </h2>
-        <p>{{ $entity->locality }}, {{ __('regions.' . $entity->region) }}</p>
+        <p>{{ $entity->locality }}, {{ get_region_name($entity->region, ["CA"], locale()) }}</p>
     </article>
     @empty
     <p>{{ __('entity.none_found') }}</p>

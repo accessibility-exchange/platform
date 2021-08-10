@@ -22,7 +22,7 @@ class ProfileFactory extends Factory
      */
     public function definition()
     {
-        $regions = config('regions');
+        $regions = get_region_codes();
 
         return [
             'name' => $this->faker->company(),

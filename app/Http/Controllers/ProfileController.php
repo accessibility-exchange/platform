@@ -28,7 +28,9 @@ class ProfileController extends Controller
     {
         $this->authorize('create', Profile::class);
 
-        return view('profiles.create');
+        return view('profiles.create', [
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -42,7 +44,6 @@ class ProfileController extends Controller
         $profile = Profile::create($request->validated());
 
         flash(__('profile.create_succeeded'), 'success');
-
 
         return redirect(\localized_route('profiles.show', ['profile' => $profile]));
     }
@@ -66,7 +67,10 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        return view('profiles.edit', ['profile' => $profile]);
+        return view('profiles.edit', [
+            'profile' => $profile,
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -99,7 +103,6 @@ class ProfileController extends Controller
         $profile->delete();
 
         flash(__('profile.destroy_succeeded'), 'success');
-
 
         return redirect(\localized_route('dashboard'));
     }
