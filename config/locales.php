@@ -12,6 +12,6 @@ return [
 
     'supported' => [
         'en',
-        'fr'
+        'fr',
     ],
 ];

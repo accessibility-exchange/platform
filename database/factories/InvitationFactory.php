@@ -22,7 +22,7 @@ class InvitationFactory extends Factory
      */
     public function definition()
     {
-        $roles = config('roles');
+        $roles = config('hearth.organizations.roles');
 
         return [
             'email' => $this->faker->unique()->safeEmail,
