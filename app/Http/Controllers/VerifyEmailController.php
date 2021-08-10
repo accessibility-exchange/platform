@@ -17,7 +17,6 @@ class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmai
      */
     public function __invoke(VerifyEmailRequest $request): RedirectResponse
     {
-
         $dashboard = \localized_route('dashboard', ['verified' => 1], $request->user()->locale);
 
         if ($request->user()->hasVerifiedEmail()) {
