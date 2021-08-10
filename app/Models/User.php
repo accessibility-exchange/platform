@@ -12,13 +12,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\Sluggable\HasSlug;
 
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
     use HasFactory;
-    use HasSlug;
     use Notifiable;
     use TwoFactorAuthenticatable;
 

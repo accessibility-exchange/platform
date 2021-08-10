@@ -67,7 +67,7 @@ class ProjectController extends Controller
 
         flash(__('project.create_succeeded'), 'success');
 
-        return redirect(localized_route('projects.show', ['project' => $project]));
+        return redirect(\localized_route('projects.show', ['project' => $project]));
     }
 
     /**
@@ -106,7 +106,7 @@ class ProjectController extends Controller
 
         flash(__('project.update_succeeded'), 'success');
 
-        return redirect(localized_route('projects.show', $project));
+        return redirect(\localized_route('projects.show', $project));
     }
 
     /**
@@ -122,6 +122,6 @@ class ProjectController extends Controller
 
         flash(__('project.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('dashboard'));
+        return redirect(\localized_route('dashboard'));
     }
 }
