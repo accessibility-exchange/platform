@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
 use App\Http\Requests\CreateOrganizationRequest;
-use App\Http\Requests\UpdateOrganizationRequest;
 use App\Http\Requests\DestroyOrganizationRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateOrganizationRequest;
+use App\Models\Organization;
 
 class OrganizationController extends Controller
 {
@@ -29,7 +28,9 @@ class OrganizationController extends Controller
     {
         $this->authorize('create', Organization::class);
 
-        return view('organizations.create');
+        return view('organizations.create', [
+            'regions' => get_regions(['CA'], locale()),
+        ]);
     }
 
     /**
@@ -73,13 +74,14 @@ class OrganizationController extends Controller
     {
         $roles = [];
 
-        foreach (config('roles') as $role) {
+        foreach (config('hearth.organizations.roles') as $role) {
             $roles[$role] = __('roles.' . $role);
         }
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'roles' => $roles
+            'regions' => get_regions(['CA'], locale()),
+            'roles' => $roles,
         ]);
     }
 

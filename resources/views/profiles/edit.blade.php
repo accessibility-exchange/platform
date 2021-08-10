@@ -13,15 +13,15 @@
         @csrf
         @method('PUT')
         <div class="field">
-            <x-label for="name" :value="__('profile.label_name')" />
-            <x-input id="name" type="name" name="name" :value="old('name', $profile->name)" required />
+            <x-hearth-label for="name" :value="__('profile.label_name')" />
+            <x-hearth-input id="name" type="name" name="name" :value="old('name', $profile->name)" required />
             </div>
         <div class="field">
-            <x-label for="locality" :value="__('forms.label_locality')" />
-            <x-input id="locality" type="locality" name="locality" :value="old('locality', $profile->locality)" required />
+            <x-hearth-label for="locality" :value="__('forms.label_locality')" />
+            <x-hearth-input id="locality" type="locality" name="locality" :value="old('locality', $profile->locality)" required />
         </div>
         <div class="field">
-            <x-label for="region" :value="__('forms.label_region')" />
+            <x-hearth-label for="region" :value="__('forms.label_region')" />
             <x-region-select :selected="old('region', $profile->region)" required />
         </div>
 
@@ -39,8 +39,8 @@
         @method('DELETE')
 
         <div class="field">
-            <x-label for="current_password" :value="__('auth.label_current_password')" />
-            <x-input id="current_password" type="password" name="current_password" required />
+            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
+            <x-hearth-input id="current_password" type="password" name="current_password" required />
             @error('current_password', 'destroyProfile')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror

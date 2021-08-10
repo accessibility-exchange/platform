@@ -7,7 +7,6 @@ use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 
 class RegisterResponse implements RegisterResponseContract
 {
-
     /**
      * Redirect to the appropriately localized dashboard for the registered user.
      *

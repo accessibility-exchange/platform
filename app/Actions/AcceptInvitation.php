@@ -2,9 +2,8 @@
 
 namespace App\Actions;
 
-use App\Models\User;
 use App\Models\Organization;
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -59,7 +58,7 @@ class AcceptInvitation
     {
         return [
             'email' => ['required', 'email', 'exists:users'],
-            'role' => ['required', 'string', Rule::in(config('roles'))]
+            'role' => ['required', 'string', Rule::in(config('hearth.organizations.roles'))],
         ];
     }
 

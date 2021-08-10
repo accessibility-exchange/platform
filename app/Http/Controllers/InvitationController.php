@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\AcceptInvitation;
 use App\Http\Requests\CreateInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
-use App\Models\Organization;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -69,7 +68,7 @@ class InvitationController extends Controller
      */
     public function destroy(Request $request, Invitation $invitation)
     {
-        if (!Gate::forUser($request->user())->check('update', $invitation->inviteable)) {
+        if (! Gate::forUser($request->user())->check('update', $invitation->inviteable)) {
             throw new AuthorizationException();
         }
 

@@ -6,7 +6,6 @@ use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseCont
 
 class PasswordResetResponse implements PasswordResetResponseContract
 {
-
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *

@@ -20,20 +20,20 @@ class EntityTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get('/en/entities/create');
+        $response = $this->actingAs($user)->get(localized_route('entities.create'));
         $response->assertStatus(200);
 
-        $response = $this->actingAs($user)->post('/en/entities/create', [
+        $response = $this->actingAs($user)->post(localized_route('entities.create'), [
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
             'region' => 'ns'
         ]);
 
-        $url = '/en/entities/' . Str::slug($user->name . ' Consulting');
+        $entity = Entity::where('name', $user->name . ' Consulting')->get()->first();
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertRedirect($url);
+        $response->assertRedirect(localized_route('entities.show', $entity));
     }
 
     public function test_users_with_admin_role_can_edit_entities()
@@ -386,7 +386,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -395,7 +395,7 @@ class EntityTest extends TestCase
             'current_password' => 'password'
         ]);
 
-        $response->assertRedirect('/en/dashboard');
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_with_admin_role_can_not_delete_entities_with_wrong_password()
@@ -405,7 +405,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -425,7 +425,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -450,7 +450,7 @@ class EntityTest extends TestCase
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -467,12 +467,12 @@ class EntityTest extends TestCase
         $user = User::factory()->create();
         $entity = Entity::factory()->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $response = $this->get('/en/entities');
+        $response = $this->get(localized_route('entities.index'));
         $response->assertStatus(200);
 
         $response = $this->get(localized_route('entities.show', $entity));
@@ -483,11 +483,11 @@ class EntityTest extends TestCase
     {
         $entity = Entity::factory()->create();
 
-        $response = $this->get('/en/entities');
-        $response->assertRedirect('/en/login');
+        $response = $this->get(localized_route('entities.index'));
+        $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('entities.show', $entity));
-        $response->assertRedirect('/en/login');
+        $response->assertRedirect(localized_route('login'));
 
     }
 }

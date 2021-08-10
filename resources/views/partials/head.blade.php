@@ -3,8 +3,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Accessibility in Action') }}</title>
-        <meta name="description" content="Accessibility in Action supports processes where people with disabilities have the power to make sure that policies, programs, and services by federally regulated entities are accessible to them and respect their human rights.">
-        <meta name="theme-color" content="#000"/>
+        <meta name="description" content="{{ __('app.description') }}">
+        <meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
 
         <!-- Manifest -->
         <link rel="manifest" href="/manifest.webmanifest">
@@ -16,6 +17,7 @@
 
         <!-- Styles -->
         <link href="{{ mix('css/app.css') }}" rel="stylesheet" integrity="{{ Sri::hash('css/app.css') }}" crossorigin="anonymous" />
+        @googlefonts
 
         <!-- Scripts -->
         <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>

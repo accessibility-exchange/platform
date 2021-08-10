@@ -7,7 +7,6 @@ use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseCo
 
 class TwoFactorLoginResponse implements TwoFactorLoginResponseContract
 {
-
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *

@@ -26,13 +26,13 @@ class UpdateMembership
         $validator = Validator::make(
             [
                 'role' => $role,
-                'membership' => $membership
+                'membership' => $membership,
             ],
             [
                 'role' => [
                     'required',
                     'string',
-                    Rule::in(config('roles'))
+                    Rule::in(config('hearth.organizations.roles')),
                 ],
             ]
         );
@@ -52,7 +52,7 @@ class UpdateMembership
         ]);
 
         flash(__('membership.role_update_succeeded', [
-            'user' => $membership->user->name
+            'user' => $membership->user->name,
         ]), 'success');
     }
 }

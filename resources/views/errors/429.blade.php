@@ -1,5 +1,5 @@
 @extends('errors::errorpage')
 
-@section('title', __('errors.error_429_title'))
+@section('title', __('hearth::errors.error_429_title'))
 @section('code', '429')
-@section('message', __('errors.error_429_message'))
+@section('message', __('hearth::errors.error_429_message'))

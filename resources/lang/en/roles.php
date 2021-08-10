@@ -2,5 +2,5 @@
 
 return [
     'admin' => 'Administrator',
-    'member' => 'Member'
+    'member' => 'Member',
 ];

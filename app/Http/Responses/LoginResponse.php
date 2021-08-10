@@ -7,7 +7,6 @@ use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
 {
-
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
