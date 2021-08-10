@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entity;
 use App\Http\Requests\CreateEntityRequest;
-use App\Http\Requests\UpdateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateEntityRequest;
+use App\Models\Entity;
 
 class EntityController extends Controller
 {
@@ -29,7 +28,9 @@ class EntityController extends Controller
     {
         $this->authorize('create', Entity::class);
 
-        return view('entities.create');
+        return view('entities.create', [
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -49,7 +50,8 @@ class EntityController extends Controller
 
         flash(__('entity.create_succeeded'), 'success');
 
-        return redirect(localized_route('entities.show', $entity));
+
+        return redirect(\localized_route('entities.show', $entity));
     }
 
     /**
@@ -73,13 +75,14 @@ class EntityController extends Controller
     {
         $roles = [];
 
-        foreach (config('roles') as $role) {
+        foreach (config('hearth.organizations.roles') as $role) {
             $roles[$role] = __('roles.' . $role);
         }
 
         return view('entities.edit', [
             'entity' => $entity,
-            'roles' => $roles
+            'regions' => get_regions(['CA'], \locale()),
+            'roles' => $roles,
         ]);
     }
 
@@ -97,7 +100,7 @@ class EntityController extends Controller
 
         flash(__('entity.update_succeeded'), 'success');
 
-        return redirect(localized_route('entities.show', $entity));
+        return redirect(\localized_route('entities.show', $entity));
     }
 
     /**
@@ -113,6 +116,7 @@ class EntityController extends Controller
 
         flash(__('entity.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('dashboard'));
+
+        return redirect(\localized_route('dashboard'));
     }
 }

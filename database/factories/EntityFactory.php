@@ -21,12 +21,12 @@ class EntityFactory extends Factory
      */
     public function definition()
     {
-        $regions = config('regions');
+        $regions = get_region_codes();
 
         return [
             'name' => $this->faker->company(),
             'locality' => $this->faker->city(),
-            'region' => $regions[$this->faker->numberBetween(0, 12)]
+            'region' => $regions[$this->faker->numberBetween(0, 12)],
         ];
     }
 }

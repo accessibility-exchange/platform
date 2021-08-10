@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Organization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -36,7 +35,7 @@ class CreateInvitationRequest extends FormRequest
                     ->where('inviteable_type', $inviteable_type)
                     ->where('inviteable_id', $inviteable_id);
             })],
-            'role' => ['required', 'string', Rule::in(config('roles'))]
+            'role' => ['required', 'string', Rule::in(config('hearth.organizations.roles'))],
         ];
     }
 

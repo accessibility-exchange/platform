@@ -7,7 +7,6 @@ use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseCo
 
 class TwoFactorLoginResponse implements TwoFactorLoginResponseContract
 {
-
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
@@ -16,7 +15,7 @@ class TwoFactorLoginResponse implements TwoFactorLoginResponseContract
      */
     public function toResponse($request)
     {
-        $dashboard = localized_route('dashboard', [], Auth::user()->locale);
+        $dashboard = \localized_route('dashboard', [], Auth::user()->locale);
 
         if ($request->wantsJson()) {
             return response('', 204);

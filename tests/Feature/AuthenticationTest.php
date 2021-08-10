@@ -12,7 +12,7 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
-        $response = $this->get('/en/login');
+        $response = $this->get(localized_route('login'));
 
         $response->assertStatus(200);
     }
@@ -21,20 +21,20 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect('/en/dashboard');
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
         $user = User::factory()->create();
 
-        $this->post('/en/login', [
+        $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
@@ -46,18 +46,18 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('/en/login', [
+        $response = $this->post(localized_route('login'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $response = $this->get('/en/account/edit');
+        $response = $this->get(localized_route('users.edit'));
         $response->assertStatus(200);
     }
 
     public function test_guests_can_not_edit_profiles()
     {
-        $response = $this->get('/en/account/edit');
-        $response->assertRedirect('/en/login');
+        $response = $this->get(localized_route('users.edit'));
+        $response->assertRedirect(localized_route('login'));
     }
 }

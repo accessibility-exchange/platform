@@ -7,7 +7,7 @@
         </x-slot>
 
         <div>
-            {{ __('auth.forgot_intro') }}
+            {{ __('hearth::auth.forgot_intro') }}
         </div>
 
         <!-- Session Status -->
@@ -21,14 +21,14 @@
 
             <!-- Email Address -->
             <div class="field">
-                <x-label for="email" :value="__('forms.label_email')" />
+                <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
 
-                <x-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+                <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
-            <x-button>
-                {{ __('auth.forgot_submit') }}
-            </x-button>
+            <x-hearth-button>
+                {{ __('hearth::auth.forgot_submit') }}
+            </x-hearth-button>
         </form>
     </x-auth-card>
 </x-guest-layout>

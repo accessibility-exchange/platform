@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Http\Requests\DestroyUserRequest;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -34,7 +33,7 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => Auth::user(),
-            'themes' => $themes
+            'themes' => $themes,
         ]);
     }
 
@@ -62,8 +61,9 @@ class UserController extends Controller
 
         $user->delete();
 
-        flash(__('user.destroy_succeeded'), 'success');
+        flash(__('hearth::user.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('welcome'));
+
+        return redirect(\localized_route('welcome'));
     }
 }

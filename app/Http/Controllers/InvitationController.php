@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Actions\AcceptInvitation;
 use App\Http\Requests\CreateInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
-use App\Models\Organization;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -32,7 +31,8 @@ class InvitationController extends Controller
 
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
-        return redirect(localized_route($inviteable->getRoutePrefix() . '.edit', $inviteable));
+
+        return redirect(\localized_route($inviteable->getRoutePrefix() . '.edit', $inviteable));
     }
 
     /**
@@ -57,7 +57,8 @@ class InvitationController extends Controller
             'success'
         );
 
-        return redirect(localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
+
+        return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
     }
 
     /**
@@ -69,7 +70,7 @@ class InvitationController extends Controller
      */
     public function destroy(Request $request, Invitation $invitation)
     {
-        if (!Gate::forUser($request->user())->check('update', $invitation->inviteable)) {
+        if (! Gate::forUser($request->user())->check('update', $invitation->inviteable)) {
             throw new AuthorizationException();
         }
 
@@ -77,6 +78,7 @@ class InvitationController extends Controller
 
         flash(__('invitation.cancel_invitation_succeeded'), 'success');
 
-        return redirect(localized_route($invitation->inviteable->getRoutePrefix() . '.edit', $invitation->inviteable));
+
+        return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.edit', $invitation->inviteable));
     }
 }

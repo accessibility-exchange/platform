@@ -28,7 +28,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'locale' => ['required', Rule::in(['en', 'fr'])],
+            'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
             'theme' => ['required', Rule::in(config('themes'))],
         ])->validateWithBag('updateProfileInformation');
 
@@ -42,7 +42,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'locale' => $input['locale'],
-                'theme' => $input['theme']
+                'theme' => $input['theme'],
             ])->save();
         }
 
@@ -64,7 +64,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
             'locale' => $input['locale'],
-            'theme' => $input['theme']
+            'theme' => $input['theme'],
         ])->save();
 
         $user->sendEmailVerificationNotification();

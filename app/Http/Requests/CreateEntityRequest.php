@@ -37,8 +37,8 @@ class CreateEntityRequest extends FormRequest
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
-                Rule::in(config('regions'))
-            ]
+                Rule::in(get_region_codes()),
+            ],
         ];
     }
 
@@ -50,7 +50,7 @@ class CreateEntityRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A regulated entity with this name already exists.'
+            'name.unique' => 'A regulated entity with this name already exists.',
         ];
     }
 }

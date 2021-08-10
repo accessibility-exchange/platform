@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DestroyUserRequest extends FormRequest
@@ -26,7 +25,7 @@ class DestroyUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'current_password' => 'required|string'
+            'current_password' => 'required|string',
         ];
     }
 
@@ -39,10 +38,10 @@ class DestroyUserRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!Hash::check($this->current_password, $this->user()->password)) {
+            if (! Hash::check($this->current_password, $this->user()->password)) {
                 $validator->errors()->add(
                     'current_password',
-                    __('The provided password does not match your current password.')
+                    __('hearth::auth.wrong_password')
                 );
             }
         })->validateWithBag('destroyAccount');

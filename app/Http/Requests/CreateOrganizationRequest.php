@@ -36,8 +36,8 @@ class CreateOrganizationRequest extends FormRequest
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
-                Rule::in(config('regions'))
-            ]
+                Rule::in(get_region_codes()),
+            ],
         ];
     }
 
@@ -49,7 +49,7 @@ class CreateOrganizationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'An organization with this name already exists.'
+            'name.unique' => 'An organization with this name already exists.',
         ];
     }
 }

@@ -2,12 +2,10 @@
 
 namespace App\Rules;
 
-use App\Models\Membership;
 use Illuminate\Contracts\Validation\Rule;
 
 class NotLastAdmin implements Rule
 {
-
     /**
      * Determine if the validation rule passes.
      *

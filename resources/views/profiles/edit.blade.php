@@ -13,19 +13,19 @@
         @csrf
         @method('PUT')
         <div class="field">
-            <x-label for="name" :value="__('profile.label_name')" />
-            <x-input id="name" type="text" name="name" :value="old('name', $profile->name)" required />
+            <x-hearth-label for="name" :value="__('profile.label_name')" />
+            <x-hearth-input id="name" type="text" name="name" :value="old('name', $profile->name)" required />
             </div>
         <div class="field">
-            <x-label for="locality" :value="__('forms.label_locality')" />
-            <x-input id="locality" type="locality" name="locality" :value="old('locality', $profile->locality)" required />
+            <x-hearth-label for="locality" :value="__('forms.label_locality')" />
+            <x-hearth-input id="locality" type="text" name="locality" :value="old('locality', $profile->locality)" required />
         </div>
         <div class="field">
-            <x-label for="region" :value="__('forms.label_region')" />
-            <x-region-select :selected="old('region', $profile->region)" required />
+            <x-hearth-label for="region" :value="__('forms.label_region')" />
+            <x-hearth-select id="region" name="region" :selected="old('region', $profile->region)" required :options="$regions"/>
         </div>
 
-        <x-button>{{ __('forms.save_changes') }}</x-button>
+        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
     </form>
 
     <h2>
@@ -39,15 +39,15 @@
         @method('DELETE')
 
         <div class="field">
-            <x-label for="current_password" :value="__('auth.label_current_password')" />
-            <x-input id="current_password" type="password" name="current_password" required />
+            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
+            <x-hearth-input id="current_password" type="password" name="current_password" required />
             @error('current_password', 'destroyProfile')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror
         </div>
 
-        <x-button>
+        <x-hearth-button>
             {{ __('profile.action_delete') }}
-        </x-button>
+        </x-hearth-button>
     </form>
 </x-app-layout>

@@ -2,23 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Spatie\Translatable\HasTranslations;
 
 class Organization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
     use HasSlug;
-    use HasTranslations;
     use Notifiable;
 
     /**
@@ -29,17 +26,17 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'locality',
-        'region'
+        'region',
     ];
 
     /**
-     * The attributes that are translatable.
+     * The relationships that should be deleted when an organization is deleted.
      *
      * @var array
      */
-    public $translatable = [];
-
-    protected $cascadeDeletes = ['users'];
+    protected $cascadeDeletes = [
+        'users',
+    ];
 
     /**
      * Get the options for generating the slug.
@@ -59,16 +56,6 @@ class Organization extends Model
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    /**
-     * Get the full namespaced class for the model.
-     *
-     * @return string
-     */
-    public function getModelClass()
-    {
-        return 'App\Models\Organization';
     }
 
     /**

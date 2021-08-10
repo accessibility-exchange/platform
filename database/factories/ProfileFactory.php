@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Profile;
 use App\Models\User;
-use App\Services\RegionService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProfileFactory extends Factory
@@ -23,7 +22,7 @@ class ProfileFactory extends Factory
      */
     public function definition()
     {
-        $regions = config('regions');
+        $regions = get_region_codes();
 
         return [
             'name' => $this->faker->company(),

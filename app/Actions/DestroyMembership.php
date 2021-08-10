@@ -3,11 +3,9 @@
 namespace App\Actions;
 
 use App\Models\Membership;
-use App\Models\User;
 use App\Rules\NotLastAdmin;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class DestroyMembership
 {
@@ -24,7 +22,7 @@ class DestroyMembership
 
         $validator = Validator::make(
             [
-                'membership' => $membership
+                'membership' => $membership,
             ],
             []
         );
@@ -43,7 +41,7 @@ class DestroyMembership
 
         flash(__('membership.remove_member_succeeded', [
             'user' => $membership->user->name,
-            'memberable' => $membership->memberable()->name
+            'memberable' => $membership->memberable()->name,
         ]), 'success');
     }
 }

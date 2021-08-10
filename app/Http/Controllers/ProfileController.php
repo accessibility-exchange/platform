@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\DestroyProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -29,7 +28,9 @@ class ProfileController extends Controller
     {
         $this->authorize('create', Profile::class);
 
-        return view('profiles.create');
+        return view('profiles.create', [
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -44,7 +45,7 @@ class ProfileController extends Controller
 
         flash(__('profile.create_succeeded'), 'success');
 
-        return redirect(localized_route('profiles.show', ['profile' => $profile]));
+        return redirect(\localized_route('profiles.show', ['profile' => $profile]));
     }
 
     /**
@@ -66,7 +67,10 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        return view('profiles.edit', ['profile' => $profile]);
+        return view('profiles.edit', [
+            'profile' => $profile,
+            'regions' => get_regions(['CA'], \locale()),
+        ]);
     }
 
     /**
@@ -83,7 +87,8 @@ class ProfileController extends Controller
 
         flash(__('profile.update_succeeded'), 'success');
 
-        return redirect(localized_route('profiles.show', $profile));
+
+        return redirect(\localized_route('profiles.show', $profile));
     }
 
     /**
@@ -99,6 +104,6 @@ class ProfileController extends Controller
 
         flash(__('profile.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('dashboard'));
+        return redirect(\localized_route('dashboard'));
     }
 }
