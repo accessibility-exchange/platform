@@ -14,4 +14,23 @@
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
-<plugins><pluginClass class="Psalm\LaravelPlugin\Plugin"/></plugins></psalm>
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
+    </plugins>
+    <issueHandlers>
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <referencedFunction name="current_route" />
+            </errorLevel>
+            <errorLevel type="suppress">
+                <referencedFunction name="locale" />
+            </errorLevel>
+            <errorLevel type="suppress">
+                <referencedFunction name="locales" />
+            </errorLevel>
+            <errorLevel type="suppress">
+                <referencedFunction name="localized_route" />
+            </errorLevel>
+        </UndefinedFunction>
+    </issueHandlers>
+</psalm>

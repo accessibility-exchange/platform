@@ -48,7 +48,8 @@ class EntityController extends Controller
 
         flash(__('entity.create_succeeded'), 'success');
 
-        return redirect(localized_route('entities.show', $entity));
+
+        return redirect(\localized_route('entities.show', $entity));
     }
 
     /**
@@ -96,7 +97,7 @@ class EntityController extends Controller
 
         flash(__('entity.update_succeeded'), 'success');
 
-        return redirect(localized_route('entities.show', $entity));
+        return redirect(\localized_route('entities.show', $entity));
     }
 
     /**
@@ -112,6 +113,7 @@ class EntityController extends Controller
 
         flash(__('entity.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('dashboard'));
+
+        return redirect(\localized_route('dashboard'));
     }
 }

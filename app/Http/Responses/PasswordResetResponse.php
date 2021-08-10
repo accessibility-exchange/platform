@@ -18,6 +18,6 @@ class PasswordResetResponse implements PasswordResetResponseContract
             return response()->json(['two_factor' => false]);
         }
 
-        return redirect()->intended(localized_route('login'));
+        return redirect()->intended(\localized_route('login'));
     }
 }

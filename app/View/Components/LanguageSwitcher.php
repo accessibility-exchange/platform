@@ -53,7 +53,7 @@ class LanguageSwitcher extends Component
     public function getLocalizedRoute($locale)
     {
         return Route::currentRouteName()
-            ? current_route($locale)
-            : localized_route('welcome', [], $locale);
+            ? \current_route($locale)
+            : \localized_route('welcome', [], $locale);
     }
 }

@@ -15,7 +15,7 @@ class RegisterResponse implements RegisterResponseContract
      */
     public function toResponse($request)
     {
-        $dashboard = localized_route('dashboard', [], Auth::user()->locale);
+        $dashboard = \localized_route('dashboard', [], Auth::user()->locale);
 
         if ($request->wantsJson()) {
             return response()->json(['two_factor' => false]);

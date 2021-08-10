@@ -43,7 +43,8 @@ class ProfileController extends Controller
 
         flash(__('profile.create_succeeded'), 'success');
 
-        return redirect(localized_route('profiles.show', ['profile' => $profile]));
+
+        return redirect(\localized_route('profiles.show', ['profile' => $profile]));
     }
 
     /**
@@ -82,7 +83,8 @@ class ProfileController extends Controller
 
         flash(__('profile.update_succeeded'), 'success');
 
-        return redirect(localized_route('profiles.show', $profile));
+
+        return redirect(\localized_route('profiles.show', $profile));
     }
 
     /**
@@ -98,6 +100,7 @@ class ProfileController extends Controller
 
         flash(__('profile.destroy_succeeded'), 'success');
 
-        return redirect(localized_route('dashboard'));
+
+        return redirect(\localized_route('dashboard'));
     }
 }

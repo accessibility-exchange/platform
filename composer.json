@@ -39,6 +39,7 @@
         "nunomaduro/larastan": "^0.7.1",
         "phpunit/phpunit": "^9.3.3",
         "psalm/plugin-laravel": "^1.4",
+        "squizlabs/php_codesniffer": "^3.6",
         "vimeo/psalm": "^4.5"
     },
     "config": {
@@ -80,6 +81,8 @@
             "vendor/bin/phpstan analyse",
             "vendor/bin/psalm"
         ],
-        "fix": "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
+        "fix": [
+            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
+        ]
     }
 }
