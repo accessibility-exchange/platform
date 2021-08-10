@@ -19,7 +19,7 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        return $user->profile()
+        return $user->profile
             ? Response::deny(__('You already have a consultant profile.'))
             : Response::allow();
     }
