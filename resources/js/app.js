@@ -1,3 +1,9 @@
 require("./bootstrap");
 
-require("alpinejs");
+import Alpine from "alpinejs";
+
+import confirmPassword from "./confirmPassword.js";
+
+Alpine.data("confirmPassword", confirmPassword);
+
+Alpine.start();

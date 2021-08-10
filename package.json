@@ -1,4 +1,5 @@
 {
+    "name": "@accessibility-in-action/platform",
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -40,7 +41,7 @@
         "sass-loader": "^12.1",
         "stylelint": "^13.10.0",
         "stylelint-config-fluid": "^0.1.0",
-        "stylelint-use-logical": "^1.1.0"
+        "stylelint-use-logical-spec": "^3.2.2"
     },
     "dependencies": {
         "@accessibility-in-action/looseleaf": "^1.5",

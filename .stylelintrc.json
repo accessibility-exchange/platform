@@ -1,10 +1,10 @@
 {
     "extends": "stylelint-config-fluid",
     "plugins": [
-        "stylelint-use-logical"
+        "stylelint-use-logical-spec"
     ],
     "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
     "rules": {
-        "csstools/use-logical": "always"
+        "liberty/use-logical-spec": ["always", {"except": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height"]}]
     }
 }
