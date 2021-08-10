@@ -52,6 +52,7 @@ jobs:
     - name: Run Laravel Server
       run: |
         php artisan migrate
+        php artisan storage:link
         php artisan serve &
       env:
         DB_PASSWORD: root
