@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
 use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -37,15 +36,15 @@ class CreateProjectRequest extends FormRequest
             ],
             'start_date' => [
                 'required',
-                'date'
+                'date',
             ],
             'end_date' => [
                 'date',
-                'nullable'
+                'nullable',
             ],
             'entity_id' => [
-                'required'
-            ]
+                'required',
+            ],
         ];
     }
 
@@ -57,7 +56,7 @@ class CreateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A project with this name already exists.'
+            'name.unique' => 'A project with this name already exists.',
         ];
     }
 }

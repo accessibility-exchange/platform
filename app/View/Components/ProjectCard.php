@@ -49,7 +49,7 @@ class ProjectCard extends Component
         return view('components.project-card', [
             'project' => $this->project,
             'level' => $this->level,
-            'showEntity' => $this->showEntity
+            'showEntity' => $this->showEntity,
         ]);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entity;
-use App\Models\Project;
 use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Entity;
+use App\Models\Project;
 use Carbon\Carbon;
 
 class ProjectController extends Controller
@@ -33,7 +33,7 @@ class ProjectController extends Controller
             'projects' => Project::orderBy('name')
                 ->where('entity_id', $entity->id)
                 ->get(),
-            'entity' => $entity
+            'entity' => $entity,
         ]);
     }
 

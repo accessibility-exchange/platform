@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Entity;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +27,7 @@ class Project extends Model
         'name',
         'entity_id',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
     /**

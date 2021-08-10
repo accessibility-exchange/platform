@@ -36,12 +36,12 @@ class UpdateProjectRequest extends FormRequest
             ],
             'start_date' => [
                 'required',
-                'date'
+                'date',
             ],
             'end_date' => [
                 'date',
-                'nullable'
-            ]
+                'nullable',
+            ],
         ];
     }
 
@@ -53,7 +53,7 @@ class UpdateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A project with this name already exists.'
+            'name.unique' => 'A project with this name already exists.',
         ];
     }
 }

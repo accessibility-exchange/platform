@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Http\Requests\VerifyEmailRequest;
 
 class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmailController
