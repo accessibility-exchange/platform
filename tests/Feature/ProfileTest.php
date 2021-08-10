@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -28,7 +27,7 @@ class ProfileTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns'
+            'region' => 'ns',
         ]);
 
         $profile = Profile::where('name', $user->name . ' Consulting')->get()->first();
@@ -55,7 +54,7 @@ class ProfileTest extends TestCase
             'user_id' => $other_user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns'
+            'region' => 'ns',
         ]);
 
         $response->assertStatus(403);
@@ -65,7 +64,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $profile = Profile::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -80,7 +79,7 @@ class ProfileTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns'
+            'region' => 'ns',
         ]);
 
         $response->assertStatus(403);
@@ -90,7 +89,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $profile = Profile::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -104,7 +103,7 @@ class ProfileTest extends TestCase
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
-            'region' => 'nl'
+            'region' => 'nl',
         ]);
         $response->assertRedirect(localized_route('profiles.show', $profile));
     }
@@ -115,7 +114,7 @@ class ProfileTest extends TestCase
         $other_user = User::factory()->create();
 
         $profile = Profile::factory()->create([
-            'user_id' => $other_user->id
+            'user_id' => $other_user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -129,7 +128,7 @@ class ProfileTest extends TestCase
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
             'locality' => 'St John\'s',
-            'region' => 'nl'
+            'region' => 'nl',
         ]);
         $response->assertStatus(403);
     }
@@ -138,7 +137,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $profile = Profile::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -147,7 +146,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
         $response->assertRedirect(localized_route('dashboard'));
     }
@@ -156,7 +155,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $profile = Profile::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -165,12 +164,11 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
-            'current_password' => 'wrong_password'
+            'current_password' => 'wrong_password',
         ]);
 
         $response->assertSessionHasErrors();
         $response->assertRedirect(localized_route('profiles.edit', $profile));
-
     }
 
     public function test_users_can_not_delete_others_profiles()
@@ -179,7 +177,7 @@ class ProfileTest extends TestCase
         $other_user = User::factory()->create();
 
         $profile = Profile::factory()->create([
-            'user_id' => $other_user->id
+            'user_id' => $other_user->id,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -188,7 +186,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
         $response->assertStatus(403);
     }

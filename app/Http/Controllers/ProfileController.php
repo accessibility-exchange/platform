@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\DestroyProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {

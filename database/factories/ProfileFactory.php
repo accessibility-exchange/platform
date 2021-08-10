@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Profile;
 use App\Models\User;
-use App\Services\RegionService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProfileFactory extends Factory

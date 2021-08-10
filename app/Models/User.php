@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Profile;
-use App\Models\Membership;
-use App\Models\Organization;
-use App\Models\Entity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,7 +31,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'email',
         'password',
         'locale',
-        'theme'
+        'theme',
     ];
 
     /**

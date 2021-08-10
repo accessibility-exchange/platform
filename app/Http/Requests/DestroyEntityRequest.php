@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DestroyEntityRequest extends FormRequest
@@ -29,7 +27,7 @@ class DestroyEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'current_password' => 'required|string'
+            'current_password' => 'required|string',
         ];
     }
 
@@ -42,7 +40,7 @@ class DestroyEntityRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!Hash::check($this->current_password, $this->user()->password)) {
+            if (! Hash::check($this->current_password, $this->user()->password)) {
                 $validator->errors()->add(
                     'current_password',
                     __('The provided password does not match your current password.')

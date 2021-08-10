@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Entity;
 use App\Http\Requests\CreateEntityRequest;
-use App\Http\Requests\UpdateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateEntityRequest;
+use App\Models\Entity;
 
 class EntityController extends Controller
 {
@@ -79,7 +78,7 @@ class EntityController extends Controller
 
         return view('entities.edit', [
             'entity' => $entity,
-            'roles' => $roles
+            'roles' => $roles,
         ]);
     }
 

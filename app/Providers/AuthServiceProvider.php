@@ -2,14 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Entity;
-use App\Models\Profile;
-use App\Models\Organization;
-use App\Models\User;
-use App\Policies\EntityPolicy;
-use App\Policies\ProfilePolicy;
-use App\Policies\OrganizationPolicy;
-use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

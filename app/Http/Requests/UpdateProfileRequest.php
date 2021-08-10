@@ -21,7 +21,6 @@ class UpdateProfileRequest extends FormRequest
         return $profile && $this->user()->can('update', $profile);
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -42,8 +41,8 @@ class UpdateProfileRequest extends FormRequest
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
-                Rule::in(config('regions'))
-            ]
+                Rule::in(config('regions')),
+            ],
         ];
     }
 
@@ -55,7 +54,7 @@ class UpdateProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A consultant profile with this name already exists.'
+            'name.unique' => 'A consultant profile with this name already exists.',
         ];
     }
 }

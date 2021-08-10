@@ -31,6 +31,7 @@
     "require-dev": {
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "laravel/dusk": "^6.13",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
@@ -38,7 +39,6 @@
         "nunomaduro/larastan": "^0.7.1",
         "phpunit/phpunit": "^9.3.3",
         "psalm/plugin-laravel": "^1.4",
-        "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^4.5"
     },
     "config": {
@@ -77,10 +77,9 @@
             "@php artisan key:generate --ansi"
         ],
         "analyze": [
-            "vendor/bin/phpstan analyse"
+            "vendor/bin/phpstan analyse",
+            "vendor/bin/psalm"
         ],
-        "lint": [
-            "vendor/bin/phpcs"
-        ]
+        "fix": "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
     }
 }

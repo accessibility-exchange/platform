@@ -42,7 +42,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'locale' => $input['locale'],
-                'theme' => $input['theme']
+                'theme' => $input['theme'],
             ])->save();
         }
 
@@ -64,7 +64,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
             'locale' => $input['locale'],
-            'theme' => $input['theme']
+            'theme' => $input['theme'],
         ])->save();
 
         $user->sendEmailVerificationNotification();

@@ -33,7 +33,7 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => Auth::user(),
-            'themes' => $themes
+            'themes' => $themes,
         ]);
     }
 

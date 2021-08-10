@@ -26,7 +26,7 @@ class EntityFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'locality' => $this->faker->city(),
-            'region' => $regions[$this->faker->numberBetween(0, 12)]
+            'region' => $regions[$this->faker->numberBetween(0, 12)],
         ];
     }
 }

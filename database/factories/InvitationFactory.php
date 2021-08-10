@@ -28,7 +28,7 @@ class InvitationFactory extends Factory
             'email' => $this->faker->unique()->safeEmail,
             'role' => $roles[$this->faker->numberBetween(0, count($roles) - 1)],
             'inviteable_id' => Organization::factory(),
-            'inviteable_type' => 'App\Models\Organization'
+            'inviteable_type' => 'App\Models\Organization',
         ];
     }
 }

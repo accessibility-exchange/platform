@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\Membership;
 use App\Models\Entity;
 use App\Models\Invitation;
+use App\Models\Membership;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
 
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class EntityTest extends TestCase
@@ -26,7 +25,7 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
             'name' => $user->name . ' Consulting',
             'locality' => 'Truro',
-            'region' => 'ns'
+            'region' => 'ns',
         ]);
 
         $entity = Entity::where('name', $user->name . ' Consulting')->get()->first();
@@ -49,7 +48,7 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl'
+            'region' => 'nl',
         ]);
         $response->assertRedirect(localized_route('entities.show', $entity));
     }
@@ -67,7 +66,7 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl'
+            'region' => 'nl',
         ]);
         $response->assertStatus(403);
     }
@@ -91,7 +90,7 @@ class EntityTest extends TestCase
         $response = $this->actingAs($user)->put(localized_route('entities.update', $other_entity), [
             'name' => $other_entity->name,
             'locality' => 'St John\'s',
-            'region' => 'nl'
+            'region' => 'nl',
         ]);
         $response->assertStatus(403);
     }
@@ -115,7 +114,7 @@ class EntityTest extends TestCase
             ->actingAs($user)
             ->from(localized_route('memberships.edit', $membership))
             ->put(localized_route('memberships.update', $membership), [
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
         $response->assertRedirect(localized_route('entities.edit', $entity));
     }
@@ -137,7 +136,7 @@ class EntityTest extends TestCase
             ->actingAs($user)
             ->from(localized_route('memberships.edit', $membership))
             ->put(localized_route('memberships.update', $membership), [
-                'role' => 'admin'
+                'role' => 'admin',
             ]);
 
         $response->assertStatus(403);
@@ -162,7 +161,7 @@ class EntityTest extends TestCase
             ->actingAs($user)
             ->from(localized_route('memberships.edit', $membership))
             ->put(localized_route('memberships.update', $membership), [
-                'role' => 'member'
+                'role' => 'member',
             ]);
 
         $response->assertSessionHasErrors(['membership']);
@@ -184,7 +183,7 @@ class EntityTest extends TestCase
                 'inviteable_id' => $entity->id,
                 'inviteable_type' => $entity->getModelClass(),
                 'email' => 'newuser@here.com',
-                'role' => 'member'
+                'role' => 'member',
             ]);
 
         $response->assertRedirect(localized_route('entities.edit', $entity));
@@ -205,7 +204,7 @@ class EntityTest extends TestCase
                 'inviteable_id' => $entity->id,
                 'inviteable_type' => $entity->getModelClass(),
                 'email' => 'newuser@here.com',
-                'role' => 'member'
+                'role' => 'member',
             ]);
 
         $response->assertStatus(403);
@@ -241,7 +240,7 @@ class EntityTest extends TestCase
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
             'inviteable_type' => $entity->getModelClass(),
-            'email' => 'me@here.com'
+            'email' => 'me@here.com',
         ]);
 
         $response = $this
@@ -269,7 +268,7 @@ class EntityTest extends TestCase
                 'inviteable_id' => $entity->id,
                 'inviteable_type' => $entity->getModelClass(),
                 'email' => $other_user->email,
-                'role' => 'member'
+                'role' => 'member',
             ]);
 
         $response->assertSessionHasErrorsIn('inviteMember', ['email']);
@@ -283,7 +282,7 @@ class EntityTest extends TestCase
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
             'inviteable_type' => $entity->getModelClass(),
-            'email' => $user->email
+            'email' => $user->email,
         ]);
 
         $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
@@ -300,7 +299,7 @@ class EntityTest extends TestCase
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
             'inviteable_type' => $entity->getModelClass(),
-            'email' => 'me@here.com'
+            'email' => 'me@here.com',
         ]);
 
         $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
@@ -392,7 +391,7 @@ class EntityTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('entities.edit', $entity))->delete(localized_route('entities.destroy', $entity), [
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
 
         $response->assertRedirect(localized_route('dashboard'));
@@ -411,7 +410,7 @@ class EntityTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('entities.edit', $entity))->delete(localized_route('entities.destroy', $entity), [
-            'current_password' => 'wrong_password'
+            'current_password' => 'wrong_password',
         ]);
 
         $response->assertSessionHasErrors();
@@ -431,7 +430,7 @@ class EntityTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('entities.edit', $entity))->delete(localized_route('entities.destroy', $entity), [
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
 
         $response->assertStatus(403);
@@ -456,7 +455,7 @@ class EntityTest extends TestCase
         ]);
 
         $response = $this->from(localized_route('entities.edit', $other_entity))->delete(localized_route('entities.destroy', $other_entity), [
-            'current_password' => 'password'
+            'current_password' => 'password',
         ]);
 
         $response->assertStatus(403);
@@ -488,6 +487,5 @@ class EntityTest extends TestCase
 
         $response = $this->get(localized_route('entities.show', $entity));
         $response->assertRedirect(localized_route('login'));
-
     }
 }

@@ -2,5 +2,5 @@
 
 return [
     'member',
-    'admin'
+    'admin',
 ];

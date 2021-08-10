@@ -37,11 +37,11 @@ class CreateProfileRequest extends FormRequest
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
                 'required',
-                Rule::in(config('regions'))
+                Rule::in(config('regions')),
             ],
             'user_id' => [
-                Rule::unique(Profile::class)
-            ]
+                Rule::unique(Profile::class),
+            ],
         ];
     }
 

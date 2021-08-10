@@ -36,7 +36,7 @@ class LanguageSwitcher extends Component
             'fr' => [
                 'code' => 'fr-CA',
                 'name' => 'Français',
-            ]
+            ],
         ];
     }
 

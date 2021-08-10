@@ -39,12 +39,15 @@ class Alert extends Component
         switch ($type) {
             case "error":
                 $this->icon = "heroicon-s-x-circle";
+
                 break;
             case "warning":
                 $this->icon = "heroicon-s-exclamation";
+
                 break;
             case "success":
                 $this->icon = "heroicon-s-check-circle";
+
                 break;
             case "notice":
             default:
