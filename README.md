@@ -107,13 +107,13 @@ All commit messages and pull request titles must follow these standards.
   prototyped features for use in co-design sessions. It must be regularly updated with changes from the [`dev`](https://github.com/accessibility-in-action/platform/tree/dev)
   branch.
 - Feature prototyping must take place in a feature branch forked from the `prototype` branch. Feature prototype branches
-  must be named according to the format `prototype/<feature>`. Once a feature prototype is ready to merge into
-  `prototype`, the merge must be performed using a [merge commit](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges).
+  must be named according to the format `try/<feature>`. Once a feature prototype is ready to merge into
+  `prototype`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 - The [`dev`](https://github.com/accessibility-in-action/platform/tree/dev) branch contains refined features
   that have been prototyped and gone through one or more co-design sessions.
 - Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
-  must be named according to the format `feature/<feature>`. Once a refined feature is ready to merge into `dev`, the
-  merge must be performed using a [merge commit](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-request-merges).
+  must be named according to the format `feat/<feature>`. Once a refined feature is ready to merge into `dev`, the
+  merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 - The [`main`](https://github.com/accessibility-in-action/platform/tree/main) branch contains refined features that
   are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
