@@ -11,8 +11,6 @@ jobs:
   deploy:
     if: github.repository == 'accessibility-in-action/platform'
 
-    environment: "aina_${{ GITHUB_REF##*/ }}"
-
     runs-on: ubuntu-latest
 
     steps:
