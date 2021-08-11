@@ -9,7 +9,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors :errors="$errors" />
 
-        <form method="POST" action="{{ localized_route('register') }}">
+        <form method="POST" action="{{ localized_route('register') }}" novalidate>
             @csrf
 
             <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: 'en' }}" />
