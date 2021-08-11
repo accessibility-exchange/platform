@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set environment variables
+        run: |
+          echo 'PROJECT_ID=aina-${{ GITHUB_REF##*/ }}' >> $GITHUB_ENV
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -25,22 +28,18 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
-          envs:     PROJECT_ID
+          envs:     GITHUB_REF
           script: |
-            cd /srv/$PROJECT_ID && \
+            cd /srv/aina-${{ GITHUB_REF##*/ }} && \
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --no-dev --optimize-autoloader
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate --force
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link
-        env:
-          PROJECT_ID: "aina-${{ GITHUB_REF##*/ }}"
 
       - name: Wait
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
-        env:
-          PROJECT_SMOKETEST_URL: "https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca"
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca
