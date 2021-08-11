@@ -1,22 +1,20 @@
-name: Prototype refresh
+name: Deploy
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
-
-env:
-  PROJECT_ID: aina-dev
-  PROJECT_SMOKETEST_URL: https://aina-dev.inclusivedesign.ca
+  push:
+    branches:
+      - dev
+      - prototype
 
 jobs:
-  refresh:
+  deploy:
     if: github.repository == 'accessibility-in-action/platform'
 
     runs-on: ubuntu-latest
 
     steps:
-
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -28,15 +26,18 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
-          envs:     PROJECT_ID
+          envs:     BRANCH_NAME
           script: |
-            cd /srv/$PROJECT_ID && \
+            cd /srv/aina-$BRANCH_NAME && \
             git checkout dev && \
             git pull && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --no-dev --optimize-autoloader
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate --force
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link
 
       - name: Wait
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
