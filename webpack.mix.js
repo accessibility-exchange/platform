@@ -11,7 +11,7 @@ mix.sass("resources/css/app.scss", "public/css");
 
 mix.purgeCss({
     extend: {
-        safelist: { deep: [/data-theme/, /modal/] }
+        safelist: { deep: [/data-theme/, /modal/, /alert/] }
     }
 });
 
