@@ -6,6 +6,7 @@
 
 .card--project {
     border: var(--ll-border-medium);
+    border-radius: var(--ll-border-radius);
     margin-block-start: var(--step-0);
     padding: var(--step-0);
     width: calc(50% - var(--step-0));
