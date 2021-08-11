@@ -14,11 +14,11 @@
         <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
         <div class="field">
             <x-hearth-label for="name" :value="__('organization.label_name')" />
-            <x-hearth-input id="name" type="name" name="name" required />
+            <x-hearth-input id="name" type="text" name="name" required />
             </div>
         <div class="field">
             <x-hearth-label for="locality" :value="__('forms.label_locality')" />
-            <x-hearth-input id="locality" type="locality" name="locality" required />
+            <x-hearth-input id="locality" type="text" name="locality" required />
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />

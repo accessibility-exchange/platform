@@ -15,11 +15,11 @@
 
         <div class="field">
             <x-hearth-label for="name" :value="__('organization.label_name')" />
-            <x-hearth-input id="name" type="name" name="name" :value="old('name', $organization->name)" required />
+            <x-hearth-input id="name" type="text" name="name" :value="old('name', $organization->name)" required />
             </div>
         <div class="field">
             <x-hearth-label for="locality" :value="__('forms.label_locality')" />
-            <x-hearth-input id="locality" type="locality" name="locality" :value="old('locality', $organization->locality)" required />
+            <x-hearth-input id="locality" type="text" name="locality" :value="old('locality', $organization->locality)" required />
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />

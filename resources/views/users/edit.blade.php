@@ -13,7 +13,7 @@
         @method('PUT')
         <div class="field">
             <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
-            <x-hearth-input id="name" type="name" name="name" :value="old('name', $user->name)" required />
+            <x-hearth-input id="name" type="text" name="name" :value="old('name', $user->name)" required />
             @error('name', 'updateProfileInformation')
             <x-validation-error>{{ $message }}</x-validation-error>
             @enderror
