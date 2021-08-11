@@ -16,7 +16,7 @@
             </x-hearth-alert>
         @endif
 
-        <div>
+        <div class="flow">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 
