@@ -12,7 +12,7 @@ class EntityPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create entities.
      *
      * @param  \App\Models\User  $user
      * @return mixed
@@ -23,7 +23,21 @@ class EntityPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can create a project for an entity.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Entity  $entity
+     * @return mixed
+     */
+    public function createProject(User $user, Entity $entity)
+    {
+        return $user->isAdministratorOf($entity)
+            ? Response::allow()
+            : Response::deny('You cannot create a project for this entity.');
+    }
+
+    /**
+     * Determine whether the user can update an entity.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Entity  $entity
@@ -37,7 +51,7 @@ class EntityPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete an entity.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Entity  $entity

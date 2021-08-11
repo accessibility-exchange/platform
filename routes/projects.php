@@ -11,6 +11,7 @@ Route::multilingual('/entities/{entity}/projects', [ProjectController::class, 'e
     ->name('projects.entity-index');
 
 Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'create'])
+    ->middleware(['auth', 'can:createProject,entity'])
     ->name('projects.create');
 
 Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'store'])

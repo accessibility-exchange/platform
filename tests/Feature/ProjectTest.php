@@ -38,4 +38,19 @@ class ProjectTest extends TestCase
 
         $response->assertRedirect($url);
     }
+
+    public function test_users_without_entity_admin_role_cannot_create_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
+        $response->assertStatus(403);
+    }
 }
