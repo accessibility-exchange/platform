@@ -27,8 +27,8 @@ class ProjectFactory extends Factory
         return [
             'name' => $entity->name . ' Project',
             'entity_id' => $entity->id,
-            'start_date' => $faker->dateTimeBetween('-6 months', '-1 months'),
-            'end_date' => $faker->dateTimeBetween('+1 months', '+6 months'),
+            'start_date' => $this->faker->dateTimeBetween('-6 months', '-1 months'),
+            'end_date' => $this->faker->dateTimeBetween('+1 months', '+6 months'),
         ];
     }
 }
