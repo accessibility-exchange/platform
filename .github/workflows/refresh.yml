@@ -1,4 +1,4 @@
-name: Dev refresh
+name: Refresh
 
 on:
   workflow_dispatch:
