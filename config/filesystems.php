@@ -47,6 +47,16 @@ return [
             'root' => database_path('snapshots'),
         ],
 
+        'snapshots-s3' => [
+            'driver' => 's3',
+            'key' => env('SNAPSHOTS_AWS_ACCESS_KEY_ID'),
+            'secret' => env('SNAPSHOTS_AWS_SECRET_ACCESS_KEY'),
+            'region' => env('SNAPSHOTS_AWS_DEFAULT_REGION'),
+            'bucket' => env('SNAPSHOTS_AWS_BUCKET'),
+            'url' => env('SNAPSHOTS_AWS_URL'),
+            'endpoint' => env('SNAPSHOTS_AWS_ENDPOINT'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
