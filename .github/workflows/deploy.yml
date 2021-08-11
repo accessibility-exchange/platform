@@ -40,4 +40,4 @@ jobs:
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
