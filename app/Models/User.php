@@ -12,14 +12,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
     use HasFactory;
-    use HasSlug;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -65,26 +62,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     protected $cascadeDeletes = [
         'organizations',
     ];
-
-    /**
-     * Get the options for generating the slug.
-     */
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
 
     /**
      * Get the user's preferred locale.
