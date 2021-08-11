@@ -1,25 +1,21 @@
-name: Prototype deploy
+name: Deploy
 
 on:
   workflow_dispatch:
   push:
     branches:
+      - dev
       - prototype
-
-env:
-  PROJECT_ID: aina-prototype
-  PROJECT_SMOKETEST_URL: https://aina-prototype.inclusivedesign.ca
 
 jobs:
   deploy:
     if: github.repository == 'accessibility-in-action/platform'
 
-    environment: aina_prototype
+    environment: aina_${{ GITHUB_REF##*/ }}
 
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -40,9 +36,13 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --no-dev --optimize-autoloader
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate --force
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link
+        env:
+          PROJECT_ID: aina-${{ GITHUB_REF##*/ }}
 
       - name: Wait
         run: sleep 15
 
       - name: Smoke test
         run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
+        env:
+          PROJECT_ID: https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca

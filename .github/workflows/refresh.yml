@@ -5,13 +5,11 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
-env:
-  PROJECT_ID: aina-dev
-  PROJECT_SMOKETEST_URL: https://aina-dev.inclusivedesign.ca
-
 jobs:
   refresh:
     if: github.repository == 'accessibility-in-action/platform'
+
+    environment: aina_${{ GITHUB_REF##*/ }}
 
     runs-on: ubuntu-latest
 
@@ -34,9 +32,13 @@ jobs:
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force
+        env:
+          PROJECT_ID: aina-${{ GITHUB_REF##*/ }}
 
       - name: Wait
         run: sleep 15
 
       - name: Smoke test
         run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
+        env:
+          PROJECT_ID: https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca
