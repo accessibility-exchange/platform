@@ -45,4 +45,4 @@ jobs:
       - name: Smoke test
         run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
         env:
-          PROJECT_ID: https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca
+          PROJECT_SMOKETEST_URL: https://aina-${{ GITHUB_REF##*/ }}.inclusivedesign.ca
