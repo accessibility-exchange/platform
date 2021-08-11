@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set environment variables
-        run: |
-          echo 'PROJECT_ID=aina-${{ GITHUB_REF##*/ }}' >> $GITHUB_ENV
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
