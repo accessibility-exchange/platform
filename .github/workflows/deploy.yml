@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -25,9 +26,9 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
-          envs:     GITHUB_REF
+          envs:     BRANCH_NAME
           script: |
-            cd /srv/aina-${{ GITHUB_REF##*/ }} && \
+            cd /srv/aina-$BRANCH_NAME && \
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
