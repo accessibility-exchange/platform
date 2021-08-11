@@ -9,27 +9,36 @@
         <!-- Session Status -->
         <x-auth-session-status :status="session('status')" />
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors :errors="$errors" />
+        @if ($errors->any())
+            <x-hearth-alert type="error">
+                <p>{{ __('hearth::auth.error_intro') }}</p>
+            </x-hearth-alert>
+        @endif
 
-        <form method="POST" action="{{ localized_route('login') }}">
+
+        <form method="POST" action="{{ localized_route('login') }}" novalidate>
             @csrf
 
             <!-- Email Address -->
-            <div class="field">
+            <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-
                 <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+                @error('email')
+                <p class="field__message"><x-heroicon-s-exclamation-circle style="display: inline-block; margin-right: 0.25em; margin-bottom: -0.125em; width: 1em; height: 1em;" />{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Password -->
-            <div class="field">
+            <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
 
                 <x-hearth-input id="password"
                                 type="password"
                                 name="password"
                                 required autocomplete="current-password" />
+                @error('password')
+                <p class="field__message"><x-heroicon-s-exclamation-circle style="display: inline-block; margin-right: 0.25em; margin-bottom: -0.125em; width: 1em; height: 1em;" />{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Remember Me -->

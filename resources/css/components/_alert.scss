@@ -19,3 +19,8 @@
     margin-inline-end: var(--step--5);
     width: var(--step-2);
 }
+
+.alert--error {
+    border-color: var(--ll-theme-text-color-error);
+    color: var(--ll-theme-text-color-error);
+}
