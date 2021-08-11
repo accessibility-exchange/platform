@@ -1,4 +1,4 @@
-name: Prototype refresh
+name: Dev refresh
 
 on:
   workflow_dispatch:

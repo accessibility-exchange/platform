@@ -1,4 +1,4 @@
-name: aina-prototype refresh
+name: Prototype refresh
 
 on:
   workflow_dispatch:
