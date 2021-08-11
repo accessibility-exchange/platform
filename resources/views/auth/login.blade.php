@@ -6,15 +6,19 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Sign in') }}
+        </x-slot>
+
         <!-- Session Status -->
         <x-auth-session-status :status="session('status')" />
 
+        <!-- Validation Errors -->
         @if ($errors->any())
             <x-hearth-alert type="error">
                 <p>{{ __('hearth::auth.error_intro') }}</p>
             </x-hearth-alert>
         @endif
-
 
         <form method="POST" action="{{ localized_route('login') }}" novalidate>
             @csrf
@@ -24,7 +28,7 @@
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
                 <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
                 @error('email')
-                <p class="field__message"><x-heroicon-s-exclamation-circle style="display: inline-block; margin-right: 0.25em; margin-bottom: -0.125em; width: 1em; height: 1em;" />{{ $message }}</p>
+                <x-field-error>{{ $message }}</x-field-error>
                 @enderror
             </div>
 
@@ -37,7 +41,7 @@
                                 name="password"
                                 required autocomplete="current-password" />
                 @error('password')
-                <p class="field__message"><x-heroicon-s-exclamation-circle style="display: inline-block; margin-right: 0.25em; margin-bottom: -0.125em; width: 1em; height: 1em;" />{{ $message }}</p>
+                <x-field-error>{{ $message }}</x-field-error>
                 @enderror
             </div>
 
