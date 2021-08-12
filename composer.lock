@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efeec2227ac39b39c6ebab4734f8655c",
+    "content-hash": "cc45fa28173ecf8b40d44933789ffde4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1161,16 +1161,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "dev-feat/organization-membership",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/greatislander/hearth.git",
-                "reference": "0519e0d37adf65c7c7423c0458d93bb0f0a08c80"
+                "url": "https://github.com/fluid-project/hearth.git",
+                "reference": "dc1adaf4dae86c36f3a0175accf4c34745bfbc88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/greatislander/hearth/zipball/0519e0d37adf65c7c7423c0458d93bb0f0a08c80",
-                "reference": "0519e0d37adf65c7c7423c0458d93bb0f0a08c80",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/dc1adaf4dae86c36f3a0175accf4c34745bfbc88",
+                "reference": "dc1adaf4dae86c36f3a0175accf4c34745bfbc88",
                 "shasum": ""
             },
             "require": {
@@ -1196,6 +1196,7 @@
                 "spatie/laravel-ray": "^1.9",
                 "vimeo/psalm": "^4.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1216,25 +1217,7 @@
                     "src/helpers.php"
                 ]
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Hearth\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "fix": [
-                    "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
-                ],
-                "psalm": [
-                    "vendor/bin/psalm"
-                ],
-                "test": [
-                    "vendor/bin/phpunit --no-coverage"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-clover coverage.xml"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1253,9 +1236,10 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/greatislander/hearth/tree/feat/organization-membership"
+                "issues": "https://github.com/fluid-project/hearth/issues",
+                "source": "https://github.com/fluid-project/hearth/tree/main"
             },
-            "time": "2021-08-04T14:11:36+00:00"
+            "time": "2021-08-12T17:15:41+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -12757,5 +12741,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
