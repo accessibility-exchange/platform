@@ -20,7 +20,7 @@
         <form method="POST" action="{{ localized_route('register') }}" novalidate>
             @csrf
 
-            <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: 'en' }}" />
+            <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
 
             <!-- Name -->
             <div class="field @error('name')field--error @enderror">
