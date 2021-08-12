@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 itemprop="name">{{ config('app.name', 'Accessibility in Action') }}</h1>
+        <h1 itemprop="name">{{ __('app.name') }}</h1>
     </x-slot>
 
     <p>{{ __('welcome.intro') }}</p>
