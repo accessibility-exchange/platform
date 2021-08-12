@@ -53,8 +53,8 @@ class CreateProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A consultant profile with this name already exists.',
-            'user_id.unique' => 'You already have a consultant profile. Would you like to edit it instead?',
+            'name.unique' => 'A consultant page with this name already exists.',
+            'user_id.unique' => 'You already have a consultant page. Would you like to edit it instead?',
         ];
     }
 }

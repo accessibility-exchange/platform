@@ -13,13 +13,16 @@
         <a href="{{ localized_route('organizations.index') }}">{{ __('organization.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
     </p>
 
+    <p>
+        <a href="{{ localized_route('entities.index') }}">{{ __('entity.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
+    </p>
 
     <h2>{{ __('user.profile_title') }}</h2>
 
     @if(Auth::user()->profile)
     <p>
         <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />
-        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_link') }}</a>
+        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_profile') }}</a>
     </p>
     @else
     <p>{!! __('user.no_profile', ['link' => '<a href="' . localized_route('profiles.create') . '">' . __('user.create_profile') . '</a>']) !!}</p>
@@ -38,7 +41,7 @@
     <p>{!! __('user.no_organization', ['create_link' => '<a href="' . localized_route('organizations.create') . '">' . __('user.create_organization') . '</a>']) !!}</p>
     @endforelse
 
-    <h2>{{ __('user.entities_title') }}</h2>
+    {{-- <h2>{{ __('user.entities_title') }}</h2>
 
     @forelse(Auth::user()->entities as $entity)
     <p>
@@ -49,5 +52,5 @@
     </p>
     @empty
     <p>{!! __('user.no_entity', ['create_link' => '<a href="' . localized_route('entities.create') . '">' . __('user.create_entity') . '</a>']) !!}</p>
-    @endforelse
+    @endforelse --}}
 </x-app-layout>

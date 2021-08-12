@@ -54,7 +54,7 @@ class UpdateProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A consultant profile with this name already exists.',
+            'name.unique' => 'A consultant page with this name already exists.',
         ];
     }
 }
