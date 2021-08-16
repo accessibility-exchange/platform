@@ -26,7 +26,7 @@ For general deployment information, please see the Laravel 8.x [deployment docum
 
 The platform requires the following:
 
-- [PHP](https://www.php.net/supported-versions.php) >= 7.4 (PHP 8.0 recommended) with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
+- [PHP](https://www.php.net/supported-versions.php) >= 8.0 with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
 - [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 - [Composer](https://getcomposer.org) >= 2.0
 
@@ -34,14 +34,16 @@ The deployment process should follow all of the recommended [optimization proces
 
 ## Development and prototyping environments
 
-In development and prototyping environments, a deployment should be followed by dropping the database tables, running all
-migrations and seeding the database:
+In development and prototyping environments, a deployment should be followed by loading the corresponding environment's snapshot:
 
 ```bash
-php artisan migrate:fresh --seed
+php artisan snapshot:load dev|prototype --force
 ```
 
-**NOTE: This will drop all existing database tables. [See the documentation](https://laravel.com/docs/8.x/migrations#drop-all-tables-migrate)
+Snapshots must be maintained by the development team, and are stored in S3 buckets. See the original [pull request](https://github.com/accessibility-in-action/platform/pull/101)
+for more information.
+
+**NOTE: This will overwrite all existing database tables. [See the documentation](https://github.com/spatie/laravel-db-snapshots)
 for details.**
 
 ## Production environments
