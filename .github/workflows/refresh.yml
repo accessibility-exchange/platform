@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: nelonoel/branch-name@v1.0.1
-      - name: Deploy stack
+      - name: Refresh database
         uses: appleboy/ssh-action@master
         with:
           host:           ${{ secrets.SSH_HOSTNAME }}
@@ -27,12 +27,13 @@ jobs:
           envs:     BRANCH_NAME
           script: |
             cd /srv/aina-$BRANCH_NAME && \
-            git checkout dev && \
-            git pull && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan snapshot:load $BRANCH_NAME --force
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
 
       - name: Wait
         run: sleep 15
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
 
       - name: Smoke test
         run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
