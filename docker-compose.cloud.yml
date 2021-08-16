@@ -4,6 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cloud
+    environment:
+      SNAPSHOTS_DISK: snapshots-s3
+      SNAPSHOTS_AWS_SECRET_ACCESS_KEY: ${SNAPSHOTS_AWS_SECRET_ACCESS_KEY}
+      SNAPSHOTS_AWS_DEFAULT_REGION: ${SNAPSHOTS_AWS_DEFAULT_REGION}
+      SNAPSHOTS_AWS_BUCKET: ${SNAPSHOTS_AWS_BUCKET}
     ports:
       - ${APP_PORT}:80
     volumes:
