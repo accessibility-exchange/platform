@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: nelonoel/branch-name@v1.0.1
-      - name: Deploy stack
+      - name: Refresh database
         uses: appleboy/ssh-action@master
         with:
           host:           ${{ secrets.SSH_HOSTNAME }}
@@ -31,8 +31,6 @@ jobs:
           envs:     BRANCH_NAME
           script: |
             cd /srv/aina-$BRANCH_NAME && \
-            git checkout dev && \
-            git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan snapshot:load $BRANCH_NAME
 
       - name: Wait
