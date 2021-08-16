@@ -5,7 +5,7 @@ return [
     /*
      * The name of the disk on which the snapshots are stored.
      */
-    'disk' => 'snapshots',
+    'disk' => env('SNAPSHOTS_DISK', 'snapshots'),
 
     /*
      * The connection to be used to create snapshots. Set this to null
