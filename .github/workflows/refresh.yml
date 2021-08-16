@@ -2,12 +2,9 @@ name: Refresh
 
 on:
   workflow_dispatch:
+  push:
   schedule:
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - dev
-      - prototype
 
 jobs:
   refresh:
@@ -32,9 +29,12 @@ jobs:
           script: |
             cd /srv/aina-$BRANCH_NAME && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan snapshot:load $BRANCH_NAME --force
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
 
       - name: Wait
         run: sleep 15
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
 
       - name: Smoke test
         run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
+        if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/prototype'
