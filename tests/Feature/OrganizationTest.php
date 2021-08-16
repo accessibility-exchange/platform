@@ -345,24 +345,30 @@ class OrganizationTest extends TestCase
         $response->assertRedirect(localized_route('organizations.show', $organization));
     }
 
-    public function test_invitation_cannot_be_accepted_unless_account_exists()
+    public function test_invitation_cannot_be_accepted_by_different_user()
     {
         if (! config('hearth.organizations.enabled')) {
             return $this->markTestSkipped('Organization support is not enabled.');
         }
 
-        $organization = Organization::factory()->create();
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $organization = Organization::factory()
+            ->hasAttached($other_user, ['role' => 'admin'])
+            ->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $organization->id,
             'inviteable_type' => get_class($organization),
-            'email' => 'me@here.com',
+            'email' => $user->email,
         ]);
 
         $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-        $response = $this->get($acceptUrl);
+        $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
+        $this->assertFalse($organization->fresh()->hasUserWithEmail($user->email));
         $response->assertSessionHasErrors();
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_with_admin_role_can_remove_members()

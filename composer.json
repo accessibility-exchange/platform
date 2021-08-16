@@ -7,19 +7,13 @@
         "laravel"
     ],
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/greatislander/hearth"
-        }
-    ],
     "require": {
         "php": "^8.0",
         "blade-ui-kit/blade-heroicons": "^0.3.1",
         "blade-ui-kit/blade-icons": "^0.5.1",
         "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
-        "fluid-project/hearth": "dev-feat/organization-membership",
+        "fluid-project/hearth": "dev-main",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",

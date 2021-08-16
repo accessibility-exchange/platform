@@ -1,24 +1,18 @@
-name: aina-prototype refresh
+name: Refresh
 
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
 
-env:
-  PROJECT_ID: aina-prototype
-  PROJECT_SMOKETEST_URL: https://aina-prototype.inclusivedesign.ca
-
 jobs:
   refresh:
     if: github.repository == 'accessibility-in-action/platform'
 
-    environment: aina_prototype
-
     runs-on: ubuntu-latest
 
     steps:
-
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -30,9 +24,9 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
-          envs:     PROJECT_ID
+          envs:     BRANCH_NAME
           script: |
-            cd /srv/$PROJECT_ID && \
+            cd /srv/aina-$BRANCH_NAME && \
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force
@@ -41,4 +35,4 @@ jobs:
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 $PROJECT_SMOKETEST_URL
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
