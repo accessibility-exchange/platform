@@ -31,7 +31,7 @@ jobs:
           envs:     BRANCH_NAME
           script: |
             cd /srv/aina-$BRANCH_NAME && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan snapshot:load $BRANCH_NAME
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan snapshot:load $BRANCH_NAME --force
 
       - name: Wait
         run: sleep 15
