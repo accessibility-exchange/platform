@@ -33,11 +33,11 @@
     </p>
     @endif
 
-    <h2><a href="{{ localized_route('resources.index') }}">{{ __('Learn about consulting') }}</a></h2>
+    {{-- <h2><a href="{{ localized_route('resources.index') }}">{{ __('Learn about consulting') }}</a></h2>
 
     <p>{{ __('Learn what you need to provide a great consulting service.') }}</p>
 
-    {{-- <h2>{{ __('user.organizations_title') }}</h2>
+    <h2>{{ __('user.organizations_title') }}</h2>
 
     @forelse(Auth::user()->organizations as $organization)
     <p>
