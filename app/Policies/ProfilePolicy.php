@@ -25,7 +25,7 @@ class ProfilePolicy
                 : Response::allow();
         }
 
-        return false;
+        return Response::deny(__('You cannot create a consultant page.'));
     }
 
     /**
