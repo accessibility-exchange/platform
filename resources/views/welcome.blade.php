@@ -1,8 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 itemprop="name">{{ config('app.name', 'Accessibility in Action') }}</h1>
+        <h1 itemprop="name">{{ __('app.name') }}</h1>
     </x-slot>
 
     <p>{{ __('welcome.intro') }}</p>
-     <p>{!! __('welcome.details', ['link' => '<a href="https://accessibility-in-action.inclusivedesign.ca/" rel="external">' . __('welcome.codesign_site') . '</a>']) !!}</p>
+    @guest
+    <p>{!! __('welcome.details_line_1', ['link' => '<a href="' . localized_route('registration') . '">' . __('welcome.register_text') . '</a>']) !!}</p>
+    <p>{!! __('welcome.details_line_2', ['link' => '<a href="' . localized_route('login') . '">' . __('welcome.sign_in_text') . '</a>']) !!}</p>
+    @endguest
 </x-app-layout>

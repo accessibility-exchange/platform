@@ -6,6 +6,10 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Reset your password') }}
+        </x-slot>
+
         <div>
             {{ __('hearth::auth.forgot_intro') }}
         </div>
@@ -14,16 +18,22 @@
         <x-auth-session-status :status="session('status')" />
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors :errors="$errors" />
+        @if ($errors->any())
+            <x-hearth-alert type="error">
+                <p>{{ __('hearth::auth.error_intro') }}</p>
+            </x-hearth-alert>
+        @endif
 
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
 
             <!-- Email Address -->
-            <div class="field">
+            <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-
                 <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+                @error('email')
+                <x-field-error>{{ $message }}</x-field-error>
+                @enderror
             </div>
 
             <x-hearth-button>

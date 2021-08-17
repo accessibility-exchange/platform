@@ -1,0 +1,10 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to form layouts in the application.
+// -----------------------------------------------------------------------------
+.field--error {
+    color: var(--ll-text-color-error);
+
+    input {
+        border-color: var(--ll-text-color-error);
+    }
+}

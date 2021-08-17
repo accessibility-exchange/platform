@@ -33,6 +33,11 @@ class CreateNewUser implements CreatesNewUsers
                     Rule::unique(User::class),
                 ],
                 'password' => $this->passwordRules(),
+                'context' => [
+                    'required',
+                    'string',
+                    Rule::in(config('app.contexts')),
+                ],
             ],
             [
 
@@ -47,6 +52,8 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'context' => $input['context'],
+            'locale' => $input['locale'],
         ]);
     }
 }

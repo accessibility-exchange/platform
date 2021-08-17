@@ -19,7 +19,7 @@ class OrganizationPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->context === 'consultant';
     }
 
     /**

@@ -6,11 +6,19 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Two-factor authentication') }}
+        </x-slot>
+
         <!-- Session Status -->
         <x-auth-session-status :status="session('status')" />
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors :errors="$errors" />
+        @if ($errors->any())
+            <x-hearth-alert type="error">
+                <p>{{ __('hearth::auth.error_intro') }}</p>
+            </x-hearth-alert>
+        @endif
 
         <form method="POST" action="{{ localized_route('two-factor.login') }}" x-data="{ recovery: false }" novalidate>
             @csrf

@@ -19,9 +19,13 @@ class ProfilePolicy
      */
     public function create(User $user)
     {
-        return $user->profile
-            ? Response::deny(__('You already have a consultant profile.'))
-            : Response::allow();
+        if ($user->context === 'consultant') {
+            return $user->profile
+                ? Response::deny(__('You already have a consultant page.'))
+                : Response::allow();
+        }
+
+        return Response::deny(__('You cannot create a consultant page.'));
     }
 
     /**
@@ -35,7 +39,7 @@ class ProfilePolicy
     {
         return $user->id === $profile->user_id
             ? Response::allow()
-            : Response::deny('You cannot edit this consultant profile.');
+            : Response::deny(__('You cannot edit this consultant page.'));
     }
 
     /**
@@ -49,6 +53,6 @@ class ProfilePolicy
     {
         return $user->id === $profile->user_id
             ? Response::allow()
-            : Response::deny('You cannot delete this consultant profile.');
+            : Response::deny(__('You cannot delete this consultant page.'));
     }
 }

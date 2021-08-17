@@ -9,6 +9,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
+    <p>{{ __('profile.create_intro') }}</p>
+
     <form action="{{ localized_route('profiles.store') }}" method="POST" novalidate>
         @csrf
         <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />

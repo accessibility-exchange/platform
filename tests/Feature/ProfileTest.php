@@ -37,6 +37,28 @@ class ProfileTest extends TestCase
         $response->assertRedirect(localized_route('profiles.show', $profile));
     }
 
+    public function test_entity_users_can_not_create_profiles()
+    {
+        $user = User::factory()->create(['context' => 'entity']);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.create'));
+        $response->assertStatus(403);
+
+        $response = $this->from(localized_route('profiles.create'))->post(localized_route('profiles.create'), [
+            'user_id' => $user->id,
+            'name' => $user->name . ' Consulting',
+            'locality' => 'Truro',
+            'region' => 'NS',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
     public function test_users_can_not_create_profiles_for_other_users()
     {
         $user = User::factory()->create();
