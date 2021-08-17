@@ -6,6 +6,13 @@
     <body>
         @include('layouts.banner')
 
+        @isset($aside)
+        <!-- Sidebar -->
+        <aside class="flow">
+            {{ $aside }}
+        </aside>
+        @endif
+
         <!-- Main Content -->
         <main>
             <article class="wrapper flow" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
@@ -23,5 +30,7 @@
                 </div>
             </article>
         </main>
+
+        @include('layouts.footer')
     </body>
 </html>

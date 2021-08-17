@@ -17,11 +17,13 @@
         <div class="field">
             <x-hearth-label for="name" :value="__('profile.label_name')" />
             <x-hearth-input id="name" type="text" name="name" :value="Auth::user()->name" required />
-            </div>
+        </div>
+
         <div class="field">
             <x-hearth-label for="locality" :value="__('forms.label_locality')" />
             <x-hearth-input id="locality" type="text" name="locality" required />
         </div>
+
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
             <x-hearth-select id="region" name="region" required :options="$regions"/>
@@ -29,4 +31,12 @@
 
         <x-hearth-button>{{ __('profile.action_create') }}</x-hearth-button>
     </form>
+
+    <x-slot name="aside">
+        <h2>{{ __('Need some support?') }}</h2>
+        <ul role="list">
+            <li><a href="#">{{ __('Call the support line') }}</a></li>
+            <li><a href="#">{{ __('E-mail us') }}</a></li>
+        </ul>
+    </x-slot>
 </x-app-layout>
