@@ -4,11 +4,11 @@
     <ul role="list" class="nav">
         @auth
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
-            {{ __('hearth::dashboard.title') }}
+            {{ __('dashboard.title') }}
         </x-nav-link>
         @else
-        @if (Route::has(locale() . '.register'))
-        <x-nav-link :href="localized_route('register')">
+        @if (Route::has(locale() . '.registration'))
+        <x-nav-link :href="localized_route('registration')">
             {{ __('hearth::auth.create_account') }}
         </x-nav-link>
         @endif

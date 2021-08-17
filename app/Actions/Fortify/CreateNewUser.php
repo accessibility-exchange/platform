@@ -33,6 +33,11 @@ class CreateNewUser implements CreatesNewUsers
                     Rule::unique(User::class),
                 ],
                 'password' => $this->passwordRules(),
+                'context' => [
+                    'required',
+                    'string',
+                    Rule::in(config('app.contexts')),
+                ],
             ],
             [
 

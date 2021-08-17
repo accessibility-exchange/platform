@@ -1,6 +1,10 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the banner layout.
 // -----------------------------------------------------------------------------
+[role="banner"] {
+    border-block-end: var(--ll-border-medium);
+}
+
 @media (min-width: 768px) {
     [role="banner"] .wrapper {
         align-items: center;

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'dashboard' => 'tableau-de-bord',
+    'dashboard' => 'acceuil',
     'logout' => 'se-deconnecter',
 ];
