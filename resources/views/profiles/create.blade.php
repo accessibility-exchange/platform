@@ -56,25 +56,11 @@
         <x-date-input :label="__('profile.label_birth_date')" name="birth_date" :value="old('birth_date', '')" />
 
         <fieldset x-data="{ other: false }">
-            <legend>{{ __('profile.legend_pronouns') }}</legend>
-            <p class="field--hint" id="pronouns-hint">{{ __('profile.hint_pronouns') }}</p>
-
-            <div>
-                <input type="checkbox" id="pronouns-masculine" name="pronouns" value="He/him/his" @if(old('pronouns') === 'He/him/his') checked @endif />
-                <x-hearth-label for="pronouns-masculine" :value="__('He/him/his')" />
-            </div>
-            <div>
-                <input type="checkbox" id="pronouns-feminine" name="pronouns" value="She/her/hers" @if(old('pronouns') === 'She/her/hers') checked @endif />
-                <x-hearth-label for="pronouns-feminine" :value="__('She/her/hers')" />
-            </div>
-            <div>
-                <input type="checkbox" id="pronouns-neutral" name="pronouns" value="They/them/theirs" @if(old('pronouns') === 'They/them/theirs') checked @endif />
-                <x-hearth-label for="pronouns-neutral" :value="__('They/them/theirs')" />
-            </div>
-            <div>
-                <input type="checkbox" id="pronouns-other" name="pronouns" value="other" x-model="other" @if(old('pronouns') === 'other') checked @endif />
-                <x-hearth-label id="other-pronouns-label" for="pronouns-other" :value="__('Other pronouns')" />
-                <x-hearth-input id="other-pronouns" type="text" name="other-pronouns" value="{{ old('other-pronouns') }}" aria-labelledby="other-pronouns-label" x-show="other" />
+            <div class="field @error('pronouns') field--error @enderror">
+                <x-hearth-label for="pronouns" :value="__('profile.label_pronouns')" />
+                <x-hearth-input id="pronouns" type="text" name="pronouns" value="{{ old('pronouns') }}" />
+                <p class="field--hint" id="pronouns-hint">{{ __('profile.hint_pronouns') }}</p>
+                <x-field-error for="pronouns" />
             </div>
         </fieldset>
 

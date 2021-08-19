@@ -9,9 +9,6 @@
             @if($profile->pronouns)
             <p>{{ $profile->pronouns }}</p>
             @endif
-            @if($profile->birth_date)
-            <p>{{ __('profile.age', ['years' => Carbon\Carbon::parse($profile->birth_date )->diffInYears( Carbon\Carbon::now())]) }}</p>
-            @endif
         </div>
     </x-slot>
 
