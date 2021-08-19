@@ -25,12 +25,15 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
-        $profile = Profile::where('name', $user->name . ' Consulting')->get()->first();
+        $profile = Profile::where('name', $user->name)->get()->first();
 
         $response->assertSessionHasNoErrors();
 
@@ -51,9 +54,12 @@ class ProfileTest extends TestCase
 
         $response = $this->from(localized_route('profiles.create'))->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);
@@ -74,9 +80,12 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $other_user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);
@@ -99,9 +108,11 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);

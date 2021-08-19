@@ -54,7 +54,7 @@
                 <x-hearth-input id="password_confirmation"
                                 type="password"
                                 name="password_confirmation" required />
-                <x-field-error name="password" />
+                <x-field-error for="password" />
             </div>
 
             <p>
