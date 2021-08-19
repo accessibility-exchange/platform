@@ -227,8 +227,29 @@ class ProfileTest extends TestCase
     public function test_users_can_view_profiles()
     {
         $user = User::factory()->create();
+        $other_user = User::factory()->create();
         $profile = Profile::factory()->create([
             'user_id' => $user->id,
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.index'));
+        $response->assertStatus(200);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(200);
+    }
+
+    public function test_users_can_view_own_draft_profiles()
+    {
+        $user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'draft',
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -236,8 +257,26 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.index'));
+        $response = $this->get(localized_route('profiles.show', $profile));
         $response->assertStatus(200);
+    }
+
+    public function test_users_can_not_view_others_draft_profiles()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'draft',
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(403);
     }
 
     public function test_guests_can_not_view_profiles()
