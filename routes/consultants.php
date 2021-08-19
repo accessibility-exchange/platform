@@ -16,7 +16,7 @@ Route::multilingual('/consultants/create', [ProfileController::class, 'store'])
     ->name('profiles.store');
 
 Route::multilingual('/consultants/{profile}', [ProfileController::class, 'show'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:view,profile'])
     ->name('profiles.show');
 
 Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'edit'])

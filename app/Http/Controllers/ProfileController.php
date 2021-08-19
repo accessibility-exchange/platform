@@ -43,7 +43,14 @@ class ProfileController extends Controller
     {
         $profile = Profile::create($request->validated());
 
-        flash(__('profile.create_succeeded'), 'success');
+        if ($request->input('save_draft')) {
+            $profile['status'] = 'draft';
+            flash(__('You have successfully saved your consultant page.'), 'success');
+        } elseif ($request->input('publish')) {
+            $profile['status'] = 'published';
+            flash(__('You have successfully published your consultant page.'), 'success');
+        }
+
 
         return redirect(\localized_route('profiles.show', ['profile' => $profile]));
     }

@@ -46,6 +46,7 @@
     "dependencies": {
         "@accessibility-in-action/looseleaf": "^1.5",
         "alpinejs": "^3.0",
-        "axios": "^0.21.1"
+        "axios": "^0.21.1",
+        "luxon": "2.0.2"
     }
 }

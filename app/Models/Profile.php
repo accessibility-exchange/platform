@@ -24,8 +24,16 @@ class Profile extends Model
      */
     protected $fillable = [
         'name',
+        'bio',
         'locality',
         'region',
+        'birth_date',
+        'pronouns',
+        'creator',
+        'creator_name',
+        'creator_relationship',
+        'visibility',
+        'status',
         'user_id',
     ];
 

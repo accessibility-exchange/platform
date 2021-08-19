@@ -31,9 +31,7 @@
             <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
                 <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
-                @error('email')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <x-field-error for="email" />
             </div>
 
             <x-hearth-button>

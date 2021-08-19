@@ -12,9 +12,29 @@ class ProfilePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the model.
+     *
+     * @param \App\Models\User  $user
+     * @param \App\Models\Profile  $model
+     *
+     * @return mixed
+     */
+    public function view(User $user, Profile $model)
+    {
+        if ($model->status === 'draft') {
+            return $user->id === $model->user_id
+                ? Response::allow()
+                : Response::deny(__('You cannot view this consultant page.'));
+        }
+
+        return Response::allow();
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     *
      * @return mixed
      */
     public function create(User $user)

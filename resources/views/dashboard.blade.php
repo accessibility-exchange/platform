@@ -20,11 +20,11 @@
 
     @if(!Auth::user()->profile)
 
-    <p>{{ __('Here are a few things to do before you can start consulting.') }}</p>
+    <p>{{ __('dashboard.things_you_can_do') }}</p>
 
-    <h2><a href="{{ localized_route('profiles.create') }}">{{ __('Create your consultant page') }}</a></h2>
+    <h2><a href="{{ localized_route('profiles.create') }}">{{ __('dashboard.create_page_action') }}</a></h2>
 
-    <p>{{ __('Tell us a little bit about yourself, so we can match you with an organization that suits you and your preferences.') }}</p>
+    <p>{{ __('dashboard.create_page_info') }}</p>
 
     @else
     <p>
@@ -33,11 +33,11 @@
     </p>
     @endif
 
-    {{-- <h2><a href="{{ localized_route('resources.index') }}">{{ __('Learn about consulting') }}</a></h2>
+    <h2><a href="{{ localized_route('resources.index') }}">{{ __('dashboard.learn_consulting_action') }}</a></h2>
 
-    <p>{{ __('Learn what you need to provide a great consulting service.') }}</p>
+    <p>{{ __('dashboard.learn_consulting_info') }}</p>
 
-    <h2>{{ __('user.organizations_title') }}</h2>
+    {{-- <h2>{{ __('user.organizations_title') }}</h2>
 
     @forelse(Auth::user()->organizations as $organization)
     <p>
@@ -63,11 +63,11 @@
     <p>{!! __('user.no_entity', ['create_link' => '<a href="' . localized_route('entities.create') . '">' . __('user.create_entity') . '</a>']) !!}</p>
     @endforelse --}}
 
-    <x-slot name="aside">
+    {{-- <x-slot name="aside">
         <h2>{{ __('Need some support?') }}</h2>
         <ul role="list">
             <li><a href="#">{{ __('Call the support line') }}</a></li>
             <li><a href="#">{{ __('E-mail us') }}</a></li>
         </ul>
-    </x-slot>
+    </x-slot> --}}
 </x-app-layout>

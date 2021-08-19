@@ -28,18 +28,14 @@
             <div class="field @error('name')field--error @enderror">
                 <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
                 <x-hearth-input id="name" type="text" name="name" :value="old('name')" required autofocus />
-                @error('name')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <x-field-error for="name" />
             </div>
 
             <!-- Email Address -->
             <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
                 <x-hearth-input id="email" type="email" name="email" :value="old('email')" required />
-                @error('email')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <x-field-error for="email" />
             </div>
 
             <!-- Password -->
@@ -49,9 +45,7 @@
                                 type="password"
                                 name="password"
                                 required autocomplete="new-password" />
-                @error('password')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <x-field-error for="password" />
             </div>
 
             <!-- Confirm Password -->
@@ -60,9 +54,7 @@
                 <x-hearth-input id="password_confirmation"
                                 type="password"
                                 name="password_confirmation" required />
-                @error('password')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <x-field-error name="password" />
             </div>
 
             <p>
