@@ -16,7 +16,7 @@ return [
     'label_birth_date' => 'When were you born? (optional)',
     'hint_birth_date' => 'This will help us make sure there is representation from all ages on our projects.',
     'label_pronouns' => 'What are your pronouns? (optional)',
-    'hint_pronouns' => 'This will help others use the correct pronouns for you.',
+    'hint_pronouns' => 'This will help others use the correct pronouns for you (e.g. he/him, she/her, they/them).',
     'legend_creator' => 'Who’s creating this consultant page?',
     'label_creator_self' => 'I’m creating it myself',
     'label_creator_other' => 'Someone else is creating it for me',
