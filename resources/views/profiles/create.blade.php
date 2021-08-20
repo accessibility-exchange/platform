@@ -53,7 +53,7 @@
             </div>
         </fieldset>
 
-        <x-date-input :label="__('profile.label_birth_date')" name="birth_date" :value="old('birth_date', '')" />
+        <x-date-input :label="__('profile.label_birth_date')" name="birth_date" :hint="__('profile.hint_birth_date')" :value="old('birth_date', '')" />
 
         <fieldset x-data="{ other: false }">
             <div class="field @error('pronouns') field--error @enderror">

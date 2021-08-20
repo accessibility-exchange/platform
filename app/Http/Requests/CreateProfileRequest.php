@@ -45,7 +45,7 @@ class CreateProfileRequest extends FormRequest
             'creator' => 'required|in:self,other',
             'creator_name' => 'required_if:creator,other|nullable|string|max:255',
             'creator_relationship' => 'required_if:creator,other|nullable|string|max:255',
-            'visibility' => 'required|in:team,all',
+            'visibility' => 'required|in:project,all',
             'user_id' => [
                 Rule::unique(Profile::class),
             ],

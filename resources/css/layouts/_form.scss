@@ -34,3 +34,8 @@ textarea + .field--hint {
 fieldset > * + .field {
     margin-block-start: 1.5em;
 }
+
+[type="reset"],
+[type="submit"] {
+    width: auto;
+}
