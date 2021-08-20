@@ -22,9 +22,12 @@
 
     <p>{{ __('Here are a few things to do before you can start consulting.') }}</p>
 
-    <h2><a href="{{ localized_route('profiles.create') }}">{{ __('Create your consultant page') }}</a></h2>
+    {{-- <h2><a href="{{ localized_route('profiles.create') }}">{{ __('Create your consultant page') }}</a></h2> --}}
+    <h2>{{ __('Create your consultant page') }}</h2>
 
     <p>{{ __('Tell us a little bit about yourself, so we can match you with an organization that suits you and your preferences.') }}</p>
+
+    <p><em>{{ __('This feature is not available yet. Thanks for your patience!') }}</em></p>
 
     @else
     <p>

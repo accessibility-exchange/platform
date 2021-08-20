@@ -17,7 +17,7 @@
         </x-hearth-alert>
         @endif
 
-        <form method="POST" action="{{ localized_route('password.update') }}">
+        <form method="POST" action="{{ localized_route('password.update') }}" novalidate>
             @csrf
 
             <!-- Password Reset Token -->
@@ -26,32 +26,25 @@
             <!-- Email Address -->
             <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <x-hearth-input id="email" type="email" name="email" :value="old('email', request()->get('email'))" required autofocus />
-                @error('email')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <input id="email" type="email" name="email" value="{{ old('email', request()->get('email')) }}" required autofocus @error('email')aria-describedby="email-error"@enderror />
+                <x-field-error for="email" />
             </div>
 
             <!-- Password -->
             <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <x-hearth-input id="password" type="password" name="password" required />
-                @error('password')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
+                <input id="password" type="password" name="password" required @error('password')aria-describedby="password-error"@enderror />
+                <x-field-error for="password" />
             </div>
 
             <!-- Confirm Password -->
             <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
 
-                <x-hearth-input id="password_confirmation"
+                <input id="password_confirmation"
                                     type="password"
-                                    name="password_confirmation" required />
-                @error('password')
-                <x-field-error>{{ $message }}</x-field-error>
-                @enderror
-
+                                    name="password_confirmation" required @error('password')aria-describedby="password-error"@enderror />
+                <x-field-error for="password" />
             </div>
 
             <x-hearth-button>
