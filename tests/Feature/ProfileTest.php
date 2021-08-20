@@ -109,6 +109,7 @@ class ProfileTest extends TestCase
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
             'creator' => 'self',
@@ -135,9 +136,13 @@ class ProfileTest extends TestCase
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
+            'bio' => $profile->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
+            'creator' => $profile->creator,
+            'visibility' => $profile->visibility,
         ]);
+
         $response->assertRedirect(localized_route('profiles.show', $profile));
     }
 
@@ -160,8 +165,11 @@ class ProfileTest extends TestCase
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
+            'bio' => $profile->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
+            'creator' => $profile->creator,
+            'visibility' => $profile->visibility,
         ]);
         $response->assertStatus(403);
     }
