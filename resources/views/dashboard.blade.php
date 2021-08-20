@@ -26,6 +26,8 @@
 
     <p>{{ __('dashboard.create_page_info') }}</p>
 
+    <p><em>{{ __('This feature is not available yet. Thanks for your patience!') }}</em></p>
+
     @else
     <p>
         <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />

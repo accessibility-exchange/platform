@@ -24,13 +24,13 @@
             </x-hearth-alert>
         @endif
 
-        <form method="POST" action="{{ route('password.email') }}">
+        <form method="POST" action="{{ route('password.email') }}" novalidate>
             @csrf
 
             <!-- Email Address -->
             <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus @error('email')aria-describedby="email-error"@enderror />
                 <x-field-error for="email" />
             </div>
 
