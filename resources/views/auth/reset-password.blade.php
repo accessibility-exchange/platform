@@ -24,21 +24,21 @@
             <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
             <!-- Email Address -->
-            <div class="field @error('email')field--error @enderror">
+            <div class="field @error('email') field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
                 <x-hearth-input type="email" name="email" value="{{ old('email', request()->get('email')) }}" required autofocus />
                 <x-hearth-error for="email" />
             </div>
 
             <!-- Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
                 <x-hearth-input type="password" name="password" required />
                 <x-hearth-error for="password" />
             </div>
 
             <!-- Confirm Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
                 <x-hearth-input type="password" name="password_confirmation" required />
                 <x-hearth-error for="password" />

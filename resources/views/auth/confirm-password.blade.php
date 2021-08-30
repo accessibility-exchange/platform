@@ -26,7 +26,7 @@
             @csrf
 
             <!-- Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
                 <x-hearth-input type="password" name="password" required autocomplete="current-password" />
                 <x-hearth-error for="password" />

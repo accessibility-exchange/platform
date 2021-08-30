@@ -24,14 +24,14 @@
             @csrf
 
             <!-- Email Address -->
-            <div class="field @error('email')field--error @enderror">
+            <div class="field @error('email') field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
                 <x-hearth-input type="email" name="email" :value="old('email')" required autofocus />
                 <x-hearth-error for="email" />
             </div>
 
             <!-- Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
                 <x-hearth-input type="password" name="password" required autocomplete="current-password" />
                 <x-hearth-error for="password" />

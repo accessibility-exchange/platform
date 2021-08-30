@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 
-class DestroyOrganizationRequest extends FormRequest
+class DestroyResourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,9 +14,9 @@ class DestroyOrganizationRequest extends FormRequest
      */
     public function authorize()
     {
-        $organization = $this->route('organization');
+        $resource = $this->route('resource');
 
-        return $organization && $this->user()->can('delete', $organization);
+        return $resource && $this->user()->can('delete', $resource);
     }
 
     /**
@@ -46,7 +46,7 @@ class DestroyOrganizationRequest extends FormRequest
                     __('validation.current_password')
                 );
             }
-        })->validateWithBag('destroyOrganization');
+        })->validateWithBag('destroyResource');
 
         return;
     }

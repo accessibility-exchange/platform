@@ -13,14 +13,10 @@
     <form action="{{ localized_route('memberships.update', $membership) }}" method="POST" novalidate>
         @csrf
         @method('PUT')
-        <fieldset>
+        <fieldset @error('membership') class="field--error" @enderror>
             <legend>{{ __('organization.label_user_role') }}</legend>
-            @foreach($roles as $role => $label)
-            <div class="field">
-                <input type="radio" id="role-{{ $role }}" name="role" value="{{ $role }}" @if ($role === $membership->role) checked @endif />
-                <label for="role-{{ $role }}">{{ $label }}</label>
-            </div>
-            @endforeach
+            <x-hearth-radio-buttons name="role" :options="$roles" :selected="old('role', $membership->role)" />
+            <x-hearth-error for="role" field="membership" />
         </fieldset>
         <a class="button" href="{{ localized_route($memberable->getRoutePrefix() . '.edit', $memberable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>
         <x-hearth-button>{{ __('organization.action_update_user_role') }}</x-hearth-button>

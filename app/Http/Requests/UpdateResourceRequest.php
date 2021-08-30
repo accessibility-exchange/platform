@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Organization;
-use App\Models\User;
+use App\Models\Resource;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateOrganizationRequest extends FormRequest
+class UpdateResourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +15,9 @@ class CreateOrganizationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $resource = $this->route('resource');
+
+        return $resource && $this->user()->can('update', $resource);
     }
 
     /**
@@ -26,19 +27,21 @@ class CreateOrganizationRequest extends FormRequest
      */
     public function rules()
     {
+        $resource = $this->route('resource');
+
         return [
-            'name' => [
+            'title' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Organization::class),
+                Rule::unique(Resource::class)->ignore($resource->id),
 
             ],
-            'locality' => ['required', 'string', 'max:255'],
-            'region' => [
+            'language' => [
                 'required',
-                Rule::in(get_region_codes()),
+                Rule::in(config('locales.supported')),
             ],
+            'summary' => 'required|string',
         ];
     }
 
@@ -50,7 +53,7 @@ class CreateOrganizationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('validation.organization.name_exists'),
+            'title.unique' => __('validation.custom.resource.title_exists'),
         ];
     }
 }

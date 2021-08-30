@@ -13,18 +13,21 @@
         @csrf
         @method('PUT')
 
-        <div class="field">
+        <div class="field @error('name') field--error @enderror">
             <x-hearth-label for="name" :value="__('organization.label_name')" />
             <x-hearth-input id="name" type="text" name="name" :value="old('name', $organization->name)" required />
-            </div>
-        <div class="field">
+            <x-hearth-error for="name" />
+        </div>
+        <div class="field @error('locality') field--error @enderror">
             <x-hearth-label for="locality" :value="__('forms.label_locality')" />
             <x-hearth-input id="locality" type="text" name="locality" :value="old('locality', $organization->locality)" required />
+            <x-hearth-error for="locality" />
         </div>
-        <div class="field">
+        <div class="field @error('region') field--error @enderror">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
             <x-hearth-select id="region" name="region" :selected="old('region', $organization->region)" required :options="$regions"/>
-            </div>
+            <x-hearth-error for="region" />
+        </div>
 
         <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
     </form>
@@ -103,21 +106,20 @@
 
     <form action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
+
         <x-hearth-input type="hidden" name="inviteable_id" :value="$organization->id"></x-hearth-input>
+
         <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($organization)"></x-hearth-input>
-        <div class="field">
-            <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
+
+        <div class="field @error('email', 'inviteOrganizationMember') field--error @enderror">
+            <x-hearth-label for="email" :value="__('forms.label_email')" />
             <x-hearth-input id="email" type="email" name="email" :value="old('email')" required />
-            @error('email', 'inviteOrganizationMember')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="email" bag="inviteOrganizationMember" />
         </div>
-        <div class="field">
+        <div class="field @error('role', 'inviteOrganizationMember') field--error @enderror">
             <x-hearth-label for="role" :value="__('organization.member_role')" />
             <x-hearth-select id="role" type="role" name="role" :options="$roles" :selected="old('role')" required />
-            @error('role', 'inviteOrganizationMember')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="role" bag="inviteOrganizationMember" />
         </div>
 
         <x-hearth-button>
@@ -135,12 +137,10 @@
         @csrf
         @method('DELETE')
 
-        <div class="field">
+        <div class="field @error('current_password', 'destroyOrganization') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
             <x-hearth-input id="current_password" type="password" name="current_password" required />
-            @error('current_password', 'destroyOrganization')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>
 
         <x-hearth-button>
