@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e71d5c7852b1462c35d9f1549cf3c0bb",
+    "content-hash": "466ce6649b088a98579aa7c45eb1cdd7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1251,16 +1251,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "dev-main",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "1fa17cd33f96bbc5a2d834389777b3425e59f962"
+                "reference": "257cddde62d9a97318a183c8a19b765f6fe00f8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/1fa17cd33f96bbc5a2d834389777b3425e59f962",
-                "reference": "1fa17cd33f96bbc5a2d834389777b3425e59f962",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/257cddde62d9a97318a183c8a19b765f6fe00f8e",
+                "reference": "257cddde62d9a97318a183c8a19b765f6fe00f8e",
                 "shasum": ""
             },
             "require": {
@@ -1286,7 +1286,6 @@
                 "spatie/laravel-ray": "^1.9",
                 "vimeo/psalm": "^4.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1327,9 +1326,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/main"
+                "source": "https://github.com/fluid-project/hearth/tree/v1.0.0"
             },
-            "time": "2021-08-16T17:24:53+00:00"
+            "time": "2021-08-26T17:45:59+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -12874,9 +12873,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "fluid-project/hearth": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

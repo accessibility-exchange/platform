@@ -13,7 +13,7 @@
         "blade-ui-kit/blade-icons": "^0.5.1",
         "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
-        "fluid-project/hearth": "dev-main",
+        "fluid-project/hearth": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
@@ -76,7 +76,7 @@
             "vendor/bin/phpstan analyse",
             "vendor/bin/psalm"
         ],
-        "fix": [
+        "format": [
             "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
         ]
     }

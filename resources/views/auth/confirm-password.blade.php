@@ -28,8 +28,8 @@
             <!-- Password -->
             <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <input id="password" type="password" name="password" required autocomplete="current-password" @error('password')aria-describedby="password-error"@enderror />
-                <x-field-error for="password" />
+                <x-hearth-input type="password" name="password" required autocomplete="current-password" />
+                <x-hearth-error for="password" />
             </div>
 
             <x-hearth-button>

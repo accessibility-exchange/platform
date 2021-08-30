@@ -26,25 +26,22 @@
             <!-- Email Address -->
             <div class="field @error('email')field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <input id="email" type="email" name="email" value="{{ old('email', request()->get('email')) }}" required autofocus @error('email')aria-describedby="email-error"@enderror />
-                <x-field-error for="email" />
+                <x-hearth-input type="email" name="email" value="{{ old('email', request()->get('email')) }}" required autofocus />
+                <x-hearth-error for="email" />
             </div>
 
             <!-- Password -->
             <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <input id="password" type="password" name="password" required @error('password')aria-describedby="password-error"@enderror />
-                <x-field-error for="password" />
+                <x-hearth-input type="password" name="password" required />
+                <x-hearth-error for="password" />
             </div>
 
             <!-- Confirm Password -->
             <div class="field @error('password')field--error @enderror">
                 <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-
-                <input id="password_confirmation"
-                                    type="password"
-                                    name="password_confirmation" required @error('password')aria-describedby="password-error"@enderror />
-                <x-field-error for="password" />
+                <x-hearth-input type="password" name="password_confirmation" required />
+                <x-hearth-error for="password" />
             </div>
 
             <x-hearth-button>

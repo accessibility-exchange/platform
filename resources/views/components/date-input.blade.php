@@ -18,6 +18,6 @@
     <input type="hidden" name="{{ $name }}" x-model="date" />
     <output id="{{ $name }}-output" aria-live="assertive" x-text="output()"></output>
     @if(isset($hint))
-    <p class="field--hint" id="{{ $name }}-hint">{{ $hint }}</p>
+    <p class="field__hint" id="{{ $name }}-hint">{{ $hint }}</p>
     @endif
 </fieldset>
