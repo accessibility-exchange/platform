@@ -6,29 +6,23 @@ export default () => ({
     year: "",
     month: "",
     day: "",
-    output() {
-        if (this.dateTime) {
-            if (this.dateTime.isValid) {
-                return `You have entered ${this.dateTime.toLocaleString(DateTime.DATE_FULL)}.`;
-            } else {
-                return "You have entered a date that is not valid.";
-            }
-        }
-        return "";
-    },
+    error: false,
     componentsToDate() {
         if (this.year && this.month && this.day) {
             const dt = DateTime.fromObject({ month: this.month, day: this.day, year: this.year });
             if (dt.isValid) {
                 this.date = dt.toSQLDate();
                 this.dateTime = dt;
+                this.error = false;
             } else {
                 this.dateTime = false;
                 this.date = "";
+                this.error = true;
             }
         } else {
             this.dateTime = false;
             this.date = "";
+            this.error = true;
         }
     },
     dateToComponents(date) {
@@ -42,9 +36,11 @@ export default () => ({
                 this.year = year;
                 this.month = month;
                 this.day = day;
+                this.error = false;
             } else {
                 this.date = "";
                 this.dateTime = false;
+                this.error = true;
             }
         }
     }

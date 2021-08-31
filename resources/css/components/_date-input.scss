@@ -1,28 +1,26 @@
 .date {
-    .hint {
-        font-size: var(--step--1);
-    }
+    display: flex;
+    flex-wrap: wrap;
+}
 
-    label {
-        float: left;
-    }
+.date .field + .field {
+    margin-inline-start: var(--step-0);
+}
 
-    label + label {
-        margin-inline-start: var(--step-0);
-    }
+.date .field--year input {
+    width: 6ch;
+}
 
-    .year input {
-        width: 6ch;
-    }
+.date .field--day input {
+    width: 4ch;
+}
 
-    .month input,
-    .day input {
-        width: 4ch;
-    }
+.date .field--month select {
+    display: block;
+    width: auto;
+}
 
-    output {
-        clear: both;
-        display: block;
-        padding-block-start: var(--step-0);
-    }
+.date legend,
+.date .field__hint {
+    width: 100%;
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "466ce6649b088a98579aa7c45eb1cdd7",
+    "content-hash": "a5739d27ed4a0a32fe0074dd4505f43d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1251,16 +1251,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "257cddde62d9a97318a183c8a19b765f6fe00f8e"
+                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/257cddde62d9a97318a183c8a19b765f6fe00f8e",
-                "reference": "257cddde62d9a97318a183c8a19b765f6fe00f8e",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/c396400380bc49760372c4f38d42e7bd41ecfb27",
+                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27",
                 "shasum": ""
             },
             "require": {
@@ -1326,9 +1326,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/v1.0.0"
+                "source": "https://github.com/fluid-project/hearth/tree/v1.1.0"
             },
-            "time": "2021-08-26T17:45:59+00:00"
+            "time": "2021-08-31T12:20:01+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
