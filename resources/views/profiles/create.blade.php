@@ -53,7 +53,7 @@
             </div>
         </fieldset>
 
-        <x-date-input :label="__('profile.label_birth_date')" name="birth_date" :hint="__('profile.hint_birth_date')" :value="old('birth_date', '')" />
+        <x-hearth-date-input :label="__('profile.label_birth_date')" name="birth_date" :hint="__('profile.hint_birth_date')" :value="old('birth_date', '')" />
 
         <div class="field @error('pronouns') field--error @enderror">
             <x-hearth-label for="pronouns" :value="__('profile.label_pronouns')" />
