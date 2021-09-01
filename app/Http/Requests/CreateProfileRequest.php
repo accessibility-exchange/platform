@@ -32,7 +32,6 @@ class CreateProfileRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique(Profile::class),
-
             ],
             'bio' => 'required|string',
             'locality' => 'required|string|max:255',
