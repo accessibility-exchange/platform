@@ -232,12 +232,13 @@ class ProfileTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_users_can_view_profiles()
+    public function test_users_can_view_profiles_with_global_visibility()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
         $profile = Profile::factory()->create([
             'user_id' => $user->id,
+            'visibility' => 'all',
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -245,11 +246,26 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.index'));
-        $response->assertStatus(200);
-
         $response = $this->get(localized_route('profiles.show', $profile));
         $response->assertStatus(200);
+    }
+
+    public function test_users_can_not_view_profiles_with_project_visibility()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'visibility' => 'project',
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(403);
     }
 
     public function test_users_can_view_own_draft_profiles()

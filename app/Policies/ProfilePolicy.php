@@ -21,7 +21,8 @@ class ProfilePolicy
      */
     public function view(User $user, Profile $model)
     {
-        if ($model->status === 'draft') {
+        if ($model->status === 'draft' || $model->visibility !== 'all') {
+            // TODO: Handle project team visibility.
             return $user->id === $model->user_id
                 ? Response::allow()
                 : Response::deny(__('You cannot view this consultant page.'));
