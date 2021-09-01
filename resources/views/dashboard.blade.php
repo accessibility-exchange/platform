@@ -22,11 +22,11 @@
 
     <p>{{ __('dashboard.things_you_can_do') }}</p>
 
-    <h2><a href="{{ localized_route('profiles.create') }}">{{ __('dashboard.create_page_action') }}</a></h2>
+    <h2>{{ __('dashboard.create_page_title') }}</h2>
 
     <p>{{ __('dashboard.create_page_info') }}</p>
 
-    <p><em>{{ __('This feature is not available yet. Thanks for your patience!') }}</em></p>
+    <p>{!! __('dashboard.create_page_prompt', ['link' => '<a href="' . localized_route('profiles.create') . '"><strong>' . __('profile.singular_title') . '</strong></a>']) !!}</p>
 
     @else
     <p>
@@ -35,9 +35,11 @@
     </p>
     @endif
 
-    <h2><a href="{{ localized_route('resources.index') }}">{{ __('dashboard.learn_consulting_action') }}</a></h2>
+    <h2>{{ __('dashboard.learn_consulting_title') }}</h2>
 
     <p>{{ __('dashboard.learn_consulting_info') }}</p>
+
+    <p>{!! __('dashboard.learn_consulting_prompt', ['link' => '<a href="' . localized_route('resources.index') . '"><strong>' . __('resource.index_title') . '</strong></a>']) !!}</p>
 
     {{-- <h2>{{ __('user.organizations_title') }}</h2>
 

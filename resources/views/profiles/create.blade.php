@@ -16,8 +16,8 @@
         <fieldset>
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('profile.label_name')" />
-                <x-hearth-input type="text" name="name" :value="Auth::user()->name" required hinted />
                 <x-hearth-hint for="name">{{ __('profile.hint_name') }}</x-hearth-hint>
+                <x-hearth-input type="text" name="name" :value="Auth::user()->name" required hinted />
                 <x-hearth-error for="name" />
             </div>
         </fieldset>
@@ -27,8 +27,8 @@
         <fieldset>
             <div class="field @error('bio') field--error @enderror">
                 <x-hearth-label for="bio" :value="__('profile.label_bio')" />
-                <x-hearth-textarea name="bio" hinted>{{ old('bio') }}</x-hearth-textarea>
                 <x-hearth-hint for="bio">{{ __('profile.hint_bio') }}</x-hearth-hint>
+                <x-hearth-textarea name="bio" hinted>{{ old('bio') }}</x-hearth-textarea>
                 <x-hearth-error for="bio" />
             </div>
 
@@ -99,7 +99,7 @@
             </div>
         </fieldset>
 
-        <input type="submit" name="save_draft" value="{{ __('profile.action_save_draft') }}" />
-        <input type="submit" name="publish" value="{{ __('profile.action_save_and_publish') }}" />
+        <x-hearth-input type="submit" name="save_draft" value="{{ __('profile.action_save_draft') }}" />
+        <x-hearth-input type="submit" name="publish" value="{{ __('profile.action_save_and_publish') }}" />
     </form>
 </x-app-layout>

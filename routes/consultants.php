@@ -28,6 +28,11 @@ Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'u
     ->method('put')
     ->name('profiles.update');
 
+Route::multilingual('/consultants/{profile}/unpublish', [ProfileController::class, 'unpublish'])
+    ->middleware(['auth', 'can:update,profile'])
+    ->method('put')
+    ->name('profiles.unpublish');
+
 Route::multilingual('/consultants/{profile}/delete', [ProfileController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,profile'])
     ->method('delete')

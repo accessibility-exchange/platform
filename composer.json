@@ -21,7 +21,8 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
-        "spatie/laravel-translatable": "^5.0"
+        "spatie/laravel-translatable": "^5.0",
+        "theiconic/name-parser": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

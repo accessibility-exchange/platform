@@ -6,6 +6,7 @@ use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\DestroyProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -45,10 +46,10 @@ class ProfileController extends Controller
 
         if ($request->input('save_draft')) {
             $profile['status'] = 'draft';
-            flash(__('You have successfully saved your consultant page.'), 'success');
+            flash(__('profile.save_draft_succeeded'), 'success');
         } elseif ($request->input('publish')) {
             $profile['status'] = 'published';
-            flash(__('You have successfully published your consultant page.'), 'success');
+            flash(__('profile.publish_succeeded'), 'success');
         }
 
 
@@ -90,9 +91,30 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
         $profile->fill($request->validated());
+
+        ray($request->validated());
+
         $profile->save();
 
         flash(__('profile.update_succeeded'), 'success');
+
+        return redirect(\localized_route('profiles.show', $profile));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Profile  $profile
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function unpublish(Request $request, Profile $profile)
+    {
+        $profile->status = 'draft';
+
+        $profile->save();
+
+        flash(__('profile.unpublish_succeeded'), 'success');
 
         return redirect(\localized_route('profiles.show', $profile));
     }

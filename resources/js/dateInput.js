@@ -22,7 +22,6 @@ export default () => ({
         } else {
             this.dateTime = false;
             this.date = "";
-            this.error = true;
         }
     },
     dateToComponents(date) {

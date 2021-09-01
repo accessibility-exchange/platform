@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
+use TheIconic\NameParser\Parser as NameParser;
 
 class Profile extends Model
 {
@@ -62,6 +64,22 @@ class Profile extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Get the consultant's age in years.
+     */
+    public function age()
+    {
+        return Carbon::parse($this->attributes['birth_date'])->age;
+    }
+
+    /**
+     * Get the consultant's first name.
+     */
+    public function firstName()
+    {
+        return (new NameParser())->parse($this->attributes['name'])->getFirstname();
     }
 
     /**

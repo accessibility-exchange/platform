@@ -6,6 +6,7 @@ return [
     'label_language' => 'Resource language',
     'label_summary' => 'Resource summary',
     'action_create' => 'Create resource',
+    'index_title' => 'Resources',
     'edit_title' => 'Edit resource',
     'edit_resource' => 'Edit resource',
     'action_delete' => 'Delete resource',
@@ -14,4 +15,5 @@ return [
     'create_succeeded' => 'Your resource has been created.',
     'update_succeeded' => 'Your resource has been updated.',
     'destroy_succeeded' => 'Your resource has been deleted.',
+    'none_found' => 'No resources found.',
 ];
