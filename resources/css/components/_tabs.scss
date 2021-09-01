@@ -1,14 +1,8 @@
-.tab-wrapper {
-    margin: 0 auto;
-    max-width: 85ch;
-    padding: var(--step-0);
-}
-
 .tabs {
     display: block;
 }
 
-.tabs ul {
+.tabs > ul {
     display: flex;
     flex-direction: column;
     list-style-type: "— ";
@@ -16,7 +10,7 @@
     padding-inline-start: calc(1em + 1ex);
 }
 
-.tabs div {
+.tabs > div {
     margin-block-start: var(--step-0);
 }
 
@@ -25,7 +19,7 @@
         margin-block-start: var(--step-3);
     }
 
-    .js .tabs ul {
+    .js .tabs > ul {
         flex-direction: row;
         list-style-type: none;
         margin-inline-start: calc(-1 * var(--step-0));

@@ -30,7 +30,7 @@
 
     @else
     <p>
-        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />
+        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong>@if(Auth::user()->profile->status === 'draft') ({{ __('profile.status_draft') }})@endif</a><br />
         <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_profile') }}</a>
     </p>
     @endif

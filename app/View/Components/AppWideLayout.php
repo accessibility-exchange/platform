@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class AppTabbedLayout extends Component
+class AppWideLayout extends Component
 {
     /**
      * Get the view / contents that represents the component.
@@ -13,6 +13,6 @@ class AppTabbedLayout extends Component
      */
     public function render()
     {
-        return view('layouts.app-tabbed');
+        return view('layouts.app-wide');
     }
 }

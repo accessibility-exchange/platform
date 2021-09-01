@@ -35,12 +35,13 @@
     'components/navigation',
     'components/tabs',
     'components/table',
+    'components/tags',
     'components/validation-error';
 
 // 6. Route-specific styles
 @import
     'routes/dashboard',
-    'routes/profiles/index',
+    'routes/profiles/show',
     'routes/users/show',
     'routes/welcome';
 

@@ -16,13 +16,13 @@
         <!-- Main Content -->
         <main>
             <article class="wrapper flow" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+                <!-- Flash Messages -->
+                @include('partials.flash-messages')
+
                 <!-- Page Heading -->
                 <header class="flow">
                     {{ $header }}
                 </header>
-
-                <!-- Flash Messages -->
-                @include('partials.flash-messages')
 
                 <!-- Page Content -->
                 <div class="content flow">

@@ -15,14 +15,14 @@
 
         <!-- Main Content -->
         <main>
-            <article class="flow tab-wrapper" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+            <article class="flow wrapper--wide" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+                <!-- Flash Messages -->
+                @include('partials.flash-messages')
+
                 <!-- Page Heading -->
                 <header class="flow">
                     {{ $header }}
                 </header>
-
-                <!-- Flash Messages -->
-                @include('partials.flash-messages')
 
                 <!-- Page Content -->
                 <div class="content flow">
