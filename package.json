@@ -44,7 +44,7 @@
         "stylelint-use-logical-spec": "^3.2.2"
     },
     "dependencies": {
-        "@accessibility-in-action/looseleaf": "^1.5",
+        "@accessibility-in-action/looseleaf": "^1.6",
         "alpinejs": "^3.0",
         "axios": "^0.21.1"
     }
