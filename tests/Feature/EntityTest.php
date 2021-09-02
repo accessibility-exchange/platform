@@ -27,16 +27,20 @@ class EntityTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name . ' Inc.',
             'locality' => 'Truro',
             'region' => 'NS',
         ]);
 
-        $url = localized_route('entities.show', ['entity' => Str::slug($user->name . ' Consulting')]);
+        $url = localized_route('entities.show', ['entity' => Str::slug($user->name . ' Inc.')]);
 
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect($url);
+
+        $entity = Organization::where('name', $user->name . ' Inc.')->first();
+
+        $this->assertTrue($user->isMemberOf($entity));
     }
 
     public function test_users_with_admin_role_can_edit_entities()
