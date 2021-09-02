@@ -16,7 +16,7 @@ class PasswordConfirmationTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('password.confirm'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_password_can_be_confirmed()

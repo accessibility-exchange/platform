@@ -24,7 +24,7 @@ class OrganizationTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(localized_route('organizations.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->actingAs($user)->post(localized_route('organizations.create'), [
             'name' => $user->name . ' Consulting',
@@ -55,7 +55,7 @@ class OrganizationTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
             'name' => $organization->name,
@@ -77,14 +77,14 @@ class OrganizationTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
             'name' => $organization->name,
             'locality' => 'St John\'s',
             'region' => 'NL',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_non_members_can_not_edit_organizations()
@@ -105,14 +105,14 @@ class OrganizationTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('organizations.edit', $other_organization));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->actingAs($user)->put(localized_route('organizations.update', $other_organization), [
             'name' => $other_organization->name,
             'locality' => 'St John\'s',
             'region' => 'NL',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_with_admin_role_can_update_other_member_roles()
@@ -167,7 +167,7 @@ class OrganizationTest extends TestCase
                 'role' => 'admin',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_only_administrator_can_not_downgrade_their_role()
@@ -247,7 +247,7 @@ class OrganizationTest extends TestCase
                 'role' => 'member',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_with_admin_role_can_cancel_invitations()
@@ -296,7 +296,7 @@ class OrganizationTest extends TestCase
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
             ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_existing_members_cannot_be_invited()
@@ -427,7 +427,7 @@ class OrganizationTest extends TestCase
             ->from(localized_route('organizations.edit', ['organization' => $organization]))
             ->delete(route('memberships.destroy', $membership));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_only_administrator_can_not_remove_themself()
@@ -523,7 +523,7 @@ class OrganizationTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_non_members_can_not_delete_organizations()
@@ -552,7 +552,7 @@ class OrganizationTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_view_organizations()
@@ -570,10 +570,10 @@ class OrganizationTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('organizations.index'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->get(localized_route('organizations.show', $organization));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_guests_can_not_view_organizations()

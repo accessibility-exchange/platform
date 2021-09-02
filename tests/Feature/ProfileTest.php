@@ -21,7 +21,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
@@ -50,7 +50,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.create'));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->from(localized_route('profiles.create'))->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
@@ -62,7 +62,7 @@ class ProfileTest extends TestCase
             'visibility' => 'all',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_not_create_profiles_for_other_users()
@@ -76,7 +76,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $other_user->id,
@@ -88,7 +88,7 @@ class ProfileTest extends TestCase
             'visibility' => 'all',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_not_create_multiple_profiles()
@@ -104,7 +104,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.create'));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
@@ -116,7 +116,7 @@ class ProfileTest extends TestCase
             'visibility' => 'all',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_edit_profiles()
@@ -132,7 +132,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.edit', $profile));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
@@ -161,7 +161,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.edit', $profile));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
@@ -171,7 +171,7 @@ class ProfileTest extends TestCase
             'creator' => $profile->creator,
             'visibility' => $profile->visibility,
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_delete_profiles()
@@ -229,7 +229,7 @@ class ProfileTest extends TestCase
         $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
             'current_password' => 'password',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_view_profiles_with_global_visibility()
@@ -247,7 +247,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.show', $profile));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_users_can_not_view_profiles_with_project_visibility()
@@ -265,7 +265,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.show', $profile));
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_view_own_draft_profiles()
@@ -282,7 +282,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.show', $profile));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_users_can_not_view_others_draft_profiles()
@@ -300,7 +300,7 @@ class ProfileTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('profiles.show', $profile));
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_guests_can_not_view_profiles()

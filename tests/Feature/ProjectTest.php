@@ -24,7 +24,7 @@ class ProjectTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->actingAs($user)->post(localized_route('projects.create', $entity), [
             'entity_id' => $entity->id,
@@ -47,12 +47,16 @@ class ProjectTest extends TestCase
         }
 
         $user = User::factory()->create();
+        $other_user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
-        $response->assertStatus(403);
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->get(localized_route('projects.create', $entity));
+        $response->assertForbidden();
     }
 
     public function test_users_can_view_projects()
@@ -133,6 +137,7 @@ class ProjectTest extends TestCase
         }
 
         $user = User::factory()->create();
+        $other_user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
@@ -144,6 +149,16 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+            'name' => 'My updated project name',
+            'start_date' => $project->start_date,
+            'end_date' => null,
+        ]);
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->get(localized_route('projects.edit', $project));
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->put(localized_route('projects.update', $project), [
             'name' => 'My updated project name',
             'start_date' => $project->start_date,
             'end_date' => null,
