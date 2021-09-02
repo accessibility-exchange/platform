@@ -16,7 +16,7 @@ Route::multilingual('/consultants/create', [ProfileController::class, 'store'])
     ->name('profiles.store');
 
 Route::multilingual('/consultants/{profile}', [ProfileController::class, 'show'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:view,profile'])
     ->name('profiles.show');
 
 Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'edit'])
@@ -27,6 +27,11 @@ Route::multilingual('/consultants/{profile}/edit', [ProfileController::class, 'u
     ->middleware(['auth', 'can:update,profile'])
     ->method('put')
     ->name('profiles.update');
+
+Route::multilingual('/consultants/{profile}/change-status', [ProfileController::class, 'updateStatus'])
+    ->middleware(['auth', 'can:update,profile'])
+    ->method('put')
+    ->name('profiles.update-status');
 
 Route::multilingual('/consultants/{profile}/delete', [ProfileController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,profile'])

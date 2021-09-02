@@ -96,7 +96,7 @@ class AcceptInvitation
             if ($user->email !== $email) {
                 $validator->errors()->add(
                     'email',
-                    __('invitation.email_not_valid', ['email' => $email])
+                    __('invitation.email_not_valid', ['email' => $user->email])
                 );
             }
         };

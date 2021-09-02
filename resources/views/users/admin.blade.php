@@ -14,28 +14,22 @@
         @csrf
         @method('PUT')
 
-        <div class="field">
+        <div class="field @error('current_password', 'updatePassword') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
             <x-hearth-input id="current_password" type="password" name="current_password" required />
-            @error('current_password', 'updatePassword')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="current_password" bag="updatePassword" />
         </div>
 
-        <div class="field">
+        <div class="field @error('password', 'updatePassword') field--error @enderror">
             <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
             <x-hearth-input id="password" type="password" name="password" required />
-            @error('password', 'updatePassword')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="password" bag="updatePassword" />
         </div>
 
-        <div class="field">
+        <div class="field @error('password_confirmation', 'updatePassword') field--error @enderror">
             <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
             <x-hearth-input id="password_confirmation" type="password" name="password_confirmation" required />
-            @error('password_confirmation', 'updatePassword')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="password_confirmation" bag="updatePassword" />
         </div>
 
         <x-hearth-button>
@@ -102,12 +96,10 @@
         @csrf
         @method('delete')
 
-        <div class="field">
+        <div class="field @error('current_password', 'destroyAccount') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
             <x-hearth-input id="current_password" type="password" name="current_password" required />
-            @error('current_password', 'destroyAccount')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="current_password" bag="destroyAccount" />
         </div>
 
         <x-hearth-button>

@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 itemprop="name">{{ __('dashboard.title') }}</h1>
+        <h1 itemprop="name">{{ __('dashboard.your_title', ['name' => Auth::user()->name]) }}</h1>
     </x-slot>
 
-    <p>{{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}</p>
+    {{-- <p>{{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}</p>
 
     <p>
         <a href="{{ localized_route('profiles.index') }}">{{ __('profile.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
@@ -15,24 +15,33 @@
 
     <p>
         <a href="{{ localized_route('entities.index') }}">{{ __('entity.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
-    </p>
+    </p> --}}
 
-    <p>
-        <a href="{{ localized_route('projects.index') }}">{{ __('project.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
-    </p>
 
-    <h2>{{ __('user.profile_title') }}</h2>
+    @if(!Auth::user()->profile)
 
-    @if(Auth::user()->profile)
-    <p>
-        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong></a><br />
-        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_link') }}</a>
-    </p>
+    <p>{{ __('dashboard.things_you_can_do') }}</p>
+
+    <h2>{{ __('dashboard.create_page_title') }}</h2>
+
+    <p>{{ __('dashboard.create_page_info') }}</p>
+
+    <p>{!! __('dashboard.create_page_prompt', ['link' => '<a href="' . localized_route('profiles.create') . '"><strong>' . __('profile.singular_title') . '</strong></a>']) !!}</p>
+
     @else
-    <p>{!! __('user.no_profile', ['link' => '<a href="' . localized_route('profiles.create') . '">' . __('user.create_profile') . '</a>']) !!}</p>
+    <p>
+        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong>@if(Auth::user()->profile->status === 'draft') ({{ __('profile.status_draft') }})@endif</a><br />
+        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_profile') }}</a>
+    </p>
     @endif
 
-    <h2>{{ __('user.organizations_title') }}</h2>
+    <h2>{{ __('dashboard.learn_consulting_title') }}</h2>
+
+    <p>{{ __('dashboard.learn_consulting_info') }}</p>
+
+    <p>{!! __('dashboard.learn_consulting_prompt', ['link' => '<a href="' . localized_route('resources.index') . '"><strong>' . __('resource.index_title') . '</strong></a>']) !!}</p>
+
+    {{-- <h2>{{ __('user.organizations_title') }}</h2>
 
     @forelse(Auth::user()->organizations as $organization)
     <p>
@@ -56,5 +65,13 @@
     </p>
     @empty
     <p>{!! __('user.no_entity', ['create_link' => '<a href="' . localized_route('entities.create') . '">' . __('user.create_entity') . '</a>']) !!}</p>
-    @endforelse
+    @endforelse --}}
+
+    {{-- <x-slot name="aside">
+        <h2>{{ __('Need some support?') }}</h2>
+        <ul role="list">
+            <li><a href="#">{{ __('Call the support line') }}</a></li>
+            <li><a href="#">{{ __('E-mail us') }}</a></li>
+        </ul>
+    </x-slot> --}}
 </x-app-layout>

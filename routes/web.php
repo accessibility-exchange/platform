@@ -21,7 +21,7 @@ Route::multilingual('/', function () {
 
 Route::multilingual('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified:' . \locale() . '.verification.notice'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::multilingual('/account/edit', [UserController::class, 'edit'])
     ->middleware(['auth'])
@@ -40,6 +40,7 @@ require __DIR__ . '/consultants.php';
 require __DIR__ . '/organizations.php';
 require __DIR__ . '/entities.php';
 require __DIR__ . '/projects.php';
+require __DIR__ . '/resources.php';
 require __DIR__ . '/memberships.php';
 require __DIR__ . '/invitations.php';
 require __DIR__ . '/fortify.php';

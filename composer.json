@@ -13,7 +13,7 @@
         "blade-ui-kit/blade-icons": "^0.5.1",
         "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
-        "fluid-project/hearth": "dev-main",
+        "fluid-project/hearth": "^1.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
@@ -21,7 +21,8 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
-        "spatie/laravel-translatable": "^5.0"
+        "spatie/laravel-translatable": "^5.0",
+        "theiconic/name-parser": "^1.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

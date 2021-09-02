@@ -6,6 +6,10 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Verify your email') }}
+        </x-slot>
+
         <div>
             {{ __('hearth::auth.verification_intro') }}
         </div>
@@ -16,7 +20,7 @@
             </x-hearth-alert>
         @endif
 
-        <div>
+        <div class="flow">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
 

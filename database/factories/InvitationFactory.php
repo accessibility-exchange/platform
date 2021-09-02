@@ -25,7 +25,7 @@ class InvitationFactory extends Factory
         $roles = config('hearth.organizations.roles');
 
         return [
-            'email' => $this->faker->unique()->safeEmail,
+            'email' => $this->faker->unique()->safeEmail(),
             'role' => $roles[$this->faker->numberBetween(0, count($roles) - 1)],
             'inviteable_id' => Organization::factory(),
             'inviteable_type' => 'App\Models\Organization',

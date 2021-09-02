@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'dashboard' => 'dashboard',
+    'dashboard' => 'home',
     'logout' => 'logout',
     'login' => 'login',
     'register' => 'register',

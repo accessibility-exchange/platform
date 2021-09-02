@@ -4,11 +4,14 @@
     <ul role="list" class="nav">
         @auth
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
-            {{ __('hearth::dashboard.title') }}
+            {{ __('dashboard.title') }}
+        </x-nav-link>
+        <x-nav-link :href="localized_route('resources.index')" :active="request()->routeIs(locale() . '.resources.index')">
+            {{ __('resource.index_title') }}
         </x-nav-link>
         @else
-        @if (Route::has(locale() . '.register'))
-        <x-nav-link :href="localized_route('register')">
+        @if (Route::has(locale() . '.registration'))
+        <x-nav-link :href="localized_route('registration')">
             {{ __('hearth::auth.create_account') }}
         </x-nav-link>
         @endif
@@ -30,7 +33,7 @@
                 @if(Auth::user()->profile)
                 <p>
                     <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', Auth::user()->profile)">
-                        {{ __('profile.profile') }}
+                        {{ __('profile.my_page') }}
                     </x-dropdown-link>
                 </p>
                 @endif

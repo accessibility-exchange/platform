@@ -6,38 +6,41 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Sign in') }}
+        </x-slot>
+
         <!-- Session Status -->
         <x-auth-session-status :status="session('status')" />
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors :errors="$errors" />
+        @if ($errors->any())
+            <x-hearth-alert type="error">
+                <p>{{ __('hearth::auth.error_intro') }}</p>
+            </x-hearth-alert>
+        @endif
 
-        <form method="POST" action="{{ localized_route('login') }}">
+        <form method="POST" action="{{ localized_route('login') }}" novalidate>
             @csrf
 
             <!-- Email Address -->
-            <div class="field">
+            <div class="field @error('email') field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-
-                <x-hearth-input id="email" type="email" name="email" :value="old('email')" required autofocus />
+                <x-hearth-input name="email" type="email" :value="old('email')" required autofocus />
+                <x-hearth-error for="email" />
             </div>
 
             <!-- Password -->
-            <div class="field">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-
-                <x-hearth-input id="password"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-hearth-input name="password" type="password" required autocomplete="current-password" />
+                <x-hearth-error for="password" />
             </div>
 
             <!-- Remember Me -->
             <div class="field">
-                <input id="remember_me" type="checkbox" name="remember">
-                <label for="remember_me">
-                    <span>{{ __('hearth::auth.label_remember_me') }}</span>
-                </label>
+                <x-hearth-input name="remember" type="checkbox" />
+                <x-hearth-label for="remember" :value="__('hearth::auth.label_remember_me')" />
             </div>
 
             @if (Route::has('en.password.request'))

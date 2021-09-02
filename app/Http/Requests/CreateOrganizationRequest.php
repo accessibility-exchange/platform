@@ -49,7 +49,7 @@ class CreateOrganizationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'An organization with this name already exists.',
+            'name.unique' => __('validation.organization.name_exists'),
         ];
     }
 }

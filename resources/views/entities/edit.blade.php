@@ -107,17 +107,13 @@
         <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($entity)"></x-hearth-input>
         <div class="field">
             <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-            <x-hearth-input id="email" type="email" name="email" :value="old('email')" required />
-            @error('email', 'inviteOrganizationMember')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-input type="email" name="email" :value="old('email')" required />
+            <x-hearth-error for="email" bag="inviteOrganizationMember" />
         </div>
         <div class="field">
             <x-hearth-label for="role" :value="__('entity.member_role')" />
-            <x-hearth-select id="role" type="role" name="role" :options="$roles" :selected="old('role')" required />
-            @error('role', 'inviteOrganizationMember')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-select type="role" name="role" :options="$roles" :selected="old('role')" required />
+            <x-hearth-error for="role" bag="inviteOrganizationMember" />
         </div>
 
         <x-hearth-button>
@@ -138,9 +134,7 @@
         <div class="field">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
             <x-hearth-input id="current_password" type="password" name="current_password" required />
-            @error('current_password', 'destroyOrganization')
-            <x-validation-error>{{ $message }}</x-validation-error>
-            @enderror
+            <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>
 
         <x-hearth-button>

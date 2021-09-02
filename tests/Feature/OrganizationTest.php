@@ -37,6 +37,10 @@ class OrganizationTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect($url);
+
+        $organization = Organization::where('name', $user->name . ' Consulting')->first();
+
+        $this->assertTrue($user->isMemberOf($organization));
     }
 
     public function test_users_with_admin_role_can_edit_organizations()

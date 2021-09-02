@@ -20,6 +20,10 @@ use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
     if (Features::enabled(Features::registration())) {
+        Route::multilingual('/registration', function () {
+            return view('auth.registration');
+        })->name('registration');
+
         Route::multilingual('/register', [RegisteredUserController::class, 'create'])
             ->middleware('guest')
             ->name('register');

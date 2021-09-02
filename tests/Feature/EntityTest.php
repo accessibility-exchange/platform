@@ -21,22 +21,26 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
 
         $response = $this->actingAs($user)->get(localized_route('entities.create'));
         $response->assertStatus(200);
 
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name . ' Inc.',
             'locality' => 'Truro',
             'region' => 'NS',
         ]);
 
-        $url = localized_route('entities.show', ['entity' => Str::slug($user->name . ' Consulting')]);
+        $url = localized_route('entities.show', ['entity' => Str::slug($user->name . ' Inc.')]);
 
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect($url);
+
+        $entity = Entity::where('name', $user->name . ' Inc.')->first();
+
+        $this->assertTrue($user->isMemberOf($entity));
     }
 
     public function test_users_with_admin_role_can_edit_entities()
@@ -45,7 +49,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
@@ -67,7 +71,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
@@ -89,8 +93,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -117,8 +121,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -145,7 +149,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
@@ -172,8 +176,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -202,7 +206,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -227,7 +231,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
@@ -252,7 +256,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
@@ -277,7 +281,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
@@ -301,8 +305,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -329,7 +333,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()->create();
         $invitation = Invitation::factory()->create([
             'inviteable_id' => $entity->id,
@@ -351,8 +355,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
         $entity = Entity::factory()
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
@@ -377,8 +381,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -405,8 +409,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
@@ -432,7 +436,7 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -458,7 +462,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
@@ -481,7 +486,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
@@ -505,7 +511,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
@@ -528,8 +535,8 @@ class EntityTest extends TestCase
             return $this->markTestSkipped('Entity support is not enabled.');
         }
 
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
+        $user = User::factory()->create(['context' => 'entity']);
+        $other_user = User::factory()->create(['context' => 'entity']);
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])

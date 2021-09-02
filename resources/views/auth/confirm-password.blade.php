@@ -6,24 +6,30 @@
             </a>
         </x-slot>
 
+        <x-slot name="title">
+            {{ __('Confirm your password') }}
+        </x-slot>
+
         <div>
             {{ __('hearth::auth.confirm_intro') }}
         </div>
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors :errors="$errors" />
+        @if ($errors->any())
+        <x-hearth-alert type="error">
+            <p>{{ __('hearth::auth.error_intro') }}</p>
+        </x-hearth-alert>
+        @endif
+
 
         <form method="POST" action="{{ localized_route('password.confirm') }}">
             @csrf
 
             <!-- Password -->
-            <div class="field">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-
-                <x-hearth-input id="password"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-hearth-input type="password" name="password" required autocomplete="current-password" />
+                <x-hearth-error for="password" />
             </div>
 
             <x-hearth-button>

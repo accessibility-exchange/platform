@@ -1,0 +1,41 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to form layouts in the application.
+// -----------------------------------------------------------------------------
+// fieldset legend,
+// fieldset .field label {
+//     font-size: var(--step-1);
+// }
+
+// fieldset legend ~ .field label {
+//     font-size: var(--step-0);
+// }
+
+// .field--error {
+//     color: var(--ll-text-color-error);
+
+//     input {
+//         border-color: var(--ll-text-color-error);
+//     }
+// }
+
+// .field__hint {
+//     font-style: italic;
+// }
+
+// input + .field__hint,
+// textarea + .field__hint {
+//     margin-block-start: var(--step--1);
+// }
+
+// .field__hint + * {
+//     margin-block-start: var(--step--1);
+// }
+
+// fieldset > * + .field {
+//     margin-block-start: 1.5em;
+// }
+
+// [type="reset"],
+// [type="submit"] {
+//     width: auto;
+// }
