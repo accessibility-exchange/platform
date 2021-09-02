@@ -38,7 +38,7 @@ class EntityTest extends TestCase
 
         $response->assertRedirect($url);
 
-        $entity = Organization::where('name', $user->name . ' Inc.')->first();
+        $entity = Entity::where('name', $user->name . ' Inc.')->first();
 
         $this->assertTrue($user->isMemberOf($entity));
     }
