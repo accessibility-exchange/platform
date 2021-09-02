@@ -1,0 +1,14 @@
+aside {
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    margin-block-start: var(--step-2);
+}
+
+@media (min-width: 200ch) {
+    aside {
+        border: var(--ll-border-thin);
+        border-radius: var(--ll-border-radius);
+        float: right;
+        margin-inline-end: calc(((100vw - 65ch) / 2) - 20ch);
+    }
+}

@@ -6,6 +6,9 @@
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
             {{ __('dashboard.title') }}
         </x-nav-link>
+        <x-nav-link :href="localized_route('resources.index')" :active="request()->routeIs(locale() . '.resources.index')">
+            {{ __('resource.index_title') }}
+        </x-nav-link>
         @else
         @if (Route::has(locale() . '.registration'))
         <x-nav-link :href="localized_route('registration')">
