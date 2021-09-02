@@ -25,12 +25,15 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
-        $profile = Profile::where('name', $user->name . ' Consulting')->get()->first();
+        $profile = Profile::where('name', $user->name)->get()->first();
 
         $response->assertSessionHasNoErrors();
 
@@ -51,9 +54,12 @@ class ProfileTest extends TestCase
 
         $response = $this->from(localized_route('profiles.create'))->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);
@@ -74,9 +80,12 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $other_user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);
@@ -99,9 +108,12 @@ class ProfileTest extends TestCase
 
         $response = $this->post(localized_route('profiles.create'), [
             'user_id' => $user->id,
-            'name' => $user->name . ' Consulting',
+            'name' => $user->name,
+            'bio' => 'Hi, welcome to my page.',
             'locality' => 'Truro',
             'region' => 'NS',
+            'creator' => 'self',
+            'visibility' => 'all',
         ]);
 
         $response->assertStatus(403);
@@ -124,9 +136,13 @@ class ProfileTest extends TestCase
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
+            'bio' => $profile->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
+            'creator' => $profile->creator,
+            'visibility' => $profile->visibility,
         ]);
+
         $response->assertRedirect(localized_route('profiles.show', $profile));
     }
 
@@ -149,8 +165,11 @@ class ProfileTest extends TestCase
 
         $response = $this->put(localized_route('profiles.update', $profile), [
             'name' => $profile->name,
+            'bio' => $profile->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
+            'creator' => $profile->creator,
+            'visibility' => $profile->visibility,
         ]);
         $response->assertStatus(403);
     }
@@ -213,11 +232,48 @@ class ProfileTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_users_can_view_profiles()
+    public function test_users_can_view_profiles_with_global_visibility()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'visibility' => 'all',
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(200);
+    }
+
+    public function test_users_can_not_view_profiles_with_project_visibility()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'visibility' => 'project',
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(403);
+    }
+
+    public function test_users_can_view_own_draft_profiles()
     {
         $user = User::factory()->create();
         $profile = Profile::factory()->create([
             'user_id' => $user->id,
+            'status' => 'draft',
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -225,8 +281,26 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.index'));
+        $response = $this->get(localized_route('profiles.show', $profile));
         $response->assertStatus(200);
+    }
+
+    public function test_users_can_not_view_others_draft_profiles()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $profile = Profile::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'draft',
+        ]);
+
+        $response = $this->post(localized_route('login'), [
+            'email' => $other_user->email,
+            'password' => 'password',
+        ]);
+
+        $response = $this->get(localized_route('profiles.show', $profile));
+        $response->assertStatus(403);
     }
 
     public function test_guests_can_not_view_profiles()

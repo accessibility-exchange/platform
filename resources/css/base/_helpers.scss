@@ -8,3 +8,13 @@
 [role="list"] {
     padding-inline-start: 0;
 }
+
+.float-left {
+    float: left;
+    margin-inline-end: var(--step-0);
+}
+
+.float-right {
+    float: right;
+    margin-inline-start: var(--step-0);
+}

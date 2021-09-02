@@ -29,46 +29,39 @@
             <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
 
             <!-- Name -->
-            <div class="field @error('name')field--error @enderror">
+            <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
-                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus @error('name')aria-describedby="name-error"@enderror />
-                <x-field-error for="name" />
+                <x-hearth-input type="text" name="name" value="{{ old('name') }}" required autofocus />
+                <x-hearth-error for="name" />
             </div>
 
             <!-- Email Address -->
-            <div class="field @error('email')field--error @enderror">
+            <div class="field @error('email') field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required @error('email')aria-describedby="email-error"@enderror />
-                <x-field-error for="email" />
+                <x-hearth-input type="email" name="email" value="{{ old('email') }}" required />
+                <x-hearth-error for="email" />
             </div>
 
             <!-- Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <input id="password"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password"
-                                @error('password')aria-describedby="password-error"@enderror />
-                <x-field-error for="password" />
+                <x-hearth-input type="password" name="password" required autocomplete="new-password" />
+                <x-hearth-error for="password" />
             </div>
 
             <!-- Confirm Password -->
-            <div class="field @error('password')field--error @enderror">
+            <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-                <input id="password_confirmation"
-                                type="password"
-                                name="password_confirmation" required
-                                @error('password')aria-describedby="password-error"@enderror />
-                <x-field-error for="password" />
+                <x-hearth-input type="password" name="password_confirmation" required />
+                <x-hearth-error for="password" />
             </div>
 
             <!-- Access Needs -->
-            <div class="field @error('access')field--error @enderror">
+            <div class="field @error('access') field--error @enderror">
                 <x-hearth-label for="access" :value="__('Access support needs (optional)')" />
                 <textarea id="access" name="access" aria-describedby="access-hint @error('password') access-error @enderror"></textarea>
-                <p class="field--hint" id="access-hint">{{ __('Please let us know if you need any access support to use this website.') }}
-                <x-field-error for="access" />
+                <p class="field__hint" id="access-hint">{{ __('Please let us know if you need any access support to use this website.') }}
+                <x-hearth-error for="access" />
             </div>
 
             <p>

@@ -1,3 +1,8 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the application layout.
 // -----------------------------------------------------------------------------
+.wrapper--wide {
+    margin: 0 auto;
+    max-width: 85ch;
+    padding: var(--step-0);
+}

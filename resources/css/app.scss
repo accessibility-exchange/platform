@@ -18,7 +18,9 @@
 // 4. Layout-related sections
 @import
     'layouts/app',
+    'layouts/aside',
     'layouts/banner',
+    'layouts/footer',
     'layouts/form',
     'layouts/guest';
 
@@ -27,16 +29,19 @@
     'components/alert',
     'components/auth-card',
     'components/brand',
+    'components/date-input',
     'components/dropdown',
     'components/modal',
     'components/navigation',
+    'components/tabs',
     'components/table',
+    'components/tags',
     'components/validation-error';
 
 // 6. Route-specific styles
 @import
     'routes/dashboard',
-    'routes/profiles/index',
+    'routes/profiles/show',
     'routes/users/show',
     'routes/welcome';
 

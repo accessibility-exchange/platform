@@ -6,6 +6,7 @@ use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\DestroyProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -43,7 +44,13 @@ class ProfileController extends Controller
     {
         $profile = Profile::create($request->validated());
 
-        flash(__('profile.create_succeeded'), 'success');
+        if ($request->input('save_draft')) {
+            $profile['status'] = 'draft';
+            flash(__('profile.save_draft_succeeded'), 'success');
+        } elseif ($request->input('publish')) {
+            $profile['status'] = 'published';
+            flash(__('profile.publish_succeeded'), 'success');
+        }
 
         return redirect(\localized_route('profiles.show', ['profile' => $profile]));
     }
@@ -56,6 +63,10 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
+        if ($profile->status === 'draft') {
+            return view('profiles.show-draft', ['profile' => $profile]);
+        }
+
         return view('profiles.show', ['profile' => $profile]);
     }
 
@@ -83,10 +94,39 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
         $profile->fill($request->validated());
+
         $profile->save();
+
+
+        if ($profile->status === 'draft') {
+            flash(__('profile.update_draft_succeeded'), 'success');
+        }
 
         flash(__('profile.update_succeeded'), 'success');
 
+        return redirect(\localized_route('profiles.show', $profile));
+    }
+
+    /**
+     * Update the specified resource's status.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Profile  $profile
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(Request $request, Profile $profile)
+    {
+        if ($request->input('unpublish')) {
+            $profile->status = 'draft';
+            $profile->save();
+
+            flash(__('profile.unpublish_succeeded'), 'success');
+        } elseif ($request->input('publish')) {
+            $profile->status = 'published';
+            $profile->save();
+
+            flash(__('profile.publish_succeeded'), 'success');
+        }
 
         return redirect(\localized_route('profiles.show', $profile));
     }

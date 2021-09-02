@@ -12,4 +12,7 @@ return [
     'entities' => [
         'enabled' => true,
     ],
+    'resources' => [
+        'enabled' => true,
+    ],
 ];
