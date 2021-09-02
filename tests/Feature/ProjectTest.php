@@ -68,13 +68,13 @@ class ProjectTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.index'));
-        $response->assertSuccess();
+        $response->assertOk();
 
         $response = $this->actingAs($user)->get(localized_route('projects.entity-index', $entity));
-        $response->assertSuccess();
+        $response->assertOk();
 
         $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
-        $response->assertSuccess();
+        $response->assertOk();
     }
 
     public function test_guests_cannot_view_projects()
@@ -95,6 +95,42 @@ class ProjectTest extends TestCase
         $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('projects.show', $project));
+
+    public function test_users_with_entity_admin_role_can_edit_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
+        $response->assertOk();
+    }
+
+    public function test_users_without_entity_admin_role_cannot_edit_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
+        $response->assertForbidden();
+    }
         $response->assertRedirect(localized_route('login'));
     }
 }

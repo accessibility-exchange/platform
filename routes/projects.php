@@ -23,9 +23,11 @@ Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->name('projects.show');
 
 Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
+    ->middleware(['auth', 'can:update,project'])
     ->name('projects.edit');
 
 Route::multilingual('/projects/{project}/update', [ProjectController::class, 'update'])
+    ->middleware(['auth', 'can:update,project'])
     ->method('put')
     ->name('projects.update');
 
