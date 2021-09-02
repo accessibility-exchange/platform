@@ -114,6 +114,16 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
         $response->assertOk();
+
+        $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+            'name' => 'My renamed accessibility project',
+            'start_date' => $project->start_date,
+            'end_date' => null,
+        ]);
+
+        $updated_project = Project::where('name', 'My renamed accessibility project')->first();
+
+        $response->assertRedirect(localized_route('projects.show', $updated_project));
     }
 
     public function test_users_without_entity_admin_role_cannot_edit_projects()
@@ -131,6 +141,13 @@ class ProjectTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
+        $response->assertForbidden();
+
+        $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+            'name' => 'My updated project name',
+            'start_date' => $project->start_date,
+            'end_date' => null,
+        ]);
         $response->assertForbidden();
     }
 }
