@@ -22,11 +22,9 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
-        $entity = Entity::factory();
-
         return [
-            'name' => $entity->name . ' Project',
-            'entity_id' => $entity->id,
+            'name' => 'My accessibility project',
+            'entity_id' => Entity::factory(),
             'start_date' => $this->faker->dateTimeBetween('-6 months', '-1 months'),
             'end_date' => $this->faker->dateTimeBetween('+1 months', '+6 months'),
         ];

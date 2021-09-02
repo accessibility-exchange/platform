@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Entity;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,7 @@ class ProjectTest extends TestCase
     public function test_users_with_entity_admin_role_can_create_projects()
     {
         if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support is not enabled.');
+            return $this->markTestSkipped('Entity support  is not enabled.');
         }
 
         $user = User::factory()->create();
@@ -52,5 +53,48 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
         $response->assertStatus(403);
+    }
+
+    public function test_users_can_view_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.index'));
+        $response->assertSuccess();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.entity-index', $entity));
+        $response->assertSuccess();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+        $response->assertSuccess();
+    }
+
+    public function test_guests_cannot_view_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $entity = Entity::factory()->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->get(localized_route('projects.index'));
+        $response->assertRedirect(localized_route('login'));
+
+        $response = $this->get(localized_route('projects.entity-index', $entity));
+        $response->assertRedirect(localized_route('login'));
+
+        $response = $this->get(localized_route('projects.show', $project));
+        $response->assertRedirect(localized_route('login'));
     }
 }
