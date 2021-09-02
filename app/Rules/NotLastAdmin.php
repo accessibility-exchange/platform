@@ -25,6 +25,6 @@ class NotLastAdmin implements Rule
      */
     public function message()
     {
-        return __('validation.custom.organization_user.not_last_admin');
+        return __('validation.custom.membership.not_last_admin');
     }
 }

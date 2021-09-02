@@ -30,14 +30,7 @@
             <!-- Two-Factor Code -->
             <div class="field" x-show="! recovery">
                 <x-hearth-label for="code" :value="__('hearth::auth.label_two_factor_auth_code')" />
-
-                <x-hearth-input id="code"
-                                type="text"
-                                name="code"
-                                inputmode="numeric"
-                                required
-                                autofocus
-                                autocomplete="one-time-code" />
+                <x-hearth-input type="text" name="code" inputmode="numeric" required autofocus autocomplete="one-time-code" />
             </div>
 
             <p x-show="! recovery">
@@ -51,11 +44,7 @@
             <!-- Recovery Code -->
             <div class="field" x-show="recovery">
                 <x-hearth-label for="recovery_code" :value="__('hearth::auth.label_two_factor_auth_recovery_code')" />
-
-                <x-hearth-input id="recovery_code"
-                                type="text"
-                                name="recovery_code"
-                                autocomplete="one-time-code" />
+                <x-hearth-input type="text" name="recovery_code" autocomplete="one-time-code" />
             </div>
 
             <p x-show="recovery">

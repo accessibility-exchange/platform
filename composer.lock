@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e71d5c7852b1462c35d9f1549cf3c0bb",
+    "content-hash": "8d183f1b807c6c49dd3c6467472cf091",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1255,16 +1255,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "dev-main",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "1fa17cd33f96bbc5a2d834389777b3425e59f962"
+                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/1fa17cd33f96bbc5a2d834389777b3425e59f962",
-                "reference": "1fa17cd33f96bbc5a2d834389777b3425e59f962",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/c396400380bc49760372c4f38d42e7bd41ecfb27",
+                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27",
                 "shasum": ""
             },
             "require": {
@@ -1290,7 +1290,6 @@
                 "spatie/laravel-ray": "^1.9",
                 "vimeo/psalm": "^4.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1331,9 +1330,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/main"
+                "source": "https://github.com/fluid-project/hearth/tree/v1.1.0"
             },
-            "time": "2021-08-16T17:24:53+00:00"
+            "time": "2021-08-31T12:20:01+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -6830,6 +6829,54 @@
                 }
             ],
             "time": "2021-08-04T23:19:25+00:00"
+        },
+        {
+            "name": "theiconic/name-parser",
+            "version": "v1.2.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theiconic/name-parser.git",
+                "reference": "9a54a713bf5b2e7fd990828147d42de16bf8a253"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theiconic/name-parser/zipball/9a54a713bf5b2e7fd990828147d42de16bf8a253",
+                "reference": "9a54a713bf5b2e7fd990828147d42de16bf8a253",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "php-mock/php-mock-phpunit": "^2.1",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TheIconic\\NameParser\\": [
+                        "src/",
+                        "tests/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "The Iconic",
+                    "email": "engineering@theiconic.com.au"
+                }
+            ],
+            "description": "PHP library for parsing a string containing a full name into its parts",
+            "support": {
+                "issues": "https://github.com/theiconic/name-parser/issues",
+                "source": "https://github.com/theiconic/name-parser/tree/v1.2.11"
+            },
+            "time": "2019-11-14T14:08:48+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -12873,9 +12920,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "fluid-project/hearth": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -143,11 +143,17 @@ return [
             'length-uppercase-specialcharacter' => 'The :attribute must be at least :length characters and contain at least one uppercase character and one special character.',
             'length-uppercase-numeric-specialcharacter' => 'The :attribute must be at least :length characters and contain at least one uppercase character, one number, and one special character.',
             'length-numeric-specialcharacter' => 'The :attribute must be at least :length characters and contain at least one special character and one number.',
-            'length' => 'The :attribute must be at least :length characters.'
+            'length' => 'The :attribute must be at least :length characters.',
         ],
-        'organization_user' => [
-            'not_last_admin' => 'There must be at least one administrator in this organization.'
-        ]
+        'membership' => [
+            'not_last_admin' => 'There must be at least one administrator.',
+        ],
+        'organization' => [
+            'name_exists' => 'An organization with this name already exists.',
+        ],
+        'resource' => [
+            'title_exists' => 'A resource with this title already exists.',
+        ],
     ],
 
     /*
