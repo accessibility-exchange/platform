@@ -95,6 +95,8 @@ class ProjectTest extends TestCase
         $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('projects.show', $project));
+        $response->assertRedirect(localized_route('login'));
+    }
 
     public function test_users_with_entity_admin_role_can_edit_projects()
     {
@@ -130,7 +132,5 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
         $response->assertForbidden();
-    }
-        $response->assertRedirect(localized_route('login'));
     }
 }
