@@ -12,7 +12,7 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 use TheIconic\NameParser\Parser as NameParser;
 
-class Profile extends Model
+class Consultant extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -83,7 +83,7 @@ class Profile extends Model
     }
 
     /**
-     * Get the user that has this consultant profile.
+     * Get the user that has this consultant consultant.
      */
     public function user(): BelongsTo
     {

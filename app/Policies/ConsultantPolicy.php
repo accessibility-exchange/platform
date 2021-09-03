@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Profile;
+use App\Models\Consultant;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class ProfilePolicy
+class ConsultantPolicy
 {
     use HandlesAuthorization;
 
@@ -15,11 +15,11 @@ class ProfilePolicy
      * Determine whether the user can view the model.
      *
      * @param \App\Models\User  $user
-     * @param \App\Models\Profile  $model
+     * @param \App\Models\Consultant  $model
      *
      * @return mixed
      */
-    public function view(User $user, Profile $model)
+    public function view(User $user, Consultant $model)
     {
         if ($model->status === 'draft' || $model->visibility !== 'all') {
             // TODO: Handle project team visibility.
@@ -41,7 +41,7 @@ class ProfilePolicy
     public function create(User $user)
     {
         if ($user->context === 'consultant') {
-            return $user->profile
+            return $user->consultant
                 ? Response::deny(__('You already have a consultant page.'))
                 : Response::allow();
         }
@@ -53,12 +53,12 @@ class ProfilePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Profile  $profile
+     * @param  \App\Models\Consultant  $consultant
      * @return mixed
      */
-    public function update(User $user, Profile $profile)
+    public function update(User $user, Consultant $consultant)
     {
-        return $user->id === $profile->user_id
+        return $user->id === $consultant->user_id
             ? Response::allow()
             : Response::deny(__('You cannot edit this consultant page.'));
     }
@@ -67,12 +67,12 @@ class ProfilePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Profile  $profile
+     * @param  \App\Models\Consultant  $consultant
      * @return mixed
      */
-    public function delete(User $user, Profile $profile)
+    public function delete(User $user, Consultant $consultant)
     {
-        return $user->id === $profile->user_id
+        return $user->id === $consultant->user_id
             ? Response::allow()
             : Response::deny(__('You cannot delete this consultant page.'));
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDetailColumnsToProfilesTable extends Migration
+class AddDetailColumnsToConsultantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddDetailColumnsToProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::table('profiles', function (Blueprint $table) {
+        Schema::table('consultants', function (Blueprint $table) {
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->text('bio');
             $table->date('birth_date')->nullable();
@@ -32,7 +32,7 @@ class AddDetailColumnsToProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::table('profiles', function (Blueprint $table) {
+        Schema::table('consultants', function (Blueprint $table) {
             $table->dropColumn([
                 'status',
                 'bio',

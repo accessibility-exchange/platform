@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Profile;
+use App\Models\Consultant;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateProfileRequest extends FormRequest
+class UpdateConsultantRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,9 @@ class CreateProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->id == $this->user_id;
+        $consultant = $this->route('consultant');
+
+        return $consultant && $this->user()->can('update', $consultant);
     }
 
     /**
@@ -26,12 +28,15 @@ class CreateProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $consultant = $this->route('consultant');
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Profile::class),
+                Rule::unique(Consultant::class)->ignore($consultant->id),
+
             ],
             'bio' => 'required|string',
             'locality' => 'required|string|max:255',
@@ -46,7 +51,7 @@ class CreateProfileRequest extends FormRequest
             'creator_relationship' => 'required_if:creator,other|nullable|string|max:255',
             'visibility' => 'required|in:project,all',
             'user_id' => [
-                Rule::unique(Profile::class),
+                Rule::unique(Consultant::class),
             ],
         ];
     }
@@ -60,7 +65,6 @@ class CreateProfileRequest extends FormRequest
     {
         return [
             'name.unique' => 'A consultant page with this name already exists.',
-            'user_id.unique' => 'You already have a consultant page. Would you like to edit it instead?',
         ];
     }
 }

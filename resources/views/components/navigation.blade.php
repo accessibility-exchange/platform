@@ -30,10 +30,10 @@
             </x-slot>
 
             <x-slot name="content">
-                @if(Auth::user()->profile)
+                @if(Auth::user()->consultant)
                 <p>
-                    <x-dropdown-link href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}" :active="request()->routeIs(locale() . '.profiles.show', Auth::user()->profile)">
-                        {{ __('profile.my_page') }}
+                    <x-dropdown-link href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}" :active="request()->routeIs(locale() . '.consultants.show', Auth::user()->consultant)">
+                        {{ __('consultant.my_page') }}
                     </x-dropdown-link>
                 </p>
                 @endif
