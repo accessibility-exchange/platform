@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 
-class DestroyProfileRequest extends FormRequest
+class DestroyConsultantRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,9 +14,9 @@ class DestroyProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        $profile = $this->route('profile');
+        $consultant = $this->route('consultant');
 
-        return $profile && $this->user()->can('delete', $profile);
+        return $consultant && $this->user()->can('delete', $consultant);
     }
 
     /**
@@ -46,7 +46,7 @@ class DestroyProfileRequest extends FormRequest
                     __('The provided password does not match your current password.')
                 );
             }
-        })->validateWithBag('destroyProfile');
+        })->validateWithBag('destroyConsultant');
 
         return;
     }

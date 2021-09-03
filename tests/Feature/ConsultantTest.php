@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Models\Profile;
+use App\Models\Consultant;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ProfileTest extends TestCase
+class ConsultantTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,10 +20,10 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.create'));
+        $response = $this->get(localized_route('consultants.create'));
         $response->assertOk();
 
-        $response = $this->post(localized_route('profiles.create'), [
+        $response = $this->post(localized_route('consultants.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -33,11 +33,11 @@ class ProfileTest extends TestCase
             'visibility' => 'all',
         ]);
 
-        $profile = Profile::where('name', $user->name)->get()->first();
+        $consultant = Consultant::where('name', $user->name)->get()->first();
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertRedirect(localized_route('profiles.show', $profile));
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
     }
 
     public function test_entity_users_can_not_create_profiles()
@@ -49,10 +49,10 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.create'));
+        $response = $this->get(localized_route('consultants.create'));
         $response->assertForbidden();
 
-        $response = $this->from(localized_route('profiles.create'))->post(localized_route('profiles.create'), [
+        $response = $this->from(localized_route('consultants.create'))->post(localized_route('consultants.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -75,10 +75,10 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.create'));
+        $response = $this->get(localized_route('consultants.create'));
         $response->assertOk();
 
-        $response = $this->post(localized_route('profiles.create'), [
+        $response = $this->post(localized_route('consultants.create'), [
             'user_id' => $other_user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -94,7 +94,7 @@ class ProfileTest extends TestCase
     public function test_users_can_not_create_multiple_profiles()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -103,10 +103,10 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.create'));
+        $response = $this->get(localized_route('consultants.create'));
         $response->assertForbidden();
 
-        $response = $this->post(localized_route('profiles.create'), [
+        $response = $this->post(localized_route('consultants.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -122,7 +122,7 @@ class ProfileTest extends TestCase
     public function test_users_can_edit_profiles()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -131,19 +131,19 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.edit', $profile));
+        $response = $this->get(localized_route('consultants.edit', $consultant));
         $response->assertOk();
 
-        $response = $this->put(localized_route('profiles.update', $profile), [
-            'name' => $profile->name,
-            'bio' => $profile->bio,
+        $response = $this->put(localized_route('consultants.update', $consultant), [
+            'name' => $consultant->name,
+            'bio' => $consultant->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
-            'creator' => $profile->creator,
-            'visibility' => $profile->visibility,
+            'creator' => $consultant->creator,
+            'visibility' => $consultant->visibility,
         ]);
 
-        $response->assertRedirect(localized_route('profiles.show', $profile));
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
     }
 
     public function test_users_can_not_edit_others_profiles()
@@ -151,7 +151,7 @@ class ProfileTest extends TestCase
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $other_user->id,
         ]);
 
@@ -160,16 +160,16 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.edit', $profile));
+        $response = $this->get(localized_route('consultants.edit', $consultant));
         $response->assertForbidden();
 
-        $response = $this->put(localized_route('profiles.update', $profile), [
-            'name' => $profile->name,
-            'bio' => $profile->bio,
+        $response = $this->put(localized_route('consultants.update', $consultant), [
+            'name' => $consultant->name,
+            'bio' => $consultant->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
-            'creator' => $profile->creator,
-            'visibility' => $profile->visibility,
+            'creator' => $consultant->creator,
+            'visibility' => $consultant->visibility,
         ]);
         $response->assertForbidden();
     }
@@ -177,7 +177,7 @@ class ProfileTest extends TestCase
     public function test_users_can_delete_profiles()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -186,7 +186,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
+        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
         $response->assertRedirect(localized_route('dashboard'));
@@ -195,7 +195,7 @@ class ProfileTest extends TestCase
     public function test_users_can_not_delete_profiles_with_wrong_password()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -204,12 +204,12 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
+        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'wrong_password',
         ]);
 
         $response->assertSessionHasErrors();
-        $response->assertRedirect(localized_route('profiles.edit', $profile));
+        $response->assertRedirect(localized_route('consultants.edit', $consultant));
     }
 
     public function test_users_can_not_delete_others_profiles()
@@ -217,7 +217,7 @@ class ProfileTest extends TestCase
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $other_user->id,
         ]);
 
@@ -226,7 +226,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->from(localized_route('profiles.edit', $profile))->delete(localized_route('profiles.destroy', $profile), [
+        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
         $response->assertForbidden();
@@ -236,7 +236,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
             'visibility' => 'all',
         ]);
@@ -246,7 +246,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.show', $profile));
+        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertOk();
     }
 
@@ -254,7 +254,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
             'visibility' => 'project',
         ]);
@@ -264,14 +264,14 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.show', $profile));
+        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertForbidden();
     }
 
     public function test_users_can_view_own_draft_profiles()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
             'status' => 'draft',
         ]);
@@ -281,7 +281,7 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.show', $profile));
+        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertOk();
     }
 
@@ -289,7 +289,7 @@ class ProfileTest extends TestCase
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
             'status' => 'draft',
         ]);
@@ -299,21 +299,21 @@ class ProfileTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response = $this->get(localized_route('profiles.show', $profile));
+        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertForbidden();
     }
 
     public function test_guests_can_not_view_profiles()
     {
         $user = User::factory()->create();
-        $profile = Profile::factory()->create([
+        $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
         ]);
 
-        $response = $this->get(localized_route('profiles.index'));
+        $response = $this->get(localized_route('consultants.index'));
         $response->assertRedirect(localized_route('login'));
 
-        $response = $this->get(localized_route('profiles.show', $profile));
+        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertRedirect(localized_route('login'));
     }
 }

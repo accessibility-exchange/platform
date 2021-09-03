@@ -1,5 +1,5 @@
 {{-- TODO: Replace with real content. --}}
-<x-header :level="$level">For contacting {{ $profile->firstName() }}</x-header>
+<x-header :level="$level">For contacting {{ $consultant->firstName() }}</x-header>
 
 <ul>
     <li>Email</li>

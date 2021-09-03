@@ -6,7 +6,7 @@
     {{-- <p>{{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}</p>
 
     <p>
-        <a href="{{ localized_route('profiles.index') }}">{{ __('profile.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
+        <a href="{{ localized_route('consultants.index') }}">{{ __('consultant.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
     </p>
 
     <p>
@@ -18,7 +18,7 @@
     </p> --}}
 
 
-    @if(!Auth::user()->profile)
+    @if(!Auth::user()->consultant)
 
     <p>{{ __('dashboard.things_you_can_do') }}</p>
 
@@ -26,12 +26,12 @@
 
     <p>{{ __('dashboard.create_page_info') }}</p>
 
-    <p>{!! __('dashboard.create_page_prompt', ['link' => '<a href="' . localized_route('profiles.create') . '"><strong>' . __('profile.singular_title') . '</strong></a>']) !!}</p>
+    <p>{!! __('dashboard.create_page_prompt', ['link' => '<a href="' . localized_route('consultants.create') . '"><strong>' . __('consultant.singular_title') . '</strong></a>']) !!}</p>
 
     @else
     <p>
-        <a href="{{ localized_route('profiles.show', ['profile' => Auth::user()->profile]) }}"><strong>{{ Auth::user()->profile->name }}</strong>@if(Auth::user()->profile->status === 'draft') ({{ __('profile.status_draft') }})@endif</a><br />
-        <a href="{{ localized_route('profiles.edit', ['profile' => Auth::user()->profile]) }}">{{ __('profile.edit_profile') }}</a>
+        <a href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}"><strong>{{ Auth::user()->consultant->name }}</strong>@if(Auth::user()->consultant->status === 'draft') ({{ __('consultant.status_draft') }})@endif</a><br />
+        <a href="{{ localized_route('consultants.edit', ['consultant' => Auth::user()->consultant]) }}">{{ __('consultant.edit_profile') }}</a>
     </p>
     @endif
 
