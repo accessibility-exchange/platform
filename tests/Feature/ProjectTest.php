@@ -165,4 +165,54 @@ class ProjectTest extends TestCase
         ]);
         $response->assertForbidden();
     }
+
+    public function test_users_with_entity_admin_role_can_delete_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->from(localized_route('projects.edit', $project))->delete(localized_route('projects.destroy', $project), [
+            'current_password' => 'password',
+        ]);
+
+        $response->assertRedirect(localized_route('dashboard'));
+    }
+
+    public function test_users_without_entity_admin_role_cannot_delete_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+            'current_password' => 'password',
+        ]);
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+            'current_password' => 'password',
+        ]);
+        $response->assertForbidden();
+    }
 }
