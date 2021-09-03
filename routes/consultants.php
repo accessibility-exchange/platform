@@ -16,24 +16,24 @@ Route::multilingual('/consultants/create', [ConsultantController::class, 'store'
     ->name('consultants.store');
 
 Route::multilingual('/consultants/{consultant}', [ConsultantController::class, 'show'])
-    ->middleware(['auth', 'can:view,profile'])
+    ->middleware(['auth', 'can:view,consultant'])
     ->name('consultants.show');
 
 Route::multilingual('/consultants/{consultant}/edit', [ConsultantController::class, 'edit'])
-    ->middleware(['auth', 'can:update,profile'])
+    ->middleware(['auth', 'can:update,consultant'])
     ->name('consultants.edit');
 
 Route::multilingual('/consultants/{consultant}/edit', [ConsultantController::class, 'update'])
-    ->middleware(['auth', 'can:update,profile'])
+    ->middleware(['auth', 'can:update,consultant'])
     ->method('put')
     ->name('consultants.update');
 
 Route::multilingual('/consultants/{consultant}/change-status', [ConsultantController::class, 'updateStatus'])
-    ->middleware(['auth', 'can:update,profile'])
+    ->middleware(['auth', 'can:update,consultant'])
     ->method('put')
     ->name('consultants.update-status');
 
 Route::multilingual('/consultants/{consultant}/delete', [ConsultantController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,profile'])
+    ->middleware(['auth', 'can:delete,consultant'])
     ->method('delete')
     ->name('consultants.destroy');
