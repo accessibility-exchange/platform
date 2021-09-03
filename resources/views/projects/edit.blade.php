@@ -36,7 +36,7 @@
         @method('DELETE')
 
         <div class="field @error('current_password', 'destroyProject') field--error @enderror">
-            <x-hearth-label for="current_password" :value="__('auth.label_current_password')" />
+            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
             <x-hearth-input type="password" name="current_password" required />
             <x-hearth-error for="current_password" bag="destroyProject" />
         </div>

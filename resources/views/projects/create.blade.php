@@ -17,7 +17,7 @@
 
         <div class="field @error('name') field--error @enderror">
             <x-hearth-label for="name" :value="__('project.label_name')" />
-            <x-hearth-input type="text" name="name" required />
+            <x-hearth-input type="text" name="name" required :value="old('name', '')" />
             <x-hearth-error for="name" />
         </div>
 
