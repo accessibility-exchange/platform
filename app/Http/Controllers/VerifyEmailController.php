@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Http\Requests\VerifyEmailRequest;
 
 class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmailController
@@ -15,7 +14,7 @@ class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmai
      * @phpstan-ignore-next-line
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function __invoke(VerifyEmailRequest $request): RedirectResponse
+    public function __invoke(VerifyEmailRequest $request)
     {
         $dashboard = \localized_route('dashboard', ['verified' => 1], $request->user()->locale);
 

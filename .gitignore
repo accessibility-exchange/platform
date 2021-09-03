@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+.nova
 .php-cs-fixer.cache
 .phpunit.result.cache
 Homestead.json

@@ -14,7 +14,7 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get(localized_route('login'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_users_can_authenticate_using_the_login_screen()
@@ -52,7 +52,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('users.edit'));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_guests_can_not_edit_profiles()

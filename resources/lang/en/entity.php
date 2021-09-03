@@ -27,5 +27,8 @@ return [
     'action_update_user_role' => 'Update Role',
     'action_cancel_user_role_update' => 'Cancel',
     'action_remove_member' => 'Remove',
-    'action_remove_member_with_name' => 'Remove :user from :regulated entity'
+    'action_remove_member_with_name' => 'Remove :user from :regulated entity',
+    'active_projects' => 'Active projects',
+    'create_project' => 'Create a project',
+    'browse_all_projects' => 'Browse all of :entity’s projects'
 ];

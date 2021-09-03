@@ -24,7 +24,7 @@ class EntityTest extends TestCase
         $user = User::factory()->create(['context' => 'entity']);
 
         $response = $this->actingAs($user)->get(localized_route('entities.create'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
             'name' => $user->name . ' Inc.',
@@ -55,7 +55,7 @@ class EntityTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('entities.edit', $entity));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
@@ -77,14 +77,14 @@ class EntityTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('entities.edit', $entity));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->actingAs($user)->put(localized_route('entities.update', $entity), [
             'name' => $entity->name,
             'locality' => 'St John\'s',
             'region' => 'NL',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_non_members_can_not_edit_entities()
@@ -105,14 +105,14 @@ class EntityTest extends TestCase
             ->create();
 
         $response = $this->actingAs($user)->get(localized_route('entities.edit', $other_entity));
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response = $this->actingAs($user)->put(localized_route('entities.update', $other_entity), [
             'name' => $other_entity->name,
             'locality' => 'St John\'s',
             'region' => 'NL',
         ]);
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_with_admin_role_can_update_other_member_roles()
@@ -167,7 +167,7 @@ class EntityTest extends TestCase
                 'role' => 'admin',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_only_administrator_can_not_downgrade_their_role()
@@ -247,7 +247,7 @@ class EntityTest extends TestCase
                 'role' => 'member',
             ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_with_admin_role_can_cancel_invitations()
@@ -296,7 +296,7 @@ class EntityTest extends TestCase
             ->from(localized_route('entities.edit', ['entity' => $entity]))
             ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_existing_members_cannot_be_invited()
@@ -427,7 +427,7 @@ class EntityTest extends TestCase
             ->from(localized_route('entities.edit', ['entity' => $entity]))
             ->delete(route('memberships.destroy', $membership));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_only_administrator_can_not_remove_themself()
@@ -526,7 +526,7 @@ class EntityTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_non_members_can_not_delete_entities()
@@ -555,7 +555,7 @@ class EntityTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     public function test_users_can_view_entities()
@@ -573,10 +573,10 @@ class EntityTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('entities.index'));
-        $response->assertStatus(200);
+        $response->assertOk();
 
         $response = $this->get(localized_route('entities.show', $entity));
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_guests_can_not_view_entities()
