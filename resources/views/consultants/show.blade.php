@@ -15,7 +15,7 @@
             @endif
         </div>
         @can('update', $consultant)
-        @if($consultant->status == 'published')
+        @if($consultant->checkStatus('published'))
         <form action="{{ localized_route('consultants.update-status', $consultant) }}" method="POST" novalidate>
             @csrf
             @method('PUT')

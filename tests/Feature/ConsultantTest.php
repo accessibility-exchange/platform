@@ -11,7 +11,7 @@ class ConsultantTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_users_can_create_profiles()
+    public function test_users_can_create_consultant_pages()
     {
         $user = User::factory()->create();
 
@@ -40,7 +40,7 @@ class ConsultantTest extends TestCase
         $response->assertRedirect(localized_route('consultants.show', $consultant));
     }
 
-    public function test_entity_users_can_not_create_profiles()
+    public function test_entity_users_can_not_create_consultant_pages()
     {
         $user = User::factory()->create(['context' => 'entity']);
 
@@ -65,7 +65,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_not_create_profiles_for_other_users()
+    public function test_users_can_not_create_consultant_pages_for_other_users()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
@@ -91,7 +91,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_not_create_multiple_profiles()
+    public function test_users_can_not_create_multiple_consultant_pages()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
@@ -119,7 +119,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_edit_profiles()
+    public function test_users_can_edit_consultant_pages()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
@@ -146,7 +146,7 @@ class ConsultantTest extends TestCase
         $response->assertRedirect(localized_route('consultants.show', $consultant));
     }
 
-    public function test_users_can_not_edit_others_profiles()
+    public function test_users_can_not_edit_others_consultant_pages()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
@@ -174,7 +174,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_delete_profiles()
+    public function test_users_can_delete_consultant_pages()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
@@ -192,7 +192,7 @@ class ConsultantTest extends TestCase
         $response->assertRedirect(localized_route('dashboard'));
     }
 
-    public function test_users_can_not_delete_profiles_with_wrong_password()
+    public function test_users_can_not_delete_consultant_pages_with_wrong_password()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
@@ -212,7 +212,7 @@ class ConsultantTest extends TestCase
         $response->assertRedirect(localized_route('consultants.edit', $consultant));
     }
 
-    public function test_users_can_not_delete_others_profiles()
+    public function test_users_can_not_delete_others_consultant_pages()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
@@ -232,7 +232,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_view_profiles_with_global_visibility()
+    public function test_users_can_view_consultant_pages_with_global_visibility()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
@@ -250,7 +250,7 @@ class ConsultantTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_users_can_not_view_profiles_with_project_visibility()
+    public function test_users_can_not_view_consultant_pages_with_project_visibility()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
@@ -268,12 +268,12 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_can_view_own_draft_profiles()
+    public function test_users_can_view_own_draft_consultant_pages()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
-            'status' => 'draft',
+            'published_at' => null,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -285,13 +285,13 @@ class ConsultantTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_users_can_not_view_others_draft_profiles()
+    public function test_users_can_not_view_others_draft_consultant_pages()
     {
         $user = User::factory()->create();
         $other_user = User::factory()->create();
         $consultant = Consultant::factory()->create([
             'user_id' => $user->id,
-            'status' => 'draft',
+            'published_at' => null,
         ]);
 
         $response = $this->post(localized_route('login'), [
@@ -303,7 +303,7 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_guests_can_not_view_profiles()
+    public function test_guests_can_not_view_consultant_pages()
     {
         $user = User::factory()->create();
         $consultant = Consultant::factory()->create([
@@ -315,5 +315,44 @@ class ConsultantTest extends TestCase
 
         $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertRedirect(localized_route('login'));
+    }
+
+    public function test_consultant_pages_can_be_published()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+            'published_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('published'));
+    }
+
+    public function test_consultant_pages_can_be_unpublished()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('draft'));
     }
 }

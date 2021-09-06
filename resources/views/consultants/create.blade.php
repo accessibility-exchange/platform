@@ -99,7 +99,6 @@
             </div>
         </fieldset>
 
-        <x-hearth-input type="submit" name="save_draft" value="{{ __('consultant.action_save_draft') }}" />
-        <x-hearth-input type="submit" name="publish" value="{{ __('consultant.action_save_and_publish') }}" />
+        <x-hearth-button type="submit">{{ __('consultant.action_save_draft') }}</x-hearth-button>
     </form>
 </x-app-layout>

@@ -14,7 +14,7 @@ class AddDetailColumnsToConsultantsTable extends Migration
     public function up()
     {
         Schema::table('consultants', function (Blueprint $table) {
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->dateTime('published_at')->nullable();
             $table->text('bio');
             $table->date('birth_date')->nullable();
             $table->string('pronouns')->nullable();
@@ -34,7 +34,7 @@ class AddDetailColumnsToConsultantsTable extends Migration
     {
         Schema::table('consultants', function (Blueprint $table) {
             $table->dropColumn([
-                'status',
+                'published_at',
                 'bio',
                 'birth_year',
                 'pronouns',
