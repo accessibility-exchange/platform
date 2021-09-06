@@ -316,4 +316,43 @@ class ConsultantTest extends TestCase
         $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertRedirect(localized_route('login'));
     }
+
+    public function test_consultant_pages_can_be_published()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+            'published_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('published'));
+    }
+
+    public function test_consultant_pages_can_be_unpublished()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('draft'));
+    }
 }

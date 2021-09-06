@@ -14,7 +14,7 @@ class AddDetailColumnsToConsultantsTable extends Migration
     public function up()
     {
         Schema::table('consultants', function (Blueprint $table) {
-            $table->date('published_at')->nullable();
+            $table->dateTime('published_at')->nullable();
             $table->text('bio');
             $table->date('birth_date')->nullable();
             $table->string('pronouns')->nullable();
