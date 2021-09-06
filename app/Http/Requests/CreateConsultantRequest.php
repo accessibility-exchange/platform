@@ -33,6 +33,7 @@ class CreateConsultantRequest extends FormRequest
                 'max:255',
                 Rule::unique(Consultant::class),
             ],
+            'picture' => 'nullable|file|image|dimensions:min_width=200,min_height=200',
             'bio' => 'required|string',
             'locality' => 'required|string|max:255',
             'region' => [

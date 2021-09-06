@@ -22,7 +22,14 @@
             </div>
         </fieldset>
 
-        {{-- TODO: Add picture. --}}
+        <fieldset>
+            <div class="field @error('picture') field--error @enderror">
+                <x-hearth-label for="picture" :value="__('consultant.label_picture')" />
+                <x-hearth-hint for="picture">{{ __('consultant.hint_picture') }}</x-hearth-hint>
+                <x-hearth-input type="file" name="picture" :value="old('picture')" hinted />
+                <x-hearth-error for="picture" />
+            </div>
+        </fieldset>
 
         <fieldset>
             <div class="field @error('bio') field--error @enderror">

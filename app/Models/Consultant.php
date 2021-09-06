@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -19,6 +20,7 @@ class Consultant extends Model
     use HasSlug;
     use HasStatus;
     use HasTranslations;
+    use InteractsWithMedia;
     use Notifiable;
 
     /**
@@ -47,6 +49,14 @@ class Consultant extends Model
      * @var array
      */
     public $translatable = [];
+
+    /**
+     * Register media collections for the model.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('picture')->singleFile();
+    }
 
     /**
      * Get the options for generating the slug.

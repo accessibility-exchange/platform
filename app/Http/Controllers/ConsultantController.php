@@ -44,6 +44,8 @@ class ConsultantController extends Controller
     {
         $consultant = Consultant::create($request->validated());
 
+        $consultant->addMedia($request->file('picture'))->toMediaCollection('picture');
+
         flash(__('consultant.save_draft_succeeded'), 'success');
 
         return redirect(\localized_route('consultants.show', ['consultant' => $consultant]));
@@ -89,8 +91,9 @@ class ConsultantController extends Controller
     {
         $consultant->fill($request->validated());
 
-        $consultant->save();
+        $consultant->addMedia($request->file('picture'))->toMediaCollection('picture');
 
+        $consultant->save();
 
         if ($consultant->checkStatus('draft')) {
             flash(__('consultant.update_draft_succeeded'), 'success');

@@ -38,6 +38,7 @@ class UpdateConsultantRequest extends FormRequest
                 Rule::unique(Consultant::class)->ignore($consultant->id),
 
             ],
+            'picture' => 'nullable|file|image|dimensions:min_width=200,min_height=200',
             'bio' => 'required|string',
             'locality' => 'required|string|max:255',
             'region' => [
