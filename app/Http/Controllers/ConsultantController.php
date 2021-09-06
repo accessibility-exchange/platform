@@ -44,13 +44,7 @@ class ConsultantController extends Controller
     {
         $consultant = Consultant::create($request->validated());
 
-        if ($request->input('save_draft')) {
-            $consultant['status'] = 'draft';
-            flash(__('consultant.save_draft_succeeded'), 'success');
-        } elseif ($request->input('publish')) {
-            $consultant['status'] = 'published';
-            flash(__('consultant.publish_succeeded'), 'success');
-        }
+        flash(__('consultant.save_draft_succeeded'), 'success');
 
         return redirect(\localized_route('consultants.show', ['consultant' => $consultant]));
     }
@@ -63,7 +57,7 @@ class ConsultantController extends Controller
      */
     public function show(Consultant $consultant)
     {
-        if ($consultant->status === 'draft') {
+        if ($consultant->checkStatus('draft')) {
             return view('consultants.show-draft', ['consultant' => $consultant]);
         }
 
@@ -98,7 +92,7 @@ class ConsultantController extends Controller
         $consultant->save();
 
 
-        if ($consultant->status === 'draft') {
+        if ($consultant->checkStatus('draft')) {
             flash(__('consultant.update_draft_succeeded'), 'success');
         }
 
@@ -117,12 +111,12 @@ class ConsultantController extends Controller
     public function updateStatus(Request $request, Consultant $consultant)
     {
         if ($request->input('unpublish')) {
-            $consultant->status = 'draft';
+            $consultant->published_at = null;
             $consultant->save();
 
             flash(__('consultant.unpublish_succeeded'), 'success');
         } elseif ($request->input('publish')) {
-            $consultant->status = 'published';
+            $consultant->published_at = date('Y-m-d h:i:s', time());
             $consultant->save();
 
             flash(__('consultant.publish_succeeded'), 'success');

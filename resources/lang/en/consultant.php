@@ -31,7 +31,7 @@ return [
     'action_save_and_publish' => 'Save and publish',
     'action_publish' => 'Publish my page',
     'action_unpublish' => 'Unpublish my page',
-    'edit_profile' => 'Edit my page',
+    'edit_consultant_page' => 'Edit my page',
     'edit_section' => 'Edit :section',
     'edit_title' => 'Edit my consultant page',
     'draft_title' => 'My consultant page – draft',

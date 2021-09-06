@@ -32,7 +32,7 @@ class ConsultantFactory extends Factory
             'birth_date' => $this->faker->date('Y-m-d'),
             'pronouns' => $this->faker->randomElement(['He/him/his', 'She/her/hers', 'They/them/theirs']),
             'user_id' => User::factory(),
-            'status' => 'published',
+            'published_at' => date('Y-m-d h:i:s', time()),
             'creator' => 'self',
             'visibility' => 'all',
         ];

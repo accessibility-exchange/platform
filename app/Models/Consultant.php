@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
+use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -16,6 +17,7 @@ class Consultant extends Model
 {
     use HasFactory;
     use HasSlug;
+    use HasStatus;
     use HasTranslations;
     use Notifiable;
 

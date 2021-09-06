@@ -80,7 +80,7 @@
         </p>
 
         @can('update', $consultant)
-        @if($consultant->status == 'draft')
+        @if($consultant->checkStatus('draft'))
         <form action="{{ localized_route('consultants.update-status', $consultant) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
