@@ -31,6 +31,14 @@ class ConsultantController extends Controller
 
         return view('consultants.create', [
             'regions' => get_regions(['CA'], \locale()),
+            'creators' => [
+                'self' => __('consultant.label_creator_self'),
+                'other' => __('consultant.label_creator_other'),
+            ],
+            'visibilities' => [
+                'all' => __('consultant.label_visibility_all'),
+                'project' => __('consultant.label_visibility_project'),
+            ],
         ]);
     }
 
@@ -77,6 +85,14 @@ class ConsultantController extends Controller
         return view('consultants.edit', [
             'consultant' => $consultant,
             'regions' => get_regions(['CA'], \locale()),
+            'creators' => [
+                'self' => __('consultant.label_creator_self'),
+                'other' => __('consultant.label_creator_other'),
+            ],
+            'visibilities' => [
+                'all' => __('consultant.label_visibility_all'),
+                'project' => __('consultant.label_visibility_project'),
+            ],
         ]);
     }
 
