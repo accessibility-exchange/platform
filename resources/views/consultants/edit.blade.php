@@ -42,7 +42,8 @@
 
             <div class="field @error('locality') field--error @enderror">
                 <x-hearth-label for="locality" :value="__('forms.label_locality')" />
-                <x-hearth-input type="text" name="locality" value="{{ old('locality', $consultant->locality) }}" required hinted="address-hint" />
+                <x-privacy-indicator id="locality-privacy" :value="__('consultant.privacy_matching_team')" />
+                <x-hearth-input type="text" name="locality" value="{{ old('locality', $consultant->locality) }}" required hinted="address-hint locality-privacy" />
                 <x-hearth-error for="locality" />
             </div>
 
@@ -53,7 +54,12 @@
             </div>
         </fieldset>
 
-        <x-hearth-date-input :label="__('consultant.label_birth_date')" name="birth_date" :hint="__('consultant.hint_birth_date')" :value="old('birth_date', $consultant->birth_date)" />
+        <x-hearth-date-input :label="__('consultant.label_birth_date')" name="birth_date" :value="old('birth_date', $consultant->birth_date)">
+            <x-slot name="hint">
+                <x-privacy-indicator :value="__('consultant.privacy_matching_team')" />
+                {{ __('consultant.hint_birth_date') }}
+            </x-slot>
+        </x-hearth-date-input>
 
         <div class="field @error('pronouns') field--error @enderror">
             <x-hearth-label for="pronouns" :value="__('consultant.label_pronouns')" />
@@ -62,41 +68,26 @@
             <x-hearth-error for="pronouns" />
         </div>
 
-        {{-- TODO: Use radio-buttons component --}}
         <fieldset x-data="{ creator: '{{ old('creator') ?? 'self' }}' }">
             <legend>{{ __('consultant.legend_creator') }}</legend>
-            <div>
-                <input type="radio" id="creator-self" name="creator" value="self" x-model="creator" @if(old('creator', $consultant->creator) == 'self') checked @endif />
-                <x-hearth-label for="creator-self" :value="__('consultant.label_creator_self')" />
-            </div>
-            <div>
-                <input type="radio" id="creator-other" name="creator" value="other" x-model="creator" @if(old('creator', $consultant->creator) == 'other') checked @endif />
-                <x-hearth-label for="creator-other" :value="__('consultant.label_creator_other')" />
-            </div>
+            <x-privacy-indicator id="creator-privacy" :value="__('consultant.privacy_matching_team')" />
+            <x-hearth-radio-buttons name="creator" :options="$creators" :selected="old('creator', $consultant->creator)" x-model="creator" />
             <div class="field @error('creator_name') field--error @enderror" x-show="creator == 'other'">
                 <x-hearth-label for="creator_name" :value="__('consultant.label_creator_name')" />
-                <x-hearth-input type="text" name="creator_name" value="{{ old('creator_name', $consultant->creator_name) }}" />
+                <x-hearth-input type="text" name="creator_name" value="{{ old('creator_name', $consultant->creator_name) }}" hinted="creator-privacy" />
                 <x-hearth-error for="creator_name" />
             </div>
             <div class="field @error('creator_relationship') field--error @enderror" x-show="creator == 'other'">
                 <x-hearth-label for="creator_relationship" :value="__('consultant.label_creator_relationship')" />
-                <x-hearth-input type="text" name="creator_relationship" value="{{ old('creator_relationship', $consultant->creator_relationship) }}" />
+                <x-hearth-input type="text" name="creator_relationship" value="{{ old('creator_relationship', $consultant->creator_relationship) }}" hinted="creator-privacy" />
                 <x-hearth-error for="creator_relationship" />
             </div>
         </fieldset>
 
-        {{-- TODO: Use radio-buttons component --}}
         <fieldset>
             <legend>{{ __('consultant.legend_visibility') }}</legend>
             <p class="field__hint">{{ __('consultant.hint_visibility') }}</p>
-            <div>
-                <input type="radio" id="visibility-all" name="visibility" value="all" @if(old('visibility', $consultant->visibility) !== 'project') checked @endif />
-                <x-hearth-label for="visibility-all" :value="__('consultant.label_visibility_all')" />
-            </div>
-            <div>
-                <input type="radio" id="visibility-projects" name="visibility" value="project" @if(old('visibility', $consultant->visibility) == 'project') checked @endif />
-                <x-hearth-label for="visibility-projects" :value="__('consultant.label_visibility_project')" />
-            </div>
+            <x-hearth-radio-buttons name="visibility" :options="$visibilities" :selected="old('visibility', 'all')" />
         </fieldset>
 
         <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>

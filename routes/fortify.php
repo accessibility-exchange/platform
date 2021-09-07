@@ -6,12 +6,12 @@ use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
-use Laravel\Fortify\Http\Controllers\ConsultantInformationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordController;
 use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+use Laravel\Fortify\Http\Controllers\ProfileInformationController;
 use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
@@ -87,7 +87,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
     }
 
     if (Features::enabled(Features::updateProfileInformation())) {
-        Route::multilingual('/account/update', [ConsultantInformationController::class, 'update'])
+        Route::multilingual('/account/update', [ProfileInformationController::class, 'update'])
             ->method('put')
             ->middleware(['auth'])
             ->name('user-profile-information.update');

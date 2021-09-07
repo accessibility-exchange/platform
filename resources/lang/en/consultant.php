@@ -55,4 +55,5 @@ return [
     'destroy_succeeded' => 'Your consultant page has been deleted.',
     'role_individual_consultant' => 'Individual consultant',
     'role_representative_consultant' => 'Representative consultant',
+    'privacy_matching_team' => 'This information is only visible to the team matching you to a project.',
 ];
