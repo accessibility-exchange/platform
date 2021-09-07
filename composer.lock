@@ -1255,16 +1255,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27"
+                "reference": "121bb937af6646cfaabe11cfd9d3d59af65cd05a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/c396400380bc49760372c4f38d42e7bd41ecfb27",
-                "reference": "c396400380bc49760372c4f38d42e7bd41ecfb27",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/121bb937af6646cfaabe11cfd9d3d59af65cd05a",
+                "reference": "121bb937af6646cfaabe11cfd9d3d59af65cd05a",
                 "shasum": ""
             },
             "require": {
@@ -1330,9 +1330,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/v1.1.0"
+                "source": "https://github.com/fluid-project/hearth/tree/v1.2.0"
             },
-            "time": "2021-08-31T12:20:01+00:00"
+            "time": "2021-09-07T15:54:54+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
