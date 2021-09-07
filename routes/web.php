@@ -19,9 +19,9 @@ Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::multilingual('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::multilingual('/home', function () {
+    return view('home');
+})->middleware(['auth'])->name('home');
 
 Route::multilingual('/account/edit', [UserController::class, 'edit'])
     ->middleware(['auth'])

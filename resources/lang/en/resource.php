@@ -7,6 +7,8 @@ return [
     'label_summary' => 'Resource summary',
     'action_create' => 'Create resource',
     'index_title' => 'Resources',
+    'plural' => 'resources',
+    'singular' => 'resource',
     'edit_title' => 'Edit resource',
     'edit_resource' => 'Edit resource',
     'action_delete' => 'Delete resource',

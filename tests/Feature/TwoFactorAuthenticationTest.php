@@ -67,7 +67,7 @@ class TwoFactorAuthenticationTest extends TestCase
             'code' => (new Google2FA())->getCurrentOtp(decrypt($user->two_factor_secret)),
         ]);
 
-        $response->assertRedirect(localized_route('dashboard'));
+        $response->assertRedirect(localized_route('home'));
 
         $this->assertAuthenticated();
     }
@@ -127,7 +127,7 @@ class TwoFactorAuthenticationTest extends TestCase
             'recovery_code' => $user->recoveryCodes()[0],
         ]);
 
-        $response->assertRedirect(localized_route('dashboard'));
+        $response->assertRedirect(localized_route('home'));
 
         $this->assertAuthenticated();
     }

@@ -117,6 +117,6 @@ class EntityController extends Controller
         flash(__('entity.destroy_succeeded'), 'success');
 
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(\localized_route('home'));
     }
 }

@@ -29,7 +29,7 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(localized_route('dashboard'));
+        $response->assertRedirect(localized_route('home'));
     }
 
     public function test_new_users_can_not_register_without_valid_context()
