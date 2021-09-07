@@ -187,7 +187,7 @@ class ProjectTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertRedirect(localized_route('dashboard'));
+        $response->assertRedirect(localized_route('home'));
     }
 
     public function test_users_without_entity_admin_role_cannot_delete_projects()
@@ -205,12 +205,12 @@ class ProjectTest extends TestCase
             'entity_id' => $entity->id,
         ]);
 
-        $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+        $response = $this->actingAs($user)->from(localized_route('home'))->delete(localized_route('projects.destroy', $project), [
             'current_password' => 'password',
         ]);
         $response->assertForbidden();
 
-        $response = $this->actingAs($other_user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+        $response = $this->actingAs($other_user)->from(localized_route('home'))->delete(localized_route('projects.destroy', $project), [
             'current_password' => 'password',
         ]);
         $response->assertForbidden();

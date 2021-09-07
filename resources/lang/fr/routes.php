@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'dashboard' => 'tableau-de-bord',
+    'home' => 'acceuil',
     'logout' => 'se-deconnecter',
     'login' => 'se-connecter',
     'register' => 'inscription',

@@ -122,6 +122,6 @@ class ProjectController extends Controller
 
         flash(__('project.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(\localized_route('home'));
     }
 }

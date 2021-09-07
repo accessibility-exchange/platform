@@ -7,6 +7,7 @@ return [
     'index_title' => 'Consultants',
     'browse_all' => 'Browse all consultants',
     'singular_title' => 'Consultant page',
+    'singular_title_lower' => 'consultant page',
     'create_title' => 'Create my consultant Page',
     'label_name' => 'Your name',
     'hint_name' => 'This is the name that will be displayed on your page.',

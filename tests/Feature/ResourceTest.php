@@ -90,7 +90,7 @@ class ResourceTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertRedirect(localized_route('dashboard'));
+        $response->assertRedirect(localized_route('home'));
     }
 
     public function test_users_can_not_delete_resources_belonging_to_them_with_wrong_password()

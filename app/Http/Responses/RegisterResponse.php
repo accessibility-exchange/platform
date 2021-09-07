@@ -8,19 +8,19 @@ use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 class RegisterResponse implements RegisterResponseContract
 {
     /**
-     * Redirect to the appropriately localized dashboard for the registered user.
+     * Redirect to the appropriately localized home page for the registered user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function toResponse($request)
     {
-        $dashboard = \localized_route('dashboard', [], Auth::user()->locale);
+        $home = \localized_route('home', [], Auth::user()->locale);
 
         if ($request->wantsJson()) {
             return response()->json(['two_factor' => false]);
         }
 
-        return redirect()->intended($dashboard);
+        return redirect()->intended($home);
     }
 }

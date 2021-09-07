@@ -154,6 +154,6 @@ class ConsultantController extends Controller
 
         flash(__('consultant.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(\localized_route('home'));
     }
 }
