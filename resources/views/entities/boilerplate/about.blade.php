@@ -3,12 +3,12 @@
 <x-header :level="$level">What we offer</x-header>
 
 <ul>
-    <li>Commuter rail services in Atlantic Canada</li>
+    <li>Here's a list of services we offer</li>
 </ul>
 
 <x-header :level="$level">Current projects</x-header>
 
-@forelse($entity->projects as $project)
+@forelse($entity->currentProjects as $project)
 <x-project-card :project="$project" :showEntity="false" />
 @empty
 <p>{{ __('project.none_found') }}</p>

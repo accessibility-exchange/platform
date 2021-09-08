@@ -15,6 +15,7 @@ return [
     'label_end_date' => 'Project end date',
     'starting' => 'Starting :date',
     'started' => 'Started :date',
+    'singular_title_lower' => 'project',
     'edit_project' => 'Edit project',
     'edit_title' => 'Edit project',
     'delete_title' => 'Delete project',

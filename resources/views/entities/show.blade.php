@@ -36,15 +36,18 @@
         <div class="flow" id="projects" x-bind="tabpanel">
             <h2>{{ __('entity.section_projects') }}</h2>
             @can('update', $entity)
-            @if(count($entity->projects) > 0)
-                <p><a class="button" href="#">{!! __('entity.edit_section', ['section' => '<span class="visually-hidden">' . __('entity.section_projects') . '</span>']) !!}</a></p>
-            @else
                 <p><a class="button" href="{{ localized_route('projects.create', $entity) }}">{{ __('entity.create_project') }}</a></p>
-            @endif
             @endcan
 
             <div class="flow">
-                @forelse ($entity->projects as $project)
+                <h3>Current projects</h3>
+                @forelse ($entity->currentProjects as $project)
+                <x-project-card :project="$project" :showEntity="false" />
+                @empty
+                <p>{{ __('project.none_found') }}</p>
+                @endforelse
+                <h3>Completed projects</h3>
+                @forelse ($entity->pastProjects as $project)
                 <x-project-card :project="$project" :showEntity="false" />
                 @empty
                 <p>{{ __('project.none_found') }}</p>
