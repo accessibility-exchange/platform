@@ -55,7 +55,7 @@
 
         <p>{{ __('home.entity_create_page_info') }}</p>
 
-        <p>{!! __('home.create_page_prompt', ['link' => '<a href="' . localized_route('entities.create') . '"><strong>' . __('entity.singular_title_lower') . '</strong></a>']) !!}</p>
+        <p><a href="{{ localized_route('entities.create') }}">{!! __('home.create_page_prompt', ['item' => __('entity.singular_title_lower')]) !!}</a></p>
         @endif
 
         <h2>{{ __('home.entity_learn_title') }}</h2>
