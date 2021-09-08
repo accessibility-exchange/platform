@@ -62,7 +62,9 @@ class EntityController extends Controller
      */
     public function show(Entity $entity)
     {
-        return view('entities.show', ['entity' => $entity]);
+        $entity->load('pastProjects', 'currentProjects');
+
+        return view('entities.show', compact('entity'));
     }
 
     /**
