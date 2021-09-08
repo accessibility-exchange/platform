@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -214,5 +215,34 @@ class ProjectTest extends TestCase
             'current_password' => 'password',
         ]);
         $response->assertForbidden();
+    }
+
+    public function test_projects_appear_in_chronological_groups()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $entity = Entity::factory()->create();
+        $past_project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'start_date' => Carbon::now()->subMonths(4)->format('Y-m-d'),
+            'end_date' => Carbon::now()->subMonths(1)->format('Y-m-d'),
+        ]);
+        $current_project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
+            'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
+        ]);
+        $future_project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
+            'end_date' => Carbon::now()->addMonths(4)->format('Y-m-d'),
+        ]);
+
+        $this->assertEquals(count($entity->projects), 3);
+        $this->assertEquals(count($entity->pastProjects), 1);
+        $this->assertEquals(count($entity->currentProjects), 1);
+        $this->assertEquals(count($entity->futureProjects), 1);
     }
 }
