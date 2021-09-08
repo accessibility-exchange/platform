@@ -10,7 +10,9 @@ jobs:
   deploy:
     if: github.repository == 'accessibility-in-action/platform'
 
-    environment: dev
+    environment:
+      name: dev
+      url: https://aina-dev.inclusivedesign.ca
 
     runs-on: ubuntu-latest
 
