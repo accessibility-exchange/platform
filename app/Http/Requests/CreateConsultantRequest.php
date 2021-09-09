@@ -34,17 +34,17 @@ class CreateConsultantRequest extends FormRequest
                 Rule::unique(Consultant::class),
             ],
             'bio' => 'required|string',
+            'links.*.url' => 'nullable|url|required_unless:links.*.text,null',
+            'links.*.text' => 'nullable|string|required_unless:links.*.url,null',
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
                 Rule::in(get_region_codes()),
             ],
-            'birth_date' => 'nullable|date',
             'pronouns' => 'nullable|string',
             'creator' => 'required|in:self,other',
             'creator_name' => 'required_if:creator,other|nullable|string|max:255',
             'creator_relationship' => 'required_if:creator,other|nullable|string|max:255',
-            'visibility' => 'required|in:project,all',
             'user_id' => [
                 Rule::unique(Consultant::class),
             ],
@@ -61,6 +61,9 @@ class CreateConsultantRequest extends FormRequest
         return [
             'name.unique' => 'A consultant page with this name already exists.',
             'user_id.unique' => 'You already have a consultant page. Would you like to edit it instead?',
+            'links.*.url.url' => 'The link must be a valid web address.',
+            'links.*.url.required_unless' => 'The link address must be filled in if the link text is filled in.',
+            'links.*.text.required_unless' => 'The link text must be filled in if the link address is filled in.',
         ];
     }
 }

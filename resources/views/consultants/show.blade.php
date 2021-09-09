@@ -10,9 +10,6 @@
             @if($consultant->pronouns)
             <p>{{ $consultant->pronouns }}</p>
             @endif
-            @if($consultant->birth_date)
-            <p>{{ __('consultant.age', ['years' => $consultant->age()]) }}</p>
-            @endif
         </div>
         @can('update', $consultant)
         @if($consultant->checkStatus('published'))

@@ -8,7 +8,14 @@ use Illuminate\View\View;
 class PrivacyIndicator extends Component
 {
     /**
-     * The label for the form input.
+     * The privacy level for the privacy indicator.
+     *
+     * @var string
+     */
+    public $level;
+
+    /**
+     * The text for the privacy indicator.
      *
      * @var null|string
      */
@@ -17,12 +24,14 @@ class PrivacyIndicator extends Component
     /**
      * Create a new component instance.
      *
-     * @param string $value The label for the form input.
+     * @param string $privacy The privacy level for the privacy indicator.
+     * @param string $value The text for the privacy indicator.
      *
      * @return void
      */
-    public function __construct($value = null)
+    public function __construct($level = 'private', $value = null)
     {
+        $this->level = $level;
         $this->value = $value;
     }
 

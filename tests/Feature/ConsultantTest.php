@@ -30,7 +30,6 @@ class ConsultantTest extends TestCase
             'locality' => 'Truro',
             'region' => 'NS',
             'creator' => 'self',
-            'visibility' => 'all',
         ]);
 
         $consultant = Consultant::where('name', $user->name)->get()->first();
@@ -59,7 +58,6 @@ class ConsultantTest extends TestCase
             'locality' => 'Truro',
             'region' => 'NS',
             'creator' => 'self',
-            'visibility' => 'all',
         ]);
 
         $response->assertForbidden();
@@ -85,7 +83,6 @@ class ConsultantTest extends TestCase
             'locality' => 'Truro',
             'region' => 'NS',
             'creator' => 'self',
-            'visibility' => 'all',
         ]);
 
         $response->assertForbidden();
@@ -113,7 +110,6 @@ class ConsultantTest extends TestCase
             'locality' => 'Truro',
             'region' => 'NS',
             'creator' => 'self',
-            'visibility' => 'all',
         ]);
 
         $response->assertForbidden();
@@ -140,7 +136,6 @@ class ConsultantTest extends TestCase
             'locality' => 'St John\'s',
             'region' => 'NL',
             'creator' => $consultant->creator,
-            'visibility' => $consultant->visibility,
         ]);
 
         $response->assertRedirect(localized_route('consultants.show', $consultant));
@@ -169,7 +164,6 @@ class ConsultantTest extends TestCase
             'locality' => 'St John\'s',
             'region' => 'NL',
             'creator' => $consultant->creator,
-            'visibility' => $consultant->visibility,
         ]);
         $response->assertForbidden();
     }
@@ -229,42 +223,6 @@ class ConsultantTest extends TestCase
         $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
-        $response->assertForbidden();
-    }
-
-    public function test_users_can_view_consultant_pages_with_global_visibility()
-    {
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
-        $consultant = Consultant::factory()->create([
-            'user_id' => $user->id,
-            'visibility' => 'all',
-        ]);
-
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $other_user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.show', $consultant));
-        $response->assertOk();
-    }
-
-    public function test_users_can_not_view_consultant_pages_with_project_visibility()
-    {
-        $user = User::factory()->create();
-        $other_user = User::factory()->create();
-        $consultant = Consultant::factory()->create([
-            'user_id' => $user->id,
-            'visibility' => 'project',
-        ]);
-
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $other_user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.show', $consultant));
         $response->assertForbidden();
     }
 
