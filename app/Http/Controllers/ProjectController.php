@@ -18,7 +18,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects.index', ['projects' => Project::orderBy('name')->get()]);
+        return view('projects.index', ['projects' => Project::with('entity')->orderBy('name')->get()]);
     }
 
     /**

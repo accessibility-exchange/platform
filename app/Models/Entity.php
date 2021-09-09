@@ -153,8 +153,8 @@ class Entity extends Model
     public function currentProjects(): HasMany
     {
         return $this->hasMany(Project::class)
-            ->whereDate('start_date', '<', Carbon::now())
-            ->whereDate('end_date', '>', Carbon::now())
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->whereDate('end_date', '>=', Carbon::now())
             ->orderBy('start_date');
     }
 
