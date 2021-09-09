@@ -16,9 +16,6 @@
             @if($consultant->pronouns)
             <p>{{ $consultant->pronouns }}</p>
             @endif
-            @if($consultant->birth_date)
-            <p>{{ __('consultant.age', ['years' => $consultant->age()]) }}</p>
-            @endif
         </div>
         <div class="flow" id="about">
             <h3>{{ __('consultant.section_about_person', ['name' => $consultant->firstName()]) }}</h3>

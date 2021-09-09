@@ -40,7 +40,7 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Create test database
       run: |
         sudo systemctl start mysql.service

@@ -29,6 +29,7 @@ class Consultant extends Model
     protected $fillable = [
         'name',
         'bio',
+        'links',
         'locality',
         'region',
         'birth_date',
@@ -36,9 +37,17 @@ class Consultant extends Model
         'creator',
         'creator_name',
         'creator_relationship',
-        'visibility',
         'status',
         'user_id',
+    ];
+
+    /**
+     * The attributes that which should be cast to other types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'links' => 'array',
     ];
 
     /**
