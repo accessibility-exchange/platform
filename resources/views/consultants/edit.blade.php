@@ -41,7 +41,7 @@
             <legend>{{ __('Links') }}</legend>
             <x-hearth-hint for="links">{{ __('consultant.hint_links') }}</x-hearth-hint>
 
-            @foreach ($consultant->links as $i => $link)
+            @forelse ($consultant->links as $i => $link)
             <div class="field @error('links.' . $i . '.url') field--error @enderror">
                 <x-hearth-label for="links_{{ $i }}_url" :value="__('consultant.label_links_url')" />
                 <x-hearth-input id="links_{{ $i }}_url" name="links[{{ $i }}][url]" :value="old('links[' . $i . '][url]', $consultant->links[$i]['url'])" hinted="links-hint" />
@@ -53,7 +53,20 @@
                 <x-hearth-error for="links_{{ $i }}_text" />
             </div>
             <br />
-            @endforeach
+            @empty
+            @for ($i = 0; $i < 1; $i++)
+            <div class="field @error('links.' . $i . '.url') field--error @enderror">
+                <x-hearth-label for="links_{{ $i }}_url" :value="__('consultant.label_links_url')" />
+                <x-hearth-input id="links_{{ $i }}_url" name="links[{{ $i }}][url]" :value="old('links[' . $i . '][url]', $consultant->links[$i]['url'])" hinted="links-hint" />
+                <x-hearth-error for="links_{{ $i }}_url" />
+            </div>
+            <div class="field @error('links.' . $i . '.text') field--error @enderror">
+                <x-hearth-label for="links_{{ $i }}_text" :value="__('consultant.label_links_text')" />
+                <x-hearth-input id="links_{{ $i }}_text" name="links[{{ $i }}][text]" :value="old('links[' . $i . '][text]', $consultant->links[$i]['text'])" hinted="links-hint" />
+                <x-hearth-error for="links_{{ $i }}_text" />
+            </div>
+            @endfor
+            @endforelse
         </fieldset>
 
         <fieldset>

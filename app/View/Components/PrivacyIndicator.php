@@ -24,7 +24,7 @@ class PrivacyIndicator extends Component
     /**
      * Create a new component instance.
      *
-     * @param string $privacy The privacy level for the privacy indicator.
+     * @param string $level The privacy level for the privacy indicator.
      * @param string $value The text for the privacy indicator.
      *
      * @return void
