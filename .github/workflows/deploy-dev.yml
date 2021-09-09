@@ -10,10 +10,6 @@ jobs:
   deploy:
     if: github.repository == 'accessibility-in-action/platform'
 
-    environment:
-      name: dev
-      url: https://aina-dev.inclusivedesign.ca
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +19,7 @@ jobs:
         with:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
-          env: ${{ jobs.deploy.environment }}
+          env: dev
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -58,4 +54,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: ${{ jobs.deploy.environment.url }}
+          env_url: https://aina-dev.inclusivedesign.ca
