@@ -14,7 +14,7 @@ class LocalizationTest extends TestCase
     {
         $user = User::factory()->create(['locale' => 'fr']);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -27,7 +27,7 @@ class LocalizationTest extends TestCase
     {
         $user = User::factory()->create(['locale' => 'fr']);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);

@@ -15,7 +15,7 @@ class ConsultantTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -44,7 +44,7 @@ class ConsultantTest extends TestCase
     {
         $user = User::factory()->create(['context' => 'entity']);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -70,7 +70,7 @@ class ConsultantTest extends TestCase
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -98,7 +98,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -126,7 +126,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -155,7 +155,7 @@ class ConsultantTest extends TestCase
             'user_id' => $other_user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -181,7 +181,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -199,7 +199,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -221,7 +221,7 @@ class ConsultantTest extends TestCase
             'user_id' => $other_user->id,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -241,7 +241,7 @@ class ConsultantTest extends TestCase
             'visibility' => 'all',
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $other_user->email,
             'password' => 'password',
         ]);
@@ -259,7 +259,7 @@ class ConsultantTest extends TestCase
             'visibility' => 'project',
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $other_user->email,
             'password' => 'password',
         ]);
@@ -276,7 +276,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -294,7 +294,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $other_user->email,
             'password' => 'password',
         ]);

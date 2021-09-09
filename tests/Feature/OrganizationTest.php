@@ -467,7 +467,7 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -490,7 +490,7 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -514,7 +514,7 @@ class OrganizationTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -543,7 +543,7 @@ class OrganizationTest extends TestCase
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -564,7 +564,7 @@ class OrganizationTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);

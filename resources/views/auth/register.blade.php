@@ -21,7 +21,7 @@
             <p>{!! __('Email <a href="mailto:support@accessibility-in-action.ca">support@accessibility-in-action.ca</a> or call 1-(800) 123-4567 for help creating your account.') !!}</p>
         </x-hearth-alert>
 
-        <form method="POST" action="{{ localized_route('register') }}" novalidate>
+        <form method="POST" action="{{ localized_route('register-store') }}" novalidate>
             @csrf
 
             <x-hearth-input id="context" type="hidden" name="context" value="{{ request()->get('context') ?: 'consultant' }}" />
