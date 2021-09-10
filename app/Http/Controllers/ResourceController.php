@@ -98,6 +98,6 @@ class ResourceController extends Controller
 
         flash(__('resource.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('home'));
+        return redirect(\localized_route('dashboard'));
     }
 }

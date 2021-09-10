@@ -20,7 +20,7 @@ class LocalizationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(localized_route('home', [], 'fr'));
+        $response->assertRedirect(localized_route('dashboard', [], 'fr'));
     }
 
     public function test_user_is_redirected_to_preferred_locale_when_editing_profile()

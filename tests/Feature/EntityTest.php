@@ -368,11 +368,11 @@ class EntityTest extends TestCase
 
         $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-        $response = $this->from(localized_route('home'))->actingAs($other_user)->get($acceptUrl);
+        $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
         $this->assertFalse($entity->fresh()->hasUserWithEmail($user->email));
         $response->assertSessionHasErrors();
-        $response->assertRedirect(localized_route('home'));
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_with_admin_role_can_remove_members()
@@ -477,7 +477,7 @@ class EntityTest extends TestCase
             'current_password' => 'password',
         ]);
 
-        $response->assertRedirect(localized_route('home'));
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_with_admin_role_can_not_delete_entities_with_wrong_password()

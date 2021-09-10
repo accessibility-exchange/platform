@@ -15,7 +15,7 @@ class TwoFactorLoginResponse implements TwoFactorLoginResponseContract
      */
     public function toResponse($request)
     {
-        $home = \localized_route('home', [], Auth::user()->locale);
+        $home = \localized_route('dashboard', [], Auth::user()->locale);
 
         if ($request->wantsJson()) {
             return response('', 204);
