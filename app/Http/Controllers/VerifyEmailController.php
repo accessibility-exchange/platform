@@ -16,10 +16,10 @@ class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmai
      */
     public function __invoke(VerifyEmailRequest $request)
     {
-        $dashboard = \localized_route('dashboard', ['verified' => 1], $request->user()->locale);
+        $home = \localized_route('dashboard', ['verified' => 1], $request->user()->locale);
 
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended($dashboard);
+            return redirect()->intended($home);
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -28,6 +28,6 @@ class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmai
 
         flash(__('hearth::auth.verification_succeeded'), 'success');
 
-        return redirect()->intended($dashboard);
+        return redirect()->intended($home);
     }
 }

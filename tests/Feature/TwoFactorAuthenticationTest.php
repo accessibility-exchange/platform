@@ -58,7 +58,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->assertGuest();
 
-        $this->post(localized_route('login'), [
+        $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -88,7 +88,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->assertGuest();
 
-        $this->post(localized_route('login'), [
+        $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -118,7 +118,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->assertGuest();
 
-        $this->post(localized_route('login'), [
+        $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -148,7 +148,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $this->assertGuest();
 
-        $this->post(localized_route('login'), [
+        $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);

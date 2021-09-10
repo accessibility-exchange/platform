@@ -35,10 +35,6 @@ class ConsultantController extends Controller
                 'self' => __('consultant.label_creator_self'),
                 'other' => __('consultant.label_creator_other'),
             ],
-            'visibilities' => [
-                'all' => __('consultant.label_visibility_all'),
-                'project' => __('consultant.label_visibility_project'),
-            ],
         ]);
     }
 
@@ -88,10 +84,6 @@ class ConsultantController extends Controller
             'creators' => [
                 'self' => __('consultant.label_creator_self'),
                 'other' => __('consultant.label_creator_other'),
-            ],
-            'visibilities' => [
-                'all' => __('consultant.label_visibility_all'),
-                'project' => __('consultant.label_visibility_project'),
             ],
         ]);
     }

@@ -1,11 +1,10 @@
-name: Deploy
+name: Deploy dev
 
 on:
   workflow_dispatch:
   push:
     branches:
       - dev
-      - prototype
 
 jobs:
   deploy:
@@ -14,7 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
+      - name: Start deployment
+        uses: bobheadxi/deployments@v0.6.0
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: dev
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
@@ -26,18 +31,30 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
-          envs:     BRANCH_NAME
           script: |
-            cd /srv/aina-$BRANCH_NAME && \
-            git checkout $BRANCH_NAME && \
+            cd /srv/aina-dev && \
+            git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --no-dev --optimize-autoloader && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate --force && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan view:clear && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
 
       - name: Wait
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-$BRANCH_NAME.inclusivedesign.ca
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-dev.inclusivedesign.ca
+
+      - name: Update deployment status
+        uses: bobheadxi/deployments@v0.6.0
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env_url: https://aina-dev.inclusivedesign.ca

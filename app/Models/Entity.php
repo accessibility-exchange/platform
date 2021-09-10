@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -143,6 +144,37 @@ class Entity extends Model
      */
     public function projects(): HasMany
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Project::class)->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this entity that are in progress.
+     */
+    public function currentProjects(): HasMany
+    {
+        return $this->hasMany(Project::class)
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->whereDate('end_date', '>=', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this entity that have been completed.
+     */
+    public function pastProjects(): HasMany
+    {
+        return $this->hasMany(Project::class)
+            ->whereDate('end_date', '<', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this entity that haven't started yet.
+     */
+    public function futureProjects(): HasMany
+    {
+        return $this->hasMany(Project::class)
+            ->whereDate('start_date', '>', Carbon::now())
+            ->orderBy('start_date');
     }
 }

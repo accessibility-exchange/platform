@@ -20,7 +20,7 @@
             </x-hearth-alert>
         @endif
 
-        <form method="POST" action="{{ localized_route('login') }}" novalidate>
+        <form method="POST" action="{{ localized_route('login-store') }}" novalidate>
             @csrf
 
             <!-- Email Address -->

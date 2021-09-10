@@ -1,3 +1,6 @@
 // -----------------------------------------------------------------------------
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
+:root {
+    --ll-text-color-success: var(--ll-theme-text-color-success, #397f5d);
+}

@@ -468,7 +468,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -492,7 +492,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -517,7 +517,7 @@ class EntityTest extends TestCase
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -546,7 +546,7 @@ class EntityTest extends TestCase
             ->hasAttached($other_user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -567,7 +567,7 @@ class EntityTest extends TestCase
         $user = User::factory()->create();
         $entity = Entity::factory()->create();
 
-        $response = $this->post(localized_route('login'), [
+        $response = $this->post(localized_route('login-store'), [
             'email' => $user->email,
             'password' => 'password',
         ]);

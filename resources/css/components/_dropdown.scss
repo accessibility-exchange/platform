@@ -9,6 +9,14 @@
     text-align: start;
 }
 
+.dropdown [aria-expanded] .indicator {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dropdown [aria-expanded="true"] .indicator {
+    transform: rotate(-180deg);
+}
+
 @media (min-width: 768px) {
     .dropdown {
         position: relative;

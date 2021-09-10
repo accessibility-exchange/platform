@@ -16,41 +16,61 @@
             @if($consultant->pronouns)
             <p>{{ $consultant->pronouns }}</p>
             @endif
-            @if($consultant->birth_date)
-            <p>{{ __('consultant.age', ['years' => $consultant->age()]) }}</p>
-            @endif
         </div>
         <div class="flow" id="about">
             <h3>{{ __('consultant.section_about_person', ['name' => $consultant->firstName()]) }}</h3>
-
+            <x-privacy-indicator level="public">
+                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
+            </x-privacy-indicator>
             <p><a class="button" href="{{ localized_route('consultants.edit', $consultant) }}">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_about') . '</span>']) !!}</a></p>
 
             {!! Illuminate\Mail\Markdown::parse($consultant->bio) !!}
+
+            @if($consultant->links)
+            <h4>{{ $consultant->firstName() }}’s links</h4>
+            <ul>
+                @foreach($consultant->links as $link)
+                <li><a href="{{ $link['url'] }}" rel="external">{{ $link['text'] }}</a></li>
+                @endforeach
+            </ul>
+            @endif
+
+            @if($consultant->creator === 'other')
+            <p><em>{{ __('This page was created by :creator, :name’s :relationship.', ['creator' => $consultant->creator_name, 'name' => $consultant->firstName(), 'relationship' => $consultant->creator_relationship]) }}</em></p>
+            @endif
         </div>
         <div class="flow" id="interests-and-goals">
             <h3>{{ __('consultant.section_interests_and_goals') }}</h3>
-
+            <x-privacy-indicator level="public">
+                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
+            </x-privacy-indicator>
             <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_interests_and_goals') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.interests-and-goals', ['level' => 4])
         </div>
         <div class="flow" id="lived-experience">
             <h3>{{ __('consultant.section_lived_experience') }}</h3>
-
+            <x-privacy-indicator level="private">
+                <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
+            </x-privacy-indicator>
             <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_lived_experience') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.lived-experience', ['level' => 4])
         </div>
         <div class="flow" id="professional-experience">
             <h3>{{ __('consultant.section_professional_experience') }}</h3>
-
+            <x-privacy-indicator level="public">
+                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
+            </x-privacy-indicator>
             <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_professional_experience') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.professional-experience', ['level' => 4])
         </div>
         <div class="flow" id="access-needs">
             <h3>{{ __('consultant.section_access_needs') }}</h3>
-
+            <x-privacy-indicator level="private">
+                <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
+            </x-privacy-indicator>
             <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_access_needs') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.access-needs', ['level' => 4])

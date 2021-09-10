@@ -18,7 +18,7 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register()
     {
-        $response = $this->post(localized_route('register'), [
+        $response = $this->post(localized_route('register-store'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -34,7 +34,7 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_not_register_without_valid_context()
     {
-        $response = $this->from(localized_route('register'))->post(localized_route('register'), [
+        $response = $this->from(localized_route('register'))->post(localized_route('register-store'), [
             'name' => 'Evil User',
             'email' => 'test@example.com',
             'password' => 'password',
