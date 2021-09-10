@@ -14,6 +14,13 @@
     <li>Materials provided in advance</li>
 </ul>
 
+<x-header :level="$level">For notifying {{ $consultant->firstName() }} of new projects</x-header>
+
+<ul>
+    <li>Email</li>
+    <li>Text message</li>
+</ul>
+
 <x-header :level="$level">To participate in a meeting</x-header>
 
 <ul>

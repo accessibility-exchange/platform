@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Welcome',
     'intro' => 'Welcome to the Accessibility in Action website!',
     'details_line_1' => 'To get started, you will need to :link.',
     'register_text' => 'create an account',

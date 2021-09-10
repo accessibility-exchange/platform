@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ $project->name }}

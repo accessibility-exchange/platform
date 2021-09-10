@@ -154,6 +154,9 @@ return [
         'resource' => [
             'title_exists' => 'A resource with this title already exists.',
         ],
+        'story' => [
+            'title_exists' => 'A story with this title already exists.',
+        ],
     ],
 
     /*
