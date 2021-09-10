@@ -183,7 +183,7 @@ class ConsultantTest extends TestCase
         $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
-        $response->assertRedirect(localized_route('home'));
+        $response->assertRedirect(localized_route('dashboard'));
     }
 
     public function test_users_can_not_delete_consultant_pages_with_wrong_password()

@@ -58,10 +58,15 @@
 
             <!-- Access Needs -->
             <div class="field @error('access') field--error @enderror">
-                <x-hearth-label for="access" :value="__('Access support needs (optional)')" />
-                <textarea id="access" name="access" aria-describedby="access-hint @error('password') access-error @enderror"></textarea>
-                <p class="field__hint" id="access-hint">{{ __('Please let us know if you need any access support to use this website.') }}
+                <x-hearth-label for="access" :value="__('Access support (optional)')" />
+                <x-hearth-hint for="access">{{ __('Please describe any support you may need to improve your access to this website.') }}</x-hearth-hint>
+                <textarea id="access" name="access" hinted>{{ old('access', '') }}</textarea>
                 <x-hearth-error for="access" />
+            </div>
+
+            <div class="field">
+                <x-hearth-input type="checkbox" name="access_outreach" value="1" />
+                <x-hearth-label for="access_outreach" :value="__('I would like someone to reach out to me about my access needs')" />
             </div>
 
             <p>

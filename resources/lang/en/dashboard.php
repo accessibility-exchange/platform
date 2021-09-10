@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'title' => 'Home',
-    'your_title' => ':name’s home page',
+    'title' => 'Dashboard',
+    'your_title' => ':name’s dashboard',
     'consultant_things_you_can_do' => 'Here are a few things to do before you can start consulting:',
     'consultant_create_page_title' => 'Create your consultant page',
     'consultant_create_page_info' => 'Tell us a little bit about yourself, so we can match you with an organization that suits you and your preferences.',
