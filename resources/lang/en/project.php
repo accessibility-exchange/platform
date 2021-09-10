@@ -2,7 +2,7 @@
 
 return [
     'none_found' => 'No projects found.',
-    'initiated_by' => 'Initiated by :entity',
+    'project_by' => 'Accessibility project by :entity',
     'browse_all' => 'Browse all projects',
     'index_title' => 'Projects',
     'create_title' => 'Create a project',
@@ -22,4 +22,8 @@ return [
     'delete_intro' => 'Your project will be deleted and cannot be recovered. If you still want to delete your project, please enter your current password to proceed.',
     'action_delete' => 'Delete project',
     'destroy_succeeded' => 'Your project has been deleted.',
+    'status_label' => 'Status',
+    'started_label' => 'Started',
+    'starting_label' => 'Starting',
+    'completed_label' => 'Completed',
 ];

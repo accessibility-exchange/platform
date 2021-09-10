@@ -3,7 +3,7 @@
         <h1>
             {{ $project->name }}
         </h1>
-        <p>{!! __('project.initiated_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
+        <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
         <p>{!! $project->timespan() !!}</p>
     </x-slot>
 

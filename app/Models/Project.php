@@ -68,6 +68,26 @@ class Project extends Model
     }
 
     /**
+     * Has the project started yet?
+     *
+     * @return bool
+     */
+    public function started()
+    {
+        return $this->start_date < Carbon::now();
+    }
+
+    /**
+     * Has the project completed yet?
+     *
+     * @return bool
+     */
+    public function completed()
+    {
+        return $this->end_date && $this->end_date < Carbon::now();
+    }
+
+    /**
      * Get the project's timespan.
      *
      * @return string
