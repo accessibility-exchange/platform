@@ -9,7 +9,7 @@ return [
     'index_title' => 'Stories',
     'plural' => 'stories',
     'singular' => 'story',
-    'edit_title' => 'Edit story',
+    'edit_title' => 'Edit story “:title”',
     'edit_story' => 'Edit story',
     'action_delete' => 'Delete story',
     'delete_title' => 'Delete story',

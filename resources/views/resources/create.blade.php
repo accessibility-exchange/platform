@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('resource.create_title') }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ __('resource.create_title') }}

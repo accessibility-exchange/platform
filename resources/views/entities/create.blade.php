@@ -1,5 +1,6 @@
 
 <x-app-layout>
+    <x-slot name="title">{{ __('entity.create_title') }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ __('entity.create_title') }}

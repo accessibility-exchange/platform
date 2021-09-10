@@ -1,8 +1,9 @@
 
 <x-app-layout>
+    <x-slot name="title">{{ __('entity.edit_title', ['name' => $entity->name]) }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('entity.edit_title') }}
+            {{ __('entity.edit_title', ['name' => $entity->name]) }}
         </h1>
     </x-slot>
 
