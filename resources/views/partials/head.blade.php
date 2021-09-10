@@ -2,7 +2,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ __('app.name') }}</title>
+        <title>{{ $title ?? __('app.name') }} &mdash; {{ __('app.name') }}</title>
         <meta name="description" content="{{ __('app.description') }}">
         <meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
         <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">

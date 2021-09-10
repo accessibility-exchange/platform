@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('welcome.title') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">{{ __('app.name') }}</h1>
     </x-slot>

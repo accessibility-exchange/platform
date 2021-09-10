@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('consultant.index_title') }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ __('consultant.index_title') }}

@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('project.index_title') }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ __('project.index_title') }}

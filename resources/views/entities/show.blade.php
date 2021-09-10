@@ -1,4 +1,5 @@
 <x-app-wide-layout>
+    <x-slot name="title">{{ $entity->name }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ $entity->name }}

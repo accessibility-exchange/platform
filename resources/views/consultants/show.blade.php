@@ -1,4 +1,5 @@
 <x-app-wide-layout>
+    <x-slot name="title">{{ $consultant->name }}</x-slot>
     <x-slot name="header">
         <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />
         <h1>

@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('dashboard.title') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">{{ __('dashboard.your_title', ['name' => Auth::user()->name]) }}</h1>
     </x-slot>
