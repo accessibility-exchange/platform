@@ -96,7 +96,7 @@
             <x-hearth-error for="pronouns" />
         </div>
 
-        <fieldset x-data="{ creator: '{{ old('creator') ?? 'self' }}' }">
+        <fieldset x-data="{ creator: '{{ old('creator') ?? $consultant->creator }}' }">
             <legend>{{ __('consultant.legend_creator') }}</legend>
             <x-hearth-radio-buttons name="creator" :options="$creators" :selected="old('creator', $consultant->creator)" x-model="creator" />
             <div class="field @error('creator_name') field--error @enderror" x-show="creator == 'other'">

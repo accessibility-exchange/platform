@@ -23,6 +23,19 @@
             <p><a class="button" href="{{ localized_route('consultants.edit', $consultant) }}">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_about') . '</span>']) !!}</a></p>
 
             {!! Illuminate\Mail\Markdown::parse($consultant->bio) !!}
+
+            @if($consultant->links)
+            <h4>{{ $consultant->firstName() }}’s links</h4>
+            <ul>
+                @foreach($consultant->links as $link)
+                <li><a href="{{ $link['url'] }}" rel="external">{{ $link['text'] }}</a></li>
+                @endforeach
+            </ul>
+            @endif
+
+            @if($consultant->creator === 'other')
+            <p><em>{{ __('This page was created by :creator, :name’s :relationship.', ['creator' => $consultant->creator_name, 'name' => $consultant->firstName(), 'relationship' => $consultant->creator_relationship]) }}</em></p>
+            @endif
         </div>
         <div class="flow" id="interests-and-goals">
             <h3>{{ __('consultant.section_interests_and_goals') }}</h3>
