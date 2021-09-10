@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ __('hearth::user.account') }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ __('hearth::user.account') }}

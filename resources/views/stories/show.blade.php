@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-slot name="title">{{ $story->title }}</x-slot>
     <x-slot name="header">
         <h1>
             {{ $story->title }}
