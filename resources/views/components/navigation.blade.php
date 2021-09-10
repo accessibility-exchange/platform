@@ -22,6 +22,31 @@
     </ul>
 
     @auth
+    <div class="browse">
+        <x-dropdown>
+            <x-slot name="trigger">
+                {{ __('Explore') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <p>
+                    <x-dropdown-link :href="localized_route('consultants.index')" :active="request()->routeIs(locale() . '.consultants.index')">
+                        {{ __('consultant.index_title') }}
+                    </x-dropdown-link>
+                </p>
+                <p>
+                    <x-dropdown-link :href="localized_route('entities.index')" :active="request()->routeIs(locale() . '.entities.index')">
+                        {{ __('entity.index_title') }}
+                    </x-dropdown-link>
+                </p>
+                <p>
+                    <x-dropdown-link :href="localized_route('projects.index')" :active="request()->routeIs(locale() . '.projects.index')">
+                        {{ __('project.index_title') }}
+                    </x-dropdown-link>
+                </p>
+            </x-slot>
+        </x-dropdown>
+    </div>
     <!-- User Dropdown -->
     <div class="user">
         <x-dropdown>

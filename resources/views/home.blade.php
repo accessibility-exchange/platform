@@ -3,20 +3,6 @@
         <h1 itemprop="name">{{ __('home.your_title', ['name' => Auth::user()->name]) }}</h1>
     </x-slot>
 
-    <p>
-        <a href="{{ localized_route('consultants.index') }}">{{ __('consultant.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
-    </p>
-
-    <p>
-        <a href="{{ localized_route('entities.index') }}">{{ __('entity.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
-    </p>
-
-    <p>
-        <a href="{{ localized_route('projects.index') }}">{{ __('project.browse_all') }} <span class="aria-hidden">&rarr;</span></a>
-    </p>
-
-    <hr>
-
     @if(Auth::user()->context === 'consultant')
         @if(!Auth::user()->consultant)
 
