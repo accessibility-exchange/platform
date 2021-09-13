@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'save_changes' => 'Save changes',
+    'label_email' => 'Email address',
+    'label_locality' => 'City or town',
+    'label_region' => 'Province or territory',
+    'label_date' => 'Date',
+    'label_year' => 'Year',
+    'label_month' => 'Month',
+    'label_day' => 'Day',
+    'month_january' => 'January',
+    'month_february' => 'February',
+    'month_march' => 'March',
+    'month_april' => 'April',
+    'month_may' => 'May',
+    'month_june' => 'June',
+    'month_july' => 'July',
+    'month_august' => 'August',
+    'month_september' => 'September',
+    'month_october' => 'October',
+    'month_november' => 'November',
+    'month_december' => 'December',
+    'errors_found' => 'Errors found',
+    'errors_found_message' => 'Sorry, some errors were found in your submission. Please correct these errors and try again.',
+];
