@@ -14,6 +14,9 @@
         @if($project->completed())
         <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->format('F Y') }}</p>
         @endif
+        @if(!$project->completed() && Auth::user()->context === 'consultant')
+        <x-hearth-button type="button">{{ __('I’m interested in consulting for this project') }}</x-hearth-button>
+        @endif
     </x-slot>
 
     <div class="tabs flow" x-data="tabs(window.location.hash ? window.location.hash.substring(1) : 'project-overview')" x-on:resize.window="enabled = window.innerWidth > 1023">
