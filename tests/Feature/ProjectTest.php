@@ -244,5 +244,8 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->pastProjects), 1);
         $this->assertEquals(count($entity->currentProjects), 1);
         $this->assertEquals(count($entity->futureProjects), 1);
+
+        $this->assertTrue($past_project->completed());
+        $this->assertTrue($current_project->started());
     }
 }
