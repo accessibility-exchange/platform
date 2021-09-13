@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
+use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -15,6 +16,7 @@ class Project extends Model
 {
     use HasFactory;
     use HasSlug;
+    use HasStatus;
     use HasTranslations;
     use Notifiable;
 
@@ -68,23 +70,33 @@ class Project extends Model
     }
 
     /**
-     * Has the project started yet?
+     * Has the project started?
      *
      * @return bool
      */
     public function started()
     {
-        return $this->start_date < Carbon::now();
+        return $this->checkStatus('started');
     }
 
     /**
-     * Has the project completed yet?
+     * Is the project active?
+     *
+     * @return bool
+     */
+    public function active()
+    {
+        return $this->checkStatus('active');
+    }
+
+    /**
+     * Has the project completed?
      *
      * @return bool
      */
     public function completed()
     {
-        return $this->end_date && $this->end_date < Carbon::now();
+        return $this->checkStatus('completed');
     }
 
     /**

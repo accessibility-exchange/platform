@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Consultant;
+use App\Models\Project;
 use App\Statuses\ConsultantStatus;
+use App\Statuses\ProjectStatus;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
@@ -32,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         StatusManager::bind(Consultant::class, ConsultantStatus::class);
+        StatusManager::bind(Project::class, ProjectStatus::class);
     }
 }
