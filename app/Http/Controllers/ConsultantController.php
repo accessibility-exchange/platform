@@ -6,6 +6,7 @@ use App\Http\Requests\CreateConsultantRequest;
 use App\Http\Requests\DestroyConsultantRequest;
 use App\Http\Requests\UpdateConsultantRequest;
 use App\Models\Consultant;
+use App\Statuses\ConsultantStatus;
 use Illuminate\Http\Request;
 
 class ConsultantController extends Controller
@@ -17,7 +18,9 @@ class ConsultantController extends Controller
      */
     public function index()
     {
-        return view('consultants.index', ['consultants' => Consultant::orderBy('name')->get()]);
+        return view('consultants.index', [
+            'consultants' => Consultant::status(new ConsultantStatus('published'))->orderBy('name')->get(),
+        ]);
     }
 
     /**

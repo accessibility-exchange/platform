@@ -7,7 +7,7 @@
 
     </x-slot>
 
-    <h2>Preview</h2>
+    <h2>{{ __('Preview') }}</h2>
     <div class="preview flow">
         <div class="meta">
             <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />

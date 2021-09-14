@@ -5,7 +5,7 @@
             {{ $project->name }}
         </h1>
         <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-        <p><strong>Status:</strong> In progress &mdash; looking for consultants</p>
+        <p><strong>Status:</strong> In progress &mdash; looking for projects</p>
         @if($project->started())
         <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
         @else
@@ -14,9 +14,19 @@
         @if($project->completed())
         <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->format('F Y') }}</p>
         @endif
-        @if(!$project->completed() && Auth::user()->context === 'consultant')
+        @if(!$project->completed() && Auth::user()->context === 'project')
         <x-hearth-button type="button">{{ __('I’m interested in consulting for this project') }}</x-hearth-button>
         @endif
+        @can('update', $project)
+        @if($project->checkStatus('published'))
+        <form action="{{ localized_route('projects.update-status', $project) }}" method="POST" novalidate>
+            @csrf
+            @method('PUT')
+
+            <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish my project')" />
+        </form>
+        @endif
+        @endcan
     </x-slot>
 
     <div class="tabs flow" x-data="tabs(window.location.hash ? window.location.hash.substring(1) : 'project-overview')" x-on:resize.window="enabled = window.innerWidth > 1023">

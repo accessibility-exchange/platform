@@ -7,7 +7,9 @@ use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Entity;
 use App\Models\Project;
+use App\Statuses\ProjectStatus;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -18,7 +20,12 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('projects.index', ['projects' => Project::with('entity')->orderBy('name')->get()]);
+        return view('projects.index', [
+            'projects' => Project::status(new ProjectStatus('published'))
+                ->with('entity')
+                ->orderBy('name')
+                ->get(),
+        ]);
     }
 
     /**
@@ -30,8 +37,9 @@ class ProjectController extends Controller
     public function entityIndex(Entity $entity)
     {
         return view('projects.entity-index', [
-            'projects' => Project::orderBy('name')
+            'projects' => Project::status(new ProjectStatus('published'))
                 ->where('entity_id', $entity->id)
+                ->orderBy('name')
                 ->get(),
             'entity' => $entity,
         ]);
@@ -78,6 +86,10 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        if ($project->checkStatus('draft')) {
+            return view('projects.show-draft', ['project' => $project]);
+        }
+
         return view('projects.show', ['project' => $project]);
     }
 
@@ -110,6 +122,30 @@ class ProjectController extends Controller
     }
 
     /**
+     * Update the specified resource's status.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(Request $request, Project $project)
+    {
+        if ($request->input('unpublish')) {
+            $project->published_at = null;
+            $project->save();
+
+            flash(__('project.unpublish_succeeded'), 'success');
+        } elseif ($request->input('publish')) {
+            $project->published_at = date('Y-m-d h:i:s', time());
+            $project->save();
+
+            flash(__('project.publish_succeeded'), 'success');
+        }
+
+        return redirect(\localized_route('projects.show', $project));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\DestroyProjectRequest  $request
@@ -123,5 +159,42 @@ class ProjectController extends Controller
         flash(__('project.destroy_succeeded'), 'success');
 
         return redirect(\localized_route('dashboard'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function manage(Request $request, Project $project)
+    {
+        $step = 1;
+
+        if ($project->checkStatusIn(['completed', 'consulted'])) {
+            $step = 6;
+        } elseif ($project->checkStatus('negotiated')) {
+            $step = 5;
+        } elseif ($project->checkStatus('matched')) {
+            $step = 4;
+        } elseif ($project->checkStatus('prepared')) {
+            $step = 3;
+        } elseif ($project->checkStatus('published')) {
+            $step = 2;
+        }
+
+        return view('projects.manage', [
+            'project' => $project,
+            'steps' => [
+                1 => __('Publish your project'),
+                2 => __('Prepare for consultations'),
+                3 => __('Build your consulting team'),
+                4 => __('Learn how to work together'),
+                5 => __('Hold consultations'),
+                6 => __('Write your report'),
+            ],
+            'step' => request()->get('step') ? request()->get('step') : $step,
+        ]);
     }
 }
