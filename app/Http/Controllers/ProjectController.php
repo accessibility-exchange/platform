@@ -197,4 +197,44 @@ class ProjectController extends Controller
             'step' => request()->get('step') ? request()->get('step') : $step,
         ]);
     }
+
+    /**
+     * Update the specified resource's progress.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProgress(Request $request, Project $project)
+    {
+        if ($request->input('step') && $request->input('substep')) {
+            $step = $request->input('step');
+            $substep = $request->input('substep');
+
+            if ($request->input('undo')) {
+                $progress = $project->progress[$step];
+                unset($progress[array_search($substep, $progress)]);
+                $project->update(
+                    [
+                        "progress->{$step}" => $progress,
+                    ]
+                );
+            } else {
+                $project->update(
+                    [
+                        "progress->{$step}" => array_unique(
+                            array_merge(
+                                $project->progress[$step],
+                                [$request->input('substep')]
+                            )
+                        ),
+                    ]
+                );
+            }
+
+            flash(__('Progress updated!'), 'success');
+        }
+
+        return redirect(\localized_route('projects.manage', $project));
+    }
 }

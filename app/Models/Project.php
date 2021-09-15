@@ -30,6 +30,13 @@ class Project extends Model
         'entity_id',
         'start_date',
         'end_date',
+        'progress->1',
+        'progress->2',
+        'progress->3',
+        'progress->4',
+        'progress->5',
+        'progress->6',
+        'published_at',
     ];
 
     /**
@@ -40,6 +47,7 @@ class Project extends Model
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
+        'progress' => 'array',
     ];
 
     /**
@@ -117,6 +125,19 @@ class Project extends Model
         return $this->start_date > Carbon::now()
             ? __('project.starting', ['date' => $this->start_date->format('F Y')])
             : __('project.started', ['date' => $this->start_date->format('F Y')]);
+    }
+
+    /**
+     * Is a given step's substep completed?
+     *
+     * @param int $step
+     * @param int $substep
+     *
+     * @return bool
+     */
+    public function isComplete($step, $substep)
+    {
+        return in_array($substep, $this->progress[$step]);
     }
 
     /**

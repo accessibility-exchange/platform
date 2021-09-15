@@ -44,3 +44,8 @@ Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'de
 Route::multilingual('/projects/{project}/dashboard', [ProjectController::class, 'manage'])
     ->middleware(['auth', 'can:manage,project'])
     ->name('projects.manage');
+
+Route::multilingual('/projects/{project}/update-progress', [ProjectController::class, 'updateProgress'])
+    ->middleware(['auth', 'can:update,project'])
+    ->method('put')
+    ->name('projects.update-progress');
