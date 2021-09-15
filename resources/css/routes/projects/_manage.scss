@@ -1,0 +1,59 @@
+progress {
+    appearance: none;
+    background-color: var(--ll-accent-background-color);
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    height: var(--step-0);
+    margin: var(--step-0) 0;
+    width: 100%;
+
+    &::-webkit-progress-bar {
+        background-color: var(--ll-accent-background-color);
+    }
+
+    &::-webkit-progress-value {
+        background-color: var(--ll-accent-color);
+    }
+
+    &::-moz-progress-bar {
+        background-color: var(--ll-accent-color);
+    }
+}
+
+.substeps .substep {
+    display: flex;
+    flex-direction: column;
+    gap: var(--step-0);
+}
+
+.substeps .substep + .substep {
+    border-block-start: var(--ll-border-thin);
+    padding-block-start: var(--step-0);
+}
+
+.substep__progress * + form {
+    margin-block-start: var(--step-0);
+}
+
+.substep__progress__status {
+    align-items: center;
+    display: flex;
+    gap: var(--step--5);
+}
+
+.substep__progress__status .icon {
+    color: var(--ll-text-color-success);
+    height: 1.5em;
+    width: 1.5em;
+}
+
+@media (min-width: 1024px) {
+    .substeps .substep {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .substeps .substep .substep__description {
+        width: 75%;
+    }
+}
