@@ -1,6 +1,6 @@
 <h2>{{ $step }}. {{ $steps[$step] }}</h2>
 
-<progress id="step" max="100" value="{{ count($project->progress[2]) / 4  * 100 }}"></progress>
+<progress id="step" max="100" value="{{ ($project->progress && isset($project->progress[2])) ? count($project->progress[2]) / 4  * 100 : 0 }}"></progress>
 
 <ol role="list" class="substeps flow">
     <li class="substep">

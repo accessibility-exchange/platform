@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\States\Project\ProjectState;
+use App\States\PublicationState;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
-use Makeable\EloquentStatus\HasStatus;
+use Spatie\ModelStates\HasStates;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -16,7 +18,7 @@ class Project extends Model
 {
     use HasFactory;
     use HasSlug;
-    use HasStatus;
+    use HasStates;
     use HasTranslations;
     use Notifiable;
 
@@ -48,6 +50,8 @@ class Project extends Model
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'progress' => 'array',
+        'state' => ProjectState::class,
+        'publication_state' => PublicationState::class,
     ];
 
     /**
@@ -84,7 +88,7 @@ class Project extends Model
      */
     public function started()
     {
-        return $this->checkStatus('started');
+        return $this->start_date < Carbon::now();
     }
 
     /**
@@ -94,7 +98,13 @@ class Project extends Model
      */
     public function active()
     {
-        return $this->checkStatus('active');
+        return in_array($this->state->slug(), [
+            'preparing',
+            'confirmating_consultants',
+            'negotiating_consultations',
+            'holding_consultations',
+            'writing_report',
+        ]);
     }
 
     /**
@@ -104,7 +114,7 @@ class Project extends Model
      */
     public function completed()
     {
-        return $this->checkStatus('completed');
+        return $this->state->slug() === 'completed';
     }
 
     /**
@@ -137,7 +147,11 @@ class Project extends Model
      */
     public function isComplete($step, $substep)
     {
-        return in_array($substep, $this->progress[$step]);
+        if ($this->progress && isset($this->progress[$step])) {
+            return in_array($substep, $this->progress[$step]);
+        }
+
+        return false;
     }
 
     /**

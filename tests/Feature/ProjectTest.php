@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
+use App\States\Project\Completed;
+use App\States\Project\Preparing;
+use App\States\Published;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -70,6 +73,8 @@ class ProjectTest extends TestCase
         $entity = Entity::factory()->create();
         $project = Project::factory()->create([
             'entity_id' => $entity->id,
+            'state' => Preparing::class,
+            'publication_state' => Published::class,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.index'));
@@ -91,6 +96,8 @@ class ProjectTest extends TestCase
         $entity = Entity::factory()->create();
         $project = Project::factory()->create([
             'entity_id' => $entity->id,
+            'state' => Preparing::class,
+            'publication_state' => Published::class,
         ]);
 
         $response = $this->get(localized_route('projects.index'));
@@ -228,16 +235,22 @@ class ProjectTest extends TestCase
             'entity_id' => $entity->id,
             'start_date' => Carbon::now()->subMonths(4)->format('Y-m-d'),
             'end_date' => Carbon::now()->subMonths(1)->format('Y-m-d'),
+            'state' => Completed::class,
+            'publication_state' => Published::class,
         ]);
         $current_project = Project::factory()->create([
             'entity_id' => $entity->id,
             'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
             'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
+            'state' => Preparing::class,
+            'publication_state' => Published::class,
         ]);
         $future_project = Project::factory()->create([
             'entity_id' => $entity->id,
             'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
             'end_date' => Carbon::now()->addMonths(4)->format('Y-m-d'),
+            'state' => Preparing::class,
+            'publication_state' => Published::class,
         ]);
 
         $this->assertEquals(count($entity->projects), 3);

@@ -12,7 +12,7 @@
         <div class="meta">
             <h3>{{ $project->name }}</h3>
             <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-            <p><strong>Status:</strong> In progress &mdash; looking for projects</p>
+            <p><strong>{{ __('Status:') }}</strong> {{ $project->state ? $project->state->label() : __('Drafting project page') }}</p>
             @if($project->started())
             <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
             @else
@@ -64,8 +64,8 @@
         </p>
 
         @can('update', $project)
-        @if($project->checkStatus('draft'))
-        <form action="{{ localized_route('projects.update-status', $project) }}" method="POST" novalidate>
+        @if($project->publication_state = 'draft')
+        <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProgressColumnToProjectsTable extends Migration
+class AddStateColumnsToProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,8 @@ class AddProgressColumnToProjectsTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->json('progress')->nullable();
+            $table->string('state')->nullable();
+            $table->string('publication_state')->default('draft');
         });
     }
 
@@ -26,7 +28,7 @@ class AddProgressColumnToProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('progress');
+            $table->dropColumn(['progress', 'state']);
         });
     }
 }

@@ -5,7 +5,7 @@
             {{ $project->name }}
         </h1>
         <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-        <p><strong>Status:</strong> In progress &mdash; looking for projects</p>
+        <p><strong>{{ __('Status:') }}</strong> {{ $project->state->label() }}</p>
         @if($project->started())
         <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
         @else
@@ -18,8 +18,8 @@
         <x-hearth-button type="button">{{ __('I’m interested in consulting for this project') }}</x-hearth-button>
         @endif
         @can('update', $project)
-        @if($project->checkStatus('published'))
-        <form action="{{ localized_route('projects.update-status', $project) }}" method="POST" novalidate>
+        @if($project->publication_state->slug() === 'published')
+        <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
 

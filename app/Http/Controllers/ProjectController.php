@@ -7,7 +7,9 @@ use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Entity;
 use App\Models\Project;
-use App\Statuses\ProjectStatus;
+use App\States\Draft;
+use App\States\Project\Preparing;
+use App\States\Published;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -21,7 +23,7 @@ class ProjectController extends Controller
     public function index()
     {
         return view('projects.index', [
-            'projects' => Project::status(new ProjectStatus('published'))
+            'projects' => Project::where('state', Published::class)
                 ->with('entity')
                 ->orderBy('name')
                 ->get(),
@@ -37,7 +39,7 @@ class ProjectController extends Controller
     public function entityIndex(Entity $entity)
     {
         return view('projects.entity-index', [
-            'projects' => Project::status(new ProjectStatus('published'))
+            'projects' => Project::where('state', Published::class)
                 ->where('entity_id', $entity->id)
                 ->orderBy('name')
                 ->get(),
@@ -86,7 +88,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if ($project->checkStatus('draft')) {
+        if (is_a($project->publication_state, Draft::class)) {
             return view('projects.show-draft', ['project' => $project]);
         }
 
@@ -128,16 +130,19 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateStatus(Request $request, Project $project)
+    public function updatePublicationStatus(Request $request, Project $project)
     {
         if ($request->input('unpublish')) {
-            $project->published_at = null;
-            $project->save();
+            $project->publication_state->transitionTo(Draft::class);
 
             flash(__('project.unpublish_succeeded'), 'success');
         } elseif ($request->input('publish')) {
-            $project->published_at = date('Y-m-d h:i:s', time());
-            $project->save();
+            $project->publication_state->transitionTo(Published::class);
+
+            if (! $project->state) {
+                $project->state = Preparing::class;
+                $project->save();
+            }
 
             flash(__('project.publish_succeeded'), 'success');
         }
@@ -172,15 +177,17 @@ class ProjectController extends Controller
     {
         $step = 1;
 
-        if ($project->checkStatusIn(['completed', 'consulted'])) {
+        if ($project->publication_state->slug() === 'published') {
+            $step = 2;
+        } elseif (in_array($project->state->slug(), ['writing_report', 'completed'])) {
             $step = 6;
-        } elseif ($project->checkStatus('negotiated')) {
+        } elseif ($project->state->slug() === 'holding_consultations') {
             $step = 5;
-        } elseif ($project->checkStatus('matched')) {
+        } elseif ($project->state->slug() === 'negotiating_consultations') {
             $step = 4;
-        } elseif ($project->checkStatus('prepared')) {
+        } elseif ($project->state->slug() === 'confirming_consultants') {
             $step = 3;
-        } elseif ($project->checkStatus('published')) {
+        } elseif ($project->publication_state->slug() === 'published') {
             $step = 2;
         }
 
@@ -224,7 +231,7 @@ class ProjectController extends Controller
                     [
                         "progress->{$step}" => array_unique(
                             array_merge(
-                                $project->progress[$step],
+                                $project->progress[$step] ?? [],
                                 [$request->input('substep')]
                             )
                         ),

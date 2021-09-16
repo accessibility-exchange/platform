@@ -31,10 +31,10 @@ Route::multilingual('/projects/{project}/update', [ProjectController::class, 'up
     ->method('put')
     ->name('projects.update');
 
-Route::multilingual('/projects/{project}/change-status', [ProjectController::class, 'updateStatus'])
+Route::multilingual('/projects/{project}/change-publication-status', [ProjectController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,project'])
     ->method('put')
-    ->name('projects.update-status');
+    ->name('projects.update-publication-status');
 
 Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,project'])
