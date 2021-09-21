@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\States\Project\ProjectState;
-use App\States\PublicationState;
+use App\States\Project\Completed;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
-use Spatie\ModelStates\HasStates;
+use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -18,7 +17,7 @@ class Project extends Model
 {
     use HasFactory;
     use HasSlug;
-    use HasStates;
+    use HasStatus;
     use HasTranslations;
     use Notifiable;
 
@@ -32,13 +31,24 @@ class Project extends Model
         'entity_id',
         'start_date',
         'end_date',
-        'progress->1',
-        'progress->2',
-        'progress->3',
-        'progress->4',
-        'progress->5',
-        'progress->6',
         'published_at',
+        'found_consultants',
+        'confirmed_consultants',
+        'scheduled_planning_meeting',
+        'notified_of_planning_meeting',
+        'prepared_project_orientation',
+        'prepared_contractual_documents',
+        'booked_access_services_for_planning',
+        'finished_planning_meeting',
+        'scheduled_consultation_meetings',
+        'notified_of_consultation_meetings',
+        'prepared_consultation_materials',
+        'booked_access_services_for_consultations',
+        'finished_consultation_meetings',
+        'prepared_accessibility_plan',
+        'prepared_follow_up_plan',
+        'shared_plans_with_consultants',
+        'published_accessibility_plan',
     ];
 
     /**
@@ -49,9 +59,7 @@ class Project extends Model
     protected $casts = [
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
-        'progress' => 'array',
-        'state' => ProjectState::class,
-        'publication_state' => PublicationState::class,
+        'published_at' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -60,6 +68,132 @@ class Project extends Model
      * @var array
      */
     public $translatable = [];
+
+    /**
+     * @var bool|null
+     */
+    public $found_consultants;
+
+    /**
+     * @var bool|null
+     */
+    public $confirmed_consultants;
+
+    /**
+     * @var bool|null
+     */
+    public $scheduled_planning_meeting;
+
+    /**
+     * @var bool|null
+     */
+    public $notified_of_planning_meeting;
+
+    /**
+     * @var bool|null
+     */
+    public $prepared_project_orientation;
+
+    /**
+     * @var bool|null
+     */
+    public $prepared_contractual_documents;
+
+    /**
+     * @var bool|null
+     */
+    public $booked_access_services_for_planning;
+
+    /**
+     * @var bool|null
+     */
+    public $finished_planning_meeting;
+
+    /**
+     * @var bool|null
+     */
+    public $scheduled_consultation_meetings;
+
+    /**
+     * @var bool|null
+     */
+    public $notified_of_consultation_meetings;
+
+    /**
+     * @var bool|null
+     */
+    public $prepared_consultation_materials;
+
+    /**
+     * @var bool|null
+     */
+    public $booked_access_services_for_consultations;
+
+    /**
+     * @var bool|null
+     */
+    public $finished_consultation_meetings;
+
+    /**
+     * @var bool|null
+     */
+    public $prepared_accessibility_plan;
+
+    /**
+     * @var bool|null
+     */
+    public $prepared_follow_up_plan;
+
+    /**
+     * @var bool|null
+     */
+    public $shared_plans_with_consultants;
+
+    /**
+     * The project's steps and the number of corresponding substeps for each.
+     *
+     * @var array
+     */
+    public $substeps = [
+        1 => [
+            'published_at',
+        ],
+        2 => [
+            'found_consultants',
+            'confirmed_consultants',
+        ],
+        3 => [
+            'scheduled_planning_meeting',
+            'notified_of_planning_meeting',
+            'prepared_project_orientation',
+            'prepared_contractual_documents',
+            'booked_access_services_for_planning',
+            'finished_planning_meeting',
+        ],
+        4 => [
+            'scheduled_consultation_meetings',
+            'notified_of_consultation_meetings',
+            'prepared_consultation_materials',
+            'booked_access_services_for_consultations',
+            'finished_consultation_meetings',
+        ],
+        5 => [
+            'prepared_accessibility_plan',
+            'prepared_follow_up_plan',
+            'shared_plans_with_consultants',
+        ],
+    ];
+
+    /**
+     * Return the substep count for a particular step.
+     *
+     * @param int $step The current step.
+     * @return int The number of substeps for this step.
+     */
+    public function substepCount($step)
+    {
+        return count($this->substeps[$step]);
+    }
 
     /**
      * Get the options for generating the slug.
@@ -92,29 +226,13 @@ class Project extends Model
     }
 
     /**
-     * Is the project active?
-     *
-     * @return bool
-     */
-    public function active()
-    {
-        return in_array($this->state->slug(), [
-            'preparing',
-            'confirmating_consultants',
-            'negotiating_consultations',
-            'holding_consultations',
-            'writing_report',
-        ]);
-    }
-
-    /**
      * Has the project completed?
      *
      * @return bool
      */
     public function completed()
     {
-        return $this->state->slug() === 'completed';
+        return $this->hasReportedFindings();
     }
 
     /**
@@ -124,7 +242,7 @@ class Project extends Model
      */
     public function timespan()
     {
-        if ($this->start_date && $this->end_date) {
+        if ($this->end_date) {
             if ($this->start_date->format('Y') === $this->end_date->format('Y')) {
                 return $this->start_date->format('F') . '&mdash;' . $this->end_date->format('F Y');
             } else {
@@ -137,21 +255,93 @@ class Project extends Model
             : __('project.started', ['date' => $this->start_date->format('F Y')]);
     }
 
+    public function hasBuiltTeam()
+    {
+        return $this->found_consultants
+            && $this->confirmed_consultants;
+    }
+
+    public function hasLearnedHowToWorkTogether()
+    {
+        return $this->scheduled_planning_meeting
+            && $this->notified_of_planning_meeting
+            && $this->prepared_project_orientation
+            && $this->prepared_contractual_documents
+            && $this->booked_access_services_for_planning
+            && $this->finished_planning_meeting;
+    }
+
+    public function hasHeldConsultations()
+    {
+        return $this->scheduled_consultation_meetings
+            && $this->notified_of_consultation_meetings
+            && $this->prepared_consultation_materials
+            && $this->booked_access_services_for_consultations
+            && $this->finished_consultation_meetings;
+    }
+
+    public function hasReportedFindings()
+    {
+        return $this->prepared_accessibility_plan
+            && $this->prepared_follow_up_plan
+            && $this->shared_plans_with_consultants;
+    }
+
+    public function currentStep()
+    {
+        $step = 1;
+
+        if ($this->hasHeldConsultations()) {
+            $step = 5;
+        } elseif ($this->hasLearnedHowToWorkTogether()) {
+            $step = 4;
+        } elseif ($this->hasBuiltTeam()) {
+            $step = 3;
+        } elseif ($this->checkStatus('published')) {
+            $step = 2;
+        } elseif ($this->checkStatus('draft')) {
+            $step = 1;
+        }
+
+        return $step;
+    }
+
     /**
      * Is a given step's substep completed?
      *
-     * @param int $step
-     * @param int $substep
+     * @param string $substep
      *
-     * @return bool
+     * @return bool|null
      */
-    public function isComplete($step, $substep)
+    public function isSubstepComplete($substep)
     {
-        if ($this->progress && isset($this->progress[$step])) {
-            return in_array($substep, $this->progress[$step]);
+        return $this[$substep] ?? null;
+    }
+
+    /**
+     * How far along is a given step?
+     *
+     * @param int $step
+     *
+     * @return float
+     */
+    public function getProgress(int $step)
+    {
+        $progress = 0;
+
+        if ($step === 1) {
+            if ($this->checkStatus('published')) {
+                $progress = 1;
+            }
+        } else {
+            foreach ($this->substeps[$step] as $key => $substep) {
+                if (! is_null($this[$substep]) && $this[$substep]) {
+                    $progress++;
+                }
+            }
         }
 
-        return false;
+        return $progress;
     }
 
     /**

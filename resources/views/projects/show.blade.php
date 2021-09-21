@@ -5,7 +5,7 @@
             {{ $project->name }}
         </h1>
         <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-        <p><strong>{{ __('Status:') }}</strong> {{ $project->state->label() }}</p>
+        <p><strong>{{ __('Status:') }}</strong> {{ $project->status }}</p>
         @if($project->started())
         <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
         @else
@@ -18,14 +18,17 @@
         <x-hearth-button type="button">{{ __('I’m interested in consulting for this project') }}</x-hearth-button>
         @endif
         @can('update', $project)
-        @if($project->publication_state->slug() === 'published')
-        <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
-            @csrf
-            @method('PUT')
+        @if($project->checkStatus('published'))
+            @if(!$project->hasBuiltTeam())
+            <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
+                @csrf
+                @method('PUT')
 
-            <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish my project')" />
-        </form>
+                <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish my project')" />
+            </form>
+            @endif
         @endif
+        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage my project') }}</a>
         @endcan
     </x-slot>
 

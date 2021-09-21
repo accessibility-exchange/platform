@@ -27,6 +27,7 @@ class ProjectFactory extends Factory
             'entity_id' => Entity::factory(),
             'start_date' => $this->faker->dateTimeBetween('-6 months', '-1 months'),
             'end_date' => $this->faker->dateTimeBetween('+1 months', '+6 months'),
+            'published_at' => date('Y-m-d h:i:s', time()),
         ];
     }
 }

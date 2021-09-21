@@ -7,9 +7,7 @@ use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Entity;
 use App\Models\Project;
-use App\States\Draft;
-use App\States\Project\Preparing;
-use App\States\Published;
+use App\Statuses\ProjectStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -23,7 +21,7 @@ class ProjectController extends Controller
     public function index()
     {
         return view('projects.index', [
-            'projects' => Project::where('state', Published::class)
+            'projects' => Project::status(new ProjectStatus('published'))
                 ->with('entity')
                 ->orderBy('name')
                 ->get(),
@@ -39,7 +37,7 @@ class ProjectController extends Controller
     public function entityIndex(Entity $entity)
     {
         return view('projects.entity-index', [
-            'projects' => Project::where('state', Published::class)
+            'projects' => Project::status(new ProjectStatus('published'))
                 ->where('entity_id', $entity->id)
                 ->orderBy('name')
                 ->get(),
@@ -88,7 +86,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if (is_a($project->publication_state, Draft::class)) {
+        if ($project->checkStatus('draft')) {
             return view('projects.show-draft', ['project' => $project]);
         }
 
@@ -133,16 +131,13 @@ class ProjectController extends Controller
     public function updatePublicationStatus(Request $request, Project $project)
     {
         if ($request->input('unpublish')) {
-            $project->publication_state->transitionTo(Draft::class);
+            $project->published_at = null;
+            $project->save();
 
             flash(__('project.unpublish_succeeded'), 'success');
         } elseif ($request->input('publish')) {
-            $project->publication_state->transitionTo(Published::class);
-
-            if (! $project->state) {
-                $project->state = Preparing::class;
-                $project->save();
-            }
+            $project->published_at = date('Y-m-d h:i:s', time());
+            $project->save();
 
             flash(__('project.publish_succeeded'), 'success');
         }
@@ -175,73 +170,136 @@ class ProjectController extends Controller
      */
     public function manage(Request $request, Project $project)
     {
-        $step = 1;
-
-        if ($project->publication_state->slug() === 'published') {
-            $step = 2;
-        } elseif (in_array($project->state->slug(), ['writing_report', 'completed'])) {
-            $step = 6;
-        } elseif ($project->state->slug() === 'holding_consultations') {
-            $step = 5;
-        } elseif ($project->state->slug() === 'negotiating_consultations') {
-            $step = 4;
-        } elseif ($project->state->slug() === 'confirming_consultants') {
-            $step = 3;
-        } elseif ($project->publication_state->slug() === 'published') {
-            $step = 2;
-        }
-
         return view('projects.manage', [
             'project' => $project,
             'steps' => [
                 1 => __('Publish your project'),
-                2 => __('Prepare for consultations'),
-                3 => __('Build your consulting team'),
-                4 => __('Learn how to work together'),
-                5 => __('Hold consultations'),
-                6 => __('Write your report'),
+                2 => __('Build your consulting team'),
+                3 => __('Learn how to work together'),
+                4 => __('Hold consultations'),
+                5 => __('Write your report'),
             ],
-            'step' => request()->get('step') ? request()->get('step') : $step,
+            'substeps' => [
+                1 => [
+                    1 => [
+                        'link' => \localized_route('projects.edit', $project),
+                        'label' => __('Publish project page'),
+                        'description' => false,
+                        'status' => $project->checkStatus('published') ? 'complete' : 'in-progress',
+                    ],
+                ],
+                2 => [
+                    1 => [
+                        'link' => "#",
+                        'label' => __('Find consultants'),
+                        'description' => false,
+                        'status' => $project->found_consultants ?? null,
+                    ],
+                    2 => [
+                        'link' => "#",
+                        'label' => __('Confirm consultants’ participation'),
+                        'description' => false,
+                        'status' => $project->confirmed_consultants ?? null,
+                    ],
+                ],
+                3 => [
+                    1 => [
+                        'link' => "#",
+                        'label' => __('Schedule the meeting'),
+                        'description' => false,
+                        'status' => $project->scheduled_planning_meeting ?? null,
+                    ],
+                    2 => [
+                        'link' => "#",
+                        'label' => __('Contact consultant team'),
+                        'description' => false,
+                        'status' => $project->notified_of_planning_meeting ?? null,
+                    ],
+                    3 => [
+                        'link' => "#",
+                        'label' => __('Prepare a project orientation'),
+                        'description' => false,
+                        'status' => $project->prepared_project_orientation ?? null,
+                    ],
+                    4 => [
+                        'link' => "#",
+                        'label' => __('Prepare contracts and other legal documents'),
+                        'description' => false,
+                        'status' => $project->prepared_contractual_documents ?? null,
+                    ],
+                    5 => [
+                        'link' => "#",
+                        'label' => __('Provide access accommodations and book service providers'),
+                        'description' => false,
+                        'status' => $project->booked_access_services_for_planning ?? null,
+                    ],
+                    6 => [
+                        'link' => "#",
+                        'label' => __('Hold the meeting'),
+                        'description' => false,
+                        'status' => $project->finished_planning_meeting ?? null,
+                    ],
+                ],
+                4 => [
+                    1 => [
+                        'link' => "#",
+                        'label' => __('Schedule the meetings'),
+                        'description' => false,
+                        'status' => $project->scheduled_consultation_meetings ?? null,
+                    ],
+                    2 => [
+                        'link' => "#",
+                        'label' => __('Contact consultant team'),
+                        'description' => false,
+                        'status' => $project->notified_of_consultation_meetings ?? null,
+                    ],
+                    3 => [
+                        'link' => "#",
+                        'label' => __('Prepare consultation materials'),
+                        'description' => false,
+                        'status' => $project->prepared_consultation_materials ?? null,
+                    ],
+                    4 => [
+                        'link' => "#",
+                        'label' => __('Provide access accommodations and book service providers'),
+                        'description' => false,
+                        'status' => $project->booked_access_services_for_consultations ?? null,
+                    ],
+                    5 => [
+                        'link' => "#",
+                        'label' => __('Hold the meetings'),
+                        'description' => false,
+                        'status' => $project->finished_consultation_meetings ?? null,
+                    ],
+                ],
+                5 => [
+                    1 => [
+                        'link' => "#",
+                        'label' => __('Prepare your accessibility plan'),
+                        'description' => false,
+                        'status' => $project->prepared_accessibility_plan ?? null,
+                    ],
+                    2 => [
+                        'link' => "#",
+                        'label' => __('Prepare your follow-up plan'),
+                        'description' => false,
+                        'status' => $project->prepared_follow_up_plan ?? null,
+                    ],
+                    3 => [
+                        'link' => "#",
+                        'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
+                        'description' => false,
+                        'status' => $project->shared_plans_with_consultants ?? null,
+                    ],
+                    4 => [
+                        'link' => "#",
+                        'label' => __('Publish your accessibility plan (optional)'),
+                        'description' => false,
+                        'status' => $project->published_accessibility_plan ?? null,
+                    ],
+                ],
+            ],
+            'step' => request()->get('step') ? request()->get('step') : $project->currentStep(),
         ]);
-    }
-
-    /**
-     * Update the specified resource's progress.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateProgress(Request $request, Project $project)
-    {
-        if ($request->input('step') && $request->input('substep')) {
-            $step = $request->input('step');
-            $substep = $request->input('substep');
-
-            if ($request->input('undo')) {
-                $progress = $project->progress[$step];
-                unset($progress[array_search($substep, $progress)]);
-                $project->update(
-                    [
-                        "progress->{$step}" => $progress,
-                    ]
-                );
-            } else {
-                $project->update(
-                    [
-                        "progress->{$step}" => array_unique(
-                            array_merge(
-                                $project->progress[$step] ?? [],
-                                [$request->input('substep')]
-                            )
-                        ),
-                    ]
-                );
-            }
-
-            flash(__('Progress updated!'), 'success');
-        }
-
-        return redirect(\localized_route('projects.manage', $project));
     }
 }

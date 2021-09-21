@@ -64,7 +64,7 @@
         </p>
 
         @can('update', $project)
-        @if($project->publication_state = 'draft')
+        @if($project->checkStatus('draft'))
         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
