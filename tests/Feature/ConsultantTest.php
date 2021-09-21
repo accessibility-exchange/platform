@@ -283,7 +283,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
             'publish' => true,
         ]);
 
@@ -302,7 +302,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
             'unpublish' => true,
         ]);
 

@@ -14,7 +14,7 @@
         </div>
         @can('update', $consultant)
         @if($consultant->checkStatus('published'))
-        <form action="{{ localized_route('consultants.update-status', $consultant) }}" method="POST" novalidate>
+        <form action="{{ localized_route('consultants.update-publication-status', $consultant) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
 

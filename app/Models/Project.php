@@ -60,6 +60,22 @@ class Project extends Model
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
+        'found_consultants' => 'boolean',
+        'confirmed_consultants' => 'boolean',
+        'scheduled_planning_meeting' => 'boolean',
+        'notified_of_planning_meeting' => 'boolean',
+        'prepared_project_orientation' => 'boolean',
+        'prepared_contractual_documents' => 'boolean',
+        'booked_access_services_for_planning' => 'boolean',
+        'finished_planning_meeting' => 'boolean',
+        'scheduled_consultation_meetings' => 'boolean',
+        'notified_of_consultation_meetings' => 'boolean',
+        'prepared_consultation_materials' => 'boolean',
+        'booked_access_services_for_consultations' => 'boolean',
+        'finished_consultation_meetings' => 'boolean',
+        'prepared_accessibility_plan' => 'boolean',
+        'prepared_follow_up_plan' => 'boolean',
+        'shared_plans_with_consultants' => 'boolean',
     ];
 
     /**
@@ -68,86 +84,6 @@ class Project extends Model
      * @var array
      */
     public $translatable = [];
-
-    /**
-     * @var bool|null
-     */
-    public $found_consultants;
-
-    /**
-     * @var bool|null
-     */
-    public $confirmed_consultants;
-
-    /**
-     * @var bool|null
-     */
-    public $scheduled_planning_meeting;
-
-    /**
-     * @var bool|null
-     */
-    public $notified_of_planning_meeting;
-
-    /**
-     * @var bool|null
-     */
-    public $prepared_project_orientation;
-
-    /**
-     * @var bool|null
-     */
-    public $prepared_contractual_documents;
-
-    /**
-     * @var bool|null
-     */
-    public $booked_access_services_for_planning;
-
-    /**
-     * @var bool|null
-     */
-    public $finished_planning_meeting;
-
-    /**
-     * @var bool|null
-     */
-    public $scheduled_consultation_meetings;
-
-    /**
-     * @var bool|null
-     */
-    public $notified_of_consultation_meetings;
-
-    /**
-     * @var bool|null
-     */
-    public $prepared_consultation_materials;
-
-    /**
-     * @var bool|null
-     */
-    public $booked_access_services_for_consultations;
-
-    /**
-     * @var bool|null
-     */
-    public $finished_consultation_meetings;
-
-    /**
-     * @var bool|null
-     */
-    public $prepared_accessibility_plan;
-
-    /**
-     * @var bool|null
-     */
-    public $prepared_follow_up_plan;
-
-    /**
-     * @var bool|null
-     */
-    public $shared_plans_with_consultants;
 
     /**
      * The project's steps and the number of corresponding substeps for each.
@@ -183,17 +119,6 @@ class Project extends Model
             'shared_plans_with_consultants',
         ],
     ];
-
-    /**
-     * Return the substep count for a particular step.
-     *
-     * @param int $step The current step.
-     * @return int The number of substeps for this step.
-     */
-    public function substepCount($step)
-    {
-        return count($this->substeps[$step]);
-    }
 
     /**
      * Get the options for generating the slug.
@@ -257,34 +182,34 @@ class Project extends Model
 
     public function hasBuiltTeam()
     {
-        return $this->found_consultants
-            && $this->confirmed_consultants;
+        return ! is_null($this->found_consultants)
+            && ! is_null($this->confirmed_consultants);
     }
 
     public function hasLearnedHowToWorkTogether()
     {
-        return $this->scheduled_planning_meeting
-            && $this->notified_of_planning_meeting
-            && $this->prepared_project_orientation
-            && $this->prepared_contractual_documents
-            && $this->booked_access_services_for_planning
-            && $this->finished_planning_meeting;
+        return ! is_null($this->scheduled_planning_meeting)
+            && ! is_null($this->notified_of_planning_meeting)
+            && ! is_null($this->prepared_project_orientation)
+            && ! is_null($this->prepared_contractual_documents)
+            && ! is_null($this->booked_access_services_for_planning)
+            && ! is_null($this->finished_planning_meeting);
     }
 
     public function hasHeldConsultations()
     {
-        return $this->scheduled_consultation_meetings
-            && $this->notified_of_consultation_meetings
-            && $this->prepared_consultation_materials
-            && $this->booked_access_services_for_consultations
-            && $this->finished_consultation_meetings;
+        return ! is_null($this->scheduled_consultation_meetings)
+            && ! is_null($this->notified_of_consultation_meetings)
+            && ! is_null($this->prepared_consultation_materials)
+            && ! is_null($this->booked_access_services_for_consultations)
+            && ! is_null($this->finished_consultation_meetings);
     }
 
     public function hasReportedFindings()
     {
-        return $this->prepared_accessibility_plan
-            && $this->prepared_follow_up_plan
-            && $this->shared_plans_with_consultants;
+        return ! is_null($this->prepared_accessibility_plan)
+            && ! is_null($this->prepared_follow_up_plan)
+            && ! is_null($this->shared_plans_with_consultants);
     }
 
     public function currentStep()
@@ -304,18 +229,6 @@ class Project extends Model
         }
 
         return $step;
-    }
-
-    /**
-     * Is a given step's substep completed?
-     *
-     * @param string $substep
-     *
-     * @return bool|null
-     */
-    public function isSubstepComplete($substep)
-    {
-        return $this[$substep] ?? null;
     }
 
     /**

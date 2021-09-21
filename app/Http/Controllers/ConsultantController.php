@@ -119,7 +119,7 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateStatus(Request $request, Consultant $consultant)
+    public function updatePublicationStatus(Request $request, Consultant $consultant)
     {
         if ($request->input('unpublish')) {
             $consultant->published_at = null;

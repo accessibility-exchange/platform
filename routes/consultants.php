@@ -28,10 +28,10 @@ Route::multilingual('/consultants/{consultant}/edit', [ConsultantController::cla
     ->method('put')
     ->name('consultants.update');
 
-Route::multilingual('/consultants/{consultant}/change-status', [ConsultantController::class, 'updateStatus'])
+Route::multilingual('/consultants/{consultant}/change-status', [ConsultantController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,consultant'])
     ->method('put')
-    ->name('consultants.update-status');
+    ->name('consultants.update-publication-status');
 
 Route::multilingual('/consultants/{consultant}/delete', [ConsultantController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,consultant'])

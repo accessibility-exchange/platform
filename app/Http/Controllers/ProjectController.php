@@ -146,6 +146,28 @@ class ProjectController extends Controller
     }
 
     /**
+     * Update the progress of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProgress(Request $request, Project $project)
+    {
+        if ($request->input('complete')) {
+            $project->update([$request->input('substep') => true]);
+
+            flash(__('project.update_succeeded'), 'success');
+        } elseif ($request->input('incomplete')) {
+            $project->update([$request->input('substep') => false]);
+
+            flash(__('project.update_succeeded'), 'success');
+        }
+
+        return redirect(\localized_route('projects.manage', $project));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param \App\Http\Requests\DestroyProjectRequest  $request
