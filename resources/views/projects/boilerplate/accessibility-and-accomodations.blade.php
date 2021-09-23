@@ -31,4 +31,8 @@
 
 <x-header :level="$level">Time-related accomodations</x-header>
 
-<p>Flexibility with deadlines, communicating at your own pace</p>
+<ul>
+    <li>Flexibility with deadlines</li>
+    <li>Need flexible or frequent breaks</li>
+</ul>
+
