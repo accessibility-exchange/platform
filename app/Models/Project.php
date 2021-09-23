@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\States\Project\Completed;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
@@ -263,5 +263,24 @@ class Project extends Model
     public function entity(): BelongsTo
     {
         return $this->belongsTo(Entity::class);
+    }
+
+    /**
+     * The consultants that belong to the project.
+     */
+    public function consultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->as('relationship')
+            ->withPivot('status');
+    }
+
+    /**
+     * The consultants that are saved to the project.
+     */
+    public function savedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->wherePivot('status', 'saved');
     }
 }

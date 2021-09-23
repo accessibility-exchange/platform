@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
@@ -99,5 +100,13 @@ class Consultant extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The projects that the consultant belongs to.
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class);
     }
 }

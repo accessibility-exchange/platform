@@ -49,3 +49,7 @@ Route::multilingual('/projects/{project}/update-progress', [ProjectController::c
     ->middleware(['auth', 'can:update,project'])
     ->method('put')
     ->name('projects.update-progress');
+
+Route::multilingual('/projects/{project}/find-consultants', [ProjectController::class, 'editConsultants'])
+    ->middleware(['auth', 'can:update,project'])
+    ->name('projects.edit-consultants');

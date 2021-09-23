@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Consultant;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
@@ -184,7 +185,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the management UI for the specified resource.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
@@ -212,7 +213,7 @@ class ProjectController extends Controller
                 ],
                 2 => [
                     1 => [
-                        'link' => "#",
+                        'link' => \localized_route('projects.edit-consultants', $project),
                         'label' => __('Find consultants'),
                         'description' => false,
                         'status' => $project->found_consultants ?? null,
@@ -323,5 +324,24 @@ class ProjectController extends Controller
             ],
             'step' => request()->get('step') ? request()->get('step') : $project->currentStep(),
         ]);
+    }
+
+    /**
+     * Manage consultants for the resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function editConsultants(Request $request, Project $project)
+    {
+        return view('projects.edit-consultants', [
+            'project' => $project,
+            'consultants' => Consultant::all(),
+        ]);
+    }
+
+    public function attachConsultant(Request $request, Project $project)
+    {
     }
 }
