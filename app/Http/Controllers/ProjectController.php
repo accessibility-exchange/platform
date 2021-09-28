@@ -337,11 +337,98 @@ class ProjectController extends Controller
     {
         return view('projects.edit-consultants', [
             'project' => $project,
-            'consultants' => Consultant::all(),
+            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+                $query->where('id', '=', $project->id);
+            })->get(),
+            'interestedConsultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+                $query->where('id', '=', $project->id);
+            })->get(),
+            'relatedConsultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+                $query->where('id', '=', $project->id);
+            })->get(),
         ]);
     }
 
-    public function attachConsultant(Request $request, Project $project)
+    /**
+     * Manage consultants for the resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function addConsultant(Request $request, Project $project)
     {
+        $validated = $request->validate([
+            'consultant_id' => 'required|integer',
+            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
+        ]);
+
+        $project->consultants()->attach($request->input('consultant_id'));
+
+        return redirect(\localized_route('projects.edit-consultants', $project));
+    }
+
+    /**
+     * Update existing consultant attachments.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function updateConsultants(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'consultant_ids' => 'required|array',
+            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
+        ]);
+
+        foreach ($request->input('consultant_ids') as $consultant_id) {
+            $project->consultants()->updateExistingPivot(
+                $consultant_id,
+                ['status' => $request->input('status')]
+            );
+        }
+
+        return redirect(\localized_route('projects.manage', $project));
+    }
+
+    /**
+     * Update an existing consultant attachment.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function updateConsultant(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'consultant_id' => 'required|integer',
+            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
+        ]);
+
+        $project->consultants()->updateExistingPivot(
+            $request->input('consultant_id'),
+            ['status' => $request->input('status')]
+        );
+
+        return redirect(\localized_route('projects.manage', $project));
+    }
+
+    /**
+     * Remove an existing consultant attachment.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function removeConsultant(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'consultant_id' => 'required|integer',
+        ]);
+
+        $project->consultants()->detach($request->input('consultant_id'));
+
+        return redirect(\localized_route('projects.manage', $project));
     }
 }

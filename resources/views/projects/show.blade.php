@@ -5,7 +5,7 @@
             {{ $project->name }}
         </h1>
         <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-        <p><strong>{{ __('Status:') }}</strong> {{ $project->status }}</p>
+        <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
         @if($project->started())
         <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
         @else

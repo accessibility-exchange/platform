@@ -24,7 +24,7 @@ return [
     'action_delete' => 'Delete project',
     'destroy_succeeded' => 'Your project has been deleted.',
     'status_label' => 'Status',
-    'started_label' => 'Started',
+    'started_label' => 'Commencé',
     'starting_label' => 'Starting',
     'completed_label' => 'Completed',
 ];

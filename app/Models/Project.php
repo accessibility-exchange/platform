@@ -49,6 +49,9 @@ class Project extends Model
         'prepared_follow_up_plan',
         'shared_plans_with_consultants',
         'published_accessibility_plan',
+        'regions',
+        'payment_methods',
+        'payment_negotiable',
     ];
 
     /**
@@ -76,6 +79,9 @@ class Project extends Model
         'prepared_accessibility_plan' => 'boolean',
         'prepared_follow_up_plan' => 'boolean',
         'shared_plans_with_consultants' => 'boolean',
+        'regions' => 'array',
+        'payment_methods' => 'array',
+        'payment_negotiable' => 'boolean',
     ];
 
     /**
@@ -216,7 +222,9 @@ class Project extends Model
     {
         $step = 1;
 
-        if ($this->hasHeldConsultations()) {
+        if ($this->hasReportedFindings()) {
+            $step = 6;
+        } elseif ($this->hasHeldConsultations()) {
             $step = 5;
         } elseif ($this->hasLearnedHowToWorkTogether()) {
             $step = 4;
@@ -229,6 +237,36 @@ class Project extends Model
         }
 
         return $step;
+    }
+
+    public function step()
+    {
+        switch ($this->currentStep()) {
+            case 1:
+                return __('Publishing project');
+
+                break;
+            case 2:
+                return __('Building consulting team');
+
+                break;
+            case 3:
+                return __('Learning how to work together');
+
+                break;
+            case 4:
+                return __('Holding consultations');
+
+                break;
+            case 5:
+                return __('Writing report');
+
+                break;
+            case 6:
+                return __('Completed');
+
+                break;
+        };
     }
 
     /**
@@ -282,5 +320,32 @@ class Project extends Model
     {
         return $this->belongsToMany(Consultant::class)
             ->wherePivot('status', 'saved');
+    }
+
+    /**
+     * The consultants that are shortlisted for the project.
+     */
+    public function shortlistedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->wherePivot('status', 'shortlisted');
+    }
+
+    /**
+     * The consultants that have been requested for the project.
+     */
+    public function requestedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->wherePivot('status', 'requested');
+    }
+
+    /**
+     * The consultants that are shortlisted for the project.
+     */
+    public function confirmedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->wherePivot('status', 'confirmed');
     }
 }

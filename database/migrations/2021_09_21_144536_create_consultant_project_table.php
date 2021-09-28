@@ -14,7 +14,7 @@ class CreateConsultantProjectTable extends Migration
     public function up()
     {
         Schema::create('consultant_project', function (Blueprint $table) {
-            $table->enum('status', ['saved', 'shortlisted', 'confirmed', 'removed', 'exited'])->default('saved');
+            $table->enum('status', ['saved', 'shortlisted', 'requested', 'confirmed', 'removed', 'exited'])->default('saved');
             $table->foreignId('consultant_id')
                 ->constrained()
                 ->onDelete('cascade');
