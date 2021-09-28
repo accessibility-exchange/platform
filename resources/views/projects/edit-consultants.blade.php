@@ -38,16 +38,20 @@
         <div class="flow" id="browse-all" x-bind="tabpanel">
             <h2>{{ __('Browse all consultants') }}</h2>
             @forelse($consultants as $consultant)
-            <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
-                @csrf
-                @method('put')
-                {{ $consultant->name }}
+            <x-consultant-card level="3" :consultant="$consultant">
+                <x-slot name="actions">
+                    <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
+                        @csrf
+                        @method('put')
 
-                <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                <x-hearth-input type="hidden" name="status" value="saved" />
+                        <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                        <x-hearth-input type="hidden" name="status" value="saved" />
 
-                <x-hearth-button>{{ __('Save') }}</x-hearth-button>
-            </form>
+                        <x-hearth-button>{{ __('Save') }}</x-hearth-button>
+                    </form>
+                </x-slot>
+            </x-consultant-card>
+
             @empty
             <p>{{ __('Sorry, no consultants were found.') }}</p>
             @endforelse
@@ -56,19 +60,18 @@
 
     @if(count($project->savedConsultants) > 0)
     <section class="drawer flow" aria-labelledby="saved-consultants" x-data="{expanded: false}">
-        <h2 id="saved-consultants"><button x-on:click="expanded = !expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Saved consultants') }}</button></h2>
+        <h2 id="saved-consultants"><button x-on:click="expanded = !expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Saved consultants') }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" /></button></h2>
 
         <div class="flow" x-show="expanded">
             @foreach($project->savedConsultants as $consultant)
-            <p>{{ $consultant->name }}</p>
+            <x-consultant-card :consultant="$consultant" level="3"></x-consultant-card>
             @endforeach
-
 
             <form action="{{ localized_route('projects.update-consultants', $project) }}" method="post">
                 @csrf
                 @method('put')
 
-                @foreach($project->consultants as $consultant)
+                @foreach($project->savedConsultants as $consultant)
                 <x-hearth-input type="hidden" :id="'consultant-id-' . $loop->index" name="consultant_ids[]" :value="$consultant->id" />
                 @endforeach
 

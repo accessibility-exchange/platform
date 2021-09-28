@@ -365,7 +365,7 @@ class ProjectController extends Controller
 
         $project->consultants()->attach($request->input('consultant_id'));
 
-        return redirect(\localized_route('projects.edit-consultants', $project));
+        return redirect()->back();
     }
 
     /**
@@ -411,7 +411,7 @@ class ProjectController extends Controller
             ['status' => $request->input('status')]
         );
 
-        return redirect(\localized_route('projects.manage', $project));
+        return redirect()->back();
     }
 
     /**
@@ -429,6 +429,6 @@ class ProjectController extends Controller
 
         $project->consultants()->detach($request->input('consultant_id'));
 
-        return redirect(\localized_route('projects.manage', $project));
+        return redirect()->back();
     }
 }
