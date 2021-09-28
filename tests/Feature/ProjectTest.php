@@ -324,5 +324,10 @@ class ProjectTest extends TestCase
         $this->assertEquals(1, count($project->savedConsultants));
         $this->assertEquals(1, count($project->shortlistedConsultants));
         $this->assertEquals(1, count($project->requestedConsultants));
+
+        // Verify consultant project counts.
+        $this->assertEquals(1, count($saved_consultant->projects));
+        $this->assertEquals(1, count($shortlisted_consultant->projects));
+        $this->assertEquals(1, count($requested_consultant->projects));
     }
 }
