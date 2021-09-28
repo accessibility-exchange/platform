@@ -37,6 +37,8 @@ class ConsultantTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $this->assertEquals($consultant->user->id, $user->id);
     }
 
     public function test_entity_users_can_not_create_consultant_pages()
