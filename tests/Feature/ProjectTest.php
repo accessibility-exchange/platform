@@ -272,6 +272,10 @@ class ProjectTest extends TestCase
 
         $response->assertSee('Consultant shortlist');
 
+        $response = $this->actingAs($user)->get(localized_route('projects.edit-consultants', $project));
+
+        $response->assertOk();
+
         // Add three consultants to saved list.
         $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
             'consultant_id' => $saved_consultant->id,
