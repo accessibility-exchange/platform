@@ -117,6 +117,33 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_consultant_pages_can_be_published_and_unpublished()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+        $this->assertTrue($consultant->checkStatus('published'));
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('draft'));
+    }
+
     public function test_users_can_edit_consultant_pages()
     {
         $user = User::factory()->create();
