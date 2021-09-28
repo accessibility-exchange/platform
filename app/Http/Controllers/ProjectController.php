@@ -360,7 +360,6 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'consultant_id' => 'required|integer',
-            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
         ]);
 
         $project->consultants()->attach($request->input('consultant_id'));

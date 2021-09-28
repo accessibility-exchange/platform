@@ -45,7 +45,6 @@
                         @method('put')
 
                         <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                        <x-hearth-input type="hidden" name="status" value="saved" />
 
                         <x-hearth-button>{{ __('Save') }}</x-hearth-button>
                     </form>

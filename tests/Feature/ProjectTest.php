@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Consultant;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
@@ -244,5 +245,84 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->pastProjects), 1);
         $this->assertEquals(count($entity->currentProjects), 1);
         $this->assertEquals(count($entity->futureProjects), 1);
+    }
+
+    public function test_consultants_can_be_attached_to_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $saved_consultant = Consultant::factory()->create();
+        $shortlisted_consultant = Consultant::factory()->create();
+        $requested_consultant = Consultant::factory()->create();
+
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'published_at' => Carbon::now(),
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
+
+        $response->assertOk();
+
+        $response->assertSee('Consultant shortlist');
+
+        // Add three consultants to saved list.
+        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+            'consultant_id' => $saved_consultant->id,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+            'consultant_id' => $shortlisted_consultant->id,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+            'consultant_id' => $requested_consultant->id,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $project = $project->fresh();
+
+        $this->assertEquals(3, count($project->savedConsultants));
+
+        // Add two consultants to shortlist.
+        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.update-consultants', $project), [
+            'consultant_ids' => [
+                $shortlisted_consultant->id,
+                $requested_consultant->id,
+            ],
+            'status' => 'shortlisted',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $project = $project->fresh();
+
+        $this->assertEquals(1, count($project->savedConsultants));
+        $this->assertEquals(2, count($project->shortlistedConsultants));
+
+        // Request service from one consultant.
+        $response = $this->actingAs($user)->from(localized_route('projects.manage', $project))->put(localized_route('projects.update-consultant', $project), [
+            'consultant_id' => $requested_consultant->id,
+            'status' => 'requested',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $project = $project->fresh();
+
+        $this->assertEquals(1, count($project->savedConsultants));
+        $this->assertEquals(1, count($project->shortlistedConsultants));
+        $this->assertEquals(1, count($project->requestedConsultants));
     }
 }
