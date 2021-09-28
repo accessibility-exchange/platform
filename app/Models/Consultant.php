@@ -56,7 +56,11 @@ class Consultant extends Model
      *
      * @var array
      */
-    public $translatable = [];
+    public $translatable = [
+        'bio',
+        'pronouns',
+        'creator_relationship',
+    ];
 
     /**
      * Get the options for generating the slug.
@@ -100,6 +104,30 @@ class Consultant extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The impacts that belong to the consultant.
+     */
+    public function impacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Impact::class);
+    }
+
+    /**
+     * The sectors that belong to the consultant.
+     */
+    public function sectors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sector::class);
+    }
+
+    /**
+     * The payment methods that belong to the consultant.
+     */
+    public function paymentMethods(): BelongsToMany
+    {
+        return $this->belongsToMany(PaymentMethod::class);
     }
 
     /**

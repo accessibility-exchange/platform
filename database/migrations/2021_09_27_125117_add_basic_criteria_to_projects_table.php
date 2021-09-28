@@ -15,7 +15,6 @@ class AddBasicCriteriaToProjectsTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->json('regions')->nullable();
-            $table->json('payment_methods')->nullable();
             $table->boolean('payment_negotiable')->nullable();
         });
     }
@@ -28,7 +27,7 @@ class AddBasicCriteriaToProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn(['regions', 'payment_methods', 'payment_negotiable']);
+            $table->dropColumn(['regions', 'payment_negotiable']);
         });
     }
 }

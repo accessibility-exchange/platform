@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -137,6 +138,14 @@ class Entity extends Model
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'inviteable');
+    }
+
+    /**
+     * The sectors that belong to the entity.
+     */
+    public function sectors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sector::class);
     }
 
     /**

@@ -22,10 +22,12 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
+        $start = $this->faker->dateTimeBetween('-6 months', '-1 months');
+
         return [
-            'name' => 'My accessibility project',
             'entity_id' => Entity::factory(),
-            'start_date' => $this->faker->dateTimeBetween('-6 months', '-1 months'),
+            'name' => 'My accessibility project',
+            'start_date' => $start,
             'end_date' => $this->faker->dateTimeBetween('+1 months', '+6 months'),
             'published_at' => date('Y-m-d h:i:s', time()),
         ];

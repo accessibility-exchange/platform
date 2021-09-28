@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Consultant;
+use App\Models\Entity;
+use App\Models\Impact;
+use App\Models\PaymentMethod;
+use App\Models\Project;
+use App\Models\Sector;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +19,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Consultant::factory(10)->create();
+        $this->call([
+            ImpactSeeder::class,
+            PaymentMethodSeeder::class,
+            SectorSeeder::class,
+        ]);
+
+        $impacts = Impact::all();
+        $paymentMethods = PaymentMethod::all();
+        $sectors = Sector::all();
+
+        Entity::factory(5)
+            ->has(
+                Project::factory(3)
+                    ->hasAttached($impacts->random(2))
+                    ->hasAttached($paymentMethods->random(2))
+            )
+            ->hasAttached($sectors->random())
+            ->create();
+
+        Consultant::factory(100)
+            ->hasAttached($impacts->random(4))
+            ->hasAttached($paymentMethods->random(4))
+            ->hasAttached($sectors->random(4))
+            ->create();
     }
 }

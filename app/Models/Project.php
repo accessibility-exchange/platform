@@ -50,7 +50,6 @@ class Project extends Model
         'shared_plans_with_consultants',
         'published_accessibility_plan',
         'regions',
-        'payment_methods',
         'payment_negotiable',
     ];
 
@@ -80,7 +79,6 @@ class Project extends Model
         'prepared_follow_up_plan' => 'boolean',
         'shared_plans_with_consultants' => 'boolean',
         'regions' => 'array',
-        'payment_methods' => 'array',
         'payment_negotiable' => 'boolean',
     ];
 
@@ -89,7 +87,9 @@ class Project extends Model
      *
      * @var array
      */
-    public $translatable = [];
+    public $translatable = [
+        'name',
+    ];
 
     /**
      * The project's steps and the number of corresponding substeps for each.
@@ -301,6 +301,30 @@ class Project extends Model
     public function entity(): BelongsTo
     {
         return $this->belongsTo(Entity::class);
+    }
+
+    /**
+     * The impacts that belong to the project.
+     */
+    public function impacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Impact::class);
+    }
+
+    /**
+     * The impacts that belong to the project.
+     */
+    public function sectors(): BelongsToMany
+    {
+        return $this->entity->belongsToMany(Sector::class);
+    }
+
+    /**
+     * The payment methods that belong to the project.
+     */
+    public function paymentMethods(): BelongsToMany
+    {
+        return $this->belongsToMany(PaymentMethod::class);
     }
 
     /**
