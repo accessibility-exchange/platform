@@ -61,6 +61,36 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_projects_can_be_published_and_unpublished()
+    {
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.show', $project));
+        $this->assertTrue($project->checkStatus('published'));
+
+        $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.show', $project));
+
+        $project = $project->fresh();
+
+        $this->assertTrue($project->checkStatus('draft'));
+    }
+
     public function test_users_can_view_projects()
     {
         if (! config('hearth.entities.enabled')) {
