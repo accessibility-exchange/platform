@@ -30,9 +30,9 @@
         <ul x-bind="tabList">
             <li x-bind="tabWrapper"><a href="#about" x-bind="tab">{{ __('consultant.section_about') }}</a></li>
             <li x-bind="tabWrapper"><a href="#interests-and-goals" x-bind="tab">{{ __('consultant.section_interests_and_goals') }}</a></li>
-            <li x-bind="tabWrapper"><a href="#lived-experience" x-bind="tab">{{ __('consultant.section_lived_experience') }}</a></li>
+            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#lived-experience" x-bind="tab">{{ __('consultant.section_lived_experience') }}</a></li>@endcan
             <li x-bind="tabWrapper"><a href="#professional-experience" x-bind="tab">{{ __('consultant.section_professional_experience') }}</a></li>
-            <li x-bind="tabWrapper"><a href="#access-needs" x-bind="tab">{{ __('consultant.section_access_needs') }}</a></li>
+            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#access-needs" x-bind="tab">{{ __('consultant.section_access_needs') }}</a></li>@endcan
         </ul>
         <div class="flow" id="about" x-bind="tabpanel">
             <h2>{{ __('consultant.section_about_person', ['name' => $consultant->firstName()]) }}</h2>
@@ -46,7 +46,7 @@
             {!! Illuminate\Mail\Markdown::parse($consultant->bio) !!}
 
             @if($consultant->links)
-            <h3>{{ $consultant->firstName() }}’s links</h3>
+            <h3>{{ __(':name’s links', ['name' => $consultant->firstName()]) }}</h3>
             <ul>
                 @foreach($consultant->links as $link)
                 <li><a href="{{ $link['url'] }}" rel="external">{{ $link['text'] }}</a></li>
@@ -68,6 +68,7 @@
             @endcan
             @include('consultants.boilerplate.interests-and-goals', ['level' => 3])
         </div>
+        @can('update', $consultant)
         <div class="flow" id="lived-experience" x-bind="tabpanel">
             <h2>{{ __('consultant.section_lived_experience') }}</h2>
             @can('update', $consultant)
@@ -78,6 +79,7 @@
             @endcan
             @include('consultants.boilerplate.lived-experience', ['level' => 3])
         </div>
+        @endcan
         <div class="flow" id="professional-experience" x-bind="tabpanel">
             <h2>{{ __('consultant.section_professional_experience') }}</h2>
             @can('update', $consultant)
@@ -88,6 +90,7 @@
             @endcan
             @include('consultants.boilerplate.professional-experience', ['level' => 3])
         </div>
+        @can('update', $consultant)
         <div class="flow" id="access-needs" x-bind="tabpanel">
             <h2>{{ __('consultant.section_access_needs') }}</h2>
             @can('update', $consultant)
@@ -98,5 +101,6 @@
             @endcan
             @include('consultants.boilerplate.access-needs', ['level' => 3])
         </div>
+        @endcan
     </div>
 </x-app-wide-layout>

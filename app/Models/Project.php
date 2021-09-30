@@ -394,15 +394,6 @@ class Project extends Model
     }
 
     /**
-     * The consultants that are saved to the project.
-     */
-    public function savedConsultants(): BelongsToMany
-    {
-        return $this->belongsToMany(Consultant::class)
-            ->wherePivot('status', 'saved');
-    }
-
-    /**
      * The consultants that are shortlisted for the project.
      */
     public function shortlistedConsultants(): BelongsToMany

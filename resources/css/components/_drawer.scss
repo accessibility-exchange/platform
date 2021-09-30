@@ -9,7 +9,7 @@
     right: var(--step-0);
 }
 
-.drawer [aria-expanded] {
+.drawer h2 button {
     background: var(--ll-background-color);
     border: 0;
     color: var(--ll-text-color);
@@ -20,13 +20,13 @@
     }
 }
 
-.drawer [aria-expanded] .indicator {
+.drawer h2 button .indicator {
     height: 1em;
     margin-block-end: -0.25em;
     transition: transform 0.2s ease-in-out;
     width: 1em;
 }
 
-.drawer [aria-expanded="true"] .indicator {
+.drawer h2 button[aria-expanded="true"] .indicator {
     transform: rotate(-180deg);
 }
