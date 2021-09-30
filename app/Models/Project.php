@@ -49,8 +49,25 @@ class Project extends Model
         'prepared_follow_up_plan',
         'shared_plans_with_consultants',
         'published_accessibility_plan',
-        'regions',
         'payment_negotiable',
+        'goals',
+        'impact',
+        'out_of_scope',
+        'virtual_consultation',
+        'timeline',
+        'payment_terms',
+        'existing_clients',
+        'prospective_clients',
+        'employees',
+        'priority_outreach',
+        'regions',
+        'locality',
+        'location_description',
+        'min',
+        'max',
+        'anything_else',
+        'flexible_deadlines',
+        'flexible_breaks',
     ];
 
     /**
@@ -80,15 +97,31 @@ class Project extends Model
         'shared_plans_with_consultants' => 'boolean',
         'regions' => 'array',
         'payment_negotiable' => 'boolean',
+        'virtual_consultation' => 'boolean',
+        'existing_clients' => 'boolean',
+        'prospective_clients' => 'boolean',
+        'employees' => 'boolean',
+        'min' => 'integer',
+        'max' => 'integer',
+        'flexible_deadlines' => 'boolean',
+        'flexible_breaks' => 'boolean',
     ];
 
     /**
-     * The attributes that are translatable.
+     * The attributes that are transterms
      *
      * @var array
      */
     public $translatable = [
-        'name',
+        'goals',
+        'impact',
+        'out_of_scope',
+        'timeline',
+        'payment_terms',
+        'priority_outreach',
+        'locality',
+        'location_description',
+        'anything_else',
     ];
 
     /**
@@ -328,12 +361,35 @@ class Project extends Model
     }
 
     /**
+     * The consulting methods that belong to the project.
+     */
+    public function consultingMethods(): BelongsToMany
+    {
+        return $this->belongsToMany(ConsultingMethod::class);
+    }
+
+    /**
+     * The access supports that belong to the project.
+     */
+    public function accessSupports(): BelongsToMany
+    {
+        return $this->belongsToMany(AccessSupport::class);
+    }
+
+    /**
+     * The access supports that belong to the project.
+     */
+    public function communicationTools(): BelongsToMany
+    {
+        return $this->belongsToMany(CommunicationTool::class);
+    }
+
+    /**
      * The consultants that belong to the project.
      */
     public function consultants(): BelongsToMany
     {
         return $this->belongsToMany(Consultant::class)
-            ->as('relationship')
             ->withPivot('status');
     }
 

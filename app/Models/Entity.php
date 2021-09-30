@@ -186,4 +186,12 @@ class Entity extends Model
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
     }
+
+    /**
+     * The consultants who have identified themselves with the entity.
+     */
+    public function consultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class);
+    }
 }

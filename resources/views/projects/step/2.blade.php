@@ -24,20 +24,20 @@
                     @method('put')
 
                     <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                        <x-hearth-input type="hidden" name="status" value="requested" />
+                    <x-hearth-input type="hidden" name="status" value="requested" />
 
-                        <x-hearth-button>{{ __('Remove') }}</x-hearth-button>
-                    </form>
-                    <form action="{{ localized_route('projects.update-consultant', $project) }}" method="post">
-                        @csrf
-                        @method('put')
+                    <x-hearth-button>{{ __('Remove') }}</x-hearth-button>
+                </form>
+                <form action="{{ localized_route('projects.update-consultant', $project) }}" method="post">
+                    @csrf
+                    @method('put')
 
-                        <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                        <x-hearth-input type="hidden" name="status" value="requested" />
+                    <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                    <x-hearth-input type="hidden" name="status" value="requested" />
 
-                        <x-hearth-button>{{ __('Request service') }}</x-hearth-button>
-                    </form>
-                </div>
+                    <x-hearth-button>{{ __('Request service') }}</x-hearth-button>
+                </form>
+            </div>
         </x-slot>
     </x-consultant-card>
     @endforeach

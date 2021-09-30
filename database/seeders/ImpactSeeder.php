@@ -23,6 +23,7 @@ class ImpactSeeder extends Seeder
             'Programs and services',
             'Transportation',
         ];
+
         foreach ($impacts as $impact) {
             DB::table('impacts')->insert([
                 'name' => json_encode(['en' => $impact]),

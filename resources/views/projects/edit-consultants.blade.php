@@ -63,7 +63,19 @@
 
         <div class="flow" x-show="expanded">
             @foreach($project->savedConsultants as $consultant)
-            <x-consultant-card :consultant="$consultant" level="3"></x-consultant-card>
+            <x-consultant-card :consultant="$consultant" level="3">
+                <x-slot name="actions">
+                    <form action="{{ localized_route('projects.remove-consultant', $project) }}" method="post">
+                        @csrf
+                        @method('put')
+
+                        <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                        <x-hearth-input type="hidden" name="status" value="requested" />
+
+                        <x-hearth-button>{{ __('Remove') }}</x-hearth-button>
+                    </form>
+                </x-slot>
+            </x-consultant-card>
             @endforeach
 
             <form action="{{ localized_route('projects.update-consultants', $project) }}" method="post">

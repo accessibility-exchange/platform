@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PaymentMethodSeeder extends Seeder
+class ConsultingMethodSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +15,15 @@ class PaymentMethodSeeder extends Seeder
     public function run()
     {
         $methods = [
-            'Cash',
-            'Cheque',
-            'Credit card',
-            'Gift card',
+            'Interviews',
+            'Surveys',
+            'Focus groups',
+            'Workshops',
+            'Other',
         ];
 
         foreach ($methods as $method) {
-            DB::table('payment_methods')->insert([
+            DB::table('consulting_methods')->insert([
                 'name' => json_encode(['en' => $method]),
             ]);
         }

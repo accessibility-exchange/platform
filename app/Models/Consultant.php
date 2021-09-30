@@ -131,10 +131,34 @@ class Consultant extends Model
     }
 
     /**
+     * The communities that belong to the consultant.
+     */
+    public function communities(): BelongsToMany
+    {
+        return $this->belongsToMany(Community::class);
+    }
+
+    /**
+     * The communities that belong to the consultant.
+     */
+    public function livedExperiences(): BelongsToMany
+    {
+        return $this->belongsToMany(LivedExperience::class);
+    }
+
+    /**
      * The projects that the consultant belongs to.
      */
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class);
+    }
+
+    /**
+     * The entities that the consultant has identified themself with.
+     */
+    public function entities(): BelongsToMany
+    {
+        return $this->belongsToMany(Entity::class);
     }
 }

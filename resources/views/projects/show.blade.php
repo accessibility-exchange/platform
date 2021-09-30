@@ -46,7 +46,7 @@
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('project overview') . '</span>']) !!}</a></p>
             @endcan
 
-            @include('projects.boilerplate.project-overview', ['level' => 3])
+            @include('projects.partials.project-overview', ['level' => 3])
         </div>
 
         <div class="flow" id="who-were-looking-for" x-bind="tabpanel">
@@ -55,7 +55,7 @@
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('who we’re looking for') . '</span>']) !!}</a></p>
             @endcan
 
-            @include('projects.boilerplate.who-were-looking-for', ['level' => 3])
+            @include('projects.partials.who-were-looking-for', ['level' => 3])
         </div>
 
         <div class="flow" id="accessibility-and-accomodations" x-bind="tabpanel">
@@ -64,7 +64,7 @@
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('accessibility and accomodations') . '</span>']) !!}</a></p>
             @endcan
 
-            @include('projects.boilerplate.accessibility-and-accomodations', ['level' => 3])
+            @include('projects.partials.accessibility-and-accomodations', ['level' => 3])
         </div>
     </div>
 

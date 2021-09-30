@@ -22,6 +22,7 @@ class SectorSeeder extends Seeder
             'Federal government benefit programs and services',
             'Crown corporations',
         ];
+
         foreach ($sectors as $sector) {
             DB::table('sectors')->insert([
                 'name' => json_encode(['en' => $sector]),
