@@ -161,4 +161,28 @@ class Consultant extends Model
     {
         return $this->belongsToMany(Entity::class);
     }
+
+    public function projectMatches(Project $project)
+    {
+        $matches = [
+            [
+                'name' => __('In your location'),
+                'value' => in_array($this->region, $project->regions),
+            ],
+            [
+                'name' => __('Accepts your payment methods'),
+                'value' => (count($this->paymentMethods->intersect($project->paymentMethods))) > 0 ? true : false,
+            ],
+            [
+                'name' => __('Interested in your sector'),
+                'value' => (count($this->sectors->intersect($project->sectors))) > 0 ? true : false,
+            ],
+            [
+                'name' => __('Interested in your project area'),
+                'value' => (count($this->impacts->intersect($project->impacts))) > 0 ? true : false,
+            ],
+        ];
+
+        return $matches;
+    }
 }

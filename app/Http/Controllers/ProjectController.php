@@ -213,7 +213,7 @@ class ProjectController extends Controller
                 ],
                 2 => [
                     1 => [
-                        'link' => \localized_route('projects.edit-consultants', $project),
+                        'link' => \localized_route('projects.find-interested-consultants', $project),
                         'label' => __('Find consultants'),
                         'description' => false,
                         'status' => $project->found_consultants ?? null,
@@ -333,19 +333,53 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function editConsultants(Request $request, Project $project)
+    public function findInterestedConsultants(Request $request, Project $project)
     {
-        return view('projects.edit-consultants', [
+        $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
+
+        return view('projects.find-consultants', [
             'project' => $project,
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
-            })->get(),
-            'interestedConsultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+            })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
+        ]);
+    }
+
+    /**
+     * Manage consultants for the resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function findRelatedConsultants(Request $request, Project $project)
+    {
+        $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
+
+        return view('projects.find-consultants', [
+            'project' => $project,
+            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
-            })->get(),
-            'relatedConsultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+            })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
+        ]);
+    }
+
+    /**
+     * Manage consultants for the resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function findAllConsultants(Request $request, Project $project)
+    {
+        $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
+
+        return view('projects.find-consultants', [
+            'project' => $project,
+            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
-            })->get(),
+            })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
         ]);
     }
 
@@ -363,6 +397,7 @@ class ProjectController extends Controller
         ]);
 
         $project->consultants()->attach($request->input('consultant_id'));
+        $project->update(['found_consultants' => false]);
 
         return redirect()->back();
     }

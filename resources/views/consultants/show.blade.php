@@ -30,9 +30,9 @@
         <ul x-bind="tabList">
             <li x-bind="tabWrapper"><a href="#about" x-bind="tab">{{ __('consultant.section_about') }}</a></li>
             <li x-bind="tabWrapper"><a href="#interests-and-goals" x-bind="tab">{{ __('consultant.section_interests_and_goals') }}</a></li>
-            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#lived-experience" x-bind="tab">{{ __('consultant.section_lived_experience') }}</a></li>@endcan
+            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#lived-experience" x-bind="tab">{{ __('consultant.section_lived_experience') }}</a></li>@endcan {{--  TODO: handle this more granularly --}}
             <li x-bind="tabWrapper"><a href="#professional-experience" x-bind="tab">{{ __('consultant.section_professional_experience') }}</a></li>
-            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#access-needs" x-bind="tab">{{ __('consultant.section_access_needs') }}</a></li>@endcan
+            @can('update', $consultant)<li x-bind="tabWrapper"><a href="#access-needs" x-bind="tab">{{ __('consultant.section_access_needs') }}</a></li>@endcan {{--  TODO: handle this more granularly --}}
         </ul>
         <div class="flow" id="about" x-bind="tabpanel">
             <h2>{{ __('consultant.section_about_person', ['name' => $consultant->firstName()]) }}</h2>

@@ -284,7 +284,6 @@ class ProjectTest extends TestCase
         }
 
         $user = User::factory()->create();
-        $saved_consultant = Consultant::factory()->create();
         $shortlisted_consultant = Consultant::factory()->create();
         $requested_consultant = Consultant::factory()->create();
 
@@ -302,24 +301,18 @@ class ProjectTest extends TestCase
 
         $response->assertSee('Consultant shortlist');
 
-        $response = $this->actingAs($user)->get(localized_route('projects.edit-consultants', $project));
+        $response = $this->actingAs($user)->get(localized_route('projects.find-all-consultants', $project));
 
         $response->assertOk();
 
-        // Add three consultants to saved list.
-        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
-            'consultant_id' => $saved_consultant->id,
-        ]);
-
-        $response->assertSessionHasNoErrors();
-
-        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+        // Add two consultants to shortlist.
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
             'consultant_id' => $shortlisted_consultant->id,
         ]);
 
         $response->assertSessionHasNoErrors();
 
-        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
             'consultant_id' => $requested_consultant->id,
         ]);
 
@@ -327,22 +320,6 @@ class ProjectTest extends TestCase
 
         $project = $project->fresh();
 
-        $this->assertEquals(3, count($project->savedConsultants));
-
-        // Add two consultants to shortlist.
-        $response = $this->actingAs($user)->from(localized_route('projects.edit-consultants', $project))->put(localized_route('projects.update-consultants', $project), [
-            'consultant_ids' => [
-                $shortlisted_consultant->id,
-                $requested_consultant->id,
-            ],
-            'status' => 'shortlisted',
-        ]);
-
-        $response->assertSessionHasNoErrors();
-
-        $project = $project->fresh();
-
-        $this->assertEquals(1, count($project->savedConsultants));
         $this->assertEquals(2, count($project->shortlistedConsultants));
 
         // Request service from one consultant.
@@ -355,12 +332,10 @@ class ProjectTest extends TestCase
 
         $project = $project->fresh();
 
-        $this->assertEquals(1, count($project->savedConsultants));
         $this->assertEquals(1, count($project->shortlistedConsultants));
         $this->assertEquals(1, count($project->requestedConsultants));
 
         // Verify consultant project counts.
-        $this->assertEquals(1, count($saved_consultant->projects));
         $this->assertEquals(1, count($shortlisted_consultant->projects));
         $this->assertEquals(1, count($requested_consultant->projects));
     }

@@ -1,5 +1,8 @@
 <div class="flow">
     <h2>{{ __('Consultant shortlist') }}</h2>
+    @if((count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants)) < $project->min)
+    <p><em>{{ __('According to your project details, you need to add at least :number more consultants to your shortlist.', ['number' => $project->min - (count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants))]) }}</em></p>
+    @endif
     @if(count($project->confirmedConsultants) > 0)
     <h3>{{ __('Confirmed') }}</h3>
     @foreach($project->confirmedConsultants as $consultant)
@@ -16,7 +19,7 @@
     <h3>{{ __('Shortlisted') }}</h3>
     @endif
     @foreach($project->shortlistedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" level="4">
+    <x-consultant-card :consultant="$consultant" :project="$project" level="4">
         <x-slot name="actions">
             <div class="actions">
                 <form action="{{ localized_route('projects.remove-consultant', $project) }}" method="post">
@@ -43,6 +46,6 @@
     @endforeach
     @if(count($project->confirmedConsultants) === 0 && count($project->requestedConsultants) === 0 && count($project->shortlistedConsultants) === 0)
     <p>{{ __('Start finding consultants to add to your shortlist.') }}</p>
-    <p><a class="button" href="{{ localized_route('projects.edit-consultants', $project) }}">{{ __('Find consultants') }}</a></p>
+    <p><a class="button" href="{{ localized_route('projects.find-interested-consultants', $project) }}">{{ __('Find consultants') }}</a></p>
     @endif
 </div>

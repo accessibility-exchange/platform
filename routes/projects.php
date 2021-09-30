@@ -50,9 +50,17 @@ Route::multilingual('/projects/{project}/update-progress', [ProjectController::c
     ->method('put')
     ->name('projects.update-progress');
 
-Route::multilingual('/projects/{project}/find-consultants', [ProjectController::class, 'editConsultants'])
+Route::multilingual('/projects/{project}/find-consultants/interested', [ProjectController::class, 'findInterestedConsultants'])
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.edit-consultants');
+    ->name('projects.find-interested-consultants');
+
+Route::multilingual('/projects/{project}/find-consultants/related', [ProjectController::class, 'findRelatedConsultants'])
+    ->middleware(['auth', 'can:manage,project'])
+    ->name('projects.find-related-consultants');
+
+Route::multilingual('/projects/{project}/find-consultants/all', [ProjectController::class, 'findAllConsultants'])
+    ->middleware(['auth', 'can:manage,project'])
+    ->name('projects.find-all-consultants');
 
 Route::multilingual('/projects/{project}/add-consultant', [ProjectController::class, 'addConsultant'])
     ->method('put')
