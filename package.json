@@ -47,7 +47,7 @@
     },
     "dependencies": {
         "@fluid-project/looseleaf": "^1.6.1",
-        "alpinejs": "^3.3",
+        "alpinejs": "^3.4",
         "axios": "^0.21.4",
         "luxon": "2.0.2"
     }
