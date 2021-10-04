@@ -457,6 +457,7 @@ class ProjectController extends Controller
         switch ($request->input('status')) {
             case 'requested':
                 flash(__('You have requested :name’s participation in your project.', ['name' => $consultant->name]), 'success');
+                $project->update(['confirmed_consultants' => false]);
 
                 break;
             case 'confirmed':

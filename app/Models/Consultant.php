@@ -147,6 +147,14 @@ class Consultant extends Model
     }
 
     /**
+     * The access supports that belong to the consultant.
+     */
+    public function accessSupports(): BelongsToMany
+    {
+        return $this->belongsToMany(AccessSupport::class);
+    }
+
+    /**
      * The projects that the consultant belongs to.
      */
     public function projects(): BelongsToMany

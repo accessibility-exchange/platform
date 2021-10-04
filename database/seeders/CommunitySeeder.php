@@ -15,10 +15,10 @@ class CommunitySeeder extends Seeder
     public function run()
     {
         $communities = [
-            'Black',
-            'Indigenous',
-            '2SLGBTQIA+',
-            'Newcomer or refugee',
+            'Black community',
+            'Indigenous community',
+            '2SLGBTQIA+ community',
+            'Newcomer or refugee community',
         ];
 
         foreach ($communities as $community) {

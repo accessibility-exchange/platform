@@ -52,16 +52,34 @@ progress {
     text-indent: calc(-1 * var(--step-1));
 }
 
+.access,
 .diversity {
-    background: var(--ll-accent-background-color);
     border-radius: var(--ll-border-radius);
     padding: var(--step-0);
+}
+
+.access {
+    border: var(--ll-border-thin);
+}
+
+.diversity {
+    background: var(--ll-accent-background-color);
 
     .columns {
         display: flex;
         flex-direction: column;
         gap: var(--step-0);
     }
+}
+
+.access ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.access li {
+    flex: 0 0 50%;
+    padding-inline-end: var(--step-0);
 }
 
 @media (min-width: 1024px) {

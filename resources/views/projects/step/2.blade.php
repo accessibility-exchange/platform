@@ -4,6 +4,16 @@
     <p><em>{{ __('According to your project details, you need to add at least :number more consultants to your shortlist.', ['number' => $project->min - (count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants))]) }}</em></p>
     @endif
     @if((count($project->consultants)) >= 5)
+    <div class="access flow">
+        <h3>{{ __('Access needs') }}</h3>
+        <p><em>{{ __('An aggregated list of your consultants’ access needs') }}</em></p>
+        <ul role="list">
+            @foreach($project->accessRequirements() as $requirement)
+            <li>{{ $requirement }}</li>
+            @endforeach
+        </ul>
+        <p class="align-end"><a href="{{ localized_route('resources.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
+    </div>
     <div class="diversity flow">
         <h3>{{ __('Diversity of consultants') }}</h3>
         <div class="columns">
@@ -83,7 +93,7 @@
                     <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
                     <x-hearth-input type="hidden" name="status" value="requested" />
 
-                    <x-hearth-button>{!! __('Remove <span class="visually-hidden">from :name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
+                    <x-hearth-button>{!! __('Remove <span class="visually-hidden">:name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
                 </form>
                 <form action="{{ localized_route('projects.update-consultant', $project) }}" method="post">
                     @csrf
@@ -92,7 +102,7 @@
                     <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
                     <x-hearth-input type="hidden" name="status" value="requested" />
 
-                    <x-hearth-button>{!! __('Request service <span class="visually-hidden">:name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
+                    <x-hearth-button>{!! __('Request service <span class="visually-hidden">from :name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
                 </form>
             </div>
         </x-slot>

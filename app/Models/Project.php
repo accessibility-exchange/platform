@@ -452,6 +452,11 @@ class Project extends Model
         return array_diff($communities, $this->presentCommunities());
     }
 
+    public function accessRequirements()
+    {
+        return $this->consultants->pluck('accessSupports')->flatten()->pluck('name')->unique()->toArray();
+    }
+
     public function presentRegions()
     {
         $regions = $this->consultants->pluck('region')->unique()->toArray();
