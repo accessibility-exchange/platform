@@ -38,7 +38,7 @@
         }
     }
 
-    a[role="tab"] {
+    .tabs > ul > li a {
         background-color: var(--ll-accent-background-color);
         border: var(--ll-border-medium);
         border-color: transparent;
@@ -67,7 +67,7 @@
         }
     }
 
-    [role="tablist"] li + li {
+    .tabs > ul > li + li {
         margin-inline-start: var(--step--4);
     }
 }

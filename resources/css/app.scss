@@ -28,8 +28,11 @@
 @import
     'components/alert',
     'components/auth-card',
+    'components/badge',
     'components/brand',
+    'components/consultant-card',
     'components/date-input',
+    'components/drawer',
     'components/dropdown',
     'components/modal',
     'components/navigation',
@@ -44,6 +47,7 @@
     'routes/home',
     'routes/entities/show',
     'routes/profiles/show',
+    'routes/projects/manage',
     'routes/users/show',
     'routes/welcome';
 

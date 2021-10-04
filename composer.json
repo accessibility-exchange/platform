@@ -11,6 +11,7 @@
         "php": "^8.0",
         "blade-ui-kit/blade-heroicons": "^0.3.1",
         "blade-ui-kit/blade-icons": "^0.5.1",
+        "doctrine/dbal": "^3.1",
         "elhebert/laravel-sri": "^3.0",
         "fideloper/proxy": "^4.4",
         "fluid-project/hearth": "^1.2",
@@ -22,6 +23,7 @@
         "makeabledk/laravel-eloquent-status": "^1.2",
         "spatie/laravel-backup": "^7.2",
         "spatie/laravel-db-snapshots": "^1.7",
+        "spatie/laravel-markdown": "^2.0",
         "spatie/laravel-translatable": "^5.0",
         "theiconic/name-parser": "^1.2"
     },
@@ -34,7 +36,6 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "nunomaduro/larastan": "^0.7.1",
         "phpunit/phpunit": "^9.3.3",
         "psalm/plugin-laravel": "^1.4",
         "squizlabs/php_codesniffer": "^3.6",
@@ -75,12 +76,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "analyze": [
-            "vendor/bin/phpstan analyse",
-            "vendor/bin/psalm"
-        ],
-        "format": [
-            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
-        ]
+        "psalm": "vendor/bin/psalm",
+        "format": "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
     }
 }

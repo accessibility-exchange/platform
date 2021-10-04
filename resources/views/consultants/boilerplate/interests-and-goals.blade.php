@@ -3,15 +3,15 @@
 <p>Here is some information about what I would like to accomplish as a consultant.</p>
 <x-header :level="$level">Types of regulated entities that {{ $consultant->firstName() }} is interested in</x-header>
 <ul role="list" class="tags">
-    <li>Telecommunications</li>
-    <li>Banking</li>
-    <li>Parks and recreation</li>
+    @foreach($consultant->sectors as $sector)
+    <li>{{ $sector->name }}</li>
+    @endforeach
 </ul>
 <x-header :level="$level">Areas within a regulated entity that {{ $consultant->firstName() }} is interested in</x-header>
 <ul role="list" class="tags">
-    <li>Employment</li>
-    <li>Built environment</li>
-    <li>Transportation</li>
+    @foreach($consultant->impacts as $impact)
+    <li>{{ $impact->name }}</li>
+    @endforeach
 </ul>
 
 <x-header :level="$level">Specific regulated entities that {{ $consultant->firstName() }} is interested in</x-header>

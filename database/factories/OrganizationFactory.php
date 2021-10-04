@@ -21,12 +21,10 @@ class OrganizationFactory extends Factory
      */
     public function definition()
     {
-        $regions = get_regions(['CA'], config('app.locale'));
-
         return [
             'name' => $this->faker->company(),
             'locality' => $this->faker->city(),
-            'region' => array_keys($regions)[$this->faker->numberBetween(1, 13)],
+            'region' => $this->faker->provinceAbbr(),
         ];
     }
 }
