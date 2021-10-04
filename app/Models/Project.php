@@ -454,7 +454,7 @@ class Project extends Model
 
     public function accessRequirements()
     {
-        return $this->consultants->pluck('accessSupports')->flatten()->pluck('name')->unique()->toArray();
+        return $this->consultants->pluck('accessSupports')->flatten()->sortBy('id')->pluck('name')->unique()->toArray();
     }
 
     public function presentRegions()

@@ -43,25 +43,46 @@ class DatabaseSeeder extends Seeder
         $livedExperiences = LivedExperience::all();
         $paymentMethods = PaymentMethod::all();
         $sectors = Sector::all();
+        $projects = Project::all();
 
-        Entity::factory(1)
-            ->has(
-                Project::factory(1)
-                    ->hasAttached($consultingMethods->random(2))
-                    ->hasAttached($impacts->random(2))
-                    ->hasAttached($paymentMethods->random(2))
-                    ->hasAttached($accessSupports)
-                    ->hasAttached($communicationTools->random(3))
-            )
-            ->hasAttached($sectors->random())
-            ->create();
+        foreach ($projects as $project) {
+            $project = Project::find(1);
+            $project->payment_negotiable = true;
+            $project->goals = 'Here’s a brief description of what we hope to accomplish in this consultation process.';
+            $project->impact = 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.';
+            $project->out_of_scope = 'Here are a few things that are not part of the scope of this project.';
+            $project->virtual_consultation = true;
+            $project->timeline = 'Timeline to be determined based on participants’ availability.';
+            $project->existing_clients = true;
+            $project->prospective_clients = true;
+            $project->flexible_deadlines = true;
+            $project->flexible_breaks = true;
+            $project->min = 20;
+            $project->max = 20;
+            $project->regions = get_region_codes(['CA']);
+            $project->priority_outreach = '_Reason:_ This project is focused on removing barriers for members of Indigenous communities.';
+            $project->anything_else = 'New consultants welcomed.';
+            $project->save();
+            $project->communities()->attach(2);
+            $project->consultingMethods()->attach($consultingMethods->random(2));
+            $project->impacts()->attach($impacts->random(2));
+            $project->paymentMethods()->attach($paymentMethods->random(2));
+            $project->accessSupports()->attach($accessSupports);
+            $project->communicationTools()->attach($communicationTools->random(3));
+        }
 
-        Consultant::factory(100)
+        $entity = Entity::first();
+        $entity->sectors()->attach($sectors->random());
+
+        for ($i = 0; $i < 20; $i++) {
+            Consultant::factory()
             ->hasAttached($communities->random())
             ->hasAttached($impacts->random(4))
             ->hasAttached($livedExperiences->random())
             ->hasAttached($paymentMethods->random(4))
             ->hasAttached($sectors->random(4))
+            ->hasAttached($accessSupports->random(2))
             ->create();
+        }
     }
 }
