@@ -7,7 +7,7 @@
     {{ $actions ?? '' }}
     @isset($project)
     <details class="match">
-        <summary>{!! __('Matches <strong>:howmuch</strong> project criteria', ['howmuch' => 'some']) !!}</summary>
+        <summary>{!! $consultant->projectMatch($project) !!}</summary>
         <ul role="list">
         @foreach($consultant->projectMatches($project) as $match)
             <li>

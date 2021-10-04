@@ -339,6 +339,7 @@ class ProjectController extends Controller
 
         return view('projects.find-consultants', [
             'project' => $project,
+            'subtitle' => __('Interested in this project'),
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
@@ -358,6 +359,7 @@ class ProjectController extends Controller
 
         return view('projects.find-consultants', [
             'project' => $project,
+            'subtitle' => __('From similar projects'),
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
@@ -377,6 +379,7 @@ class ProjectController extends Controller
 
         return view('projects.find-consultants', [
             'project' => $project,
+            'subtitle' => __('Browse all consultants'),
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
@@ -396,8 +399,12 @@ class ProjectController extends Controller
             'consultant_id' => 'required|integer',
         ]);
 
+        $consultant = Consultant::find($request->input('consultant_id'));
+
         $project->consultants()->attach($request->input('consultant_id'));
         $project->update(['found_consultants' => false]);
+
+        flash(__(':name has been added to your consultant shortlist.', ['name' => $consultant->name]), 'success');
 
         return redirect()->back();
     }
@@ -413,7 +420,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'consultant_ids' => 'required|array',
-            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
+            'status' => 'required|string|in:shortlisted,requested,confirmed,removed,exited',
         ]);
 
         foreach ($request->input('consultant_ids') as $consultant_id) {
@@ -437,13 +444,35 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'consultant_id' => 'required|integer',
-            'status' => 'required|string|in:saved,shortlisted,requested,confirmed,removed,exited',
+            'status' => 'required|string|in:shortlisted,requested,confirmed,removed,exited',
         ]);
+
+        $consultant = Consultant::find($request->input('consultant_id'));
 
         $project->consultants()->updateExistingPivot(
             $request->input('consultant_id'),
             ['status' => $request->input('status')]
         );
+
+        switch ($request->input('status')) {
+            case 'requested':
+                flash(__('You have requested :name’s participation in your project.', ['name' => $consultant->name]), 'success');
+
+                break;
+            case 'confirmed':
+                flash(__(':name’s participation in your project is now confirmed!', ['name' => $consultant->name]), 'success');
+
+                break;
+            case 'removed':
+                flash(__('You have removed :name from your project.', ['name' => $consultant->name]), 'success');
+
+                break;
+            case 'exited':
+                flash(__(':name has left your project.', ['name' => $consultant->name]), 'success');
+
+                break;
+        }
+
 
         return redirect()->back();
     }
@@ -461,7 +490,11 @@ class ProjectController extends Controller
             'consultant_id' => 'required|integer',
         ]);
 
+        $consultant = Consultant::find($request->input('consultant_id'));
+
         $project->consultants()->detach($request->input('consultant_id'));
+
+        flash(__(':name has been removed from your consultant shortlist.', ['name' => $consultant->name]), 'success');
 
         return redirect()->back();
     }

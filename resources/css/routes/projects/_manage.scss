@@ -52,6 +52,18 @@ progress {
     text-indent: calc(-1 * var(--step-1));
 }
 
+.diversity {
+    background: var(--ll-accent-background-color);
+    border-radius: var(--ll-border-radius);
+    padding: var(--step-0);
+
+    .columns {
+        display: flex;
+        flex-direction: column;
+        gap: var(--step-0);
+    }
+}
+
 @media (min-width: 1024px) {
     .manage {
         display: grid;
@@ -63,6 +75,10 @@ progress {
     .overview {
         grid-column: 2 / 3;
         grid-row: 1 / 1;
+    }
+
+    .diversity .columns {
+        flex-direction: row;
     }
 
     .step {
@@ -77,5 +93,15 @@ progress {
 
     .substeps .substep .substep__description {
         width: 65%;
+    }
+
+    .grid {
+        display: grid;
+        gap: var(--step-0);
+        grid-template-columns: repeat(2, 1fr);
+
+        > p {
+            grid-column: 1 / 3;
+        }
     }
 }

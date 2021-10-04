@@ -1,5 +1,5 @@
 
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ __('Find consultants') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -12,7 +12,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <nav>
+    <nav class="find__nav">
         <ul role="list">
             <x-nav-link :href="localized_route('projects.find-interested-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-interested-consultants')">{{ __('Interested in this project') }}</x-nav-link>
             <x-nav-link :href="localized_route('projects.find-related-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-related-consultants')">{{ __('From similar projects') }}</x-nav-link>
@@ -20,25 +20,27 @@
         </ul>
     </nav>
 
-    <div class="flow" id="browse-all">
-        <h2>{{ __('Browse all consultants') }}</h2>
-        @forelse($consultants as $consultant)
-        <x-consultant-card level="3" :consultant="$consultant" :project="$project">
-            <x-slot name="actions">
-                <div class="actions">
-                    <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
-                        @csrf
-                        @method('put')
-                        <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                        <x-hearth-button>{!! __('Add <span class="visually-hidden">:name</span> to shortlist', ['name' => $consultant->name]) !!}</x-hearth-button>
-                    </form>
-                </div>
-            </x-slot>
-        </x-consultant-card>
+    <div class="find__list flow">
+        <h2>{{ $subtitle }}</h2>
+        <div class="grid">
+            @forelse($consultants as $consultant)
+            <x-consultant-card level="3" :consultant="$consultant" :project="$project">
+                <x-slot name="actions">
+                    <div class="actions">
+                        <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
+                            @csrf
+                            @method('put')
+                            <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                                <x-hearth-button>{!! __('Add <span class="visually-hidden">:name</span> to shortlist', ['name' => $consultant->name]) !!}</x-hearth-button>
+                            </form>
+                        </div>
+                    </x-slot>
+            </x-consultant-card>
+            @empty
+            <p>{{ __('Sorry, no consultants were found.') }}</p>
+            @endforelse
+        </div>
 
-        @empty
-        <p>{{ __('Sorry, no consultants were found.') }}</p>
-        @endforelse
 
         {{-- {{ $consultants->links() }} TODO: Set up pagination --}}
     </div>
@@ -69,4 +71,4 @@
     </section>
     @endif
 
-</x-app-layout>
+</x-app-wide-layout>

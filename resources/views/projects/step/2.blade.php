@@ -1,7 +1,61 @@
 <div class="flow">
     <h2>{{ __('Consultant shortlist') }}</h2>
-    @if((count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants)) < $project->min)
+    @if((count($project->consultants)) < $project->min)
     <p><em>{{ __('According to your project details, you need to add at least :number more consultants to your shortlist.', ['number' => $project->min - (count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants))]) }}</em></p>
+    @endif
+    @if((count($project->consultants)) >= 5)
+    <div class="diversity flow">
+        <h3>{{ __('Diversity of consultants') }}</h3>
+        <div class="columns">
+
+            <div class="column flow">
+                <h4>{{ __('On your shortlist:') }}</h4>
+                <p><strong>{{ __('Lived experience') }}</strong></p>
+                <ul>
+                    @foreach ($project->presentLivedExperiences() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                <p><strong>{{ __('Communities') }}</strong></p>
+                <ul>
+                    @foreach ($project->presentCommunities() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                @if(count($project->regions) === 13)
+                <p><strong>{{ __('Cross-country') }}</strong></p>
+                <ul>
+                    @foreach ($project->presentRegions() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+            <div class="column flow">
+                <h4>{{ __('Missing from your shortlist:') }}</h4>
+                <p><strong>{{ __('Lived experience') }}</strong></p>
+                <ul>
+                    @foreach ($project->absentLivedExperiences() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                <p><strong>{{ __('Communities') }}</strong></p>
+                <ul>
+                    @foreach ($project->absentCommunities() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                @if(count($project->regions) === 13)
+                <p><strong>{{ __('Cross-country') }}</strong></p>
+                <ul>
+                    @foreach ($project->absentRegions() as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
+        </div>
+    </div>
     @endif
     @if(count($project->confirmedConsultants) > 0)
     <h3>{{ __('Confirmed') }}</h3>
@@ -44,7 +98,7 @@
         </x-slot>
     </x-consultant-card>
     @endforeach
-    @if(count($project->confirmedConsultants) === 0 && count($project->requestedConsultants) === 0 && count($project->shortlistedConsultants) === 0)
+    @if(count($project->consultants) === 0)
     <p>{{ __('Start finding consultants to add to your shortlist.') }}</p>
     <p><a class="button" href="{{ localized_route('projects.find-interested-consultants', $project) }}">{{ __('Find consultants') }}</a></p>
     @endif

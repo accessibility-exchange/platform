@@ -16,12 +16,26 @@
 
 <p>{{ __('Cross disability & intersectional') }}</p>
 
+@if($project->communities)
+<x-header :level="$level + 1">{{ __('Priority outreach') }}</x-header>
+
+<ul>
+    @foreach ($project->communities as $community)
+    <li>{{ $community->name }}</li>
+    @endforeach
+</ul>
+
+@if($project->priority_outreach)
+<x-markdown class="flow">{{ $project->priority_outreach }}</x-markdown>
+@endif
+@endif
+
 <x-header :level="$level">{{ __('Where') }}</x-header>
 
 <p>
     @if($project->locality){{ $project->locality }}, @endif
     @if(count($project->regions) === 13)
-    {{ _('Any province or territory') }}
+    {{ __('Any province or territory') }}
     @endif
 </p>
 

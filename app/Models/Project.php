@@ -385,6 +385,14 @@ class Project extends Model
     }
 
     /**
+     * The communities that belong to the project.
+     */
+    public function communities(): BelongsToMany
+    {
+        return $this->belongsToMany(Community::class);
+    }
+
+    /**
      * The consultants that belong to the project.
      */
     public function consultants(): BelongsToMany
@@ -418,5 +426,75 @@ class Project extends Model
     {
         return $this->belongsToMany(Consultant::class)
             ->wherePivot('status', 'confirmed');
+    }
+
+    public function presentLivedExperiences()
+    {
+        return $this->consultants->pluck('livedExperiences')->flatten()->pluck('name')->unique()->toArray();
+    }
+
+    public function absentLivedExperiences()
+    {
+        $livedExperiences = LivedExperience::all()->pluck('name')->toArray();
+
+        return array_diff($livedExperiences, $this->presentLivedExperiences());
+    }
+
+    public function presentCommunities()
+    {
+        return $this->consultants->pluck('communities')->flatten()->pluck('name')->unique()->toArray();
+    }
+
+    public function absentCommunities()
+    {
+        $communities = Community::all()->pluck('name')->toArray();
+
+        return array_diff($communities, $this->presentCommunities());
+    }
+
+    public function presentRegions()
+    {
+        $regions = $this->consultants->pluck('region')->unique()->toArray();
+        $present = [];
+
+        if (in_array('BC', $regions)) {
+            $present[] = __('West Coast');
+        }
+
+        if (in_array('AB', $regions) || in_array('SK', $regions)) {
+            $present[] = __('Prairie Provinces');
+        }
+
+        if (in_array('MB', $regions) || in_array('ON', $regions)) {
+            $present[] = __('Central Provinces');
+        }
+
+        if (in_array('YT', $regions) || in_array('NT', $regions) || in_array('NU', $regions)) {
+            $present[] = __('Northern Territories');
+        }
+
+        if (in_array('QC', $regions)) {
+            $present[] = __('Quebec');
+        }
+
+        if (in_array('NB', $regions) || in_array('NS', $regions) || in_array('PE', $regions) || in_array('NL', $regions)) {
+            $present[] = __('Atlantic Provinces');
+        }
+
+        return $present;
+    }
+
+    public function absentRegions()
+    {
+        $regions = [
+            __('West Coast'),
+            __('Prairie Provinces'),
+            __('Central Provinces'),
+            __('Northern Territories'),
+            __('Quebec'),
+            __('Atlantic Provinces'),
+        ];
+
+        return array_diff($regions, $this->presentRegions());
     }
 }

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -63,4 +63,4 @@
         </section>
     </div>
 
-</x-app-layout>
+</x-app-wide-layout>

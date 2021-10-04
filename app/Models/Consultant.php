@@ -183,6 +183,32 @@ class Consultant extends Model
             ],
         ];
 
+        if (count($project->communities) > 0) {
+            $matches[] = [
+                'name' => __('Community'),
+                'value' => (count($this->communities->intersect($project->communities))) > 0 ? true : false,
+            ];
+        }
+
         return $matches;
+    }
+
+    public function projectMatch(Project $project)
+    {
+        $projectMatches = $this->projectMatches($project);
+        $matchCount = array_filter($projectMatches, function ($key) {
+            return $key['value'];
+        });
+        $percentage = count($matchCount) / count($projectMatches);
+
+        if ($percentage == 1) {
+            return __('Matches <strong>all</strong> project criteria');
+        } elseif ($percentage > 0.5) {
+            return __('Matches <strong>most</strong> project criteria');
+        } elseif ($percentage > 0) {
+            return __('Matches <strong>some</strong> project criteria');
+        }
+
+        return __('Doesn’t match any project criteria');
     }
 }
