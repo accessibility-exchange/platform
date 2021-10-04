@@ -53,7 +53,15 @@
 
         <p><a href="{{ localized_route('resources.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
 
-        @if(count(Auth::user()->entities) > 0)
+        @if(count(Auth::user()->projects()) > 0)
+        <h2>{{ __('View or manage your projects') }}</h2>
+
+        @foreach(Auth::user()->projects() as $project)
+        <p><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></p>
+        @endforeach
+
+        @elseif(count(Auth::user()->entities) > 0)
+
         <h2>{{ __('dashboard.entity_create_project_title') }}</h2>
 
         <p>{{ __('dashboard.entity_create_project_info') }}</p>

@@ -29,4 +29,4 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Perform static analysis
-      run: composer analyze
+      run: composer psalm

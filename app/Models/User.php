@@ -153,6 +153,19 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->withTimestamps();
     }
 
+    public function projects()
+    {
+        $projects = collect([]);
+
+        foreach ($this->entities as $entity) {
+            if (count($entity->projects) > 0) {
+                $projects = $projects->merge($entity->projects);
+            }
+        }
+
+        return $projects;
+    }
+
     /**
      * Determine if the user is a member of a given memberable.
      *

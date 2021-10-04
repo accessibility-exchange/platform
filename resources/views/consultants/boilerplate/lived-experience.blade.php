@@ -1,6 +1,6 @@
 {{-- TODO: Replace with real content. --}}
 <x-header :level="$level">{{ $consultant->firstName() }}’s self-description</x-header>
-<p>Here is how I describe my experience of Deafness, disability, and other intersecting identities.</p>
+<p>Here is how I describe my experience of being Deaf, of disability, and of my other intersecting identities.</p>
 <x-header :level="$level">Some aspects of {{ $consultant->firstName() }}’s identity</x-header>
 <ul role="list" class="tags">
     <li>Heard of hearing</li>

@@ -37,6 +37,8 @@ class ConsultantTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $this->assertEquals($consultant->user->id, $user->id);
     }
 
     public function test_entity_users_can_not_create_consultant_pages()
@@ -113,6 +115,33 @@ class ConsultantTest extends TestCase
         ]);
 
         $response->assertForbidden();
+    }
+
+    public function test_consultant_pages_can_be_published_and_unpublished()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+        $this->assertTrue($consultant->checkStatus('published'));
+
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $consultant = $consultant->fresh();
+
+        $this->assertTrue($consultant->checkStatus('draft'));
     }
 
     public function test_users_can_edit_consultant_pages()
@@ -283,7 +312,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
             'publish' => true,
         ]);
 
@@ -302,7 +331,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-status', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.show', $consultant))->put(localized_route('consultants.update-publication-status', $consultant), [
             'unpublish' => true,
         ]);
 

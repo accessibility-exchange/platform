@@ -1,0 +1,32 @@
+.drawer {
+    background: var(--ll-background-color);
+    border-block-start: var(--ll-border-thin);
+    border-inline-end: var(--ll-border-thin);
+    border-inline-start: var(--ll-border-thin);
+    bottom: 0;
+    padding: var(--step-0);
+    position: fixed;
+    right: var(--step-0);
+}
+
+.drawer h2 button {
+    background: var(--ll-background-color);
+    border: 0;
+    color: var(--ll-text-color);
+
+    &:active {
+        background: var(--ll-text-color);
+        color: var(--ll-background-color);
+    }
+}
+
+.drawer h2 button .indicator {
+    height: 1em;
+    margin-block-end: -0.25em;
+    transition: transform 0.2s ease-in-out;
+    width: 1em;
+}
+
+.drawer h2 button[aria-expanded="true"] .indicator {
+    transform: rotate(-180deg);
+}

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Consultant;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
@@ -58,6 +59,36 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($other_user)->get(localized_route('projects.create', $entity));
         $response->assertForbidden();
+    }
+
+    public function test_projects_can_be_published_and_unpublished()
+    {
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+            'publish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.show', $project));
+        $this->assertTrue($project->checkStatus('published'));
+
+        $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+            'unpublish' => true,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.show', $project));
+
+        $project = $project->fresh();
+
+        $this->assertTrue($project->checkStatus('draft'));
     }
 
     public function test_users_can_view_projects()
@@ -244,8 +275,68 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->pastProjects), 1);
         $this->assertEquals(count($entity->currentProjects), 1);
         $this->assertEquals(count($entity->futureProjects), 1);
+    }
 
-        $this->assertTrue($past_project->completed());
-        $this->assertTrue($current_project->started());
+    public function test_consultants_can_be_attached_to_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $shortlisted_consultant = Consultant::factory()->create();
+        $requested_consultant = Consultant::factory()->create();
+
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'published_at' => Carbon::now(),
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
+
+        $response->assertOk();
+
+        $response->assertSee('Consultant shortlist');
+
+        $response = $this->actingAs($user)->get(localized_route('projects.find-all-consultants', $project));
+
+        $response->assertOk();
+
+        // Add two consultants to shortlist.
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+            'consultant_id' => $shortlisted_consultant->id,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
+            'consultant_id' => $requested_consultant->id,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $project = $project->fresh();
+
+        $this->assertEquals(2, count($project->shortlistedConsultants));
+
+        // Request service from one consultant.
+        $response = $this->actingAs($user)->from(localized_route('projects.manage', $project))->put(localized_route('projects.update-consultant', $project), [
+            'consultant_id' => $requested_consultant->id,
+            'status' => 'requested',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+
+        $project = $project->fresh();
+
+        $this->assertEquals(1, count($project->shortlistedConsultants));
+        $this->assertEquals(1, count($project->requestedConsultants));
+
+        // Verify consultant project counts.
+        $this->assertEquals(1, count($shortlisted_consultant->projects));
+        $this->assertEquals(1, count($requested_consultant->projects));
     }
 }

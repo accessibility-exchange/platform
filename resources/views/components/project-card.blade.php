@@ -3,12 +3,8 @@
     @if($showEntity)
     <p>{!! __('project.project_by', ['entity' => '<strong>' . $project->entity->name . '</strong>']) !!}</p>
     @endif
-    <p><strong>{{ __('project.status_label') }}:</strong> @if($project->status)
-        {{ $project->status }}
-    @elseif($project->started() && !$project->completed())
-        {{ __('In progress') }}
-    @elseif($project->completed())
-        {{ __('Completed') }}
+    <p><strong>{{ __('project.status_label') }}:</strong> @if($project->step())
+        {{ $project->step() }}
     @endif
     </p>
     @if($project->started())
