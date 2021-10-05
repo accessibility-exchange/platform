@@ -49,9 +49,11 @@ class ConsultantController extends Controller
      */
     public function store(CreateConsultantRequest $request)
     {
-        $consultant = Consultant::create($request->validated());
+        $consultant = Consultant::create($request->safe()->except('picture'));
 
-        $consultant->addMedia($request->file('picture'))->toMediaCollection('picture');
+        if ($request->hasFile('picture') && $request->file('picture')->isValid()) {
+            $consultant->addMediaFromRequest('picture')->toMediaCollection('picture');
+        }
 
         flash(__('consultant.save_draft_succeeded'), 'success');
 
@@ -100,9 +102,11 @@ class ConsultantController extends Controller
      */
     public function update(UpdateConsultantRequest $request, Consultant $consultant)
     {
-        $consultant->fill($request->validated());
+        $consultant->fill($request->safe()->except('picture'));
 
-        $consultant->addMedia($request->file('picture'))->toMediaCollection('picture');
+        if ($request->hasFile('picture') && $request->file('picture')->isValid()) {
+            $consultant->addMediaFromRequest('picture')->toMediaCollection('picture');
+        }
 
         $consultant->save();
 

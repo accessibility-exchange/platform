@@ -10,7 +10,11 @@
     <h2>{{ __('Preview') }}</h2>
     <div class="preview flow">
         <div class="meta">
+            @if(isset($consultant->getMedia('picture')[0]))
+            <img class="float-left"src="{{ $consultant->getMedia('picture')[0]->getUrl('thumb') }}" alt="{{ $consultant->picture_alt }}" />
+            @else
             <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/{{ $consultant->name }}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />
+            @endif
             <h3>{{ $consultant->name }}</h3>
             <p>{{ __('consultant.role_individual_consultant') }}</p>
             <p>{{ $consultant->locality }}, {{ get_region_name($consultant->region, ["CA"], locale()) }}</p>

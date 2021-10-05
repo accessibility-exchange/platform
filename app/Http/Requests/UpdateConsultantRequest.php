@@ -39,6 +39,7 @@ class UpdateConsultantRequest extends FormRequest
 
             ],
             'picture' => 'nullable|file|image|dimensions:min_width=200,min_height=200',
+            'picture_alt' => 'nullable|string|required_unless:picture,null',
             'bio' => 'required|string',
             'links.*.url' => 'nullable|url|required_unless:links.*.text,null',
             'links.*.text' => 'nullable|string|required_unless:links.*.url,null',
@@ -65,10 +66,11 @@ class UpdateConsultantRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A consultant page with this name already exists.',
-            'links.*.url.url' => 'The link must be a valid web address.',
-            'links.*.url.required_unless' => 'The link address must be filled in if the link text is filled in.',
-            'links.*.text.required_unless' => 'The link text must be filled in if the link address is filled in.',
+            'picture_alt.required_unless' => __('You must provide alternative text for your picture.'),
+            'name.unique' => __('A consultant page with this name already exists.'),
+            'links.*.url.url' => __('The link must be a valid web address.'),
+            'links.*.url.required_unless' => __('The link address must be filled in if the link text is filled in.'),
+            'links.*.text.required_unless' => __('The link text must be filled in if the link address is filled in.'),
         ];
     }
 }
