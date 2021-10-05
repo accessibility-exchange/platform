@@ -32,7 +32,7 @@
             <div class="field @error('bio') field--error @enderror">
                 <x-hearth-label for="bio" :value="__('consultant.label_bio')" />
                 <x-hearth-hint for="bio">{{ __('consultant.hint_bio') }}</x-hearth-hint>
-                <x-hearth-textarea id="bio" name="bio[en]" hinted>{{ old('bio') }}</x-hearth-textarea>
+                <x-hearth-textarea name="bio" hinted>{{ old('bio') }}</x-hearth-textarea>
                 <x-hearth-error for="bio" />
             </div>
 
@@ -78,7 +78,7 @@
         <div class="field @error('pronouns') field--error @enderror">
             <x-hearth-label for="pronouns" :value="__('consultant.label_pronouns')" />
             <x-hearth-hint for="pronouns">{{ __('consultant.hint_pronouns') }}</x-hearth-hint>
-            <x-hearth-input type="text" id="pronouns" name="pronouns[en]" value="{{ old('pronouns') }}" hinted />
+            <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns') }}" hinted />
             <x-hearth-error for="pronouns" />
         </div>
 
@@ -92,7 +92,7 @@
             </div>
             <div class="field @error('creator_relationship') field--error @enderror" x-show="creator == 'other'">
                 <x-hearth-label for="creator_relationship" :value="__('consultant.label_creator_relationship')" />
-                <x-hearth-input type="text" id="creator_relationship" name="creator_relationship[en]" value="{{ old('creator_relationship') }}" />
+                <x-hearth-input type="text" name="creator_relationship" value="{{ old('creator_relationship') }}" />
                 <x-hearth-error for="creator_relationship" />
             </div>
         </fieldset>
