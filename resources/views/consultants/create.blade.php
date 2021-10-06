@@ -30,7 +30,7 @@
             <div class="field @error('picture') field--error @enderror">
                 <x-hearth-label for="picture" :value="__('Your picture (optional)')" />
                 <x-hearth-hint for="picture">{{ __('This will be the picture that others use to identify you.') }}</x-hearth-hint>
-                <x-hearth-input type="file" name="picture" :value="old('picture')" hinted />
+                @livewire('image-uploader', ['name' => 'picture', 'image' => null, 'alt' => false])
                 <x-hearth-error for="picture" />
             </div>
         </fieldset>
