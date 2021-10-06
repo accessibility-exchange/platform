@@ -106,6 +106,8 @@ class ConsultantController extends Controller
 
         if ($request->hasFile('picture') && $request->file('picture')->isValid()) {
             $consultant->addMediaFromRequest('picture')->toMediaCollection('picture');
+        } elseif (! $request->hasFile('picture')) {
+            $consultant->clearMediaCollection('picture');
         }
 
         $consultant->save();

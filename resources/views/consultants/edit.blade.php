@@ -29,10 +29,7 @@
             <div class="field @error('picture') field--error @enderror">
                 <x-hearth-label for="picture" :value="__('Your picture (optional)')" />
                 <x-hearth-hint for="picture">{{ __('This will be the picture that others use to identify you.') }}</x-hearth-hint>
-                @if($consultant->getMedia('picture')->first())
-                <img src="{{ $consultant->getMedia('picture')->first()->getUrl('thumb') }}" alt="{{ $consultant->picture_alt }}" />
-                @endif
-                <x-hearth-input type="file" name="picture" hinted />
+                @livewire('image-uploader', ['name' => 'picture', 'image' => $consultant->getMedia('picture')->first(), 'alt' => $consultant->picture_alt ?? ''])
                 <x-hearth-error for="picture" />
             </div>
 
