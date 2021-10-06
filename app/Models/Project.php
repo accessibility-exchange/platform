@@ -466,20 +466,16 @@ class Project extends Model
             $present[] = __('West Coast');
         }
 
-        if (in_array('AB', $regions) || in_array('SK', $regions)) {
+        if (in_array('AB', $regions) || in_array('SK', $regions) || in_array('MB', $regions)) {
             $present[] = __('Prairie Provinces');
         }
 
-        if (in_array('MB', $regions) || in_array('ON', $regions)) {
-            $present[] = __('Central Provinces');
+        if (in_array('ON', $regions) || in_array('QC', $regions)) {
+            $present[] = __('Central Canada');
         }
 
         if (in_array('YT', $regions) || in_array('NT', $regions) || in_array('NU', $regions)) {
             $present[] = __('Northern Territories');
-        }
-
-        if (in_array('QC', $regions)) {
-            $present[] = __('Quebec');
         }
 
         if (in_array('NB', $regions) || in_array('NS', $regions) || in_array('PE', $regions) || in_array('NL', $regions)) {
