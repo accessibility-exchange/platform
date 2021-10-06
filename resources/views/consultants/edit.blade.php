@@ -19,8 +19,8 @@
         <fieldset>
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('consultant.label_name')" />
-                <x-hearth-input type="text" name="name" :value="old('name', $consultant->name)" required hinted />
                 <x-hearth-hint for="name">{{ __('consultant.hint_name') }}</x-hearth-hint>
+                <x-hearth-input type="text" name="name" :value="old('name', $consultant->name)" required hinted />
                 <x-hearth-error for="name" />
             </div>
         </fieldset>
@@ -29,6 +29,9 @@
             <div class="field @error('picture') field--error @enderror">
                 <x-hearth-label for="picture" :value="__('Your picture (optional)')" />
                 <x-hearth-hint for="picture">{{ __('This will be the picture that others use to identify you.') }}</x-hearth-hint>
+                @if($consultant->getMedia('picture')->first())
+                <img src="{{ $consultant->getMedia('picture')->first()->getUrl('thumb') }}" alt="{{ $consultant->picture_alt }}" />
+                @endif
                 <x-hearth-input type="file" name="picture" hinted />
                 <x-hearth-error for="picture" />
             </div>
@@ -43,8 +46,8 @@
         <fieldset>
             <div class="field @error('bio') field--error @enderror">
                 <x-hearth-label for="bio" :value="__('consultant.label_bio')" />
-                <x-hearth-textarea name="bio" hinted>{{ old('bio', $consultant->bio) }}</x-hearth-textarea>
                 <x-hearth-hint for="bio">{{ __('consultant.hint_bio') }}</x-hearth-hint>
+                <x-hearth-textarea name="bio" hinted>{{ old('bio', $consultant->bio) }}</x-hearth-textarea>
                 <x-hearth-error for="bio" />
             </div>
 
@@ -105,8 +108,8 @@
 
         <div class="field @error('pronouns') field--error @enderror">
             <x-hearth-label for="pronouns" :value="__('consultant.label_pronouns')" />
-            <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $consultant->pronouns) }}" hinted />
             <x-hearth-hint for="pronouns">{{ __('consultant.hint_pronouns') }}</x-hearth-hint>
+            <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $consultant->pronouns) }}" hinted />
             <x-hearth-error for="pronouns" />
         </div>
 

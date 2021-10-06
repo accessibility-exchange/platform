@@ -1,8 +1,8 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $consultant->name }}</x-slot>
     <x-slot name="header">
-        @if(isset($consultant->getMedia('picture')[0]))
-        <img class="float-left"src="{{ $consultant->getMedia('picture')[0]->getUrl('thumb') }}" alt="{{ $consultant->picture_alt }}" />
+        @if($consultant->getMedia('picture')->first())
+        <img class="float-left"src="{{ $consultant->getMedia('picture')->first()->getUrl('thumb') }}" alt="{{ $consultant->picture_alt }}" />
         @else
         <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/{{ $consultant->name }}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />
         @endif
