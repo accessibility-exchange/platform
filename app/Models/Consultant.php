@@ -9,17 +9,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 use TheIconic\NameParser\Parser as NameParser;
 
-class Consultant extends Model
+class Consultant extends Model implements HasMedia
 {
     use HasFactory;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
+    use InteractsWithMedia;
     use Notifiable;
 
     /**
@@ -34,6 +38,7 @@ class Consultant extends Model
         'locality',
         'region',
         'birth_date',
+        'picture_alt',
         'pronouns',
         'creator',
         'creator_name',
@@ -57,10 +62,29 @@ class Consultant extends Model
      * @var array
      */
     public $translatable = [
+        'picture_alt',
         'bio',
         'pronouns',
         'creator_relationship',
     ];
+
+    /**
+     * Register media collections for the model.
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('picture')->singleFile();
+    }
+
+    /**
+     * Register media conversions for the model.
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+              ->width(200)
+              ->height(200);
+    }
 
     /**
      * Get the options for generating the slug.

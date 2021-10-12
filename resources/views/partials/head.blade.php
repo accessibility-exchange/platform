@@ -22,6 +22,7 @@
         <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
         @endenv
         @googlefonts
+        @livewireStyles()
 
         <!-- Scripts -->
         <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
@@ -34,3 +35,4 @@
         <script src="{{ mix('js/vendor.js') }}" defer></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
         @endenv
+

@@ -10,7 +10,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('consultants.store') }}" method="POST" novalidate>
+    <form action="{{ localized_route('consultants.store') }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
 
         <x-privacy-indicator level="public" :value="__('consultant.privacy_about_page')" />
@@ -26,7 +26,22 @@
             </div>
         </fieldset>
 
-        {{-- TODO: Add picture. --}}
+        <fieldset>
+            <div class="field @error('picture') field--error @enderror">
+                <x-hearth-label for="picture" :value="__('Your picture (optional)')" />
+                <x-hearth-hint for="picture">{{ __('This will be the picture that others use to identify you.') }}</x-hearth-hint>
+                @livewire('image-uploader', ['name' => 'picture', 'image' => null, 'alt' => false])
+                <x-hearth-error for="picture" />
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="field @error('picture_alt') field--error @enderror">
+                <x-hearth-label for="picture_alt" :value="__('Alternative text for your picture')" />
+                <x-hearth-input name="picture_alt" :value="old('picture_alt')" />
+                <x-hearth-error for="picture_alt" />
+            </div>
+        </fieldset>
 
         <fieldset>
             <div class="field @error('bio') field--error @enderror">

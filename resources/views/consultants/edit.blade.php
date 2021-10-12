@@ -10,7 +10,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('consultants.update', $consultant) }}" method="POST" novalidate>
+    <form action="{{ localized_route('consultants.update', $consultant) }}" method="POST" enctype="multipart/form-data" novalidate>
         @csrf
         @method('PUT')
 
@@ -19,19 +19,32 @@
         <fieldset>
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('consultant.label_name')" />
-                <x-hearth-input type="text" name="name" :value="old('name', $consultant->name)" required hinted />
                 <x-hearth-hint for="name">{{ __('consultant.hint_name') }}</x-hearth-hint>
+                <x-hearth-input type="text" name="name" :value="old('name', $consultant->name)" required hinted />
                 <x-hearth-error for="name" />
             </div>
         </fieldset>
 
-        {{-- TODO: Add picture. --}}
+        <fieldset>
+            <div class="field @error('picture') field--error @enderror">
+                <x-hearth-label for="picture" :value="__('Your picture (optional)')" />
+                <x-hearth-hint for="picture">{{ __('This will be the picture that others use to identify you.') }}</x-hearth-hint>
+                @livewire('image-uploader', ['name' => 'picture', 'image' => $consultant->getMedia('picture')->first(), 'alt' => $consultant->picture_alt ?? ''])
+                <x-hearth-error for="picture" />
+            </div>
+
+            <div class="field @error('picture_alt') field--error @enderror">
+                <x-hearth-label for="picture_alt" :value="__('Alternative text for your picture')" />
+                <x-hearth-input name="picture_alt" :value="old('picture_alt', $consultant->picture_alt)" />
+                <x-hearth-error for="picture_alt" />
+            </div>
+        </fieldset>
 
         <fieldset>
             <div class="field @error('bio') field--error @enderror">
                 <x-hearth-label for="bio" :value="__('consultant.label_bio')" />
-                <x-hearth-textarea name="bio" hinted>{{ old('bio', $consultant->bio) }}</x-hearth-textarea>
                 <x-hearth-hint for="bio">{{ __('consultant.hint_bio') }}</x-hearth-hint>
+                <x-hearth-textarea name="bio" hinted>{{ old('bio', $consultant->bio) }}</x-hearth-textarea>
                 <x-hearth-error for="bio" />
             </div>
 
@@ -92,8 +105,8 @@
 
         <div class="field @error('pronouns') field--error @enderror">
             <x-hearth-label for="pronouns" :value="__('consultant.label_pronouns')" />
-            <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $consultant->pronouns) }}" hinted />
             <x-hearth-hint for="pronouns">{{ __('consultant.hint_pronouns') }}</x-hearth-hint>
+            <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $consultant->pronouns) }}" hinted />
             <x-hearth-error for="pronouns" />
         </div>
 
