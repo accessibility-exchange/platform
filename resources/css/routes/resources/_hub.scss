@@ -1,0 +1,40 @@
+form.search {
+    display: grid;
+    gap: var(--step-0);
+
+    > * + * {
+        margin-block-start: 0;
+    }
+}
+
+.cards--collections {
+    display: grid;
+    gap: var(--step-0);
+}
+
+.card--collection {
+    border: var(--ll-border-medium);
+    border-radius: var(--ll-border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: var(--step-0);
+
+    .actions {
+        margin-block-start: auto;
+
+        a {
+            margin-block-start: var(--step-0);
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    form.search {
+        grid-template-columns: 1fr auto;
+    }
+
+    .cards--collections {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

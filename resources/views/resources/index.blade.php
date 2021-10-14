@@ -1,7 +1,8 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('resource.index_title') }}</x-slot>
+    <x-slot name="title">{{ __('Browse all resources') }}</x-slot>
     <x-slot name="header">
-        <h1 itemprop="name">{{ __('resource.index_title') }}</h1>
+        <h1 itemprop="name">{{ __('Browse all resources') }}</h1>
+        <p class="subtitle">{{ __('Browse different resources to find what can help you throughout a consultation process based on your role and responsibilities.') }}</p>
     </x-slot>
 
    <div class="flow">
