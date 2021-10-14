@@ -16,7 +16,39 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        return view('resources.index', ['resources' => Resource::orderBy('title')->get()]);
+        return view('resources.index', [
+            'resources' => Resource::orderBy('title')->paginate(20),
+            'topics' => [
+                'accessible-consultation' => __('Accessible consultation'),
+                'intersectional-outreach' => __('Intersectional outreach'),
+                'contracts' => __('Contracts'),
+                'privacy' => __('Privacy'),
+                'disability-knowledge' => __('Disability knowledge'),
+            ],
+            'types' => [
+                'guidelines-and-best-practices' => __('Guidelines and best practices'),
+                'practical-guides-and-how-tos' => __('Practical guides and how tos'),
+                'stories-from-deaf-and-disability-communities' => __('Stories from Deaf and Disability communities'),
+                'templates-and-forms' => __('Templates and forms'),
+                'case-studies' => __('Case studies'),
+            ],
+            'formats' => [
+                'text' => __('Text'),
+                'video' => __('Video'),
+                'audio' => __('Audio'),
+                'pdf' => __('PDF'),
+                'word' => __('Word document'),
+            ],
+            'languages' => [
+                'en' => 'English',
+                'fr' => 'Français',
+            ],
+            'process' => [
+                'preparing-for-consultation' => __('Preparing for consultation'),
+                'going-through-consultation' => __('Going through consultation'),
+                'after-consultation' => __('After consultation and preparing reports'),
+            ],
+        ]);
     }
 
     /**

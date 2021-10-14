@@ -30,6 +30,7 @@
         "theiconic/name-parser": "^1.2"
     },
     "require-dev": {
+        "amirami/localizator": "^0.6.1@alpha",
         "barryvdh/laravel-debugbar": "^3.6",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
