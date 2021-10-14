@@ -1,0 +1,38 @@
+.expander button {
+    align-items: center;
+    background-color: var(--ll-background-color);
+    border: 0;
+    color: var(--ll-text-color);
+    display: flex;
+    font-size: var(--step-1);
+    justify-content: space-between;
+    padding: 0;
+    width: 100%;
+
+    svg {
+        height: 1.5em;
+        width: 1.5em;
+    }
+}
+
+.resources {
+    display: grid;
+    gap: var(--step-0);
+}
+
+.resources .cards {
+    display: grid;
+    gap: var(--step-0);
+}
+
+.card--resource {
+    border: var(--ll-border-medium);
+    border-radius: var(--ll-border-radius);
+    padding: var(--step-0);
+}
+
+@media (min-width: 1024px) {
+    .resources {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
