@@ -4,10 +4,6 @@
 use App\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Route;
 
-Route::multilingual('/resources', function () {
-    return view('resources.hub');
-})->name('resources.hub');
-
 Route::multilingual('/resources/all', [ResourceController::class, 'index'])
     ->name('resources.index');
 
