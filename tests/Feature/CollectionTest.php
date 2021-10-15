@@ -13,6 +13,14 @@ class CollectionTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_resource_hub_can_be_accessed()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(localized_route('collections.index'));
+        $response->assertOk();
+    }
+
     public function test_collections_can_be_accessed()
     {
         $user = User::factory()->create();
