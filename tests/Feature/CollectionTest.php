@@ -35,6 +35,9 @@ class CollectionTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('collections.show', $collection));
         $response->assertSee($resource->title);
+
+        $this->assertEquals(count($resource->collections), 1);
+        $this->assertEquals(count($collection->resources), 1);
     }
 
     public function test_collection_stories_appear_in_collection()
@@ -46,6 +49,7 @@ class CollectionTest extends TestCase
         $story = Story::factory()->create();
         $collection->stories()->attach($story->id);
 
+        $this->assertEquals(count($story->collections), 1);
         $this->assertEquals(count($collection->stories), 1);
     }
 }
