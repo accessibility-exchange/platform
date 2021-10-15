@@ -43,4 +43,12 @@ class Story extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Get all of the collections for the resource.
+     */
+    public function collections()
+    {
+        return $this->morphToMany(Collection::class, 'collectionable');
+    }
 }

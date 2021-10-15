@@ -54,4 +54,20 @@ class Collection extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Get all of the resources that are assigned this tag.
+     */
+    public function resources()
+    {
+        return $this->morphedByMany(Resource::class, 'collectionable');
+    }
+
+    /**
+     * Get all of the stories that are assigned this collection.
+     */
+    public function stories()
+    {
+        return $this->morphedByMany(Story::class, 'collectionable');
+    }
 }
