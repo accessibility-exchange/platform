@@ -53,7 +53,6 @@ class CollectionController extends Controller
         return view('collections.show', [
             'collection' => $collection,
             'resources' => $collection->resources,
-            // TODO: Add stories
             'topics' => [
                 'accessible-consultation' => __('Accessible consultation'),
                 'intersectional-outreach' => __('Intersectional outreach'),
