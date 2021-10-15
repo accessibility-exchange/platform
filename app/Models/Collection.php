@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\Translatable\HasTranslations;
 
-class Story extends Model
+class Collection extends Model
 {
     use HasFactory;
     use HasSlug;
+    use HasTranslations;
 
     /**
      * The attributes that are mass assignable.
@@ -19,9 +21,18 @@ class Story extends Model
      */
     protected $fillable = [
         'title',
-        'language',
         'user_id',
-        'summary',
+        'description',
+    ];
+
+    /**
+     * The attributes that are transterms
+     *
+     * @var array
+     */
+    public $translatable = [
+        'title',
+        'description',
     ];
 
     /**
@@ -45,10 +56,18 @@ class Story extends Model
     }
 
     /**
-     * Get all of the collections for the resource.
+     * Get all of the resources that are assigned this tag.
      */
-    public function collections()
+    public function resources()
     {
-        return $this->morphToMany(Collection::class, 'collectionable');
+        return $this->morphedByMany(Resource::class, 'collectionable');
+    }
+
+    /**
+     * Get all of the stories that are assigned this collection.
+     */
+    public function stories()
+    {
+        return $this->morphedByMany(Story::class, 'collectionable');
     }
 }

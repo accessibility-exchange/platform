@@ -1,10 +1,12 @@
-<x-app-layout>
-    <x-slot name="title">{{ __('Browse all resources') }}</x-slot>
+<x-app-wide-layout>
+    <x-slot name="title">{{ $collection->title }}</x-slot>
     <x-slot name="header">
-        <p><a href="{{ localized_route('collections.index') }}">{{ __('Back to resource hub') }}</a></p>
-        <h1 itemprop="name">{{ __('Browse all resources') }}</h1>
-        <p class="subtitle">{{ __('Browse different resources to find what can help you throughout a consultation process based on your role and responsibilities.') }}</p>
+        <h1>
+            {{ $collection->title }}
+        </h1>
     </x-slot>
+
+    <x-markdown>{{ $collection->description }}</x-markdown>
 
     <div class="flow">
         <h2>{{ __('Search') }}</h2>
@@ -99,4 +101,4 @@
             @endforelse
         </div>
     </div>
-</x-app-layout>
+</x-app-wide-layout>
