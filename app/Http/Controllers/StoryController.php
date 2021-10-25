@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateStoryRequest;
 use App\Http\Requests\DestroyStoryRequest;
 use App\Http\Requests\UpdateStoryRequest;
+use App\Models\Format;
+use App\Models\Phase;
 use App\Models\Story;
+use App\Models\Topic;
 
 class StoryController extends Controller
 {
