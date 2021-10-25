@@ -3,7 +3,7 @@
     <x-slot name="header">
         <p><a href="{{ localized_route('collections.index') }}">{{ __('Back to resource hub') }}</a></p>
         <h1 itemprop="name">{{ __('Browse all resources') }}</h1>
-        <p class="subtitle">{{ __('Browse different resources to find what can help you throughout a consultation process based on your role and responsibilities.') }}</p>
+        <p class="subtitle">{{ __('Browse different resources to find what can help you throughout a consultation phase based on your role and responsibilities.') }}</p>
     </x-slot>
 
     <div class="flow">
@@ -19,26 +19,26 @@
         <div class="filters flow">
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <div class="expander" x-data="{expanded: false}">
-                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Popular topics') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
+                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Topic') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
                 <div x-show="expanded">
                     <ul role="list">
-                        @foreach($topics as $key => $label)
+                        @foreach($topics as $topic)
                         <li>
-                            <x-hearth-input type="checkbox" id="topics-{{ $key }}" name="topics[]" value="{{ $key }}" />
-                            <label for="topics-{{ $key }}">{{ $label }}</label>
+                            <x-hearth-input type="checkbox" id="topics-{{ $topic->id }}" name="topics[]" value="{{ $topic->id }}" />
+                            <label for="topics-{{ $topic->id }}">{{ $topic->name }}</label>
                         </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="expander" x-data="{expanded: false}">
-                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Content') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
+                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Content type') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
                 <div x-show="expanded">
                     <ul role="list">
-                        @foreach($types as $key => $label)
+                        @foreach($types as $type)
                         <li>
-                            <x-hearth-input type="checkbox" id="type-{{ $key }}" name="type[]" value="{{ $key }}" />
-                            <label for="type-{{ $key }}">{{ $label }}</label>
+                            <x-hearth-input type="checkbox" id="type-{{ $type->id }}" name="type[]" value="{{ $type->id }}" />
+                            <label for="type-{{ $type->id }}">{{ $type->name }}</label>
                         </li>
                         @endforeach
                     </ul>
@@ -48,10 +48,10 @@
                 <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Format') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
                 <div x-show="expanded">
                     <ul role="list">
-                        @foreach($formats as $key => $label)
+                        @foreach($formats as $format)
                         <li>
-                            <x-hearth-input type="checkbox" id="format-{{ $key }}" name="format[]" value="{{ $key }}" />
-                            <label for="format-{{ $key }}">{{ $label }}</label>
+                            <x-hearth-input type="checkbox" id="format-{{ $format->id }}" name="format[]" value="{{ $format->id }}" />
+                            <label for="format-{{ $format->id }}">{{ $format->name }}</label>
                         </li>
                         @endforeach
                     </ul>
@@ -61,23 +61,23 @@
                 <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Language') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
                 <div x-show="expanded">
                     <ul role="list">
-                        @foreach($languages as $key => $label)
+                        @foreach($languages as $code)
                         <li>
-                            <x-hearth-input type="checkbox" id="language-{{ $key }}" name="language[]" value="{{ $key }}" />
-                            <label for="language-{{ $key }}">{{ $label }}</label>
+                            <x-hearth-input type="checkbox" id="language-{{ $code }}" name="language[]" value="{{ $code }}" />
+                            <label for="language-{{ $code }}">{{ get_locale_name($code) }}</label>
                         </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="expander" x-data="{expanded: false}">
-                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Consultation process') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
+                <button @click="expanded = ! expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Consultation phase') }} <x-heroicon-s-plus x-show="! expanded" class="icon" /><x-heroicon-s-minus x-show="expanded" class="icon" /></button>
                 <div x-show="expanded">
                     <ul role="list">
-                        @foreach($process as $key => $label)
+                        @foreach($phases as $phase)
                         <li>
-                            <x-hearth-input type="checkbox" id="process-{{ $key }}" name="process[]" value="{{ $key }}" />
-                            <label for="process-{{ $key }}">{{ $label }}</label>
+                            <x-hearth-input type="checkbox" id="phase-{{ $phase->id }}" name="phase[]" value="{{ $phase->id }}" />
+                            <label for="phase-{{ $phase->id }}">{{ $phase->name }}</label>
                         </li>
                         @endforeach
                     </ul>
@@ -87,8 +87,8 @@
         <div class="cards">
             @forelse($resources as $resource)
             <article class="card card--resource">
-                <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ Arr::random($types) }}</p>
-                <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ Arr::random($formats) }} <span class="aria-hidden">&middot;</span> <span class="visually-hidden">{{ __('Language') }}:</span> {{ Arr::random($languages) }}</p>
+                <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ $types->random()->name }}</p>
+                <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span class="aria-hidden">&middot;</span> <span class="visually-hidden">{{ __('Language') }}:</span> {{ get_locale_name(Arr::random($languages)) }}</p>
                 <h2>
                     <a href="{{ localized_route('resources.show', $resource) }}">{{ $resource->title }}</a>
                 </h2>

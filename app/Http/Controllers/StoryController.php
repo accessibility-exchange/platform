@@ -16,7 +16,13 @@ class StoryController extends Controller
      */
     public function index()
     {
-        return view('stories.index', ['stories' => Story::orderBy('title')->get()]);
+        return view('stories.index', [
+            'stories' => Story::orderBy('title')->get(),
+            'topics' => Topic::all(),
+            'formats' => Format::all(),
+            'languages' => ['en', 'fr'],
+            'phases' => Phase::all(),
+        ]);
     }
 
     /**

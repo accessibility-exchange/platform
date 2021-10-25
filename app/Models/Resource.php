@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
@@ -19,8 +20,8 @@ class Resource extends Model
      */
     protected $fillable = [
         'title',
-        'language',
         'user_id',
+        'content_type_id',
         'summary',
     ];
 
@@ -50,5 +51,47 @@ class Resource extends Model
     public function collections()
     {
         return $this->morphToMany(Collection::class, 'collectionable');
+    }
+
+    /**
+     * Get all of the formats for the resource.
+     */
+    public function formats()
+    {
+        return $this->morphToMany(Format::class, 'formattable')->withPivot('original', 'language');
+    }
+
+    public function originalFormat()
+    {
+        return $this->morphToMany(Format::class, 'formattable')->wherePivot('original', true)->withPivot('language');
+    }
+
+    /**
+     * Get all of the formats for the resource.
+     */
+    public function phases()
+    {
+        return $this->morphToMany(Phase::class, 'phaseable');
+    }
+
+    /**
+     * Get all of the formats for the resource.
+     */
+    public function topics()
+    {
+        return $this->morphToMany(Topic::class, 'topicable');
+    }
+
+    /**
+     * Get the content time for the resource.
+     */
+    public function contentType()
+    {
+        return $this->belongsTo(ContentType::class);
+    }
+
+    public function published()
+    {
+        return Carbon::parse($this->created_at)->format('F j, Y');
     }
 }

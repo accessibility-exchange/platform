@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateResourceRequest;
 use App\Http\Requests\DestroyResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
+use App\Models\ContentType;
+use App\Models\Format;
+use App\Models\Phase;
 use App\Models\Resource;
+use App\Models\Topic;
 
 class ResourceController extends Controller
 {
@@ -18,36 +22,11 @@ class ResourceController extends Controller
     {
         return view('resources.index', [
             'resources' => Resource::orderBy('title')->paginate(20),
-            'topics' => [
-                'accessible-consultation' => __('Accessible consultation'),
-                'intersectional-outreach' => __('Intersectional outreach'),
-                'contracts' => __('Contracts'),
-                'privacy' => __('Privacy'),
-                'disability-knowledge' => __('Disability knowledge'),
-            ],
-            'types' => [
-                'guidelines-and-best-practices' => __('Guidelines and best practices'),
-                'practical-guides-and-how-tos' => __('Practical guides and how tos'),
-                'stories-from-deaf-and-disability-communities' => __('Stories from Deaf and Disability communities'),
-                'templates-and-forms' => __('Templates and forms'),
-                'case-studies' => __('Case studies'),
-            ],
-            'formats' => [
-                'text' => __('Text'),
-                'video' => __('Video'),
-                'audio' => __('Audio'),
-                'pdf' => __('PDF'),
-                'word' => __('Word document'),
-            ],
-            'languages' => [
-                'en' => 'English',
-                'fr' => 'Français',
-            ],
-            'process' => [
-                'preparing-for-consultation' => __('Preparing for consultation'),
-                'going-through-consultation' => __('Going through consultation'),
-                'after-consultation' => __('After consultation and preparing reports'),
-            ],
+            'topics' => Topic::all(),
+            'types' => ContentType::all(),
+            'formats' => Format::all(),
+            'languages' => ['en', 'fr'],
+            'phases' => Phase::all(),
         ]);
     }
 
