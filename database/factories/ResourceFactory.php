@@ -27,7 +27,6 @@ class ResourceFactory extends Factory
 
         return [
             'title' => Str::ucfirst($title),
-            'language' => config('app.locale'),
             'summary' => $this->faker->sentence(),
             'user_id' => User::factory(),
         ];

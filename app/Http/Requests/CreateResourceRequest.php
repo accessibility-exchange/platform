@@ -33,10 +33,6 @@ class CreateResourceRequest extends FormRequest
                 Rule::unique(Resource::class),
 
             ],
-            'language' => [
-                'required',
-                Rule::in(config('locales.supported')),
-            ],
             'summary' => 'required|string',
             'user_id' => 'required',
         ];
