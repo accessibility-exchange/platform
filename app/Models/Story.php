@@ -19,7 +19,6 @@ class Story extends Model
      */
     protected $fillable = [
         'title',
-        'language',
         'user_id',
         'summary',
     ];
