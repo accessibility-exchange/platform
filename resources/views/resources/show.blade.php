@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="title">{{ $resource->title }}</x-slot>
     <x-slot name="header">
-        <p><span class="visually-hidden">{{ __('Content type:') }}</span> {{ $resource->contentType->name }}</p>
+        <p><span class="visually-hidden">{{ __('Content type:') }}</span> {{ $resource->contentType->name ?? __('General resources') }}</p>
         <h1>
             {{ $resource->title }}
         </h1>
