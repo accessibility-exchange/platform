@@ -14,8 +14,20 @@
         @if($project->completed())
         <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->format('F Y') }}</p>
         @endif
-        @if(!$project->completed() && Auth::user()->context === 'project')
-        <x-hearth-button type="button">{{ __('I’m interested in consulting for this project') }}</x-hearth-button>
+        @if(!$project->completed() && Auth::user()->consultant)
+        @if(!Auth::user()->consultant->projectsOfInterest->contains($project->id))
+        <form action="{{ localized_route('consultants.express-interest', Auth::user()->consultant) }}" method="post">
+            @csrf
+            <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
+            <x-hearth-button type="submit">{{ __('I’m interested in this project') }}</x-hearth-button>
+        </form>
+        @else
+        <form action="{{ localized_route('consultants.remove-interest', Auth::user()->consultant) }}" method="post">
+            @csrf
+            <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
+            <x-hearth-button type="submit">{{ __('I’m not interested in this project') }}</x-hearth-button>
+        </form>
+        @endif
         @endif
         @can('update', $project)
         @if($project->checkStatus('published'))

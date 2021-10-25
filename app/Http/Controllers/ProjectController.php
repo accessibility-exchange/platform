@@ -342,6 +342,8 @@ class ProjectController extends Controller
             'subtitle' => __('Interested in this project'),
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
+            })->whereHas('projectsOfInterest', function ($query) use ($project) {
+                $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
         ]);
     }

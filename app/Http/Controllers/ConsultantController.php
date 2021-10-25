@@ -160,4 +160,44 @@ class ConsultantController extends Controller
 
         return redirect(\localized_route('dashboard'));
     }
+
+    /**
+     * Express interest in a project.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Consultant  $consultant
+     * @return \Illuminate\View\View
+     */
+    public function expressInterest(Request $request, Consultant $consultant)
+    {
+        $validated = $request->validate([
+            'project_id' => 'required|integer',
+        ]);
+
+        $consultant->projectsOfInterest()->attach($request->input('project_id'));
+
+        flash(__('You have expressed your interest in this project.'), 'success');
+
+        return redirect()->back();
+    }
+
+    /**
+     * Remove interest in a project.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Consultant  $consultant
+     * @return \Illuminate\View\View
+     */
+    public function removeInterest(Request $request, Consultant $consultant)
+    {
+        $validated = $request->validate([
+            'project_id' => 'required|integer',
+        ]);
+
+        $consultant->projectsOfInterest()->detach($request->input('project_id'));
+
+        flash(__('You have removed your expression of interest in this project.'), 'success');
+
+        return redirect()->back();
+    }
 }

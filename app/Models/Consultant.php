@@ -187,6 +187,14 @@ class Consultant extends Model implements HasMedia
     }
 
     /**
+     * The projects that the consultant belongs to.
+     */
+    public function projectsOfInterest(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'projects_of_interest');
+    }
+
+    /**
      * The entities that the consultant has identified themself with.
      */
     public function entities(): BelongsToMany
