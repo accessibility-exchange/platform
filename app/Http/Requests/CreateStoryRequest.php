@@ -33,10 +33,6 @@ class CreateStoryRequest extends FormRequest
                 Rule::unique(Story::class),
 
             ],
-            'language' => [
-                'required',
-                Rule::in(config('locales.supported')),
-            ],
             'summary' => 'required|string',
             'user_id' => 'required',
         ];

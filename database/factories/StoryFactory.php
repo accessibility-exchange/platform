@@ -26,7 +26,6 @@ class StoryFactory extends Factory
 
         return [
             'title' => $title,
-            'language' => config('app.locale'),
             'summary' => $this->faker->sentence(),
             'user_id' => User::factory(),
         ];

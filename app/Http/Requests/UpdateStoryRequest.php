@@ -37,10 +37,6 @@ class UpdateStoryRequest extends FormRequest
                 Rule::unique(Story::class)->ignore($story->id),
 
             ],
-            'language' => [
-                'required',
-                Rule::in(config('locales.supported')),
-            ],
             'summary' => 'required|string',
         ];
     }

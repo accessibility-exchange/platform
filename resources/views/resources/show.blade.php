@@ -1,10 +1,11 @@
 <x-app-layout>
     <x-slot name="title">{{ $resource->title }}</x-slot>
     <x-slot name="header">
+        <p><span class="visually-hidden">{{ __('Content type:') }}</span> {{ $resource->contentType->name ?? __('General resources') }}</p>
         <h1>
             {{ $resource->title }}
         </h1>
-        <p>{{ get_locale_name($resource->language, locale()) }}</p>
+        <p>{{ __('Created by :creator', ['creator' => $resource->creator ?? __('Accessibility Exchange')]) }} <span class="separator" aria-hidden="true">&middot;</span><span class="visually-hidden">{{ __('Published:') }}</span> {{ $resource->published() }}</p>
     </x-slot>
 
     {!! Illuminate\Mail\Markdown::parse($resource->summary) !!}
