@@ -311,6 +311,8 @@ class ProjectTest extends TestCase
 
         $response->assertRedirect(localized_route('projects.show', $project));
 
+        $project = $project->fresh();
+
         $this->assertFalse($project->interestedConsultants->contains($consultant));
     }
 
