@@ -277,6 +277,43 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->futureProjects), 1);
     }
 
+    public function test_consultants_can_express_interest_in_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $admin_user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $entity = Entity::factory()
+            ->hasAttached($admin_user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'published_at' => Carbon::now(),
+        ]);
+
+        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('consultants.express-interest', $consultant), [
+            'project_id' => $project->id,
+        ]);
+
+        $response->assertRedirect(localized_route('projects.show', $project));
+
+        $this->assertTrue($project->interestedConsultants->contains($consultant));
+
+        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('consultants.remove-interest', $consultant), [
+            'project_id' => $project->id,
+        ]);
+
+        $response->assertRedirect(localized_route('projects.show', $project));
+
+        $this->assertFalse($project->interestedConsultants->contains($consultant));
+    }
+
     public function test_consultants_can_be_attached_to_projects()
     {
         if (! config('hearth.entities.enabled')) {

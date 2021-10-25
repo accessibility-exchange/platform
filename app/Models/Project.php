@@ -393,6 +393,14 @@ class Project extends Model
     }
 
     /**
+     * The consultants that are interested in the project.
+     */
+    public function interestedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class, 'projects_of_interest');
+    }
+
+    /**
      * The consultants that belong to the project.
      */
     public function consultants(): BelongsToMany
