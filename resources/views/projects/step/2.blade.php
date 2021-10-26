@@ -12,7 +12,7 @@
             <li>{{ $requirement }}</li>
             @endforeach
         </ul>
-        <p class="align-end"><a href="{{ localized_route('resources.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
+        <p class="align-end"><a href="{{ localized_route('collections.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
     </div>
     <div class="diversity flow">
         <h3>{{ __('Diversity of consultants') }}</h3>
@@ -32,7 +32,7 @@
                     <li>{{ $item }}</li>
                     @endforeach
                 </ul>
-                @if(count($project->regions) === 13)
+                @if($project->regions && count($project->regions) === 13)
                 <p><strong>{{ __('Cross-country') }}</strong></p>
                 <ul>
                     @foreach ($project->presentRegions() as $item)
@@ -55,7 +55,7 @@
                     <li>{{ $item }}</li>
                     @endforeach
                 </ul>
-                @if(count($project->regions) === 13)
+                @if($project->regions && count($project->regions) === 13)
                 <p><strong>{{ __('Cross-country') }}</strong></p>
                 <ul>
                     @foreach ($project->absentRegions() as $item)

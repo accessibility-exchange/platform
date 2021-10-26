@@ -31,6 +31,7 @@
 
         <section class="step flow" aria-labelledby="step-{{ $step }}">
             <h2 id="step-{{ $step }}">{{ $step }}. {{ $steps[$step] }}</h2>
+            <p class=""></p>
 
             <p>{{ __('You have completed :count of :total steps.', ['count' => $project->getProgress($step), 'total' => count($substeps[$step])]) }}</p>
 
@@ -59,6 +60,9 @@
 
             @if($step == 2)
             @include('projects.step.2')
+            @endif
+            @if($step == 3)
+            @include('projects.step.3')
             @endif
         </section>
     </div>
