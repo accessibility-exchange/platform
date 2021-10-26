@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\ContentType;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ContentTypeSeeder extends Seeder
 {
@@ -22,8 +22,8 @@ class ContentTypeSeeder extends Seeder
         ];
 
         foreach ($content_types as $content_type) {
-            DB::table('content_types')->insert([
-                'name' => json_encode(['en' => $content_type]),
+            ContentType::firstOrCreate([
+                'name' => $content_type,
             ]);
         }
     }

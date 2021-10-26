@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\LivedExperience;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class LivedExperienceSeeder extends Seeder
 {
@@ -31,8 +31,8 @@ class LivedExperienceSeeder extends Seeder
         ];
 
         foreach ($experiences as $experience) {
-            DB::table('lived_experiences')->insert([
-                'name' => json_encode(['en' => $experience]),
+            LivedExperience::firstOrCreate([
+                'name' => $experience,
             ]);
         }
     }

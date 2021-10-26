@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Topic;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class TopicSeeder extends Seeder
 {
@@ -23,8 +23,8 @@ class TopicSeeder extends Seeder
         ];
 
         foreach ($topics as $topic) {
-            DB::table('topics')->insert([
-                'name' => json_encode(['en' => $topic]),
+            Topic::firstOrCreate([
+                'name' => $topic,
             ]);
         }
     }

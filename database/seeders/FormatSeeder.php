@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Format;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class FormatSeeder extends Seeder
 {
@@ -23,8 +23,8 @@ class FormatSeeder extends Seeder
         ];
 
         foreach ($formats as $format) {
-            DB::table('sectors')->insert([
-                'name' => json_encode(['en' => $format]),
+            Format::firstOrCreate([
+                'name' => $format,
             ]);
         }
     }

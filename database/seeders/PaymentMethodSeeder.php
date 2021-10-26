@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PaymentMethodSeeder extends Seeder
 {
@@ -22,8 +22,8 @@ class PaymentMethodSeeder extends Seeder
         ];
 
         foreach ($methods as $method) {
-            DB::table('payment_methods')->insert([
-                'name' => json_encode(['en' => $method]),
+            PaymentMethod::firstOrCreate([
+                'name' => $method,
             ]);
         }
     }

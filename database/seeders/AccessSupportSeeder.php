@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccessSupport;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AccessSupportSeeder extends Seeder
 {
@@ -98,8 +98,8 @@ class AccessSupportSeeder extends Seeder
         ];
 
         foreach ($supports as $support) {
-            DB::table('access_supports')->insert([
-                'name' => json_encode(['en' => $support['name']]),
+            AccessSupport::firstOrCreate([
+                'name' => $support['name'],
                 'in_person' => $support['in_person'] ?? false,
                 'virtual' => $support['virtual'] ?? false,
             ]);

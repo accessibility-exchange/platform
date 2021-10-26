@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Phase;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PhaseSeeder extends Seeder
 {
@@ -21,8 +21,8 @@ class PhaseSeeder extends Seeder
         ];
 
         foreach ($phases as $phase) {
-            DB::table('phases')->insert([
-                'name' => json_encode(['en' => $phase]),
+            Phase::firstOrCreate([
+                'name' => $phase,
             ]);
         }
     }
