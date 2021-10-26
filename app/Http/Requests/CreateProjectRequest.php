@@ -56,7 +56,7 @@ class CreateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A project with this name already exists.',
+            'name.unique' => __('A project with this name already exists.'),
         ];
     }
 }
