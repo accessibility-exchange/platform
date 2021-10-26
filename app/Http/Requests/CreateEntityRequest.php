@@ -50,7 +50,7 @@ class CreateEntityRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'A regulated entity with this name already exists.',
+            'name.unique' => __('A regulated entity with this name already exists.'),
         ];
     }
 }
