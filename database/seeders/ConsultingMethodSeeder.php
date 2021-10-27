@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\ConsultingMethod;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ConsultingMethodSeeder extends Seeder
 {
@@ -23,8 +23,8 @@ class ConsultingMethodSeeder extends Seeder
         ];
 
         foreach ($methods as $method) {
-            DB::table('consulting_methods')->insert([
-                'name' => json_encode(['en' => $method]),
+            ConsultingMethod::firstOrCreate([
+                'name->en' => $method,
             ]);
         }
     }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Community;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CommunitySeeder extends Seeder
 {
@@ -22,8 +22,8 @@ class CommunitySeeder extends Seeder
         ];
 
         foreach ($communities as $community) {
-            DB::table('communities')->insert([
-                'name' => json_encode(['en' => $community]),
+            Community::firstOrCreate([
+                'name->en' => $community,
             ]);
         }
     }
