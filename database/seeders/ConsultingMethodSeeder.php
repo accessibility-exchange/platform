@@ -24,7 +24,7 @@ class ConsultingMethodSeeder extends Seeder
 
         foreach ($methods as $method) {
             ConsultingMethod::firstOrCreate([
-                'name' => $method,
+                'name->en' => $method,
             ]);
         }
     }

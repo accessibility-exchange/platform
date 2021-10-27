@@ -32,7 +32,7 @@ class LivedExperienceSeeder extends Seeder
 
         foreach ($experiences as $experience) {
             LivedExperience::firstOrCreate([
-                'name' => $experience,
+                'name->en' => $experience,
             ]);
         }
     }

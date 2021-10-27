@@ -25,7 +25,7 @@ class SectorSeeder extends Seeder
 
         foreach ($sectors as $sector) {
             Sector::firstOrCreate([
-                'name' => $sector,
+                'name->en' => $sector,
             ]);
         }
     }

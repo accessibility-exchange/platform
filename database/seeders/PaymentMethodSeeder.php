@@ -23,7 +23,7 @@ class PaymentMethodSeeder extends Seeder
 
         foreach ($methods as $method) {
             PaymentMethod::firstOrCreate([
-                'name' => $method,
+                'name->en' => $method,
             ]);
         }
     }

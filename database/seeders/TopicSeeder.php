@@ -24,7 +24,7 @@ class TopicSeeder extends Seeder
 
         foreach ($topics as $topic) {
             Topic::firstOrCreate([
-                'name' => $topic,
+                'name->en' => $topic,
             ]);
         }
     }

@@ -24,7 +24,7 @@ class FormatSeeder extends Seeder
 
         foreach ($formats as $format) {
             Format::firstOrCreate([
-                'name' => $format,
+                'name->en' => $format,
             ]);
         }
     }

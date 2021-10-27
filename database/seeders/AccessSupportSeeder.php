@@ -99,7 +99,7 @@ class AccessSupportSeeder extends Seeder
 
         foreach ($supports as $support) {
             AccessSupport::firstOrCreate([
-                'name' => $support['name'],
+                'name->en' => $support['name'],
                 'in_person' => $support['in_person'] ?? false,
                 'virtual' => $support['virtual'] ?? false,
             ]);

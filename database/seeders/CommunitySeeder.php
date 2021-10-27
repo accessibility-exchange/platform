@@ -23,7 +23,7 @@ class CommunitySeeder extends Seeder
 
         foreach ($communities as $community) {
             Community::firstOrCreate([
-                'name' => $community,
+                'name->en' => $community,
             ]);
         }
     }

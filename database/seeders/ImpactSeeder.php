@@ -26,7 +26,7 @@ class ImpactSeeder extends Seeder
 
         foreach ($impacts as $impact) {
             Impact::firstOrCreate([
-                'name' => $impact,
+                'name->en' => $impact,
             ]);
         }
     }

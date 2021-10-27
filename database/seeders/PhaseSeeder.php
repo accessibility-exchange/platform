@@ -22,7 +22,7 @@ class PhaseSeeder extends Seeder
 
         foreach ($phases as $phase) {
             Phase::firstOrCreate([
-                'name' => $phase,
+                'name->en' => $phase,
             ]);
         }
     }

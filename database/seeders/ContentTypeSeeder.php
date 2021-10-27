@@ -23,7 +23,7 @@ class ContentTypeSeeder extends Seeder
 
         foreach ($content_types as $content_type) {
             ContentType::firstOrCreate([
-                'name' => $content_type,
+                'name->en' => $content_type,
             ]);
         }
     }

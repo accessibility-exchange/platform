@@ -26,7 +26,7 @@ class CommunicationToolSeeder extends Seeder
 
         foreach ($tools as $tool) {
             CommunicationTool::firstOrCreate([
-                'name' => $tool,
+                'name->en' => $tool,
             ]);
         }
     }
