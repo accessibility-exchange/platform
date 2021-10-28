@@ -14,7 +14,25 @@
     @if(count($project->confirmedConsultants) > 0)
     <h3>{{ __('Consultants') }}</h3>
     @foreach($project->confirmedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" level="4"></x-consultant-card>
+    <x-consultant-card :consultant="$consultant" level="4">
+        <x-header :level="4">{{ __('Contact information') }}</x-header>
+        <ul role="list">
+            @if($consultant->phone)
+            <li>{{ __('Phone: :phone', ['phone' => $consultant->phone])}}</li>
+            @endif
+            @if($consultant->email)
+            <li>{{ __('Email: :email', ['email' => $consultant->email])}}</li>
+            @endif
+        </ul>
+        <details>
+            <summary>{{ __('Access Needs') }}</summary>
+            <ul role="list">
+                @foreach($consultant->accessSupports as $accessSupport)
+                <li>{{ $accessSupport->name }}</li>
+                @endforeach
+            </ul>
+        </details>
+    </x-consultant-card>
     @endforeach
     @endif
 </div>
