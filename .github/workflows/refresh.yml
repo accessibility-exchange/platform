@@ -7,7 +7,7 @@ on:
 
 jobs:
   refresh:
-    if: github.repository == 'accessibility-in-action/platform'
+    if: github.repository == 'accessibility-exchange/platform'
 
     runs-on: ubuntu-latest
     strategy:

@@ -1,11 +1,11 @@
 {
-    "name": "Accessibility in Action",
-    "short_name": "AinA",
+    "name": "The Accessibility Exchange",
+    "short_name": "AccessExchange",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#fff",
     "theme_color": "#000",
-    "description": "A readable Hacker News app.",
+    "description": "The Accessibility Exchange supports processes where people with disabilities have the power to make sure that policies, programs, and services by federally regulated entities are accessible to them and respect their human rights.",
     "icons": [
         {
             "src": "/icon-192.png",

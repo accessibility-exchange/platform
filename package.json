@@ -1,5 +1,5 @@
 {
-    "name": "@accessibility-in-action/platform",
+    "name": "@accessibility-exchange/platform",
     "private": true,
     "scripts": {
         "dev": "npm run development",
