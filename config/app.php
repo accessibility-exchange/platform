@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Accessibility in Action'),
+    'name' => env('APP_NAME', 'The Accessibility Exchange'),
 
     /*
     |--------------------------------------------------------------------------

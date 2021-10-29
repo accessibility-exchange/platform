@@ -5,7 +5,7 @@
         <h1>
             {{ $resource->title }}
         </h1>
-        <p>{{ __('Created by :creator', ['creator' => $resource->creator ?? __('Accessibility Exchange')]) }} <span class="separator" aria-hidden="true">&middot;</span><span class="visually-hidden">{{ __('Published:') }}</span> {{ $resource->published() }}</p>
+        <p>{{ __('Created by :creator', ['creator' => $resource->creator ?? __('The Accessibility Exchange')]) }} <span class="separator" aria-hidden="true">&middot;</span><span class="visually-hidden">{{ __('Published:') }}</span> {{ $resource->published() }}</p>
     </x-slot>
 
     {!! Illuminate\Mail\Markdown::parse($resource->summary) !!}

@@ -16,7 +16,7 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/en/')
-                    ->assertSee('Accessibility in Action');
+                    ->assertSee('The Accessibility Exchange');
         });
     }
 }
