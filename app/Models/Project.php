@@ -180,6 +180,151 @@ class Project extends Model
     }
 
     /**
+     * Get the project steps.
+     *
+     * @return array
+     */
+    public function getSteps()
+    {
+        return [
+            1 => __('Publish your project'),
+            2 => __('Build your consulting team'),
+            3 => __('Learn how to work together'),
+            4 => __('Hold consultations'),
+            5 => __('Write your report'),
+        ];
+    }
+
+    /**
+     * Get the project substeps.
+     *
+     * @return array
+     */
+    public function getSubsteps()
+    {
+        return [
+            1 => [
+                1 => [
+                    'link' => \localized_route('projects.edit', $this),
+                    'label' => __('Publish project page'),
+                    'description' => false,
+                    'status' => $this->checkStatus('published') ? 'complete' : 'in-progress',
+                ],
+            ],
+            2 => [
+                1 => [
+                    'link' => \localized_route('projects.find-interested-consultants', $this),
+                    'label' => __('Find consultants'),
+                    'description' => false,
+                    'status' => $this->found_consultants ?? null,
+                ],
+                2 => [
+                    'link' => "#",
+                    'label' => __('Confirm consultants’ participation'),
+                    'description' => false,
+                    'status' => $this->confirmed_consultants ?? null,
+                ],
+            ],
+            3 => [
+                1 => [
+                    'link' => "#",
+                    'label' => __('Schedule the meeting'),
+                    'description' => false,
+                    'status' => $this->scheduled_planning_meeting ?? null,
+                ],
+                2 => [
+                    'link' => "#",
+                    'label' => __('Contact consultant team'),
+                    'description' => false,
+                    'status' => $this->notified_of_planning_meeting ?? null,
+                ],
+                3 => [
+                    'link' => "#",
+                    'label' => __('Prepare a project orientation'),
+                    'description' => false,
+                    'status' => $this->prepared_project_orientation ?? null,
+                ],
+                4 => [
+                    'link' => "#",
+                    'label' => __('Prepare contracts and other legal documents'),
+                    'description' => false,
+                    'status' => $this->prepared_contractual_documents ?? null,
+                ],
+                5 => [
+                    'link' => "#",
+                    'label' => __('Provide access accommodations and book service providers'),
+                    'description' => false,
+                    'status' => $this->booked_access_services_for_planning ?? null,
+                ],
+                6 => [
+                    'link' => "#",
+                    'label' => __('Hold the meeting'),
+                    'description' => false,
+                    'status' => $this->finished_planning_meeting ?? null,
+                ],
+            ],
+            4 => [
+                1 => [
+                    'link' => "#",
+                    'label' => __('Schedule the meetings'),
+                    'description' => false,
+                    'status' => $this->scheduled_consultation_meetings ?? null,
+                ],
+                2 => [
+                    'link' => "#",
+                    'label' => __('Contact consultant team'),
+                    'description' => false,
+                    'status' => $this->notified_of_consultation_meetings ?? null,
+                ],
+                3 => [
+                    'link' => "#",
+                    'label' => __('Prepare consultation materials'),
+                    'description' => false,
+                    'status' => $this->prepared_consultation_materials ?? null,
+                ],
+                4 => [
+                    'link' => "#",
+                    'label' => __('Provide access accommodations and book service providers'),
+                    'description' => false,
+                    'status' => $this->booked_access_services_for_consultations ?? null,
+                ],
+                5 => [
+                    'link' => "#",
+                    'label' => __('Hold the meetings'),
+                    'description' => false,
+                    'status' => $this->finished_consultation_meetings ?? null,
+                ],
+            ],
+            5 => [
+                1 => [
+                    'link' => "#",
+                    'label' => __('Prepare your accessibility plan'),
+                    'description' => false,
+                    'status' => $this->prepared_accessibility_plan ?? null,
+                ],
+                2 => [
+                    'link' => "#",
+                    'label' => __('Prepare your follow-up plan'),
+                    'description' => false,
+                    'status' => $this->prepared_follow_up_plan ?? null,
+                ],
+                3 => [
+                    'link' => "#",
+                    'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
+                    'description' => false,
+                    'status' => $this->shared_plans_with_consultants ?? null,
+                ],
+                4 => [
+                    'link' => "#",
+                    'label' => __('Publish your accessibility plan (optional)'),
+                    'description' => false,
+                    'status' => $this->published_accessibility_plan ?? null,
+                ],
+            ],
+        ];
+    }
+
+    /**
      * Has the project started?
      *
      * @return bool
