@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sector;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SectorSeeder extends Seeder
 {
@@ -24,8 +24,8 @@ class SectorSeeder extends Seeder
         ];
 
         foreach ($sectors as $sector) {
-            DB::table('sectors')->insert([
-                'name' => json_encode(['en' => $sector]),
+            Sector::firstOrCreate([
+                'name->en' => $sector,
             ]);
         }
     }

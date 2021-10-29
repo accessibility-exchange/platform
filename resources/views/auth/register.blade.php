@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="{{ localized_route('welcome') }}">
-                {{ config('app.name', 'Accessibility in Action') }}
+                {{ config('app.name', 'The Accessibility Exchange') }}
             </a>
         </x-slot>
 
@@ -18,7 +18,7 @@
         @endif
 
         <x-hearth-alert :title="__('Need some support?')">
-            <p>{!! __('Email <a href="mailto:support@accessibility-in-action.ca">support@accessibility-in-action.ca</a> or call 1-(800) 123-4567 for help creating your account.') !!}</p>
+            <p>{!! __('Email <a href="mailto:support@accessibility-exchange.ca">support@accessibility-exchange.ca</a> or call 1-(800) 123-4567 for help creating your account.') !!}</p>
         </x-hearth-alert>
 
         <form method="POST" action="{{ localized_route('register-store') }}" novalidate>

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Impact;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ImpactSeeder extends Seeder
 {
@@ -25,8 +25,8 @@ class ImpactSeeder extends Seeder
         ];
 
         foreach ($impacts as $impact) {
-            DB::table('impacts')->insert([
-                'name' => json_encode(['en' => $impact]),
+            Impact::firstOrCreate([
+                'name->en' => $impact,
             ]);
         }
     }

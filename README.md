@@ -1,19 +1,19 @@
-# Accessibility in Action
+# The Accessibility Exchange
 
-[![Project license](https://badgen.net/github/license/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
-[![Latest release](https://badgen.net/github/release/accessibility-in-action/platform)](https://github.com/accessibility-in-action/platform/releases/latest)
-[![Check status](https://badgen.net/github/checks/accessibility-in-action/platform/dev)](https://github.com/accessibility-in-action/platform/releases/latest)
-[![Code coverage](https://badgen.net/codecov/c/github/accessibility-in-action/platform)](https://codecov.io/gh/accessibility-in-action/platform/)
-[![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
+[![Project license](https://badgen.net/github/license/accessibility-exchange/platform)](https://github.com/accessibility-exchange/platform/releases/latest)
+[![Latest release](https://badgen.net/github/release/accessibility-exchange/platform)](https://github.com/accessibility-exchange/platform/releases/latest)
+[![Check status](https://badgen.net/github/checks/accessibility-exchange/platform/dev)](https://github.com/accessibility-exchange/platform/releases/latest)
+[![Code coverage](https://badgen.net/codecov/c/github/accessibility-exchange/platform)](https://codecov.io/gh/accessibility-exchange/platform/)
+[![Localization status](https://badges.crowdin.net/accessibility-exchange/localized.svg)](https://crowdin.com/project/accessibility-in-action)
 
-Accessibility in Action is a two-year initiative managed by the
+The Accessibility Exchange is a two-year initiative managed by the
 [Institute for Research and Development on Inclusion and Society (IRIS)](https://irisinstitute.ca/) that sets out to
 create an online platform which will support processes where people with disabilities have the power to make sure that policies,
 programs, and services by federally regulated entities are accessible to them and respect their human rights. Current
 consultation processes are built on a foundation of systemic ableism—they lack accountability, follow-through, and don't
 honour the expertise of people with disabilities.
 
-The Accessibility in Action platform is co-designed and developed by the [Inclusive Design Research Centre](https://idrc.ocadu.ca/)
+The Accessibility Exchange platform is co-designed and developed by the [Inclusive Design Research Centre](https://idrc.ocadu.ca/)
 at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
@@ -40,7 +40,7 @@ In development and prototyping environments, a deployment should be followed by 
 php artisan snapshot:load dev|prototype --force
 ```
 
-Snapshots must be maintained by the development team, and are stored in S3 buckets. See the original [pull request](https://github.com/accessibility-in-action/platform/pull/101)
+Snapshots must be maintained by the development team, and are stored in S3 buckets. See the original [pull request](https://github.com/accessibility-exchange/platform/pull/101)
 for more information.
 
 **NOTE: This will overwrite all existing database tables. [See the documentation](https://github.com/spatie/laravel-db-snapshots)
@@ -65,7 +65,7 @@ Local development uses the [Laravel Sail](https://laravel.com/docs/8.x/sail) Doc
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
    ```bash
-   gh repo fork accessibility-in-action/platform --clone
+   gh repo fork accessibility-exchange/platform --clone
    ```
 
 4. Create a `.env` file from the included example file:
@@ -105,22 +105,22 @@ of how some key tasks can be carried out using Sail:
 
 - This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
 All commit messages and pull request titles must follow these standards.
-- The [`prototype`](https://github.com/accessibility-in-action/platform/tree/prototype) branch contains
-  prototyped features for use in co-design sessions. It must be regularly updated with changes from the [`dev`](https://github.com/accessibility-in-action/platform/tree/dev)
+- The [`prototype`](https://github.com/accessibility-exchange/platform/tree/prototype) branch contains
+  prototyped features for use in co-design sessions. It must be regularly updated with changes from the [`dev`](https://github.com/accessibility-exchange/platform/tree/dev)
   branch.
 - Feature prototyping must take place in a feature branch forked from the `prototype` branch. Feature prototype branches
   must be named according to the format `try/<feature>`. Once a feature prototype is ready to merge into
   `prototype`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
-- The [`dev`](https://github.com/accessibility-in-action/platform/tree/dev) branch contains refined features
+- The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains refined features
   that have been prototyped and gone through one or more co-design sessions.
 - Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
   must be named according to the format `feat/<feature>`. Once a refined feature is ready to merge into `dev`, the
   merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
-- The [`main`](https://github.com/accessibility-in-action/platform/tree/main) branch contains refined features that
+- The [`main`](https://github.com/accessibility-exchange/platform/tree/main) branch contains refined features that
   are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `main` branch.
 
 ## License
 
-The Accessibility in Action platform is available under the [BSD 3-Clause License](https://github.com/accessibility-in-action/platform/blob/main/LICENSE.md).
+The Accessibility Exchange platform is available under the [BSD 3-Clause License](https://github.com/accessibility-exchange/platform/blob/main/LICENSE.md).
