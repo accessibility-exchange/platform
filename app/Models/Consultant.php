@@ -127,6 +127,17 @@ class Consultant extends Model implements HasMedia
     }
 
     /**
+     * Get the consultant's phone number.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getPhoneNumberAttribute($value)
+    {
+        return str_replace(['-', '(', ')', '.', ' '], '', $this->phone);
+    }
+
+    /**
      * Get the user that has this consultant consultant.
      */
     public function user(): BelongsTo
