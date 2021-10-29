@@ -15,23 +15,23 @@
     <h3>{{ __('Consultants') }}</h3>
     @foreach($project->confirmedConsultants as $consultant)
     <x-consultant-card :consultant="$consultant" level="4">
-        <x-header :level="4">{{ __('Contact information') }}</x-header>
+        <x-header :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $consultant->name]) !!}</x-header>
         <ul role="list">
             @if($consultant->phone)
-            <li>{{ __('Phone: :phone', ['phone' => $consultant->phone])}}</li>
+            <li>{!! __('Phone: :phone', ['phone' => '<a href="tel:' . $consultant->phone_number . '">' . $consultant->phone . '</a>']) !!}</li>
             @endif
             @if($consultant->email)
-            <li>{{ __('Email: :email', ['email' => $consultant->email])}}</li>
+            <li>{!! __('Email: :email', ['email' => '<a href="mailto:' . $consultant->email . '">' . $consultant->email . '</a>']) !!}</li>
             @endif
         </ul>
-        <details>
-            <summary>{{ __('Access Needs') }}</summary>
+        <x-expander :level="5">
+            <x-slot name="summary">{!! __('<span class="visually-hidden">:name’s </span>Access needs', ['name' => $consultant->name]) !!}</x-slot>
             <ul role="list">
                 @foreach($consultant->accessSupports as $accessSupport)
                 <li>{{ $accessSupport->name }}</li>
                 @endforeach
             </ul>
-        </details>
+        </x-expander>
     </x-consultant-card>
     @endforeach
     @endif
