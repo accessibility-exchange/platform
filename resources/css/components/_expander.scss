@@ -1,0 +1,16 @@
+.expander button {
+    align-items: center;
+    background-color: var(--ll-background-color);
+    border: 0;
+    color: var(--ll-text-color);
+    display: flex;
+    font-size: inherit;
+    justify-content: space-between;
+    padding: 0;
+    width: 100%;
+
+    svg {
+        height: 1.5em;
+        width: 1.5em;
+    }
+}
