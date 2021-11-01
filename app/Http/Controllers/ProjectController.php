@@ -193,136 +193,28 @@ class ProjectController extends Controller
      */
     public function manage(Request $request, Project $project)
     {
-        return view('projects.manage', [
+        return view('projects.entity-dashboard', [
             'project' => $project,
-            'steps' => [
-                1 => __('Publish your project'),
-                2 => __('Build your consulting team'),
-                3 => __('Learn how to work together'),
-                4 => __('Hold consultations'),
-                5 => __('Write your report'),
-            ],
-            'substeps' => [
-                1 => [
-                    1 => [
-                        'link' => \localized_route('projects.edit', $project),
-                        'label' => __('Publish project page'),
-                        'description' => false,
-                        'status' => $project->checkStatus('published') ? 'complete' : 'in-progress',
-                    ],
-                ],
-                2 => [
-                    1 => [
-                        'link' => \localized_route('projects.find-interested-consultants', $project),
-                        'label' => __('Find consultants'),
-                        'description' => false,
-                        'status' => $project->found_consultants ?? null,
-                    ],
-                    2 => [
-                        'link' => "#",
-                        'label' => __('Confirm consultants’ participation'),
-                        'description' => false,
-                        'status' => $project->confirmed_consultants ?? null,
-                    ],
-                ],
-                3 => [
-                    1 => [
-                        'link' => "#",
-                        'label' => __('Schedule the meeting'),
-                        'description' => false,
-                        'status' => $project->scheduled_planning_meeting ?? null,
-                    ],
-                    2 => [
-                        'link' => "#",
-                        'label' => __('Contact consultant team'),
-                        'description' => false,
-                        'status' => $project->notified_of_planning_meeting ?? null,
-                    ],
-                    3 => [
-                        'link' => "#",
-                        'label' => __('Prepare a project orientation'),
-                        'description' => false,
-                        'status' => $project->prepared_project_orientation ?? null,
-                    ],
-                    4 => [
-                        'link' => "#",
-                        'label' => __('Prepare contracts and other legal documents'),
-                        'description' => false,
-                        'status' => $project->prepared_contractual_documents ?? null,
-                    ],
-                    5 => [
-                        'link' => "#",
-                        'label' => __('Provide access accommodations and book service providers'),
-                        'description' => false,
-                        'status' => $project->booked_access_services_for_planning ?? null,
-                    ],
-                    6 => [
-                        'link' => "#",
-                        'label' => __('Hold the meeting'),
-                        'description' => false,
-                        'status' => $project->finished_planning_meeting ?? null,
-                    ],
-                ],
-                4 => [
-                    1 => [
-                        'link' => "#",
-                        'label' => __('Schedule the meetings'),
-                        'description' => false,
-                        'status' => $project->scheduled_consultation_meetings ?? null,
-                    ],
-                    2 => [
-                        'link' => "#",
-                        'label' => __('Contact consultant team'),
-                        'description' => false,
-                        'status' => $project->notified_of_consultation_meetings ?? null,
-                    ],
-                    3 => [
-                        'link' => "#",
-                        'label' => __('Prepare consultation materials'),
-                        'description' => false,
-                        'status' => $project->prepared_consultation_materials ?? null,
-                    ],
-                    4 => [
-                        'link' => "#",
-                        'label' => __('Provide access accommodations and book service providers'),
-                        'description' => false,
-                        'status' => $project->booked_access_services_for_consultations ?? null,
-                    ],
-                    5 => [
-                        'link' => "#",
-                        'label' => __('Hold the meetings'),
-                        'description' => false,
-                        'status' => $project->finished_consultation_meetings ?? null,
-                    ],
-                ],
-                5 => [
-                    1 => [
-                        'link' => "#",
-                        'label' => __('Prepare your accessibility plan'),
-                        'description' => false,
-                        'status' => $project->prepared_accessibility_plan ?? null,
-                    ],
-                    2 => [
-                        'link' => "#",
-                        'label' => __('Prepare your follow-up plan'),
-                        'description' => false,
-                        'status' => $project->prepared_follow_up_plan ?? null,
-                    ],
-                    3 => [
-                        'link' => "#",
-                        'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
-                        'description' => false,
-                        'status' => $project->shared_plans_with_consultants ?? null,
-                    ],
-                    4 => [
-                        'link' => "#",
-                        'label' => __('Publish your accessibility plan (optional)'),
-                        'description' => false,
-                        'status' => $project->published_accessibility_plan ?? null,
-                    ],
-                ],
-            ],
-            'step' => request()->get('step') ? request()->get('step') : $project->currentStep(),
+            'steps' => $project->getEntitySteps(),
+            'substeps' => $project->getEntitySubsteps(),
+            'step' => request()->get('step') ? request()->get('step') : $project->currentEntityStep(),
+        ]);
+    }
+
+    /**
+     * Display the participant UI for the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function participate(Request $request, Project $project)
+    {
+        return view('projects.consultant-dashboard', [
+            'project' => $project,
+            'steps' => $project->getConsultantSteps(),
+            'substeps' => $project->getConsultantSubsteps(),
+            'step' => request()->get('step') ? request()->get('step') : $project->currentConsultantStep(),
         ]);
     }
 
@@ -341,6 +233,8 @@ class ProjectController extends Controller
             'project' => $project,
             'subtitle' => __('Interested in this project'),
             'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+                $query->where('id', '=', $project->id);
+            })->whereHas('projectsOfInterest', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
         ]);

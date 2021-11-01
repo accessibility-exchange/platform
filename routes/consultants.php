@@ -33,6 +33,17 @@ Route::multilingual('/consultants/{consultant}/change-status', [ConsultantContro
     ->method('put')
     ->name('consultants.update-publication-status');
 
+Route::multilingual('/consultants/{consultant}/express-interest', [ConsultantController::class, 'expressInterest'])
+    ->method('post')
+    ->middleware(['auth', 'can:update,consultant'])
+    ->name('consultants.express-interest');
+
+    Route::multilingual('/consultants/{consultant}/remove-interest', [ConsultantController::class, 'removeInterest'])
+    ->method('post')
+    ->middleware(['auth', 'can:update,consultant'])
+    ->name('consultants.remove-interest');
+
+
 Route::multilingual('/consultants/{consultant}/delete', [ConsultantController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,consultant'])
     ->method('delete')

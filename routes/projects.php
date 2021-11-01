@@ -41,9 +41,13 @@ Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'de
     ->method('delete')
     ->name('projects.destroy');
 
-Route::multilingual('/projects/{project}/dashboard', [ProjectController::class, 'manage'])
+Route::multilingual('/projects/{project}/manage', [ProjectController::class, 'manage'])
     ->middleware(['auth', 'can:manage,project'])
     ->name('projects.manage');
+
+Route::multilingual('/projects/{project}/participate', [ProjectController::class, 'participate'])
+    ->middleware(['auth', 'can:participate,project'])
+    ->name('projects.participate');
 
 Route::multilingual('/projects/{project}/update-progress', [ProjectController::class, 'updateProgress'])
     ->middleware(['auth', 'can:manage,project'])

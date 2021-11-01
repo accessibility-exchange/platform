@@ -26,7 +26,7 @@
 
         <p>{{ __('dashboard.consultant_learn_info') }}</p>
 
-        <p><a href="{{ localized_route('resources.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
+        <p><a href="{{ localized_route('collections.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
 
     @elseif (Auth::user()->context === 'entity')
 
@@ -51,7 +51,7 @@
 
         <p>{{ __('dashboard.entity_learn_info') }}</p>
 
-        <p><a href="{{ localized_route('resources.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
+        <p><a href="{{ localized_route('collections.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
 
         @if(count(Auth::user()->projects()) > 0)
         <h2>{{ __('View or manage your projects') }}</h2>

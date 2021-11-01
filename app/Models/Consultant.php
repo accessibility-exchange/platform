@@ -39,6 +39,10 @@ class Consultant extends Model implements HasMedia
         'region',
         'birth_date',
         'picture_alt',
+        'phone',
+        'email',
+        'support_person_phone',
+        'support_person_email',
         'pronouns',
         'creator',
         'creator_name',
@@ -123,6 +127,17 @@ class Consultant extends Model implements HasMedia
     }
 
     /**
+     * Get the consultant's phone number.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getPhoneNumberAttribute($value)
+    {
+        return str_replace(['-', '(', ')', '.', ' '], '', $this->phone);
+    }
+
+    /**
      * Get the user that has this consultant consultant.
      */
     public function user(): BelongsTo
@@ -184,6 +199,14 @@ class Consultant extends Model implements HasMedia
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class);
+    }
+
+    /**
+     * The projects that the consultant belongs to.
+     */
+    public function projectsOfInterest(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'projects_of_interest');
     }
 
     /**

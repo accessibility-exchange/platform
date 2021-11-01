@@ -26,6 +26,30 @@
 
         <x-hearth-date-input :label="__('project.label_end_date')" name="end_date" :value="old('end_date', '')" />
 
+        <div class="field @error('goals') field--error @enderror">
+            <x-hearth-label for="goals" :value="__('Goals for consultation')" />
+            <x-hearth-textarea name="goals" required :value="old('goals', '')" />
+            <x-hearth-error for="goals" />
+        </div>
+
+        <div class="field @error('impact') field--error @enderror">
+            <x-hearth-label for="impact" :value="__('Who will the project impact')" />
+            <x-hearth-textarea name="impact" required :value="old('impact', '')" />
+            <x-hearth-error for="impact" />
+        </div>
+
+        <div class="field @error('out_of_scope') field--error @enderror">
+            <x-hearth-label for="out_of_scope" :value="__('What is this project not going to do?')" />
+            <x-hearth-textarea name="out_of_scope" required :value="old('out_of_scope', '')" />
+            <x-hearth-error for="out_of_scope" />
+        </div>
+
+        <div class="field @error('timeline') field--error @enderror">
+            <x-hearth-label for="timeline" :value="__('Project timeline')" />
+            <x-hearth-textarea name="timeline" required :value="old('timeline', '')" />
+            <x-hearth-error for="timeline" />
+        </div>
+
         <x-hearth-button>{{ __('project.action_create') }}</x-hearth-button>
     </form>
 </x-app-layout>

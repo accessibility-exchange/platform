@@ -34,14 +34,13 @@ class UpdateProjectRequest extends FormRequest
                 'max:255',
                 Rule::unique(Project::class)->ignore($project->id),
             ],
-            'start_date' => [
-                'required',
-                'date',
-            ],
-            'end_date' => [
-                'date',
-                'nullable',
-            ],
+            'start_date' => 'required|date',
+            'end_date' => 'date|nullable',
+            'goals' => 'string|nullable',
+            'impact' => 'string|nullable',
+            'out_of_scope' => 'string|nullable',
+            'virtual_consultation' => 'boolean',
+            'timeline' => 'string|nullable',
         ];
     }
 

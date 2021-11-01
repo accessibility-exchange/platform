@@ -34,7 +34,7 @@
 
 <p>
     @if($project->locality){{ $project->locality }}, @endif
-    @if(count($project->regions) === 13)
+    @if($project->regions && count($project->regions) === 13)
     {{ __('Any province or territory') }}
     @endif
 </p>

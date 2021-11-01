@@ -12,7 +12,7 @@
             <li>{{ $requirement }}</li>
             @endforeach
         </ul>
-        <p class="align-end"><a href="{{ localized_route('resources.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
+        <p class="align-end"><a href="{{ localized_route('collections.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
     </div>
     <div class="diversity flow">
         <h3>{{ __('Diversity of consultants') }}</h3>
@@ -32,7 +32,7 @@
                     <li>{{ $item }}</li>
                     @endforeach
                 </ul>
-                @if(count($project->regions) === 13)
+                @if($project->regions && count($project->regions) === 13)
                 <p><strong>{{ __('Cross-country') }}</strong></p>
                 <ul>
                     @foreach ($project->presentRegions() as $item)
@@ -55,7 +55,7 @@
                     <li>{{ $item }}</li>
                     @endforeach
                 </ul>
-                @if(count($project->regions) === 13)
+                @if($project->regions && count($project->regions) === 13)
                 <p><strong>{{ __('Cross-country') }}</strong></p>
                 <ul>
                     @foreach ($project->absentRegions() as $item)
@@ -70,7 +70,17 @@
     @if(count($project->confirmedConsultants) > 0)
     <h3>{{ __('Confirmed') }}</h3>
     @foreach($project->confirmedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" level="4"></x-consultant-card>
+    <x-consultant-card :consultant="$consultant" level="4">
+        <x-header :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $consultant->name]) !!}</x-header>
+        <ul role="list">
+            @if($consultant->phone)
+            <li>{!! __('Phone: :phone', ['phone' => '<a href="tel:' . $consultant->phone_number . '">' . $consultant->phone . '</a>']) !!}</li>
+            @endif
+            @if($consultant->email)
+            <li>{!! __('Email: :email', ['email' => '<a href="mailto:' . $consultant->email . '">' . $consultant->email . '</a>']) !!}</li>
+            @endif
+        </ul>
+    </x-consultant-card>
     @endforeach
     @endif
     @if(count($project->requestedConsultants) > 0)
