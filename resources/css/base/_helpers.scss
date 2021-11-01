@@ -18,3 +18,9 @@
     float: right;
     margin-inline-start: var(--step-0);
 }
+
+.box {
+    border: var(--ll-border-medium);
+    border-radius: var(--ll-border-radius);
+    padding: var(--step-0);
+}

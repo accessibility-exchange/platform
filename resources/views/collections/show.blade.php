@@ -80,7 +80,7 @@
             @forelse($resources as $resource)
             <article class="card card--resource">
                 <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ $types->random()->name }}</p>
-                <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span class="aria-hidden">&middot;</span> <span class="visually-hidden">{{ __('Language') }}:</span> {{ get_locale_name(Arr::random($languages)) }}</p>
+                <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span aria-hidden="true">&middot;</span> <span class="visually-hidden">{{ __('Language') }}:</span> {{ get_locale_name(Arr::random($languages)) }}</p>
                 <h2>
                     <a href="{{ localized_route('resources.show', $resource) }}">{{ $resource->title }}</a>
                 </h2>

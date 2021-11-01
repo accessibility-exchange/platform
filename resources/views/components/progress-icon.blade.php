@@ -1,4 +1,4 @@
-<svg class="icon" width="23" height="23" viewBox="0 0 24 24">
+<svg class="icon" width="23" height="23" viewBox="0 0 24 24" aria-hidden="true">
     @if($started)
     <circle fill="currentColor" stroke="currentColor" stroke-width="1" r="10" cx="12" cy="12" />
     <circle stroke="black" stroke-width="3" stroke-dasharray="{{ 7 * 2 * pi() }} {{ 7 * 2 * pi() }}" stroke-dashoffset="{{ 7 * 2 * pi() - 7 * 2 * pi() * $progress ?? 0 }}" fill="transparent" r="7" cx="12" cy="12" style="transform: rotate(-90deg); transform-origin: 50% 50%;" />

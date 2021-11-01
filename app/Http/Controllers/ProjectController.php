@@ -193,11 +193,28 @@ class ProjectController extends Controller
      */
     public function manage(Request $request, Project $project)
     {
-        return view('projects.manage', [
+        return view('projects.entity-dashboard', [
             'project' => $project,
-            'steps' => $project->getSteps(),
-            'substeps' => $project->getSubsteps(),
-            'step' => request()->get('step') ? request()->get('step') : $project->currentStep(),
+            'steps' => $project->getEntitySteps(),
+            'substeps' => $project->getEntitySubsteps(),
+            'step' => request()->get('step') ? request()->get('step') : $project->currentEntityStep(),
+        ]);
+    }
+
+    /**
+     * Display the participant UI for the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\View\View
+     */
+    public function participate(Request $request, Project $project)
+    {
+        return view('projects.consultant-dashboard', [
+            'project' => $project,
+            'steps' => $project->getConsultantSteps(),
+            'substeps' => $project->getConsultantSubsteps(),
+            'step' => request()->get('step') ? request()->get('step') : $project->currentConsultantStep(),
         ]);
     }
 
