@@ -6,9 +6,6 @@
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
             {{ __('dashboard.title') }}
         </x-nav-link>
-        <x-nav-link :href="localized_route('collections.index')" :active="request()->routeIs(locale() . '.collections.index')">
-            {{ __('Resource hub') }}
-        </x-nav-link>
         @else
         @if (Route::has(locale() . '.registration'))
         <x-nav-link :href="localized_route('registration')">
@@ -29,6 +26,11 @@
             </x-slot>
 
             <x-slot name="content">
+                <p>
+                    <x-dropdown-link :href="localized_route('collections.index')" :active="request()->routeIs(locale() . '.collections.index')">
+                        {{ __('Resource hub') }}
+                    </x-dropdown-link>
+                </p>
                 <p>
                     <x-dropdown-link :href="localized_route('consultants.index')" :active="request()->routeIs(locale() . '.consultants.index')">
                         {{ __('consultant.index_title') }}
