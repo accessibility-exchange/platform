@@ -52,6 +52,9 @@
             <li x-bind="tabWrapper"><a href="#project-overview" x-bind="tab">{{ __('Project overview') }}</a></li>
             <li x-bind="tabWrapper"><a href="#who-were-looking-for" x-bind="tab">{{ __('Who we’re looking for') }}</a></li>
             <li x-bind="tabWrapper"><a href="#accessibility-and-accomodations" x-bind="tab">{{ __('Accessibility and accomodations') }}</a></li>
+            @if($project->completed())
+            <li x-bind="tabWrapper"><a href="#community-experiences" x-bind="tab">{{ __('Community experiences') }}</a></li>
+            @endif
         </ul>
 
         <div class="flow" id="project-overview" x-bind="tabpanel">
@@ -80,6 +83,14 @@
 
             @include('projects.partials.accessibility-and-accomodations', ['level' => 3])
         </div>
+
+        @if($project->completed())
+        <div class="flow" id="community-experiences" x-bind="tabpanel">
+            <h2>{{ __('Community experiences') }}</h2>
+
+            @include('projects.partials.community-experiences', ['level' => 3])
+        </div>
+        @endif
     </div>
 
 </x-app-wide-layout>

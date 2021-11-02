@@ -737,6 +737,15 @@ class Project extends Model
             ->wherePivot('status', 'confirmed');
     }
 
+    /**
+     * The consultants that have exited the project.
+     */
+    public function exitedConsultants(): BelongsToMany
+    {
+        return $this->belongsToMany(Consultant::class)
+            ->wherePivot('status', 'exited');
+    }
+
     public function presentLivedExperiences()
     {
         return $this->consultants->pluck('livedExperiences')->flatten()->pluck('name')->unique()->toArray();
@@ -806,5 +815,30 @@ class Project extends Model
         ];
 
         return array_diff($regions, $this->presentRegions());
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Calculate the average rating for a given criteria.
+     *
+     * @param string $key
+     */
+    public function averageRatingFor($key)
+    {
+        return round(2 * $this->reviews->avg($key)) / 2;
+    }
+
+    /**
+     * Calculate consultant retention.
+     *
+     * @return float
+     */
+    public function consultantRetention()
+    {
+        return round(count($this->confirmedConsultants) / (count($this->confirmedConsultants) + count($this->exitedConsultants)), 2);
     }
 }
