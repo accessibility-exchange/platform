@@ -224,7 +224,7 @@ class Project extends Model
                 'subtitle' => __('Take part in consultations with the entity, and work together on their accessibility plan.'),
             ],
             3 => [
-                'title' => __('Review the reports'),
+                'title' => __('Review and reflect'),
             ],
         ];
     }
@@ -366,102 +366,9 @@ class Project extends Model
     public function getConsultantSubsteps()
     {
         return [
-            1 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Schedule the meeting'),
-                    'description' => __('Pick a date and time to have this meeting with your consultants.'),
-                    'status' => $this->scheduled_planning_meeting ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
-                    'status' => $this->notified_of_planning_meeting ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Prepare a project orientation'),
-                    'description' => __('Provide your consultants with all the information they need about your project.'),
-                    'status' => $this->prepared_project_orientation ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Prepare contracts and other legal documents'),
-                    'description' => __('Provide your consultants with any contracts they may need to sign.'),
-                    'status' => $this->prepared_contractual_documents ?? null,
-                ],
-                5 => [
-                    'link' => "#",
-                    'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
-                    'status' => $this->booked_access_services_for_planning ?? null,
-                ],
-                6 => [
-                    'link' => "#",
-                    'label' => __('Hold the meeting'),
-                    'description' => false,
-                    'status' => $this->finished_planning_meeting ?? null,
-                ],
-            ],
-            2 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Schedule the meetings'),
-                    'description' => __('Pick the dates and times to have these meetings with your consultants.'),
-                    'status' => $this->scheduled_consultation_meetings ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
-                    'status' => $this->notified_of_consultation_meetings ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Prepare consultation materials'),
-                    'description' => __('Provide your consultants with all the information they need for the consultation.'),
-                    'status' => $this->prepared_consultation_materials ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
-                    'status' => $this->booked_access_services_for_consultations ?? null,
-                ],
-                5 => [
-                    'link' => "#",
-                    'label' => __('Hold the meetings'),
-                    'description' => false,
-                    'status' => $this->finished_consultation_meetings ?? null,
-                ],
-            ],
-            3 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Prepare your accessibility plan'),
-                    'description' => false,
-                    'status' => $this->prepared_accessibility_plan ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Prepare your follow-up plan'),
-                    'description' => false,
-                    'status' => $this->prepared_follow_up_plan ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
-                    'description' => false,
-                    'status' => $this->shared_plans_with_consultants ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Publish your accessibility plan (optional)'),
-                    'description' => false,
-                    'status' => $this->published_accessibility_plan ?? null,
-                ],
-            ],
+            1 => [],
+            2 => [],
+            3 => [],
         ];
     }
 
