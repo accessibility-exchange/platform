@@ -827,7 +827,7 @@ class Project extends Model
      */
     public function averageRatingFor($key)
     {
-        return round($this->reviews->avg($key), 1);
+        return round(2 * $this->reviews->avg($key)) / 2;
     }
 
     /**
