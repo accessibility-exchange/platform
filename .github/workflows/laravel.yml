@@ -52,4 +52,6 @@ jobs:
         php artisan storage:link
         vendor/bin/phpunit --coverage-clover coverage.xml
     - name: Upload coverage to Codecov
-      run: bash <(curl -s https://codecov.io/bash)
+      uses: codecov/codecov-action@v2
+      with:
+        fail_ci_if_error: true
