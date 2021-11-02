@@ -823,6 +823,8 @@ class Project extends Model
     }
 
     /**
+     * Calculate the average rating for a given criteria.
+     *
      * @param string $key
      */
     public function averageRatingFor($key)
@@ -831,7 +833,9 @@ class Project extends Model
     }
 
     /**
+     * Calculate consultant retention.
      *
+     * @return float
      */
     public function consultantRetention()
     {
