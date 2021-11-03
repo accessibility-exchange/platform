@@ -377,7 +377,26 @@ class Project extends Model
         return [
             1 => [],
             2 => [],
-            3 => [],
+            3 => [
+                1 => [
+                    'link' => '#',
+                    'label' => __('Review the plans'),
+                    'description' => __('Review the plans that the entity has published.'),
+                    'status' => null,
+                ],
+                2 => [
+                    'link' => '#',
+                    'label' => __('Reflect on the completed plan'),
+                    'description' => __('You can review the completed plan and share your reflections. What input you gave made it in, what didn’t?'),
+                    'status' => null,
+                ],
+                3 => [
+                    'link' => '#',
+                    'label' => __('Share your experience'),
+                    'description' => __('Share your experience of what it was like to consult with this regulated entity. This will help other consultants understand what it’s like to work with them.'),
+                    'status' => null,
+                ],
+            ],
         ];
     }
 
