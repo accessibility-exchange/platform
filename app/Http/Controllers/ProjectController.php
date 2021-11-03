@@ -285,7 +285,7 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function addConsultant(Request $request, Project $project)
     {
@@ -308,7 +308,7 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateConsultants(Request $request, Project $project)
     {
@@ -332,7 +332,7 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateConsultant(Request $request, Project $project)
     {
@@ -368,7 +368,6 @@ class ProjectController extends Controller
                 break;
         }
 
-
         return redirect()->back();
     }
 
@@ -377,7 +376,7 @@ class ProjectController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function removeConsultant(Request $request, Project $project)
     {
