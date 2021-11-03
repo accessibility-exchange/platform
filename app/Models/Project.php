@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
@@ -108,11 +109,11 @@ class Project extends Model
     ];
 
     /**
-     * The attributes that are transterms
+     * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'goals',
         'impact',
         'out_of_scope',
@@ -129,7 +130,7 @@ class Project extends Model
      *
      * @var array
      */
-    public $substeps = [
+    public array $substeps = [
         1 => [
             'published_at',
         ],
@@ -161,6 +162,8 @@ class Project extends Model
 
     /**
      * Get the options for generating the slug.
+     *
+     * @return \Spatie\Sluggable\SlugOptions
      */
     public function getSlugOptions(): SlugOptions
     {
@@ -174,7 +177,7 @@ class Project extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -184,25 +187,25 @@ class Project extends Model
      *
      * @return array
      */
-    public function getEntitySteps()
+    public function getEntitySteps(): array
     {
         return [
             1 => [
                 'title' => __('Publish your project'),
             ],
             2 => [
-                'title' => __('Build your consulting team'),
+                'title' => __('Build a consulting team'),
             ],
             3 => [
                 'title' => __('Learn how to work together'),
-                'subtitle' => __('Meet with the consultants and have a conversation with them about how you’d like to work together.'),
+                'subtitle' => __('Meet with the consulting team and have a conversation with them about how you’d like to work together.'),
             ],
             4 => [
                 'title' => __('Hold consultations'),
-                'subtitle' => __('Have consultations with your consultants to work on your accessibility project.'),
+                'subtitle' => __('Have consultations with the consulting team to work on your accessibility project.'),
             ],
             5 => [
-                'title' => __('Write your report'),
+                'title' => __('Prepare and share your plans'),
             ],
         ];
     }
@@ -212,7 +215,7 @@ class Project extends Model
      *
      * @return array
      */
-    public function getConsultantSteps()
+    public function getConsultantSteps(): array
     {
         return [
             1 => [
@@ -224,7 +227,7 @@ class Project extends Model
                 'subtitle' => __('Take part in consultations with the entity, and work together on their accessibility plan.'),
             ],
             3 => [
-                'title' => __('Review the reports'),
+                'title' => __('Review and reflect'),
             ],
         ];
     }
@@ -234,7 +237,7 @@ class Project extends Model
      *
      * @return array
      */
-    public function getEntitySubsteps()
+    public function getEntitySubsteps(): array
     {
         return [
             1 => [
@@ -263,31 +266,31 @@ class Project extends Model
                 1 => [
                     'link' => "#",
                     'label' => __('Schedule the meeting'),
-                    'description' => __('Pick a date and time to have this meeting with your consultants.'),
+                    'description' => __('Pick a date and time to have this meeting with the consulting team.'),
                     'status' => $this->scheduled_planning_meeting ?? null,
                 ],
                 2 => [
                     'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
+                    'label' => __('Contact consulting team'),
+                    'description' => __('Contact the consulting team about the meeting.'),
                     'status' => $this->notified_of_planning_meeting ?? null,
                 ],
                 3 => [
                     'link' => "#",
                     'label' => __('Prepare a project orientation'),
-                    'description' => __('Provide your consultants with all the information they need about your project.'),
+                    'description' => __('Provide the consulting team with all the information they need about your project.'),
                     'status' => $this->prepared_project_orientation ?? null,
                 ],
                 4 => [
                     'link' => "#",
                     'label' => __('Prepare contracts and other legal documents'),
-                    'description' => __('Provide your consultants with any contracts they may need to sign.'),
+                    'description' => __('Provide the consulting team with any contracts they may need to sign.'),
                     'status' => $this->prepared_contractual_documents ?? null,
                 ],
                 5 => [
                     'link' => "#",
                     'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
+                    'description' => __('Make sure the access needs of the consulting team are met.'),
                     'status' => $this->booked_access_services_for_planning ?? null,
                 ],
                 6 => [
@@ -301,25 +304,25 @@ class Project extends Model
                 1 => [
                     'link' => "#",
                     'label' => __('Schedule the meetings'),
-                    'description' => __('Pick the dates and times to have these meetings with your consultants.'),
+                    'description' => __('Pick the dates and times to have these meetings with the consulting team.'),
                     'status' => $this->scheduled_consultation_meetings ?? null,
                 ],
                 2 => [
                     'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
+                    'label' => __('Contact consulting team'),
+                    'description' => __('Contact the consulting team about the meeting.'),
                     'status' => $this->notified_of_consultation_meetings ?? null,
                 ],
                 3 => [
                     'link' => "#",
                     'label' => __('Prepare consultation materials'),
-                    'description' => __('Provide your consultants with all the information they need for the consultation.'),
+                    'description' => __('Provide the consulting team with all the information they need for the consultation.'),
                     'status' => $this->prepared_consultation_materials ?? null,
                 ],
                 4 => [
                     'link' => "#",
                     'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
+                    'description' => __('Make sure the access needs of the consulting team are met.'),
                     'status' => $this->booked_access_services_for_consultations ?? null,
                 ],
                 5 => [
@@ -333,25 +336,31 @@ class Project extends Model
                 1 => [
                     'link' => "#",
                     'label' => __('Prepare your accessibility plan'),
-                    'description' => false,
+                    'description' => __('See examples and templates for this in :link.', ['link' => '<a href="' . \localized_route('collections.index') . '">' . __('the Resource hub') . '</a>']),
                     'status' => $this->prepared_accessibility_plan ?? null,
                 ],
                 2 => [
                     'link' => "#",
                     'label' => __('Prepare your follow-up plan'),
-                    'description' => false,
+                    'description' => __('Agree on a follow-up plan with the consulting team.'),
                     'status' => $this->prepared_follow_up_plan ?? null,
                 ],
                 3 => [
                     'link' => "#",
-                    'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
+                    'label' => __('Share your accessibility plan and follow-up plan with the consulting team.'),
                     'description' => false,
                     'status' => $this->shared_plans_with_consultants ?? null,
                 ],
                 4 => [
                     'link' => "#",
                     'label' => __('Publish your accessibility plan (optional)'),
-                    'description' => false,
+                    'description' => __('By uploading your completed plan, you can build trust with the larger disability community, which may make consultants more eager to work with you in the future.'),
+                    'status' => $this->published_accessibility_plan ?? null,
+                ],
+                5 => [
+                    'link' => "#",
+                    'label' => __('Update consultants based on your follow-up plan'),
+                    'description' => __('Based on your follow-up plan, update the consulting team on the progress of your accessibility project.'),
                     'status' => $this->published_accessibility_plan ?? null,
                 ],
             ],
@@ -363,105 +372,12 @@ class Project extends Model
      *
      * @return array
      */
-    public function getConsultantSubsteps()
+    public function getConsultantSubsteps(): array
     {
         return [
-            1 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Schedule the meeting'),
-                    'description' => __('Pick a date and time to have this meeting with your consultants.'),
-                    'status' => $this->scheduled_planning_meeting ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
-                    'status' => $this->notified_of_planning_meeting ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Prepare a project orientation'),
-                    'description' => __('Provide your consultants with all the information they need about your project.'),
-                    'status' => $this->prepared_project_orientation ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Prepare contracts and other legal documents'),
-                    'description' => __('Provide your consultants with any contracts they may need to sign.'),
-                    'status' => $this->prepared_contractual_documents ?? null,
-                ],
-                5 => [
-                    'link' => "#",
-                    'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
-                    'status' => $this->booked_access_services_for_planning ?? null,
-                ],
-                6 => [
-                    'link' => "#",
-                    'label' => __('Hold the meeting'),
-                    'description' => false,
-                    'status' => $this->finished_planning_meeting ?? null,
-                ],
-            ],
-            2 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Schedule the meetings'),
-                    'description' => __('Pick the dates and times to have these meetings with your consultants.'),
-                    'status' => $this->scheduled_consultation_meetings ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Contact consultant team'),
-                    'description' => __('Contact your consultants about the meeting.'),
-                    'status' => $this->notified_of_consultation_meetings ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Prepare consultation materials'),
-                    'description' => __('Provide your consultants with all the information they need for the consultation.'),
-                    'status' => $this->prepared_consultation_materials ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Provide access accommodations and book service providers'),
-                    'description' => __('Make sure the access needs of your consultants are met.'),
-                    'status' => $this->booked_access_services_for_consultations ?? null,
-                ],
-                5 => [
-                    'link' => "#",
-                    'label' => __('Hold the meetings'),
-                    'description' => false,
-                    'status' => $this->finished_consultation_meetings ?? null,
-                ],
-            ],
-            3 => [
-                1 => [
-                    'link' => "#",
-                    'label' => __('Prepare your accessibility plan'),
-                    'description' => false,
-                    'status' => $this->prepared_accessibility_plan ?? null,
-                ],
-                2 => [
-                    'link' => "#",
-                    'label' => __('Prepare your follow-up plan'),
-                    'description' => false,
-                    'status' => $this->prepared_follow_up_plan ?? null,
-                ],
-                3 => [
-                    'link' => "#",
-                    'label' => __('Share your accessibility plan and follow-up plan with your consultant team'),
-                    'description' => false,
-                    'status' => $this->shared_plans_with_consultants ?? null,
-                ],
-                4 => [
-                    'link' => "#",
-                    'label' => __('Publish your accessibility plan (optional)'),
-                    'description' => false,
-                    'status' => $this->published_accessibility_plan ?? null,
-                ],
-            ],
+            1 => [],
+            2 => [],
+            3 => [],
         ];
     }
 
@@ -470,7 +386,7 @@ class Project extends Model
      *
      * @return bool
      */
-    public function started()
+    public function started(): bool
     {
         return $this->start_date < Carbon::now();
     }
@@ -480,7 +396,7 @@ class Project extends Model
      *
      * @return bool
      */
-    public function completed()
+    public function completed(): bool
     {
         return $this->hasReportedFindings();
     }
@@ -490,7 +406,7 @@ class Project extends Model
      *
      * @return string
      */
-    public function timespan()
+    public function timespan(): string
     {
         if ($this->end_date) {
             if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
@@ -505,13 +421,23 @@ class Project extends Model
             : __('project.started', ['date' => $this->start_date->translatedFormat('F Y')]);
     }
 
-    public function hasBuiltTeam()
+    /**
+     * Has the entity built a consulting team for the project?
+     *
+     * @return bool
+     */
+    public function hasBuiltTeam(): bool
     {
         return ! is_null($this->found_consultants)
             && ! is_null($this->confirmed_consultants);
     }
 
-    public function hasLearnedHowToWorkTogether()
+    /**
+     * Has the entity and the consulting team learned how to work together?
+     *
+     * @return bool
+     */
+    public function hasLearnedHowToWorkTogether(): bool
     {
         return ! is_null($this->scheduled_planning_meeting)
             && ! is_null($this->notified_of_planning_meeting)
@@ -521,7 +447,12 @@ class Project extends Model
             && ! is_null($this->finished_planning_meeting);
     }
 
-    public function hasHeldConsultations()
+    /**
+     * Has the entity held consultations?
+     *
+     * @return bool
+     */
+    public function hasHeldConsultations(): bool
     {
         return ! is_null($this->scheduled_consultation_meetings)
             && ! is_null($this->notified_of_consultation_meetings)
@@ -530,14 +461,24 @@ class Project extends Model
             && ! is_null($this->finished_consultation_meetings);
     }
 
-    public function hasReportedFindings()
+    /**
+     * Has the entity prepared and shared their accessibility and follow-up plans?
+     *
+     * @return bool
+     */
+    public function hasReportedFindings(): bool
     {
         return ! is_null($this->prepared_accessibility_plan)
             && ! is_null($this->prepared_follow_up_plan)
             && ! is_null($this->shared_plans_with_consultants);
     }
 
-    public function currentEntityStep()
+    /**
+     * What numeric step is the entity on?
+     *
+     * @return int
+     */
+    public function currentEntityStep(): int
     {
         $step = 1;
 
@@ -558,7 +499,12 @@ class Project extends Model
         return $step;
     }
 
-    public function currentConsultantStep()
+    /**
+     * What numeric step is the consultant on?
+     *
+     * @return int
+     */
+    public function currentConsultantStep(): int
     {
         $step = 1;
 
@@ -573,33 +519,20 @@ class Project extends Model
         return $step;
     }
 
-    public function step()
+    /**
+     * What named step is the project on?
+     *
+     * @return string
+     */
+    public function step(): string
     {
-        switch ($this->currentEntityStep()) {
-            case 1:
-                return __('Publishing project');
-
-                break;
-            case 2:
-                return __('Building consulting team');
-
-                break;
-            case 3:
-                return __('Learning how to work together');
-
-                break;
-            case 4:
-                return __('Holding consultations');
-
-                break;
-            case 5:
-                return __('Writing report');
-
-                break;
-            case 6:
-                return __('Completed');
-
-                break;
+        return match ($this->currentEntityStep()) {
+            1 => __('Publishing project'),
+            2 => __('Building consulting team'),
+            3 => __('Learning how to work together'),
+            4 => __('Holding consultations'),
+            5 => __('Writing report'),
+            6 => __('Completed'),
         };
     }
 
@@ -608,9 +541,9 @@ class Project extends Model
      *
      * @param int $step
      *
-     * @return float
+     * @return int
      */
-    public function getProgress(int $step)
+    public function getProgress(int $step): int
     {
         $progress = 0;
 
@@ -619,7 +552,7 @@ class Project extends Model
                 $progress = 1;
             }
         } else {
-            foreach ($this->substeps[$step] as $key => $substep) {
+            foreach ($this->substeps[$step] as $substep) {
                 if (! is_null($this[$substep]) && $this[$substep]) {
                     $progress++;
                 }
@@ -630,7 +563,9 @@ class Project extends Model
     }
 
     /**
-     * Get the entity that owns the project.
+     * The entity that created the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function entity(): BelongsTo
     {
@@ -638,7 +573,9 @@ class Project extends Model
     }
 
     /**
-     * The impacts that belong to the project.
+     * The impacts that the project aims to have.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function impacts(): BelongsToMany
     {
@@ -646,7 +583,9 @@ class Project extends Model
     }
 
     /**
-     * The impacts that belong to the project.
+     * The sectors that the project is working within.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sectors(): BelongsToMany
     {
@@ -654,7 +593,9 @@ class Project extends Model
     }
 
     /**
-     * The payment methods that belong to the project.
+     * The payment methods that the project can offer.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function paymentMethods(): BelongsToMany
     {
@@ -662,7 +603,9 @@ class Project extends Model
     }
 
     /**
-     * The consulting methods that belong to the project.
+     * The consulting methods that the project will use.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function consultingMethods(): BelongsToMany
     {
@@ -670,7 +613,9 @@ class Project extends Model
     }
 
     /**
-     * The access supports that belong to the project.
+     * The access supports that the project can provide.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function accessSupports(): BelongsToMany
     {
@@ -678,7 +623,9 @@ class Project extends Model
     }
 
     /**
-     * The access supports that belong to the project.
+     * The communication tools that the project uses.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function communicationTools(): BelongsToMany
     {
@@ -686,7 +633,9 @@ class Project extends Model
     }
 
     /**
-     * The communities that belong to the project.
+     * The communities that the project is focussed on.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function communities(): BelongsToMany
     {
@@ -695,6 +644,8 @@ class Project extends Model
 
     /**
      * The consultants that are interested in the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function interestedConsultants(): BelongsToMany
     {
@@ -702,7 +653,9 @@ class Project extends Model
     }
 
     /**
-     * The consultants that belong to the project.
+     * The consultants that are affiliated with the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function consultants(): BelongsToMany
     {
@@ -712,6 +665,8 @@ class Project extends Model
 
     /**
      * The consultants that are shortlisted for the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function shortlistedConsultants(): BelongsToMany
     {
@@ -721,6 +676,8 @@ class Project extends Model
 
     /**
      * The consultants that have been requested for the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function requestedConsultants(): BelongsToMany
     {
@@ -730,6 +687,8 @@ class Project extends Model
 
     /**
      * The consultants that are shortlisted for the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function confirmedConsultants(): BelongsToMany
     {
@@ -739,6 +698,8 @@ class Project extends Model
 
     /**
      * The consultants that have exited the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function exitedConsultants(): BelongsToMany
     {
@@ -746,36 +707,66 @@ class Project extends Model
             ->wherePivot('status', 'exited');
     }
 
+    /**
+     * An aggregated list of lived experiences reflected in the consulting team.
+     *
+     * @return array
+     */
     public function presentLivedExperiences()
     {
         return $this->consultants->pluck('livedExperiences')->flatten()->pluck('name')->unique()->toArray();
     }
 
-    public function absentLivedExperiences()
+    /**
+     * An aggregated list of lived experiences not reflected in the consulting team.
+     *
+     * @return array
+     */
+    public function absentLivedExperiences(): array
     {
         $livedExperiences = LivedExperience::all()->pluck('name')->toArray();
 
         return array_diff($livedExperiences, $this->presentLivedExperiences());
     }
 
-    public function presentCommunities()
+    /**
+     * An aggregated list of communities reflected in the consulting team.
+     *
+     * @return array
+     */
+    public function presentCommunities(): array
     {
         return $this->consultants->pluck('communities')->flatten()->pluck('name')->unique()->toArray();
     }
 
-    public function absentCommunities()
+    /**
+     * An aggregated list of communities not reflected in the consulting team.
+     *
+     * @return array
+     */
+    public function absentCommunities(): array
     {
         $communities = Community::all()->pluck('name')->toArray();
 
         return array_diff($communities, $this->presentCommunities());
     }
 
-    public function accessRequirements()
+    /**
+     * An aggregated list of access requirements listed by the consulting team.
+     *
+     * @return array
+     */
+    public function accessRequirements(): array
     {
         return $this->consultants->pluck('accessSupports')->flatten()->sortBy('id')->pluck('name')->unique()->toArray();
     }
 
-    public function presentRegions()
+    /**
+     * An aggregated list of regions reflected in the consulting team.
+     *
+     * @return array
+     */
+    public function presentRegions(): array
     {
         $regions = $this->consultants->pluck('region')->unique()->toArray();
         $present = [];
@@ -803,7 +794,12 @@ class Project extends Model
         return $present;
     }
 
-    public function absentRegions()
+    /**
+     * An aggregated list of regions not reflected in the consulting team.
+     *
+     * @return array
+     */
+    public function absentRegions(): array
     {
         $regions = [
             __('West Coast'),
@@ -817,7 +813,12 @@ class Project extends Model
         return array_diff($regions, $this->presentRegions());
     }
 
-    public function reviews()
+    /**
+     * A collection of the project's reviews.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
@@ -826,8 +827,10 @@ class Project extends Model
      * Calculate the average rating for a given criteria.
      *
      * @param string $key
+     *
+     * @return float|int The average rating rounded to the nearest 0.5.
      */
-    public function averageRatingFor($key)
+    public function averageRatingFor(string $key): float|int
     {
         return round(2 * $this->reviews->avg($key)) / 2;
     }
@@ -835,9 +838,9 @@ class Project extends Model
     /**
      * Calculate consultant retention.
      *
-     * @return float
+     * @return float The consultant retention as a decimal fraction of 1.
      */
-    public function consultantRetention()
+    public function consultantRetention(): float
     {
         return round(count($this->confirmedConsultants) / (count($this->confirmedConsultants) + count($this->exitedConsultants)), 2);
     }

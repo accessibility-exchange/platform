@@ -2,7 +2,7 @@
     @if((count($project->consultants)) >= 5)
     <div class="access flow">
         <h2>{{ __('Access needs') }}</h2>
-        <p><em>{{ __('An aggregated list of your consultants’ access needs') }}</em></p>
+        <p><em>{{ __('An aggregated list of the consulting team’s access needs') }}</em></p>
         <ul role="list">
             @foreach($project->accessRequirements() as $requirement)
             <li>{{ $requirement }}</li>

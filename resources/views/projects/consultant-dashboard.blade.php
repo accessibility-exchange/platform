@@ -24,7 +24,7 @@
                     <x-progress-icon :started="false" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('not started') }}</span>
                     @endif
-                    <a href="{{ localized_route('projects.participate', ['project' => $project, 'step' => $i]) }}" aria-describedby="step-{{ $i }}">
+                    <a href="{{ localized_route('projects.participate', ['project' => $project, 'step' => $i]) }}" aria-describedby="step-{{ $i }}" @if($i == $step) aria-current="page" @endif>
                         <strong>{{ $i }}. {{ $steps[$i]['title'] }}</strong>
                     </a>
                 </li>

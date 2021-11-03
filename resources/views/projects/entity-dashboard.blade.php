@@ -24,7 +24,7 @@
                     <x-progress-icon :started="false" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('not started') }}</span>
                     @endif
-                    <a href="{{ localized_route('projects.manage', ['project' => $project, 'step' => $i]) }}" aria-describedby="step-{{ $i }}">
+                    <a href="{{ localized_route('projects.manage', ['project' => $project, 'step' => $i]) }}" aria-describedby="step-{{ $i }}" @if($i == $step) aria-current="page" @endif>
                         <strong>{{ $i }}. {{ $steps[$i]['title'] }}</strong>
                     </a>
                 </li>
@@ -47,7 +47,7 @@
                 <li class="substep">
                     <p class="substep__description">
                         <a href="{{ $substep['link'] }}" aria-describedby="status-{{ $loop->iteration }}">{{ $substep['label'] }}</a>@if($substep['description'])<br />
-                        {{ $substep['description'] }}
+                        {!! $substep['description'] !!}
                         @endif
                     </p>
                     <div class="substep__progress">

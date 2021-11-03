@@ -378,4 +378,23 @@ class ProjectTest extends TestCase
         $this->assertEquals(1, count($shortlisted_consultant->projects));
         $this->assertEquals(1, count($requested_consultant->projects));
     }
+
+    public function test_confirmed_consultants_can_participate_in_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $entity = Entity::factory()->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'published_at' => Carbon::now(),
+        ]);
+        $consultant = Consultant::factory()->create();
+        $project->consultants()->attach($consultant->id, ['status' => 'confirmed']);
+
+        $response = $this->actingAs($consultant->user)->get(localized_route('projects.participate', $project));
+
+        $response->assertOk();
+    }
 }
