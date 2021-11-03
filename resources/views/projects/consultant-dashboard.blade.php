@@ -31,20 +31,48 @@
                 @endfor
             </ol>
         </section>
-        <section class="step flow" aria-labelledby="step-{{ $step }}">
-            <h2 id="step-{{ $step }}">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
+        <section class="step flow" aria-labelledby="step-{{ $step }}-region">
+            <h2 id="step-{{ $step }}-region">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
             @isset($steps[$step]['subtitle'])
             <p class="subtitle">{{ $steps[$step]['subtitle'] }}</p>
             @endisset
 
+            @if(count($substeps[$step]) > 0)
+            <p>{{ __('You have completed :count of :total steps.', ['count' => $project->getProgress($step), 'total' => count($substeps[$step])]) }}</p>
+
+            <progress id="step" max="100" value="{{ $project->getProgress($step) / count($substeps[$step]) * 100 }}"></progress>
+
+            <ol role="list" class="substeps flow">
+                @foreach($substeps[$step] as $substep)
+                <li class="substep">
+                    <p class="substep__description">
+                        <a href="{{ $substep['link'] }}" aria-describedby="status-{{ $loop->iteration }}">{{ $substep['label'] }}</a>@if($substep['description'])<br />
+                        {!! $substep['description'] !!}
+                        @endif
+                    </p>
+                    <div class="substep__progress">
+                        <p class="substep__progress__status badge" id="status-{{ $loop->iteration }}">
+                            @if(!is_null($substeps[$step][$loop->iteration]['status']))
+                            {{ ($substeps[$step][$loop->iteration]['status']) ? __('Complete') : __('In progress') }}
+                            @else
+                            {{ __('Not started') }}
+                            @endif
+                        </p>
+                    </div>
+                </li>
+                @endforeach
+            </ol>
+            @endif
+
             @include("projects.consultant-step.$step")
-            <h2>{{ __('Resources for this step') }}</h2>
             @switch($step)
-                @case(1)
+            @case(1)
+                    <h2>{{ __('Resources for this step') }}</h2>
                     <p><a href="#">{{ __('What to look out for in legal contracts') }}</a></p>
                     <p><a href="#">{{ __('Questions to ask your entity partners') }}</a></p>
                     @break
                 @case(2)
+                    <h2>{{ __('Resources for this step') }}</h2>
                     <p><a href="#">{{ __('How to advocate for your needs') }}</a></p>
                     <p><a href="#">{{ __('Communication tips for working with entities') }}</a></p>
                     @break
