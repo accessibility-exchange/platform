@@ -392,4 +392,28 @@ class ProjectController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     *
+     * @param \App\Models\Project $project
+     * @return \Illuminate\View\View
+     */
+    public function createProjectUpdate(Project $project)
+    {
+        return view('projects.create-update', [
+            'project' => $project,
+            'steps' => $project->getEntitySteps(),
+        ]);
+    }
+
+    /**
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Project $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeProjectUpdate(Request $request, Project $project)
+    {
+        // TODO: persist project update to the database.
+    }
 }
