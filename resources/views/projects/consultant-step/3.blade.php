@@ -10,7 +10,7 @@
                 {{ __('Download') }} <span class="visually-hidden">{{ __('Accessibility plan – :language', ['language' => get_locale_name('en', locale())]) }}</span>
             </a>
         </p>
-        <h4>{{ __('Summary of feedback (draft) – :language', ['language' => get_locale_name('fr', locale())]) }}</h4>
+        <h4>{{ __('Accessibility plan – :language', ['language' => get_locale_name('fr', locale())]) }}</h4>
         <p>{{ __('Description of this document.') }}</p>
         <p>
             <a class="button" href="#">
@@ -19,7 +19,7 @@
                 {{ __('Download') }} <span class="visually-hidden">{{ __('Accessibility plan – :language', ['language' => get_locale_name('fr', locale())]) }}</span>
             </a>
         </p>
-        <h4>{{ __('Draft accessibility report – :language', ['language' => get_locale_name('en', locale())]) }}</h4>
+        <h4>{{ __('Follow-up plan – :language', ['language' => get_locale_name('en', locale())]) }}</h4>
         <p>{{ __('Description of this document.') }}</p>
         <p>
             <a class="button" href="#">
@@ -28,7 +28,7 @@
                 {{ __('Download') }} <span class="visually-hidden">{{ __('Follow-up plan – :language', ['language' => get_locale_name('en', locale())]) }}</span>
             </a>
         </p>
-        <h4>{{ __('Draft accessibility report – :language', ['language' => get_locale_name('fr', locale())]) }}</h4>
+        <h4>{{ __('Follow-up plan – :language', ['language' => get_locale_name('fr', locale())]) }}</h4>
         <p>{{ __('Description of this document.') }}</p>
         <p>
             <a class="button" href="#">
