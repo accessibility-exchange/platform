@@ -32,8 +32,8 @@
             </ol>
         </section>
 
-        <section class="step flow" aria-labelledby="step-{{ $step }}">
-            <h2 id="step-{{ $step }}">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
+        <section class="step flow" aria-labelledby="step-{{ $step }}-region">
+            <h2 id="step-{{ $step }}-region">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
             @isset($steps[$step]['subtitle'])
             <p class="subtitle">{{ $steps[$step]['subtitle'] }}</p>
             @endisset
@@ -64,13 +64,14 @@
             </ol>
 
             @include("projects.entity-step.$step")
-            <h2>{{ __('Resources for this step') }}</h2>
             @switch($step)
                 @case(3)
+                    <h2>{{ __('Resources for this step') }}</h2>
                     <p><a href="#">{{ __('How to write complex documents in plain language') }}</a></p>
                     <p><a href="#">{{ __('Guide to providing access accommodations') }}</a></p>
                     @break
                 @case(4)
+                    <h2>{{ __('Resources for this step') }}</h2>
                     <p><a href="#">{{ __('How to write complex documents in plain language') }}</a></p>
                     <p><a href="#">{{ __('Guide to providing access accommodations') }}</a></p>
                     @break
