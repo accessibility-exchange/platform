@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use function localized_route;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -242,7 +243,7 @@ class Project extends Model
         return [
             1 => [
                 1 => [
-                    'link' => \localized_route('projects.edit', $this),
+                    'link' => localized_route('projects.edit', $this),
                     'label' => __('Publish project page'),
                     'description' => false,
                     'status' => $this->checkStatus('published') ? 'complete' : 'in-progress',
@@ -250,7 +251,7 @@ class Project extends Model
             ],
             2 => [
                 1 => [
-                    'link' => \localized_route('projects.find-interested-consultants', $this),
+                    'link' => localized_route('projects.find-interested-consultants', $this),
                     'label' => __('Find consultants'),
                     'description' => __('Build your shortlist of consultants who you would like to consult on your project.'),
                     'status' => $this->found_consultants ?? null,
@@ -336,7 +337,7 @@ class Project extends Model
                 1 => [
                     'link' => "#",
                     'label' => __('Prepare your accessibility plan'),
-                    'description' => __('See examples and templates for this in :link.', ['link' => '<a href="' . \localized_route('collections.index') . '">' . __('the Resource hub') . '</a>']),
+                    'description' => __('See examples and templates for this in :link.', ['link' => '<a href="' . localized_route('collections.index') . '">' . __('the Resource hub') . '</a>']),
                     'status' => $this->prepared_accessibility_plan ?? null,
                 ],
                 2 => [
@@ -358,7 +359,7 @@ class Project extends Model
                     'status' => $this->published_accessibility_plan ?? null,
                 ],
                 5 => [
-                    'link' => "#",
+                    'link' => localized_route('projects.create-update', $this),
                     'label' => __('Update consultants based on your follow-up plan'),
                     'description' => __('Based on your follow-up plan, update the consulting team on the progress of your accessibility project.'),
                     'status' => $this->published_accessibility_plan ?? null,
@@ -394,6 +395,12 @@ class Project extends Model
                     'link' => '#',
                     'label' => __('Share your experience'),
                     'description' => __('Share your experience of what it was like to consult with this regulated entity. This will help other consultants understand what it’s like to work with them.'),
+                    'status' => null,
+                ],
+                4 => [
+                    'link' => localized_route('projects.index-updates', $this),
+                    'label' => __('Review project updates'),
+                    'description' => __('Review updates from the entity as they put the accessibility plan into action.'),
                     'status' => null,
                 ],
             ],

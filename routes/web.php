@@ -45,4 +45,5 @@ require __DIR__ . '/collections.php';
 require __DIR__ . '/stories.php';
 require __DIR__ . '/memberships.php';
 require __DIR__ . '/invitations.php';
+require __DIR__ . '/updates.php';
 require __DIR__ . '/fortify.php';

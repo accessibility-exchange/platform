@@ -1,0 +1,35 @@
+
+<x-app-wide-layout>
+    <x-slot name="title">{{ __('Updates for :project', ['project' => $project->name]) }}</x-slot>
+    <x-slot name="header">
+        <h1>
+            {{ __('Updates for :project', ['project' => $project->name]) }}
+        </h1>
+        @if($project->started())
+        <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+        @else
+        <p><strong>{{ __('project.starting_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+        @endif
+        @if($project->completed())
+        <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
+        @endif
+        @can('manage', $project)
+        <p><a href="{{ localized_route('projects.manage', ['project' => $project, 'step' => 5]) }}">{{ __('Return to project dashboard') }}</a></p>
+        @elsecan('participate', $project)
+        <p><a href="{{ localized_route('projects.participate', ['project' => $project, 'step' => 3]) }}">{{ __('Return to project dashboard') }}</a></p>
+        @endcan
+    </x-slot>
+
+    <div class="box flow">
+        <article class="update flow">
+            <h2>{{ __('Update: October 15, 2021') }}</h2>
+            <p>{{ __('A brief excerpt from this update.') }}
+                <p><a href="#">{{  __('Read more') }} <span class="visually-hidden">– {{ __('Update: October 15, 2021') }}</span></a></p>
+        </article>
+        <article class="update flow">
+            <h2>{{ __('Update: November 1, 2021') }}</h2>
+            <p>{{ __('A brief excerpt from this update.') }}
+                <p><a href="#">{{  __('Read more') }} <span class="visually-hidden">– {{ __('Update: November 1, 2021') }}</span></a></p>
+        </article>
+    </div>
+</x-app-wide-layout>

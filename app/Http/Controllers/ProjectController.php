@@ -392,4 +392,29 @@ class ProjectController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     *
+     * @param \App\Models\Project $project
+     * @return \Illuminate\View\View
+     */
+    public function indexProjectUpdates(Project $project)
+    {
+        return view('projects.index-updates', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     *
+     * @param \App\Models\Project $project
+     * @return \Illuminate\View\View
+     */
+    public function createProjectUpdate(Project $project)
+    {
+        return view('projects.create-update', [
+            'project' => $project,
+            'steps' => $project->getEntitySteps(),
+        ]);
+    }
 }
