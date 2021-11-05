@@ -33,9 +33,10 @@
         </section>
 
         <section class="step flow" aria-labelledby="step">
-            <h2 id="step">{{  __('Write a project update') }}</h2>
-            <p>{{ __('Write a project update to share with your consulting team on the progress of your implementation.') }}</p>
+            <h2 id="step">{{  __('Share a project update') }}</h2>
+            <p>{{ __('Share a project update to share with your consulting team on the progress of your implementation.') }}</p>
             <p>{{ __('This is optional, but it is great at building trust with your consultants, and increases the likelihood that they’ll come back for future consultations.') }}</p>
+            <p><a href="#">{{ __('Share an update') }}</a></p>
         </section>
     </div>
 
