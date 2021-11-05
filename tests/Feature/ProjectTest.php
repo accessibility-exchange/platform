@@ -415,7 +415,7 @@ class ProjectTest extends TestCase
 
         $response->assertOk();
 
-        $response = $this->actingAs($consultant->user)->get(localized_route('projects.updates-index', $project));
+        $response = $this->actingAs($consultant->user)->get(localized_route('projects.index-updates', $project));
 
         $response->assertOk();
     }
