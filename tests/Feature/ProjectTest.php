@@ -248,6 +248,24 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_users_with_entity_admin_role_can_create_project_updates()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.create-update', $project));
+        $response->assertOk();
+    }
+
     public function test_projects_appear_in_chronological_groups()
     {
         if (! config('hearth.entities.enabled')) {
@@ -394,6 +412,10 @@ class ProjectTest extends TestCase
         $project->consultants()->attach($consultant->id, ['status' => 'confirmed']);
 
         $response = $this->actingAs($consultant->user)->get(localized_route('projects.participate', $project));
+
+        $response->assertOk();
+
+        $response = $this->actingAs($consultant->user)->get(localized_route('projects.updates-index', $project));
 
         $response->assertOk();
     }

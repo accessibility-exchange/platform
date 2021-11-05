@@ -112,16 +112,20 @@ class Consultant extends Model implements HasMedia
 
     /**
      * Get the consultant's age in years.
+     *
+     * @return int
      */
-    public function age()
+    public function age(): int
     {
         return Carbon::parse($this->attributes['birth_date'])->age;
     }
 
     /**
      * Get the consultant's first name.
+     *
+     * @return string
      */
-    public function firstName()
+    public function firstName(): string
     {
         return (new NameParser())->parse($this->attributes['name'])->getFirstname();
     }
@@ -132,7 +136,7 @@ class Consultant extends Model implements HasMedia
      * @param string $value
      * @return string
      */
-    public function getPhoneNumberAttribute($value)
+    public function getPhoneNumberAttribute($value): string
     {
         return str_replace(['-', '(', ')', '.', ' '], '', $this->phone);
     }
@@ -217,7 +221,7 @@ class Consultant extends Model implements HasMedia
         return $this->belongsToMany(Entity::class);
     }
 
-    public function projectMatches(Project $project)
+    public function projectMatches(Project $project): array
     {
         $matches = [
             [
@@ -248,7 +252,7 @@ class Consultant extends Model implements HasMedia
         return $matches;
     }
 
-    public function projectMatch(Project $project)
+    public function projectMatch(Project $project): string
     {
         $projectMatches = $this->projectMatches($project);
         $matchCount = array_filter($projectMatches, function ($key) {
