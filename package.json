@@ -49,6 +49,6 @@
         "@fluid-project/looseleaf": "^1.6.1",
         "alpinejs": "^3.4",
         "axios": "^0.24.0",
-        "luxon": "2.0.2"
+        "luxon": "2.1.0"
     }
 }
