@@ -1,12 +1,10 @@
 <?php
 
 return [
-    'none_found' => 'No projects found.',
     'project_by' => 'Accessibility project by :entity',
     'browse_all' => 'Browse all projects',
     'index_title' => 'Projects',
     'entity_index_title' => ':entity’s projects',
-    'create_title' => 'Create a project',
     'label_name' => 'Project name',
     'action_create' => 'Create project',
     'create_succeeded' => 'Your project has been created.',
@@ -28,8 +26,4 @@ return [
     'update_succeeded' => 'Your project has been updated.',
     'update_draft_succeeded' => 'Your draft project has been updated.',
     'destroy_succeeded' => 'Your project has been deleted.',
-    'status_label' => 'Status',
-    'started_label' => 'Started',
-    'starting_label' => 'Starting',
-    'completed_label' => 'Completed',
 ];

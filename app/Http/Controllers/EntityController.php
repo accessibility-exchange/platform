@@ -6,6 +6,7 @@ use App\Http\Requests\CreateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
 use App\Http\Requests\UpdateEntityRequest;
 use App\Models\Entity;
+use Illuminate\Support\Facades\Route;
 
 class EntityController extends Controller
 {
@@ -48,7 +49,7 @@ class EntityController extends Controller
             ['role' => 'admin']
         );
 
-        flash(__('entity.create_succeeded'), 'success');
+        flash(__('Your regulated entity has been created.'), 'success');
 
 
         return redirect(\localized_route('entities.show', $entity));
@@ -62,7 +63,11 @@ class EntityController extends Controller
      */
     public function show(Entity $entity)
     {
-        $entity->load('pastProjects', 'currentProjects');
+        if (Route::currentRouteName() === locale() . '.entities.show-projects') {
+            $entity->load('currentProjects');
+        } elseif (Route::currentRouteName() === locale() . '.entities.show-projects') {
+            $entity->load('pastProjects', 'currentProjects');
+        }
 
         return view('entities.show', compact('entity'));
     }
@@ -100,7 +105,7 @@ class EntityController extends Controller
         $entity->fill($request->validated());
         $entity->save();
 
-        flash(__('entity.update_succeeded'), 'success');
+        flash(__('Your regulated entity has been updated.'), 'success');
 
         return redirect(\localized_route('entities.show', $entity));
     }
@@ -116,7 +121,7 @@ class EntityController extends Controller
     {
         $entity->delete();
 
-        flash(__('entity.destroy_succeeded'), 'success');
+        flash(__('Your regulated entity has been deleted.'), 'success');
 
         return redirect(\localized_route('dashboard'));
     }

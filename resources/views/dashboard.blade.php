@@ -44,7 +44,7 @@
 
         <p>{{ __('dashboard.entity_create_page_info') }}</p>
 
-        <p><a href="{{ localized_route('entities.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('entity.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('entities.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('regulated entity')]) !!}</a></p>
         @endif
 
         <h2>{{ __('dashboard.entity_learn_title') }}</h2>

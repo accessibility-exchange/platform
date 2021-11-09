@@ -19,6 +19,14 @@ Route::multilingual('/entities/{entity}', [EntityController::class, 'show'])
     ->middleware(['auth'])
     ->name('entities.show');
 
+Route::multilingual('/entities/{entity}/accessibility-and-inclusion', [EntityController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('entities.show-accessibility-and-inclusion');
+
+ Route::multilingual('/entities/{entity}/projects', [EntityController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('entities.show-projects');
+
 Route::multilingual('/entities/{entity}/edit', [EntityController::class, 'edit'])
     ->middleware(['auth', 'can:update,entity'])
     ->name('entities.edit');

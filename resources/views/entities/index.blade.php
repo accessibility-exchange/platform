@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('entity.index_title') }}</x-slot>
+    <x-slot name="title">{{ __('Regulated entities') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('entity.index_title') }}
+            {{ __('Regulated entities') }}
         </h1>
     </x-slot>
 
@@ -15,7 +15,7 @@
         <p>{{ $entity->locality }}, {{ get_region_name($entity->region, ["CA"], locale()) }}</p>
     </article>
     @empty
-    <p>{{ __('entity.none_found') }}</p>
+    <p>{{ __('No regulated entities found.') }}</p>
     @endforelse
     </div>
 </x-app-layout>

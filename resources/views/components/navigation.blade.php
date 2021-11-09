@@ -38,7 +38,7 @@
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('entities.index')" :active="request()->routeIs(locale() . '.entities.index')">
-                        {{ __('entity.index_title') }}
+                        {{ __('Regulated entities') }}
                     </x-dropdown-link>
                 </p>
                 <p>

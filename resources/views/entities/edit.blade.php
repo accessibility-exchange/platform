@@ -1,9 +1,9 @@
 
 <x-app-layout>
-    <x-slot name="title">{{ __('entity.edit_title', ['name' => $entity->name]) }}</x-slot>
+    <x-slot name="title">{{ __('Edit regulated entity “:name”', ['name' => $entity->name]) }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('entity.edit_title', ['name' => $entity->name]) }}
+            {{ __('Edit regulated entity “:name”', ['name' => $entity->name]) }}
         </h1>
     </x-slot>
 
@@ -15,7 +15,7 @@
         @method('PUT')
 
         <div class="field">
-            <x-hearth-label for="name" :value="__('entity.label_name')" />
+            <x-hearth-label for="name" :value="__('Regulated entity name')" />
             <x-hearth-input id="name" type="text" name="name" :value="old('name', $entity->name)" required />
             </div>
         <div class="field">
@@ -27,18 +27,18 @@
             <x-hearth-select id="region" name="region" :selected="old('region', $entity->region)" required :options="$regions"/>
             </div>
 
-        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
+        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
     </form>
 
-    <h2>{{ __('entity.members_title') }}</h2>
+    <h2>{{ __('Regulated entity members') }}</h2>
 
-    <div role="region" aria-label="{{ __('entity.members_title') }}" tabindex="0">
+    <div role="region" aria-label="{{ __('Regulated entity members') }}" tabindex="0">
         <table>
             <thead>
                 <tr>
-                  <th>{{ __('entity.member_name') }}</th>
-                  <th>{{ __('entity.member_status') }}</th>
-                  <th>{{ __('entity.member_role') }}</th>
+                  <th>{{ __('Name') }}</th>
+                  <th>{{ __('Status') }}</th>
+                  <th>{{ __('Role') }}</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -46,17 +46,17 @@
             @foreach ($entity->users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
-                <td>{{ __('entity.member_active') }}</td>
+                <td>{{ __('Active') }}</td>
                 <td>{{ __('roles.' . $user->membership->role) }}</td>
                 <td>
-                    <a aria-label="{{ __('entity.edit_user_role_link_with_name', ['user' => $user->name]) }}" href="{{ localized_route('memberships.edit', $user->membership->id) }}">{{ __('entity.edit_user_role_link') }}</a>
+                    <a aria-label="{{ __('Edit :user’s role', ['user' => $user->name]) }}" href="{{ localized_route('memberships.edit', $user->membership->id) }}">{{ __('Edit') }}</a>
                 </td>
                 <td>
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('entity.action_remove_member_with_name', ['user' => $user->name, 'entity' => $entity->name])">
-                            {{ __('entity.action_remove_member') }}
+                        <x-hearth-button class="link" :aria-label="__('Remove :user from :entity', ['user' => $user->name, 'entity' => $entity->name])">
+                            {{ __('Remove') }}
                         </x-hearth-button>
                     </form>
                 </td>
@@ -112,7 +112,7 @@
             <x-hearth-error for="email" bag="inviteOrganizationMember" />
         </div>
         <div class="field">
-            <x-hearth-label for="role" :value="__('entity.member_role')" />
+            <x-hearth-label for="role" :value="__('Role')" />
             <x-hearth-select type="role" name="role" :options="$roles" :selected="old('role')" required />
             <x-hearth-error for="role" bag="inviteOrganizationMember" />
         </div>
@@ -123,10 +123,10 @@
     </form>
 
     <h2>
-        {{ __('entity.delete_title') }}
+        {{ __('Delete regulated entity') }}
     </h2>
 
-    <p>{{ __('entity.delete_intro') }}</p>
+    <p>{{ __('Your regulated entity will be deleted and cannot be recovered. If you still want to delete your regulated entity, please enter your current password to proceed.') }}</p>
 
     <form action="{{ localized_route('entities.destroy', $entity) }}" method="POST" novalidate>
         @csrf
@@ -139,7 +139,7 @@
         </div>
 
         <x-hearth-button>
-            {{ __('entity.action_delete') }}
+            {{ __('Delete regulated entity') }}
         </x-hearth-button>
     </form>
 </x-app-layout>

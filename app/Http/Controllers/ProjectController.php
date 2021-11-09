@@ -30,23 +30,6 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display a listing of the resource within a specific entity.
-     *
-     * @param \App\Models\Entity  $entity
-     * @return \Illuminate\View\View
-     */
-    public function entityIndex(Entity $entity)
-    {
-        return view('projects.entity-index', [
-            'projects' => Project::status(new ProjectStatus('published'))
-                ->where('entity_id', $entity->id)
-                ->orderBy('name')
-                ->get(),
-            'entity' => $entity,
-        ]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param \App\Models\Entity  $entity

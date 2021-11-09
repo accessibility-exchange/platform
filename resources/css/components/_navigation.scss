@@ -43,6 +43,16 @@ nav .icon {
         margin-inline-start: auto;
     }
 
+    .has-nav-secondary {
+        display: grid;
+        gap: var(--step-3);
+        grid-template-columns: 25% 75%;
+    }
+
+    .has-nav-secondary nav.secondary {
+        margin-inline-start: 0;
+    }
+
     nav > * + * {
         margin-block-start: 0;
         margin-inline-start: var(--step--2);
@@ -53,7 +63,15 @@ nav .icon {
         flex-direction: row;
     }
 
+    nav.secondary ul {
+        flex-direction: column;
+    }
+
     nav ul > li + li {
         margin-inline-start: var(--step--2);
+    }
+
+    nav.secondary ul > li + li {
+        margin-inline-start: 0;
     }
 }
