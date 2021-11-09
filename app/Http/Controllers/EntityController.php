@@ -6,7 +6,9 @@ use App\Http\Requests\CreateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
 use App\Http\Requests\UpdateEntityRequest;
 use App\Models\Entity;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
 
 class EntityController extends Controller
 {
@@ -15,7 +17,7 @@ class EntityController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         return view('entities.index', ['entities' => Entity::orderBy('name')->get()]);
     }
@@ -25,7 +27,7 @@ class EntityController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Entity::class);
 
@@ -40,7 +42,7 @@ class EntityController extends Controller
      * @param  \App\Http\Requests\CreateEntityRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateEntityRequest $request)
+    public function store(CreateEntityRequest $request): RedirectResponse
     {
         $entity = Entity::create($request->validated());
 
@@ -61,11 +63,11 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\View\View
      */
-    public function show(Entity $entity)
+    public function show(Entity $entity): View
     {
-        if (Route::currentRouteName() === locale() . '.entities.show-projects') {
+        if (Route::currentRouteName() === \locale() . '.entities.show-projects') {
             $entity->load('currentProjects');
-        } elseif (Route::currentRouteName() === locale() . '.entities.show-projects') {
+        } elseif (Route::currentRouteName() === \locale() . '.entities.show-projects') {
             $entity->load('pastProjects', 'currentProjects');
         }
 
@@ -78,7 +80,7 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\View\View
      */
-    public function edit(Entity $entity)
+    public function edit(Entity $entity): View
     {
         $roles = [];
 
@@ -100,7 +102,7 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateEntityRequest $request, Entity $entity)
+    public function update(UpdateEntityRequest $request, Entity $entity): RedirectResponse
     {
         $entity->fill($request->validated());
         $entity->save();
@@ -117,7 +119,7 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyEntityRequest $request, Entity $entity)
+    public function destroy(DestroyEntityRequest $request, Entity $entity): RedirectResponse
     {
         $entity->delete();
 

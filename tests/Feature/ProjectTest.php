@@ -106,9 +106,6 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('projects.index'));
         $response->assertOk();
 
-        $response = $this->actingAs($user)->get(localized_route('projects.entity-index', $entity));
-        $response->assertOk();
-
         $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
         $response->assertOk();
     }
@@ -125,9 +122,6 @@ class ProjectTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('projects.index'));
-        $response->assertRedirect(localized_route('login'));
-
-        $response = $this->get(localized_route('projects.entity-index', $entity));
         $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('projects.show', $project));

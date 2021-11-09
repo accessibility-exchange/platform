@@ -577,6 +577,12 @@ class EntityTest extends TestCase
 
         $response = $this->get(localized_route('entities.show', $entity));
         $response->assertOk();
+
+        $response = $this->get(localized_route('entities.show-accessibility-and-inclusion', $entity));
+        $response->assertOk();
+
+        $response = $this->get(localized_route('entities.show-projects', $entity));
+        $response->assertOk();
     }
 
     public function test_guests_can_not_view_entities()
@@ -591,6 +597,12 @@ class EntityTest extends TestCase
         $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('entities.show', $entity));
+        $response->assertRedirect(localized_route('login'));
+
+        $response = $this->get(localized_route('entities.show-accessibility-and-inclusion', $entity));
+        $response->assertRedirect(localized_route('login'));
+
+        $response = $this->get(localized_route('entities.show-projects', $entity));
         $response->assertRedirect(localized_route('login'));
     }
 }
