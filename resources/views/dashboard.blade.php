@@ -13,12 +13,12 @@
 
         <p>{{ __('dashboard.consultant_create_page_info') }}</p>
 
-        <p><a href="{{ localized_route('consultants.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('consultant.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('consultants.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('consultant page')]) !!}</a></p>
 
         @else
         <p>
-            <a href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}"><strong>{{ Auth::user()->consultant->name }}</strong>@if(Auth::user()->consultant->checkStatus('draft')) ({{ __('consultant.status_draft') }})@endif</a><br />
-            <a href="{{ localized_route('consultants.edit', ['consultant' => Auth::user()->consultant]) }}">{{ __('consultant.edit_consultant_page') }}</a>
+            <a href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}"><strong>{{ Auth::user()->consultant->name }}</strong>@if(Auth::user()->consultant->checkStatus('draft')) ({{ __('draft') }})@endif</a><br />
+            <a href="{{ localized_route('consultants.edit', ['consultant' => Auth::user()->consultant]) }}">{{ __('Edit my page') }}</a>
         </p>
         @endif
 

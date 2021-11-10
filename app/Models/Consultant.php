@@ -65,7 +65,7 @@ class Consultant extends Model implements HasMedia
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'picture_alt',
         'bio',
         'pronouns',
@@ -105,7 +105,7 @@ class Consultant extends Model implements HasMedia
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }

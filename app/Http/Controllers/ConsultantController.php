@@ -7,7 +7,9 @@ use App\Http\Requests\DestroyConsultantRequest;
 use App\Http\Requests\UpdateConsultantRequest;
 use App\Models\Consultant;
 use App\Statuses\ConsultantStatus;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ConsultantController extends Controller
 {
@@ -16,7 +18,7 @@ class ConsultantController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         return view('consultants.index', [
             'consultants' => Consultant::status(new ConsultantStatus('published'))->orderBy('name')->get(),
@@ -28,15 +30,15 @@ class ConsultantController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Consultant::class);
 
         return view('consultants.create', [
             'regions' => get_regions(['CA'], \locale()),
             'creators' => [
-                'self' => __('consultant.label_creator_self'),
-                'other' => __('consultant.label_creator_other'),
+                'self' => __('I’m creating it myself'),
+                'other' => __('Someone else is creating it for me'),
             ],
         ]);
     }
@@ -47,7 +49,7 @@ class ConsultantController extends Controller
      * @param  \App\Http\Requests\CreateConsultantRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateConsultantRequest $request)
+    public function store(CreateConsultantRequest $request): RedirectResponse
     {
         $consultant = Consultant::create($request->safe()->except('picture'));
 
@@ -55,7 +57,7 @@ class ConsultantController extends Controller
             $consultant->addMediaFromRequest('picture')->toMediaCollection('picture');
         }
 
-        flash(__('consultant.save_draft_succeeded'), 'success');
+        flash(__('Your draft consultant page has been saved.'), 'success');
 
         return redirect(\localized_route('consultants.show', ['consultant' => $consultant]));
     }
@@ -66,7 +68,7 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\View\View
      */
-    public function show(Consultant $consultant)
+    public function show(Consultant $consultant): View
     {
         if ($consultant->checkStatus('draft')) {
             return view('consultants.show-draft', ['consultant' => $consultant]);
@@ -81,14 +83,14 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\View\View
      */
-    public function edit(Consultant $consultant)
+    public function edit(Consultant $consultant): View
     {
         return view('consultants.edit', [
             'consultant' => $consultant,
             'regions' => get_regions(['CA'], \locale()),
             'creators' => [
-                'self' => __('consultant.label_creator_self'),
-                'other' => __('consultant.label_creator_other'),
+                'self' => __('I’m creating it myself'),
+                'other' => __('Someone else is creating it for me'),
             ],
         ]);
     }
@@ -100,7 +102,7 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateConsultantRequest $request, Consultant $consultant)
+    public function update(UpdateConsultantRequest $request, Consultant $consultant): RedirectResponse
     {
         $consultant->fill($request->safe()->except('picture'));
 
@@ -113,10 +115,10 @@ class ConsultantController extends Controller
         $consultant->save();
 
         if ($consultant->checkStatus('draft')) {
-            flash(__('consultant.update_draft_succeeded'), 'success');
+            flash(__('Your draft consultant page has been updated.'), 'success');
         }
 
-        flash(__('consultant.update_succeeded'), 'success');
+        flash(__('Your consultant page has been updated.'), 'success');
 
         return redirect(\localized_route('consultants.show', $consultant));
     }
@@ -128,18 +130,18 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePublicationStatus(Request $request, Consultant $consultant)
+    public function updatePublicationStatus(Request $request, Consultant $consultant): RedirectResponse
     {
         if ($request->input('unpublish')) {
             $consultant->published_at = null;
             $consultant->save();
 
-            flash(__('consultant.unpublish_succeeded'), 'success');
+            flash(__('Your consultant page has been unpublished.'), 'success');
         } elseif ($request->input('publish')) {
             $consultant->published_at = date('Y-m-d h:i:s', time());
             $consultant->save();
 
-            flash(__('consultant.publish_succeeded'), 'success');
+            flash(__('Your consultant page has been published.'), 'success');
         }
 
         return redirect(\localized_route('consultants.show', $consultant));
@@ -152,11 +154,11 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyConsultantRequest $request, Consultant $consultant)
+    public function destroy(DestroyConsultantRequest $request, Consultant $consultant): RedirectResponse
     {
         $consultant->delete();
 
-        flash(__('consultant.destroy_succeeded'), 'success');
+        flash(__('Your consultant page has been deleted.'), 'success');
 
         return redirect(\localized_route('dashboard'));
     }
@@ -168,7 +170,7 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\View\View
      */
-    public function expressInterest(Request $request, Consultant $consultant)
+    public function expressInterest(Request $request, Consultant $consultant): View
     {
         $validated = $request->validate([
             'project_id' => 'required|integer',
@@ -188,7 +190,7 @@ class ConsultantController extends Controller
      * @param  \App\Models\Consultant  $consultant
      * @return \Illuminate\View\View
      */
-    public function removeInterest(Request $request, Consultant $consultant)
+    public function removeInterest(Request $request, Consultant $consultant): View
     {
         $validated = $request->validate([
             'project_id' => 'required|integer',

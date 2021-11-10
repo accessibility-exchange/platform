@@ -33,7 +33,7 @@
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('consultants.index')" :active="request()->routeIs(locale() . '.consultants.index')">
-                        {{ __('consultant.index_title') }}
+                        {{ __('Consultants') }}
                     </x-dropdown-link>
                 </p>
                 <p>
@@ -60,7 +60,7 @@
                 @if(Auth::user()->consultant)
                 <p>
                     <x-dropdown-link href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}" :active="request()->routeIs(locale() . '.consultants.show', Auth::user()->consultant)">
-                        {{ __('consultant.my_page') }}
+                        {{ __('My page') }}
                     </x-dropdown-link>
                 </p>
                 @endif
