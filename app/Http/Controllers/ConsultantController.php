@@ -168,9 +168,9 @@ class ConsultantController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Consultant  $consultant
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function expressInterest(Request $request, Consultant $consultant): View
+    public function expressInterest(Request $request, Consultant $consultant): RedirectResponse
     {
         $validated = $request->validate([
             'project_id' => 'required|integer',
@@ -188,9 +188,9 @@ class ConsultantController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Consultant  $consultant
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeInterest(Request $request, Consultant $consultant): View
+    public function removeInterest(Request $request, Consultant $consultant): RedirectResponse
     {
         $validated = $request->validate([
             'project_id' => 'required|integer',
