@@ -290,6 +290,29 @@ class ConsultantTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_users_can_view_private_sections_of_own_consultant_pages()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('consultants.show-lived-experience', $consultant));
+        $response->assertOk();
+    }
+
+    public function test_users_can_not_view_private_sections_of_others_consultant_pages()
+    {
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($other_user)->get(localized_route('consultants.show-lived-experience', $consultant));
+        $response->assertForbidden();
+    }
+
     public function test_guests_can_not_view_consultant_pages()
     {
         $user = User::factory()->create();
