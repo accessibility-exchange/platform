@@ -66,7 +66,7 @@
 
         <p>{{ __('dashboard.entity_create_project_info') }}</p>
 
-        <p><a href="{{ localized_route('projects.create', Auth::user()->entities[0]) }}">{!! __('dashboard.create_page_prompt', ['item' => __('project.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('projects.create', Auth::user()->entities[0]) }}">{!! __('dashboard.create_page_prompt', ['item' => __('project')]) !!}</a></p>
         @endif
     @endif
 
