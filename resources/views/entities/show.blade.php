@@ -11,9 +11,9 @@
     <div class="has-nav-secondary">
         <nav class="secondary" aria-labelledby="entity">
             <ul role="list">
-                <li><a href="{{ localized_route('entities.show', $entity) }}" @if(request()->routeIs(locale() . '.entities.show')) aria-current="page" @endif>{{ __('About') }}</a></li>
-                <li><a href="{{ localized_route('entities.show-accessibility-and-inclusion', $entity) }}" @if(request()->routeIs(locale() . '.entities.show-accessibility-and-inclusion')) aria-current="page" @endif>{{ __('Accessibility and inclusion') }}</a></li>
-                <li><a href="{{ localized_route('entities.show-projects', $entity) }}" @if(request()->routeIs(locale() . '.entities.show-projects')) aria-current="page" @endif>{{ __('Projects') }}</a></li>
+                <x-nav-link :href="localized_route('entities.show', $entity)" :active="request()->routeIs(locale() . '.entities.show')">{{ __('About') }}</x-nav-link>
+                <x-nav-link :href="localized_route('entities.show-accessibility-and-inclusion', $entity)" :active="request()->routeIs(locale() . '.entities.show-accessibility-and-inclusion')">{{ __('Accessibility and inclusion') }}</x-nav-link>
+                <x-nav-link :href="localized_route('entities.show-projects', $entity)" :active="request()->routeIs(locale() . '.entities.show-projects')">{{ __('Projects') }}</x-nav-link>
             </ul>
         </nav>
 
