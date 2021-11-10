@@ -14,14 +14,14 @@
         @method('put')
 
         <div class="field @error('name') field--error @enderror">
-            <x-hearth-label for="name" :value="__('project.label_name')" />
+            <x-hearth-label for="name" :value="__('Project name')" />
             <x-hearth-input type="text" name="name" :value="old('name', $project->name)" required />
             <x-hearth-error for="name" />
         </div>
 
-        <x-hearth-date-input :label="__('project.label_start_date')" name="start_date" :value="old('start_date', $project->start_date->format('Y-m-d'))" />
+        <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', $project->start_date->format('Y-m-d'))" />
 
-        <x-hearth-date-input :label="__('project.label_end_date')" name="end_date" :value="old('end_date', $project->end_date ? $project->end_date->format('Y-m-d') : '')" />
+        <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', $project->end_date ? $project->end_date->format('Y-m-d') : '')" />
 
         <div class="field @error('goals') field--error @enderror">
             <x-hearth-label for="goals" :value="__('Goals for consultation')" />
@@ -47,14 +47,14 @@
             <x-hearth-error for="timeline" />
         </div>
 
-        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
+        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
     </form>
 
     <h2>
-        {{ __('project.delete_title') }}
+        {{ __('Delete project') }}
     </h2>
 
-    <p>{{ __('project.delete_intro') }}</p>
+    <p>{{ __('Your project will be deleted and cannot be recovered. If you still want to delete your project, please enter your current password to proceed.') }}</p>
 
     <form action="{{ localized_route('projects.destroy', $project) }}" method="POST" novalidate>
         @csrf
@@ -67,7 +67,7 @@
         </div>
 
         <x-hearth-button>
-            {{ __('project.action_delete') }}
+            {{ __('Delete project') }}
         </x-hearth-button>
     </form>
 </x-app-layout>

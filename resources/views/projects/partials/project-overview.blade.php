@@ -42,7 +42,7 @@
 
 <x-markdown class="flow">{{ $project->payment_terms }}</x-markdown>
 
-<x-header :level="$level + 1">{{ __('Payment type') }}</x-header>
+<x-header :level="$level + 1">{{ __('Payment types') }}</x-header>
 
 <ul role="list" class="tags">
     @foreach($project->paymentMethods as $method)

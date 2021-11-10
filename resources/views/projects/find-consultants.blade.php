@@ -12,37 +12,39 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <nav class="find__nav">
-        <ul role="list">
-            <x-nav-link :href="localized_route('projects.find-interested-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-interested-consultants')">{{ __('Interested in this project') }}</x-nav-link>
-            <x-nav-link :href="localized_route('projects.find-related-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-related-consultants')">{{ __('From similar projects') }}</x-nav-link>
-            <x-nav-link :href="localized_route('projects.find-all-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-all-consultants')">{{ __('Browse all consultants') }}</x-nav-link>
-        </ul>
-    </nav>
+    <div class="has-nav-secondary">
+        <nav class="secondary" aria-labelledby="project">
+            <ul role="list">
+                <x-nav-link :href="localized_route('projects.find-interested-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-interested-consultants')">{{ __('Interested in this project') }}</x-nav-link>
+                <x-nav-link :href="localized_route('projects.find-related-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-related-consultants')">{{ __('From similar projects') }}</x-nav-link>
+                <x-nav-link :href="localized_route('projects.find-all-consultants', $project)" :active="request()->routeIs(locale() . '.projects.find-all-consultants')">{{ __('Browse all consultants') }}</x-nav-link>
+            </ul>
+        </nav>
 
-    <div class="find__list flow">
-        <h2>{{ $subtitle }}</h2>
-        <div class="grid">
-            @forelse($consultants as $consultant)
-            <x-consultant-card level="3" :consultant="$consultant" :project="$project">
-                <x-slot name="actions">
-                    <div class="actions">
-                        <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
-                            @csrf
-                            @method('put')
-                            <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
-                                <x-hearth-button>{!! __('Add <span class="visually-hidden">:name</span> to shortlist', ['name' => $consultant->name]) !!}</x-hearth-button>
-                            </form>
-                        </div>
-                    </x-slot>
-            </x-consultant-card>
-            @empty
-            <p>{{ __('Sorry, no consultants were found.') }}</p>
-            @endforelse
+        <div class="find__list flow">
+            <h2>{{ $subtitle }}</h2>
+            <div class="grid">
+                @forelse($consultants as $consultant)
+                <x-consultant-card level="3" :consultant="$consultant" :project="$project">
+                    <x-slot name="actions">
+                        <div class="actions">
+                            <form action="{{ localized_route('projects.add-consultant', $project) }}" method="post">
+                                @csrf
+                                @method('put')
+                                <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                                    <x-hearth-button>{!! __('Add <span class="visually-hidden">:name</span> to shortlist', ['name' => $consultant->name]) !!}</x-hearth-button>
+                                </form>
+                            </div>
+                        </x-slot>
+                </x-consultant-card>
+                @empty
+                <p>{{ __('Sorry, no consultants were found.') }}</p>
+                @endforelse
+            </div>
+
+
+            {{-- {{ $consultants->links() }} TODO: Set up pagination --}}
         </div>
-
-
-        {{-- {{ $consultants->links() }} TODO: Set up pagination --}}
     </div>
 
     @if(count($project->shortlistedConsultants) > 0)

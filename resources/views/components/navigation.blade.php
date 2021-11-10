@@ -43,7 +43,7 @@
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('projects.index')" :active="request()->routeIs(locale() . '.projects.index')">
-                        {{ __('project.index_title') }}
+                        {{ __('Projects') }}
                     </x-dropdown-link>
                 </p>
             </x-slot>

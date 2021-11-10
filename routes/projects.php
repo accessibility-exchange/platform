@@ -18,6 +18,18 @@ Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->middleware(['auth'])
     ->name('projects.show');
 
+Route::multilingual('/projects/{project}/who-were-looking-for', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-who-were-looking-for');
+
+Route::multilingual('/projects/{project}/accessibility-and-accomodations', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-accessibility-and-accomodations');
+
+Route::multilingual('/projects/{project}/community-experiences', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-community-experiences');
+
 Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
     ->middleware(['auth', 'can:update,project'])
     ->name('projects.edit');

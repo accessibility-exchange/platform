@@ -7,6 +7,10 @@ nav {
     margin-block-start: var(--step-2);
 }
 
+nav.secondary + * {
+    margin-block-start: var(--step-3);
+}
+
 nav ul {
     margin: 0;
     padding-inline-start: 0;
@@ -51,6 +55,10 @@ nav .icon {
 
     .has-nav-secondary nav.secondary {
         margin-inline-start: 0;
+    }
+
+    nav.secondary + * {
+        margin-block-start: 0;
     }
 
     nav > * + * {

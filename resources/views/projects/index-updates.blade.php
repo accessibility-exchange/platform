@@ -6,7 +6,7 @@
             {{ __('Updates for :project', ['project' => $project->name]) }}
         </h1>
         @if($project->started())
-        <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+        <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @else
         <p><strong>{{ __('project.starting_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @endif
