@@ -89,6 +89,9 @@ class ProjectTest extends TestCase
         $project = $project->fresh();
 
         $this->assertTrue($project->checkStatus('draft'));
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+        $response->assertSee('draft');
     }
 
     public function test_users_can_view_projects()

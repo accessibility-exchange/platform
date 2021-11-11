@@ -70,15 +70,10 @@ class ConsultantTest extends TestCase
         $user = User::factory()->create();
         $other_user = User::factory()->create();
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.create'));
+        $response = $this->actingAs($user)->get(localized_route('consultants.create'));
         $response->assertOk();
 
-        $response = $this->post(localized_route('consultants.create'), [
+        $response = $this->actingAs($user)->post(localized_route('consultants.create'), [
             'user_id' => $other_user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -97,15 +92,10 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.create'));
+        $response = $this->actingAs($user)->get(localized_route('consultants.create'));
         $response->assertForbidden();
 
-        $response = $this->post(localized_route('consultants.create'), [
+        $response = $this->actingAs($user)->post(localized_route('consultants.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
@@ -151,15 +141,10 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.edit', $consultant));
+        $response = $this->actingAs($user)->get(localized_route('consultants.edit', $consultant));
         $response->assertOk();
 
-        $response = $this->put(localized_route('consultants.update', $consultant), [
+        $response = $this->actingAs($user)->put(localized_route('consultants.update', $consultant), [
             'name' => $consultant->name,
             'bio' => $consultant->bio,
             'locality' => 'St John\'s',
@@ -168,6 +153,25 @@ class ConsultantTest extends TestCase
         ]);
 
         $response->assertRedirect(localized_route('consultants.show', $consultant));
+
+        $draft_user = User::factory()->create();
+        $draft_consultant = Consultant::factory()->create([
+            'user_id' => $draft_user->id,
+            'published_at' => null,
+        ]);
+
+        $response = $this->actingAs($draft_user)->get(localized_route('consultants.edit', $draft_consultant));
+        $response->assertOk();
+
+        $response = $this->actingAs($draft_user)->put(localized_route('consultants.update', $draft_consultant), [
+            'name' => $draft_consultant->name,
+            'bio' => $draft_consultant->bio,
+            'locality' => 'St John\'s',
+            'region' => 'NL',
+            'creator' => $draft_consultant->creator,
+        ]);
+
+        $response->assertRedirect(localized_route('consultants.show', $draft_consultant));
     }
 
     public function test_users_can_not_edit_others_consultant_pages()
@@ -179,15 +183,10 @@ class ConsultantTest extends TestCase
             'user_id' => $other_user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.edit', $consultant));
+        $response = $this->actingAs($user)->get(localized_route('consultants.edit', $consultant));
         $response->assertForbidden();
 
-        $response = $this->put(localized_route('consultants.update', $consultant), [
+        $response = $this->actingAs($user)->put(localized_route('consultants.update', $consultant), [
             'name' => $consultant->name,
             'bio' => $consultant->bio,
             'locality' => 'St John\'s',
@@ -204,12 +203,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
         $response->assertRedirect(localized_route('dashboard'));
@@ -222,12 +216,7 @@ class ConsultantTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'wrong_password',
         ]);
 
@@ -244,12 +233,7 @@ class ConsultantTest extends TestCase
             'user_id' => $other_user->id,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
+        $response = $this->actingAs($user)->from(localized_route('consultants.edit', $consultant))->delete(localized_route('consultants.destroy', $consultant), [
             'current_password' => 'password',
         ]);
         $response->assertForbidden();
@@ -263,12 +247,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.show', $consultant));
+        $response = $this->actingAs($user)->get(localized_route('consultants.show', $consultant));
         $response->assertOk();
     }
 
@@ -281,12 +260,7 @@ class ConsultantTest extends TestCase
             'published_at' => null,
         ]);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $other_user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('consultants.show', $consultant));
+        $response = $this->actingAs($other_user)->get(localized_route('consultants.show', $consultant));
         $response->assertForbidden();
     }
 
@@ -364,5 +338,25 @@ class ConsultantTest extends TestCase
         $consultant = $consultant->fresh();
 
         $this->assertTrue($consultant->checkStatus('draft'));
+    }
+
+    public function test_draft_consultants_do_not_appear_on_consultant_index()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create([
+            'published_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('consultants.index'));
+        $response->assertDontSee($consultant->name);
+    }
+
+    public function test_published_consultants_appear_on_consultant_index()
+    {
+        $user = User::factory()->create();
+        $consultant = Consultant::factory()->create();
+
+        $response = $this->actingAs($user)->get(localized_route('consultants.index'));
+        $response->assertSee($consultant->name);
     }
 }
