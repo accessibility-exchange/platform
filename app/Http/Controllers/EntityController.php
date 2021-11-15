@@ -65,7 +65,7 @@ class EntityController extends Controller
      */
     public function show(Entity $entity): View
     {
-        if (Route::currentRouteName() === \locale() . '.entities.show-projects') {
+        if (Route::currentRouteName() === \locale() . '.entities.show') {
             $entity->load('currentProjects');
         } elseif (Route::currentRouteName() === \locale() . '.entities.show-projects') {
             $entity->load('pastProjects', 'currentProjects');
