@@ -1,5 +1,5 @@
 <!-- Primary Navigation Menu -->
-<nav x-data="{ open: false }">
+<nav x-data="{ open: false }" aria-label="{{ __('main menu') }}">
     <!-- Navigation Links -->
     <ul role="list" class="nav">
         @auth
