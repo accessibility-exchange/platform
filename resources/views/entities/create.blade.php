@@ -1,9 +1,9 @@
 
 <x-app-layout>
-    <x-slot name="title">{{ __('entity.create_title') }}</x-slot>
+    <x-slot name="title">{{ __('Create a regulated entity') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('entity.create_title') }}
+            {{ __('Create a regulated entity') }}
         </h1>
     </x-slot>
 
@@ -14,7 +14,7 @@
         @csrf
         <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
         <div class="field">
-            <x-hearth-label for="name" :value="__('entity.label_name')" />
+            <x-hearth-label for="name" :value="__('Regulated entity name')" />
             <x-hearth-input id="name" type="text" name="name" required />
             </div>
         <div class="field">
@@ -26,6 +26,6 @@
             <x-hearth-select id="region" name="region" required :options="$regions"/>
         </div>
 
-        <x-hearth-button>{{ __('entity.action_create') }}</x-hearth-button>
+        <x-hearth-button>{{ __('Create regulated entity') }}</x-hearth-button>
     </form>
 </x-app-layout>

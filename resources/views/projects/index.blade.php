@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('project.index_title') }}</x-slot>
+    <x-slot name="title">{{ __('Projects') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('project.index_title') }}
+            {{ __('Projects') }}
         </h1>
     </x-slot>
 
@@ -10,7 +10,7 @@
         @forelse($projects as $project)
         <x-project-card :project="$project" :level="2" />
         @empty
-        <p>{{ __('project.none_found') }}</p>
+        <p>{{ __('No projects found.') }}</p>
         @endforelse
     </div>
 </x-app-layout>

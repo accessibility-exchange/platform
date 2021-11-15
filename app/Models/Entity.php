@@ -34,14 +34,14 @@ class Entity extends Model
         'region',
     ];
 
+    protected $cascadeDeletes = ['users'];
+
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatable = [];
-
-    protected $cascadeDeletes = ['users'];
+    public array $translatable = [];
 
     /**
      * Get the options for generating the slug.
@@ -58,7 +58,7 @@ class Entity extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -68,7 +68,7 @@ class Entity extends Model
      *
      * @return string
      */
-    public function getRouteKeyPlaceholder()
+    public function getRouteKeyPlaceholder(): string
     {
         return 'entity';
     }
@@ -78,7 +78,7 @@ class Entity extends Model
      *
      * @return string
      */
-    public function getRoutePrefix()
+    public function getRoutePrefix(): string
     {
         return 'entities';
     }
@@ -112,7 +112,7 @@ class Entity extends Model
      * @param  string  $email
      * @return bool
      */
-    public function hasUserWithEmail(string $email)
+    public function hasUserWithEmail(string $email): bool
     {
         return $this->users->contains(function ($user) use ($email) {
             return $user->email === $email;
@@ -125,7 +125,7 @@ class Entity extends Model
      * @param  string  $email
      * @return bool
      */
-    public function hasAdministratorWithEmail(string $email)
+    public function hasAdministratorWithEmail(string $email): bool
     {
         return $this->administrators->contains(function ($user) use ($email) {
             return $user->email === $email;
@@ -134,6 +134,8 @@ class Entity extends Model
 
     /**
      * Get the invitations associated with this entity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function invitations(): MorphMany
     {
@@ -142,6 +144,8 @@ class Entity extends Model
 
     /**
      * The sectors that belong to the entity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function sectors(): BelongsToMany
     {
@@ -150,6 +154,8 @@ class Entity extends Model
 
     /**
      * Get the projects that belong to this entity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function projects(): HasMany
     {
@@ -158,6 +164,8 @@ class Entity extends Model
 
     /**
      * Get the projects that belong to this entity that are in progress.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function currentProjects(): HasMany
     {
@@ -169,6 +177,8 @@ class Entity extends Model
 
     /**
      * Get the projects that belong to this entity that have been completed.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pastProjects(): HasMany
     {
@@ -179,6 +189,8 @@ class Entity extends Model
 
     /**
      * Get the projects that belong to this entity that haven't started yet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function futureProjects(): HasMany
     {
@@ -189,6 +201,8 @@ class Entity extends Model
 
     /**
      * The consultants who have identified themselves with the entity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function consultants(): BelongsToMany
     {

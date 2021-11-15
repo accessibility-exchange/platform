@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('consultant.index_title') }}</x-slot>
+    <x-slot name="title">{{ __('Consultants') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('consultant.index_title') }}
+            {{ __('Consultants') }}
         </h1>
     </x-slot>
 
@@ -15,7 +15,7 @@
             <p>{{ $consultant->locality }}, {{ get_region_name($consultant->region, ["CA"], locale()) }}</p>
         </article>
         @empty
-        <p>{{ __('consultant.none_found') }}</p>
+        <p>{{ __('No consultants found.') }}</p>
         @endforelse
     </div>
 </x-app-layout>

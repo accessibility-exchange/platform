@@ -1,18 +1,18 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
-        <h1>
+        <h1 id="project">
             {{ $project->name }}
         </h1>
-        <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
+        <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
         <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
         @if($project->started())
-        <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+        <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @else
-        <p><strong>{{ __('project.starting_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+        <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @endif
         @if($project->completed())
-        <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
+        <p><strong>{{ __('Completed') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
         @endif
         @if(!$project->completed() && Auth::user()->consultant)
         @if($project->confirmedConsultants->contains(Auth::user()->consultant))
@@ -46,51 +46,42 @@
         @endcan
     </x-slot>
 
-    <div class="tabs flow" x-data="tabs(window.location.hash ? window.location.hash.substring(1) : 'project-overview')" x-on:resize.window="enabled = window.innerWidth > 1023">
-        <h2 x-show="!enabled">{{ __('Contents') }}</h2>
-        <ul x-bind="tabList">
-            <li x-bind="tabWrapper"><a href="#project-overview" x-bind="tab">{{ __('Project overview') }}</a></li>
-            <li x-bind="tabWrapper"><a href="#who-were-looking-for" x-bind="tab">{{ __('Who we’re looking for') }}</a></li>
-            <li x-bind="tabWrapper"><a href="#accessibility-and-accomodations" x-bind="tab">{{ __('Accessibility and accomodations') }}</a></li>
-            @if($project->completed())
-            <li x-bind="tabWrapper"><a href="#community-experiences" x-bind="tab">{{ __('Community experiences') }}</a></li>
-            @endif
-        </ul>
+    <div class="has-nav-secondary">
+        <nav class="secondary" aria-labelledby="project">
+            <ul role="list">
+                <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">{{ __('Project overview') }}</x-nav-link>
+                <x-nav-link :href="localized_route('projects.show-who-were-looking-for', $project)" :active="request()->routeIs(locale() . '.projects.show-who-were-looking-for')">{{ __('Who we’re looking for') }}</x-nav-link>
+                <x-nav-link :href="localized_route('projects.show-accessibility-and-accomodations', $project)" :active="request()->routeIs(locale() . '.projects.show-accessibility-and-accomodations')">{{ __('Accessibility and accomodations') }}</x-nav-link>
+                @if($project->completed())
+                <x-nav-link :href="localized_route('projects.show-community-experiences', $project)" :active="request()->routeIs(locale() . '.projects.show-community-experiences')">{{ __('Community experiences') }}</x-nav-link>
+                @endif
+            </ul>
+        </nav>
 
-        <div class="flow" id="project-overview" x-bind="tabpanel">
+        <div class="flow">
+        @if(request()->routeIs(locale() . '.projects.show'))
             <h2>{{ __('Project overview') }}</h2>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('project overview') . '</span>']) !!}</a></p>
             @endcan
-
             @include('projects.partials.project-overview', ['level' => 3])
-        </div>
-
-        <div class="flow" id="who-were-looking-for" x-bind="tabpanel">
+        @elseif(request()->routeIs(locale() . '.projects.show-who-were-looking-for'))
             <h2>{{ __('Who we’re looking for') }}</h2>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('who we’re looking for') . '</span>']) !!}</a></p>
             @endcan
-
             @include('projects.partials.who-were-looking-for', ['level' => 3])
-        </div>
-
-        <div class="flow" id="accessibility-and-accomodations" x-bind="tabpanel">
+        @elseif(request()->routeIs(locale() . '.projects.show-accessibility-and-accomodations'))
             <h2>{{ __('Accessibility and accomodations') }}</h2>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('accessibility and accomodations') . '</span>']) !!}</a></p>
             @endcan
-
             @include('projects.partials.accessibility-and-accomodations', ['level' => 3])
-        </div>
-
-        @if($project->completed())
-        <div class="flow" id="community-experiences" x-bind="tabpanel">
+        @elseif(request()->routeIs(locale() . '.projects.show-community-experiences'))
             <h2>{{ __('Community experiences') }}</h2>
-
             @include('projects.partials.community-experiences', ['level' => 3])
-        </div>
         @endif
+        </div>
     </div>
 
 </x-app-wide-layout>

@@ -1,8 +1,8 @@
 <x-app-wide-layout>
-    <x-slot name="title">{{ __('consultant.draft_title') }}</x-slot>
+    <x-slot name="title">{{ __('My consultant page (draft)') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('consultant.draft_title') }}
+            {{ __('My consultant page (draft)') }}
         </h1>
 
     </x-slot>
@@ -16,18 +16,18 @@
             <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/{{ $consultant->name }}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />
             @endif
             <h3>{{ $consultant->name }}</h3>
-            <p>{{ __('consultant.role_individual_consultant') }}</p>
+            <p>{{ __('Individual consultant') }}</p>
             <p>{{ $consultant->locality }}, {{ get_region_name($consultant->region, ["CA"], locale()) }}</p>
             @if($consultant->pronouns)
             <p>{{ $consultant->pronouns }}</p>
             @endif
         </div>
         <div class="flow" id="about">
-            <h3>{{ __('consultant.section_about_person', ['name' => $consultant->firstName()]) }}</h3>
+            <h3>{{ __('About :name', ['name' => $consultant->firstName()]) }}</h3>
             <x-privacy-indicator level="public">
                 <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
             </x-privacy-indicator>
-            <p><a class="button" href="{{ localized_route('consultants.edit', $consultant) }}">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_about') . '</span>']) !!}</a></p>
+            <p><a class="button" href="{{ localized_route('consultants.edit', $consultant) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('consultant.section_about') . '</span>']) !!}</a></p>
 
             {!! Illuminate\Mail\Markdown::parse($consultant->bio) !!}
 
@@ -45,38 +45,38 @@
             @endif
         </div>
         <div class="flow" id="interests-and-goals">
-            <h3>{{ __('consultant.section_interests_and_goals') }}</h3>
+            <h3>{{ __('Interests and goals') }}</h3>
             <x-privacy-indicator level="public">
                 <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
             </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_interests_and_goals') . '</span>']) !!}</a></p>
+            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests and goals') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.interests-and-goals', ['level' => 4])
         </div>
         <div class="flow" id="lived-experience">
-            <h3>{{ __('consultant.section_lived_experience') }}</h3>
+            <h3>{{ __('Lived experience') }}</h3>
             <x-privacy-indicator level="private">
                 <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
             </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_lived_experience') . '</span>']) !!}</a></p>
+            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Lived experience') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.lived-experience', ['level' => 4])
         </div>
         <div class="flow" id="professional-experience">
-            <h3>{{ __('consultant.section_professional_experience') }}</h3>
+            <h3>{{ __('Professional experience') }}</h3>
             <x-privacy-indicator level="public">
                 <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
             </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_professional_experience') . '</span>']) !!}</a></p>
+            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Professional experience') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.professional-experience', ['level' => 4])
         </div>
         <div class="flow" id="access-needs">
-            <h3>{{ __('consultant.section_access_needs') }}</h3>
+            <h3>{{ __('Access needs') }}</h3>
             <x-privacy-indicator level="private">
                 <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
             </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('consultant.edit_section', ['section' => '<span class="visually-hidden">' . __('consultant.section_access_needs') . '</span>']) !!}</a></p>
+            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Access needs') . '</span>']) !!}</a></p>
 
             @include('consultants.boilerplate.access-needs', ['level' => 4])
         </div>
@@ -85,22 +85,22 @@
         <h2>Steps to publish</h2>
 
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('consultant.section_interests_and_goals') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('Interests and goals') }}</a><br />
             <small>Completed</small>
         </p>
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('consultant.section_lived_experience') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('Lived experience') }}</a><br />
             <small>Completed</small>
         </p>
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('consultant.section_access_needs') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('Access needs') }}</a><br />
             <small>Completed</small>
         </p>
 
         <h3>Optional:</h3>
 
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('consultant.section_professional_experience') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('consultants.edit', $consultant) }}">{{ __('Professional experience') }}</a><br />
             <small>Completed</small>
         </p>
 
@@ -110,7 +110,7 @@
             @csrf
             @method('PUT')
 
-            <x-hearth-input type="submit" name="publish" :value="__('consultant.action_publish')" />
+            <x-hearth-input type="submit" name="publish" :value="__('Publish my page')" />
         </form>
         @endif
         @endcan
