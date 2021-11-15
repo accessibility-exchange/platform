@@ -12,15 +12,30 @@
 
     <p>{{ __('project.create_intro', ['entity' => $entity->name]) }}</p>
 
+    {{-- TODO: Remove this --}}
+    @php $locales = ['en', 'fr', 'iu']; @endphp
+
     <form id="create-project" action="{{ localized_route('projects.store', $entity) }}" method="POST" novalidate>
         @csrf
         <x-hearth-input id="entity_id" type="hidden" name="entity_id" :value="$entity->id" required />
 
-        <div class="field @error('name') field--error @enderror">
-            <x-hearth-label for="name" :value="__('project.label_name')" />
-            <x-hearth-input type="text" name="name" required :value="old('name', '')" />
-            <x-hearth-error for="name" />
+        @foreach($locales as $locale)
+        @if($locale === locale())
+        <div class="field @error('name_' . $locale) field--error @enderror">
+            <x-hearth-label :for="'name_' . $locale" :value="__('Project name (:locale)', ['locale' => get_locale_name($locale)])" />
+            <x-hearth-input type="text" :id="'name_' . $locale" :name="'name[' . $locale . ']'" :value="old('', '')" />
+            <x-hearth-error :for="'name_' . $locale" />
         </div>
+        @else
+        <x-expander :summary="get_locale_name($locale)" :level="3">
+        <div class="field @error('name_' . $locale) field--error @enderror">
+            <x-hearth-label :for="'name_' . $locale" :value="__('Project name (:locale)', ['locale' => get_locale_name($locale)])" />
+            <x-hearth-input type="text" :id="'name_' . $locale" :name="'name[' . $locale . ']'" :value="old('', '')" />
+            <x-hearth-error :for="'name_' . $locale" />
+        </div>
+        </x-expander>
+        @endif
+        @endforeach
 
         <x-hearth-date-input :label="__('project.label_start_date')" name="start_date" :value="old('start_date', '')" />
 

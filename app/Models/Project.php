@@ -24,53 +24,11 @@ class Project extends Model
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are protected from mass assignment.
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'entity_id',
-        'start_date',
-        'end_date',
-        'published_at',
-        'found_consultants',
-        'confirmed_consultants',
-        'scheduled_planning_meeting',
-        'notified_of_planning_meeting',
-        'prepared_project_orientation',
-        'prepared_contractual_documents',
-        'booked_access_services_for_planning',
-        'finished_planning_meeting',
-        'scheduled_consultation_meetings',
-        'notified_of_consultation_meetings',
-        'prepared_consultation_materials',
-        'booked_access_services_for_consultations',
-        'finished_consultation_meetings',
-        'prepared_accessibility_plan',
-        'prepared_follow_up_plan',
-        'shared_plans_with_consultants',
-        'published_accessibility_plan',
-        'payment_negotiable',
-        'goals',
-        'impact',
-        'out_of_scope',
-        'virtual_consultation',
-        'timeline',
-        'payment_terms',
-        'existing_clients',
-        'prospective_clients',
-        'employees',
-        'priority_outreach',
-        'regions',
-        'locality',
-        'location_description',
-        'min',
-        'max',
-        'anything_else',
-        'flexible_deadlines',
-        'flexible_breaks',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.
@@ -115,6 +73,8 @@ class Project extends Model
      * @var array
      */
     public array $translatable = [
+        'name',
+        'slug',
         'goals',
         'impact',
         'out_of_scope',
@@ -180,7 +140,7 @@ class Project extends Model
      */
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        return 'slug->' . locale();
     }
 
     /**

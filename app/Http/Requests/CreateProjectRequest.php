@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class CreateProjectRequest extends FormRequest
 {
@@ -28,12 +26,8 @@ class CreateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(Project::class),
-            ],
+            'name.*' => 'nullable|string|max:255|unique_translation:projects',
+            'name.en' => 'required|string|max:255|unique_translation:projects',
             'start_date' => 'required|date',
             'end_date' => 'date|nullable',
             'entity_id' => 'required',
