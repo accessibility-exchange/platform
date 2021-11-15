@@ -1,9 +1,9 @@
 
 <x-app-layout>
-    <x-slot name="title">{{ __('project.create_title') }}</x-slot>
+    <x-slot name="title">{{ __('Create a project') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('project.create_title') }}
+            {{ __('Create a project') }}
         </h1>
     </x-slot>
 
@@ -37,9 +37,9 @@
         @endif
         @endforeach
 
-        <x-hearth-date-input :label="__('project.label_start_date')" name="start_date" :value="old('start_date', '')" />
+        <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', '')" />
 
-        <x-hearth-date-input :label="__('project.label_end_date')" name="end_date" :value="old('end_date', '')" />
+        <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', '')" />
 
         <div class="field @error('goals') field--error @enderror">
             <x-hearth-label for="goals" :value="__('Goals for consultation')" />
@@ -65,6 +65,6 @@
             <x-hearth-error for="timeline" />
         </div>
 
-        <x-hearth-button>{{ __('project.action_create') }}</x-hearth-button>
+        <x-hearth-button>{{ __('Create project') }}</x-hearth-button>
     </form>
 </x-app-layout>

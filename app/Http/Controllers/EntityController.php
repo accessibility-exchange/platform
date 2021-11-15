@@ -6,6 +6,9 @@ use App\Http\Requests\CreateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
 use App\Http\Requests\UpdateEntityRequest;
 use App\Models\Entity;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
 
 class EntityController extends Controller
 {
@@ -14,7 +17,7 @@ class EntityController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         return view('entities.index', ['entities' => Entity::orderBy('name')->get()]);
     }
@@ -24,7 +27,7 @@ class EntityController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Entity::class);
 
@@ -39,7 +42,7 @@ class EntityController extends Controller
      * @param  \App\Http\Requests\CreateEntityRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateEntityRequest $request)
+    public function store(CreateEntityRequest $request): RedirectResponse
     {
         $entity = Entity::create($request->validated());
 
@@ -48,7 +51,7 @@ class EntityController extends Controller
             ['role' => 'admin']
         );
 
-        flash(__('entity.create_succeeded'), 'success');
+        flash(__('Your regulated entity has been created.'), 'success');
 
 
         return redirect(\localized_route('entities.show', $entity));
@@ -60,9 +63,13 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\View\View
      */
-    public function show(Entity $entity)
+    public function show(Entity $entity): View
     {
-        $entity->load('pastProjects', 'currentProjects');
+        if (Route::currentRouteName() === \locale() . '.entities.show') {
+            $entity->load('currentProjects');
+        } elseif (Route::currentRouteName() === \locale() . '.entities.show-projects') {
+            $entity->load('pastProjects', 'currentProjects');
+        }
 
         return view('entities.show', compact('entity'));
     }
@@ -73,7 +80,7 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\View\View
      */
-    public function edit(Entity $entity)
+    public function edit(Entity $entity): View
     {
         $roles = [];
 
@@ -95,12 +102,12 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateEntityRequest $request, Entity $entity)
+    public function update(UpdateEntityRequest $request, Entity $entity): RedirectResponse
     {
         $entity->fill($request->validated());
         $entity->save();
 
-        flash(__('entity.update_succeeded'), 'success');
+        flash(__('Your regulated entity has been updated.'), 'success');
 
         return redirect(\localized_route('entities.show', $entity));
     }
@@ -112,11 +119,11 @@ class EntityController extends Controller
      * @param  \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyEntityRequest $request, Entity $entity)
+    public function destroy(DestroyEntityRequest $request, Entity $entity): RedirectResponse
     {
         $entity->delete();
 
-        flash(__('entity.destroy_succeeded'), 'success');
+        flash(__('Your regulated entity has been deleted.'), 'success');
 
         return redirect(\localized_route('dashboard'));
     }

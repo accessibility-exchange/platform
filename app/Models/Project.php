@@ -468,9 +468,7 @@ class Project extends Model
     {
         $step = 1;
 
-        if ($this->hasReportedFindings()) {
-            $step = 6;
-        } elseif ($this->hasHeldConsultations()) {
+        if ($this->hasHeldConsultations()) {
             $step = 5;
         } elseif ($this->hasLearnedHowToWorkTogether()) {
             $step = 4;

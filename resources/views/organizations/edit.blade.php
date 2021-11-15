@@ -30,7 +30,7 @@
             <x-hearth-error for="region" />
         </div>
 
-        <x-hearth-button>{{ __('forms.save_changes') }}</x-hearth-button>
+        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
     </form>
 
     <h2>{{ __('organization.members_title') }}</h2>

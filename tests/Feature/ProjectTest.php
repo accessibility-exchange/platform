@@ -89,6 +89,9 @@ class ProjectTest extends TestCase
         $project = $project->fresh();
 
         $this->assertTrue($project->checkStatus('draft'));
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+        $response->assertSee('draft');
     }
 
     public function test_users_can_view_projects()
@@ -104,9 +107,6 @@ class ProjectTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.index'));
-        $response->assertOk();
-
-        $response = $this->actingAs($user)->get(localized_route('projects.entity-index', $entity));
         $response->assertOk();
 
         $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
@@ -125,9 +125,6 @@ class ProjectTest extends TestCase
         ]);
 
         $response = $this->get(localized_route('projects.index'));
-        $response->assertRedirect(localized_route('login'));
-
-        $response = $this->get(localized_route('projects.entity-index', $entity));
         $response->assertRedirect(localized_route('login'));
 
         $response = $this->get(localized_route('projects.show', $project));

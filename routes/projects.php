@@ -6,10 +6,6 @@ Route::multilingual('/projects', [ProjectController::class, 'index'])
     ->middleware(['auth'])
     ->name('projects.index');
 
-Route::multilingual('/entities/{entity}/projects', [ProjectController::class, 'entityIndex'])
-    ->middleware(['auth'])
-    ->name('projects.entity-index');
-
 Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'create'])
     ->middleware(['auth', 'can:createProject,entity'])
     ->name('projects.create');
@@ -21,6 +17,18 @@ Route::multilingual('/entities/{entity}/projects/create', [ProjectController::cl
 Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->middleware(['auth'])
     ->name('projects.show');
+
+Route::multilingual('/projects/{project}/who-were-looking-for', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-who-were-looking-for');
+
+Route::multilingual('/projects/{project}/accessibility-and-accomodations', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-accessibility-and-accomodations');
+
+Route::multilingual('/projects/{project}/community-experiences', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-community-experiences');
 
 Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
     ->middleware(['auth', 'can:update,project'])

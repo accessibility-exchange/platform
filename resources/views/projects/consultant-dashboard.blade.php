@@ -6,7 +6,7 @@
             {{ $project->name }}
         </h1>
         @if($project->started())
-        <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->format('F Y') }} <span aria-hidden="true">&middot;</span> <a href="{{ localized_route('projects.show', $project) }}">{{ __('See published project') }}</a></p>
+        <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->format('F Y') }} <span aria-hidden="true">&middot;</span> <a href="{{ localized_route('projects.show', $project) }}">{{ __('See published project') }}</a></p>
         @endif
     </x-slot>
     <div class="manage">

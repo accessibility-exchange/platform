@@ -10,7 +10,9 @@ use App\Models\Entity;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProjectController extends Controller
 {
@@ -19,7 +21,7 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(): View
     {
         return view('projects.index', [
             'projects' => Project::status(new ProjectStatus('published'))
@@ -30,29 +32,12 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display a listing of the resource within a specific entity.
-     *
-     * @param \App\Models\Entity  $entity
-     * @return \Illuminate\View\View
-     */
-    public function entityIndex(Entity $entity)
-    {
-        return view('projects.entity-index', [
-            'projects' => Project::status(new ProjectStatus('published'))
-                ->where('entity_id', $entity->id)
-                ->orderBy('name')
-                ->get(),
-            'entity' => $entity,
-        ]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param \App\Models\Entity  $entity
      * @return \Illuminate\View\View
      */
-    public function create(Entity $entity)
+    public function create(Entity $entity): View
     {
         return view('projects.create', ['entity' => $entity]);
     }
@@ -64,7 +49,7 @@ class ProjectController extends Controller
      * @param \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateProjectRequest $request, Entity $entity)
+    public function store(CreateProjectRequest $request, Entity $entity): RedirectResponse
     {
         $data = $request->validated();
         $data['start_date'] = Carbon::createFromFormat('Y-m-d', $data['start_date']);
@@ -74,7 +59,7 @@ class ProjectController extends Controller
 
         $project = Project::create($data);
 
-        flash(__('project.create_succeeded'), 'success');
+        flash(__('Your project has been created.'), 'success');
 
         return redirect(\localized_route('projects.show', ['project' => $project]));
     }
@@ -85,7 +70,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function show(Project $project)
+    public function show(Project $project): View
     {
         if ($project->checkStatus('draft')) {
             return view('projects.show-draft', ['project' => $project]);
@@ -100,7 +85,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function edit(Project $project)
+    public function edit(Project $project): View
     {
         return view('projects.edit', ['project' => $project]);
     }
@@ -112,12 +97,12 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
         $project->fill($request->validated());
         $project->save();
 
-        flash(__('project.update_succeeded'), 'success');
+        flash(__('Your project has been updated.'), 'success');
 
         return redirect(\localized_route('projects.show', $project));
     }
@@ -129,18 +114,18 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePublicationStatus(Request $request, Project $project)
+    public function updatePublicationStatus(Request $request, Project $project): RedirectResponse
     {
         if ($request->input('unpublish')) {
             $project->published_at = null;
             $project->save();
 
-            flash(__('project.unpublish_succeeded'), 'success');
+            flash(__('Your project has been unpublished.'), 'success');
         } elseif ($request->input('publish')) {
             $project->published_at = date('Y-m-d h:i:s', time());
             $project->save();
 
-            flash(__('project.publish_succeeded'), 'success');
+            flash(__('Your project has been published.'), 'success');
         }
 
         return redirect(\localized_route('projects.show', $project));
@@ -153,16 +138,16 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateProgress(Request $request, Project $project)
+    public function updateProgress(Request $request, Project $project): RedirectResponse
     {
         if ($request->input('complete')) {
             $project->update([$request->input('substep') => true]);
 
-            flash(__('project.update_succeeded'), 'success');
+            flash(__('Your project has been updated.'), 'success');
         } elseif ($request->input('incomplete')) {
             $project->update([$request->input('substep') => false]);
 
-            flash(__('project.update_succeeded'), 'success');
+            flash(__('Your project has been updated.'), 'success');
         }
 
         return redirect(\localized_route('projects.manage', $project));
@@ -175,11 +160,11 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(DestroyProjectRequest $request, Project $project)
+    public function destroy(DestroyProjectRequest $request, Project $project): RedirectResponse
     {
         $project->delete();
 
-        flash(__('project.destroy_succeeded'), 'success');
+        flash(__('Your project has been deleted.'), 'success');
 
         return redirect(\localized_route('dashboard'));
     }
@@ -191,7 +176,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function manage(Request $request, Project $project)
+    public function manage(Request $request, Project $project): View
     {
         return view('projects.entity-dashboard', [
             'project' => $project,
@@ -208,7 +193,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function participate(Request $request, Project $project)
+    public function participate(Request $request, Project $project): View
     {
         return view('projects.consultant-dashboard', [
             'project' => $project,
@@ -225,7 +210,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findInterestedConsultants(Request $request, Project $project)
+    public function findInterestedConsultants(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
@@ -247,7 +232,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findRelatedConsultants(Request $request, Project $project)
+    public function findRelatedConsultants(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
@@ -267,7 +252,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findAllConsultants(Request $request, Project $project)
+    public function findAllConsultants(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
@@ -287,7 +272,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addConsultant(Request $request, Project $project)
+    public function addConsultant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'consultant_id' => 'required|integer',
@@ -310,7 +295,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateConsultants(Request $request, Project $project)
+    public function updateConsultants(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'consultant_ids' => 'required|array',
@@ -334,7 +319,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateConsultant(Request $request, Project $project)
+    public function updateConsultant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'consultant_id' => 'required|integer',
@@ -378,7 +363,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeConsultant(Request $request, Project $project)
+    public function removeConsultant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
             'consultant_id' => 'required|integer',
@@ -398,7 +383,7 @@ class ProjectController extends Controller
      * @param \App\Models\Project $project
      * @return \Illuminate\View\View
      */
-    public function indexProjectUpdates(Project $project)
+    public function indexProjectUpdates(Project $project): View
     {
         return view('projects.index-updates', [
             'project' => $project,
@@ -410,7 +395,7 @@ class ProjectController extends Controller
      * @param \App\Models\Project $project
      * @return \Illuminate\View\View
      */
-    public function createProjectUpdate(Project $project)
+    public function createProjectUpdate(Project $project): View
     {
         return view('projects.create-update', [
             'project' => $project,

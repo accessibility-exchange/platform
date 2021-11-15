@@ -11,10 +11,10 @@
     <div class="preview flow">
         <div class="meta">
             <h3>{{ $project->name }}</h3>
-            <p>{!! __('project.project_by', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
+            <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
             <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
             @if($project->started())
-            <p><strong>{{ __('project.started_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+            <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
             @else
             <p><strong>{{ __('project.starting_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
             @endif

@@ -48,7 +48,7 @@
         </div>
 
         <x-hearth-button>
-            {{ __('hearth::forms.save_changes') }}
+            {{ __('Save changes') }}
         </x-hearth-button>
     </form>
 </x-app-layout>

@@ -1,5 +1,5 @@
 <!-- Primary Navigation Menu -->
-<nav x-data="{ open: false }">
+<nav x-data="{ open: false }" aria-label="{{ __('main menu') }}">
     <!-- Navigation Links -->
     <ul role="list" class="nav">
         @auth
@@ -33,17 +33,17 @@
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('consultants.index')" :active="request()->routeIs(locale() . '.consultants.index')">
-                        {{ __('consultant.index_title') }}
+                        {{ __('Consultants') }}
                     </x-dropdown-link>
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('entities.index')" :active="request()->routeIs(locale() . '.entities.index')">
-                        {{ __('entity.index_title') }}
+                        {{ __('Regulated entities') }}
                     </x-dropdown-link>
                 </p>
                 <p>
                     <x-dropdown-link :href="localized_route('projects.index')" :active="request()->routeIs(locale() . '.projects.index')">
-                        {{ __('project.index_title') }}
+                        {{ __('Projects') }}
                     </x-dropdown-link>
                 </p>
             </x-slot>
@@ -60,7 +60,7 @@
                 @if(Auth::user()->consultant)
                 <p>
                     <x-dropdown-link href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}" :active="request()->routeIs(locale() . '.consultants.show', Auth::user()->consultant)">
-                        {{ __('consultant.my_page') }}
+                        {{ __('My page') }}
                     </x-dropdown-link>
                 </p>
                 @endif

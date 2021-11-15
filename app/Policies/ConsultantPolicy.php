@@ -31,6 +31,20 @@ class ConsultantPolicy
     }
 
     /**
+     * Determine whether the user can view personal details of the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Consultant  $consultant
+     * @return mixed
+     */
+    public function viewPersonalDetails(User $user, Consultant $consultant)
+    {
+        return $user->id === $consultant->user_id
+            ? Response::allow()
+            : Response::deny(__('You cannot view this consultant page.'));
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user

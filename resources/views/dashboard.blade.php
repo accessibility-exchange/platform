@@ -13,12 +13,12 @@
 
         <p>{{ __('dashboard.consultant_create_page_info') }}</p>
 
-        <p><a href="{{ localized_route('consultants.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('consultant.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('consultants.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('consultant page')]) !!}</a></p>
 
         @else
         <p>
-            <a href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}"><strong>{{ Auth::user()->consultant->name }}</strong>@if(Auth::user()->consultant->checkStatus('draft')) ({{ __('consultant.status_draft') }})@endif</a><br />
-            <a href="{{ localized_route('consultants.edit', ['consultant' => Auth::user()->consultant]) }}">{{ __('consultant.edit_consultant_page') }}</a>
+            <a href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}"><strong>{{ Auth::user()->consultant->name }}</strong>@if(Auth::user()->consultant->checkStatus('draft')) ({{ __('draft') }})@endif</a><br />
+            <a href="{{ localized_route('consultants.edit', ['consultant' => Auth::user()->consultant]) }}">{{ __('Edit my page') }}</a>
         </p>
         @endif
 
@@ -44,7 +44,7 @@
 
         <p>{{ __('dashboard.entity_create_page_info') }}</p>
 
-        <p><a href="{{ localized_route('entities.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('entity.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('entities.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('regulated entity')]) !!}</a></p>
         @endif
 
         <h2>{{ __('dashboard.entity_learn_title') }}</h2>
@@ -66,7 +66,7 @@
 
         <p>{{ __('dashboard.entity_create_project_info') }}</p>
 
-        <p><a href="{{ localized_route('projects.create', Auth::user()->entities[0]) }}">{!! __('dashboard.create_page_prompt', ['item' => __('project.singular_title_lower')]) !!}</a></p>
+        <p><a href="{{ localized_route('projects.create', Auth::user()->entities[0]) }}">{!! __('dashboard.create_page_prompt', ['item' => __('project')]) !!}</a></p>
         @endif
     @endif
 

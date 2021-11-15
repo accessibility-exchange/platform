@@ -19,6 +19,22 @@ Route::multilingual('/consultants/{consultant}', [ConsultantController::class, '
     ->middleware(['auth', 'can:view,consultant'])
     ->name('consultants.show');
 
+Route::multilingual('/consultants/{consultant}/interests-and-goals', [ConsultantController::class, 'show'])
+    ->middleware(['auth', 'can:view,consultant'])
+    ->name('consultants.show-interests-and-goals');
+
+Route::multilingual('/consultants/{consultant}/lived-experience', [ConsultantController::class, 'show'])
+    ->middleware(['auth', 'can:viewPersonalDetails,consultant'])
+    ->name('consultants.show-lived-experience');
+
+Route::multilingual('/consultants/{consultant}/professional-experience', [ConsultantController::class, 'show'])
+    ->middleware(['auth', 'can:view,consultant'])
+    ->name('consultants.show-professional-experience');
+
+Route::multilingual('/consultants/{consultant}/access-needs', [ConsultantController::class, 'show'])
+    ->middleware(['auth', 'can:viewPersonalDetails,consultant'])
+    ->name('consultants.show-access-needs');
+
 Route::multilingual('/consultants/{consultant}/edit', [ConsultantController::class, 'edit'])
     ->middleware(['auth', 'can:update,consultant'])
     ->name('consultants.edit');
