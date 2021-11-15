@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use function localized_route;
 use Makeable\EloquentStatus\HasStatus;
-use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class Project extends Model
 {
     use HasFactory;
-    use HasSlug;
     use HasStatus;
     use HasTranslations;
+    use HasTranslatableSlug;
     use Notifiable;
 
     /**
@@ -140,7 +140,7 @@ class Project extends Model
      */
     public function getRouteKeyName(): string
     {
-        return 'slug->' . locale();
+        return 'slug';
     }
 
     /**

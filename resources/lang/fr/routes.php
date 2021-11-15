@@ -6,4 +6,6 @@ return [
     'login' => 'se-connecter',
     'register' => 'inscription',
     'verification.verify' => '/verification-de-courriel/{id}/{hash}',
+    'projects.index' => '/projets',
+    'projects.show' => '/projets/{project}',
 ];
