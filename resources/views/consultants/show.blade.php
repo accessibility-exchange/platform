@@ -6,7 +6,7 @@
         @else
         <img class="float-left" src="https://source.boringavatars.com/bauhaus/192/{{ $consultant->name }}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51" alt="{{ $consultant->name }}" />
         @endif
-        <h1>
+        <h1 id="consultant">
             {{ $consultant->name }}
         </h1>
         <div class="meta">
@@ -30,7 +30,7 @@
 
 
     <div class="has-nav-secondary">
-        <nav class="secondary" aria-labelledby="project">
+        <nav class="secondary" aria-labelledby="consultant">
             <ul role="list">
                 <x-nav-link :href="localized_route('consultants.show', $consultant)" :active="request()->routeIs(locale() . '.consultants.show')">{{ __('About') }}</x-nav-link>
                 <x-nav-link :href="localized_route('consultants.show-interests-and-goals', $consultant)" :active="request()->routeIs(locale() . '.consultants.show-interests-and-goals')">{{ __('Interests and goals') }}</x-nav-link>
