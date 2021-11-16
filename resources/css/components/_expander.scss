@@ -14,3 +14,13 @@
         width: 1.5em;
     }
 }
+
+.field + .expander {
+    border-block-start: var(--ll-border-thin);
+    padding-block-start: var(--step--3);
+}
+
+.field .expander__summary {
+    font-size: var(--step-1);
+    font-weight: 700;
+}

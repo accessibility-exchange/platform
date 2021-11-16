@@ -27,14 +27,15 @@ class CreateProjectRequest extends FormRequest
     {
         return [
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
-            'name.en' => 'required|string|max:255|unique_translation:projects',
+            'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:projects',
+            'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:projects',
             'start_date' => 'required|date',
             'end_date' => 'date|nullable',
             'entity_id' => 'required',
-            'goals' => 'string|nullable',
-            'impact' => 'string|nullable',
-            'out_of_scope' => 'string|nullable',
-            'timeline' => 'string|nullable',
+            'goals.*' => 'string|nullable',
+            'impact.*' => 'string|nullable',
+            'out_of_scope.*' => 'string|nullable',
+            'timeline.*' => 'string|nullable',
         ];
     }
 
@@ -46,7 +47,8 @@ class CreateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('A project with this name already exists.'),
+            'name.*.unique' => __('A project with this name already exists.'),
+            'name.*.required_without' => __('A project name field must be provided in either English or French.'),
         ];
     }
 }
