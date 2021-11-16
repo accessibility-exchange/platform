@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use function localized_route;
 use Makeable\EloquentStatus\HasStatus;
-use Spatie\Sluggable\HasTranslatableSlug;
+use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
@@ -20,7 +20,7 @@ class Project extends Model
     use HasFactory;
     use HasStatus;
     use HasTranslations;
-    use HasTranslatableSlug;
+    use HasSlug;
     use Notifiable;
 
     /**
@@ -74,7 +74,6 @@ class Project extends Model
      */
     public array $translatable = [
         'name',
-        'slug',
         'goals',
         'impact',
         'out_of_scope',

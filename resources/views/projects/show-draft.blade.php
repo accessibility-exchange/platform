@@ -16,10 +16,10 @@
             @if($project->started())
             <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
             @else
-            <p><strong>{{ __('project.starting_label') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
+            <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
             @endif
             @if($project->completed())
-            <p><strong>{{ __('project.completed_label') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
+            <p><strong>{{ __('Complete') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
             @endif
         </div>
 

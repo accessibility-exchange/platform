@@ -10,23 +10,22 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('project.create_intro', ['entity' => $entity->name]) }}</p>
+    <p>{{ __('This project will be created on behalf of :entity.', ['entity' => $entity->name]) }}</p>
 
     {{-- TODO: Remove this --}}
-    @php $locales = ['en', 'fr', 'iu']; @endphp
+    @php $locales = ['en', 'fr']; @endphp
 
     <form id="create-project" action="{{ localized_route('projects.store', $entity) }}" method="POST" novalidate>
         @csrf
         <x-hearth-input id="entity_id" type="hidden" name="entity_id" :value="$entity->id" required />
 
-        @foreach($locales as $locale)
-        @if($locale === locale())
-        <div class="field @error('name_' . $locale) field--error @enderror">
-            <x-hearth-label :for="'name_' . $locale" :value="__('Project name (:locale)', ['locale' => get_locale_name($locale)])" />
-            <x-hearth-input type="text" :id="'name_' . $locale" :name="'name[' . $locale . ']'" :value="old('', '')" />
-            <x-hearth-error :for="'name_' . $locale" />
+        <div class="field @error('name_' . locale()) field--error @enderror">
+            <x-hearth-label :for="'name_' . locale()" :value="__('Project name (:locale)', ['locale' => get_locale_name(locale())])" />
+            <x-hearth-input type="text" :id="'name_' . locale()" :name="'name[' . locale() . ']'" :value="old('', '')" />
+            <x-hearth-error :for="'name_' . locale()" />
         </div>
-        @else
+        @foreach($locales as $locale)
+        @if($locale !== locale())
         <x-expander :summary="get_locale_name($locale)" :level="3">
         <div class="field @error('name_' . $locale) field--error @enderror">
             <x-hearth-label :for="'name_' . $locale" :value="__('Project name (:locale)', ['locale' => get_locale_name($locale)])" />

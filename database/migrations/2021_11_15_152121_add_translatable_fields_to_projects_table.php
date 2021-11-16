@@ -15,7 +15,6 @@ class AddTranslatableFieldsToProjectsTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->json('name')->change();
-            $table->json('slug')->change();
         });
     }
 
@@ -28,7 +27,6 @@ class AddTranslatableFieldsToProjectsTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->string('name')->change();
-            $table->string('slug')->change();
         });
     }
 }
