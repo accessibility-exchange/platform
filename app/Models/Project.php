@@ -36,6 +36,7 @@ class Project extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'array',
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
