@@ -24,3 +24,21 @@
     font-size: var(--step-1);
     font-weight: 700;
 }
+
+.field.expander {
+    position: relative;
+}
+
+.field.expander.field--error button {
+    color: var(--ll-text-color-error);
+}
+
+.field.expander .badge {
+    position: absolute;
+    right: 3em;
+    top: var(--step--2);
+}
+
+.field.expander .expander__content {
+    margin-block-start: var(--step--5);
+}
