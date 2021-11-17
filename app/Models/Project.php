@@ -24,10 +24,10 @@ class Project extends Model
     use Notifiable;
 
     /**
-      * The attributes that are mass assignable.
-      *
-      * @var array
-      */
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'entity_id',
