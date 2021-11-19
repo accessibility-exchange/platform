@@ -1,6 +1,10 @@
+.expander {
+    position: relative;
+}
+
 .expander button {
     align-items: center;
-    background-color: var(--ll-background-color);
+    background-color: transparent;
     border: 0;
     color: var(--ll-text-color);
     display: flex;
@@ -37,6 +41,7 @@
     position: absolute;
     right: 3em;
     top: var(--step--2);
+    z-index: -1;
 }
 
 .field.expander .expander__content {
