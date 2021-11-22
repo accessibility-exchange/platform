@@ -35,4 +35,4 @@ class CreateCollectionsTable extends Migration
     {
         Schema::dropIfExists('collections');
     }
-}otherCollections
+}

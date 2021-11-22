@@ -19,6 +19,7 @@ class CreateFormattablesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('formattable');
+            $table->string('language');
             $table->boolean('original')->nullable();
             $table->timestamps();
         });

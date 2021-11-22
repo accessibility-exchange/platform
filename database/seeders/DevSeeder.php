@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Entity;
 use Illuminate\Database\Seeder;
 
 class DevSeeder extends Seeder
@@ -17,5 +18,10 @@ class DevSeeder extends Seeder
             DatabaseSeeder::class,
             CollectionSeeder::class,
         ]);
+
+        $entity = Entity::factory()
+            ->create([
+                'name' => 'ABC Corporation',
+            ]);
     }
 }
