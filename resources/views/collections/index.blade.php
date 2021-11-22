@@ -28,19 +28,9 @@
             </div>
             @endforeach
         </div>
-        <h2>{{ __('Resources based on stages of consultation') }}</h2>
-        <div class="cards cards--collections">
-            @foreach($stageCollections as $collection)
-            <div class="card card--collection flow">
-                <h3 id="{{ Str::slug($collection->title) }}">{{ $collection->title }}</h3>
-                <p>{{ $collection->description }}</p>
-                <p class="actions"><a class="button" href="{{ localized_route('collections.show', $collection)}}" aria-describedby="{{ Str::slug($collection->title) }}">{{ __('Visit resources') }}</a></p>
-            </div>
-            @endforeach
-        </div>
         <h2>{{ __('Resource based on topics') }}</h2>
         <div class="cards cards--collections">
-            @foreach($otherCollections as $collection)
+            @foreach($topicCollections as $collection)
             <div class="card card--collection flow">
                 <h3 id="{{ Str::slug($collection->title) }}">{{ $collection->title }}</h3>
                 <p>{{ $collection->description }}</p>
