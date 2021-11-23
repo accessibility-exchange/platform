@@ -1,14 +1,14 @@
-<x-header :level="$level">{{ __('Goals for consultation') }}</x-header>
+<x-heading :level="$level">{{ __('Goals for consultation') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->goals }}</x-markdown>
 
-<x-header :level="$level">{{ __('Project impact') }}</x-header>
+<x-heading :level="$level">{{ __('Project impact') }}</x-heading>
 
-<x-header :level="$level + 1">{{ __('Who will this project impact?') }}</x-header>
+<x-heading :level="$level + 1">{{ __('Who will this project impact?') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->impact }}</x-markdown>
 
-<x-header :level="$level + 1">{{ __('What areas of your organization will this project impact?') }}</x-header>
+<x-heading :level="$level + 1">{{ __('What areas of your organization will this project impact?') }}</x-heading>
 
 <ul role="list" class="tags">
     @foreach($project->impacts as $impact)
@@ -16,11 +16,11 @@
     @endforeach
 </ul>
 
-<x-header :level="$level + 1">{{ __('What is this project not going to do?') }}</x-header>
+<x-heading :level="$level + 1">{{ __('What is this project not going to do?') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->out_of_scope }}</x-markdown>
 
-<x-header :level="$level">{{ __('Ways of consulting') }}</x-header>
+<x-heading :level="$level">{{ __('Ways of consulting') }}</x-heading>
 
 <ul>
     @foreach($project->consultingMethods as $method)
@@ -32,17 +32,17 @@
 <p><em>{{ __('Virtual consultation supported.') }}</em></p>
 @endif
 
-<x-header :level="$level">{{ __('Timeline') }}</x-header>
+<x-heading :level="$level">{{ __('Timeline') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->timeline }}</x-markdown>
 
-<x-header :level="$level">{{ __('Payment') }}</x-header>
+<x-heading :level="$level">{{ __('Payment') }}</x-heading>
 
-<x-header :level="$level + 1">{{ __('Timeline for payment') }}</x-header>
+<x-heading :level="$level + 1">{{ __('Timeline for payment') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->payment_terms }}</x-markdown>
 
-<x-header :level="$level + 1">{{ __('Payment types') }}</x-header>
+<x-heading :level="$level + 1">{{ __('Payment types') }}</x-heading>
 
 <ul role="list" class="tags">
     @foreach($project->paymentMethods as $method)
