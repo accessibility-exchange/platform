@@ -1,17 +1,17 @@
 {{-- TODO: Replace with real content. --}}
-<x-header :level="$level">Fields of knowledge</x-header>
+<x-heading :level="$level">Fields of knowledge</x-heading>
 <ul role="list" class="tags">
     <li>Policy</li>
     <li>Education</li>
 </ul>
-<x-header :level="$level">Skills</x-header>
+<x-heading :level="$level">Skills</x-heading>
 <ul role="list" class="tags">
     <li>Writing grants</li>
     <li>Advocacy</li>
     <li>Community building</li>
     <li>Budgeting</li>
 </ul>
-<x-header :level="$level">Work experience</x-header>
+<x-heading :level="$level">Work experience</x-heading>
 <ul class="flow" role="list">
     <li>
         <strong>Community Coordinator at a local organization</strong><br />

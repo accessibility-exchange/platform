@@ -1,5 +1,5 @@
 {{-- TODO: Replace with real content. --}}
-<x-header :level="$level">For contacting {{ $consultant->firstName() }}</x-header>
+<x-heading :level="$level">For contacting {{ $consultant->firstName() }}</x-heading>
 
 <ul>
     <li>Email</li>
@@ -7,40 +7,40 @@
     <li>Video relay service</li>
 </ul>
 
-<x-header :level="$level">For written communication</x-header>
+<x-heading :level="$level">For written communication</x-heading>
 
 <ul>
     <li>Sign language translation of written material</li>
     <li>Materials provided in advance</li>
 </ul>
 
-<x-header :level="$level">For notifying {{ $consultant->firstName() }} of new projects</x-header>
+<x-heading :level="$level">For notifying {{ $consultant->firstName() }} of new projects</x-heading>
 
 <ul>
     <li>Email</li>
     <li>Text message</li>
 </ul>
 
-<x-header :level="$level">To participate in a meeting</x-header>
+<x-heading :level="$level">To participate in a meeting</x-heading>
 
 <ul>
     <li>Calendar invitation</li>
     <li>Virtual meetings preferred</li>
 </ul>
 
-<x-header :level="$level">For time-related needs</x-header>
+<x-heading :level="$level">For time-related needs</x-heading>
 
 <ul>
     <li>Communicating at a flexible pace</li>
 </ul>
 
-<x-header :level="$level">Languages used</x-header>
+<x-heading :level="$level">Languages used</x-heading>
 
 <ul>
     <li>American Sign Language (ASL)</li>
     <li>English</li>
 </ul>
 
-<x-header :level="$level">Support person</x-header>
+<x-heading :level="$level">Support person</x-heading>
 
 <p>Janine Appleseed</p>

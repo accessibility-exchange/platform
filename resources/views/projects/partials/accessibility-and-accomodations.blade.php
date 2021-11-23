@@ -1,4 +1,4 @@
-<x-header :level="$level">{{ __('Access supports available') }}</x-header>
+<x-heading :level="$level">{{ __('Access supports available') }}</x-heading>
 
 <ul>
     @foreach ($project->accessSupports as $accessSupport)
@@ -6,7 +6,7 @@
     @endforeach
 </ul>
 
-<x-header :level="$level">{{ __('Communication tools used') }}</x-header>
+<x-heading :level="$level">{{ __('Communication tools used') }}</x-heading>
 
 <ul>
     @foreach ($project->communicationTools as $tool)
@@ -14,7 +14,7 @@
     @endforeach
 </ul>
 
-<x-header :level="$level">{{ __('Time-related accomodations') }}</x-header>
+<x-heading :level="$level">{{ __('Time-related accomodations') }}</x-heading>
 
 <ul>
     <li>{{ __('Flexibility with deadlines') }}</li>

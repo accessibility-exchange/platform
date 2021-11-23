@@ -1,4 +1,4 @@
-<x-header :level="$level">{{ __('Relationship to entity') }}</x-header>
+<x-heading :level="$level">{{ __('Relationship to entity') }}</x-heading>
 
 <ul role="list" class="tags">
     @if($project->existing_clients)
@@ -12,12 +12,12 @@
     @endif
 </ul>
 
-<x-header :level="$level">{{ __('Representation') }}</x-header>
+<x-heading :level="$level">{{ __('Representation') }}</x-heading>
 
 <p>{{ __('Cross disability & intersectional') }}</p>
 
 @if($project->communities)
-<x-header :level="$level + 1">{{ __('Priority outreach') }}</x-header>
+<x-heading :level="$level + 1">{{ __('Priority outreach') }}</x-heading>
 
 <ul>
     @foreach ($project->communities as $community)
@@ -30,7 +30,7 @@
 @endif
 @endif
 
-<x-header :level="$level">{{ __('Where') }}</x-header>
+<x-heading :level="$level">{{ __('Where') }}</x-heading>
 
 <p>
     @if($project->locality){{ $project->locality }}, @endif
@@ -39,7 +39,7 @@
     @endif
 </p>
 
-<x-header :level="$level">{{ __('How many') }}</x-header>
+<x-heading :level="$level">{{ __('How many') }}</x-heading>
 
 <p>
     @if($project->min < $project->max)
@@ -49,6 +49,6 @@
     @endif
 </p>
 
-<x-header :level="$level">{{ __('Anything else?') }}</x-header>
+<x-heading :level="$level">{{ __('Anything else?') }}</x-heading>
 
 <x-markdown class="flow">{{ $project->anything_else }}</x-markdown>

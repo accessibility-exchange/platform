@@ -15,7 +15,7 @@
     <h3>{{ __('Consultants') }}</h3>
     @foreach($project->confirmedConsultants as $consultant)
     <x-consultant-card :consultant="$consultant" level="4">
-        <x-header :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $consultant->name]) !!}</x-header>
+        <x-heading :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $consultant->name]) !!}</x-heading>
         <ul role="list">
             @if($consultant->phone)
             <li>{!! __('Phone: :phone', ['phone' => '<a href="tel:' . $consultant->phone_number . '">' . $consultant->phone . '</a>']) !!}</li>

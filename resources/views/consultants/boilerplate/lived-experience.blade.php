@@ -1,13 +1,13 @@
 {{-- TODO: Replace with real content. --}}
-<x-header :level="$level">{{ $consultant->firstName() }}’s self-description</x-header>
+<x-heading :level="$level">{{ $consultant->firstName() }}’s self-description</x-heading>
 <p>Here is how I describe my experience of being Deaf, of disability, and of my other intersecting identities.</p>
-<x-header :level="$level">Some aspects of {{ $consultant->firstName() }}’s identity</x-header>
+<x-heading :level="$level">Some aspects of {{ $consultant->firstName() }}’s identity</x-heading>
 <ul role="list" class="tags">
     <li>Heard of hearing</li>
     <li>Person of colour</li>
     <li>Newcomer or immigrant</li>
 </ul>
 {{-- @if($consultant->birth_date) --}}
-<x-header :level="$level">{{ $consultant->firstName() }}’s age</x-header>
+<x-heading :level="$level">{{ $consultant->firstName() }}’s age</x-heading>
 <p>42</p>
 {{-- @endif --}}
