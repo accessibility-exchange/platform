@@ -14,7 +14,7 @@ class CollectionSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $faker = \Faker\Factory::create('en_CA');
 
         $collections = [
             [
