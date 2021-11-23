@@ -20,7 +20,6 @@ class CreateStoriesTable extends Migration
                 ->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
-            $table->string('language')->default('en');
             $table->longText('summary');
             $table->timestamps();
         });

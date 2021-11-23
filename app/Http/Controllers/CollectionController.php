@@ -19,9 +19,8 @@ class CollectionController extends Controller
     {
         return view('collections.index', [
             // TODO: Handle this better.
-            'roleCollections' => Collection::whereIn('id', [1, 2, 3, 4])->get(),
-            'stageCollections' => Collection::whereIn('id', [5, 6, 7])->get(),
-            'otherCollections' => Collection::where('id', '>', 7)->get(),
+            'roleCollections' => Collection::whereIn('id', [1, 2, 3])->get(),
+            'topicCollections' => Collection::whereIn('id', [4, 5, 6, 7])->get(),
         ]);
     }
 
