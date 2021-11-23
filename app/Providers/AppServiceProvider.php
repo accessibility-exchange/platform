@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Consultant;
 use App\Models\Project;
+use App\Settings;
 use App\Statuses\ConsultantStatus;
 use App\Statuses\ProjectStatus;
 use Illuminate\Routing\UrlGenerator;
@@ -19,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(Settings::class, function () {
+            return Settings::make(storage_path('app/settings.json'));
+        });
     }
 
     /**

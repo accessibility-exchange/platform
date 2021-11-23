@@ -6,3 +6,37 @@
     max-width: 85ch;
     padding: var(--step-0);
 }
+
+.contact-bar {
+    border-block-end: var(--ll-border-thin);
+    display: flex;
+    flex-direction: column;
+    gap: var(--step-0);
+    padding-block-end: var(--step-0);
+    width: 100%;
+
+    li {
+        align-items: center;
+        display: flex;
+        gap: 0.25em;
+    }
+
+    .icon {
+        height: 1em;
+        margin-inline-end: 0.125em;
+        width: 1em;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .contact-bar {
+        align-items: center;
+        flex-direction: row;
+        gap: var(--step-1);
+        justify-content: flex-start;
+
+        .exit {
+            margin-left: auto; /* stylelint-disable-line liberty/use-logical-spec */
+        }
+    }
+}
