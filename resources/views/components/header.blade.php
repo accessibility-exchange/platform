@@ -1,1 +1,1 @@
-<h{{ $level }}>{{ $slot }}</h{{ $level }}>
+<h{{ $level }} {{ $attributes }}>{{ $slot }}</h{{ $level }}>

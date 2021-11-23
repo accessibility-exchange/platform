@@ -18,9 +18,9 @@ use Spatie\Translatable\HasTranslations;
 class Project extends Model
 {
     use HasFactory;
-    use HasSlug;
     use HasStatus;
     use HasTranslations;
+    use HasSlug;
     use Notifiable;
 
     /**
@@ -78,6 +78,7 @@ class Project extends Model
      * @var array
      */
     protected $casts = [
+        'name' => 'array',
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
@@ -115,6 +116,7 @@ class Project extends Model
      * @var array
      */
     public array $translatable = [
+        'name',
         'goals',
         'impact',
         'out_of_scope',
