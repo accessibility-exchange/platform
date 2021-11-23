@@ -21,6 +21,7 @@ main:focus {
     display: flex;
     flex-direction: column;
     gap: var(--step-0);
+    margin-block-start: var(--step-3);
     padding-block-end: var(--step-0);
     width: 100%;
 
@@ -44,6 +45,7 @@ main:focus {
         flex-direction: row;
         gap: var(--step-1);
         justify-content: flex-start;
+        margin-block-start: 0;
 
         .exit {
             margin-left: auto; /* stylelint-disable-line liberty/use-logical-spec */
