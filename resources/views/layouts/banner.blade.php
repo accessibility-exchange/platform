@@ -1,4 +1,5 @@
 <header role="banner">
+    @include('components.skip-link')
     <div class="wrapper">
         @include('partials.contact-bar')
     </div>

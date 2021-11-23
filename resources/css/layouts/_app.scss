@@ -1,6 +1,15 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the application layout.
 // -----------------------------------------------------------------------------
+main {
+    margin-block-start: var(--step--5);
+}
+
+main:focus {
+    box-shadow: var(--ll-input-focus-box-shadow);
+    outline: none;
+}
+
 .wrapper--wide {
     margin: 0 auto;
     max-width: 85ch;
