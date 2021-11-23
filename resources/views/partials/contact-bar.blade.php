@@ -22,6 +22,9 @@
         </a>
     </li>
     <li class="exit">
-        <a class="button" rel="nofollow noopener noreferrer" href="https://google.ca">{{ __('Quick exit') }}</a>
+        <a class="button" rel="nofollow noopener noreferrer" href="https://weather.com">
+            <x-heroicon-o-logout aria-hidden="true" class="icon" />
+            {{ __('Quick exit') }}
+        </a>
     </li>
 </ul>
