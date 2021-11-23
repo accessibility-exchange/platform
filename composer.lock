@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "292ddcbed568d4d269f10a6b2747983f",
+    "content-hash": "153f6dd2bc564d06e73d45acfcf4d80d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -530,6 +530,81 @@
             "time": "2021-07-19T17:38:59+00:00"
         },
         {
+            "name": "codezero/laravel-unique-translation",
+            "version": "3.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codezero-be/laravel-unique-translation.git",
+                "reference": "a26017dfd2222b421b17aa799ab91a5563eca93d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codezero-be/laravel-unique-translation/zipball/a26017dfd2222b421b17aa799ab91a5563eca93d",
+                "reference": "a26017dfd2222b421b17aa799ab91a5563eca93d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2||^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0",
+                "spatie/laravel-translatable": "^4.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CodeZero\\UniqueTranslation\\UniqueTranslationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CodeZero\\UniqueTranslation\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Vermeyen",
+                    "email": "ivan@codezero.be"
+                }
+            ],
+            "description": "Check if a translated value in a JSON column is unique in the database.",
+            "keywords": [
+                "database",
+                "json",
+                "language",
+                "laravel",
+                "mysql",
+                "php",
+                "rule",
+                "translation",
+                "unique",
+                "validation",
+                "validator"
+            ],
+            "support": {
+                "issues": "https://github.com/codezero-be/laravel-unique-translation/issues",
+                "source": "https://github.com/codezero-be/laravel-unique-translation/tree/3.4.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/ivanvermeyen",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/ivanvermeyen",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2020-11-27T16:39:38+00:00"
+        },
+        {
             "name": "commerceguys/addressing",
             "version": "v1.2.1",
             "source": {
@@ -594,16 +669,16 @@
         },
         {
             "name": "commerceguys/intl",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/commerceguys/intl.git",
-                "reference": "90b4f75c4917927a1960c0dcaa002a91ab97f5d5"
+                "reference": "cab3b55dbf8c1753fe54457404082c777a8c154f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/commerceguys/intl/zipball/90b4f75c4917927a1960c0dcaa002a91ab97f5d5",
-                "reference": "90b4f75c4917927a1960c0dcaa002a91ab97f5d5",
+                "url": "https://api.github.com/repos/commerceguys/intl/zipball/cab3b55dbf8c1753fe54457404082c777a8c154f",
+                "reference": "cab3b55dbf8c1753fe54457404082c777a8c154f",
                 "shasum": ""
             },
             "require": {
@@ -636,9 +711,9 @@
             "description": "Internationalization library powered by CLDR data.",
             "support": {
                 "issues": "https://github.com/commerceguys/intl/issues",
-                "source": "https://github.com/commerceguys/intl/tree/v1.1.0"
+                "source": "https://github.com/commerceguys/intl/tree/v1.1.1"
             },
-            "time": "2021-05-17T08:25:58+00:00"
+            "time": "2021-10-30T18:07:14+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",

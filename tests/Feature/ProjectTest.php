@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->post(localized_route('projects.create', $entity), [
             'entity_id' => $entity->id,
-            'name' => 'Test Project',
+            'name' => ['en' => 'Test Project'],
             'start_date' => '2021-01-01',
             'end_date' => '2021-12-31',
         ]);
@@ -154,7 +154,7 @@ class ProjectTest extends TestCase
             'end_date' => null,
         ]);
 
-        $updated_project = Project::where('name', 'My renamed accessibility project')->first();
+        $updated_project = Project::where('name->en', 'My renamed accessibility project')->first();
 
         $response->assertRedirect(localized_route('projects.show', $updated_project));
     }

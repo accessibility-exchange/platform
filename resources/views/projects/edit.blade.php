@@ -1,8 +1,8 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('project.edit_title', ['name' => $project->name]) }}</x-slot>
+    <x-slot name="title">{{ __('Edit “:name”', ['name' => $project->name]) }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('project.edit_title', ['name' => $project->name]) }}
+            {{ __('Edit “:name”', ['name' => $project->name]) }}
         </h1>
     </x-slot>
 
@@ -13,39 +13,19 @@
         @csrf
         @method('put')
 
-        <div class="field @error('name') field--error @enderror">
-            <x-hearth-label for="name" :value="__('Project name')" />
-            <x-hearth-input type="text" name="name" :value="old('name', $project->name)" required />
-            <x-hearth-error for="name" />
-        </div>
+        <x-translatable-input name="name" :label="__('Project name')" :model="$project" />
 
         <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', $project->start_date->format('Y-m-d'))" />
 
         <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', $project->end_date ? $project->end_date->format('Y-m-d') : '')" />
 
-        <div class="field @error('goals') field--error @enderror">
-            <x-hearth-label for="goals" :value="__('Goals for consultation')" />
-            <x-hearth-textarea name="goals" required :value="old('goals', $project->goals)" />
-            <x-hearth-error for="goals" />
-        </div>
+        <x-translatable-textarea name="goals" :label="__('Goals for consultation')" :model="$project" />
 
-        <div class="field @error('impact') field--error @enderror">
-            <x-hearth-label for="impact" :value="__('Who will the project impact')" />
-            <x-hearth-textarea name="impact" required :value="old('impact', $project->impact)" />
-            <x-hearth-error for="impact" />
-        </div>
+        <x-translatable-textarea name="impact" :label="__('Who will the project impact')" :model="$project" />
 
-        <div class="field @error('out_of_scope') field--error @enderror">
-            <x-hearth-label for="out_of_scope" :value="__('What is this project not going to do?')" />
-            <x-hearth-textarea name="out_of_scope" required :value="old('out_of_scope', $project->out_of_scope)" />
-            <x-hearth-error for="out_of_scope" />
-        </div>
+        <x-translatable-textarea name="out_of_scope" :label="__('What is this project not going to do?')" :model="$project" />
 
-        <div class="field @error('timeline') field--error @enderror">
-            <x-hearth-label for="timeline" :value="__('Project timeline')" />
-            <x-hearth-textarea name="timeline" required :value="old('timeline', $project->timeline)" />
-            <x-hearth-error for="timeline" />
-        </div>
+        <x-translatable-textarea name="timeline" :label="__('Project timeline')" :model="$project" />
 
         <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
     </form>
