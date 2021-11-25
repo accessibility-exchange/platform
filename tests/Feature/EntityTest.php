@@ -44,6 +44,18 @@ class EntityTest extends TestCase
         $this->assertEquals(count($user->memberships), 1);
     }
 
+    public function test_users_primary_entity_can_be_retrieved()
+    {
+        $user = User::factory()->create(['context' => 'entity']);
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+
+        $user = $user->fresh();
+
+        $this->assertEquals($user->entity()->id, $entity->id);
+    }
+
     public function test_users_with_admin_role_can_edit_entities()
     {
         if (! config('hearth.entities.enabled')) {

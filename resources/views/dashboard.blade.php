@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">
-            <small>{{ Auth::user()->name }}@if(count(Auth::user()->entities) > 0), {{ Auth::user()->entities->first()->name }}@endif</small><br />
+            <small>{{ Auth::user()->name }}@if(Auth::user()->entity()), {{ Auth::user()->entity()->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
     </x-slot>
@@ -72,7 +72,7 @@
             <div class="column flow">
                 <div class="box flow">
                     <h2>{{ __('Getting started') }}</h2>
-                    @if(!count(Auth::user()->entities) > 0)
+                    @if(!Auth::user()->entity())
                     <x-expander level="3">
                         <x-slot name="summary">{{ __('Create your entity page') }}</x-slot>
                         <div class="flow">
@@ -85,7 +85,7 @@
                         <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
                         <div class="flow">
                             <p>{{ __('Create a new project page so that consultants can begin to express their interest in working with you.') }}</p>
-                            <p><a class="button" href="{{ localized_route('projects.create', Auth::user()->entities->first()) }}">{{ __('Create project page') }}</a></p>
+                            <p><a class="button" href="{{ localized_route('projects.create', Auth::user()->entity()) }}">{{ __('Create project page') }}</a></p>
                         </div>
                     </x-expander>
                     @endif
@@ -98,12 +98,12 @@
                     </x-expander>
                 </div>
 
-                @if(count(Auth::user()->entities) > 0)
+                @if(Auth::user()->entity())
                 <div class="box flow">
                     <h2>{{ __('My entity page') }}</h2>
                     <p>
-                        <a href="{{ localized_route('entities.show', Auth::user()->entities->first()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
-                        <a href="{{ localized_route('entities.edit', Auth::user()->entities->first()) }}">{{ __('Edit my entity page') }}</a>
+                        <a href="{{ localized_route('entities.show', Auth::user()->entity()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
+                        <a href="{{ localized_route('entities.edit', Auth::user()->entity()) }}">{{ __('Edit my entity page') }}</a>
                     </p>
                 </div>
                 @endif
@@ -120,10 +120,10 @@
             <div class="column flow">
                 <div class="box">
                     <h2>{{ __('My active projects') }}</h2>
-                    @if(Auth::user()->entities->first() && count(Auth::user()->entities->first()->projects) > 0)
+                    @if(Auth::user()->entity() && count(Auth::user()->entity()->projects) > 0)
                     {{-- TODO: Display project cards. --}}
                     @else
-                    <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', Auth::user()->entities->first()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
+                    <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', Auth::user()->entity()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
                     @endif
                 </div>
             </div>
