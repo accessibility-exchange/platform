@@ -3,7 +3,7 @@
 
 if (! function_exists('settings')) {
     /**
-     * Retrieve a setting from the settiungs Valuestore.
+     * Retrieve a setting from the settings Valuestore.
      *
      * @param string $key The setting key.
      * @param mixed $default A default value for the setting.
