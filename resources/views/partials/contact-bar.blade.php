@@ -22,9 +22,19 @@
         </a>
     </li>
     <li class="exit">
+        @auth
+        <form method="POST" action="{{ localized_route('exit') }}">
+            @csrf
+            <button type="submit">
+                <x-heroicon-o-logout aria-hidden="true" class="icon" />
+                {{ __('Quick exit') }}
+            </button>
+        </form>
+        @else
         <a class="button" rel="nofollow noopener noreferrer" href="https://weather.com">
             <x-heroicon-o-logout aria-hidden="true" class="icon" />
             {{ __('Quick exit') }}
         </a>
+        @endauth
     </li>
 </ul>
