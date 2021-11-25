@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">
-            <small>{{ Auth::user()->name }}</small><br />
+            <small>{{ Auth::user()->name }}@if(count(Auth::user()->entities) > 0), {{ Auth::user()->entities->first()->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
     </x-slot>
@@ -67,47 +67,67 @@
                 </div>
             </div>
         </div>
-
     @elseif (Auth::user()->context === 'entity')
+        <div class="columns">
+            <div class="column flow">
+                <div class="box flow">
+                    <h2>{{ __('Getting started') }}</h2>
+                    @if(!count(Auth::user()->entities) > 0)
+                    <x-expander level="3">
+                        <x-slot name="summary">{{ __('Create your entity page') }}</x-slot>
+                        <div class="flow">
+                            <p>{{ __('Share more about your organization so that consultants can get to know you.') }}</p>
+                            <p><a class="button" href="{{ localized_route('entities.create') }}">{{ __('Create your page') }}</a></p>
+                        </div>
+                    </x-expander>
+                    @else
+                    <x-expander level="3">
+                        <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
+                        <div class="flow">
+                            <p>{{ __('Create a new project page so that consultants can begin to express their interest in working with you.') }}</p>
+                            <p><a class="button" href="{{ localized_route('projects.create', Auth::user()->entities->first()) }}">{{ __('Create project page') }}</a></p>
+                        </div>
+                    </x-expander>
+                    @endif
+                    <x-expander level="3">
+                        <x-slot name="summary">{{ __('Learn about engaging the disability community') }}</x-slot>
+                        <div class="flow">
+                            <p>{{ __('Browse through our resources and learn more.') }}</p>
+                            <p><a class="button" href="{{ localized_route('collections.index') }}">{{ __('Explore the resource hub') }}</a></p>
+                        </div>
+                    </x-expander>
+                </div>
 
-        <p>{{ __('dashboard.entity_things_you_can_do') }}</p>
+                @if(count(Auth::user()->entities) > 0)
+                <div class="box flow">
+                    <h2>{{ __('My entity page') }}</h2>
+                    <p>
+                        <a href="{{ localized_route('entities.show', Auth::user()->entities->first()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
+                        <a href="{{ localized_route('entities.edit', Auth::user()->entities->first()) }}">{{ __('Edit my entity page') }}</a>
+                    </p>
+                </div>
+                @endif
 
-        @if(count(Auth::user()->entities) > 0)
-        <h2>{{ __('dashboard.entity_manage_page_title') }}</h2>
+                <div class="box">
+                    <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
+                </div>
 
-        @foreach(Auth::user()->entities as $entity)
-        <p><a href="{{ localized_route('entities.show', $entity) }}"><strong>{{ $entity->name }}</strong></a></p>
-        @endforeach
+                <div class="box">
+                    <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
+                </div>
+            </div>
 
-        @else
-        <h2>{{ __('dashboard.entity_create_page_title') }}</h2>
-
-        <p>{{ __('dashboard.entity_create_page_info') }}</p>
-
-        <p><a href="{{ localized_route('entities.create') }}">{!! __('dashboard.create_page_prompt', ['item' => __('regulated entity')]) !!}</a></p>
-        @endif
-
-        <h2>{{ __('dashboard.entity_learn_title') }}</h2>
-
-        <p>{{ __('dashboard.entity_learn_info') }}</p>
-
-        <p><a href="{{ localized_route('collections.index') }}">{{ __('dashboard.learn_prompt') }}</a></p>
-
-        @if(count(Auth::user()->projects()) > 0)
-        <h2>{{ __('View or manage your projects') }}</h2>
-
-        @foreach(Auth::user()->projects() as $project)
-        <p><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></p>
-        @endforeach
-
-        @elseif(count(Auth::user()->entities) > 0)
-
-        <h2>{{ __('dashboard.entity_create_project_title') }}</h2>
-
-        <p>{{ __('dashboard.entity_create_project_info') }}</p>
-
-        <p><a href="{{ localized_route('projects.create', Auth::user()->entities[0]) }}">{!! __('dashboard.create_page_prompt', ['item' => __('project')]) !!}</a></p>
-        @endif
+            <div class="column flow">
+                <div class="box">
+                    <h2>{{ __('My active projects') }}</h2>
+                    @if(Auth::user()->entities->first() && count(Auth::user()->entities->first()->projects) > 0)
+                    {{-- TODO: Display project cards. --}}
+                    @else
+                    <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', Auth::user()->entities->first()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
     @endif
 
 </x-app-wide-layout>
