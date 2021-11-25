@@ -25,7 +25,6 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
             'locale' => 'en',
             'context' => 'consultant',
-            'access' => '',
         ]);
 
         $this->assertAuthenticated();
@@ -41,7 +40,6 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
             'locale' => 'en',
             'context' => 'superadmin',
-            'access' => '',
         ]);
 
         $this->assertGuest();

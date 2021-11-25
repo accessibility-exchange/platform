@@ -41,6 +41,7 @@ class EntityTest extends TestCase
         $entity = Entity::where('name', $user->name . ' Inc.')->first();
 
         $this->assertTrue($user->isMemberOf($entity));
+        $this->assertEquals(count($user->memberships), 1);
     }
 
     public function test_users_with_admin_role_can_edit_entities()
