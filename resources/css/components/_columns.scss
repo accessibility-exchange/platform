@@ -1,0 +1,16 @@
+.columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--step-0);
+}
+
+.column > * + * {
+    margin-block-start: var(--step-0);
+}
+
+@media (min-width: 1024px) {
+    .columns {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
