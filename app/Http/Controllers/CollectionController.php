@@ -17,10 +17,12 @@ class CollectionController extends Controller
      */
     public function index()
     {
+        $roleCollectionIds = settings()->get('roleCollectionIds', [1, 2, 3]);
+        $topicCollectionIds = settings()->get('topicCollectionIds', [4, 5, 6, 7]);
+
         return view('collections.index', [
-            // TODO: Handle this better.
-            'roleCollections' => Collection::whereIn('id', [1, 2, 3])->get(),
-            'topicCollections' => Collection::whereIn('id', [4, 5, 6, 7])->get(),
+            'roleCollections' => Collection::whereIn('id', $roleCollectionIds)->get(),
+            'topicCollections' => Collection::whereIn('id', $topicCollectionIds)->get(),
         ]);
     }
 
