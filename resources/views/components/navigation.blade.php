@@ -4,7 +4,7 @@
     <ul role="list" class="nav__basics">
         @auth
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
-            {{ __('dashboard.title') }}
+            {{ __('Dashboard') }}
         </x-nav-link>
         @else
         @if (Route::has(locale() . '.registration'))
