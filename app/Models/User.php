@@ -155,7 +155,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     public function entity(): mixed
     {
-        return $this->entities->firstOrFail();
+        return $this->entities->first();
     }
 
     public function projects()
