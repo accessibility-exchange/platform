@@ -3,13 +3,8 @@ name: Lint and analyze PHP code
 on:
   push:
     branches: [ dev, prototype ]
-    paths:
-    - '**.php'
   pull_request:
     branches: [ dev, prototype ]
-    paths:
-    - '**.php'
-
 
 jobs:
   php-lint-analyze:
