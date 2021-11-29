@@ -6,7 +6,7 @@
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your entity page') }}</x-slot>
                 <div class="flow">
-                    <p>{{ __('Share more about your organization so that consultants can get to know you.') }}</p>
+                    <p>{{ __('Share more about your organization so that community members can get to know you.') }}</p>
                     <p><a class="button" href="{{ localized_route('entities.create') }}">{{ __('Create your page') }}</a></p>
                 </div>
             </x-expander>
@@ -14,7 +14,7 @@
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
                 <div class="flow">
-                    <p>{{ __('Create a new project page so that consultants can begin to express their interest in working with you.') }}</p>
+                    <p>{{ __('Create a new project page so that community members can begin to express their interest in working with you.') }}</p>
                     <p><a class="button" href="{{ localized_route('projects.create', $currentUser->entity()) }}">{{ __('Create project page') }}</a></p>
                 </div>
             </x-expander>

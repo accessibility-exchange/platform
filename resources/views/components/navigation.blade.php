@@ -27,8 +27,8 @@
 
             <x-slot name="content">
                 <p>
-                    <x-dropdown-link :href="localized_route('consultants.index')" :active="request()->routeIs(locale() . '.consultants.index')">
-                        {{ __('Consultants') }}
+                    <x-dropdown-link :href="localized_route('community-members.index')" :active="request()->routeIs(locale() . '.community-members.index')">
+                        {{ __('Community members') }}
                     </x-dropdown-link>
                 </p>
                 <p>
@@ -67,9 +67,9 @@
             </x-slot>
 
             <x-slot name="content">
-                @if(Auth::user()->consultant)
+                @if(Auth::user()->communityMember)
                 <p>
-                    <x-dropdown-link href="{{ localized_route('consultants.show', ['consultant' => Auth::user()->consultant]) }}" :active="request()->routeIs(locale() . '.consultants.show', Auth::user()->consultant)">
+                    <x-dropdown-link href="{{ localized_route('community-members.show', ['communityMember' => Auth::user()->communityMember]) }}" :active="request()->routeIs(locale() . '.community-members.show', Auth::user()->communityMember)">
                         {{ __('My page') }}
                     </x-dropdown-link>
                 </p>

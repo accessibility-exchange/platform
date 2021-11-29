@@ -2,12 +2,12 @@
     <div class="column flow">
         <div class="box flow">
             <h2>{{ __('Getting started') }}</h2>
-            @if(!$currentUser->consultant)
+            @if(!$currentUser->communityMember)
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your community member page') }}</x-slot>
                 <div class="flow">
                     <p>{{ __('Once you create your page, entities can find you and ask you to consult on their projects.') }}</p>
-                    <p><a class="button" href="{{ localized_route('consultants.create') }}">{{ __('Create your page') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('community-members.create') }}">{{ __('Create your page') }}</a></p>
                 </div>
             </x-expander>
             @else
@@ -28,12 +28,12 @@
             </x-expander>
         </div>
 
-        @if($currentUser->consultant)
+        @if($currentUser->communityMember)
         <div class="box flow">
             <h2>{{ __('My page') }}</h2>
             <p>
-                <a href="{{ localized_route('consultants.show', ['consultant' => $currentUser->consultant]) }}"><strong>{{ __('Visit my page') }}</strong>@if($currentUser->consultant->checkStatus('draft')) ({{ __('draft') }})@endif</a><br />
-                <a href="{{ localized_route('consultants.edit', ['consultant' => $currentUser->consultant]) }}">{{ __('Edit my page') }}</a>
+                <a href="{{ localized_route('community-members.show', ['communityMember' => $currentUser->communityMember]) }}"><strong>{{ __('Visit my page') }}</strong>@if($currentUser->communityMember->checkStatus('draft')) ({{ __('draft') }})@endif</a><br />
+                <a href="{{ localized_route('community-members.edit', ['communityMember' => $currentUser->communityMember]) }}">{{ __('Edit my page') }}</a>
             </p>
         </div>
 
@@ -48,10 +48,10 @@
     </div>
 
     <div class="column flow">
-        @if($currentUser->consultant)
+        @if($currentUser->communityMember)
         <div class="box">
             <h2>{{ __('My active projects') }}</h2>
-            @if(count($currentUser->consultant->projects) > 0)
+            @if(count($currentUser->communityMember->projects) > 0)
             {{-- TODO: Display project cards. --}}
             @else
             <p>{!! __('You have no active projects right now. To find a project to work on, :action and express your interest in ones that you want to work on.', ['action' => '<a href="' . localized_route('projects.index') . '">' . __('browse through our list of projects') . '</a>']) !!}</p>

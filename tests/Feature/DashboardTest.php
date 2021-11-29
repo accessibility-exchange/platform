@@ -13,7 +13,7 @@ class DashboardTest extends TestCase
     public function test_user_can_access_dashboard()
     {
         $user = User::factory()->create([
-            'context' => 'consultant',
+            'context' => 'community-member',
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('dashboard'));

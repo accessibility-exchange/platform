@@ -18,8 +18,8 @@ class CollectionSeeder extends Seeder
 
         $collections = [
             [
-                'title' => 'Consultants',
-                'description' => 'Build up your skills and refine your practice to tackle more challenging projects.',
+                'title' => 'Community members',
+                'description' => 'Build up your skills and refine your practice to participate in more challenging projects.',
             ],
             [
                 'title' => 'Federally regulated entities',
@@ -27,7 +27,7 @@ class CollectionSeeder extends Seeder
             ],
             [
                 'title' => 'Deaf and Disability organizations',
-                'description' => 'Support your members on their path of becoming accessibility consultants.',
+                'description' => 'Support your members on their path of becoming accessibility community-members.',
             ],
             [
                 'title' => 'Disability knowledge and awareness',

@@ -200,12 +200,12 @@ class Entity extends Model
     }
 
     /**
-     * The consultants who have identified themselves with the entity.
+     * The community members who have identified themselves with the entity.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function consultants(): BelongsToMany
+    public function communityMembers(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class);
+        return $this->belongsToMany(CommunityMember::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Consultant;
+use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
@@ -292,7 +292,7 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->futureProjects), 1);
     }
 
-    public function test_consultants_can_express_interest_in_projects()
+    public function test_community_members_can_express_interest_in_projects()
     {
         if (! config('hearth.entities.enabled')) {
             return $this->markTestSkipped('Entity support  is not enabled.');
@@ -300,7 +300,7 @@ class ProjectTest extends TestCase
 
         $user = User::factory()->create();
         $admin_user = User::factory()->create();
-        $consultant = Consultant::factory()->create([
+        $communityMember = CommunityMember::factory()->create([
             'user_id' => $user->id,
         ]);
 
@@ -312,15 +312,15 @@ class ProjectTest extends TestCase
             'published_at' => Carbon::now(),
         ]);
 
-        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('consultants.express-interest', $consultant), [
+        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('community-members.express-interest', $communityMember), [
             'project_id' => $project->id,
         ]);
 
         $response->assertRedirect(localized_route('projects.show', $project));
 
-        $this->assertTrue($project->interestedConsultants->contains($consultant));
+        $this->assertTrue($project->interestedCommunityMembers->contains($communityMember));
 
-        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('consultants.remove-interest', $consultant), [
+        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('community-members.remove-interest', $communityMember), [
             'project_id' => $project->id,
         ]);
 
@@ -328,18 +328,18 @@ class ProjectTest extends TestCase
 
         $project = $project->fresh();
 
-        $this->assertFalse($project->interestedConsultants->contains($consultant));
+        $this->assertFalse($project->interestedCommunityMembers->contains($communityMember));
     }
 
-    public function test_consultants_can_be_attached_to_projects()
+    public function test_community_members_can_be_attached_to_projects()
     {
         if (! config('hearth.entities.enabled')) {
             return $this->markTestSkipped('Entity support  is not enabled.');
         }
 
         $user = User::factory()->create();
-        $shortlisted_consultant = Consultant::factory()->create();
-        $requested_consultant = Consultant::factory()->create();
+        $shortlisted_community_member = CommunityMember::factory()->create();
+        $requested_community_member = CommunityMember::factory()->create();
 
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -353,32 +353,32 @@ class ProjectTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertSee('Consultant shortlist');
+        $response->assertSee('Participant shortlist');
 
-        $response = $this->actingAs($user)->get(localized_route('projects.find-all-consultants', $project));
+        $response = $this->actingAs($user)->get(localized_route('projects.find-all-participants', $project));
 
         $response->assertOk();
 
-        // Add two consultants to shortlist.
-        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
-            'consultant_id' => $shortlisted_consultant->id,
+        // Add two community_members to shortlist.
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-participants', $project))->put(localized_route('projects.add-participant', $project), [
+            'participant_id' => $shortlisted_community_member->id,
         ]);
 
         $response->assertSessionHasNoErrors();
 
-        $response = $this->actingAs($user)->from(localized_route('projects.find-all-consultants', $project))->put(localized_route('projects.add-consultant', $project), [
-            'consultant_id' => $requested_consultant->id,
+        $response = $this->actingAs($user)->from(localized_route('projects.find-all-participants', $project))->put(localized_route('projects.add-participant', $project), [
+            'participant_id' => $requested_community_member->id,
         ]);
 
         $response->assertSessionHasNoErrors();
 
         $project = $project->fresh();
 
-        $this->assertEquals(2, count($project->shortlistedConsultants));
+        $this->assertEquals(2, count($project->shortlistedParticipants));
 
-        // Request service from one consultant.
-        $response = $this->actingAs($user)->from(localized_route('projects.manage', $project))->put(localized_route('projects.update-consultant', $project), [
-            'consultant_id' => $requested_consultant->id,
+        // Request service from one community_member.
+        $response = $this->actingAs($user)->from(localized_route('projects.manage', $project))->put(localized_route('projects.update-participant', $project), [
+            'participant_id' => $requested_community_member->id,
             'status' => 'requested',
         ]);
 
@@ -386,15 +386,15 @@ class ProjectTest extends TestCase
 
         $project = $project->fresh();
 
-        $this->assertEquals(1, count($project->shortlistedConsultants));
-        $this->assertEquals(1, count($project->requestedConsultants));
+        $this->assertEquals(1, count($project->shortlistedParticipants));
+        $this->assertEquals(1, count($project->requestedParticipants));
 
-        // Verify consultant project counts.
-        $this->assertEquals(1, count($shortlisted_consultant->projects));
-        $this->assertEquals(1, count($requested_consultant->projects));
+        // Verify community_member project counts.
+        $this->assertEquals(1, count($shortlisted_community_member->projects));
+        $this->assertEquals(1, count($requested_community_member->projects));
     }
 
-    public function test_confirmed_consultants_can_participate_in_projects()
+    public function test_confirmed_participants_can_participate_in_projects()
     {
         if (! config('hearth.entities.enabled')) {
             return $this->markTestSkipped('Entity support  is not enabled.');
@@ -405,14 +405,14 @@ class ProjectTest extends TestCase
             'entity_id' => $entity->id,
             'published_at' => Carbon::now(),
         ]);
-        $consultant = Consultant::factory()->create();
-        $project->consultants()->attach($consultant->id, ['status' => 'confirmed']);
+        $communityMember = CommunityMember::factory()->create();
+        $project->participants()->attach($communityMember->id, ['status' => 'confirmed']);
 
-        $response = $this->actingAs($consultant->user)->get(localized_route('projects.participate', $project));
+        $response = $this->actingAs($communityMember->user)->get(localized_route('projects.participate', $project));
 
         $response->assertOk();
 
-        $response = $this->actingAs($consultant->user)->get(localized_route('projects.index-updates', $project));
+        $response = $this->actingAs($communityMember->user)->get(localized_route('projects.index-updates', $project));
 
         $response->assertOk();
     }

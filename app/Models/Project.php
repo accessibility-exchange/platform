@@ -34,8 +34,8 @@ class Project extends Model
         'start_date',
         'end_date',
         'published_at',
-        'found_consultants',
-        'confirmed_consultants',
+        'found_participants',
+        'confirmed_participants',
         'scheduled_planning_meeting',
         'notified_of_planning_meeting',
         'prepared_project_orientation',
@@ -49,7 +49,7 @@ class Project extends Model
         'finished_consultation_meetings',
         'prepared_accessibility_plan',
         'prepared_follow_up_plan',
-        'shared_plans_with_consultants',
+        'shared_plans_with_participants',
         'published_accessibility_plan',
         'payment_negotiable',
         'goals',
@@ -82,8 +82,8 @@ class Project extends Model
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
-        'found_consultants' => 'boolean',
-        'confirmed_consultants' => 'boolean',
+        'found_participants' => 'boolean',
+        'confirmed_participants' => 'boolean',
         'scheduled_planning_meeting' => 'boolean',
         'notified_of_planning_meeting' => 'boolean',
         'prepared_project_orientation' => 'boolean',
@@ -97,7 +97,7 @@ class Project extends Model
         'finished_consultation_meetings' => 'boolean',
         'prepared_accessibility_plan' => 'boolean',
         'prepared_follow_up_plan' => 'boolean',
-        'shared_plans_with_consultants' => 'boolean',
+        'shared_plans_with_participants' => 'boolean',
         'regions' => 'array',
         'payment_negotiable' => 'boolean',
         'virtual_consultation' => 'boolean',
@@ -138,8 +138,8 @@ class Project extends Model
             'published_at',
         ],
         2 => [
-            'found_consultants',
-            'confirmed_consultants',
+            'found_participants',
+            'confirmed_participants',
         ],
         3 => [
             'scheduled_planning_meeting',
@@ -159,7 +159,7 @@ class Project extends Model
         5 => [
             'prepared_accessibility_plan',
             'prepared_follow_up_plan',
-            'shared_plans_with_consultants',
+            'shared_plans_with_participants',
         ],
     ];
 
@@ -214,16 +214,16 @@ class Project extends Model
     }
 
     /**
-     * Get the project steps for consultants.
+     * Get the project steps for community-members.
      *
      * @return array
      */
-    public function getConsultantSteps(): array
+    public function getParticipantSteps(): array
     {
         return [
             1 => [
                 'title' => __('Learn how to work together'),
-                'subtitle' => __('Meet with the other consultants and the entity. Have a conversation with them about how you’d like to work together.'),
+                'subtitle' => __('Meet with the other participants and the entity. Have a conversation with them about how you’d like to work together.'),
             ],
             2 => [
                 'title' => __('Take part in consultations'),
@@ -253,16 +253,16 @@ class Project extends Model
             ],
             2 => [
                 1 => [
-                    'link' => localized_route('projects.find-interested-consultants', $this),
-                    'label' => __('Find consultants'),
-                    'description' => __('Build your shortlist of consultants who you would like to consult on your project.'),
-                    'status' => $this->found_consultants ?? null,
+                    'link' => localized_route('projects.find-interested-participants', $this),
+                    'label' => __('Find participants'),
+                    'description' => __('Build your shortlist of participants who you would like to consult on your project.'),
+                    'status' => $this->found_participants ?? null,
                 ],
                 2 => [
                     'link' => "#",
-                    'label' => __('Confirm consultants’ participation'),
-                    'description' => __('Reach out to each consultant and ask whether they’d like to consult on your project.'),
-                    'status' => $this->confirmed_consultants ?? null,
+                    'label' => __('Confirm participants’ participation'),
+                    'description' => __('Reach out to each participant and ask whether they’d like to consult on your project.'),
+                    'status' => $this->confirmed_participants ?? null,
                 ],
             ],
             3 => [
@@ -274,7 +274,7 @@ class Project extends Model
                 ],
                 2 => [
                     'link' => "#",
-                    'label' => __('Contact consulting team'),
+                    'label' => __('Contact participant team'),
                     'description' => __('Contact the consulting team about the meeting.'),
                     'status' => $this->notified_of_planning_meeting ?? null,
                 ],
@@ -312,7 +312,7 @@ class Project extends Model
                 ],
                 2 => [
                     'link' => "#",
-                    'label' => __('Contact consulting team'),
+                    'label' => __('Contact participant team'),
                     'description' => __('Contact the consulting team about the meeting.'),
                     'status' => $this->notified_of_consultation_meetings ?? null,
                 ],
@@ -352,17 +352,17 @@ class Project extends Model
                     'link' => "#",
                     'label' => __('Share your accessibility plan and follow-up plan with the consulting team.'),
                     'description' => false,
-                    'status' => $this->shared_plans_with_consultants ?? null,
+                    'status' => $this->shared_plans_with_participants ?? null,
                 ],
                 4 => [
                     'link' => "#",
                     'label' => __('Publish your accessibility plan (optional)'),
-                    'description' => __('By uploading your completed plan, you can build trust with the larger disability community, which may make consultants more eager to work with you in the future.'),
+                    'description' => __('By uploading your completed plan, you can build trust with the larger disability community, which may make participants more eager to work with you in the future.'),
                     'status' => $this->published_accessibility_plan ?? null,
                 ],
                 5 => [
                     'link' => localized_route('projects.create-update', $this),
-                    'label' => __('Update consultants based on your follow-up plan'),
+                    'label' => __('Update participants based on your follow-up plan'),
                     'description' => __('Based on your follow-up plan, update the consulting team on the progress of your accessibility project.'),
                     'status' => $this->published_accessibility_plan ?? null,
                 ],
@@ -371,11 +371,11 @@ class Project extends Model
     }
 
     /**
-     * Get the project substeps for consultants.
+     * Get the project substeps for participants.
      *
      * @return array
      */
-    public function getConsultantSubsteps(): array
+    public function getParticipantSubsteps(): array
     {
         return [
             1 => [],
@@ -396,7 +396,7 @@ class Project extends Model
                 3 => [
                     'link' => '#',
                     'label' => __('Share your experience'),
-                    'description' => __('Share your experience of what it was like to consult with this regulated entity. This will help other consultants understand what it’s like to work with them.'),
+                    'description' => __('Share your experience of what it was like to consult with this regulated entity. This will help other participants understand what it’s like to work with them.'),
                     'status' => null,
                 ],
                 4 => [
@@ -456,8 +456,8 @@ class Project extends Model
      */
     public function hasBuiltTeam(): bool
     {
-        return ! is_null($this->found_consultants)
-            && ! is_null($this->confirmed_consultants);
+        return ! is_null($this->found_participants)
+            && ! is_null($this->confirmed_participants);
     }
 
     /**
@@ -498,7 +498,7 @@ class Project extends Model
     {
         return ! is_null($this->prepared_accessibility_plan)
             && ! is_null($this->prepared_follow_up_plan)
-            && ! is_null($this->shared_plans_with_consultants);
+            && ! is_null($this->shared_plans_with_participants);
     }
 
     /**
@@ -526,11 +526,11 @@ class Project extends Model
     }
 
     /**
-     * What numeric step is the consultant on?
+     * What numeric step is the participant on?
      *
      * @return int
      */
-    public function currentConsultantStep(): int
+    public function currentParticipantStep(): int
     {
         $step = 1;
 
@@ -669,67 +669,67 @@ class Project extends Model
     }
 
     /**
-     * The consultants that are interested in the project.
+     * The community members that are interested in the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function interestedConsultants(): BelongsToMany
+    public function interestedCommunityMembers(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class, 'projects_of_interest');
+        return $this->belongsToMany(CommunityMember::class, 'projects_of_interest');
     }
 
     /**
-     * The consultants that are affiliated with the project.
+     * The participants that are affiliated with the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function consultants(): BelongsToMany
+    public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class)
+        return $this->belongsToMany(CommunityMember::class)
             ->withPivot('status');
     }
 
     /**
-     * The consultants that are shortlisted for the project.
+     * The participants that are shortlisted for the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function shortlistedConsultants(): BelongsToMany
+    public function shortlistedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class)
+        return $this->belongsToMany(CommunityMember::class)
             ->wherePivot('status', 'shortlisted');
     }
 
     /**
-     * The consultants that have been requested for the project.
+     * The participants that have been requested for the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function requestedConsultants(): BelongsToMany
+    public function requestedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class)
+        return $this->belongsToMany(CommunityMember::class)
             ->wherePivot('status', 'requested');
     }
 
     /**
-     * The consultants that are shortlisted for the project.
+     * The community members that are shortlisted for the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function confirmedConsultants(): BelongsToMany
+    public function confirmedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class)
+        return $this->belongsToMany(CommunityMember::class)
             ->wherePivot('status', 'confirmed');
     }
 
     /**
-     * The consultants that have exited the project.
+     * The community members that have exited the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function exitedConsultants(): BelongsToMany
+    public function exitedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Consultant::class)
+        return $this->belongsToMany(CommunityMember::class)
             ->wherePivot('status', 'exited');
     }
 
@@ -740,7 +740,7 @@ class Project extends Model
      */
     public function presentLivedExperiences()
     {
-        return $this->consultants->pluck('livedExperiences')->flatten()->pluck('name')->unique()->toArray();
+        return $this->participants->pluck('livedExperiences')->flatten()->pluck('name')->unique()->toArray();
     }
 
     /**
@@ -762,7 +762,7 @@ class Project extends Model
      */
     public function presentCommunities(): array
     {
-        return $this->consultants->pluck('communities')->flatten()->pluck('name')->unique()->toArray();
+        return $this->participants->pluck('communities')->flatten()->pluck('name')->unique()->toArray();
     }
 
     /**
@@ -784,7 +784,7 @@ class Project extends Model
      */
     public function accessRequirements(): array
     {
-        return $this->consultants->pluck('accessSupports')->flatten()->sortBy('id')->pluck('name')->unique()->toArray();
+        return $this->participants->pluck('accessSupports')->flatten()->sortBy('id')->pluck('name')->unique()->toArray();
     }
 
     /**
@@ -794,7 +794,7 @@ class Project extends Model
      */
     public function presentRegions(): array
     {
-        $regions = $this->consultants->pluck('region')->unique()->toArray();
+        $regions = $this->participants->pluck('region')->unique()->toArray();
         $present = [];
 
         if (in_array('BC', $regions)) {
@@ -862,12 +862,12 @@ class Project extends Model
     }
 
     /**
-     * Calculate consultant retention.
+     * Calculate participant retention.
      *
-     * @return float The consultant retention as a decimal fraction of 1.
+     * @return float The participant retention as a decimal fraction of 1.
      */
-    public function consultantRetention(): float
+    public function participantRetention(): float
     {
-        return round(count($this->confirmedConsultants) / (count($this->confirmedConsultants) + count($this->exitedConsultants)), 2);
+        return round(count($this->confirmedParticipants) / (count($this->confirmedParticipants) + count($this->exitedParticipants)), 2);
     }
 }

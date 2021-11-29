@@ -1,9 +1,9 @@
 <div class="flow">
-    <h2>{{ __('Consultant shortlist') }}</h2>
-    @if((count($project->consultants)) < $project->min)
-    <p><em>{{ __('According to your project details, you need to add at least :number more consultants to your shortlist.', ['number' => $project->min - (count($project->confirmedConsultants) + count($project->requestedConsultants) + count($project->shortlistedConsultants))]) }}</em></p>
+    <h2>{{ __('Participant shortlist') }}</h2>
+    @if((count($project->participants)) < $project->min)
+    <p><em>{{ __('According to your project details, you need to add at least :number more participants to your shortlist.', ['number' => $project->min - (count($project->confirmedParticipants) + count($project->requestedParticipants) + count($project->shortlistedParticipants))]) }}</em></p>
     @endif
-    @if((count($project->consultants)) >= 5)
+    @if((count($project->participants)) >= 5)
     <div class="access flow">
         <h3>{{ __('Access needs') }}</h3>
         <p><em>{{ __('An aggregated list of the consulting team’s access needs') }}</em></p>
@@ -15,7 +15,7 @@
         <p class="align-end"><a href="{{ localized_route('collections.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
     </div>
     <div class="diversity flow">
-        <h3>{{ __('Diversity of consultants') }}</h3>
+        <h3>{{ __('Diversity of participants') }}</h3>
         <div class="columns">
 
             <div class="column flow">
@@ -67,59 +67,59 @@
         </div>
     </div>
     @endif
-    @if(count($project->confirmedConsultants) > 0)
+    @if(count($project->confirmedParticipants) > 0)
     <h3>{{ __('Confirmed') }}</h3>
-    @foreach($project->confirmedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" level="4">
-        <x-heading :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $consultant->name]) !!}</x-heading>
+    @foreach($project->confirmedParticipants as $communityMember)
+    <x-community-member-card :communityMember="$communityMember" level="4">
+        <x-heading :level="5">{!! __('<span class="visually-hidden">:name’s </span>Contact information', ['name' => $communityMember->name]) !!}</x-heading>
         <ul role="list">
-            @if($consultant->phone)
-            <li>{!! __('Phone: :phone', ['phone' => '<a href="tel:' . $consultant->phone_number . '">' . $consultant->phone . '</a>']) !!}</li>
+            @if($communityMember->phone)
+            <li>{!! __('Phone: :phone', ['phone' => '<a href="tel:' . $communityMember->phone_number . '">' . $communityMember->phone . '</a>']) !!}</li>
             @endif
-            @if($consultant->email)
-            <li>{!! __('Email: :email', ['email' => '<a href="mailto:' . $consultant->email . '">' . $consultant->email . '</a>']) !!}</li>
+            @if($communityMember->email)
+            <li>{!! __('Email: :email', ['email' => '<a href="mailto:' . $communityMember->email . '">' . $communityMember->email . '</a>']) !!}</li>
             @endif
         </ul>
-    </x-consultant-card>
+    </x-community-member-card>
     @endforeach
     @endif
-    @if(count($project->requestedConsultants) > 0)
+    @if(count($project->requestedParticipants) > 0)
     <h3>{{ __('Awaiting response') }}</h3>
-    @foreach($project->requestedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" level="4"></x-consultant-card>
+    @foreach($project->requestedParticipants as $communityMember)
+    <x-community-member-card :communityMember="$communityMember" level="4"></x-community-member-card>
     @endforeach
     @endif
-    @if(count($project->shortlistedConsultants) > 0)
+    @if(count($project->shortlistedParticipants) > 0)
     <h3>{{ __('Shortlisted') }}</h3>
     @endif
-    @foreach($project->shortlistedConsultants as $consultant)
-    <x-consultant-card :consultant="$consultant" :project="$project" level="4">
+    @foreach($project->shortlistedParticipants as $communityMember)
+    <x-community-member-card :communityMember="$communityMember" :project="$project" level="4">
         <x-slot name="actions">
             <div class="actions">
-                <form action="{{ localized_route('projects.remove-consultant', $project) }}" method="post">
+                <form action="{{ localized_route('projects.remove-participant', $project) }}" method="post">
                     @csrf
                     @method('put')
 
-                    <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                    <x-hearth-input type="hidden" name="participant_id" :value="$communityMember->id" />
                     <x-hearth-input type="hidden" name="status" value="requested" />
 
-                    <x-hearth-button>{!! __('Remove <span class="visually-hidden">:name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
+                    <x-hearth-button>{!! __('Remove <span class="visually-hidden">:name</span>', ['name' => $communityMember->name]) !!}</x-hearth-button>
                 </form>
-                <form action="{{ localized_route('projects.update-consultant', $project) }}" method="post">
+                <form action="{{ localized_route('projects.update-participant', $project) }}" method="post">
                     @csrf
                     @method('put')
 
-                    <x-hearth-input type="hidden" name="consultant_id" :value="$consultant->id" />
+                    <x-hearth-input type="hidden" name="participant_id" :value="$communityMember->id" />
                     <x-hearth-input type="hidden" name="status" value="requested" />
 
-                    <x-hearth-button>{!! __('Request service <span class="visually-hidden">from :name</span>', ['name' => $consultant->name]) !!}</x-hearth-button>
+                    <x-hearth-button>{!! __('Request service <span class="visually-hidden">from :name</span>', ['name' => $communityMember->name]) !!}</x-hearth-button>
                 </form>
             </div>
         </x-slot>
-    </x-consultant-card>
+    </x-community-member-card>
     @endforeach
-    @if(count($project->consultants) === 0)
-    <p>{{ __('Start finding consultants to add to your shortlist.') }}</p>
-    <p><a class="button" href="{{ localized_route('projects.find-interested-consultants', $project) }}">{{ __('Find consultants') }}</a></p>
+    @if(count($project->participants) === 0)
+    <p>{{ __('Start finding community members to add to your shortlist.') }}</p>
+    <p><a class="button" href="{{ localized_route('projects.find-interested-participants', $project) }}">{{ __('Find participants') }}</a></p>
     @endif
 </div>

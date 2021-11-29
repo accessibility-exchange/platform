@@ -42,8 +42,8 @@ class CreateProjectsTable extends Migration
             $table->boolean('flexible_deadlines')->nullable();
             $table->boolean('flexible_breaks')->nullable();
             $table->dateTime('published_at')->nullable();
-            $table->boolean('found_consultants')->nullable();
-            $table->boolean('confirmed_consultants')->nullable();
+            $table->boolean('found_participants')->nullable();
+            $table->boolean('confirmed_participants')->nullable();
             $table->boolean('scheduled_planning_meeting')->nullable();
             $table->boolean('notified_of_planning_meeting')->nullable();
             $table->boolean('prepared_project_orientation')->nullable();
@@ -57,7 +57,7 @@ class CreateProjectsTable extends Migration
             $table->boolean('finished_consultation_meetings')->nullable();
             $table->boolean('prepared_accessibility_plan')->nullable();
             $table->boolean('prepared_follow_up_plan')->nullable();
-            $table->boolean('shared_plans_with_consultants')->nullable();
+            $table->boolean('shared_plans_with_participants')->nullable();
             $table->boolean('published_accessibility_plan')->nullable();
             $table->timestamps();
         });

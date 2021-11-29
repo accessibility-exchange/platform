@@ -15,7 +15,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'consultant_id',
+        'community_member_id',
         'project_id',
         'body',
         'met_access_needs',
@@ -27,11 +27,11 @@ class Review extends Model
     ];
 
     /**
-     * Get the parent consultant model.
+     * Get the parent community member model.
      */
-    public function consultant()
+    public function communityMember()
     {
-        return $this->belongsTo(Consultant::class);
+        return $this->belongsTo(CommunityMember::class);
     }
 
     /**
