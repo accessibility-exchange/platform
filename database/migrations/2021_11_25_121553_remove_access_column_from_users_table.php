@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLinksColumnToConsultantsTable extends Migration
+class RemoveAccessColumnFromUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddLinksColumnToConsultantsTable extends Migration
      */
     public function up()
     {
-        Schema::table('consultants', function (Blueprint $table) {
-            $table->json('links')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['access', 'access_outreach']);
         });
     }
 
@@ -25,8 +25,9 @@ class AddLinksColumnToConsultantsTable extends Migration
      */
     public function down()
     {
-        Schema::table('consultants', function (Blueprint $table) {
-            $table->dropColumn('links');
+        Schema::table('users', function (Blueprint $table) {
+            $table->text('access')->nullable();
+            $table->boolean('access_outreach')->nullable()->default(false);
         });
     }
 }

@@ -1,6 +1,6 @@
 <article class="card card--consultant flow">
     <header>
-        <x-header :level="$level"><a href="{{ localized_route('consultants.show', $consultant) }}">{{ $consultant->name }}</a></x-header>
+        <x-heading :level="$level"><a href="{{ localized_route('consultants.show', $consultant) }}">{{ $consultant->name }}</a></x-heading>
         <p><strong>{{ __('Individual consultant') }}</strong></p>
     </header>
     {{ $slot ?? '' }}

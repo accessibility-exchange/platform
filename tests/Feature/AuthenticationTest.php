@@ -30,6 +30,16 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(localized_route('dashboard'));
     }
 
+    public function test_users_can_quickly_exit()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(localized_route('exit'));
+
+        $this->assertGuest();
+        $response->assertRedirect('https://weather.com');
+    }
+
     public function test_users_can_not_authenticate_with_invalid_password()
     {
         $user = User::factory()->create();
@@ -46,12 +56,7 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('users.edit'));
+        $response = $this->actingAs($user)->get(localized_route('users.edit'));
         $response->assertOk();
     }
 

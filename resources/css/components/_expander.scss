@@ -1,16 +1,50 @@
+.expander {
+    position: relative;
+}
+
 .expander button {
     align-items: center;
-    background-color: var(--ll-background-color);
+    background-color: transparent;
     border: 0;
     color: var(--ll-text-color);
     display: flex;
     font-size: inherit;
     justify-content: space-between;
     padding: 0;
+    text-align: start;
     width: 100%;
 
     svg {
         height: 1.5em;
         width: 1.5em;
     }
+}
+
+.field + .expander {
+    border-block-start: var(--ll-border-thin);
+    padding-block-start: var(--step--3);
+}
+
+.field .expander__summary {
+    font-size: var(--step-1);
+    font-weight: 700;
+}
+
+.field.expander {
+    position: relative;
+}
+
+.field.expander.field--error button {
+    color: var(--ll-text-color-error);
+}
+
+.field.expander .badge {
+    position: absolute;
+    right: 3em;
+    top: var(--step--2);
+    z-index: -1;
+}
+
+.field.expander .expander__content {
+    margin-block-start: var(--step--5);
 }

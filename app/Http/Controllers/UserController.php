@@ -19,6 +19,18 @@ class UserController extends Controller
     }
 
     /**
+     * Show the dashboard view for the logged-in user.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function dashboard()
+    {
+        return view('dashboard', [
+            'currentUser' => Auth::user(),
+        ]);
+    }
+
+    /**
      * Show the profile edit view for the logged-in user.
      *
      * @return \Illuminate\View\View

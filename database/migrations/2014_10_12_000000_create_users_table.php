@@ -20,6 +20,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('locale')->default('en');
+            $table->string('theme')->default('light');
+            $table->string('context')->default('consultant');
+            $table->text('access')->nullable();
+            $table->boolean('access_outreach')->nullable()->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

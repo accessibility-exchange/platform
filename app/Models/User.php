@@ -32,8 +32,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'locale',
         'theme',
         'context',
-        'access',
-        'access_outreach',
     ];
 
     /**
@@ -55,7 +53,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'access_outreach' => 'boolean',
     ];
 
     /**
@@ -141,8 +138,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      * Get the regulated entities that belong to this user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\MorphToMany<Entity>
      */
     public function entities(): MorphToMany
     {
@@ -151,6 +146,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->withPivot('id')
             ->withPivot('role')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the regulated entity that belongs to this user.
+     *
+     * @return \App\Models\Entity|false
+     */
+    public function entity(): mixed
+    {
+        return $this->entities->first();
     }
 
     public function projects()

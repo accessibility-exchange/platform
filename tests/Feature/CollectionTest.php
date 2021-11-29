@@ -6,6 +6,8 @@ use App\Models\Collection;
 use App\Models\Resource;
 use App\Models\Story;
 use App\Models\User;
+use Database\Seeders\ContentTypeSeeder;
+use Database\Seeders\FormatSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,6 +36,9 @@ class CollectionTest extends TestCase
 
     public function test_collection_resources_appear_in_collection()
     {
+        $this->seed(ContentTypeSeeder::class);
+        $this->seed(FormatSeeder::class);
+
         $user = User::factory()->create();
         $collection = Collection::factory()->create([
             'user_id' => $user->id,

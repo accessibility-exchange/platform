@@ -1,5 +1,5 @@
 @if(count($project->reviews) > 0)
-<x-header :level="$level">{{ __('Overall score') }}</x-header>
+<x-heading :level="$level">{{ __('Overall score') }}</x-heading>
 <div class="scores flow">
     <div class="scores__score">
         <span class="score__attribute">{{ __('Met access needs') }}</span>
@@ -30,7 +30,7 @@
         <span class="score__value">{{ $project->consultantRetention() * 100 }}%</span>
     </div>
 </div>
-<x-header :level="$level">{{ __('Individual experiences') }}</x-header>
+<x-heading :level="$level">{{ __('Individual experiences') }}</x-heading>
 <ul role="list" class="comments grid">
     @foreach($project->reviews as $review)
     <li class="comments__comment">“{{ $review->body }}”</li>

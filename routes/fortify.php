@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExitController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -53,6 +54,11 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->method('post')
         ->middleware('auth')
         ->name('logout');
+
+    Route::multilingual('/exit', [ExitController::class, 'exit'])
+        ->method('post')
+        ->middleware('auth')
+        ->name('exit');
 
     if (Features::enabled(Features::resetPasswords())) {
         Route::multilingual('/forgot-password', [PasswordResetLinkController::class, 'create'])

@@ -38,8 +38,6 @@ class CreateNewUser implements CreatesNewUsers
                     'string',
                     Rule::in(config('app.contexts')),
                 ],
-                'access' => 'nullable|string',
-                'access_outreach' => 'nullable|boolean',
             ],
             [
 
@@ -56,8 +54,6 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
             'context' => $input['context'],
             'locale' => $input['locale'],
-            'access' => $input['access'],
-            'access_outreach' => $input['access_outreach'] ?? false,
         ]);
     }
 }

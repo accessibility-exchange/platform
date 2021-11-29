@@ -33,7 +33,6 @@ class UserFactory extends Factory
             'locale' => config('app.locale'),
             'theme' => 'system',
             'context' => 'consultant',
-            'access' => '',
         ];
     }
 }

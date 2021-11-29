@@ -18,9 +18,12 @@ class CreateResourcesTable extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->foreignId('content_type_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
-            $table->string('language')->default('en');
             $table->longText('summary');
             $table->timestamps();
         });
