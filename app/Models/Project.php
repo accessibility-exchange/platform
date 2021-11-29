@@ -669,7 +669,7 @@ class Project extends Model
     }
 
     /**
-     * The participants that are interested in the project.
+     * The community members that are interested in the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
