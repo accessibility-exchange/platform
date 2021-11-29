@@ -318,7 +318,7 @@ class ProjectTest extends TestCase
 
         $response->assertRedirect(localized_route('projects.show', $project));
 
-        $this->assertTrue($project->interestedParticipants->contains($communityMember));
+        $this->assertTrue($project->interestedCommunityMembers->contains($communityMember));
 
         $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('community-members.remove-interest', $communityMember), [
             'project_id' => $project->id,
@@ -328,7 +328,7 @@ class ProjectTest extends TestCase
 
         $project = $project->fresh();
 
-        $this->assertFalse($project->interestedParticipants->contains($communityMember));
+        $this->assertFalse($project->interestedCommunityMembers->contains($communityMember));
     }
 
     public function test_community_members_can_be_attached_to_projects()

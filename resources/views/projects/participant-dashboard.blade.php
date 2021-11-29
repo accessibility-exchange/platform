@@ -64,7 +64,7 @@
             </ol>
             @endif
 
-            @include("projects.participants-step.$step")
+            @include("projects.participant-step.$step")
             @switch($step)
             @case(1)
                     <h2>{{ __('Resources for this step') }}</h2>
