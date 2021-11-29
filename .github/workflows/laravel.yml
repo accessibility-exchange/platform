@@ -15,7 +15,7 @@ jobs:
       matrix:
         php: [8.0, 8.1]
 
-    name: PHP ${{ matrix.php }}
+    name: tests - PHP ${{ matrix.php }}
 
     steps:
     - uses: shivammathur/setup-php@v2
