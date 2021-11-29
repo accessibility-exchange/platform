@@ -1,10 +1,18 @@
 {
-    "extends": "stylelint-config-fluid",
+    "extends": ["stylelint-config-standard-scss"],
     "plugins": [
+        "stylelint-order",
         "stylelint-use-logical-spec"
     ],
     "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
     "rules": {
-        "liberty/use-logical-spec": ["always", {"except": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height"]}]
+        "indentation": 4,
+        "liberty/use-logical-spec": ["always", {"except": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height"]}],
+        "order/order": [
+            "custom-properties",
+            "declarations"
+        ],
+        "order/properties-alphabetical-order": true,
+        "selector-class-pattern": null
     }
 }

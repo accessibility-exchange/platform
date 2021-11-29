@@ -5,11 +5,11 @@
 [data-theme="light-dark"] {
     --ll-theme-border-color: #bdbdbb;
     --ll-theme-text-color: #bdbdbb;
-    --ll-theme-text-color-translucent: rgba(189, 189, 187, 0.2);
-    --ll-theme-text-color-transparent: rgba(189, 189, 187, 0);
+    --ll-theme-text-color-translucent: rgb(189 189 187 / 20%);
+    --ll-theme-text-color-transparent: rgb(189 189 187 / 0%);
     --ll-theme-accent-color: #bdbdbb;
     --ll-theme-background-color: #555;
-    --ll-theme-background-color-transparent: rgba(85, 85, 85, 0);
+    --ll-theme-background-color-transparent: rgb(85 85 85 / 0%);
     --ll-theme-accent-background-color: #777;
     --ll-theme-select-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="gray" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
 }
