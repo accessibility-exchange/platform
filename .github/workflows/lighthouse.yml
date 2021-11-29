@@ -44,7 +44,7 @@ jobs:
     - name: Create test database
       run: |
         sudo systemctl start mysql.service
-        mysqladmin create aina --user="root" --password="root"
+        mysqladmin create accessibilityexchange --user="root" --password="root"
     - name: Generate key
       run: php artisan key:Generate
     - name: Run database migration
