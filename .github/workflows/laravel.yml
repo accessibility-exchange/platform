@@ -9,12 +9,21 @@ on:
 jobs:
   laravel-tests:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+        php: [8.0, 8.1]
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
     - uses: shivammathur/setup-php@2.9.0
       with:
-        php-version: '8.0'
+        php-version: ${{ matrix.php }}
     - uses: actions/checkout@v2
     - name: Cache Composer packages
       uses: actions/cache@v2
@@ -41,8 +50,19 @@ jobs:
         php artisan migrate
         php artisan storage:link
         vendor/bin/phpunit --coverage-clover coverage.xml
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.php == 8.0 }}
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_PASSWORD: root
+        DB_HOST: localhost
+      run: |
+        php artisan migrate
+        php artisan storage:link
+        vendor/bin/phpunit
+      if: ${{ matrix.os != 'ubuntu-latest' || matrix.php != 8.0 }}
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
+      if: ${{ matrix.os == 'ubuntu-latest' && matrix.php == 8.0 }}
