@@ -1,70 +1,70 @@
 // 1. Configuration and helpers
 @import
-    'abstracts/variables',
-    'abstracts/functions',
-    'abstracts/mixins';
+    "abstracts/variables",
+    "abstracts/functions",
+    "abstracts/mixins";
 
 // 2. Vendors
 @import
-    'vendors/looseleaf';
+    "vendors/looseleaf";
 
 // 3. Base stuff
 @import
-    'base/base',
-    'base/fonts',
-    'base/typography',
-    'base/helpers';
+    "base/base",
+    "base/fonts",
+    "base/typography",
+    "base/helpers";
 
 // 4. Layout-related sections
 @import
-    'layouts/app',
-    'layouts/aside',
-    'layouts/banner',
-    'layouts/footer',
-    'layouts/form',
-    'layouts/guest';
+    "layouts/app",
+    "layouts/aside",
+    "layouts/banner",
+    "layouts/footer",
+    "layouts/form",
+    "layouts/guest";
 
 // 5. Components
 @import
-    'components/alert',
-    'components/auth-card',
-    'components/badge',
-    'components/brand',
-    'components/columns',
-    'components/consultant-card',
-    'components/date-input',
-    'components/drawer',
-    'components/dropdown',
-    'components/expander',
-    'components/modal',
-    'components/navigation',
-    'components/privacy-indicator',
-    'components/project-card',
-    'components/skip-link',
-    'components/table',
-    'components/tags',
-    'components/update';
+    "components/alert",
+    "components/auth-card",
+    "components/badge",
+    "components/brand",
+    "components/columns",
+    "components/consultant-card",
+    "components/date-input",
+    "components/drawer",
+    "components/dropdown",
+    "components/expander",
+    "components/modal",
+    "components/navigation",
+    "components/privacy-indicator",
+    "components/project-card",
+    "components/skip-link",
+    "components/table",
+    "components/tags",
+    "components/update";
 
 // 6. Route-specific styles
 @import
-    'routes/home',
-    'routes/entities/show',
-    'routes/profiles/show',
-    'routes/projects/manage',
-    'routes/projects/show',
-    'routes/resources/hub',
-    'routes/resources/index',
-    'routes/users/show',
-    'routes/welcome';
+    "routes/home",
+    "routes/entities/show",
+    "routes/profiles/show",
+    "routes/projects/manage",
+    "routes/projects/show",
+    "routes/resources/hub",
+    "routes/resources/index",
+    "routes/users/show",
+    "routes/welcome";
 
 // 7. Themes
 @import
-    'themes/black-brown',
-    'themes/black-yellow',
-    'themes/dark',
-    'themes/grey-dark',
-    'themes/grey-white',
-    'themes/light-dark',
-    'themes/light',
-    'themes/system',
-    'themes/yellow-black';
+    "themes/black-brown",
+    "themes/black-yellow",
+    "themes/dark",
+    "themes/grey-dark",
+    "themes/grey-white",
+    "themes/light-dark",
+    "themes/light",
+    "themes/system",
+    "themes/yellow-black";
