@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Consultant;
+use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\PaymentMethod;
@@ -46,7 +46,7 @@ class PrototypeSeeder extends Seeder
                 'email_verified_at' => now(),
             ]);
 
-        $consultantPage = Consultant::factory()
+        $communityMemberPage = CommunityMember::factory()
             ->create([
                 'user_id' => $communityMember->id,
                 'name' => $communityMember->name,
@@ -59,20 +59,20 @@ class PrototypeSeeder extends Seeder
             ]);
 
         // Attach impacts.
-        $consultantPage->impacts()->attach([
+        $communityMemberPage->impacts()->attach([
             $communicationImpact->id,
             $programsAndServicesImpact->id,
             $transportationImpact->id,
         ]);
 
         // Attach payment methods.
-        $consultantPage->paymentMethods()->attach([
+        $communityMemberPage->paymentMethods()->attach([
             $cashPaymentMethod->id,
             $giftCardPaymentMethod->id,
         ]);
 
         // Attach sector.
-        $consultantPage->sectors()->attach($transportationSector->id);
+        $communityMemberPage->sectors()->attach($transportationSector->id);
 
         $entityRepresentative = User::factory()
             ->create([
@@ -98,8 +98,8 @@ class PrototypeSeeder extends Seeder
                 'entity_id' => $entity->id,
                 'start_date' => '2020-01-01',
                 'end_date' => '2020-12-31',
-                'found_consultants' => true,
-                'confirmed_consultants' => true,
+                'found_participants' => true,
+                'confirmed_participants' => true,
                 'scheduled_planning_meeting' => true,
                 'notified_of_planning_meeting' => true,
                 'prepared_project_orientation' => true,
@@ -113,7 +113,7 @@ class PrototypeSeeder extends Seeder
                 'finished_consultation_meetings' => true,
                 'prepared_accessibility_plan' => true,
                 'prepared_follow_up_plan' => true,
-                'shared_plans_with_consultants' => true,
+                'shared_plans_with_participants' => true,
                 'published_accessibility_plan' => true,
             ]);
 
@@ -143,8 +143,8 @@ class PrototypeSeeder extends Seeder
                 'entity_id' => $entity->id,
                 'start_date' => '2021-01-01',
                 'end_date' => '2021-12-31',
-                'found_consultants' => true,
-                'confirmed_consultants' => true,
+                'found_participants' => true,
+                'confirmed_participants' => true,
                 'scheduled_planning_meeting' => true,
                 'notified_of_planning_meeting' => true,
                 'prepared_project_orientation' => true,

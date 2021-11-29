@@ -62,34 +62,34 @@ Route::multilingual('/projects/{project}/update-progress', [ProjectController::c
     ->method('put')
     ->name('projects.update-progress');
 
-Route::multilingual('/projects/{project}/find-consultants/interested', [ProjectController::class, 'findInterestedConsultants'])
+Route::multilingual('/projects/{project}/find-participants/interested', [ProjectController::class, 'findInterestedCommunityMembers'])
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-interested-consultants');
+    ->name('projects.find-interested-participants');
 
-Route::multilingual('/projects/{project}/find-consultants/related', [ProjectController::class, 'findRelatedConsultants'])
+Route::multilingual('/projects/{project}/find-participants/related', [ProjectController::class, 'findRelatedCommunityMembers'])
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-related-consultants');
+    ->name('projects.find-related-participants');
 
-Route::multilingual('/projects/{project}/find-consultants/all', [ProjectController::class, 'findAllConsultants'])
+Route::multilingual('/projects/{project}/find-participants/all', [ProjectController::class, 'findAllCommunityMembers'])
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-all-consultants');
+    ->name('projects.find-all-participants');
 
-Route::multilingual('/projects/{project}/add-consultant', [ProjectController::class, 'addConsultant'])
+Route::multilingual('/projects/{project}/add-participant', [ProjectController::class, 'addParticipant'])
     ->method('put')
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.add-consultant');
+    ->name('projects.add-participant');
 
-Route::multilingual('/projects/{project}/update-consultants', [ProjectController::class, 'updateConsultants'])
+Route::multilingual('/projects/{project}/update-participants', [ProjectController::class, 'updateParticipants'])
     ->method('put')
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.update-consultants');
+    ->name('projects.update-participants');
 
-Route::multilingual('/projects/{project}/update-consultant', [ProjectController::class, 'updateConsultant'])
+Route::multilingual('/projects/{project}/update-participant', [ProjectController::class, 'updateParticipant'])
     ->method('put')
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.update-consultant');
+    ->name('projects.update-participant');
 
-Route::multilingual('/projects/{project}/remove-consultant', [ProjectController::class, 'removeConsultant'])
+Route::multilingual('/projects/{project}/remove-participant', [ProjectController::class, 'removeParticipant'])
     ->method('put')
     ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.remove-consultant');
+    ->name('projects.remove-participant');

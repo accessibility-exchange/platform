@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
-use App\Models\Consultant;
+use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
@@ -195,29 +195,29 @@ class ProjectController extends Controller
      */
     public function participate(Request $request, Project $project): View
     {
-        return view('projects.consultant-dashboard', [
+        return view('projects.participant-dashboard', [
             'project' => $project,
-            'steps' => $project->getConsultantSteps(),
-            'substeps' => $project->getConsultantSubsteps(),
-            'step' => request()->get('step') ? request()->get('step') : $project->currentConsultantStep(),
+            'steps' => $project->getParticipantSteps(),
+            'substeps' => $project->getParticipantSubsteps(),
+            'step' => request()->get('step') ? request()->get('step') : $project->currentParticipantStep(),
         ]);
     }
 
     /**
-     * Manage consultants for the resources.
+     * Manage participants for the resources.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findInterestedConsultants(Request $request, Project $project): View
+    public function findInterestedCommunityMembers(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
-        return view('projects.find-consultants', [
+        return view('projects.find-participants', [
             'project' => $project,
             'subtitle' => __('Interested in this project'),
-            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+            'communityMembers' => CommunityMember::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->whereHas('projectsOfInterest', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
@@ -226,85 +226,85 @@ class ProjectController extends Controller
     }
 
     /**
-     * Manage consultants for the resources.
+     * Manage participants for the resources.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findRelatedConsultants(Request $request, Project $project): View
+    public function findRelatedCommunityMembers(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
-        return view('projects.find-consultants', [
+        return view('projects.find-participants', [
             'project' => $project,
             'subtitle' => __('From similar projects'),
-            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+            'communityMembers' => CommunityMember::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
         ]);
     }
 
     /**
-     * Manage consultants for the resources.
+     * Manage participants for the resources.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
-    public function findAllConsultants(Request $request, Project $project): View
+    public function findAllCommunityMembers(Request $request, Project $project): View
     {
         $projectPaymentMethods = $project->paymentMethods()->pluck('id')->toArray();
 
-        return view('projects.find-consultants', [
+        return view('projects.find-participants', [
             'project' => $project,
-            'subtitle' => __('Browse all consultants'),
-            'consultants' => Consultant::whereDoesntHave('projects', function ($query) use ($project) {
+            'subtitle' => __('Browse all community members'),
+            'communityMembers' => CommunityMember::whereDoesntHave('projects', function ($query) use ($project) {
                 $query->where('id', '=', $project->id);
             })->with(['paymentMethods', 'sectors', 'impacts'])->paginate(20),
         ]);
     }
 
     /**
-     * Manage consultants for the resources.
+     * Manage participants for the resources.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addConsultant(Request $request, Project $project): RedirectResponse
+    public function addParticipant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
-            'consultant_id' => 'required|integer',
+            'participant_id' => 'required|integer',
         ]);
 
-        $consultant = Consultant::find($request->input('consultant_id'));
+        $communityMember = CommunityMember::find($request->input('participant_id'));
 
-        $project->consultants()->attach($request->input('consultant_id'));
-        $project->update(['found_consultants' => false]);
+        $project->participants()->attach($request->input('participant_id'));
+        $project->update(['found_participants' => false]);
 
-        flash(__(':name has been added to your consultant shortlist.', ['name' => $consultant->name]), 'success');
+        flash(__(':name has been added to your participant shortlist.', ['name' => $communityMember->name]), 'success');
 
         return redirect()->back();
     }
 
     /**
-     * Update existing consultant attachments.
+     * Update existing participant attachments.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateConsultants(Request $request, Project $project): RedirectResponse
+    public function updateParticipants(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
-            'consultant_ids' => 'required|array',
+            'participant_ids' => 'required|array',
             'status' => 'required|string|in:shortlisted,requested,confirmed,removed,exited',
         ]);
 
-        foreach ($request->input('consultant_ids') as $consultant_id) {
-            $project->consultants()->updateExistingPivot(
-                $consultant_id,
+        foreach ($request->input('participant_ids') as $communityMember_id) {
+            $project->participants()->updateExistingPivot(
+                $communityMember_id,
                 ['status' => $request->input('status')]
             );
         }
@@ -313,42 +313,42 @@ class ProjectController extends Controller
     }
 
     /**
-     * Update an existing consultant attachment.
+     * Update an existing participant attachment.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateConsultant(Request $request, Project $project): RedirectResponse
+    public function updateParticipant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
-            'consultant_id' => 'required|integer',
+            'participant_id' => 'required|integer',
             'status' => 'required|string|in:shortlisted,requested,confirmed,removed,exited',
         ]);
 
-        $consultant = Consultant::find($request->input('consultant_id'));
+        $communityMember = CommunityMember::find($request->input('participant_id'));
 
-        $project->consultants()->updateExistingPivot(
-            $request->input('consultant_id'),
+        $project->participants()->updateExistingPivot(
+            $request->input('participant_id'),
             ['status' => $request->input('status')]
         );
 
         switch ($request->input('status')) {
             case 'requested':
-                flash(__('You have requested :name’s participation in your project.', ['name' => $consultant->name]), 'success');
-                $project->update(['confirmed_consultants' => false]);
+                flash(__('You have requested :name’s participation in your project.', ['name' => $communityMember->name]), 'success');
+                $project->update(['confirmed_participants' => false]);
 
                 break;
             case 'confirmed':
-                flash(__(':name’s participation in your project is now confirmed!', ['name' => $consultant->name]), 'success');
+                flash(__(':name’s participation in your project is now confirmed!', ['name' => $communityMember->name]), 'success');
 
                 break;
             case 'removed':
-                flash(__('You have removed :name from your project.', ['name' => $consultant->name]), 'success');
+                flash(__('You have removed :name from your project.', ['name' => $communityMember->name]), 'success');
 
                 break;
             case 'exited':
-                flash(__(':name has left your project.', ['name' => $consultant->name]), 'success');
+                flash(__(':name has left your project.', ['name' => $communityMember->name]), 'success');
 
                 break;
         }
@@ -357,23 +357,23 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove an existing consultant attachment.
+     * Remove an existing participant attachment.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function removeConsultant(Request $request, Project $project): RedirectResponse
+    public function removeParticipant(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
-            'consultant_id' => 'required|integer',
+            'participant_id' => 'required|integer',
         ]);
 
-        $consultant = Consultant::find($request->input('consultant_id'));
+        $communityMember = CommunityMember::find($request->input('participant_id'));
 
-        $project->consultants()->detach($request->input('consultant_id'));
+        $project->participants()->detach($request->input('participant_id'));
 
-        flash(__(':name has been removed from your consultant shortlist.', ['name' => $consultant->name]), 'success');
+        flash(__(':name has been removed from your participant shortlist.', ['name' => $communityMember->name]), 'success');
 
         return redirect()->back();
     }

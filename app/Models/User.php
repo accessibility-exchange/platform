@@ -75,11 +75,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the consultant page associated with the user.
+     * Get the community member page associated with the user.
      */
-    public function consultant(): HasOne
+    public function communityMember(): HasOne
     {
-        return $this->hasOne(Consultant::class);
+        return $this->hasOne(CommunityMember::class);
     }
 
     /**

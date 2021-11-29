@@ -14,17 +14,17 @@
         @if($project->completed())
         <p><strong>{{ __('Completed') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
         @endif
-        @if(!$project->completed() && Auth::user()->consultant)
-        @if($project->confirmedConsultants->contains(Auth::user()->consultant))
+        @if(!$project->completed() && Auth::user()->communityMember)
+        @if($project->confirmedParticipants->contains(Auth::user()->communityMember))
         <p><a href="{{ localized_route('projects.participate', $project) }}" class="button">{{ __('Project dashboard') }}</a></p>
-        @elseif(!Auth::user()->consultant->projectsOfInterest->contains($project->id))
-        <form action="{{ localized_route('consultants.express-interest', Auth::user()->consultant) }}" method="post">
+        @elseif(!Auth::user()->communityMember->projectsOfInterest->contains($project->id))
+        <form action="{{ localized_route('community-members.express-interest', Auth::user()->communityMember) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
             <x-hearth-button type="submit">{{ __('I’m interested in this project') }}</x-hearth-button>
         </form>
         @else
-        <form action="{{ localized_route('consultants.remove-interest', Auth::user()->consultant) }}" method="post">
+        <form action="{{ localized_route('community-members.remove-interest', Auth::user()->communityMember) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
             <x-hearth-button type="submit">{{ __('I’m not interested in this project') }}</x-hearth-button>

@@ -71,7 +71,7 @@
 
             <x-hearth-input type="submit" name="publish" :value="__('Publish my project')" />
         </form>
-        <p>{{ __('Once you publish your project, consultants can find and apply for your project.') }}</p>
+        <p>{{ __('Once you publish your project, community members can find and apply for your project.') }}</p>
         @endif
         @endcan
     </div>

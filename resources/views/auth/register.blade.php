@@ -24,7 +24,7 @@
         <form method="POST" action="{{ localized_route('register-store') }}" novalidate>
             @csrf
 
-            <x-hearth-input id="context" type="hidden" name="context" value="{{ request()->get('context') ?: 'consultant' }}" />
+            <x-hearth-input id="context" type="hidden" name="context" value="{{ request()->get('context') ?: 'community-member' }}" />
 
             <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
 

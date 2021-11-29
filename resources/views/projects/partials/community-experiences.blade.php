@@ -26,8 +26,8 @@
         <span class="score__value"><x-dots class="score__indicator" :value="$project->averageRatingFor('sensitive_to_comfort_levels')" /> {{ $project->averageRatingFor('sensitive_to_comfort_levels') }}/5</span>
     </div>
     <div class="scores__score">
-        <span class="score__attribute">{{ __('Consultant retention') }}</span>
-        <span class="score__value">{{ $project->consultantRetention() * 100 }}%</span>
+        <span class="score__attribute">{{ __('Participant retention') }}</span>
+        <span class="score__value">{{ $project->participantRetention() * 100 }}%</span>
     </div>
 </div>
 <x-heading :level="$level">{{ __('Individual experiences') }}</x-heading>

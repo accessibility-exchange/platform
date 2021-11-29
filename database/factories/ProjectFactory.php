@@ -44,7 +44,7 @@ class ProjectFactory extends Factory
             'regions' => get_region_codes(['CA']),
             'min' => 20,
             'max' => 20,
-            'anything_else' => ['en' => 'New consultants welcomed.'],
+            'anything_else' => ['en' => 'New participants welcomed.'],
             'flexible_deadlines' => true,
             'flexible_breaks' => true,
         ];

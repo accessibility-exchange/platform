@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Consultant;
+use App\Models\CommunityMember;
 use App\Models\Project;
 use App\Settings;
-use App\Statuses\ConsultantStatus;
+use App\Statuses\CommunityMemberStatus;
 use App\Statuses\ProjectStatus;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
         }
 
-        StatusManager::bind(Consultant::class, ConsultantStatus::class);
+        StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
     }
 }

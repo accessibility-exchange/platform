@@ -7,7 +7,7 @@
         </h1>
     </x-slot>
 
-    @if($currentUser->context === 'consultant')
+    @if($currentUser->context === 'community-member')
         @include('dashboard.community-member')
     @elseif ($currentUser->context === 'entity')
         @include('dashboard.entity-representative')

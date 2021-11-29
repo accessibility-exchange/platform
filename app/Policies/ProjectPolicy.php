@@ -43,7 +43,7 @@ class ProjectPolicy
      */
     public function participate(User $user, Project $project)
     {
-        return $project->confirmedConsultants->contains($user->consultant);
+        return $project->confirmedParticipants->contains($user->communityMember);
     }
 
     /**

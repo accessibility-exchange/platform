@@ -8,6 +8,6 @@
 
 <x-heading :level="$level">{{ __('Community experiences') }}</x-heading>
 
-<p>Experiences from previous consultants who have worked with {{ $entity->name }}.</p>
+<p>Experiences from community members who have worked with {{ $entity->name }}.</p>
 
 

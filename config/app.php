@@ -240,7 +240,7 @@ return [
     */
 
     'contexts' => [
-        'consultant',
+        'community-member',
         'entity',
     ],
 ];
