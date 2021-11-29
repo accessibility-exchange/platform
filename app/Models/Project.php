@@ -371,7 +371,7 @@ class Project extends Model
     }
 
     /**
-     * Get the project substeps for community-members.
+     * Get the project substeps for participants.
      *
      * @return array
      */
