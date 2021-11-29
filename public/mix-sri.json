@@ -1,6 +1,14 @@
 {
-    "/js/app.js": "sha256-n2TZaGhaOAtMcl7lctDN4zmIsU17Hpdd2bs3huAeGYY=",
-    "/js/manifest.js": "sha256-Oh/aHOfZfYzanWEFg87YPOSKdJZ+veETwi7JVfMEnkU=",
-    "/css/app.css": "sha256-gqLYO+kwwn3g4ICAMb6qa/S6UZEUItZujc7U15p/+Lk=",
-    "/js/vendor.js": "sha256-gcbndkKTopYOmZJzoZy/KoitlZbfPmbntBTqeCY+FPA="
+    "/js/vendor.js": "sha256-R4ql9V9p6wNwhcfY8Beq2cvQrfR6AISK/BE6yLPyTx4=",
+    "/css/app.css": "sha256-c4viQdA/O/iqTEeJHzD8bt6o4fBgJgUhPrvgtku7+LQ=",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff": "sha256-L3Vz7pxOASyUa/tqUSJpZbRUcWog8ochQe/IDVA7C8c=",
+    "/fonts/atkinson-hyperlegible-italic.woff": "sha256-pIZv3mkHraW7/3agaRVEJA3RP+KB6YwlGCcuStuyRTY=",
+    "/fonts/atkinson-hyperlegible-bold.woff": "sha256-8N6Mywr25Q/RtR1Q1QMsaCStwPG0NTRZGfyh2bcrNiM=",
+    "/fonts/atkinson-hyperlegible-regular.woff": "sha256-tR0uFiJqVuMEq5umfSL1BK/Fvc6rHK7+OGBjom7kvAs=",
+    "/fonts/atkinson-hyperlegible-bolditalic.woff2": "sha256-yic7dYfwanF1XrpDaSLXVixc4G8AHT1jSn+EDOM9IiI=",
+    "/fonts/atkinson-hyperlegible-italic.woff2": "sha256-piIFrvuWbWSXJgNrHzawcuavsWu8o2lXGEDyBBmLHPc=",
+    "/fonts/atkinson-hyperlegible-bold.woff2": "sha256-8Bidy59EVlFq2ncYeTv22g8zcfSWPBtFQQjY1XG/ysY=",
+    "/fonts/atkinson-hyperlegible-regular.woff2": "sha256-7+UsV+Zr3o7+MLRw323iBFXE9lI8B0b+bINj26ZjqSM=",
+    "/js/app.js": "sha256-6RxXl52hWE1fC8bX4NsTnGPqQZFUkZOB26bOTwryxFQ=",
+    "/js/manifest.js": "sha256-XsWdklVl797QbagQqHhPmiFe0jF+Y05DEqDO3KiZHQc="
 }

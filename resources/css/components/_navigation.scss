@@ -7,6 +7,10 @@ nav {
     margin-block-start: var(--step-2);
 }
 
+nav > * + * {
+    margin-block-start: var(--step--2);
+}
+
 nav.secondary + * {
     margin-block-start: var(--step-3);
 }
@@ -22,10 +26,6 @@ nav ul > li {
 
 nav ul > li::before {
     display: none;
-}
-
-nav > * + * {
-    margin-block-start: var(--step--2);
 }
 
 nav .link {
@@ -57,13 +57,13 @@ nav .icon {
         margin-inline-start: 0;
     }
 
-    nav.secondary + * {
-        margin-block-start: 0;
-    }
-
     nav > * + * {
         margin-block-start: 0;
         margin-inline-start: var(--step--2);
+    }
+
+    nav.secondary + * {
+        margin-block-start: 0;
     }
 
     nav ul {
