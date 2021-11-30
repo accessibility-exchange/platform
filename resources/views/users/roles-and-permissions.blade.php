@@ -9,6 +9,7 @@
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
+
     {{-- TODO --}}
     <p>Coming soon!</p>
 </x-app-layout>
