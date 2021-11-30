@@ -1,5 +1,4 @@
 const mix = require("laravel-mix");
-const chokidar = require("chokidar");
 require("laravel-mix-sri");
 
 mix.copyDirectory("resources/fonts", "public/fonts");
@@ -14,24 +13,13 @@ if (mix.inProduction()) {
     mix.version();
 }
 
+mix.browserSync({
+    port: 8080,
+    proxy: "localhost",
+    open: false
+});
+
 mix.options({
-    hmrOptions: {
-        host: "localhost",
-        port: 8080
-    },
     processCssUrls: false
 });
 
-mix.webpackConfig({
-    devServer: {
-        host: "0.0.0.0",
-        port: 8080,
-        onBeforeSetupMiddleware(server) {
-            chokidar.watch([
-                "./resources/views/**/*.blade.php"
-            ]).on("all", function () {
-                server.sockWrite(server.sockets, "content-changed");
-            });
-        }
-    }
-});
