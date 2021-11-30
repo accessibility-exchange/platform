@@ -47,7 +47,7 @@ Route::multilingual('/settings/display-preferences', [UserController::class, 'up
 
 Route::multilingual('/settings/notifications', [UserController::class, 'editNotificationPreferences'])
     ->middleware(['auth'])
-    ->name('users.edit-notification-preferences');
+    ->name('users.edit_notification_preferences');
 
 Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
     ->middleware(['auth'])
