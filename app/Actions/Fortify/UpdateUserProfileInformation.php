@@ -29,7 +29,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 Rule::unique('users')->ignore($user->id),
             ],
             'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
-            'theme' => ['required', Rule::in(config('themes'))],
         ])->validateWithBag('updateProfileInformation');
 
         if (
@@ -42,11 +41,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'locale' => $input['locale'],
-                'theme' => $input['theme'],
             ])->save();
         }
 
-        Cookie::queue('theme', $input['theme']);
         Cookie::queue('locale', $input['locale']);
     }
 
@@ -64,7 +61,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'email_verified_at' => null,
             'locale' => $input['locale'],
-            'theme' => $input['theme'],
         ])->save();
 
         $user->sendEmailVerificationNotification();

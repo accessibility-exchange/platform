@@ -51,18 +51,4 @@ class AuthenticationTest extends TestCase
 
         $this->assertGuest();
     }
-
-    public function test_users_can_edit_own_profiles()
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(localized_route('users.edit'));
-        $response->assertOk();
-    }
-
-    public function test_guests_can_not_edit_profiles()
-    {
-        $response = $this->get(localized_route('users.edit'));
-        $response->assertRedirect(localized_route('login'));
-    }
 }

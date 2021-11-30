@@ -23,13 +23,39 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('dashboard');
 
-Route::multilingual('/account/edit', [UserController::class, 'edit'])
+Route::multilingual('/settings', [UserController::class, 'settings'])
+    ->middleware(['auth'])
+    ->name('users.settings');
+
+Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
     ->middleware(['auth'])
     ->name('users.edit');
 
-Route::multilingual('/account/admin', [UserController::class, 'admin'])
+Route::multilingual('/settings/roles-and-permissions', [UserController::class, 'editRolesAndPermissions'])
+    ->middleware(['auth'])
+    ->name('users.edit_roles_and_permissions');
+
+Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
+    ->middleware(['auth'])
+    ->name('users.edit_display_preferences');
+
+
+Route::multilingual('/settings/display-preferences', [UserController::class, 'updateDisplayPreferences'])
+    ->method('put')
+    ->middleware(['auth'])
+    ->name('users.update_display_preferences');
+
+Route::multilingual('/settings/notifications', [UserController::class, 'editNotificationPreferences'])
+    ->middleware(['auth'])
+    ->name('users.edit_notification_preferences');
+
+Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
     ->middleware(['auth'])
     ->name('users.admin');
+
+Route::multilingual('/settings/delete-account', [UserController::class, 'delete'])
+    ->middleware(['auth'])
+    ->name('users.delete');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')

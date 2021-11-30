@@ -76,14 +76,8 @@
                 @endif
 
                 <p>
-                    <x-dropdown-link href="{{ localized_route('users.edit') }}" :active="request()->routeIs(locale() . '.users.edit')">
-                        {{ __('hearth::user.settings') }}
-                    </x-dropdown-link>
-                </p>
-
-                <p>
-                    <x-dropdown-link href="{{ localized_route('users.admin') }}" :active="request()->routeIs(locale() . '.users.admin')">
-                        {{ __('hearth::user.account') }}
+                    <x-dropdown-link href="{{ localized_route('users.settings') }}" :active="request()->routeIs(locale() . '.users.settings')">
+                        {{ __('Settings') }}
                     </x-dropdown-link>
                 </p>
 
