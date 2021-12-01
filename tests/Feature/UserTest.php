@@ -82,4 +82,12 @@ class UserTest extends TestCase
         $response = $this->get(localized_route('users.edit_notification_preferences'));
         $response->assertRedirect(localized_route('login'));
     }
+
+    public function test_users_can_access_my_projects_page()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
+        $response->assertOk();
+    }
 }
