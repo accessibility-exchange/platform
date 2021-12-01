@@ -9,6 +9,7 @@
     <h2>{{ __('Active projects') }}</h2>
     @forelse($communityMember->currentProjects as $project)
     <x-project-card :project="$project" />
+    <p><a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty
     <p>{{ __('You have no active projects right now.') }}</p>
     @endforelse
@@ -16,6 +17,7 @@
     <h2>{{ __('Completed projects') }}</h2>
     @forelse($communityMember->pastProjects as $project)
     <x-project-card :project="$project" />
+    <p><a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty
     <p>{{ __('You have not completed any projects yet.') }}</p>
     @endforelse
