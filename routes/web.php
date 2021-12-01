@@ -39,7 +39,6 @@ Route::multilingual('/settings/display-preferences', [UserController::class, 'ed
     ->middleware(['auth'])
     ->name('users.edit_display_preferences');
 
-
 Route::multilingual('/settings/display-preferences', [UserController::class, 'updateDisplayPreferences'])
     ->method('put')
     ->middleware(['auth'])
@@ -52,6 +51,10 @@ Route::multilingual('/settings/notifications', [UserController::class, 'editNoti
 Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
     ->middleware(['auth'])
     ->name('users.admin');
+
+Route::multilingual('/my-projects', [UserController::class, 'showMyProjects'])
+    ->middleware(['auth'])
+    ->name('users.show_my_projects');
 
 Route::multilingual('/settings/delete-account', [UserController::class, 'delete'])
     ->middleware(['auth'])

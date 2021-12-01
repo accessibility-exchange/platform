@@ -4,8 +4,13 @@
     <ul role="list" class="nav__basics">
         @auth
         <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
-            {{ __('Dashboard') }}
+            {{ __('My dashboard') }}
         </x-nav-link>
+        @if(Auth::user()->communityMember || Auth::user()->entity())
+        <x-nav-link :href="localized_route('users.show_my_projects')" :active="request()->routeIs(locale() . '.users.show_my_projects')">
+            {{ __('My projects') }}
+        </x-nav-link>
+        @endif
         @else
         @if (Route::has(locale() . '.registration'))
         <x-nav-link :href="localized_route('registration')">

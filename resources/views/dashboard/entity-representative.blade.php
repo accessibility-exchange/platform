@@ -50,10 +50,13 @@
 
     <div class="column flow">
         @if($currentUser->entity())
-        <div class="box">
+        <div class="box flow">
             <h2>{{ __('My active projects') }}</h2>
             @if(count($currentUser->entity()->projects) > 0)
-            {{-- TODO: Display project cards. --}}
+                @foreach($currentUser->entity()->projects as $project)
+                <x-project-card :project="$project" />
+                @endforeach
+            <p><a href="{{ localized_route('users.show_my_projects') }}">{{ __('Show all my projects') }}</a></p>
             @else
             <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', $currentUser->entity()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
             @endif

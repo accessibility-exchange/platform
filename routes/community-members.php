@@ -54,11 +54,10 @@ Route::multilingual('/members/{communityMember}/express-interest', [CommunityMem
     ->middleware(['auth', 'can:update,communityMember'])
     ->name('community-members.express-interest');
 
-    Route::multilingual('/members/{communityMember}/remove-interest', [CommunityMemberController::class, 'removeInterest'])
+Route::multilingual('/members/{communityMember}/remove-interest', [CommunityMemberController::class, 'removeInterest'])
     ->method('post')
     ->middleware(['auth', 'can:update,communityMember'])
     ->name('community-members.remove-interest');
-
 
 Route::multilingual('/members/{communityMember}/delete', [CommunityMemberController::class, 'destroy'])
     ->middleware(['auth', 'can:delete,communityMember'])
