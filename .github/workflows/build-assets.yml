@@ -1,7 +1,7 @@
 name: Build JS and Sass assets
 
 on:
-  pull_request:
+  push:
     branches: [ dev, prototype ]
     paths:
     - 'package.json'
@@ -11,10 +11,11 @@ jobs:
   build-assets:
 
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
