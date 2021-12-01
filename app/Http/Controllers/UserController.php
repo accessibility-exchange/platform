@@ -134,7 +134,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function showMyProjects(): View
+    public function showMyProjects(): mixed
     {
         if (Auth::user()->communityMember) {
             $communityMember = Auth::user()->communityMember;

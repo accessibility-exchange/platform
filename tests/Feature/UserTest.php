@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\CommunityMember;
+use App\Models\Entity;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -90,11 +92,20 @@ class UserTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
         $response->assertRedirect(localized_route('dashboard'));
 
+        $communityUser = User::factory()->create();
         $communityMember = CommunityMember::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $communityUser->id,
         ]);
 
-        $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
+        $response = $this->actingAs($communityUser)->get(localized_route('users.show_my_projects'));
+        $response->assertOk();
+
+        $entityUser = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($entityUser, ['role' => 'admin'])
+            ->create();
+
+        $response = $this->actingAs($entityUser)->get(localized_route('users.show_my_projects'));
         $response->assertOk();
     }
 
