@@ -206,6 +206,27 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * The past projects that the community member belongs to.
+     */
+    public function pastProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)
+            ->whereDate('end_date', '<', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    /**
+     * The current projects that the community member belongs to.
+     */
+    public function currentProjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class)
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->whereDate('end_date', '>=', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    /**
      * The projects that the community member belongs to.
      */
     public function projectsOfInterest(): BelongsToMany

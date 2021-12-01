@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\CommunityMember;
+use App\Models\Entity;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -80,6 +82,36 @@ class UserTest extends TestCase
     public function test_guests_can_not_edit_notification_preferences()
     {
         $response = $this->get(localized_route('users.edit_notification_preferences'));
+        $response->assertRedirect(localized_route('login'));
+    }
+
+    public function test_users_can_access_my_projects_page()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
+        $response->assertRedirect(localized_route('dashboard'));
+
+        $communityUser = User::factory()->create();
+        $communityMember = CommunityMember::factory()->create([
+            'user_id' => $communityUser->id,
+        ]);
+
+        $response = $this->actingAs($communityUser)->get(localized_route('users.show_my_projects'));
+        $response->assertOk();
+
+        $entityUser = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($entityUser, ['role' => 'admin'])
+            ->create();
+
+        $response = $this->actingAs($entityUser)->get(localized_route('users.show_my_projects'));
+        $response->assertOk();
+    }
+
+    public function test_guests_can_not_access_my_projects_page()
+    {
+        $response = $this->get(localized_route('users.show_my_projects'));
         $response->assertRedirect(localized_route('login'));
     }
 }
