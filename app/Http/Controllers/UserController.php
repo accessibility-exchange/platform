@@ -120,13 +120,39 @@ class UserController extends Controller
     }
 
     /**
-     * Show the account admin view for the logged-in user.
+     * Show the password and security admin view for the logged-in user.
      *
      * @return \Illuminate\View\View
      */
     public function admin(): View
     {
         return view('users.admin', ['user' => Auth::user()]);
+    }
+
+    /**
+     * Show the my projects view for the logged-in user.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function showMyProjects(): View
+    {
+        if (Auth::user()->communityMember) {
+            $communityMember = Auth::user()->communityMember;
+            $communityMember->load('pastProjects', 'currentProjects');
+
+            return view('community-members.my-projects', [
+                'communityMember' => $communityMember,
+            ]);
+        } elseif (Auth::user()->entity()) {
+            $entity = Auth::user()->entity();
+            $entity->load('pastProjects', 'currentProjects');
+
+            return view('entities.my-projects', [
+                'entity' => Auth::user()->entity(),
+            ]);
+        }
+
+        return redirect(\localized_route('dashboard'));
     }
 
     /**
