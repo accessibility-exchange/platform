@@ -90,4 +90,10 @@ class UserTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
         $response->assertOk();
     }
+
+    public function test_guests_can_not_access_my_projects_page()
+    {
+        $response = $this->get(localized_route('users.show_my_projects'));
+        $response->assertRedirect(localized_route('login'));
+    }
 }
