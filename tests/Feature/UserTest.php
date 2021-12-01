@@ -29,6 +29,16 @@ class UserTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('users.edit'));
         $response->assertOk();
+
+        $response = $this->actingAs($user)->put(localized_route('user-profile-information.update'), [
+            'name' => 'Jonny Appleseed',
+            'email' => $user->email,
+            'locale' => $user->locale,
+        ]);
+        $response->assertRedirect(localized_route('users.edit'));
+
+        $user = $user->fresh();
+        $this->assertEquals($user->name, 'Jonny Appleseed');
     }
 
     public function test_guests_can_not_edit_basic_information()
