@@ -88,6 +88,13 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
+        $response->assertRedirect(localized_route('dashboard'));
+
+        $communityMember = CommunityMember::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
         $response->assertOk();
     }
 
