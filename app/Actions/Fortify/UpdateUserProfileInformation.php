@@ -44,6 +44,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             ])->save();
         }
 
+        flash(__('Your information has been updated.'), 'success');
+
         Cookie::queue('locale', $input['locale']);
     }
 
