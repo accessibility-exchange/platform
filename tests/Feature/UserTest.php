@@ -47,6 +47,18 @@ class UserTest extends TestCase
         ]);
         $response->assertOk();
         $response->assertSee('Your information has been updated.');
+
+        $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+            'name' => $user->name,
+            'email' => 'me@example.net',
+            'locale' => $user->locale,
+        ]);
+        $response->assertOk();
+        $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
+
+        $user = $user->fresh();
+        $this->assertEquals($user->email, 'me@example.net');
+        $this->assertNull($user->email_verified_at);
     }
 
     public function test_guests_can_not_edit_basic_information()
