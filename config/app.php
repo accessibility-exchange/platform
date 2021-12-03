@@ -241,6 +241,7 @@ return [
 
     'contexts' => [
         'community-member',
+        'organization',
         'entity',
     ],
 ];

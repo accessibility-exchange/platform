@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyUserRequest;
+use App\Http\Requests\SaveUserContextRequest;
+use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -54,6 +56,35 @@ class UserController extends Controller
         return view('users.edit', [
             'user' => Auth::user(),
         ]);
+    }
+
+    /**
+     * Store a new user's context in the session.
+     *
+     * @param  \App\Http\Requests\SaveUserContextRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveContext(SaveUserContextRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        session()->put('context', $data['context']);
+
+        return redirect(\localized_route('register', ['step' => 2]));
+    }
+
+    /**
+     * Store a new user's details in the session.
+     *
+     * @param  \App\Http\Requests\SaveUserDetailsRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        session()->put('name', $data['name']);
+        session()->put('email', $data['email']);
+
+        return redirect(\localized_route('register', ['step' => 3]));
     }
 
     /**

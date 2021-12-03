@@ -18,13 +18,14 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register()
     {
-        $response = $this->post(localized_route('register-store'), [
+        $response = $this->withSession([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'context' => 'community-member',
+        ])->post(localized_route('register-store'), [
             'password' => 'password',
             'password_confirmation' => 'password',
             'locale' => 'en',
-            'context' => 'community-member',
         ]);
 
         $this->assertAuthenticated();
@@ -33,13 +34,14 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_not_register_without_valid_context()
     {
-        $response = $this->from(localized_route('register'))->post(localized_route('register-store'), [
+        $response = $this->from(localized_route('register'))->withSession([
             'name' => 'Evil User',
             'email' => 'test@example.com',
+            'context' => 'superadmin',
+        ])->post(localized_route('register-store'), [
             'password' => 'password',
             'password_confirmation' => 'password',
             'locale' => 'en',
-            'context' => 'superadmin',
         ]);
 
         $this->assertGuest();

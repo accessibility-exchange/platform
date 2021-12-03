@@ -7,7 +7,19 @@
         </x-slot>
 
         <x-slot name="title">
-            {{ __('Create an account') }}
+            @switch(request()->get('step'))
+                @case(1)
+                    {{ __('Your role') }}
+                    @break
+                @case(2)
+                    {{ __('Your details') }}
+                    @break
+                @case(3)
+                    {{ __('Choose a password') }}
+                    @break
+                @default
+                {{ __('Create an account') }}
+            @endswitch
         </x-slot>
 
         <!-- Validation Errors -->
@@ -17,54 +29,16 @@
             </x-hearth-alert>
         @endif
 
-        <x-hearth-alert :title="__('Need some support?')">
-            <p>{!! __('Email <a href="mailto:support@accessibility-exchange.ca">support@accessibility-exchange.ca</a> or call 1-(800) 123-4567 for help creating your account.') !!}</p>
-        </x-hearth-alert>
+        @if(request()->get('step'))
+            @include('auth.register.steps.' . request()->get('step'))
+        @else
+            @include('auth.register.steps.0')
+        @endif
 
-        <form method="POST" action="{{ localized_route('register-store') }}" novalidate>
-            @csrf
-
-            <x-hearth-input id="context" type="hidden" name="context" value="{{ request()->get('context') ?: 'community-member' }}" />
-
-            <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
-
-            <!-- Name -->
-            <div class="field @error('name') field--error @enderror">
-                <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
-                <x-hearth-input type="text" name="name" value="{{ old('name') }}" required autofocus />
-                <x-hearth-error for="name" />
-            </div>
-
-            <!-- Email Address -->
-            <div class="field @error('email') field--error @enderror">
-                <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <x-hearth-input type="email" name="email" value="{{ old('email') }}" required />
-                <x-hearth-error for="email" />
-            </div>
-
-            <!-- Password -->
-            <div class="field @error('password') field--error @enderror">
-                <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <x-hearth-input type="password" name="password" required autocomplete="new-password" />
-                <x-hearth-error for="password" />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="field @error('password') field--error @enderror">
-                <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-                <x-hearth-input type="password" name="password_confirmation" required />
-                <x-hearth-error for="password" />
-            </div>
-
-            <p>
-                <a href="{{ localized_route('login') }}">
-                    {{ __('hearth::auth.existing_account_prompt') }}
-                </a>
-            </p>
-
-            <x-hearth-button>
-                {{ __('hearth::auth.create_your_account') }}
-            </x-hearth-button>
-        </form>
+        <p>
+            {{ __('Already have an account?') }} <a href="{{ localized_route('login') }}">
+                {{ __('Sign in.') }}
+            </a>
+        </p>
     </x-auth-card>
 </x-guest-layout>

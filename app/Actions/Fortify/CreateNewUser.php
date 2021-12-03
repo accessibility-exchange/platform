@@ -21,10 +21,14 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+        $input['name'] = session()->get('name');
+        $input['email'] = session()->get('email');
+        $input['context'] = session()->get('context');
+
         Validator::make(
             $input,
             [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => 'required|string|max:255',
                 'email' => [
                     'required',
                     'string',
