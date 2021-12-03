@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExitController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -21,13 +22,19 @@ use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
     if (Features::enabled(Features::registration())) {
-        Route::multilingual('/registration', function () {
-            return view('auth.registration');
-        })->name('registration');
-
         Route::multilingual('/register', [RegisteredUserController::class, 'create'])
             ->middleware('guest')
             ->name('register');
+
+        Route::multilingual('/register/save/context', [UserController::class, 'saveContext'])
+            ->method('post')
+            ->middleware('guest')
+            ->name('register-context');
+
+        Route::multilingual('/register/save/details', [UserController::class, 'saveDetails'])
+            ->method('post')
+            ->middleware('guest')
+            ->name('register-details');
 
         Route::multilingual('/register', [RegisteredUserController::class, 'store'])
             ->method('post')

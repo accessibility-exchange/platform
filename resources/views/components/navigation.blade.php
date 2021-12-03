@@ -12,11 +12,9 @@
         </x-nav-link>
         @endif
         @else
-        @if (Route::has(locale() . '.registration'))
-        <x-nav-link :href="localized_route('registration')">
+        <x-nav-link :href="localized_route('register')">
             {{ __('hearth::auth.create_account') }}
         </x-nav-link>
-        @endif
         <x-nav-link :href="localized_route('login')">
             {{ __('hearth::auth.sign_in') }}
         </x-nav-link>
