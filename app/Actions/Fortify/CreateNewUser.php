@@ -21,9 +21,9 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        $input['name'] = session()->get('name');
-        $input['email'] = session()->get('email');
-        $input['context'] = session()->get('context');
+        $input['name'] = session('name');
+        $input['email'] = session('email');
+        $input['context'] = session('context');
 
         Validator::make(
             $input,
@@ -59,5 +59,9 @@ class CreateNewUser implements CreatesNewUsers
             'context' => $input['context'],
             'locale' => $input['locale'],
         ]);
+
+        session()->forget('name');
+        session()->forget('email');
+        session()->forget('context');
     }
 }
