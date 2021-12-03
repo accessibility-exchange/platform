@@ -14,7 +14,7 @@
         @endif
 
         <!-- Main Content -->
-        <main id="main" tabindex="-1">
+        <main id="main">
             <article class="flow wrapper--wide" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Flash Messages -->
                 @include('partials.flash-messages')
