@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SaveUserContextRequest extends FormRequest
 {
@@ -24,7 +25,11 @@ class SaveUserContextRequest extends FormRequest
     public function rules()
     {
         return [
-            'context' => 'required|string',
+            'context' => [
+                'required',
+                'string',
+                Rule::in(config('app.contexts')),
+            ],
         ];
     }
 }
