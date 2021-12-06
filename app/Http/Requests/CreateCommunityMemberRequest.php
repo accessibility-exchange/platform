@@ -27,25 +27,25 @@ class CreateCommunityMemberRequest extends FormRequest
     public function rules()
     {
         return [
+
+            'user_id' => [
+                Rule::unique(CommunityMember::class),
+            ],
             'name' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique(CommunityMember::class),
             ],
-            'bio' => 'required|string',
-            'links.*.url' => 'nullable|url|required_unless:links.*.text,null',
-            'links.*.text' => 'nullable|string|required_unless:links.*.url,null',
+            'creator' => 'required|in:self,other',
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
                 Rule::in(get_region_codes()),
             ],
             'pronouns' => 'nullable|string',
-            'creator' => 'required|in:self,other',
-            'user_id' => [
-                Rule::unique(CommunityMember::class),
-            ],
+            'bio' => 'required|string',
+            'links.*' => 'nullable|url',
         ];
     }
 
@@ -57,12 +57,9 @@ class CreateCommunityMemberRequest extends FormRequest
     public function messages()
     {
         return [
-            'picture_alt.required_unless' => __('You must provide alternative text for your picture.'),
             'name.unique' => __('A community member page with this name already exists.'),
             'user_id.unique' => __('You already have a community member page. Would you like to edit it instead?'),
-            'links.*.url.url' => __('The link must be a valid web address.'),
-            'links.*.url.required_unless' => __('The link address must be filled in if the link text is filled in.'),
-            'links.*.text.required_unless' => __('The link text must be filled in if the link address is filled in.'),
+            'links.*.url' => __('The link must be a valid web address.'),
         ];
     }
 }

@@ -14,6 +14,6 @@
     @if(request()->get('step'))
         @include('community-members.create.' . request()->get('step'))
     @else
-        @include('community-members.create.1')
+        @include('community-members.create.0')
     @endif
 </x-app-layout>

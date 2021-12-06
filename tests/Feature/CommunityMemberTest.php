@@ -22,10 +22,10 @@ class CommunityMemberTest extends TestCase
             'roles' => ['participant', 'consultant'],
         ]);
 
-        $response->assertRedirect(localized_route('community-members.create', ['step' => 2]));
+        $response->assertRedirect(localized_route('community-members.create', ['step' => 1]));
         $response->assertSessionHas('roles', ['participant', 'consultant']);
 
-        $response = $this->actingAs($user)->from(localized_route('community-members.create', ['step' => 2]))->post(localized_route('community-members.create'), [
+        $response = $this->actingAs($user)->from(localized_route('community-members.create', ['step' => 1]))->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',

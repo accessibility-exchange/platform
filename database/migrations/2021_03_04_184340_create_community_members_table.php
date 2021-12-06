@@ -15,6 +15,7 @@ class CreateCommunityMembersTable extends Migration
     {
         Schema::create('community_members', function (Blueprint $table) {
             $table->id();
+            $table->json('roles');
             $table->string('name');
             $table->string('slug');
             $table->string('locality');
@@ -23,9 +24,8 @@ class CreateCommunityMembersTable extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->dateTime('published_at')->nullable();
-            $table->json('bio');
+            $table->json('bio')->nullable();
             $table->json('links')->nullable();
-            $table->date('birth_date')->nullable();
             $table->json('pronouns')->nullable();
             $table->json('picture_alt')->nullable();
             $table->enum('creator', ['self', 'other'])->default('self');
@@ -33,7 +33,6 @@ class CreateCommunityMembersTable extends Migration
             $table->string('support_person_phone')->nullable();
             $table->string('email')->nullable();
             $table->string('support_person_email')->nullable();
-            $table->json('roles');
             $table->enum('preferred_contact_method', [
                 'phone',
                 'support_person_phone',

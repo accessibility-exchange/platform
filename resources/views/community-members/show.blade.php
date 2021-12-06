@@ -54,13 +54,15 @@
             <p><a class="button" href="{{ localized_route('community-members.edit', $communityMember) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a></p>
             @endcan
 
-            {!! Illuminate\Mail\Markdown::parse($communityMember->bio) !!}
+            @if($communityMember->bio)
+            <x-markdown class="flow">{{ $communityMember->bio }}</x-markdown>
+            @endif
 
             @if($communityMember->links)
             <h3>{{ __(':name’s links', ['name' => $communityMember->firstName()]) }}</h3>
             <ul>
-                @foreach($communityMember->links as $link)
-                <li><a href="{{ $link['url'] }}" rel="external">{{ $link['text'] }}</a></li>
+                @foreach($communityMember->links as $key => $link)
+                <li><a href="{{ $link }}" rel="external">{{ $key }}</a></li>
                 @endforeach
             </ul>
             @endif

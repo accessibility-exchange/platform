@@ -55,7 +55,7 @@ class CommunityMemberController extends Controller
         $data = $request->validated();
         session()->put('roles', $data['roles']);
 
-        return redirect(\localized_route('community-members.create', ['step' => 2]));
+        return redirect(\localized_route('community-members.create', ['step' => 1]));
     }
 
     /**
