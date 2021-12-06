@@ -28,7 +28,7 @@ class EntityTest extends TestCase
 
         $response = $this->actingAs($user)->post(localized_route('entities.create'), [
             'name' => $user->name . ' Inc.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
         ]);
 

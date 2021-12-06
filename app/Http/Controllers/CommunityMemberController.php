@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommunityMemberRequest;
 use App\Http\Requests\DestroyCommunityMemberRequest;
+use App\Http\Requests\SaveCommunityMemberRolesRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
 use App\Models\CommunityMember;
 use App\Statuses\CommunityMemberStatus;
@@ -46,16 +47,31 @@ class CommunityMemberController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \App\Http\Requests\SaveCommunityMemberRolesRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveRoles(SaveCommunityMemberRolesRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        session()->put('roles', $data['roles']);
+
+        return redirect(\localized_route('community-members.create', ['step' => 2]));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
      * @param  \App\Http\Requests\CreateCommunityMemberRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateCommunityMemberRequest $request): RedirectResponse
     {
-        $communityMember = CommunityMember::create($request->safe()->except('picture'));
+        $data = $request->validated();
+        $data['roles'] = session('roles');
 
-        if ($request->hasFile('picture') && $request->file('picture')->isValid()) {
-            $communityMember->addMediaFromRequest('picture')->toMediaCollection('picture');
-        }
+        $communityMember = CommunityMember::create($data);
+
+        session()->forget('roles');
 
         flash(__('Your draft community member page has been saved.'), 'success');
 

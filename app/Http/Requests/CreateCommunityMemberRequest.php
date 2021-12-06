@@ -33,8 +33,6 @@ class CreateCommunityMemberRequest extends FormRequest
                 'max:255',
                 Rule::unique(CommunityMember::class),
             ],
-            'picture' => 'nullable|file|image|dimensions:min_width=200,min_height=200',
-            'picture_alt' => 'nullable|string|required_unless:picture,null',
             'bio' => 'required|string',
             'links.*.url' => 'nullable|url|required_unless:links.*.text,null',
             'links.*.text' => 'nullable|string|required_unless:links.*.url,null',
@@ -45,8 +43,6 @@ class CreateCommunityMemberRequest extends FormRequest
             ],
             'pronouns' => 'nullable|string',
             'creator' => 'required|in:self,other',
-            'creator_name' => 'required_if:creator,other|nullable|string|max:255',
-            'creator_relationship' => 'required_if:creator,other|nullable|string|max:255',
             'user_id' => [
                 Rule::unique(CommunityMember::class),
             ],

@@ -15,19 +15,21 @@ class CommunityMemberTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('community-members.create'));
+        $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertOk();
 
-        $response = $this->post(localized_route('community-members.create'), [
+        $response = $this->actingAs($user)->post(localized_route('community-members.create-save-roles'), [
+            'roles' => ['participant', 'consultant'],
+        ]);
+
+        $response->assertRedirect(localized_route('community-members.create', ['step' => 2]));
+        $response->assertSessionHas('roles', ['participant', 'consultant']);
+
+        $response = $this->actingAs($user)->from(localized_route('community-members.create', ['step' => 2]))->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
             'creator' => 'self',
         ]);
@@ -45,19 +47,14 @@ class CommunityMemberTest extends TestCase
     {
         $user = User::factory()->create(['context' => 'entity']);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('community-members.create'));
+        $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertForbidden();
 
         $response = $this->from(localized_route('community-members.create'))->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
             'creator' => 'self',
         ]);
@@ -77,7 +74,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $other_user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
             'creator' => 'self',
         ]);
@@ -99,7 +96,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
             'creator' => 'self',
         ]);

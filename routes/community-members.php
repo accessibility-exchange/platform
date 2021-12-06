@@ -10,6 +10,11 @@ Route::multilingual('/members/create', [CommunityMemberController::class, 'creat
     ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
     ->name('community-members.create');
 
+Route::multilingual('/members/create/save-roles', [CommunityMemberController::class, 'saveRoles'])
+    ->method('post')
+    ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
+    ->name('community-members.create-save-roles');
+
 Route::multilingual('/members/create', [CommunityMemberController::class, 'store'])
     ->method('post')
     ->middleware(['auth', 'can:create,App\Models\CommunityMember'])

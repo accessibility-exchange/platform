@@ -48,6 +48,7 @@ class CommunityMember extends Model implements HasMedia
         'creator_name',
         'creator_relationship',
         'status',
+        'roles',
         'user_id',
     ];
 
@@ -58,6 +59,7 @@ class CommunityMember extends Model implements HasMedia
      */
     protected $casts = [
         'links' => 'array',
+        'roles' => 'array',
     ];
 
     /**

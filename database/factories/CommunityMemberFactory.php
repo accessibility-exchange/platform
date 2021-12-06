@@ -33,6 +33,7 @@ class CommunityMemberFactory extends Factory
             'pronouns' => ['en' => $this->faker->randomElement(['He/him/his', 'She/her/hers', 'They/them/theirs'])],
             'published_at' => date('Y-m-d h:i:s', time()),
             'creator' => 'self',
+            'roles' => ['participant'],
         ];
     }
 }
