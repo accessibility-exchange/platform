@@ -44,7 +44,7 @@ class CreateCommunityMemberRequest extends FormRequest
                 Rule::in(get_region_codes()),
             ],
             'pronouns' => 'nullable|string',
-            'bio' => 'required|string',
+            'bio' => 'nullable|string',
             'links.*' => 'nullable|url',
         ];
     }

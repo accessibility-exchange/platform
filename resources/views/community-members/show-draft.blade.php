@@ -24,85 +24,34 @@
         </div>
         <div class="flow" id="about">
             <h3>{{ __('About :name', ['name' => $communityMember->firstName()]) }}</h3>
-            <x-privacy-indicator level="public">
-                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
-            </x-privacy-indicator>
-            <p><a class="button" href="{{ localized_route('community-members.edit', $communityMember) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a></p>
-
-            @if($communityMember->bio)
-            <x-markdown class="flow">{{ $communityMember->bio }}</x-markdown>
-            @endif
-
-            @if($communityMember->links)
-            <h4>{{ $communityMember->firstName() }}’s links</h4>
-            <ul>
-                @foreach($communityMember->links as $key => $link)
-                <li><a href="{{ $link }}" rel="external">{{ $key }}</a></li>
-                @endforeach
-            </ul>
-            @endif
-
-            @if($communityMember->creator === 'other')
-            <p><em>{{ __('This page was created by :creator, :name’s :relationship.', ['creator' => $communityMember->creator_name, 'name' => $communityMember->firstName(), 'relationship' => $communityMember->creator_relationship]) }}</em></p>
-            @endif
+            @include('community-members.partials.about', ['level' => 4])
         </div>
-        <div class="flow" id="interests-and-goals">
-            <h3>{{ __('Interests and goals') }}</h3>
-            <x-privacy-indicator level="public">
-                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
-            </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests and goals') . '</span>']) !!}</a></p>
-
-            @include('community-members.boilerplate.interests-and-goals', ['level' => 4])
+        <div class="flow" id="interests">
+            <h3>{{ __('Interests') }}</h3>
+            @include('community-members.partials.interests', ['level' => 4])
         </div>
-        <div class="flow" id="lived-experience">
-            <h3>{{ __('Lived experience') }}</h3>
-            <x-privacy-indicator level="private">
-                <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
-            </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Lived experience') . '</span>']) !!}</a></p>
-
-            @include('community-members.boilerplate.lived-experience', ['level' => 4])
-        </div>
-        <div class="flow" id="professional-experience">
-            <h3>{{ __('Professional experience') }}</h3>
-            <x-privacy-indicator level="public">
-                <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
-            </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Professional experience') . '</span>']) !!}</a></p>
-
-            @include('community-members.boilerplate.professional-experience', ['level' => 4])
+        <div class="flow" id="experiences">
+            <h3>{{ __('Experiences') }}</h3>
+            @include('community-members.partials.experiences', ['level' => 4])
         </div>
         <div class="flow" id="access-needs">
             <h3>{{ __('Access needs') }}</h3>
-            <x-privacy-indicator level="private">
-                <strong>{{ __('This information is not public.') }}</strong> {{ __('It is only visible to regulated entities who work with you.') }}
-            </x-privacy-indicator>
-            <p><a class="button" href="#">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Access needs') . '</span>']) !!}</a></p>
-
-            @include('community-members.boilerplate.access-needs', ['level' => 4])
+            @include('community-members.partials.access-needs', ['level' => 4])
         </div>
     </div>
     <div class="steps flow">
         <h2>Steps to publish</h2>
 
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', $communityMember) }}">{{ __('Interests and goals') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{{ __('Interests') }}</a><br />
             <small>Completed</small>
         </p>
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', $communityMember) }}">{{ __('Lived experience') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]) }}">{{ __('Lived experience') }}</a><br />
             <small>Completed</small>
         </p>
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', $communityMember) }}">{{ __('Access needs') }}</a><br />
-            <small>Completed</small>
-        </p>
-
-        <h3>Optional:</h3>
-
-        <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', $communityMember) }}">{{ __('Professional experience') }}</a><br />
+            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]) }}">{{ __('Access needs') }}</a><br />
             <small>Completed</small>
         </p>
 

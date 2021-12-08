@@ -29,6 +29,7 @@ class CreateCommunityMembersTable extends Migration
             $table->json('pronouns')->nullable();
             $table->json('picture_alt')->nullable();
             $table->enum('creator', ['self', 'other'])->default('self');
+            $table->json('areas_of_interest')->nullable();
             $table->string('phone')->nullable();
             $table->string('support_person_phone')->nullable();
             $table->string('email')->nullable();

@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCommunityMemberRequest;
 use App\Http\Requests\DestroyCommunityMemberRequest;
 use App\Http\Requests\SaveCommunityMemberRolesRequest;
+use App\Http\Requests\UpdateCommunityMemberAccessNeedsRequest;
+use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
+use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
 use App\Models\CommunityMember;
+use App\Models\Impact;
+use App\Models\Sector;
 use App\Statuses\CommunityMemberStatus;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -104,6 +109,8 @@ class CommunityMemberController extends Controller
         return view('community-members.edit', [
             'communityMember' => $communityMember,
             'regions' => get_regions(['CA'], \locale()),
+            'sectors' => Sector::all()->pluck('name', 'id')->toArray(),
+            'impacts' => Impact::all()->pluck('name', 'id')->toArray(),
             'creators' => [
                 'self' => __('I’m creating it myself'),
                 'other' => __('Someone else is creating it for me'),
@@ -120,13 +127,82 @@ class CommunityMemberController extends Controller
      */
     public function update(UpdateCommunityMemberRequest $request, CommunityMember $communityMember): RedirectResponse
     {
-        $communityMember->fill($request->safe()->except('picture'));
+        $communityMember->fill($request->validated());
 
-        if ($request->hasFile('picture') && $request->file('picture')->isValid()) {
-            $communityMember->addMediaFromRequest('picture')->toMediaCollection('picture');
-        } elseif (! $request->hasFile('picture')) {
-            $communityMember->clearMediaCollection('picture');
+        $communityMember->save();
+
+        if ($communityMember->checkStatus('draft')) {
+            flash(__('Your draft community member page has been updated.'), 'success');
         }
+
+        flash(__('Your community member page has been updated.'), 'success');
+
+        return redirect(\localized_route('community-members.show', $communityMember));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCommunityMemberInterestsRequest  $request
+     * @param  \App\Models\CommunityMember  $communityMember
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateInterests(UpdateCommunityMemberInterestsRequest $request, CommunityMember $communityMember): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $communityMember->fill($data);
+
+        $communityMember->save();
+
+        $communityMember->sectors()->sync($data['sectors'] ?? []);
+        $communityMember->impacts()->sync($data['impacts'] ?? []);
+
+        if ($communityMember->checkStatus('draft')) {
+            flash(__('Your draft community member page has been updated.'), 'success');
+        }
+
+        flash(__('Your community member page has been updated.'), 'success');
+
+        return redirect(\localized_route('community-members.show', $communityMember));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCommunityMemberExperiencesRequest  $request
+     * @param  \App\Models\CommunityMember  $communityMember
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateExperiences(UpdateCommunityMemberExperiencesRequest $request, CommunityMember $communityMember): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $communityMember->fill($data);
+
+        $communityMember->save();
+
+        if ($communityMember->checkStatus('draft')) {
+            flash(__('Your draft community member page has been updated.'), 'success');
+        }
+
+        flash(__('Your community member page has been updated.'), 'success');
+
+        return redirect(\localized_route('community-members.show', $communityMember));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCommunityMemberAccessNeedsRequest  $request
+     * @param  \App\Models\CommunityMember  $communityMember
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateAccessNeeds(UpdateCommunityMemberAccessNeedsRequest $request, CommunityMember $communityMember): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $communityMember->fill($data);
 
         $communityMember->save();
 

@@ -268,7 +268,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->get(localized_route('community-members.show-lived-experience', $communityMember));
+        $response = $this->actingAs($user)->get(localized_route('community-members.show-experiences', $communityMember));
         $response->assertOk();
     }
 
@@ -280,7 +280,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($other_user)->get(localized_route('community-members.show-lived-experience', $communityMember));
+        $response = $this->actingAs($other_user)->get(localized_route('community-members.show-experiences', $communityMember));
         $response->assertForbidden();
     }
 

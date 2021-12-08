@@ -50,6 +50,7 @@ class CommunityMember extends Model implements HasMedia
         'status',
         'roles',
         'user_id',
+        'areas_of_interest',
     ];
 
     /**
@@ -71,7 +72,7 @@ class CommunityMember extends Model implements HasMedia
         'picture_alt',
         'bio',
         'pronouns',
-        'creator_relationship',
+        'areas_of_interest',
     ];
 
     /**
@@ -113,13 +114,13 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
-     * Get the community member's age in years.
+     * Get the community member's links.
      *
-     * @return int
+     * @return array
      */
-    public function age(): int
+    public function getLinksAttribute(): array
     {
-        return Carbon::parse($this->attributes['birth_date'])->age;
+        return array_filter(json_decode($this->attributes['links'], true));
     }
 
     /**
