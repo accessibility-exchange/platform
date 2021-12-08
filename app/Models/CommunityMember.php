@@ -120,7 +120,11 @@ class CommunityMember extends Model implements HasMedia
      */
     public function getLinksAttribute(): array
     {
-        return array_filter(json_decode($this->attributes['links'], true));
+        if (! is_null($this->attributes['links'])) {
+            return array_filter(json_decode($this->attributes['links'], true));
+        }
+
+        return [];
     }
 
     /**
