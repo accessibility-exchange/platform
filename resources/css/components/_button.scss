@@ -1,0 +1,25 @@
+button,
+[type="submit"],
+[type="reset"] {
+    appearance: none;
+    border: var(--border-size-2) solid var(--ae-blue);
+    border-radius: var(--radius-2);
+    font-family: "Open Sans", sans-serif;
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-6);
+    height: var(--size-8);
+    min-width: var(--size-12);
+    padding-inline: var(--size-3);
+}
+
+button,
+[type="submit"] {
+    background: var(--ae-blue);
+    color: var(--ae-white);
+}
+
+[type="reset"],
+button.secondary {
+    background: var(--ae-white);
+    color: var(--ae-blue);
+}

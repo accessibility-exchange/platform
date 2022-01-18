@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 .alert {
     border: var(--ll-border-thin);
-    border-radius: var(--ll-border-radius);
+    border-radius: var(--radius-2);
     padding: var(--step-0) var(--step-1);
 }
 
@@ -11,7 +11,8 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    font-weight: 700;
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-4);
 }
 
 .alert .icon {

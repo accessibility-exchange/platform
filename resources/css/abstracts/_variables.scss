@@ -1,6 +1,18 @@
 // -----------------------------------------------------------------------------
-// This file contains all application-wide Sass variables.
+// This file contains all application-wide sass variables and custom properties.
 // -----------------------------------------------------------------------------
+
 :root {
-    --ll-text-color-success: var(--ll-theme-text-color-success, #397f5d);
+    --ae-cyan: #00aeef;
+    --ae-blue: #1f2f5f;
+    --ae-magenta: #f16e9d;
+    --ae-grey: #dad9e1;
+    --ae-graphite: #2b2e38;
+    --ae-green: #00aea9;
+    --ae-dark-grey: #59575b;
+    --ae-black: #000;
+    --ae-white: #fff;
+    --ae-light-green: #bfe2e1;
+    --ae-light-yellow: #ebedbb;
+    --ae-light-red: #f5cdcd;
 }

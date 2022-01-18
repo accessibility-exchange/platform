@@ -1,0 +1,69 @@
+.field + .field {
+    margin-block-start: var(--size-3);
+}
+
+input,
+textarea {
+    appearance: none;
+    border: var(--border-size-2) solid var(--ae-graphite);
+    border-radius: var(--radius-2);
+    color: var(--ae-black);
+    font-family: "Open Sans", sans-serif;
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-4);
+    min-width: var(--size-12);
+    padding-inline: var(--size-2);
+    width: 100%;
+}
+
+input {
+    height: var(--size-8);
+}
+
+textarea {
+    height: var(--size-13);
+}
+
+label {
+    font-weight: var(--font-weight-7);
+}
+
+label + * {
+    margin-block-start: var(--size-2);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+    font-weight: var(--font-weight-6);
+}
+
+input[type="checkbox"] + label::before {
+    appearance: none;
+    border: var(--border-size-2) solid var(--ae-graphite);
+    border-radius: var(--radius-1);
+    content: "";
+    display: inline-block;
+    height: var(--size-4);
+    margin-block-end: var(--size-00);
+    width: var(--size-4);
+}
+
+input[type="checkbox"]:focus + label::before {
+    box-shadow: 0 0 0 calc(var(--size-1) / 2) var(--ae-cyan);
+}
+
+input[type="checkbox"]:checked + label::before {
+    background: var(--ae-blue);
+    border-color: var(--ae-blue);
+}

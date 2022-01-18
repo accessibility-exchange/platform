@@ -1,7 +1,7 @@
 const mix = require("laravel-mix");
+const openProps = require("open-props");
+const postcssJitProps = require("postcss-jit-props");
 require("laravel-mix-sri");
-
-mix.copyDirectory("resources/fonts", "public/fonts");
 
 mix.js("resources/js/app.js", "public/js").extract();
 
@@ -20,6 +20,9 @@ mix.browserSync({
 });
 
 mix.options({
-    processCssUrls: false
+    processCssUrls: false,
+    postCss: [
+        postcssJitProps(openProps)
+    ]
 });
 

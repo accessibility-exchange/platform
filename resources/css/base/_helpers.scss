@@ -11,16 +11,26 @@
 
 .float-left {
     float: left;
-    margin-inline-end: var(--step-0);
+    margin-inline-end: var(--size-3);
 }
 
 .float-right {
     float: right;
-    margin-inline-start: var(--step-0);
+    margin-inline-start: var(--size-3);
 }
 
 .box {
-    border: var(--ll-border-medium);
-    border-radius: var(--ll-border-radius);
-    padding: var(--step-0);
+    border: var(--border-size-2);
+    border-radius: var(--radius-1);
+    padding: var(--size-3);
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
 }
