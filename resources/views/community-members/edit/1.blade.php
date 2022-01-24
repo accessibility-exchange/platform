@@ -1,9 +1,10 @@
+@include('community-members.partials.progress')
+
 <h2>
     {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 5]) }}<br />
     {{ __('About you') }}
 </h2>
 
-@include('community-members.partials.progress')
 
 <form action="{{ localized_route('community-members.update', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
@@ -97,10 +98,10 @@
         x-init="$refs.ssr.remove()"
     >
         <legend>{{ __('Other websites (optional)') }}</legend>
-        <div x-ref="ssr">
+        <ul role="list" class="flow" x-ref="ssr">
             @if($communityMember->other_links)
             @foreach ($communityMember->other_links as $link)
-            <div class="flow">
+            <li class="flow">
                 <div class="field">
                     <x-hearth-label :for="'link_title_' . $loop->index" :value="__('Website title')" />
                     <x-hearth-input :id="'link_title_' . $loop->index" :name="'other_links[' . $loop->index . '][title]'" :value="old('other_links[' . $loop->index . '][title]', $link['title'])" />
@@ -109,22 +110,24 @@
                     <x-hearth-label :for="'link_url_' . $loop->index" :value="__('Website link')" />
                     <x-hearth-input :id="'link_url_' . $loop->index" :name="'other_links[' . $loop->index . '][url]'" :value="old('other_links[' . $loop->index . '][url]', $link['url'])" />
                 </div>
-            </div>
+            </li>
             @endforeach
             @endif
-        </div>
-        <template x-for="(link, index) in links">
-            <div class="flow">
-                <div class="field">
-                    <label x-bind:for="'link_title_' + index">{{ __('Website title') }}</label>
-                    <input type="text" x-bind:id="'link_title_' + index" x-bind:name="'other_links['+ index + '][title]'" x-bind:value="link.title"/ >
-                </div>
-                <div class="field"><label x-bind:for="'link_url_' + index">{{ __('Website link') }}</label>
-                    <input type="text" x-bind:id="'link_url_' + index" x-bind:name="'other_links['+ index + '][url]'" x-bind:value="link.url"/ >
-                </div>
-                <p x-show="index > 0"><button @click="links.splice(index, 1)" type="button">Delete this link</button></p>
-            </div>
-        </template>
+        </ul>
+        <ul role="list" class="flow">
+            <template x-for="(link, index) in links">
+                <li class="flow">
+                    <div class="field">
+                        <label x-bind:for="'link_title_' + index">{{ __('Website title') }}</label>
+                        <input type="text" x-bind:id="'link_title_' + index" x-bind:name="'other_links['+ index + '][title]'" x-bind:value="link.title"/ >
+                    </div>
+                    <div class="field"><label x-bind:for="'link_url_' + index">{{ __('Website link') }}</label>
+                        <input type="text" x-bind:id="'link_url_' + index" x-bind:name="'other_links['+ index + '][url]'" x-bind:value="link.url"/ >
+                    </div>
+                    <button @click="links.splice(index, 1)" type="button">{{ __('Delete this link') }}</button>
+                </li>
+            </template>
+        </ul>
         <p><button @click="links.push({})" type="button">Add new link</button></p>
     </fieldset>
 
