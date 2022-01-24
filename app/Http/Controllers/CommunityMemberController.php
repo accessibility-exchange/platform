@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommunityMemberRequest;
 use App\Http\Requests\DestroyCommunityMemberRequest;
-use App\Http\Requests\SaveCommunityMemberRolesRequest;
-use App\Http\Requests\UpdateCommunityMemberAccessNeedsRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
 use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
 use App\Models\CommunityMember;
 use App\Models\Impact;
+use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\CommunityMemberStatus;
 use Illuminate\Http\RedirectResponse;
@@ -52,35 +51,18 @@ class CommunityMemberController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\SaveCommunityMemberRolesRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function saveRoles(SaveCommunityMemberRolesRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-        session()->put('roles', $data['roles']);
-
-        return redirect(\localized_route('community-members.create', ['step' => 1]));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
      * @param  \App\Http\Requests\CreateCommunityMemberRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateCommunityMemberRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $data['roles'] = session('roles');
 
         $communityMember = CommunityMember::create($data);
 
-        session()->forget('roles');
-
         flash(__('Your draft community member page has been saved.'), 'success');
 
-        return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
     }
 
     /**
@@ -111,6 +93,12 @@ class CommunityMemberController extends Controller
             'regions' => get_regions(['CA'], \locale()),
             'sectors' => Sector::all()->pluck('name', 'id')->toArray(),
             'impacts' => Impact::all()->pluck('name', 'id')->toArray(),
+            'livedExperiences' => LivedExperience::all()->pluck('name', 'id')->toArray(),
+            'ageGroups' => [
+                'youth' => __('Youth (18–24)'),
+                'adult' => __('Adult (25–64)'),
+                'senior' => __('Senior (65+)'),
+            ],
             'creators' => [
                 'self' => __('I’m creating it myself'),
                 'other' => __('Someone else is creating it for me'),
@@ -133,11 +121,15 @@ class CommunityMemberController extends Controller
 
         if ($communityMember->checkStatus('draft')) {
             flash(__('Your draft community member page has been updated.'), 'success');
+        } else {
+            flash(__('Your community member page has been updated.'), 'success');
         }
 
-        flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save_and_next')) {
+            $step = 2;
+        }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => $step ?? 1]));
     }
 
     /**
@@ -160,9 +152,9 @@ class CommunityMemberController extends Controller
 
         if ($communityMember->checkStatus('draft')) {
             flash(__('Your draft community member page has been updated.'), 'success');
+        } else {
+            flash(__('Your community member page has been updated.'), 'success');
         }
-
-        flash(__('Your community member page has been updated.'), 'success');
 
         return redirect(\localized_route('community-members.show', $communityMember));
     }
@@ -182,11 +174,13 @@ class CommunityMemberController extends Controller
 
         $communityMember->save();
 
+        $communityMember->livedExperiences()->sync($data['lived_experiences'] ?? []);
+
         if ($communityMember->checkStatus('draft')) {
             flash(__('Your draft community member page has been updated.'), 'success');
+        } else {
+            flash(__('Your community member page has been updated.'), 'success');
         }
-
-        flash(__('Your community member page has been updated.'), 'success');
 
         return redirect(\localized_route('community-members.show', $communityMember));
     }
@@ -194,11 +188,11 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberAccessNeedsRequest  $request
+     * @param  \App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest  $request
      * @param  \App\Models\CommunityMember  $communityMember
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateAccessNeeds(UpdateCommunityMemberAccessNeedsRequest $request, CommunityMember $communityMember): RedirectResponse
+    public function updateCommunicationPreferences(UpdateCommunityMemberCommunicationPreferencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
 
@@ -208,9 +202,33 @@ class CommunityMemberController extends Controller
 
         if ($communityMember->checkStatus('draft')) {
             flash(__('Your draft community member page has been updated.'), 'success');
+        } else {
+            flash(__('Your community member page has been updated.'), 'success');
         }
 
-        flash(__('Your community member page has been updated.'), 'success');
+        return redirect(\localized_route('community-members.show', $communityMember));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateCommunityMemberAccessAndAccomodationsRequest  $request
+     * @param  \App\Models\CommunityMember  $communityMember
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateAccessAndAccomodations(UpdateCommunityMemberAccessAndAccomodationsRequest $request, CommunityMember $communityMember): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $communityMember->fill($data);
+
+        $communityMember->save();
+
+        if ($communityMember->checkStatus('draft')) {
+            flash(__('Your draft community member page has been updated.'), 'success');
+        } else {
+            flash(__('Your community member page has been updated.'), 'success');
+        }
 
         return redirect(\localized_route('community-members.show', $communityMember));
     }

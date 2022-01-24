@@ -3,7 +3,11 @@
     <x-slot name="title">{{ __('Edit your community member page') }}</x-slot>
     <x-slot name="header">
         <h1>
+            @if($communityMember->checkStatus('published'))
             {{ __('Edit your community member page') }}
+            @else
+            {{ __('Create your community member page') }}
+            @endif
         </h1>
     </x-slot>
 

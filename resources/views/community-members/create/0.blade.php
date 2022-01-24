@@ -1,4 +1,7 @@
-<form method="POST" action="{{ localized_route('community-members.create-save-roles') }}" novalidate>
+<form method="POST" action="{{ localized_route('community-members.store') }}" novalidate>
+
+    <x-hearth-input type="hidden" name="user_id" :value="Auth::user()->id" required />
+    <x-hearth-input type="hidden" name="name" :value="Auth::user()->name" required />
 
     <fieldset class="field @error('roles') field--error @enderror">
         <legend>{{ __('What do you want to do here?') }}</legend>

@@ -35,10 +35,10 @@
         width: 60%;
     }
 
-    .steps {
-        float: left;
-        margin-block-start: calc(-2 * var(--step-1));
-        margin-inline-start: var(--step-3);
-        width: calc(40% - var(--step-3));
-    }
+    // .steps {
+    //     float: left;
+    //     margin-block-start: calc(-2 * var(--step-1));
+    //     margin-inline-start: var(--step-3);
+    //     width: calc(40% - var(--step-3));
+    // }
 }

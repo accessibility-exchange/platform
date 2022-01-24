@@ -35,6 +35,7 @@ class CommunityMember extends Model implements HasMedia
         'name',
         'bio',
         'links',
+        'other_links',
         'locality',
         'region',
         'birth_date',
@@ -51,6 +52,16 @@ class CommunityMember extends Model implements HasMedia
         'roles',
         'user_id',
         'areas_of_interest',
+        'service_preference',
+        'age_group',
+        'other_lived_experience',
+        'lived_experience',
+        'skills_and_strengths',
+        'work_and_volunteer_experiences',
+        'communication_with_platform',
+        'communication_with_entities',
+        'communication_languages',
+        'meeting_types',
     ];
 
     /**
@@ -60,7 +71,9 @@ class CommunityMember extends Model implements HasMedia
      */
     protected $casts = [
         'links' => 'array',
+        'other_links' => 'array',
         'roles' => 'array',
+        'work_and_volunteer_experiences' => 'array',
     ];
 
     /**
@@ -73,6 +86,9 @@ class CommunityMember extends Model implements HasMedia
         'bio',
         'pronouns',
         'areas_of_interest',
+        'other_lived_experience',
+        'lived_experience',
+        'skills_and_strengths',
     ];
 
     /**

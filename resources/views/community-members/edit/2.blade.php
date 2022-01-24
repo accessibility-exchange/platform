@@ -1,8 +1,17 @@
+<h2>
+    {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
+    {{ __('Interests') }}
+</h2>
+
+@include('community-members.partials.progress')
+
 <form action="{{ localized_route('community-members.update-interests', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
 
     <x-privacy-indicator level="public" :value="__('This information will be on your public page. It is visible to anyone with an account on this website.')" />
+
+    {{-- Service preference --}}
 
     <fieldset class="field @error('sectors') field--error @enderror">
         <legend>{{ __('What types of regulated entity are you interested in?') }}</legend>
@@ -26,5 +35,8 @@
         </div>
     </fieldset>
 
-    <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
+    <p>
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
 </form>

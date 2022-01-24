@@ -10,11 +10,6 @@ Route::multilingual('/members/create', [CommunityMemberController::class, 'creat
     ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
     ->name('community-members.create');
 
-Route::multilingual('/members/create/save-roles', [CommunityMemberController::class, 'saveRoles'])
-    ->method('post')
-    ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
-    ->name('community-members.create-save-roles');
-
 Route::multilingual('/members/create', [CommunityMemberController::class, 'store'])
     ->method('post')
     ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
@@ -55,10 +50,15 @@ Route::multilingual('/members/{communityMember}/edit-experiences', [CommunityMem
     ->method('put')
     ->name('community-members.update-experiences');
 
-Route::multilingual('/members/{communityMember}/edit-access-needs', [CommunityMemberController::class, 'updateAccessNeeds'])
+Route::multilingual('/members/{communityMember}/edit-communication-preferences', [CommunityMemberController::class, 'updateCommunicationPreferences'])
     ->middleware(['auth', 'can:update,communityMember'])
     ->method('put')
-    ->name('community-members.update-access-needs');
+    ->name('community-members.update-communication-preferences');
+
+Route::multilingual('/members/{communityMember}/edit-access-and-accomodations', [CommunityMemberController::class, 'updateAccessAndAccomodations'])
+    ->middleware(['auth', 'can:update,communityMember'])
+    ->method('put')
+    ->name('community-members.update-access-and-accomodations');
 
 Route::multilingual('/members/{communityMember}/change-status', [CommunityMemberController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,communityMember'])

@@ -42,18 +42,21 @@
     <div class="steps flow">
         <h2>Steps to publish</h2>
 
-        <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{{ __('Interests') }}</a><br />
-            <small>Completed</small>
-        </p>
-        <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]) }}">{{ __('Lived experience') }}</a><br />
-            <small>Completed</small>
-        </p>
-        <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]) }}">{{ __('Access needs') }}</a><br />
-            <small>Completed</small>
-        </p>
+        <ol class="progress flow">
+            <li>
+                <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember]) }}">{{ __('About you') }}</a>
+            </li>
+            <li>
+                <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{{ __('Interests') }}</a>
+            </li>
+            <li>
+                <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]) }}">{{ __('Experiences') }}</a>
+            </li>
+            <li>
+                <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]) }}">{{ __('Access needs') }}</a>
+            </li>
+        </ol>
+
 
         @can('update', $communityMember)
         @if($communityMember->checkStatus('draft'))

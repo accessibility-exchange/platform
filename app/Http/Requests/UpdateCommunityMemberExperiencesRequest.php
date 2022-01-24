@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\LivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCommunityMemberExperiencesRequest extends FormRequest
 {
@@ -26,7 +28,19 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'lived_experiences' => [
+                'nullable',
+                'array'  ,
+                Rule::in(LivedExperience::all()->pluck('id')->toArray()),
+            ],
+            'other_lived_experience' => 'nullable|string',
+            'age_group' => 'required|in:youth,adult,senior',
+            'lived_experience' => 'nullable|string',
+            'skills_and_strengths' => 'nullable|string',
+            'work_and_volunteer_experiences.*.title' => 'required|string',
+            'work_and_volunteer_experiences.*.start_year' => 'required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
+            'work_and_volunteer_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
+            'work_and_volunteer_experiences.*.current' => 'boolean',
         ];
     }
 }

@@ -5,6 +5,8 @@
 <p><a class="button" href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a></p>
 @endcan
 
+{{-- Service preference --}}
+
 @if(!$communityMember->sectors->isEmpty())
 <x-heading :level="$level">{{ __('Types of regulated entities that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
 <ul role="list" class="tags">

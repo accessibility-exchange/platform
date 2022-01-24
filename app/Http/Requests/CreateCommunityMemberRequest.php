@@ -27,7 +27,6 @@ class CreateCommunityMemberRequest extends FormRequest
     public function rules()
     {
         return [
-
             'user_id' => [
                 Rule::unique(CommunityMember::class),
             ],
@@ -37,15 +36,7 @@ class CreateCommunityMemberRequest extends FormRequest
                 'max:255',
                 Rule::unique(CommunityMember::class),
             ],
-            'creator' => 'required|in:self,other',
-            'locality' => 'required|string|max:255',
-            'region' => [
-                'required',
-                Rule::in(get_region_codes()),
-            ],
-            'pronouns' => 'nullable|string',
-            'bio' => 'nullable|string',
-            'links.*' => 'nullable|url',
+            'roles' => 'required|array|in:participant,consultant,connector',
         ];
     }
 

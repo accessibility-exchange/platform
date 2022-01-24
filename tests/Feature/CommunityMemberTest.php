@@ -18,27 +18,15 @@ class CommunityMemberTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertOk();
 
-        $response = $this->actingAs($user)->post(localized_route('community-members.create-save-roles'), [
-            'roles' => ['participant', 'consultant'],
-        ]);
-
-        $response->assertRedirect(localized_route('community-members.create', ['step' => 1]));
-        $response->assertSessionHas('roles', ['participant', 'consultant']);
-
-        $response = $this->actingAs($user)->from(localized_route('community-members.create', ['step' => 1]))->post(localized_route('community-members.create'), [
+        $response = $this->actingAs($user)->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
-            'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Halifax',
-            'region' => 'NS',
-            'creator' => 'self',
+            'roles' => ['participant', 'consultant'],
         ]);
 
         $communityMember = CommunityMember::where('name', $user->name)->get()->first();
 
-        $response->assertSessionHasNoErrors();
-
-        $response->assertRedirect(localized_route('community-members.show', $communityMember));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
 
         $this->assertEquals($communityMember->user->id, $user->id);
     }
@@ -56,7 +44,6 @@ class CommunityMemberTest extends TestCase
             'bio' => 'Hi, welcome to my page.',
             'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -76,7 +63,6 @@ class CommunityMemberTest extends TestCase
             'bio' => 'Hi, welcome to my page.',
             'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -98,7 +84,6 @@ class CommunityMemberTest extends TestCase
             'bio' => 'Hi, welcome to my page.',
             'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -146,10 +131,9 @@ class CommunityMemberTest extends TestCase
             'bio' => $communityMember->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
-            'creator' => $communityMember->creator,
         ]);
 
-        $response->assertRedirect(localized_route('community-members.show', $communityMember));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
 
         $draft_user = User::factory()->create();
         $draft_community_member = CommunityMember::factory()->create([
@@ -168,7 +152,7 @@ class CommunityMemberTest extends TestCase
             'creator' => $draft_community_member->creator,
         ]);
 
-        $response->assertRedirect(localized_route('community-members.show', $draft_community_member));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $draft_community_member, 'step' => 1]));
     }
 
     public function test_users_can_not_edit_others_community_member_pages()

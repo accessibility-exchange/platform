@@ -10,7 +10,6 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-
     @if(request()->get('step'))
         @include('community-members.create.' . request()->get('step'))
     @else

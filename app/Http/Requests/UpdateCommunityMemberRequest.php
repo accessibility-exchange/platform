@@ -41,7 +41,6 @@ class UpdateCommunityMemberRequest extends FormRequest
                 Rule::unique(CommunityMember::class)->ignore($communityMember->id),
 
             ],
-            'creator' => 'required|in:self,other',
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
@@ -50,6 +49,8 @@ class UpdateCommunityMemberRequest extends FormRequest
             'pronouns' => 'nullable|string',
             'bio' => 'nullable|string',
             'links.*' => 'nullable|url',
+            'other_links.*.title' => 'nullable|string',
+            'other_links.*.url' => 'nullable|url',
         ];
     }
 
