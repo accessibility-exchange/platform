@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateCommunityMemberRequest;
 use App\Http\Requests\DestroyCommunityMemberRequest;
+use App\Http\Requests\UpdateCommunityMemberAccessAndAccomodationsRequest;
+use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
 use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
