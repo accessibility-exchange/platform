@@ -5773,27 +5773,27 @@
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "5.1.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "0e0bca41f4e8ecc6cec90aab7c5e03789253ba00"
+                "reference": "4567de39c483f7e43dddab9b8cb657796b139fd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/0e0bca41f4e8ecc6cec90aab7c5e03789253ba00",
-                "reference": "0e0bca41f4e8ecc6cec90aab7c5e03789253ba00",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/4567de39c483f7e43dddab9b8cb657796b139fd2",
+                "reference": "4567de39c483f7e43dddab9b8cb657796b139fd2",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^8.0",
-                "illuminate/support": "^8.0",
+                "illuminate/database": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
                 "php": "^8.0",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^6.23"
+                "orchestra/testbench": "^6.23|^7.0"
             },
             "type": "library",
             "extra": {
@@ -5844,7 +5844,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/5.1.0"
+                "source": "https://github.com/spatie/laravel-translatable/tree/5.2.0"
             },
             "funding": [
                 {
@@ -5852,7 +5852,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-12-16T08:41:16+00:00"
+            "time": "2022-01-13T11:15:07+00:00"
         },
         {
             "name": "spatie/shiki-php",
@@ -8494,16 +8494,16 @@
         },
         {
             "name": "voku/portable-ascii",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/voku/portable-ascii.git",
-                "reference": "1f8b372a927ab2d17dbdab443aefbfe6a5354284"
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/1f8b372a927ab2d17dbdab443aefbfe6a5354284",
-                "reference": "1f8b372a927ab2d17dbdab443aefbfe6a5354284",
+                "url": "https://api.github.com/repos/voku/portable-ascii/zipball/87337c91b9dfacee02452244ee14ab3c43bc485a",
+                "reference": "87337c91b9dfacee02452244ee14ab3c43bc485a",
                 "shasum": ""
             },
             "require": {
@@ -8540,7 +8540,7 @@
             ],
             "support": {
                 "issues": "https://github.com/voku/portable-ascii/issues",
-                "source": "https://github.com/voku/portable-ascii/tree/1.6.0"
+                "source": "https://github.com/voku/portable-ascii/tree/1.6.1"
             },
             "funding": [
                 {
@@ -8564,7 +8564,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-24T09:37:53+00:00"
+            "time": "2022-01-24T18:55:24+00:00"
         },
         {
             "name": "webmozart/assert",
