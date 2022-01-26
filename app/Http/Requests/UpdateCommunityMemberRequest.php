@@ -49,7 +49,7 @@ class UpdateCommunityMemberRequest extends FormRequest
             'pronouns' => 'nullable|string',
             'bio' => 'nullable|string',
             'links.*' => 'nullable|url',
-            'other_links.*.title' => 'nullable|string',
+            'other_links.*.title' => 'nullable|string|required_with:other_links.*.url',
             'other_links.*.url' => 'nullable|url',
         ];
     }
@@ -64,6 +64,8 @@ class UpdateCommunityMemberRequest extends FormRequest
         return [
             'name.unique' => __('A community member page with this name already exists.'),
             'links.*.url' => __('The link must be a valid web address.'),
+            'other_links.*.url.url' => __('The link must be a valid web address.'),
+            'other_links.*.title.required_with' => __('Please provide a title for the link.'),
         ];
     }
 }

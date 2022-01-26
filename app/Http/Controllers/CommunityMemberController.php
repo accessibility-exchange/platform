@@ -117,7 +117,13 @@ class CommunityMemberController extends Controller
      */
     public function update(UpdateCommunityMemberRequest $request, CommunityMember $communityMember): RedirectResponse
     {
-        $communityMember->fill($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['other_links'])) {
+            $data['other_links'] = array_filter(array_map('array_filter', $data['other_links']));
+        }
+
+        $communityMember->fill($data);
 
         $communityMember->save();
 
