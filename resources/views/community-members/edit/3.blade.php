@@ -11,9 +11,11 @@
 
     <h2>{{ __('Experiences') }}</h2>
 
-    <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-    <x-hearth-input type="submit" name="save" :value="__('Save')" />
-    <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    <p>
+        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
 
     <h3>{{ __('Lived experiences') }}</h3>
 

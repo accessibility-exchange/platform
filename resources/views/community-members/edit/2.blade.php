@@ -9,9 +9,11 @@
     @csrf
     @method('PUT')
 
-    <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-    <x-hearth-input type="submit" name="save" :value="__('Save')" />
-    <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    <p>
+        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
 
     <p>{{ __('This information is used to tell entities if you have any special interests. This entire page is optional.') }}</p>
 

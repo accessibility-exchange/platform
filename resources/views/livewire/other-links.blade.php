@@ -9,7 +9,7 @@
             </div>
             <div class="field @error("other_links.{$i}.url") field--error @enderror">
                 <x-hearth-label :for="'other_links_url_' . $i" :value="__('Website link')" />
-                <x-hearth-input :id="'url_' . $i" :name="'other_links[' . $i . '][url]'" :value="$link['url']" />
+                <x-hearth-input type="url" :id="'url_' . $i" :name="'other_links[' . $i . '][url]'" :value="$link['url']" />
                 <x-hearth-error :for="'other_links_' . $i . '_url'" :field="'other_links.' . $i . '.url'" />
             </div>
             <button type="button" wire:click="removeLink({{ $i }})">{{ __('Remove this website') }}</button>
