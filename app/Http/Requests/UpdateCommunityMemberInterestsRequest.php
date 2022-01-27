@@ -31,17 +31,16 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
         return [
             'areas_of_interest' => 'nullable|string',
             'sectors' => [
-                'required',
-                'array'  ,
-                'min:1',
+                'nullable',
+                'array',
                 Rule::in(Sector::all()->pluck('id')->toArray()),
             ],
             'impacts' => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
                 Rule::in(Impact::all()->pluck('id')->toArray()),
             ],
+            'service_preference' => 'nullable|array|in:digital,non-digital',
         ];
     }
 

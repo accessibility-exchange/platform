@@ -38,6 +38,7 @@ class CommunityMember extends Model implements HasMedia
         'other_links',
         'locality',
         'region',
+        'hide_location',
         'birth_date',
         'picture_alt',
         'phone',
@@ -70,8 +71,10 @@ class CommunityMember extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
+        'hide_location' => 'boolean',
         'links' => 'array',
         'other_links' => 'array',
+        'service_preference' => 'array',
         'roles' => 'array',
         'work_and_volunteer_experiences' => 'array',
     ];

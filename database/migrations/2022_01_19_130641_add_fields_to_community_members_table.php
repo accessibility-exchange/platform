@@ -16,9 +16,11 @@ class AddFieldsToCommunityMembersTable extends Migration
         Schema::table('community_members', function (Blueprint $table) {
             $table->string('locality')->nullable()->change();
             $table->string('region')->nullable()->change();
+            $table->boolean('hide_location')->default(false);
             $table->json('other_links')->nullable();
             $table->json('service_preference')->nullable();
             $table->string('age_group')->nullable();
+            $table->string('living_situation')->nullable();
             $table->json('other_lived_experience')->nullable();
             $table->json('lived_experience')->nullable();
             $table->json('skills_and_strengths')->nullable();
@@ -39,9 +41,11 @@ class AddFieldsToCommunityMembersTable extends Migration
     {
         Schema::table('community_members', function (Blueprint $table) {
             $table->dropColumn([
+                'hide_location',
                 'other_links',
                 'service_preference',
                 'age_group',
+                'living_situation',
                 'other_lived_experience',
                 'lived_experience',
                 'skills_and_strengths',

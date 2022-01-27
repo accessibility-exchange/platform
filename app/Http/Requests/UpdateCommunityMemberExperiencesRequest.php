@@ -34,13 +34,26 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
                 Rule::in(LivedExperience::all()->pluck('id')->toArray()),
             ],
             'other_lived_experience' => 'nullable|string',
-            'age_group' => 'required|in:youth,adult,senior',
+            'age_group' => 'nullable|string|in:youth,adult,senior',
+            'living_situation' => 'nullable|string|in:urban,suburban,rural',
             'lived_experience' => 'nullable|string',
             'skills_and_strengths' => 'nullable|string',
             'work_and_volunteer_experiences.*.title' => 'required|string',
             'work_and_volunteer_experiences.*.start_year' => 'required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
             'work_and_volunteer_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
             'work_and_volunteer_experiences.*.current' => 'boolean',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'work_and_volunteer_experiences.*.start_year.required_with' => __('Please provide the year you started this role.'),
         ];
     }
 }

@@ -5,12 +5,11 @@
     {{ __('About you') }}
 </h2>
 
-
 <form action="{{ localized_route('community-members.update', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
 
-    <x-privacy-indicator level="public" :value="__('This information will be public. Any member of the website can find this information.')" />
+    <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
 
     <fieldset>
         <div class="field @error('name') field--error @enderror">
@@ -34,9 +33,16 @@
 
         <div class="field @error('locality') field--error @enderror">
             <x-hearth-label for="locality" :value="__('City or town (optional)')" />
-            <x-hearth-input type="text" name="locality" value="{{ old('locality', $communityMember->locality) }}" required hinted="address-hint locality-privacy" />
+            <x-hearth-input type="text" name="locality" value="{{ old('locality', $communityMember->locality) }}" hinted="address-hint locality-privacy" />
             <x-hearth-error for="locality" />
         </div>
+
+        <div class="field">
+            <x-hearth-checkbox name="hide_location" :checked="old('hide_location', $communityMember->hide_location ?? false)" />
+            <x-hearth-label for="hide_location" :value="__('Hide my location from anyone besides entities looking to hire me')" />
+        </div>
+
+        <x-info :value="__('If you hide your location, you will not show up on search results based on location.')" />
 
     </fieldset>
 
@@ -78,119 +84,11 @@
         @endforeach
     </fieldset>
 
-    <fieldset class="flow" x-data="otherLinks(
-        {{ count($communityMember->other_links ?? []) }},
-        'other_links',
-        ['title', 'url']
-    )">
+    <fieldset class="flow">
         <legend>{{ __('Other websites (optional)') }}</legend>
-
-        <ul role="list" class="flow" x-ref="list">
-            @if($communityMember->other_links && count($communityMember->other_links) > 0)
-                @foreach ($communityMember->other_links as $link)
-                <li class="flow">
-                    <div class="field @error('other_links.' . $loop->index . '.title') field--error @enderror">
-                        <label for="{{ 'other_links_title_' . $loop->index }}">{{ __('Website title') }}</label>
-                        <input
-                            id="{{ 'other_links_title_' . $loop->index }}"
-                            name="other_links[{{ $loop->index }}][title]"
-                            value="{{ old('other_links.' . $loop->index . '.title', $link['title']) }}"
-                            @error('other_links.' . $loop->index . '.title') aria-invalid="true" aria-describedby="{{ 'other_links_' . $loop->index . '_title-error'}}" @enderror
-                        />
-                        @error('other_links.' . $loop->index . '.title')
-                        <x-hearth-error :for="'other_links_' . $loop->index . '_title'" :field="'other_links.' . $loop->index . '.title'">
-                            {{ $message }}
-                        </x-hearth-error>
-                        @enderror
-                    </div>
-                    <div class="field @error('other_links.' . $loop->index . '.url') field--error @enderror">
-                        <label for="{{ 'other_links_url_' . $loop->index }}">{{ __('Website link') }}</label>
-                        <input
-                            id="{{ 'other_links_url_' . $loop->index }}"
-                            name="other_links[{{ $loop->index }}][url]"
-                            value="{{ old('other_links.' . $loop->index . '.url', $link['url']) }}"
-                            @error('other_links.' . $loop->index . '.url') aria-invalid="true" aria-describedby="{{ 'other_links_' . $loop->index . '_url-error'}}" @enderror
-                        />
-                        @error('other_links.' . $loop->index . '.url')
-                        <x-hearth-error :for="'other_links_' . $loop->index . '_url'" :field="'other_links.' . $loop->index . '.url'">
-                            {{ $message }}
-                        </x-hearth-error>
-                        @enderror
-                    </div>
-                    <button type="button" x-bind="remove">{{ __('Remove this link') }}</button>
-                </li>
-                @endforeach
-            @else
-                <li class="flow">
-                    <div class="field">
-                        <label for="other_links_title_0">{{ __('Website title') }}</label>
-                        <input
-                            id="other_links_title_0"
-                            name="other_links[0][title]"
-                            value=""
-                        />
-                    </div>
-                    <div class="field">
-                        <label for="other_links_url_0">{{ __('Website link') }}</label>
-                        <input
-                            id="other_links_url_0"
-                            name="other_links[0][url]"
-                            value=""
-                        />
-                    </div>
-                </li>
-            @endif
-        </ul>
-        <button type="button" x-bind="add">{{ __('Add another link') }}</button>
+        <p class="field__hint">{{ __('This could be your personal website, a blog or portfolio, or articles about your work.') }}</p>
+        <livewire:other-links :links="$communityMember->other_links" />
     </fieldset>
-
-    <script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('otherLinks', (length = 0, name = false, fields = []) => ({
-            length: length,
-            name: name,
-            fields: fields,
-            reindex(items) {
-                let i = 0;
-                Array.prototype.forEach.call(items, el => {
-                    this.fields.forEach(field => {
-                        const label = el.querySelector(`label[for^="${this.name}_${field}`);
-                        const input = el.querySelector(`input[id^="${this.name}_${field}`);
-                        label.setAttribute('for', `${this.name}_${field}_${i}`);
-                        input.setAttribute('id', `${this.name}_${field}_${i}`);
-                        input.setAttribute('name', `${this.name}[${i}][${field}]`);
-                    });
-                    i++;
-                });
-                return i;
-            },
-            remove: {
-                ['@click'](e) {
-                    const list = e.target.parentNode.parentNode;
-                    e.target.parentNode.remove();
-                    const listItems = list.querySelectorAll('li');
-                    this.length = this.reindex(listItems);
-                },
-                ['x-show']() {
-                    return this.length > 1;
-                }
-            },
-            add: {
-                ['@click']() {
-                    const row = this.$refs.list.querySelector('li').cloneNode(true);
-                    const inputs = row.querySelectorAll('input');
-                    Array.prototype.forEach.call(inputs, el => {
-                        el.value = '';
-                    });
-                    this.$refs.list.appendChild(row);
-                    const listItems = this.$refs.list.querySelectorAll('li');
-                    this.length = this.reindex(listItems);
-                }
-            },
-
-        }));
-    });
-    </script>
 
     <p>
         <x-hearth-input type="submit" name="save" :value="__('Save')" />

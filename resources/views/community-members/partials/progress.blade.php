@@ -26,8 +26,9 @@
         @csrf
         @method('PUT')
 
-        <x-hearth-input type="submit" name="publish" :value="__('Publish my page')" />
+        <x-hearth-input type="submit" name="publish" :value="__('Publish page')" />
     </form>
+    <p class="field__hint">{{ __('Once you publish your page, Federally Regulated Organizations can find you and ask you to consult with them.') }}</p>
     @endif
     @endcan
 </div>

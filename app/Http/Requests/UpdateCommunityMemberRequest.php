@@ -41,16 +41,17 @@ class UpdateCommunityMemberRequest extends FormRequest
                 Rule::unique(CommunityMember::class)->ignore($communityMember->id),
 
             ],
-            'locality' => 'required|string|max:255',
+            'locality' => 'nullable|string|max:255',
             'region' => [
                 'required',
                 Rule::in(get_region_codes()),
             ],
+            'hide_location' => 'boolean',
             'pronouns' => 'nullable|string',
             'bio' => 'nullable|string',
             'links.*' => 'nullable|url',
             'other_links.*.title' => 'nullable|string|required_with:other_links.*.url',
-            'other_links.*.url' => 'nullable|url',
+            'other_links.*.url' => 'nullable|url|required_with:other_links.*.title',
         ];
     }
 
@@ -65,6 +66,7 @@ class UpdateCommunityMemberRequest extends FormRequest
             'name.unique' => __('A community member page with this name already exists.'),
             'links.*.url' => __('The link must be a valid web address.'),
             'other_links.*.url.url' => __('The link must be a valid web address.'),
+            'other_links.*.url.required_with' => __('Please provide a link for the website.'),
             'other_links.*.title.required_with' => __('Please provide a title for the link.'),
         ];
     }

@@ -95,11 +95,20 @@ class CommunityMemberController extends Controller
             'regions' => get_regions(['CA'], \locale()),
             'sectors' => Sector::all()->pluck('name', 'id')->toArray(),
             'impacts' => Impact::all()->pluck('name', 'id')->toArray(),
+            'servicePreferences' => [
+                'digital' => __('Digital services (websites, apps, etc.)'),
+                'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
+            ],
             'livedExperiences' => LivedExperience::all()->pluck('name', 'id')->toArray(),
             'ageGroups' => [
                 'youth' => __('Youth (18–24)'),
                 'adult' => __('Adult (25–64)'),
                 'senior' => __('Senior (65+)'),
+            ],
+            'livingSituations' => [
+                'urban' => __('Urban'),
+                'suburban' => __('Suburban'),
+                'rural' => __('Rural'),
             ],
             'creators' => [
                 'self' => __('I’m creating it myself'),
@@ -121,6 +130,10 @@ class CommunityMemberController extends Controller
 
         if (isset($data['other_links'])) {
             $data['other_links'] = array_filter(array_map('array_filter', $data['other_links']));
+        }
+
+        if (! isset($data['hide_location'])) {
+            $data['hide_location'] = false;
         }
 
         $communityMember->fill($data);
@@ -151,6 +164,10 @@ class CommunityMemberController extends Controller
     {
         $data = $request->validated();
 
+        if (! isset($data['service_preference'])) {
+            $data['service_preference'] = [];
+        }
+
         $communityMember->fill($data);
 
         $communityMember->save();
@@ -164,7 +181,13 @@ class CommunityMemberController extends Controller
             flash(__('Your community member page has been updated.'), 'success');
         }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        if ($request->input('save_and_next')) {
+            $step = 3;
+        } elseif ($request->input('save_and_previous')) {
+            $step = 1;
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => $step ?? 2]));
     }
 
     /**
@@ -178,6 +201,10 @@ class CommunityMemberController extends Controller
     {
         $data = $request->validated();
 
+        if (isset($data['work_and_volunteer_experiences'])) {
+            $data['work_and_volunteer_experiences'] = array_filter(array_map('array_filter', $data['work_and_volunteer_experiences']));
+        }
+
         $communityMember->fill($data);
 
         $communityMember->save();
@@ -190,7 +217,13 @@ class CommunityMemberController extends Controller
             flash(__('Your community member page has been updated.'), 'success');
         }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        if ($request->input('save_and_next')) {
+            $step = 4;
+        } elseif ($request->input('save_and_previous')) {
+            $step = 2;
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => $step ?? 3]));
     }
 
     /**
@@ -214,7 +247,13 @@ class CommunityMemberController extends Controller
             flash(__('Your community member page has been updated.'), 'success');
         }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        if ($request->input('save_and_next')) {
+            $step = 5;
+        } elseif ($request->input('save_and_previous')) {
+            $step = 3;
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => $step ?? 4]));
     }
 
     /**
@@ -238,7 +277,11 @@ class CommunityMemberController extends Controller
             flash(__('Your community member page has been updated.'), 'success');
         }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        if ($request->input('save_and_previous')) {
+            $step = 4;
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => $step ?? 5]));
     }
 
     /**
