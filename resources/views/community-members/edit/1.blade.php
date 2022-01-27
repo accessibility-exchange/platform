@@ -78,17 +78,21 @@
         @endforeach
     </fieldset>
 
-    <fieldset class="flow" x-data="otherLinks({{ count($communityMember->other_links ?? []) }})">
+    <fieldset class="flow" x-data="otherLinks(
+        {{ count($communityMember->other_links ?? []) }},
+        'other_links',
+        ['title', 'url']
+    )">
         <legend>{{ __('Other websites (optional)') }}</legend>
 
         <ul role="list" class="flow" x-ref="list">
-            @if($communityMember->other_links)
-                @forelse ($communityMember->other_links as $link)
+            @if($communityMember->other_links && count($communityMember->other_links) > 0)
+                @foreach ($communityMember->other_links as $link)
                 <li class="flow">
                     <div class="field @error('other_links.' . $loop->index . '.title') field--error @enderror">
-                        <label for="{{ 'link_title_' . $loop->index }}">{{ __('Website title') }}</label>
+                        <label for="{{ 'other_links_title_' . $loop->index }}">{{ __('Website title') }}</label>
                         <input
-                            id="{{ 'link_title_' . $loop->index }}"
+                            id="{{ 'other_links_title_' . $loop->index }}"
                             name="other_links[{{ $loop->index }}][title]"
                             value="{{ old('other_links.' . $loop->index . '.title', $link['title']) }}"
                             @error('other_links.' . $loop->index . '.title') aria-invalid="true" aria-describedby="{{ 'other_links_' . $loop->index . '_title-error'}}" @enderror
@@ -100,9 +104,9 @@
                         @enderror
                     </div>
                     <div class="field @error('other_links.' . $loop->index . '.url') field--error @enderror">
-                        <label for="{{ 'link_url_' . $loop->index }}">{{ __('Website link') }}</label>
+                        <label for="{{ 'other_links_url_' . $loop->index }}">{{ __('Website link') }}</label>
                         <input
-                            id="{{ 'link_url_' . $loop->index }}"
+                            id="{{ 'other_links_url_' . $loop->index }}"
                             name="other_links[{{ $loop->index }}][url]"
                             value="{{ old('other_links.' . $loop->index . '.url', $link['url']) }}"
                             @error('other_links.' . $loop->index . '.url') aria-invalid="true" aria-describedby="{{ 'other_links_' . $loop->index . '_url-error'}}" @enderror
@@ -115,45 +119,26 @@
                     </div>
                     <button type="button" x-bind="remove">{{ __('Remove this link') }}</button>
                 </li>
-                @empty
+                @endforeach
+            @else
                 <li class="flow">
                     <div class="field">
-                        <label for="link_title_0">{{ __('Website title') }}</label>
+                        <label for="other_links_title_0">{{ __('Website title') }}</label>
                         <input
-                            id="link_title_0"
+                            id="other_links_title_0"
                             name="other_links[0][title]"
                             value=""
                         />
                     </div>
                     <div class="field">
-                        <label for="link_url_0">{{ __('Website link') }}</label>
+                        <label for="other_links_url_0">{{ __('Website link') }}</label>
                         <input
-                            id="link_url_0"
+                            id="other_links_url_0"
                             name="other_links[0][url]"
                             value=""
                         />
                     </div>
                 </li>
-                @endforelse
-            @else
-            <li class="flow">
-                <div class="field">
-                    <label for="link_title_0">{{ __('Website title') }}</label>
-                    <input
-                        id="link_title_0"
-                        name="other_links[0][title]"
-                        value=""
-                    />
-                </div>
-                <div class="field">
-                    <label for="link_url_0">{{ __('Website link') }}</label>
-                    <input
-                        id="link_url_0"
-                        name="other_links[0][url]"
-                        value=""
-                    />
-                </div>
-            </li>
             @endif
         </ul>
         <button type="button" x-bind="add">{{ __('Add another link') }}</button>
@@ -161,28 +146,30 @@
 
     <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('otherLinks', (initialLength = 0) => ({
-            length: initialLength,
+        Alpine.data('otherLinks', (length = 0, name = false, fields = []) => ({
+            length: length,
+            name: name,
+            fields: fields,
+            reindex(items) {
+                let i = 0;
+                Array.prototype.forEach.call(items, el => {
+                    this.fields.forEach(field => {
+                        const label = el.querySelector(`label[for^="${this.name}_${field}`);
+                        const input = el.querySelector(`input[id^="${this.name}_${field}`);
+                        label.setAttribute('for', `${this.name}_${field}_${i}`);
+                        input.setAttribute('id', `${this.name}_${field}_${i}`);
+                        input.setAttribute('name', `${this.name}[${i}][${field}]`);
+                    });
+                    i++;
+                });
+                return i;
+            },
             remove: {
                 ['@click'](e) {
                     const list = e.target.parentNode.parentNode;
                     e.target.parentNode.remove();
-                    let i = 0;
                     const listItems = list.querySelectorAll('li');
-                    Array.prototype.forEach.call(listItems, el => {
-                        const titleLabel = el.querySelector('label[for^="link_title"]');
-                        const urlLabel = el.querySelector('label[for^="link_url"]');
-                        const titleInput = el.querySelector('input[id^="link_title"]');
-                        const urlInput = el.querySelector('input[id^="link_url"]');
-                        titleLabel.setAttribute('for', `link_title_${i}`);
-                        urlLabel.setAttribute('for', `link_url_${i}`);
-                        titleInput.setAttribute('id', `link_title_${i}`);
-                        titleInput.setAttribute('name', `other_links[${i}][title]`);
-                        urlInput.setAttribute('id', `link_url_${i}`);
-                        urlInput.setAttribute('name', `other_links[${i}][url]`);
-                        i++;
-                    });
-                    this.length = i;
+                    this.length = this.reindex(listItems);
                 },
                 ['x-show']() {
                     return this.length > 1;
@@ -196,22 +183,8 @@
                         el.value = '';
                     });
                     this.$refs.list.appendChild(row);
-                    let i = 0;
                     const listItems = this.$refs.list.querySelectorAll('li');
-                    Array.prototype.forEach.call(listItems, el => {
-                        const titleLabel = el.querySelector('label[for^="link_title"]');
-                        const urlLabel = el.querySelector('label[for^="link_url"]');
-                        const titleInput = el.querySelector('input[id^="link_title"]');
-                        const urlInput = el.querySelector('input[id^="link_url"]');
-                        titleLabel.setAttribute('for', `link_title_${i}`);
-                        urlLabel.setAttribute('for', `link_url_${i}`);
-                        titleInput.setAttribute('id', `link_title_${i}`);
-                        titleInput.setAttribute('name', `other_links[${i}][title]`);
-                        urlInput.setAttribute('id', `link_url_${i}`);
-                        urlInput.setAttribute('name', `other_links[${i}][url]`);
-                        i++;
-                    });
-                    this.length = i;
+                    this.length = this.reindex(listItems);
                 }
             },
 
