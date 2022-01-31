@@ -31,15 +31,8 @@ class CreateCommunityMembersTable extends Migration
             $table->enum('creator', ['self', 'other'])->default('self');
             $table->json('areas_of_interest')->nullable();
             $table->string('phone')->nullable();
-            $table->string('support_person_phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('support_person_email')->nullable();
-            $table->enum('preferred_contact_method', [
-                'phone',
-                'support_person_phone',
-                'email',
-                'support_person_email',
-            ])->nullable();
+            $table->json('preferred_contact_method')->nullable();
             $table->timestamps();
         });
     }

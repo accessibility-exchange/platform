@@ -29,6 +29,7 @@ class AddFieldsToCommunityMembersTable extends Migration
             $table->json('communication_with_entities')->nullable();
             $table->json('communication_languages')->nullable();
             $table->json('meeting_types')->nullable();
+            $table->json('support_people')->nullable();
         });
     }
 
@@ -54,6 +55,7 @@ class AddFieldsToCommunityMembersTable extends Migration
                 'communication_with_entities',
                 'communication_languages',
                 'meeting_types',
+                'support_people',
             ]);
         });
     }

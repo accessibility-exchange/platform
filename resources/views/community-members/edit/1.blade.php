@@ -87,7 +87,7 @@
     <fieldset class="flow">
         <legend>{{ __('Other websites (optional)') }}</legend>
         <p class="field__hint">{{ __('This could be your personal website, a blog or portfolio, or articles about your work.') }}</p>
-        <livewire:other-links :links="$communityMember->other_links" />
+        <livewire:other-links :links="$communityMember->other_links ?? []" />
     </fieldset>
 
     <p>

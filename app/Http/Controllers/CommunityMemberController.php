@@ -14,6 +14,7 @@ use App\Models\Impact;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\CommunityMemberStatus;
+use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -90,6 +91,12 @@ class CommunityMemberController extends Controller
      */
     public function edit(CommunityMember $communityMember): View
     {
+        $languages = (new LanguageRepository)->getAll();
+
+        foreach ($languages as $key => $language) {
+            $languages[$key] = $language->getName();
+        }
+
         return view('community-members.edit', [
             'communityMember' => $communityMember,
             'regions' => get_regions(['CA'], \locale()),
@@ -114,6 +121,14 @@ class CommunityMemberController extends Controller
                 'self' => __('I’m creating it myself'),
                 'other' => __('Someone else is creating it for me'),
             ],
+            'contactMethods' => [
+                'email' => __('Email'),
+                'text' => __('Text message'),
+                'phone' => __('Phone call'),
+                'vrs' => __('Phone call with Video Relay Service (VRS)'),
+                'support_person' => __('Contact my support person'),
+            ],
+            'languages' => $languages,
         ]);
     }
 

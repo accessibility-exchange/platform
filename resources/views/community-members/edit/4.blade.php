@@ -5,11 +5,50 @@
 
 @include('community-members.partials.progress')
 
-<form action="{{ localized_route('community-members.update-communication-preferences-needs', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
+<form action="{{ localized_route('community-members.update-communication-preferences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
 
+    <h3>{{ __('Contact information') }}</h3>
+
     <p>
+        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
+
+    <fieldset>
+        <legend>{{ __('For you') }}</legend>
+        <div class="field @error('email') field-error @enderror">
+            <x-hearth-label for="email" :value="__('Email')" />
+            <x-hearth-input type="email" name="email" :value="old('email', $communityMember->email ?? $communityMember->user->email)" required />
+            <x-hearth-error for="email" />
+        </div>
+        <div class="field @error('phone') field-error @enderror">
+            <x-hearth-label for="phone" :value="__('Phone')" />
+            <x-hearth-input type="tel" name="phone" :value="old('phone', $communityMember->phone)" required />
+            <x-hearth-error for="phone" />
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>{{ __('For your support people') }}</legend>
+        <livewire:support-people :supportPeople="$communityMember->support_people ?? []" />
+    </fieldset>
+
+    <h3>{{ __('Communication with you') }}</h3>
+
+    <fieldset>
+        <legend>{{ __('How do you want to be contacted when a regulated entity wants to consult with you?') }}</legend>
+        <x-hearth-checkboxes name="preferred_contact_method" :options="$contactMethods" :selected="old('preferred_contact_method', $communityMember->preferred_contact_method ?? [])" />
+    </fieldset>
+
+    <fieldset>
+        <legend>{{ __('What language do you use?') }}</legend>
+        <x-hearth-select name="languages" :options="$languages" :selected="old('languages', $communityMember->languages ?? [])" />
+    </fieldset>
+
+    <p>
+        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
         <x-hearth-input type="submit" name="save" :value="__('Save')" />
         <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
     </p>
