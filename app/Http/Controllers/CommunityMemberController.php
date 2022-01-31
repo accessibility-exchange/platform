@@ -128,7 +128,7 @@ class CommunityMemberController extends Controller
                 'vrs' => __('Phone call with Video Relay Service (VRS)'),
                 'support_person' => __('Contact my support person'),
             ],
-            'languages' => $languages,
+            'languages' => ['' => __('Choose a language…')] + $languages,
         ]);
     }
 
@@ -251,6 +251,14 @@ class CommunityMemberController extends Controller
     public function updateCommunicationPreferences(UpdateCommunityMemberCommunicationPreferencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
+
+        if (isset($data['support_people'])) {
+            $data['support_people'] = array_filter(array_map('array_filter', $data['support_people']));
+        }
+
+        if (isset($data['languages'])) {
+            $data['languages'] = array_filter($data['languages']);
+        }
 
         $communityMember->fill($data);
 

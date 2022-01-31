@@ -14,8 +14,18 @@ class AddFieldsToCommunityMembersTable extends Migration
     public function up()
     {
         Schema::table('community_members', function (Blueprint $table) {
+            $table->json('bio')->nullable()->change();
             $table->string('locality')->nullable()->change();
             $table->string('region')->nullable()->change();
+            $table->string('preferred_contact_method')->change();
+            $table->dropColumn([
+                'birth_date',
+                'creator_relationship',
+                'creator_name',
+                'support_person_phone',
+                'support_person_email',
+            ]);
+            $table->json('roles');
             $table->boolean('hide_location')->default(false);
             $table->json('other_links')->nullable();
             $table->json('service_preference')->nullable();
@@ -25,10 +35,7 @@ class AddFieldsToCommunityMembersTable extends Migration
             $table->json('lived_experience')->nullable();
             $table->json('skills_and_strengths')->nullable();
             $table->json('work_and_volunteer_experiences')->nullable();
-            $table->json('communication_with_platform')->nullable();
-            $table->json('communication_with_entities')->nullable();
-            $table->json('communication_languages')->nullable();
-            $table->json('meeting_types')->nullable();
+            $table->json('languages')->nullable();
             $table->json('support_people')->nullable();
         });
     }
@@ -51,10 +58,7 @@ class AddFieldsToCommunityMembersTable extends Migration
                 'lived_experience',
                 'skills_and_strengths',
                 'work_and_volunteer_experiences',
-                'communication_with_platform',
-                'communication_with_entities',
-                'communication_languages',
-                'meeting_types',
+                'languages',
                 'support_people',
             ]);
         });

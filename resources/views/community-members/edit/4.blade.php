@@ -43,8 +43,8 @@
     </fieldset>
 
     <fieldset>
-        <legend>{{ __('What language do you use?') }}</legend>
-        <x-hearth-select name="languages" :options="$languages" :selected="old('languages', $communityMember->languages ?? [])" />
+        <legend>{{ __('What languages do you use?') }}</legend>
+        <livewire:language-picker :languages="$communityMember->languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
     </fieldset>
 
     <p>
