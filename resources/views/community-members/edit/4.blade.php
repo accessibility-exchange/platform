@@ -32,7 +32,7 @@
     </fieldset>
     <fieldset>
         <legend>{{ __('For your support people') }}</legend>
-        <livewire:support-people :supportPeople="$communityMember->support_people ?? []" />
+        <livewire:support-people :people="$communityMember->support_people ?? [['name' => '', 'email' => '', 'phone' => '', 'page_creator' => false]]" />
     </fieldset>
 
     <h3>{{ __('Communication with you') }}</h3>

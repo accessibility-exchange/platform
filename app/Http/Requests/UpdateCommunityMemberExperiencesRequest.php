@@ -38,10 +38,10 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
             'living_situation' => 'nullable|string|in:urban,suburban,rural',
             'lived_experience' => 'nullable|string',
             'skills_and_strengths' => 'nullable|string',
-            'work_and_volunteer_experiences.*.title' => 'required|string',
-            'work_and_volunteer_experiences.*.start_year' => 'required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
+            'work_and_volunteer_experiences.*.title' => 'nullable|string',
+            'work_and_volunteer_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
             'work_and_volunteer_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
-            'work_and_volunteer_experiences.*.current' => 'boolean',
+            'work_and_volunteer_experiences.*.current' => 'nullable|boolean',
         ];
     }
 

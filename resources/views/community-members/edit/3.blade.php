@@ -71,7 +71,7 @@
     <fieldset class="flow">
         <legend>{{ __('Work and volunteer experiences (optional)') }}</legend>
         <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
-        <livewire:work-and-volunteer-experiences :experiences="$communityMember->work_and_volunteer_experiences ?? []" />
+        <livewire:work-and-volunteer-experiences :experiences="$communityMember->work_and_volunteer_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
     </fieldset>
 
     <p>

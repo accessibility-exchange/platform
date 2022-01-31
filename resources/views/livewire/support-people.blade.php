@@ -1,6 +1,6 @@
 <div class="flow">
     <ul role="list" class="flow">
-        @foreach($supportPeople as $i => $person)
+        @foreach($people as $i => $person)
         <li class="flow">
             <div class="field @error("support_people.{$i}.name") field-error @enderror">
                 <x-hearth-label :for="'support_people_' . $i . '_name'" :value="__('Contact name')" />
@@ -22,7 +22,9 @@
                 <x-hearth-checkbox :id="'support_people_' . $i . '_page_creator'" :name="'support_people[' . $i . '][page_creator]'" :checked="$person['page_creator'] ?? false" />
                 <x-hearth-label :for="'support_people_' . $i . '_page_creator'" :value="__('This person created my page on my behalf')" />
             </div>
+            @if($loop->count > 1)
             <button type="button" wire:click="removePerson({{ $i }})">{{ __('Remove this support person') }}</button>
+            @endif
         </li>
         @endforeach
     </ul>

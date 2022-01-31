@@ -12,7 +12,9 @@
                 <x-hearth-input type="url" :id="'url_' . $i" :name="'other_links[' . $i . '][url]'" :value="$link['url']" />
                 <x-hearth-error :for="'other_links_' . $i . '_url'" :field="'other_links.' . $i . '.url'" />
             </div>
+            @if($loop->count > 1)
             <button type="button" wire:click="removeLink({{ $i }})">{{ __('Remove this website') }}</button>
+            @endif
         @endforeach
     </ul>
     @if ($this->canAddMoreLinks())

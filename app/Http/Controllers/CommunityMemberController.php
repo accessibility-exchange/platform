@@ -144,7 +144,12 @@ class CommunityMemberController extends Controller
         $data = $request->validated();
 
         if (isset($data['other_links'])) {
-            $data['other_links'] = array_filter(array_map('array_filter', $data['other_links']));
+            $other_links = array_filter(array_map('array_filter', $data['other_links']));
+            if (empty($other_links)) {
+                unset($data['other_links']);
+            } else {
+                $data['other_links'] = $other_links;
+            }
         }
 
         if (! isset($data['hide_location'])) {
@@ -217,7 +222,12 @@ class CommunityMemberController extends Controller
         $data = $request->validated();
 
         if (isset($data['work_and_volunteer_experiences'])) {
-            $data['work_and_volunteer_experiences'] = array_filter(array_map('array_filter', $data['work_and_volunteer_experiences']));
+            $work_and_volunteer_experiences = array_filter(array_map('array_filter', $data['work_and_volunteer_experiences']));
+            if (empty($work_and_volunteer_experiences)) {
+                unset($data['work_and_volunteer_experiences']);
+            } else {
+                $data['work_and_volunteer_experiences'] = $work_and_volunteer_experiences;
+            }
         }
 
         $communityMember->fill($data);
@@ -253,11 +263,21 @@ class CommunityMemberController extends Controller
         $data = $request->validated();
 
         if (isset($data['support_people'])) {
-            $data['support_people'] = array_filter(array_map('array_filter', $data['support_people']));
+            $support_people = array_filter(array_map('array_filter', $data['support_people']));
+            if (empty($support_people)) {
+                unset($data['support_people']);
+            } else {
+                $data['support_people'] = $support_people;
+            }
         }
 
         if (isset($data['languages'])) {
-            $data['languages'] = array_filter($data['languages']);
+            $languages = array_filter($data['languages']);
+            if (empty($languages)) {
+                unset($data['languages']);
+            } else {
+                $data['languages'] = $languages;
+            }
         }
 
         $communityMember->fill($data);

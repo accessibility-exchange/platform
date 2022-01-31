@@ -6,11 +6,11 @@ use Livewire\Component;
 
 class SupportPeople extends Component
 {
-    public $supportPeople = [];
+    public $people = [];
 
-    public function mount(array $supportPeople)
+    public function mount(array $people)
     {
-        $this->supportPeople = old('support_people', $supportPeople);
+        $this->people = old('support_people', $people);
     }
 
     public function addPerson(): void
@@ -19,19 +19,19 @@ class SupportPeople extends Component
             return;
         }
 
-        $this->supportPeople[] = ['name' => '', 'phone' => '', 'email' => ''];
+        $this->people[] = ['name' => '', 'phone' => '', 'email' => ''];
     }
 
     public function removePerson(int $i): void
     {
-        unset($this->supportPeople[$i]);
+        unset($this->people[$i]);
 
-        $this->supportPeople = array_values($this->supportPeople);
+        $this->people = array_values($this->people);
     }
 
     public function canAddMorePeople()
     {
-        return count($this->supportPeople) < 6;
+        return count($this->people) < 6;
     }
 
     public function render()
