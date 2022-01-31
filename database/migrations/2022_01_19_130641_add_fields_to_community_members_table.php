@@ -28,6 +28,7 @@ class AddFieldsToCommunityMembersTable extends Migration
             $table->json('roles');
             $table->boolean('hide_location')->default(false);
             $table->json('other_links')->nullable();
+            $table->json('areas_of_interest')->nullable();
             $table->json('service_preference')->nullable();
             $table->string('age_group')->nullable();
             $table->string('living_situation')->nullable();
