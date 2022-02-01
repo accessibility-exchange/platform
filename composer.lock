@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ca0ddeee2318b3d2e42b69c6c7e4362",
+    "content-hash": "e72c62681121266789e6cc0c52ce5c3d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3310,26 +3310,26 @@
         },
         {
             "name": "makeabledk/laravel-eloquent-status",
-            "version": "v1.2.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makeabledk/laravel-eloquent-status.git",
-                "reference": "0c0a596384946851edee82bf9e4f790d1998f4c1"
+                "reference": "4f13b70ea70e9ebbe7a85d86f397a6fed99b729f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/0c0a596384946851edee82bf9e4f790d1998f4c1",
-                "reference": "0c0a596384946851edee82bf9e4f790d1998f4c1",
+                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/4f13b70ea70e9ebbe7a85d86f397a6fed99b729f",
+                "reference": "4f13b70ea70e9ebbe7a85d86f397a6fed99b729f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^5.5|^6.0|^7.0|^8.0",
-                "makeabledk/laravel-querykit": "^2.0",
-                "php": ">=7.2.0"
+                "illuminate/support": "^8.80|^9.0",
+                "makeabledk/laravel-querykit": "^3.0",
+                "php": "^8.0"
             },
             "require-dev": {
-                "laravel/laravel": "^5.5|^6.0|^7.0|^8.0",
-                "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0"
+                "laravel/laravel": "^8.0|^9.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
             "autoload": {
@@ -3343,30 +3343,31 @@
             ],
             "support": {
                 "issues": "https://github.com/makeabledk/laravel-eloquent-status/issues",
-                "source": "https://github.com/makeabledk/laravel-eloquent-status/tree/v1.2.0"
+                "source": "https://github.com/makeabledk/laravel-eloquent-status/tree/v2.0.0"
             },
-            "time": "2020-09-18T21:03:51+00:00"
+            "time": "2022-01-27T08:29:52+00:00"
         },
         {
             "name": "makeabledk/laravel-querykit",
-            "version": "v2.3.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makeabledk/laravel-query-kit.git",
-                "reference": "8c377b99710d459bd7798cb50a466d0454bc20c2"
+                "reference": "35e377d85017e6f37e694b4430ee0aec086515df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/8c377b99710d459bd7798cb50a466d0454bc20c2",
-                "reference": "8c377b99710d459bd7798cb50a466d0454bc20c2",
+                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/35e377d85017e6f37e694b4430ee0aec086515df",
+                "reference": "35e377d85017e6f37e694b4430ee0aec086515df",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^6.0|^7.0|^8.0",
-                "php": ">=7.3.0"
+                "illuminate/support": "^8.80|^9.0",
+                "php": "^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^3.8|^4.0|^6.0"
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
             "extra": {
@@ -3387,9 +3388,9 @@
             ],
             "support": {
                 "issues": "https://github.com/makeabledk/laravel-query-kit/issues",
-                "source": "https://github.com/makeabledk/laravel-query-kit/tree/v2.3.0"
+                "source": "https://github.com/makeabledk/laravel-query-kit/tree/v3.0.1"
             },
-            "time": "2020-12-07T06:18:37+00:00"
+            "time": "2022-01-26T12:42:00+00:00"
         },
         {
             "name": "monolog/monolog",
