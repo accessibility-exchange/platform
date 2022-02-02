@@ -1,5 +1,5 @@
 <div class="steps flow">
-    <h2>{{ __('Steps to publish') }}</h2>
+    <h3>{{ __('Page sections') }}</h3>
 
     <ol class="progress flow">
         <li>
@@ -19,16 +19,17 @@
         </li>
     </ol>
 
-
     @can('update', $communityMember)
     @if($communityMember->checkStatus('draft'))
-    <form action="{{ localized_route('community-members.update-publication-status', $communityMember) }}" method="POST" novalidate>
-        @csrf
-        @method('PUT')
-
-        <x-hearth-input type="submit" name="publish" :value="__('Publish page')" />
-    </form>
-    <p class="field__hint">{{ __('Once you publish your page, Federally Regulated Organizations can find you and ask you to consult with them.') }}</p>
+        <p>
+            <x-hearth-input type="submit" name="preview" :value="__('Preview page')" />
+            <x-hearth-input type="submit" name="publish" :value="__('Publish page')" />
+        </p>
+        <p class="field__hint">{{ __('Once you publish your page, Federally Regulated Organizations can find you and ask you to consult with them.') }}</p>
+    @else
+        <p>
+            <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish page')" />
+        </p>
     @endif
     @endcan
 </div>

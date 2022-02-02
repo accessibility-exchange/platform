@@ -17,14 +17,16 @@
             @endif
         </div>
         @can('update', $communityMember)
-        @if($communityMember->checkStatus('published'))
         <form action="{{ localized_route('community-members.update-publication-status', $communityMember) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
 
+            @if($communityMember->checkStatus('published'))
             <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish my page')" />
+            @else
+            <x-hearth-input type="submit" name="publish" :value="__('Publish my page')" />
+            @endif
         </form>
-        @endif
         @endcan
     </x-slot>
 

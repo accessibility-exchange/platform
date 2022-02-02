@@ -319,4 +319,18 @@ class CommunityMember extends Model implements HasMedia
 
         return __('Doesn’t match any project criteria');
     }
+
+    public function publish(): void
+    {
+        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->save();
+        flash(__('Your community member page has been published.'), 'success');
+    }
+
+    public function unpublish(): void
+    {
+        $this->published_at = null;
+        $this->save();
+        flash(__('Your community member page has been unpublished.'), 'success');
+    }
 }

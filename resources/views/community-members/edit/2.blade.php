@@ -1,13 +1,13 @@
-<h2>
-    {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
-    {{ __('Interests') }}
-</h2>
-
-@include('community-members.partials.progress')
-
 <form action="{{ localized_route('community-members.update-interests', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
+
+    <h2>
+        {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
+        {{ __('Interests') }}
+    </h2>
+
+    @include('community-members.partials.progress')
 
     <p>
         <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />

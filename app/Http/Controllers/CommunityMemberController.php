@@ -77,10 +77,6 @@ class CommunityMemberController extends Controller
      */
     public function show(CommunityMember $communityMember): View
     {
-        if ($communityMember->checkStatus('draft')) {
-            return view('community-members.show-draft', ['communityMember' => $communityMember]);
-        }
-
         return view('community-members.show', ['communityMember' => $communityMember]);
     }
 
@@ -167,10 +163,20 @@ class CommunityMemberController extends Controller
 
         $communityMember->save();
 
-        if ($communityMember->checkStatus('draft')) {
-            flash(__('Your draft community member page has been updated.'), 'success');
-        } else {
-            flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save') || $request->input('preview') || $request->input('save_and_next')) {
+            if ($communityMember->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+        } elseif ($request->input('publish')) {
+            $communityMember->publish();
+        } elseif ($request->input('unpublish')) {
+            $communityMember->unpublish();
+        }
+
+        if ($request->input('preview')) {
+            return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
         }
 
         if ($request->input('save_and_next')) {
@@ -202,10 +208,20 @@ class CommunityMemberController extends Controller
         $communityMember->sectors()->sync($data['sectors'] ?? []);
         $communityMember->impacts()->sync($data['impacts'] ?? []);
 
-        if ($communityMember->checkStatus('draft')) {
-            flash(__('Your draft community member page has been updated.'), 'success');
-        } else {
-            flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save') || $request->input('preview') || $request->input('save_and_previous') || $request->input('save_and_next')) {
+            if ($communityMember->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+        } elseif ($request->input('publish')) {
+            $communityMember->publish();
+        } elseif ($request->input('unpublish')) {
+            $communityMember->unpublish();
+        }
+
+        if ($request->input('preview')) {
+            return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
         }
 
         if ($request->input('save_and_next')) {
@@ -247,10 +263,20 @@ class CommunityMemberController extends Controller
 
         $communityMember->livedExperiences()->sync($data['lived_experiences'] ?? []);
 
-        if ($communityMember->checkStatus('draft')) {
-            flash(__('Your draft community member page has been updated.'), 'success');
-        } else {
-            flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save') || $request->input('preview') || $request->input('save_and_previous') || $request->input('save_and_next')) {
+            if ($communityMember->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+        } elseif ($request->input('publish')) {
+            $communityMember->publish();
+        } elseif ($request->input('unpublish')) {
+            $communityMember->unpublish();
+        }
+
+        if ($request->input('preview')) {
+            return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
         }
 
         if ($request->input('save_and_next')) {
@@ -295,10 +321,20 @@ class CommunityMemberController extends Controller
 
         $communityMember->save();
 
-        if ($communityMember->checkStatus('draft')) {
-            flash(__('Your draft community member page has been updated.'), 'success');
-        } else {
-            flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save') || $request->input('preview') || $request->input('save_and_previous') || $request->input('save_and_next')) {
+            if ($communityMember->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+        } elseif ($request->input('publish')) {
+            $communityMember->publish();
+        } elseif ($request->input('unpublish')) {
+            $communityMember->unpublish();
+        }
+
+        if ($request->input('preview')) {
+            return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
         }
 
         if ($request->input('save_and_next')) {
@@ -327,10 +363,20 @@ class CommunityMemberController extends Controller
 
         $communityMember->accessSupports()->sync($data['access_needs'] ?? []);
 
-        if ($communityMember->checkStatus('draft')) {
-            flash(__('Your draft community member page has been updated.'), 'success');
-        } else {
-            flash(__('Your community member page has been updated.'), 'success');
+        if ($request->input('save') || $request->input('preview') || $request->input('save_and_previous')) {
+            if ($communityMember->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+        } elseif ($request->input('publish')) {
+            $communityMember->publish();
+        } elseif ($request->input('unpublish')) {
+            $communityMember->unpublish();
+        }
+
+        if ($request->input('preview')) {
+            return redirect(\localized_route('community-members.show', ['communityMember' => $communityMember]));
         }
 
         if ($request->input('save_and_previous')) {
@@ -350,15 +396,9 @@ class CommunityMemberController extends Controller
     public function updatePublicationStatus(Request $request, CommunityMember $communityMember): RedirectResponse
     {
         if ($request->input('unpublish')) {
-            $communityMember->published_at = null;
-            $communityMember->save();
-
-            flash(__('Your community member page has been unpublished.'), 'success');
+            $communityMember->unpublish();
         } elseif ($request->input('publish')) {
-            $communityMember->published_at = date('Y-m-d h:i:s', time());
-            $communityMember->save();
-
-            flash(__('Your community member page has been published.'), 'success');
+            $communityMember->publish();
         }
 
         return redirect(\localized_route('community-members.show', $communityMember));

@@ -1,14 +1,13 @@
-
-<h2>
-    {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 5]) }}<br />
-    {{ __('About you') }}
-</h2>
-
-@include('community-members.partials.progress')
-
 <form action="{{ localized_route('community-members.update', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
+
+    <h2>
+        {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 5]) }}<br />
+        {{ __('About you') }}
+    </h2>
+
+    @include('community-members.partials.progress')
 
     <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
 
