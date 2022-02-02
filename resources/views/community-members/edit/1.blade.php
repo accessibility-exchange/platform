@@ -26,8 +26,8 @@
         <p class="field__hint" id="address-hint">{{ __('Your location will be used if entities are looking to get feedback on their services in a certain place.') }}</p>
 
         <div class="field @error('region') field--error @enderror">
-            <x-hearth-label for="region" :value="__('Province or territory (required)')" />
-            <x-hearth-select name="region" required :options="$regions" :selected="old('region', $communityMember->region)" hinted="address-hint" />
+            <x-hearth-label for="region" :value="__('Province or territory (optional)')" />
+            <x-hearth-select name="region" :options="$regions" :selected="old('region', $communityMember->region)" hinted="address-hint" />
             <x-hearth-error for="region" />
         </div>
 

@@ -16,6 +16,7 @@ class AddFieldsToCommunityMembersTable extends Migration
         Schema::table('community_members', function (Blueprint $table) {
             $table->json('bio')->nullable()->change();
             $table->string('locality')->nullable()->change();
+            $table->string('region')->nullable()->change();
             $table->dropColumn([
                 'birth_date',
                 'creator_name',
