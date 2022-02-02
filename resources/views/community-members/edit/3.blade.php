@@ -9,8 +9,6 @@
     @csrf
     @method('PUT')
 
-    <h2>{{ __('Experiences') }}</h2>
-
     <p>
         <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
         <x-hearth-input type="submit" name="save" :value="__('Save')" />
@@ -35,10 +33,12 @@
         <x-hearth-error for="age_group" />
     </fieldset>
 
-    <fieldset class="field @error('living_situation') field--error @enderror">
-        <legend>{{ __('How would you describe where you live? (optional)') }}</legend>
-        <x-hearth-radio-buttons name="living_situation" :options="$livingSituations" :selected="old('living_situation', $communityMember->living_situation)" />
-        <x-hearth-error for="living_situation" />
+    <fieldset>
+        <legend>{{ __('What is your living situation?') }}</legend>
+        <div class="field">
+            <x-hearth-checkbox name="rural_or_remote" :checked="old('rural_or_remote', $communityMember->rural_or_remote) ?? false" />
+            <x-hearth-label for="rural_or_remote" :value="__('I live in a rural or remote area')" />
+        </div>
     </fieldset>
 
     <fieldset>

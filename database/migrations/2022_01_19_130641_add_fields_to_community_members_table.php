@@ -38,6 +38,7 @@ class AddFieldsToCommunityMembersTable extends Migration
             $table->json('languages')->nullable();
             $table->json('support_people')->nullable();
             $table->json('preferred_contact_methods')->nullable();
+            $table->json('meeting_types')->nullable();
         });
     }
 
@@ -73,6 +74,7 @@ class AddFieldsToCommunityMembersTable extends Migration
                 'languages',
                 'support_people',
                 'preferred_contact_methods',
+                'meeting_types',
             ]);
         });
     }

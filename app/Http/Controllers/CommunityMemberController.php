@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
 use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
+use App\Models\AccessSupport;
 use App\Models\CommunityMember;
 use App\Models\Impact;
 use App\Models\LivedExperience;
@@ -129,6 +130,12 @@ class CommunityMemberController extends Controller
                 'support_person' => __('Contact my support person'),
             ],
             'languages' => ['' => __('Choose a language…')] + $languages,
+            'meetingTypes' => [
+                'in_person' => __('In person'),
+                'web_conference' => __('Virtual – web conference'),
+                'phone' => __('Virtual – phone call'),
+            ],
+            'accessNeeds' => AccessSupport::all()->pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -220,6 +227,10 @@ class CommunityMemberController extends Controller
     public function updateExperiences(UpdateCommunityMemberExperiencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
+
+        if (! isset($data['rural_or_remote'])) {
+            $data['rural_or_remote'] = false;
+        }
 
         if (isset($data['work_and_volunteer_experiences'])) {
             $work_and_volunteer_experiences = array_filter(array_map('array_filter', $data['work_and_volunteer_experiences']));
@@ -313,6 +324,8 @@ class CommunityMemberController extends Controller
         $communityMember->fill($data);
 
         $communityMember->save();
+
+        $communityMember->accessSupports()->sync($data['access_needs'] ?? []);
 
         if ($communityMember->checkStatus('draft')) {
             flash(__('Your draft community member page has been updated.'), 'success');

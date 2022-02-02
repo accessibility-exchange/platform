@@ -59,6 +59,7 @@ class CommunityMember extends Model implements HasMedia
         'work_and_volunteer_experiences',
         'languages',
         'support_people',
+        'meeting_types',
     ];
 
     /**
@@ -77,6 +78,7 @@ class CommunityMember extends Model implements HasMedia
         'languages' => 'array',
         'rural_or_remote' => 'boolean',
         'preferred_contact_methods' => 'array',
+        'meeting_types' => 'array',
     ];
 
     /**

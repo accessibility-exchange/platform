@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AccessSupport;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCommunityMemberAccessAndAccomodationsRequest extends FormRequest
 {
@@ -26,7 +28,12 @@ class UpdateCommunityMemberAccessAndAccomodationsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'access_needs' => [
+                'nullable',
+                'array',
+                Rule::in(AccessSupport::all()->pluck('id')->toArray()),
+            ],
+            'meeting_types' => 'required|array|min:1|in:in_person,web_conference,phone',
         ];
     }
 }

@@ -9,13 +9,15 @@
     @csrf
     @method('PUT')
 
-    <h3>{{ __('Contact information') }}</h3>
-
     <p>
         <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
         <x-hearth-input type="submit" name="save" :value="__('Save')" />
         <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
     </p>
+
+    <x-privacy-indicator level="private" :value="__('Only organizations who work with you will be able to access this information.')" />
+
+    <h3>{{ __('Contact information') }}</h3>
 
     <fieldset>
         <legend>{{ __('For you') }}</legend>

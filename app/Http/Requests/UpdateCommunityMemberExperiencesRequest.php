@@ -35,7 +35,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
             ],
             'other_lived_experience' => 'nullable|string',
             'age_group' => 'nullable|string|in:youth,adult,senior',
-            'living_situation' => 'nullable|string|in:urban,suburban,rural',
+            'rural_or_remote' => 'boolean',
             'lived_experience' => 'nullable|string',
             'skills_and_strengths' => 'nullable|string',
             'work_and_volunteer_experiences.*.title' => 'nullable|string',
