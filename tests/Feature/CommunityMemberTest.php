@@ -48,6 +48,20 @@ class CommunityMemberTest extends TestCase
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-interests', $communityMember), [
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
     }
 
     public function test_entity_users_can_not_create_community_member_pages()
