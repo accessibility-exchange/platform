@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\MediaLibrary\HasMedia;
@@ -332,5 +333,52 @@ class CommunityMember extends Model implements HasMedia
         $this->published_at = null;
         $this->save();
         flash(__('Your community member page has been unpublished.'), 'success');
+    }
+
+    public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
+    {
+        if ($request->input('save')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        } elseif ($request->input('save_and_previous')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step - 1]));
+        } elseif ($request->input('save_and_next')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step + 1]));
+        } elseif ($request->input('preview')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.show', $this));
+        } elseif ($request->input('publish')) {
+            $this->publish();
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        } elseif ($request->input('unpublish')) {
+            $this->unpublish();
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
     }
 }

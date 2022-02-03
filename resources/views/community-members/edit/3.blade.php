@@ -66,8 +66,6 @@
 
     {{-- Upload a file --}}
 
-
-
     <fieldset class="flow">
         <legend>{{ __('Work and volunteer experiences (optional)') }}</legend>
         <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
