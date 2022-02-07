@@ -32,7 +32,7 @@ class LanguagePicker extends Component
 
     public function canAddMoreLanguages()
     {
-        return count($this->languages) <= 5;
+        return count($this->languages) < 5;
     }
 
     public function render()

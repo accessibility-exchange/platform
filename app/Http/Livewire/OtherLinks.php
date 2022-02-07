@@ -31,7 +31,7 @@ class OtherLinks extends Component
 
     public function canAddMoreLinks()
     {
-        return count($this->links) < 6;
+        return count($this->links) < 5;
     }
 
     public function render()

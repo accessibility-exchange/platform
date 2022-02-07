@@ -31,7 +31,7 @@ class SupportPeople extends Component
 
     public function canAddMorePeople()
     {
-        return count($this->people) < 6;
+        return count($this->people) < 5;
     }
 
     public function render()
