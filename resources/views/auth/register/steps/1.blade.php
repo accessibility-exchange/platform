@@ -7,7 +7,7 @@
             'community-member' => __('As a community member'),
             'organization' => __('On behalf of a community organization'),
             'entity' => __('On behalf of a federally-regulated entity')
-        ]" :selected="old('context', session()->get('context')) ?? false" hinted />
+        ]" :selected="old('context', session('context')) ?? false" hinted />
         <x-hearth-error for="context" />
     </fieldset>
 

@@ -13,53 +13,197 @@ class CommunityMemberTest extends TestCase
 
     public function test_users_can_create_community_member_pages()
     {
+        $this->seed();
+
         $user = User::factory()->create();
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('community-members.create'));
+        $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertOk();
 
-        $response = $this->post(localized_route('community-members.create'), [
+        $response = $this->actingAs($user)->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
-            'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
-            'region' => 'NS',
-            'creator' => 'self',
+            'roles' => ['participant', 'consultant'],
         ]);
 
         $communityMember = CommunityMember::where('name', $user->name)->get()->first();
 
-        $response->assertSessionHasNoErrors();
-
-        $response->assertRedirect(localized_route('community-members.show', $communityMember));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
 
         $this->assertEquals($communityMember->user->id, $user->id);
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
+            'name' => $user->name,
+            'locality' => 'Halifax',
+            'region' => 'NS',
+            'hide_location' => 1,
+            'pronouns' => '',
+            'bio' => '',
+            'other_links' => [
+                [
+                    'title' => 'My website',
+                    'url' => 'https://example.com',
+                ],
+            ],
+            'save' => __('Save'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
+            'name' => $user->name,
+            'region' => 'NS',
+            'publish' => __('Publish'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $communityMember = $communityMember->fresh();
+        $this->assertTrue($communityMember->checkStatus('published'));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
+            'name' => $user->name,
+            'region' => 'NS',
+            'unpublish' => __('Unpublish'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $communityMember = $communityMember->fresh();
+        $this->assertFalse($communityMember->checkStatus('published'));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
+            'name' => $user->name,
+            'region' => 'NS',
+            'preview' => __('Preview'),
+        ]);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.show', ['communityMember' => $communityMember]));
+
+        $response = $this->actingAs($user)
+            ->from(localized_route('community-members.edit', $communityMember))
+            ->put(localized_route('community-members.update', $communityMember), [
+                'name' => $user->name,
+                'locality' => 'Halifax',
+                'region' => 'NS',
+                'hide_location' => 1,
+                'pronouns' => '',
+                'bio' => '',
+                'other_links' => [
+                    [
+                        'title' => '',
+                        'url' => '',
+                    ],
+                ],
+                'save_and_next' => __('Save and next'),
+            ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-interests', $communityMember), [
+            'sectors' => [1],
+            'impacts' => [1],
+            'areas_of_interest' => '',
+            'save_and_previous' => __('Save and previous'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
+            'lived_experiences' => [1],
+            'age_group' => 'adult',
+            'lived_experience' => '',
+            'skills_and_strengths' => '',
+            'work_and_volunteer_experiences' => [
+                [
+                    'title' => 'Some job',
+                    'start_year' => '2021',
+                    'end_year' => '',
+                    'current' => 1,
+                ],
+            ],
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
+            'lived_experiences' => [1],
+            'age_group' => 'adult',
+            'lived_experience' => '',
+            'skills_and_strengths' => '',
+            'work_and_volunteer_experiences' => [
+                [
+                    'title' => '',
+                    'start_year' => '',
+                    'end_year' => '',
+                ],
+            ],
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
+            'email' => 'me@here.com',
+            'phone' => '902-123-4567',
+            'support_people' => [
+                [
+                    'name' => '',
+                    'email' => '',
+                    'phone' => '',
+                ],
+            ],
+            'preferred_contact_methods' => ['email'],
+            'languages' => ['en'],
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
+            'email' => 'me@here.com',
+            'phone' => '902-123-4567',
+            'support_people' => [
+                [
+                    'name' => 'Someone',
+                    'email' => 'me@here.com',
+                    'phone' => '438-123-4567',
+                ],
+            ],
+            'preferred_contact_methods' => ['email'],
+            'languages' => ['en'],
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
+
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-access-and-accomodations', $communityMember), [
+            'meeting_types' => ['in_person', 'web_conference'],
+            'save' => __('Save'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
     }
 
     public function test_entity_users_can_not_create_community_member_pages()
     {
         $user = User::factory()->create(['context' => 'entity']);
 
-        $response = $this->post(localized_route('login-store'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-
-        $response = $this->get(localized_route('community-members.create'));
+        $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertForbidden();
 
         $response = $this->from(localized_route('community-members.create'))->post(localized_route('community-members.create'), [
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -77,9 +221,8 @@ class CommunityMemberTest extends TestCase
             'user_id' => $other_user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -99,9 +242,8 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
             'name' => $user->name,
             'bio' => 'Hi, welcome to my page.',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
-            'creator' => 'self',
         ]);
 
         $response->assertForbidden();
@@ -149,10 +291,9 @@ class CommunityMemberTest extends TestCase
             'bio' => $communityMember->bio,
             'locality' => 'St John\'s',
             'region' => 'NL',
-            'creator' => $communityMember->creator,
         ]);
 
-        $response->assertRedirect(localized_route('community-members.show', $communityMember));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
 
         $draft_user = User::factory()->create();
         $draft_community_member = CommunityMember::factory()->create([
@@ -171,7 +312,7 @@ class CommunityMemberTest extends TestCase
             'creator' => $draft_community_member->creator,
         ]);
 
-        $response->assertRedirect(localized_route('community-members.show', $draft_community_member));
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $draft_community_member, 'step' => 1]));
     }
 
     public function test_users_can_not_edit_others_community_member_pages()
@@ -271,7 +412,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($user)->get(localized_route('community-members.show-lived-experience', $communityMember));
+        $response = $this->actingAs($user)->get(localized_route('community-members.show-experiences', $communityMember));
         $response->assertOk();
     }
 
@@ -283,7 +424,7 @@ class CommunityMemberTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->actingAs($other_user)->get(localized_route('community-members.show-lived-experience', $communityMember));
+        $response = $this->actingAs($other_user)->get(localized_route('community-members.show-experiences', $communityMember));
         $response->assertForbidden();
     }
 

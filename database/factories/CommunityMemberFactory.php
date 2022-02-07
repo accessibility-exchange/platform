@@ -27,12 +27,12 @@ class CommunityMemberFactory extends Factory
             'name' => function (array $attributes) {
                 return User::find($attributes['user_id'])->name;
             },
-            'bio' => ['en' => $this->faker->paragraph(2)],
             'locality' => $this->faker->city(),
             'region' => $this->faker->provinceAbbr(),
             'pronouns' => ['en' => $this->faker->randomElement(['He/him/his', 'She/her/hers', 'They/them/theirs'])],
             'published_at' => date('Y-m-d h:i:s', time()),
             'creator' => 'self',
+            'roles' => ['participant'],
         ];
     }
 }

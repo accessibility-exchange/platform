@@ -6,14 +6,14 @@
     <!-- Name -->
     <div class="field @error('name') field--error @enderror">
         <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
-        <x-hearth-input type="text" name="name" value="{{ old('name', session()->get('name')) }}" required autofocus />
+        <x-hearth-input type="text" name="name" value="{{ old('name', session('name')) }}" required autofocus />
         <x-hearth-error for="name" />
     </div>
 
     <!-- Email Address -->
     <div class="field @error('email') field--error @enderror">
         <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-        <x-hearth-input type="email" name="email" value="{{ old('email', session()->get('email')) }}" required />
+        <x-hearth-input type="email" name="email" value="{{ old('email', session('email')) }}" required />
         <x-hearth-error for="email" />
     </div>
 

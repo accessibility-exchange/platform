@@ -28,7 +28,7 @@ class OrganizationTest extends TestCase
 
         $response = $this->actingAs($user)->post(localized_route('organizations.create'), [
             'name' => $user->name . ' Consulting',
-            'locality' => 'Truro',
+            'locality' => 'Halifax',
             'region' => 'NS',
         ]);
 

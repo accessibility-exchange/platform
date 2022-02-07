@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\MediaLibrary\HasMedia;
@@ -33,22 +34,33 @@ class CommunityMember extends Model implements HasMedia
      */
     protected $fillable = [
         'name',
-        'bio',
-        'links',
+        'slug',
         'locality',
         'region',
-        'birth_date',
+        'bio',
+        'links',
+        'pronouns',
         'picture_alt',
+        'creator',
         'phone',
         'email',
-        'support_person_phone',
-        'support_person_email',
-        'pronouns',
-        'creator',
-        'creator_name',
-        'creator_relationship',
+        'preferred_contact_methods',
+        'roles',
+        'hide_location',
+        'other_links',
+        'areas_of_interest',
+        'service_preference',
         'status',
         'user_id',
+        'age_group',
+        'rural_or_remote',
+        'other_lived_experience',
+        'lived_experience',
+        'skills_and_strengths',
+        'work_and_volunteer_experiences',
+        'languages',
+        'support_people',
+        'meeting_types',
     ];
 
     /**
@@ -57,7 +69,17 @@ class CommunityMember extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
+        'hide_location' => 'boolean',
         'links' => 'array',
+        'other_links' => 'array',
+        'service_preference' => 'array',
+        'roles' => 'array',
+        'work_and_volunteer_experiences' => 'array',
+        'support_people' => 'array',
+        'languages' => 'array',
+        'rural_or_remote' => 'boolean',
+        'preferred_contact_methods' => 'array',
+        'meeting_types' => 'array',
     ];
 
     /**
@@ -69,7 +91,10 @@ class CommunityMember extends Model implements HasMedia
         'picture_alt',
         'bio',
         'pronouns',
-        'creator_relationship',
+        'areas_of_interest',
+        'other_lived_experience',
+        'lived_experience',
+        'skills_and_strengths',
     ];
 
     /**
@@ -111,13 +136,17 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
-     * Get the community member's age in years.
+     * Get the community member's links.
      *
-     * @return int
+     * @return array
      */
-    public function age(): int
+    public function getLinksAttribute(): array
     {
-        return Carbon::parse($this->attributes['birth_date'])->age;
+        if (! is_null($this->attributes['links'])) {
+            return array_filter(json_decode($this->attributes['links'], true));
+        }
+
+        return [];
     }
 
     /**
@@ -290,5 +319,66 @@ class CommunityMember extends Model implements HasMedia
         }
 
         return __('Doesn’t match any project criteria');
+    }
+
+    public function publish(): void
+    {
+        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->save();
+        flash(__('Your community member page has been published.'), 'success');
+    }
+
+    public function unpublish(): void
+    {
+        $this->published_at = null;
+        $this->save();
+        flash(__('Your community member page has been unpublished.'), 'success');
+    }
+
+    public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
+    {
+        if ($request->input('save')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        } elseif ($request->input('save_and_previous')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step - 1]));
+        } elseif ($request->input('save_and_next')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step + 1]));
+        } elseif ($request->input('preview')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft community member page has been updated.'), 'success');
+            } else {
+                flash(__('Your community member page has been updated.'), 'success');
+            }
+
+            return redirect(\localized_route('community-members.show', $this));
+        } elseif ($request->input('publish')) {
+            $this->publish();
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        } elseif ($request->input('unpublish')) {
+            $this->unpublish();
+
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        }
+
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
     }
 }
