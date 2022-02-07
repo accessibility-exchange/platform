@@ -165,6 +165,24 @@ class CommunityMemberTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
 
+        $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
+            'email' => 'me@here.com',
+            'phone' => '902-123-4567',
+            'support_people' => [
+                [
+                    'name' => 'Someone',
+                    'email' => 'me@here.com',
+                    'phone' => '438-123-4567',
+                ],
+            ],
+            'preferred_contact_methods' => ['email'],
+            'languages' => ['en'],
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
+
         $response = $this->actingAs($user)->put(localized_route('community-members.update-access-and-accomodations', $communityMember), [
             'meeting_types' => ['in_person', 'web_conference'],
             'save' => __('Save'),
