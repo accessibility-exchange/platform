@@ -31,7 +31,7 @@ class WorkAndVolunteerExperiences extends Component
 
     public function canAddMoreExperiences()
     {
-        return count($this->experiences) < 21;
+        return count($this->experiences) < 20;
     }
 
     public function render()
