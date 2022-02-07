@@ -50,7 +50,6 @@ class DevSeeder extends Seeder
             ->create([
                 'user_id' => $communityMember->id,
                 'name' => $communityMember->name,
-                'bio' => $faker->sentences(3),
                 'locality' => 'Toronto',
                 'region' => 'ON',
                 'pronouns' => 'He/him/his',

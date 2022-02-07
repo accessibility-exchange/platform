@@ -27,29 +27,16 @@ class CreateCommunityMemberRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id' => [
+                Rule::unique(CommunityMember::class),
+            ],
             'name' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique(CommunityMember::class),
             ],
-            'picture' => 'nullable|file|image|dimensions:min_width=200,min_height=200',
-            'picture_alt' => 'nullable|string|required_unless:picture,null',
-            'bio' => 'required|string',
-            'links.*.url' => 'nullable|url|required_unless:links.*.text,null',
-            'links.*.text' => 'nullable|string|required_unless:links.*.url,null',
-            'locality' => 'required|string|max:255',
-            'region' => [
-                'required',
-                Rule::in(get_region_codes()),
-            ],
-            'pronouns' => 'nullable|string',
-            'creator' => 'required|in:self,other',
-            'creator_name' => 'required_if:creator,other|nullable|string|max:255',
-            'creator_relationship' => 'required_if:creator,other|nullable|string|max:255',
-            'user_id' => [
-                Rule::unique(CommunityMember::class),
-            ],
+            'roles' => 'required|array|in:participant,consultant,connector',
         ];
     }
 
@@ -61,12 +48,9 @@ class CreateCommunityMemberRequest extends FormRequest
     public function messages()
     {
         return [
-            'picture_alt.required_unless' => __('You must provide alternative text for your picture.'),
             'name.unique' => __('A community member page with this name already exists.'),
             'user_id.unique' => __('You already have a community member page. Would you like to edit it instead?'),
-            'links.*.url.url' => __('The link must be a valid web address.'),
-            'links.*.url.required_unless' => __('The link address must be filled in if the link text is filled in.'),
-            'links.*.text.required_unless' => __('The link text must be filled in if the link address is filled in.'),
+            'links.*.url' => __('The link must be a valid web address.'),
         ];
     }
 }

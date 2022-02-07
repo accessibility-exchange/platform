@@ -19,17 +19,13 @@ Route::multilingual('/members/{communityMember}', [CommunityMemberController::cl
     ->middleware(['auth', 'can:view,communityMember'])
     ->name('community-members.show');
 
-Route::multilingual('/members/{communityMember}/interests-and-goals', [CommunityMemberController::class, 'show'])
+Route::multilingual('/members/{communityMember}/interests', [CommunityMemberController::class, 'show'])
     ->middleware(['auth', 'can:view,communityMember'])
-    ->name('community-members.show-interests-and-goals');
+    ->name('community-members.show-interests');
 
-Route::multilingual('/members/{communityMember}/lived-experience', [CommunityMemberController::class, 'show'])
+Route::multilingual('/members/{communityMember}/experiences', [CommunityMemberController::class, 'show'])
     ->middleware(['auth', 'can:viewPersonalDetails,communityMember'])
-    ->name('community-members.show-lived-experience');
-
-Route::multilingual('/members/{communityMember}/professional-experience', [CommunityMemberController::class, 'show'])
-    ->middleware(['auth', 'can:view,communityMember'])
-    ->name('community-members.show-professional-experience');
+    ->name('community-members.show-experiences');
 
 Route::multilingual('/members/{communityMember}/access-needs', [CommunityMemberController::class, 'show'])
     ->middleware(['auth', 'can:viewPersonalDetails,communityMember'])
@@ -43,6 +39,26 @@ Route::multilingual('/members/{communityMember}/edit', [CommunityMemberControlle
     ->middleware(['auth', 'can:update,communityMember'])
     ->method('put')
     ->name('community-members.update');
+
+Route::multilingual('/members/{communityMember}/edit-interests', [CommunityMemberController::class, 'updateInterests'])
+    ->middleware(['auth', 'can:update,communityMember'])
+    ->method('put')
+    ->name('community-members.update-interests');
+
+Route::multilingual('/members/{communityMember}/edit-experiences', [CommunityMemberController::class, 'updateExperiences'])
+    ->middleware(['auth', 'can:update,communityMember'])
+    ->method('put')
+    ->name('community-members.update-experiences');
+
+Route::multilingual('/members/{communityMember}/edit-communication-preferences', [CommunityMemberController::class, 'updateCommunicationPreferences'])
+    ->middleware(['auth', 'can:update,communityMember'])
+    ->method('put')
+    ->name('community-members.update-communication-preferences');
+
+Route::multilingual('/members/{communityMember}/edit-access-and-accomodations', [CommunityMemberController::class, 'updateAccessAndAccomodations'])
+    ->middleware(['auth', 'can:update,communityMember'])
+    ->method('put')
+    ->name('community-members.update-access-and-accomodations');
 
 Route::multilingual('/members/{communityMember}/change-status', [CommunityMemberController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,communityMember'])
