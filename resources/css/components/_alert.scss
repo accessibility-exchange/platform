@@ -2,26 +2,56 @@
 // This file contains all styles related to the alert component.
 // -----------------------------------------------------------------------------
 .alert {
-    border: var(--ll-border-thin);
+    background: var(--ae-grey);
     border-radius: var(--radius-2);
-    padding: var(--step-0) var(--step-1);
+    padding: var(--size-3);
 }
 
 .alert .title {
     align-items: center;
     display: flex;
     flex-direction: row;
-    font-size: var(--font-size-4);
-    font-weight: var(--font-weight-4);
+    font-size: var(--font-size-2);
+    font-size: var(--ae-font-size-fluid-2);
+    font-weight: var(--font-weight-6);
+}
+
+.alert .title + * {
+    margin-block-start: var(--size-1);
 }
 
 .alert .icon {
-    height: var(--step-2);
-    margin-inline-end: var(--step--5);
-    width: var(--step-2);
+    height: var(--size-5);
+    margin-inline-end: var(--size-1);
+    width: var(--size-5);
 }
 
 .alert--error {
-    border-color: var(--ll-text-color-error);
-    color: var(--ll-text-color-error);
+    background: var(--ae-light-red);
+    border-color: var(--ae-light-red);
+}
+
+.alert--warning {
+    background: var(--ae-light-yellow);
+    border-color: var(--ae-light-yellow);
+}
+
+.alert--success {
+    background: var(--ae-light-green);
+    border-color: var(--ae-light-green);
+}
+
+@media (--md-n-above) {
+    .alert .title {
+        font-size: var(--font-size-3);
+        font-size: var(--ae-font-size-fluid-2);
+    }
+}
+
+@media (--xl-n-above) {
+    .alert .title {
+        font-size: var(--font-size-4);
+        font-size: var(--ae-font-size-fluid-2);
+        font-weight: var(--font-weight-4);
+    }
 }

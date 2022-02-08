@@ -18,11 +18,7 @@
     </x-slot>
 
     <!-- Validation Errors -->
-    @if ($errors->any())
-    <x-hearth-alert type="error">
-        <p>{{ __('hearth::auth.error_intro') }}</p>
-    </x-hearth-alert>
-    @endif
+    <x-auth-validation-errors />
 
     @if(request()->get('step'))
         @include('auth.register.steps.' . request()->get('step'))

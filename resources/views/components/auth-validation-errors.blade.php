@@ -1,13 +1,17 @@
 @props(['errors'])
 
 @if ($errors->any())
-    <div {{ $attributes->merge(['class' => 'flow']) }}>
-        <p class="center">{{ __('hearth::auth.error_intro') }}</p>
-
-        @foreach ($errors->all() as $error)
-            <x-hearth-alert type="error">
-                <p>{{ $error }}</p>
-            </x-hearth-alert>
-        @endforeach
+    <div x-data="{ready: false}" x-init="ready = true" role="alert">
+        <template x-if="ready">
+                <x-hearth-alert type="error">
+                    {{ __('hearth::auth.error_intro') }}
+                    {{-- <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul> --}}
+                </x-hearth-alert>
+            </div>
+        </template>
     </div>
 @endif
