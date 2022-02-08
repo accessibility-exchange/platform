@@ -1,5 +1,6 @@
 const mix = require("laravel-mix");
 const openProps = require("open-props");
+const postcssCustomMedia = require("postcss-custom-media");
 const postcssJitProps = require("postcss-jit-props");
 require("laravel-mix-sri");
 
@@ -22,7 +23,13 @@ mix.browserSync({
 mix.options({
     processCssUrls: false,
     postCss: [
-        postcssJitProps(openProps)
+        postcssCustomMedia({
+            importFrom: "./node_modules/open-props/media.min.css"
+        }),
+        postcssJitProps({
+            ...openProps,
+            files: ["./resources/css/props.css"]
+        })
     ]
 });
 

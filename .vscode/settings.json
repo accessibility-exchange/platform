@@ -1,7 +1,7 @@
 {
     "phpcs.executablePath": "vendor/bin/phpcs",
     "cssvar.files": [
-        "./resources/css/abstracts/_variables.scss",
+        "./resources/css/props.css",
         "./node_modules/open-props/open-props.min.css",
     ]
 }
