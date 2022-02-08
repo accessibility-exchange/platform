@@ -1,24 +1,22 @@
 :root {
-    --font-size-9: 3.75rem;
-    --font-size-10: 4.5rem;
-    --ae-cyan: #00aeef;
-    --ae-blue: #1f2f5f;
-    --ae-magenta: #f16e9d;
-    --ae-grey: #dad9e1;
-    --ae-graphite: #2b2e38;
-    --ae-green: #00aea9;
-    --ae-dark-grey: #59575b;
-    --ae-black: #000;
-    --ae-white: #fff;
-    --ae-light-green: #bfe2e1;
-    --ae-light-yellow: #ebedbb;
-    --ae-light-red: #f5cdcd;
+    --ae-cyan: hsl(196deg 100 47);
+    --ae-blue: hsl(225deg 51 25);
+    --ae-magenta: hsl(338deg 82 69);
+    --ae-grey: hsl(248deg 12 87);
+    --ae-graphite: hsl(226deg 13 19);
+    --ae-green: hsl(178deg 100 34);
+    --ae-dark-grey: hsl(270deg 2 35);
+    --ae-black: hsl(0deg 0 0);
+    --ae-white: hsl(0deg 0 100);
+    --ae-light-green: hsl(178deg 38 82);
+    --ae-light-yellow: hsl(62deg 58 83);
+    --ae-light-red: hsl(0deg 67 88);
     --ae-font-family-base: "Open Sans", sans-serif;
     --ae-font-family-display: montserrat, sans-serif;
-    --ae-font-size-0: var(--font-size-0);
-    --ae-font-size-1: var(--font-size-1);
     --ae-font-size-fluid-2: clamp(1.125rem, 0.8929vw + 0.6964rem, 1.5rem);
     --ae-font-size-fluid-3: clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem);
     --ae-font-size-fluid-4: clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem);
     --ae-font-size-fluid-5: clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem);
+    --font-size-9: 3.75rem;
+    --font-size-10: 4.5rem;
 }

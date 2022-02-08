@@ -9,13 +9,13 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
-        "lint:js": "eslint *.js resources/js/**/*.js",
-        "lint:sass": "stylelint resources/css/**/*.scss",
+        "lint:scripts": "eslint *.js resources/js/**/*.js",
+        "lint:styles": "stylelint resources/css/**/*.{css,scss}",
         "lint": "run-s lint:*",
         "postinstall": "husky install"
     },
     "lint-staged": {
-        "*.scss": [
+        "*.{css,scss}": [
             "stylelint"
         ],
         "*.js": [
