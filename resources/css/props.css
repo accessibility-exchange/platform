@@ -1,23 +1,60 @@
 :root {
-    --ae-cyan: #00aeef;
-    --ae-blue: #1f2f5f;
-    --ae-magenta: #f16e9d;
-    --ae-grey: #dad9e1;
-    --ae-graphite: #2b2e38;
-    --ae-green: #00aea9;
-    --ae-dark-grey: #59575b;
+    /* Colors */
     --ae-black: #000;
+    --ae-graphite-8: #2b2e38;
+    --ae-graphite-7: #3f424c;
+    --ae-graphite-6: #4b5560;
+    --ae-grey-2: #eaedf3;
+    --ae-grey-1: #f8fafd;
     --ae-white: #fff;
-    --ae-light-green: #bfe2e1;
-    --ae-light-yellow: #ebedbb;
-    --ae-light-red: #f5cdcd;
+    --ae-blue-7: #26296a;
+    --ae-green-5: #00aea9;
+    --ae-green-2: #92e5e3;
+    --ae-green-1: #bfe2e1;
+    --ae-turquoise-5: #00b9d6;
+    --ae-turquoise-2: #7de2f4;
+    --ae-turquoise-1: #c6f4fe;
+    --ae-lavender-3: #cab6d9;
+    --ae-lavender-2: #eecef0;
+    --ae-magenta-3: #f16e9d;
+    --ae-magenta-2: #ffa0ce;
+    --ae-yellow-3: #f5dc62;
+    --ae-yellow-2: #fce88b;
+    --ae-yellow-1: #ebedbb;
+    --ae-red-2: #f6a7a7;
+    --ae-red-1: #f5cdcd;
+
+    /* Element colours */
+    --h1-color: var(--theme-h1-color, var(--ae-black));
+    --heading-color: var(--theme-heading-color, var(--ae-graphite-8));
+    --body-background: var(--theme-body-background, var(--ae-white));
+    --body-color: var(--theme-body-color, var(--ae-graphite-7));
+    --link-color: var(--theme-link-color, var(--ae-blue-7));
+    --badge-background: var(--theme-badge-background, var(--ae-grey-2));
+    --badge-color: var(--theme-badge-color, var(--ae-black));
+    --divider-color: var(--theme-divider-color, var(--ae-graphite-6));
+    --alert-background: var(--theme-alert-background, var(--ae-grey-2));
+    --alert-color: var(--theme-alert-color, var(--ae-graphite-8));
+    --alert-background-error: var(--theme-alert-background-error, var(--ae-red-1));
+    --alert-color-error: var(--theme-alert-color-error, var(--ae-graphite-8));
+    --alert-background-warning: var(--theme-alert-background-warning, var(--ae-yellow-1));
+    --alert-color-warning: var(--theme-alert-color-warning, var(--ae-graphite-8));
+    --alert-background-success: var(--theme-alert-background-success, var(--ae-green-1));
+    --alert-color-success: var(--theme-alert-color-success, var(--ae-graphite-8));
+    --input-border: var(--theme-input-border, var(--ae-graphite-7));
+    --input-color: var(--theme-input-color, var(--ae-graphite-7));
+    --checkbox-checked-background: var(--theme-checkbox-checked-background, var(--ae-blue-7));
+    --radio-checked-background: var(--theme-radio-checked-background, var(--ae-blue-7));
+    --radio-checked-border: var(--theme-radio-checked-border, var(--ae-graphite-7));
+    --hint-color: var(--theme-hint-color, var(--ae-graphite-6));
+
+    /* Typography */
     --ae-font-family-base: "Open Sans", sans-serif;
     --ae-font-family-display: montserrat, sans-serif;
     --ae-font-size-fluid-2: clamp(1.125rem, 0.8929vw + 0.6964rem, 1.5rem);
     --ae-font-size-fluid-3: clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem);
     --ae-font-size-fluid-4: clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem);
     --ae-font-size-fluid-5: clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem);
-    --ae-checkmark-white: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --font-size-9: 3.75rem;
     --font-size-10: 4.5rem;
 }

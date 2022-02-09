@@ -2,8 +2,9 @@
 // This file contains all styles related to the alert component.
 // -----------------------------------------------------------------------------
 .alert {
-    background: var(--ae-grey);
+    background: var(--alert-background);
     border-radius: var(--radius-2);
+    color: var(--alert-color);
     padding: var(--size-3);
 }
 
@@ -27,18 +28,18 @@
 }
 
 .alert--error {
-    background: var(--ae-light-red);
-    border-color: var(--ae-light-red);
+    background: var(--alert-background-error);
+    color: var(--alert-color-error);
 }
 
 .alert--warning {
-    background: var(--ae-light-yellow);
-    border-color: var(--ae-light-yellow);
+    background: var(--alert-background-warning);
+    color: var(--alert-color-warning);
 }
 
 .alert--success {
-    background: var(--ae-light-green);
-    border-color: var(--ae-light-green);
+    background: var(--alert-background-success);
+    color: var(--alert-color-success);
 }
 
 @media (--md-n-above) {

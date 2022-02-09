@@ -1,13 +1,9 @@
 .badge {
-    background: var(--ae-grey);
+    background: var(--badge-background);
     border-radius: var(--radius-1);
+    color: var(--badge-color);
     font-family: var(--ae-font-family-base);
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-4);
     padding: var(--size-2);
-}
-
-.badge--dark {
-    background: var(--ae-graphite);
-    color: var(--ae-white);
 }

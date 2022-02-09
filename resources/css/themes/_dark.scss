@@ -3,14 +3,27 @@
 // -----------------------------------------------------------------------------
 
 [data-theme="dark"] {
-    --ll-theme-border-color: #fff;
-    --ll-theme-text-color: #fff;
-    --ll-theme-text-color-error: #ff5e5e;
-    --ll-theme-text-color-translucent: rgb(255 255 255 / 20%);
-    --ll-theme-text-color-transparent: rgb(255 255 255 / 0%);
-    --ll-theme-accent-color: hsl(405deg 73% 57%);
-    --ll-theme-background-color: #000;
-    --ll-theme-background-color-transparent: rgb(0 0 0 / 0%);
-    --ll-theme-accent-background-color: #222;
-    --ll-theme-select-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+    --theme-h1-color: var(--ae-white);
+    --theme-heading-color: var(--ae-grey-1);
+    --theme-body-background: var(--ae-graphite-8);
+    --theme-body-color: var(--ae-grey-2);
+    --theme-link-color: var(--ae-turquoise-1);
+    --theme-badge-background: var(--ae-graphite-7);
+    --theme-badge-color: var(--ae-white);
+    --theme-divider-color: var(--ae-grey-2);
+    --theme-alert-background: var(--ae-graphite-7);
+    --theme-alert-color: var(--ae-grey-1);
+    --theme-alert-background-error: var(--ae-red-2);
+    --theme-alert-color-error: var(--ae-graphite-8);
+    --theme-alert-background-warning: var(--ae-yellow-2);
+    --theme-alert-color-warning: var(--ae-graphite-8);
+    --theme-alert-background-success: var(--ae-green-2);
+    --theme-alert-color-success: var(--ae-graphite-8);
+    --theme-input-border: var(--ae-grey-2);
+    --theme-input-color: var(--ae-grey-2);
+    --theme-checkbox-checked-background: var(--ae-grey-2);
+    --theme-radio-checked-background: var(--ae-grey-2);
+    --theme-radio-checked-border: var(--ae-grey-2);
+    --theme-hint-color: var(--ae-grey-2);
+    --checkbox-checkmark: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%232b2e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
 }
