@@ -10,12 +10,12 @@
         "prod": "npm run production",
         "production": "mix --production",
         "lint:scripts": "eslint *.js resources/js/**/*.js",
-        "lint:styles": "stylelint resources/css/**/*.{css,scss}",
+        "lint:styles": "stylelint resources/css/**/*.scss",
         "lint": "run-s lint:*",
         "postinstall": "husky install"
     },
     "lint-staged": {
-        "*.{css,scss}": [
+        "*.scss": [
             "stylelint"
         ],
         "*.js": [

@@ -1,14 +1,12 @@
-.field + .field {
-    margin-block-start: var(--size-3);
-}
-
 input,
-textarea {
+textarea,
+select {
     appearance: none;
     background: transparent;
     border: var(--border-size-2) solid var(--input-border);
     border-radius: var(--radius-2);
     color: var(--input-color);
+    display: block;
     font-family: "Open Sans", sans-serif;
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-4);
@@ -30,6 +28,13 @@ textarea {
     resize: vertical;
 }
 
+select {
+    background-image: var(--select-chevron, url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%233F424C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'));
+    background-position: right var(--size-5) center;
+    background-repeat: no-repeat;
+    height: var(--size-8);
+}
+
 input[type="checkbox"] {
     border: var(--border-size-2) solid var(--input-border);
     border-radius: var(--radius-1);
@@ -42,7 +47,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
     background: var(--checkbox-checked-background);
-    background-image: var(--checkbox-checkmark);
+    background-image: var(--checkbox-checkmark, url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'));
     background-position: center;
     background-repeat: no-repeat;
     border-color: var(--checkbox-checked-background);
@@ -78,6 +83,25 @@ label + * {
 input[type="checkbox"] + label,
 input[type="radio"] + label {
     font-weight: var(--font-weight-6);
+}
+
+/** Fields and fieldsets **/
+fieldset {
+    border: 0;
+    padding: 0;
+}
+
+* + fieldset,
+fieldset + .field {
+    margin-block-start: var(--size-5);
+}
+
+legend {
+    @extend %h4;
+}
+
+.field + .field {
+    margin-block-start: var(--size-3);
 }
 
 /** Hints **/

@@ -26,10 +26,7 @@ mix.options({
         postcssCustomMedia({
             importFrom: "./node_modules/open-props/media.min.css"
         }),
-        postcssJitProps({
-            ...openProps,
-            files: ["./resources/css/props.css"]
-        })
+        postcssJitProps(openProps)
     ]
 });
 

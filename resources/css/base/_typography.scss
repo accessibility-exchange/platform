@@ -49,11 +49,7 @@ h3 {
 }
 
 h4 {
-    color: var(--heading-color);
-    font-family: var(--ae-font-family-base);
-    font-size: var(--font-size-2);
-    font-size: var(--ae-font-size-fluid-2);
-    font-weight: var(--font-weight-6);
+    @extend %h4;
 }
 
 @media (--md-n-above) {
@@ -73,11 +69,6 @@ h4 {
         font-size: var(--ae-font-size-fluid-3);
         font-weight: var(--font-weight-5);
     }
-
-    h4 {
-        font-size: var(--font-size-3);
-        font-size: var(--ae-font-size-fluid-2);
-    }
 }
 
 @media (--xl-n-above) {
@@ -95,8 +86,21 @@ h4 {
         font-size: var(--font-size-5);
         font-size: var(--ae-font-size-fluid-3);
     }
+}
 
-    h4 {
+%h4 {
+    color: var(--heading-color);
+    font-family: var(--ae-font-family-base);
+    font-size: var(--font-size-2);
+    font-size: var(--ae-font-size-fluid-2);
+    font-weight: var(--font-weight-6);
+
+    @media (--md-n-above) {
+        font-size: var(--font-size-3);
+        font-size: var(--ae-font-size-fluid-2);
+    }
+
+    @media (--xl-n-above) {
         font-size: var(--font-size-4);
         font-size: var(--ae-font-size-fluid-2);
         font-weight: var(--font-weight-4);

@@ -9,12 +9,12 @@
 }
 
 .alert .title {
+    @extend %h4;
+
     align-items: center;
+    color: var(--alert-color);
     display: flex;
     flex-direction: row;
-    font-size: var(--font-size-2);
-    font-size: var(--ae-font-size-fluid-2);
-    font-weight: var(--font-weight-6);
 }
 
 .alert .title + * {

@@ -8,3 +8,9 @@ html:focus-within {
 body {
     background: var(--body-background);
 }
+
+main {
+    margin-inline: auto;
+    max-width: 60rem;
+    width: 100%;
+}
