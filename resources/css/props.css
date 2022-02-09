@@ -17,6 +17,7 @@
     --ae-font-size-fluid-3: clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem);
     --ae-font-size-fluid-4: clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem);
     --ae-font-size-fluid-5: clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem);
+    --ae-checkmark-white: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%23FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --font-size-9: 3.75rem;
     --font-size-10: 4.5rem;
 }
