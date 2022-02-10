@@ -9,7 +9,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <ul role="list">
+    <ul class="link-list" role="list">
         <li><a href="{{ localized_route('users.edit') }}">{{ __('Basic information') }}</a></li>
         <li><a href="{{ localized_route('users.edit_roles_and_permissions') }}">{{ __('Roles and permissions') }}</a></li>
         <li><a href="{{ localized_route('users.edit_display_preferences') }}">{{ __('Display preferences') }}</a></li>
