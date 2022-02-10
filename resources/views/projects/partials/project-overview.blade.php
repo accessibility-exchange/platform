@@ -12,7 +12,7 @@
 
 <ul role="list" class="tags">
     @foreach($project->impacts as $impact)
-    <li>{{ $impact->name }}</li>
+    <li class="tag">{{ $impact->name }}</li>
     @endforeach
 </ul>
 
@@ -46,7 +46,7 @@
 
 <ul role="list" class="tags">
     @foreach($project->paymentMethods as $method)
-    <li>{{ $method->name }}</li>
+    <li class="tag">{{ $method->name }}</li>
     @endforeach
 </ul>
 

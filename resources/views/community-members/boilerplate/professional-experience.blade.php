@@ -1,15 +1,15 @@
 {{-- TODO: Replace with real content. --}}
 <x-heading :level="$level">Fields of knowledge</x-heading>
 <ul role="list" class="tags">
-    <li>Policy</li>
-    <li>Education</li>
+    <li class="tag">Policy</li>
+    <li class="tag">Education</li>
 </ul>
 <x-heading :level="$level">Skills</x-heading>
 <ul role="list" class="tags">
-    <li>Writing grants</li>
-    <li>Advocacy</li>
-    <li>Community building</li>
-    <li>Budgeting</li>
+    <li class="tag">Writing grants</li>
+    <li class="tag">Advocacy</li>
+    <li class="tag">Community building</li>
+    <li class="tag">Budgeting</li>
 </ul>
 <x-heading :level="$level">Work experience</x-heading>
 <ul class="flow" role="list">

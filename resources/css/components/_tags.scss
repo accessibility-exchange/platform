@@ -1,11 +1,38 @@
+%tag {
+    align-items: center;
+    background: var(--tag-background);
+    border: var(--border-size-2) solid var(--tag-border);
+    border-radius: var(--radius-3);
+    color: var(--tag-color);
+    display: flex;
+    flex-direction: row;
+    font-weight: var(--font-weight-6);
+    height: var(--size-7);
+    padding: var(--size-1) var(--size-3);
+}
+
 .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--step-0);
+    gap: var(--size-3);
+}
 
-    li {
-        background: var(--ll-accent-background-color);
-        border-radius: var(--step-0);
-        padding: var(--step--5) var(--step--1);
-    }
+.tag {
+    @extend %tag;
+}
+
+.tag--link {
+    @extend %tag;
+
+    background: var(--tag-link-background);
+    border-color: var(--tag-link-border);
+    color: var(--tag-link-color);
+}
+
+.tag--button {
+    @extend %tag;
+
+    background: var(--tag-button-background);
+    border-color: var(--tag-button-border);
+    color: var(--tag-button-color);
 }

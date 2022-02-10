@@ -2,13 +2,13 @@
 
 <ul role="list" class="tags">
     @if($project->existing_clients)
-    <li>{{ __('Existing clients') }}</li>
+    <li class="tag">{{ __('Existing clients') }}</li>
     @endif
     @if($project->prospective_clients)
-    <li>{{ __('Prospective clients') }}</li>
+    <li class="tag">{{ __('Prospective clients') }}</li>
     @endif
     @if($project->employees)
-    <li>{{ __('Employees') }}</li>
+    <li class="tag">{{ __('Employees') }}</li>
     @endif
 </ul>
 
@@ -21,7 +21,7 @@
 
 <ul>
     @foreach ($project->communities as $community)
-    <li>{{ $community->name }}</li>
+    <li class="tag">{{ $community->name }}</li>
     @endforeach
 </ul>
 
