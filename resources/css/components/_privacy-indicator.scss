@@ -13,11 +13,3 @@
 .field__privacy--public {
     background-color: var(--ll-text-color-success);
 }
-
-.field__privacy .icon,
-.info .icon {
-    height: var(--step-1);
-    margin-block-end: calc(-1 * var(--step--5));
-    margin-inline-end: calc(var(--step--2) / 2);
-    width: var(--step-1);
-}

@@ -47,6 +47,12 @@
     --radio-checked-background: var(--theme-radio-checked-background, var(--ae-blue-7));
     --radio-checked-border: var(--theme-radio-checked-border, var(--ae-graphite-7));
     --hint-color: var(--theme-hint-color, var(--ae-graphite-6));
+    --button-primary-border: var(--theme-button-primary-border, var(--ae-blue-7));
+    --button-primary-background: var(--theme-button-primary-background, var(--ae-blue-7));
+    --button-primary-color: var(--theme-button-primary-color, var(--ae-white));
+    --button-secondary-border: var(--theme-button-secondary-border, var(--ae-blue-7));
+    --button-secondary-background: var(--theme-button-secondary-background, var(--ae-white));
+    --button-secondary-color: var(--theme-button-secondary-color, var(--ae-blue-7));
 
     /* Typography */
     --ae-font-family-base: "Open Sans", sans-serif;

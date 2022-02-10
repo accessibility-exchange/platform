@@ -15,7 +15,7 @@
             <ol role="list">
                 @for ($i = 1; $i < 4; $i++)
                 <li>@if($project->currentParticipantStep() > $i)
-                    <x-heroicon-s-check-circle class="icon" width="24" height="24" aria-hidden="true" />
+                    <x-heroicon-s-check-circle width="24" height="24" aria-hidden="true" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('completed') }}</span>
                     @elseif($project->currentParticipantStep() === $i)
                     <x-progress-icon :started="true" progress="0" />

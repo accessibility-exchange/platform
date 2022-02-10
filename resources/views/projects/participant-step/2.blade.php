@@ -10,17 +10,17 @@
         <h3>{{ __('Access and accomodations') }}</h3>
         <h4>{{ __('For communication') }}</h4>
         <ul role="list">
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Large text') }}</strong> – {{ __('provided') }}</li>
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Plain language') }}</strong> – {{ __('provided') }}</li>
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Materials in advance') }}</strong> – {{ __('provided') }}</li>
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Materials translated into :language', ['language' => get_locale_name('fr', locale())]) }}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{{ __('Large text') }}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{{ __('Plain language') }}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{{ __('Materials in advance') }}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{{ __('Materials translated into :language', ['language' => get_locale_name('fr', locale())]) }}</strong> – {{ __('provided') }}</li>
         </ul>
         <h4>{{ __('For meetings') }}</h4>
         <ul role="list">
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{!! __('<abbr title="American Sign Language">ASL</abbr> interpretation') !!}</strong> – {{ __('provided') }}</li>
-            <li><x-heroicon-o-x-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong><abbr title="{{ __('Communication Access Realtime Translation') }}">CART</abbr></strong> – {{ __('not provided') }}</li>
-            <li><x-heroicon-o-check-circle class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Automatic captioning') }}</strong> – {{ __('provided') }}</li>
-            <li><x-heroicon-o-dots-circle-horizontal class="icon" width="24" height="24" aria-hidden="true" /> <strong>{{ __('Language interpretation for :language', ['language' => get_locale_name('fr', locale())]) }}</strong> – {{ __('booking in progress') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{!! __('<abbr title="American Sign Language">ASL</abbr> interpretation') !!}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-x-circle width="24" height="24" aria-hidden="true" /> <strong><abbr title="{{ __('Communication Access Realtime Translation') }}">CART</abbr></strong> – {{ __('not provided') }}</li>
+            <li><x-heroicon-o-check-circle width="24" height="24" aria-hidden="true" /> <strong>{{ __('Automatic captioning') }}</strong> – {{ __('provided') }}</li>
+            <li><x-heroicon-o-dots-circle-horizontal width="24" height="24" aria-hidden="true" /> <strong>{{ __('Language interpretation for :language', ['language' => get_locale_name('fr', locale())]) }}</strong> – {{ __('booking in progress') }}</li>
         </ul>
     </div>
     <div class="box flow">

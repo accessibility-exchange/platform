@@ -26,12 +26,6 @@ main {
         display: flex;
         gap: 0.25em;
     }
-
-    .icon {
-        height: 1em;
-        margin-inline-end: 0.125em;
-        width: 1em;
-    }
 }
 
 @media screen and (min-width: 1024px) {

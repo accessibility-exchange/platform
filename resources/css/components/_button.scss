@@ -1,25 +1,39 @@
-button,
-input[type="submit"],
-input[type="reset"] {
+%button {
+    align-items: center;
     appearance: none;
-    border: var(--border-size-2) solid var(--ae-blue-7);
     border-radius: var(--radius-2);
+    border-style: solid;
+    border-width: var(--border-size-2);
+    display: flex;
     font-family: var(--ae-font-family-base);
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-6);
+    gap: var(--size-2);
     height: var(--size-8);
     padding-inline: var(--size-3);
     width: 100%;
+
+    svg {
+        height: var(--size-3);
+    }
 }
 
 button,
+button[type="submit"],
 input[type="submit"] {
-    background: var(--ae-blue-7);
-    color: var(--ae-white);
+    @extend %button;
+
+    background: var(--button-primary-background);
+    border-color: var(--button-primary-border);
+    color: var(--button-primary-color);
 }
 
-input[type="reset"],
-button.secondary {
-    background: var(--ae-white);
-    color: var(--ae-blue-7);
+button.secondary,
+button[type="reset"],
+input[type="reset"] {
+    @extend %button;
+
+    background: var(--button-secondary-background);
+    border-color: var(--button-secondary-border);
+    color: var(--button-secondary-color);
 }

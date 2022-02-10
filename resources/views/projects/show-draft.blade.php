@@ -55,11 +55,11 @@
         <h2>{{ __('Steps to publish') }}</h2>
 
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('projects.edit', $project) }}">{{ __('Tell us who you’re looking for') }}</a><br />
+            <x-heroicon-s-check-circle style="color: green" /> <a href="{{ localized_route('projects.edit', $project) }}">{{ __('Tell us who you’re looking for') }}</a><br />
             <small>{{ __('Completed') }}</small>
         </p>
         <p>
-            <x-heroicon-s-check-circle class="icon" style="color: green" /> <a href="{{ localized_route('projects.edit', $project) }}">{{ __('Access and accomodations') }}</a><br />
+            <x-heroicon-s-check-circle style="color: green" /> <a href="{{ localized_route('projects.edit', $project) }}">{{ __('Access and accomodations') }}</a><br />
             <small>{{ __('Completed') }}</small>
         </p>
 
