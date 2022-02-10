@@ -14,13 +14,13 @@ select {
     width: 100%;
 }
 
-input[aria-invalid],
-textarea[aria-invalid] {
-    // TODO
-}
-
 input {
     height: var(--size-8);
+
+    &[aria-invalid] {
+        border-color: var(--input-error-border);
+        color: var(--input-error-color);
+    }
 }
 
 input[type="search"] {
@@ -50,6 +50,11 @@ textarea {
     height: var(--size-12);
     padding-block: var(--size-2);
     resize: vertical;
+
+    &[aria-invalid] {
+        border-color: var(--input-error-border);
+        color: var(--input-error-color);
+    }
 }
 
 select {
@@ -58,6 +63,12 @@ select {
     background-repeat: no-repeat;
     height: var(--size-8);
     padding-inline-end: var(--size-8);
+
+    &[aria-invalid] {
+        background-image: var(--select-error-chevron, url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23922020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'));
+        border-color: var(--input-error-border);
+        color: var(--input-error-color);
+    }
 }
 
 input[type="checkbox"] {
@@ -68,6 +79,10 @@ input[type="checkbox"] {
     margin-block-end: var(--size-00);
     padding-inline: 0;
     width: var(--size-4);
+
+    &[aria-invalid] {
+        border-color: var(--input-error-border);
+    }
 }
 
 input[type="checkbox"]:checked {
@@ -76,6 +91,11 @@ input[type="checkbox"]:checked {
     background-position: center;
     background-repeat: no-repeat;
     border-color: var(--checkbox-checked-background);
+
+    &[aria-invalid] {
+        background-color: var(--input-error-color);
+        border-color: var(--input-error-border);
+    }
 }
 
 input[type="radio"] {
@@ -86,6 +106,10 @@ input[type="radio"] {
     margin-block-end: var(--size-00);
     padding-inline: 0;
     width: var(--size-4);
+
+    &[aria-invalid] {
+        border-color: var(--input-error-border);
+    }
 }
 
 input[type="radio"]:checked {
@@ -94,6 +118,11 @@ input[type="radio"]:checked {
     background-repeat: no-repeat;
     border-color: var(--radio-checked-border);
     box-shadow: inset 0 0 0 calc(var(--size-1) * 0.75) var(--body-background);
+
+    &[aria-invalid] {
+        background-color: var(--input-error-color);
+        border-color: var(--input-error-border);
+    }
 }
 
 /** Labels **/
@@ -149,4 +178,26 @@ input + .field__hint,
 textarea + .field__hint,
 select + .field__hint {
     margin-block-start: var(--size-2);
+}
+
+/** Errors **/
+.field--error,
+.field--error .field__hint,
+.field__error {
+    color: var(--input-error-color);
+}
+
+.field__error {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    font-style: italic;
+    font-weight: var(--font-weight-6);
+    gap: var(--size-2);
+    justify-content: flex-start;
+    margin-block-start: var(--size-1);
+}
+
+.field__error svg {
+    height: var(--size-3);
 }

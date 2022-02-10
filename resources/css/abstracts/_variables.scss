@@ -21,6 +21,7 @@
     --ae-yellow-3: #f5dc62;
     --ae-yellow-2: #fce88b;
     --ae-yellow-1: #ebedbb;
+    --ae-red-8: #922020;
     --ae-red-2: #f6a7a7;
     --ae-red-1: #f5cdcd;
 
@@ -41,12 +42,14 @@
     --alert-color-warning: var(--theme-alert-color-warning, var(--ae-graphite-8));
     --alert-background-success: var(--theme-alert-background-success, var(--ae-green-1));
     --alert-color-success: var(--theme-alert-color-success, var(--ae-graphite-8));
+    --hint-color: var(--theme-hint-color, var(--ae-graphite-6));
     --input-border: var(--theme-input-border, var(--ae-graphite-7));
     --input-color: var(--theme-input-color, var(--ae-graphite-7));
+    --input-error-border: var(--theme-input-error-border, var(--ae-red-8));
+    --input-error-color: var(--theme-input-error-color, var(--ae-red-8));
     --checkbox-checked-background: var(--theme-checkbox-checked-background, var(--ae-blue-7));
     --radio-checked-background: var(--theme-radio-checked-background, var(--ae-blue-7));
     --radio-checked-border: var(--theme-radio-checked-border, var(--ae-graphite-7));
-    --hint-color: var(--theme-hint-color, var(--ae-graphite-6));
     --button-primary-border: var(--theme-button-primary-border, var(--ae-blue-7));
     --button-primary-background: var(--theme-button-primary-background, var(--ae-blue-7));
     --button-primary-color: var(--theme-button-primary-color, var(--ae-white));
