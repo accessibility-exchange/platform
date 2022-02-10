@@ -3,6 +3,7 @@
 // -----------------------------------------------------------------------------
 .alert {
     background: var(--alert-background);
+    border: var(--border-size-1) solid var(--alert-border);
     border-radius: var(--radius-2);
     color: var(--alert-color);
     padding: var(--size-3);
@@ -12,7 +13,7 @@
     @extend %h4;
 
     align-items: center;
-    color: var(--alert-color);
+    color: inherit;
     display: flex;
     flex-direction: row;
 }
@@ -29,16 +30,19 @@
 
 .alert--error {
     background: var(--alert-background-error);
+    border-color: var(--alert-border-error);
     color: var(--alert-color-error);
 }
 
 .alert--warning {
     background: var(--alert-background-warning);
+    border-color: var(--alert-border-warning);
     color: var(--alert-color-warning);
 }
 
 .alert--success {
     background: var(--alert-background-success);
+    border-color: var(--alert-border-success);
     color: var(--alert-color-success);
 }
 

@@ -1,5 +1,6 @@
 .badge {
     background: var(--badge-background);
+    border: var(--border-size-1) solid var(--badge-border);
     border-radius: var(--radius-1);
     color: var(--badge-color);
     font-family: var(--ae-font-family-base);
