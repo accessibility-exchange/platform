@@ -5,13 +5,14 @@
     border-block-end: var(--ll-border-medium);
 }
 
-@media (min-width: 1024px) {
+@media (--lg-n-above) {
     [role="banner"] .wrapper {
         align-items: center;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
-        margin-block: var(--step-2);
+        margin: 0 auto;
         max-width: 130ch;
+        width: 100%;
     }
 }
