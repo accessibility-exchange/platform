@@ -6,8 +6,6 @@ $current = ($active ?? false)
             : [];
 @endphp
 
-<li>
-    <a {{ $attributes->merge($current) }}>
-        {{ $slot }}
-    </a>
-</li>
+<a {{ $attributes->merge($current) }}>
+    {{ $slot }}
+</a>

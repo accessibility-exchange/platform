@@ -1,9 +1,7 @@
 <div class="wrapper">
     <ul role="list">
         <li>
-            <p>
-                <strong>{{ __('Call') }}<span class="sep"> • </span>{{ __('Text') }}<span class="sep"> • </span>{{ __('VRS') }}</strong> {{ settings()->get('phone', '1-800-123-4567') }}
-            </p>
+            <strong>{{ __('Call') }}<span class="sep"> • </span>{{ __('Text') }}<span class="sep"> • </span>{{ __('VRS') }}</strong> {{ settings()->get('phone', '1-800-123-4567') }}
         </li>
 
         <li>
@@ -17,7 +15,6 @@
                 @csrf
                 <button type="submit">
                     {{ __('Quick exit') }}
-                    <x-heroicon-o-logout aria-hidden="true" />
                 </button>
             </form>
             @else

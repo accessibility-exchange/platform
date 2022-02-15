@@ -2,7 +2,9 @@
 // This file contains all styles related to the banner layout.
 // -----------------------------------------------------------------------------
 [role="banner"] {
-    border-block-end: var(--ll-border-medium);
+    background-color: var(--theme-banner-background, var(--ae-white));
+    border-block-end: var(--border-size-1) solid var(--theme-banner-border, var(--ae-graphite-7));
+    position: relative;
 }
 
 @media (--lg-n-above) {

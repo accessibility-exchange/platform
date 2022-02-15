@@ -1,19 +1,38 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the dropdown component.
 // -----------------------------------------------------------------------------
-.dropdown .dropdown__content {
+.dropdown__parent {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: var(--theme-nav-color, var(--ae-graphite-7));
+    display: flex;
+    font-weight: var(--font-weight-6);
+    justify-content: flex-start;
+}
+
+.dropdown__content {
     background-color: var(--ll-background-color);
     border: var(--ll-border-thin);
     border-radius: var(--ll-border-radius);
-    padding: var(--step--5) var(--step--4);
+    margin-block-start: 0;
+    padding: 0 var(--size-5);
     text-align: start;
+
+    a {
+        align-items: center;
+        display: flex;
+        height: var(--size-8);
+        margin-inline-start: var(--size-5);
+    }
 }
 
-.dropdown [aria-expanded] .indicator {
+.dropdown__parent[aria-expanded] .indicator {
     transition: transform 0.2s ease-in-out;
 }
 
-.dropdown [aria-expanded="true"] .indicator {
+.dropdown__parent[aria-expanded="true"] .indicator {
     transform: rotate(-180deg);
 }
 
@@ -22,7 +41,7 @@
         position: relative;
     }
 
-    .dropdown .dropdown__content {
+    .dropdown__content {
         height: auto;
         inset-inline-end: 0;
         position: absolute;

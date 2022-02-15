@@ -2,5 +2,52 @@
 // This file contains all styles related to the brand component.
 // -----------------------------------------------------------------------------
 .brand {
-    font-size: var(--font-size-6);
+    a {
+        display: flex;
+        height: var(--size-10);
+        justify-content: center;
+        margin-block: var(--size-4);
+        min-width: 18.5rem;
+        width: 100%;
+    }
+
+    svg {
+        height: inherit;
+    }
+}
+
+[data-theme] .brand .logo {
+    display: none;
+}
+
+[data-theme] .brand .logo--themeable {
+    display: block;
+}
+
+[data-theme="light"] .brand .logo {
+    display: block;
+}
+
+[data-theme="light"] .brand .logo--themeable {
+    display: none;
+}
+
+@media (--OSlight) {
+    [data-theme="system"] .brand .logo {
+        display: block;
+    }
+
+    [data-theme="system"] .brand .logo--themeable {
+        display: none;
+    }
+}
+
+@media (--OSdark) {
+    [data-theme="system"] .brand .logo--themeable {
+        display: block;
+    }
+
+    [data-theme="system"] .brand .logo {
+        display: none;
+    }
 }
