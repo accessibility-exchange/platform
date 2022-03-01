@@ -5473,16 +5473,16 @@
         },
         {
             "name": "spatie/laravel-markdown",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-markdown.git",
-                "reference": "de451b6dddfdcfdfa3db2ad77d9cd1ee7fe8e937"
+                "reference": "cca6e7676d0b5921f9c8f2ca497fbe6f007bc829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-markdown/zipball/de451b6dddfdcfdfa3db2ad77d9cd1ee7fe8e937",
-                "reference": "de451b6dddfdcfdfa3db2ad77d9cd1ee7fe8e937",
+                "url": "https://api.github.com/repos/spatie/laravel-markdown/zipball/cca6e7676d0b5921f9c8f2ca497fbe6f007bc829",
+                "reference": "cca6e7676d0b5921f9c8f2ca497fbe6f007bc829",
                 "shasum": ""
             },
             "require": {
@@ -5490,6 +5490,7 @@
                 "illuminate/contracts": "^8.37|^9.0",
                 "illuminate/support": "^8.49|^9.0",
                 "illuminate/view": "^8.49|^9.0",
+                "league/commonmark": "^2.2",
                 "php": "^8.0",
                 "spatie/commonmark-shiki-highlighter": "^2.0",
                 "spatie/laravel-package-tools": "^1.4.3"
@@ -5535,7 +5536,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-markdown/tree/2.2.0"
+                "source": "https://github.com/spatie/laravel-markdown/tree/2.2.1"
             },
             "funding": [
                 {
@@ -5543,7 +5544,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-13T10:08:03+00:00"
+            "time": "2022-02-28T12:18:07+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -5654,16 +5655,16 @@
         },
         {
             "name": "spatie/laravel-package-tools",
-            "version": "1.11.0",
+            "version": "1.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "fd75af77d0bbf221f33369186df16da704bebebd"
+                "reference": "16a8de828e7f1f32d580c667e1de5bf2943abd6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/fd75af77d0bbf221f33369186df16da704bebebd",
-                "reference": "fd75af77d0bbf221f33369186df16da704bebebd",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/16a8de828e7f1f32d580c667e1de5bf2943abd6b",
+                "reference": "16a8de828e7f1f32d580c667e1de5bf2943abd6b",
                 "shasum": ""
             },
             "require": {
@@ -5701,7 +5702,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.11.0"
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.11.2"
             },
             "funding": [
                 {
@@ -5709,7 +5710,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-01-11T16:14:23+00:00"
+            "time": "2022-02-22T08:55:13+00:00"
         },
         {
             "name": "spatie/laravel-sluggable",
@@ -5857,16 +5858,16 @@
         },
         {
             "name": "spatie/shiki-php",
-            "version": "1.1.7",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/shiki-php.git",
-                "reference": "d2229f325c8d94da72e7e52870bc9d048dc7733b"
+                "reference": "3d3e2f72174a7b8bfd68013ad44bb8f7452fc13c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/shiki-php/zipball/d2229f325c8d94da72e7e52870bc9d048dc7733b",
-                "reference": "d2229f325c8d94da72e7e52870bc9d048dc7733b",
+                "url": "https://api.github.com/repos/spatie/shiki-php/zipball/3d3e2f72174a7b8bfd68013ad44bb8f7452fc13c",
+                "reference": "3d3e2f72174a7b8bfd68013ad44bb8f7452fc13c",
                 "shasum": ""
             },
             "require": {
@@ -5908,7 +5909,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/shiki-php/tree/1.1.7"
+                "source": "https://github.com/spatie/shiki-php/tree/1.2.0"
             },
             "funding": [
                 {
@@ -5916,7 +5917,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-22T15:40:31+00:00"
+            "time": "2022-02-24T09:33:10+00:00"
         },
         {
             "name": "spatie/temporary-directory",
