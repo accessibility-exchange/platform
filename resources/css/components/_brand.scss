@@ -2,12 +2,13 @@
 // This file contains all styles related to the brand component.
 // -----------------------------------------------------------------------------
 .brand {
+    height: var(--size-9);
+    margin-block: var(--size-4);
+
     a {
         display: flex;
-        height: var(--size-10);
+        height: var(--size-9);
         justify-content: center;
-        margin-block: var(--size-4);
-        min-width: 18.5rem;
         width: 100%;
     }
 

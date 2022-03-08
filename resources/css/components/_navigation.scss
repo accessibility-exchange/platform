@@ -4,7 +4,6 @@
 nav {
     display: flex;
     flex-direction: column;
-    height: var(--size-11);
 }
 
 nav > * + * {
@@ -86,6 +85,7 @@ nav .dropdown a[aria-current] {
 @media (--lg-n-above) {
     nav {
         flex-direction: row;
+        height: calc(var(--size-10) + var(--size-5));
         margin-block-start: 0;
         margin-inline-start: auto;
     }

@@ -38,3 +38,11 @@ input[type="reset"] {
     border-color: var(--button-secondary-border);
     color: var(--button-secondary-color);
 }
+
+button.button--inverse,
+button.button--inverse[type="submit"],
+input.button--inverse[type="submit"] {
+    background: var(--button-inverse-primary-background, var(--ae-grey-2));
+    border-color: var(--button-inverse-primary-border, var(--ae-grey-2));
+    color: var(--button-inverse-primary-color, var(--ae-blue-7));
+}

@@ -1,28 +1,34 @@
-<div class="wrapper">
-    <ul role="list">
-        <li>
-            <strong>{{ __('Call') }}<span class="sep"> • </span>{{ __('Text') }}<span class="sep"> • </span>{{ __('VRS') }}</strong> {{ settings()->get('phone', '1-800-123-4567') }}
-        </li>
+<div class="contact-bar">
+    <div class="wrapper">
+        <div class="contact-methods" x-data="{'open': false}">
+            <button x-bind:aria-expanded="open.toString()" x-on:click="open = !open" class="hidden--lg-n-above">
+                {{ __('Contact us') }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
+            </button>
+            <div x-bind:class="open ? '' : 'hidden'">
+                <div>
+                    <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span class="semibold">{{ __('Call, text, VRS') }}:</span>&nbsp;{{ settings()->get('phone', '1-800-123-4567') }}
+                </div>
 
-        <li>
-            <a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
-                {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
-            </a>
-        </li>
-        <li class="exit">
+                <div>
+                    <x-heroicon-o-mail aria-hidden="true" height="20" width="20" />&nbsp;<span class="semibold">{{ __('Email') }}:</span>&nbsp;<a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
+                        {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="exit">
             @auth
             <form method="POST" action="{{ localized_route('exit') }}">
                 @csrf
-                <button type="submit">
+                <button class="button--inverse" type="submit">
                     {{ __('Quick exit') }}
                 </button>
             </form>
             @else
-            <a class="button" rel="nofollow noopener noreferrer" href="https://weather.com">
-                <x-heroicon-o-logout aria-hidden="true" />
+            <a class="cta cta--inverse" rel="nofollow noopener noreferrer" href="https://weather.com">
                 {{ __('Quick exit') }}
             </a>
             @endauth
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>

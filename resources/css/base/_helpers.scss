@@ -9,6 +9,16 @@
     padding-inline-start: 0;
 }
 
+.hidden--lg-n-above {
+    @media (--lg-n-above) {
+        display: none;
+    }
+}
+
+.semibold {
+    font-weight: var(--font-weight-6);
+}
+
 .float-left {
     float: left;
     margin-inline-end: var(--size-3);
