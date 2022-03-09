@@ -38,10 +38,10 @@
     .dropdown__content {
         display: block;
         height: auto;
+        min-width: var(--size-12);
         position: absolute;
         right: 0;
         text-align: end;
         white-space: nowrap;
-        width: auto;
     }
 }

@@ -2,13 +2,13 @@
 // This file contains all styles related to the brand component.
 // -----------------------------------------------------------------------------
 .brand {
-    height: var(--size-9);
+    height: var(--size-8);
     margin-block: var(--size-4);
 
     a {
         color: var(--brand-color);
         display: flex;
-        height: var(--size-9);
+        height: inherit;
         justify-content: flex-start;
         width: 100%;
     }
@@ -51,5 +51,11 @@
 
     [data-theme="system"] .brand .logo {
         display: none;
+    }
+}
+
+@media (--md-n-above) {
+    .brand {
+        height: var(--size-9);
     }
 }

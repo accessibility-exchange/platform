@@ -2,13 +2,23 @@
 // This file contains everything related to the dark theme.
 // -----------------------------------------------------------------------------
 @mixin dark {
-    --theme-h1-color: var(--ae-white);
+    --theme-h1-color: white;
     --theme-heading-color: var(--ae-grey-1);
     --theme-body-background: var(--ae-graphite-8);
     --theme-body-color: var(--ae-grey-2);
     --theme-link-color: var(--ae-turquoise-1);
+    --theme-cta-background: var(--ae-grey-2);
+    --theme-cta-border: var(--ae-grey-2);
+    --theme-cta-color: var(--ae-blue-7);
+    --theme-cta-outline: var(--ae-grey-2);
+    --theme-cta-background-hover: var(--ae-grey-1);
+    --theme-cta-border-hover: var(--ae-grey-1);
+    --theme-cta-color-hover: var(--ae-blue-8);
+    --theme-cta-color-active: var(--ae-blue-7);
+    --theme-cta-background-active: white;
+    --theme-cta-border-active: white;
     --theme-badge-background: var(--ae-graphite-7);
-    --theme-badge-color: var(--ae-white);
+    --theme-badge-color: white;
     --theme-divider-color: var(--ae-grey-2);
     --theme-alert-background: var(--ae-graphite-7);
     --theme-alert-color: var(--ae-grey-1);
@@ -29,9 +39,21 @@
     --theme-button-primary-background: var(--ae-grey-2);
     --theme-button-primary-border: var(--ae-grey-2);
     --theme-button-primary-color: var(--ae-blue-7);
+    --theme-button-primary-outline: var(--ae-grey-2);
+    --theme-button-primary-background-hover: var(--ae-grey-1);
+    --theme-button-primary-border-hover: var(--ae-grey-1);
+    --theme-button-primary-color-hover: var(--ae-blue-8);
+    --theme-button-primary-color-active: var(--ae-blue-7);
+    --theme-button-primary-background-active: white;
+    --theme-button-primary-border-active: white;
     --theme-button-secondary-background: var(--ae-graphite-8);
     --theme-button-secondary-border: var(--ae-grey-1);
     --theme-button-secondary-color: var(--ae-grey-1);
+    --theme-button-borderless-outline: var(--ae-grey-2);
+    --theme-button-borderless-color-hover: var(--ae-grey-2);
+    --theme-button-borderless-background-hover: black;
+    --theme-button-borderless-color-focus: var(--ae-grey-2);
+    --theme-button-borderless-color-active: var(--ae-grey-1);
     --theme-tag-background: var(--ae-graphite-8);
     --theme-tag-border: var(--ae-grey-2);
     --theme-tag-color: var(--ae-grey-2);
@@ -46,7 +68,7 @@
     --theme-banner-background: var(--ae-graphite-7);
     --theme-banner-border: var(--ae-graphite-6);
     --theme-banner-shadow: 0 0 10px rgb(0 0 0 / 50%);
-    --theme-brand-color: var(--ae-white);
+    --theme-brand-color: white;
     --theme-nav-parent-background-mobile: var(--ae-graphite-8);
     --theme-nav-parent-background-hover-mobile: var(--ae-graphite-7);
     --theme-nav-parent-background-focus-mobile: var(--ae-graphite-7);
@@ -54,14 +76,14 @@
     --theme-nav-border-mobile: var(--ae-graphite-5);
     --theme-nav-color-mobile: var(--ae-grey-2);
     --theme-nav-indicator-mobile: var(--ae-grey-2);
-    --theme-nav-child-background-mobile: var(--ae-black);
+    --theme-nav-child-background-mobile: black;
     --theme-nav-child-background-hover-mobile: var(--ae-graphite-7);
     --theme-nav-child-background-focus-mobile: var(--ae-graphite-7);
     --theme-nav-child-background-active-mobile: var(--ae-graphite-7);
     --theme-nav-parent-background: var(--ae-graphite-7);
     --theme-nav-parent-background-hover: var(--ae-graphite-8);
     --theme-nav-parent-background-focus: var(--ae-graphite-8);
-    --theme-nav-parent-background-active: var(--ae-black);
+    --theme-nav-parent-background-active: black;
     --theme-nav-parent-background-expanded: var(--ae-graphite-8);
     --theme-nav-border: var(--ae-graphite-6);
     --theme-nav-color: var(--ae-grey-2);

@@ -2,7 +2,7 @@
 // This file contains all styles related to the banner layout.
 // -----------------------------------------------------------------------------
 [role="banner"] {
-    background-color: var(--theme-banner-background, var(--ae-white));
+    background-color: var(--theme-banner-background, white);
     border-block-end: var(--border-size-1) solid var(--banner-border);
     box-shadow: var(--banner-shadow);
     position: relative;
@@ -12,7 +12,6 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: var(--size-3);
     justify-content: flex-start;
     padding-inline: var(--size-3);
 }

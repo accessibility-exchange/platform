@@ -4,7 +4,7 @@
             <button x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false" class="button--borderless hidden--lg-n-above">
                 {{ __('Contact us') }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
             </button>
-            <div x-bind:class="open ? '' : 'hidden'">
+            <div x-bind:class="open ? '' : 'hidden--lg-n-below'">
                 <div>
                     <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span class="semibold">{{ __('Call, text, VRS') }}:</span>&nbsp;{{ settings()->get('phone', '1-800-123-4567') }}
                 </div>
@@ -20,12 +20,12 @@
             @auth
             <form method="POST" action="{{ localized_route('exit') }}">
                 @csrf
-                <button class="button--inverse" type="submit">
+                <button type="submit">
                     {{ __('Quick exit') }}
                 </button>
             </form>
             @else
-            <a class="cta cta--inverse" rel="nofollow noopener noreferrer" href="https://weather.com">
+            <a class="cta" rel="nofollow noopener noreferrer" href="https://weather.com">
                 {{ __('Quick exit') }}
             </a>
             @endauth

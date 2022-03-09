@@ -5,7 +5,6 @@ nav {
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: var(--size-3);
     z-index: 1;
 }
 
@@ -32,8 +31,10 @@ nav > ul {
 }
 
 nav > ul.hidden {
-    @media (--lg-n-below) {
-        display: none;
+    display: none;
+
+    @media (--lg-n-above) {
+        display: flex;
     }
 }
 
@@ -68,20 +69,20 @@ nav .dropdown a {
 }
 
 nav a:hover,
-nav button:hover {
+nav ul button:hover {
     background: var(--nav-parent-background-hover-mobile);
     box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
 }
 
 nav a:focus,
-nav button:focus {
+nav ul button:focus {
     background: var(--nav-parent-background-focus-mobile);
     box-shadow: inset 0 0 0 3px var(--nav-indicator-mobile);
     outline: none;
 }
 
 nav a:active,
-nav button:active {
+nav ul button:active {
     background: var(--nav-parent-background-active-mobile);
     box-shadow: none;
 }
@@ -108,12 +109,6 @@ nav .dropdown a:focus {
 
 nav .dropdown a:active {
     background: var(--nav-child-background-active-mobile);
-}
-
-nav .language-switcher {
-    .indicator {
-        display: none;
-    }
 }
 
 @media (--lg-n-above) {
@@ -149,7 +144,7 @@ nav .language-switcher {
     }
 
     nav a,
-    nav button {
+    nav ul button {
         background: var(--nav-parent-background);
         border-block-end: 0;
         color: var(--nav-color);
@@ -163,21 +158,21 @@ nav .language-switcher {
     }
 
     nav a:hover,
-    nav button:hover {
+    nav ul button:hover {
         background: var(--nav-parent-background-hover);
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
         color: var(--nav-indicator);
     }
 
     nav a:focus,
-    nav button:focus {
+    nav ul button:focus {
         background: var(--nav-parent-background-focus);
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
         color: var(--nav-indicator);
     }
 
     nav a:active,
-    nav button:active {
+    nav ul button:active {
         background: var(--nav-parent-background-active);
         box-shadow: none;
         color: var(--nav-indicator);

@@ -1,7 +1,7 @@
 <!-- Primary Navigation Menu -->
 <nav class="primary" x-data="{ open: false }" aria-label="{{ __('main menu') }}" @click.away="open = false">
     <button class="button--borderless hidden--lg-n-above" x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false">
-        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span class="visually-hidden">{{ __('Menu') }}</span>
+        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span class="visually-hidden--md-n-below">{{ __('Menu') }}</span>
     </button>
     <!-- Navigation Links -->
     <ul role="list" x-bind:class="open ? '' : 'hidden'">
@@ -98,8 +98,21 @@
         </x-nav-dropdown>
         @endauth
     </ul>
-    <!-- Language Switcher -->
-    {{-- <ul class="language-switcher" role="list">
-        <x-hearth-language-switcher />
-    </ul> --}}
+</nav>
+<!-- Primary Navigation Menu -->
+<nav class="language-switcher" x-data="{ open: false }" aria-label="{{ __('language menu') }}" @click.away="open = false">
+    <button class="button--borderless hidden--lg-n-above" x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false">
+        <x-heroicon-o-translate class="indicator" aria-hidden="true" /><span class="visually-hidden--md-n-below">{{ __('Language') }}</span>
+    </button>
+    <ul role="list" x-bind:class="open ? '' : 'hidden'">
+        @foreach (config('locales.supported') as $locale )
+        <li class="hidden--lg-n-above">
+            <x-nav-link rel="alternate" hreflang="{{ $locale }}" :href="current_route($locale, route($locale . '.welcome'))" :active="request()->routeIs($locale . '.*')">
+                {{ get_locale_name($locale, $locale) }}
+            </x-nav-link>
+        </li>
+        @endforeach
+        <!-- Language Switcher -->
+        <x-hearth-language-switcher class="hidden--lg-n-below"/>
+    </ul>
 </nav>

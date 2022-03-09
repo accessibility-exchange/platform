@@ -9,13 +9,13 @@
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-6);
     gap: var(--size-2);
-    height: var(--size-8);
+    height: calc(var(--size-8) - var(--size-1));
     justify-content: center;
     padding-inline: var(--size-3);
     width: 100%;
 
     svg {
-        height: var(--size-3);
+        height: 1em;
     }
 }
 
@@ -27,6 +27,23 @@ input[type="submit"] {
     background: var(--button-primary-background);
     border-color: var(--button-primary-border);
     color: var(--button-primary-color);
+
+    &:hover {
+        background: var(--button-primary-background-hover);
+        border-color: var(--button-primary-border-hover);
+        color: var(--button-primary-color-hover);
+    }
+
+    &:focus {
+        outline: var(--button-primary-outline) solid calc(var(--size-1) / 2);
+        outline-offset: calc(var(--size-1) / 2);
+    }
+
+    &:active {
+        background: var(--button-primary-background-active);
+        border-color: var(--button-primary-border-active);
+        color: var(--button-primary-color-active);
+    }
 }
 
 button.secondary,
@@ -37,14 +54,11 @@ input[type="reset"] {
     background: var(--button-secondary-background);
     border-color: var(--button-secondary-border);
     color: var(--button-secondary-color);
-}
 
-button.button--inverse,
-button.button--inverse[type="submit"],
-input.button--inverse[type="submit"] {
-    background: var(--button-inverse-primary-background, var(--ae-grey-2));
-    border-color: var(--button-inverse-primary-border, var(--ae-grey-2));
-    color: var(--button-inverse-primary-color, var(--ae-blue-7));
+    &:focus {
+        outline: var(--button-secondary-outline) solid calc(var(--size-1) / 2);
+        outline-offset: calc(var(--size-1) / 2);
+    }
 }
 
 button.button--borderless,
@@ -53,10 +67,24 @@ input.button--borderless[type="submit"] {
     background: inherit;
     border: 0;
     color: currentColor;
-    height: auto;
-    padding-inline: 0;
+    padding-inline: var(--size-3);
+
+    &:hover {
+        background: var(--button-borderless-background-hover);
+        color: var(--button-borderless-color-hover);
+    }
+
+    &:focus {
+        color: var(--button-borderless-color-focus);
+        outline: var(--button-borderless-outline) solid calc(var(--size-1) / 2);
+        outline-offset: calc(var(--size-1) / 2);
+    }
+
+    &:active {
+        color: var(--button-borderless-color-active);
+    }
 
     svg {
-        height: var(--size-4);
+        height: 1.25em;
     }
 }

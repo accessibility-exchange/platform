@@ -9,9 +9,15 @@
     padding-inline-start: 0;
 }
 
+.hidden--lg-n-below {
+    @media (max-width: 1023px) {
+        display: none !important;
+    }
+}
+
 .hidden--lg-n-above {
     @media (--lg-n-above) {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -46,7 +52,19 @@
 }
 
 .visually-hidden--lg-n-below {
-    @media (--lg-n-below) {
+    @media (max-width: 1023px) {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+    }
+}
+
+.visually-hidden--md-n-below {
+    @media (max-width: 767px) {
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
         height: 1px;

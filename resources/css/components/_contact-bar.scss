@@ -5,7 +5,7 @@
     color: var(--contact-bar-color);
     display: flex;
     height: var(--size-9);
-    padding-inline: var(--size-3);
+    padding-inline: var(--size-2);
 }
 
 .contact-bar a {
@@ -18,12 +18,16 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 0;
     width: 100%;
 }
 
 .contact-bar .contact-methods button {
-    border: 0;
-    padding: 0;
+    --button-borderless-outline: var(--ae-grey-2);
+    --button-borderless-color-hover: var(--ae-grey-2);
+    --button-borderless-background-hover: black;
+    --button-borderless-color-focus: var(--ae-grey-2);
+    --button-borderless-color-active: var(--ae-grey-1);
 }
 
 .contact-bar .contact-methods button[aria-expanded] .indicator {
@@ -44,20 +48,40 @@
     width: 100vw;
 }
 
-@media (--lg-n-below) {
-    .contact-bar .contact-methods > div.hidden {
-        display: none;
-    }
-}
-
 .contact-bar .contact-methods > div > div {
     align-items: center;
-    border-block-start: var(--border-size-1) solid var(--ae-white);
+    border-block-start: var(--border-size-1) solid white;
     display: flex;
     flex-wrap: wrap;
     height: auto;
     min-height: var(--size-9);
     padding: var(--size-3);
+}
+
+.contact-bar .exit button {
+    --button-primary-background: var(--ae-grey-2);
+    --button-primary-border: var(--ae-grey-2);
+    --button-primary-color: var(--ae-blue-7);
+    --button-primary-outline: var(--ae-grey-2);
+    --button-primary-background-hover: var(--ae-grey-1);
+    --button-primary-border-hover: var(--ae-grey-1);
+    --button-primary-color-hover: var(--ae-blue-8);
+    --button-primary-color-active: var(--ae-blue-7);
+    --button-primary-background-active: white;
+    --button-primary-border-active: white;
+}
+
+.contact-bar .exit .cta {
+    --cta-background: var(--ae-grey-2);
+    --cta-border: var(--ae-grey-2);
+    --cta-color: var(--ae-blue-7);
+    --cta-outline: var(--ae-grey-2);
+    --cta-background-hover: var(--ae-grey-1);
+    --cta-border-hover: var(--ae-grey-1);
+    --cta-color-hover: var(--ae-blue-8);
+    --cta-color-active: var(--ae-blue-7);
+    --cta-background-active: white;
+    --cta-border-active: white;
 }
 
 @media (--lg-n-above) {

@@ -1,4 +1,4 @@
-<li class="dropdown flow" x-data="{ open: false }" @keyup.escape.window="open = false" @click.away="open = false" @close.stop="open = false">
+<li {{ $attributes->merge(['class' => 'dropdown flow']) }} x-data="{ open: false }" @keyup.escape.window="open = false" @click.away="open = false" @close.stop="open = false">
     <button class="dropdown__parent" @click="open = ! open" x-bind:aria-expanded="open.toString()">
         {{ $trigger }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
     </button>
