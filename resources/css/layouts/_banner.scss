@@ -3,16 +3,22 @@
 // -----------------------------------------------------------------------------
 [role="banner"] {
     background-color: var(--theme-banner-background, var(--ae-white));
-    border-block-end: var(--border-size-1) solid var(--theme-banner-border, var(--ae-graphite-7));
+    border-block-end: var(--border-size-1) solid var(--banner-border);
+    box-shadow: var(--banner-shadow);
     position: relative;
+}
+
+[role="banner"] .wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: var(--size-3);
+    justify-content: flex-start;
+    padding-inline: var(--size-3);
 }
 
 @media (--lg-n-above) {
     [role="banner"] .wrapper {
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
         margin: 0 auto;
         max-width: 130ch;
         width: 100%;

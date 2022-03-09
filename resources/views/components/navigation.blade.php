@@ -1,7 +1,10 @@
 <!-- Primary Navigation Menu -->
-<nav x-data="{ open: false }" aria-label="{{ __('main menu') }}">
+<nav class="primary" x-data="{ open: false }" aria-label="{{ __('main menu') }}" @click.away="open = false">
+    <button class="button--borderless hidden--lg-n-above" x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false">
+        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span class="visually-hidden">{{ __('Menu') }}</span>
+    </button>
     <!-- Navigation Links -->
-    <ul role="list" class="nav__basics">
+    <ul role="list" x-bind:class="open ? '' : 'hidden'">
         @auth
         <li>
             <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
@@ -94,9 +97,9 @@
             </x-slot>
         </x-nav-dropdown>
         @endauth
-
-        <!-- Language Switcher -->
-        <x-hearth-language-switcher />
     </ul>
-
+    <!-- Language Switcher -->
+    {{-- <ul class="language-switcher" role="list">
+        <x-hearth-language-switcher />
+    </ul> --}}
 </nav>

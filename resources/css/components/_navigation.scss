@@ -2,92 +2,123 @@
 // This file contains all styles related to the navigation component.
 // -----------------------------------------------------------------------------
 nav {
+    align-items: center;
     display: flex;
+    flex-direction: row;
+    gap: var(--size-3);
+    z-index: 1;
+}
+
+nav.primary {
+    margin-inline-start: auto;
+}
+
+nav.secondary {
+    align-items: flex-start;
     flex-direction: column;
 }
 
-nav > * + * {
-    margin-block-start: var(--step--2);
+nav > ul {
+    background: var(--nav-background);
+    border-block-start: var(--border-size-1) solid var(--ae-blue-8);
+    color: var(--ae-grey-2);
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    margin-block: 0;
+    position: absolute;
+    top: calc(var(--size-9) + var(--size-10) + var(--size-5));
+    width: 100vw;
 }
 
-nav.secondary + * {
-    margin-block-start: var(--step-3);
+nav > ul.hidden {
+    @media (--lg-n-below) {
+        display: none;
+    }
 }
 
-nav ul {
-    margin: 0;
-    padding-inline-start: 0;
+nav > ul > li {
+    min-height: var(--size-8);
 }
 
-nav ul > li {
-    padding-inline-start: 0;
-}
-
-nav ul > li::before {
-    display: none;
+nav > ul ul {
+    background: var(--ae-blue-8);
+    border-block-end: var(--border-size-1) solid var(--ae-blue-8);
+    position: relative;
 }
 
 nav a,
 nav button {
     align-items: center;
-    color: var(--theme-nav-color, var(--ae-graphite-7));
+    background: var(--nav-parent-background-mobile);
+    border-block-end: var(--border-size-1) solid var(--nav-border-mobile);
+    border-block-start: 0;
+    border-inline: 0;
+    color: var(--nav-color-mobile);
     display: flex;
     font-weight: var(--font-weight-6);
-    height: 100%;
+    height: var(--size-8);
     padding-inline: var(--size-3);
     text-decoration: none;
-
-    &:hover {
-        background: var(--theme-body-background, var(--ae-grey-1));
-        box-shadow: inset 0 -3px 0 0 var(--theme-nav-color, var(--ae-blue-7));
-    }
-
-    &:focus {
-        background: var(--theme-body-background, var(--ae-grey-1));
-        box-shadow: inset 0 0 0 3px var(--theme-nav-color, var(--ae-blue-7));
-        outline: none;
-    }
-
-    &:active {
-        background: var(--theme-body-background, var(--ae-grey-2));
-        box-shadow: none;
-    }
-}
-
-nav a[aria-current] {
-    box-shadow: inset 0 -6px 0 0 var(--theme-nav-current-color, var(--ae-lavender-3));
-
-    &:hover {
-        background: var(--theme-body-background, var(--ae-grey-1));
-        box-shadow: inset 0 -3px 0 0 var(--theme-nav-color, var(--ae-blue-7));
-    }
-
-    &:focus {
-        background: var(--theme-body-background, var(--ae-grey-1));
-        box-shadow: inset 0 0 0 3px var(--theme-nav-color, var(--ae-blue-7));
-        outline: none;
-    }
-
-    &:active {
-        background: var(--theme-body-background, var(--ae-grey-2));
-        box-shadow: none;
-    }
 }
 
 nav .dropdown a {
-    // TODO.
+    background: var(--nav-child-background-mobile);
+    border-block-end: 0;
 }
 
-nav .dropdown a[aria-current] {
-    // TODO.
+nav a:hover,
+nav button:hover {
+    background: var(--nav-parent-background-hover-mobile);
+    box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
+}
+
+nav a:focus,
+nav button:focus {
+    background: var(--nav-parent-background-focus-mobile);
+    box-shadow: inset 0 0 0 3px var(--nav-indicator-mobile);
+    outline: none;
+}
+
+nav a:active,
+nav button:active {
+    background: var(--nav-parent-background-active-mobile);
+    box-shadow: none;
+}
+
+nav a[aria-current] {
+    box-shadow: inset 6px 0 0 0 var(--nav-current-color);
+
+    &:hover {
+        box-shadow: inset 3px 0 0 0 var(--nav-current-color);
+    }
+
+    &:focus {
+        box-shadow: inset 0 0 0 3px var(--nav-current-color);
+    }
+}
+
+nav .dropdown a:hover {
+    background: var(--nav-child-background-hover-mobile);
+}
+
+nav .dropdown a:focus {
+    background: var(--nav-child-background-focus-mobile);
+}
+
+nav .dropdown a:active {
+    background: var(--nav-child-background-active-mobile);
+}
+
+nav .language-switcher {
+    .indicator {
+        display: none;
+    }
 }
 
 @media (--lg-n-above) {
     nav {
-        flex-direction: row;
         height: calc(var(--size-10) + var(--size-5));
-        margin-block-start: 0;
-        margin-inline-start: auto;
     }
 
     .has-nav-secondary {
@@ -100,29 +131,108 @@ nav .dropdown a[aria-current] {
         margin-inline-start: 0;
     }
 
-    nav > * + * {
-        margin-block-start: 0;
-        margin-inline-start: var(--step--2);
-    }
-
-    nav.secondary + * {
-        margin-block-start: 0;
-    }
-
-    nav ul {
+    nav > ul {
+        border-block-start: 0;
         display: flex;
         flex-direction: row;
+        height: inherit;
+        left: 0;
+        position: relative;
+        top: 0;
+        width: auto;
+    }
+
+    nav > ul ul {
+        border-block-end: 0;
+        box-shadow: var(--nav-dropdown-shadow);
+        z-index: -1;
+    }
+
+    nav a,
+    nav button {
+        background: var(--nav-parent-background);
+        border-block-end: 0;
+        color: var(--nav-color);
+        height: 100%;
+    }
+
+    nav .dropdown a {
+        background: var(--nav-child-background);
+        font-weight: var(--font-weight-4);
+        padding-inline-start: var(--size-3);
+    }
+
+    nav a:hover,
+    nav button:hover {
+        background: var(--nav-parent-background-hover);
+        box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
+        color: var(--nav-indicator);
+    }
+
+    nav a:focus,
+    nav button:focus {
+        background: var(--nav-parent-background-focus);
+        box-shadow: inset 0 0 0 3px var(--nav-indicator);
+        color: var(--nav-indicator);
+    }
+
+    nav a:active,
+    nav button:active {
+        background: var(--nav-parent-background-active);
+        box-shadow: none;
+        color: var(--nav-indicator);
+    }
+
+    nav .dropdown li + li a {
+        border-block-start: var(--border-size-1) solid var(--nav-border);
+    }
+
+    nav .dropdown a:hover {
+        background: var(--nav-child-background-hover);
+        box-shadow: inset 3px 0 0 0 var(--nav-indicator);
+    }
+
+    nav .dropdown a:focus {
+        background: var(--nav-child-background-focus);
+    }
+
+    nav .dropdown a:active {
+        background: var(--nav-child-background-active);
+    }
+
+    nav button[aria-expanded="true"] {
+        background: var(--nav-parent-background-expanded);
     }
 
     nav.secondary ul {
         flex-direction: column;
     }
 
-    nav ul > li + li {
-        margin-inline-start: var(--step--2);
+    nav a[aria-current] {
+        box-shadow: inset 0 -6px 0 0 var(--nav-current-color);
+
+        &:hover {
+            box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
+        }
+
+        &:focus {
+            box-shadow: inset 0 0 0 3px var(--nav-indicator);
+        }
+
+        &:active {
+            box-shadow: none;
+        }
     }
 
-    nav.secondary ul > li + li {
-        margin-inline-start: 0;
+    nav .dropdown a[aria-current] {
+        box-shadow: inset 6px 0 0 0 var(--nav-current-color);
+
+        &:hover {
+            box-shadow: inset 3px 0  0 0 var(--nav-indicator);
+        }
+
+        &:focus {
+            box-shadow: inset 0 0 0 3px var(--nav-indicator);
+        }
     }
 }

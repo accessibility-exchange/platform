@@ -6,9 +6,10 @@
     margin-block: var(--size-4);
 
     a {
+        color: var(--brand-color);
         display: flex;
         height: var(--size-9);
-        justify-content: center;
+        justify-content: flex-start;
         width: 100%;
     }
 

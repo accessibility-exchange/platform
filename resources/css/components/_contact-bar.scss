@@ -1,15 +1,15 @@
 .contact-bar {
     align-items: center;
     background: var(--theme-contact-bar-background, var(--contact-bar-background));
-    border-block-end: var(--border-size-1) dashed var(--theme-contact-bar-border, transparent);
-    color: var(--theme-contact-bar-color, var(--ae-grey-2));
+    border-block-end: var(--border-size-1) dashed var(--contact-bar-border);
+    color: var(--contact-bar-color);
     display: flex;
     height: var(--size-9);
     padding-inline: var(--size-3);
 }
 
 .contact-bar a {
-    color: var(--theme-contact-bar-link-color, var(--ae-grey-2));
+    color: var(--contact-bar-color);
     font-weight: var(--font-weight-4);
 }
 

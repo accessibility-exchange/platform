@@ -1,7 +1,10 @@
 {
     "phpcs.executablePath": "vendor/bin/phpcs",
     "cssvar.files": [
-        "./resources/css/props.css",
+        "./resources/css/abstracts/_variables.scss",
         "./node_modules/open-props/open-props.min.css",
-    ]
+    ],
+    "css.validate": false,
+    "scss.validate": false,
+    "stylelint.validate": ["scss"]
 }

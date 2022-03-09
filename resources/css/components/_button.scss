@@ -46,3 +46,17 @@ input.button--inverse[type="submit"] {
     border-color: var(--button-inverse-primary-border, var(--ae-grey-2));
     color: var(--button-inverse-primary-color, var(--ae-blue-7));
 }
+
+button.button--borderless,
+button.button--borderless[type="submit"],
+input.button--borderless[type="submit"] {
+    background: inherit;
+    border: 0;
+    color: currentColor;
+    height: auto;
+    padding-inline: 0;
+
+    svg {
+        height: var(--size-4);
+    }
+}

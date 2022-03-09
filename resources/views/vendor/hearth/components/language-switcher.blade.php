@@ -1,6 +1,6 @@
 <x-nav-dropdown>
     <x-slot name="trigger">
-        <x-heroicon-s-globe-alt aria-hidden="true" /> {{ $locales[locale()] }}
+        <x-heroicon-o-translate aria-hidden="true" /> <span class="visually-hidden--lg-n-below">{{ $locales[locale()] }}</span>
     </x-slot>
 
     <x-slot name="content">

@@ -4,6 +4,7 @@
     --ae-graphite-8: #2b2e38;
     --ae-graphite-7: #3f424c;
     --ae-graphite-6: #4b5560;
+    --ae-graphite-5: #637180;
     --ae-grey-3: #d9dce3;
     --ae-grey-2: #eaedf3;
     --ae-grey-1: #f8fafd;
@@ -73,7 +74,37 @@
     --tag-button-background: var(--theme-tag-button-background, var(--ae-blue-6));
     --tag-button-border: var(--theme-tag-button-border, var(--ae-blue-6));
     --tag-button-color: var(--theme-tag-button-color, var(--ae-white));
+    --contact-bar-border: var(--theme-contact-bar-border, transparent);
     --contact-bar-background: var(--theme-contact-bar-background, var(--ae-blue-7));
+    --contact-bar-color: var(--theme-contact-bar-color, var(--ae-grey-2));
+    --banner-border: var(--theme-banner-border, var(--ae-grey-3));
+    --banner-shadow: var(--theme-banner-shadow, 0 0 10px 0 rgb(0 0 0 / 15%));
+    --brand-color: var(--theme-brand-color, var(--link-color));
+    --nav-parent-background-mobile: var(--theme-nav-parent-background-mobile, var(--ae-blue-7));
+    --nav-parent-background-hover-mobile: var(--theme-nav-parent-background-hover-mobile, var(--ae-blue-8));
+    --nav-parent-background-focus-mobile: var(--theme-nav-parent-background-focus-mobile, var(--ae-blue-8));
+    --nav-parent-background-active-mobile: var(--theme-nav-parent-background-active-mobile, var(--ae-black));
+    --nav-border-mobile: var(--theme-nav-border-mobile, var(--ae-blue-8));
+    --nav-color-mobile: var(--theme-nav-color-mobile, var(--ae-grey-2));
+    --nav-indicator-mobile: var(--theme-nav-indicator-mobile, var(--ae-grey-1));
+    --nav-child-background-mobile: var(--theme-nav-child-background-mobile, var(--ae-blue-8));
+    --nav-child-background-hover-mobile: var(--theme-nav-child-background-hover-mobile, var(--ae-blue-7));
+    --nav-child-background-focus-mobile: var(--theme-nav-child-background-focus-mobile, var(--ae-blue-7));
+    --nav-child-background-active-mobile: var(--theme-nav-child-background-active-mobile, var(--ae-blue-6));
+    --nav-parent-background: var(--theme-nav-parent-background, var(--ae-white));
+    --nav-parent-background-hover: var(--theme-nav-parent-background-hover, var(--ae-grey-1));
+    --nav-parent-background-focus: var(--theme-nav-parent-background-focus, var(--ae-grey-1));
+    --nav-parent-background-active: var(--theme-nav-parent-background-active, var(--ae-grey-2));
+    --nav-parent-background-expanded: var(--theme-nav-parent-background-expanded, var(--ae-grey-2));
+    --nav-border: var(--theme-nav-border, var(--ae-grey-3));
+    --nav-color: var(--theme-nav-color, var(--ae-graphite-7));
+    --nav-indicator: var(--theme-nav-indicator, var(--ae-blue-7));
+    --nav-dropdown-shadow: var(--theme-nav-dropdown-shadow, 0 0 10px rgb(0 0 0 / 15%));
+    --nav-child-background: var(--theme-nav-child-background, var(--ae-white));
+    --nav-child-background-hover: var(--theme-nav-child-background-hover, var(--ae-grey-1));
+    --nav-child-background-focus: var(--theme-nav-child-background-focus, var(--ae-grey-1));
+    --nav-child-background-active: var(--theme-nav-child-background-active, var(--ae-grey-2));
+    --nav-current-color: var(--theme-nav-current-color, var(--ae-lavender-3));
 
     /* Typography */
     --ae-font-family-base: "Open Sans", sans-serif;

@@ -1,7 +1,7 @@
 <div class="contact-bar">
     <div class="wrapper">
-        <div class="contact-methods" x-data="{'open': false}">
-            <button x-bind:aria-expanded="open.toString()" x-on:click="open = !open" class="hidden--lg-n-above">
+        <div class="contact-methods" x-data="{'open': false}" @click.away="open = false">
+            <button x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false" class="button--borderless hidden--lg-n-above">
                 {{ __('Contact us') }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
             </button>
             <div x-bind:class="open ? '' : 'hidden'">
