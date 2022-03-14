@@ -1,0 +1,10 @@
+.center {
+    box-sizing: content-box;
+    display: block;
+    margin-inline: auto;
+    max-inline-size: var(--measure);
+}
+
+.center\:wide {
+    max-inline-size: calc(2 * var(--measure));
+}

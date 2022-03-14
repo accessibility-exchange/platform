@@ -13,7 +13,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="flow" action="{{ localized_route('users.update_display_preferences') }}" method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('users.update_display_preferences') }}" method="POST" novalidate>
         @csrf
 
         @method('PUT')

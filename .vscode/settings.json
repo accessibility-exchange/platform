@@ -6,5 +6,8 @@
     ],
     "css.validate": false,
     "scss.validate": false,
-    "stylelint.validate": ["scss"]
+    "stylelint.validate": ["scss"],
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
 }

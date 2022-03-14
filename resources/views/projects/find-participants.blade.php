@@ -21,7 +21,7 @@
             </ul>
         </nav>
 
-        <div class="find__list flow">
+        <div class="find__list stack">
             <h2>{{ $subtitle }}</h2>
             <div class="grid">
                 @forelse($communityMembers as $communityMember)
@@ -48,10 +48,10 @@
     </div>
 
     @if(count($project->shortlistedParticipants) > 0)
-    <section class="drawer flow" aria-labelledby="shortlisted-participants" x-data="{expanded: false}">
+    <section class="drawer stack" aria-labelledby="shortlisted-participants" x-data="{expanded: false}">
         <h2 id="shortlisted-participants"><button x-on:click="expanded = !expanded" x-bind:aria-expanded="expanded.toString()">{{ __('Shortlisted participants') }} <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" /></button></h2>
 
-        <div class="flow" x-show="expanded" x-cloak>
+        <div class="stack" x-show="expanded" x-cloak>
             @foreach($project->shortlistedParticipants as $communityMember)
             <x-community-member-card :communityMember="$communityMember" :project="$project" level="3">
                 <x-slot name="actions">

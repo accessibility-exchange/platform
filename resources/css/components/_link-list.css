@@ -1,0 +1,22 @@
+.link-list a {
+    align-items: center;
+    border-block-start: var(--border-size-1) solid currentcolor;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-block: var(--size-4);
+    text-decoration: none;
+    width: 100%;
+}
+
+.link-list a::after {
+    background-image: var(
+        --link-list-chevron,
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%233842aa"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>')
+    );
+    background-repeat: no-repeat;
+    content: "";
+    display: inline-block;
+    height: var(--size-4);
+    width: var(--size-4);
+}

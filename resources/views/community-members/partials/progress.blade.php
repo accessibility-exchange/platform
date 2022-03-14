@@ -1,7 +1,7 @@
-<div class="steps flow">
+<div class="steps stack">
     <h3>{{ __('Page sections') }}</h3>
 
-    <ol class="progress flow">
+    <ol class="progress stack">
         <li>
             <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember]) }}">{{ __('About you') }}</a>
         </li>

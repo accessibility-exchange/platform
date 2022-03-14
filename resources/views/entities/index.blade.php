@@ -6,7 +6,7 @@
         </h1>
     </x-slot>
 
-   <div class="flow">
+   <div class="stack">
     @forelse($entities as $entity)
     <article>
         <h2>

@@ -1,0 +1,261 @@
+/* This file contains all styles related to the navigation component. */
+header nav a,
+header nav form {
+    align-items: center;
+    display: flex;
+    gap: var(--size-1);
+}
+
+header nav {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    z-index: 1;
+}
+
+header nav.languages {
+    display: inline-flex;
+    height: calc(var(--size-10) + var(--size-5));
+}
+
+nav.secondary {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+header nav > ul {
+    background: var(--nav-background);
+    border-block-start: var(--border-size-1) solid var(--nav-border-mobile);
+    color: var(--tae-grey-2);
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    margin-block: 0;
+    position: absolute;
+    top: calc(var(--size-8) + var(--size-10) + var(--size-5));
+    width: 100vw;
+}
+
+@media (min-width: 768px) {
+    header nav > ul {
+        top: calc(var(--size-9) + var(--size-10) + var(--size-5));
+    }
+}
+
+header nav > ul.hidden {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    header nav > ul.hidden {
+        display: flex;
+    }
+}
+
+header nav > ul > li {
+    min-height: var(--size-8);
+}
+
+header nav > ul ul {
+    background: var(--nav-child-background-mobile);
+    border-block-end: var(--border-size-1) solid var(--nav-border-mobile);
+    position: relative;
+}
+
+header nav a,
+header nav button {
+    align-items: center;
+    background: var(--nav-parent-background-mobile);
+    border-block-end: var(--border-size-1) solid var(--nav-border-mobile);
+    border-block-start: 0;
+    border-inline: 0;
+    color: var(--nav-color-mobile);
+    display: flex;
+    font-weight: var(--font-weight-6);
+    height: var(--size-8);
+    padding-inline: var(--size-3);
+    text-decoration: none;
+}
+
+header nav .dropdown a {
+    background: var(--nav-child-background-mobile);
+    border-block-end: 0;
+}
+
+header nav a:hover,
+header nav ul button:hover {
+    background: var(--nav-parent-background-hover-mobile);
+    box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
+}
+
+header nav a:focus,
+header nav ul button:focus {
+    background: var(--nav-parent-background-focus-mobile);
+    box-shadow: inset 0 0 0 3px var(--nav-indicator-mobile);
+    outline: none;
+}
+
+header nav a:active,
+header nav ul button:active {
+    background: var(--nav-parent-background-active-mobile);
+    box-shadow: none;
+}
+
+header nav a[aria-current] {
+    box-shadow: inset 6px 0 0 0 var(--nav-current-color);
+}
+
+header nav a[aria-current]:hover {
+    box-shadow: inset 3px 0 0 0 var(--nav-current-color);
+}
+
+header nav a[aria-current]:focus {
+    box-shadow: inset 0 0 0 3px var(--nav-current-color);
+}
+
+header nav .dropdown a:hover {
+    background: var(--nav-child-background-hover-mobile);
+}
+
+header nav .dropdown a:focus {
+    background: var(--nav-child-background-focus-mobile);
+}
+
+header nav .dropdown a:active {
+    background: var(--nav-child-background-active-mobile);
+}
+
+@media (min-width: 1024px) {
+    header nav {
+        height: calc(var(--size-10) + var(--size-5));
+    }
+
+    header nav.primary {
+        height: var(--size-8);
+    }
+
+    .has-nav-secondary {
+        display: grid;
+        gap: var(--step-3);
+        grid-template-columns: 25% 75%;
+    }
+
+    .has-nav-secondary nav.secondary {
+        margin-inline-start: 0;
+    }
+
+    header nav > ul {
+        border-block-start: 0;
+        display: flex;
+        flex-direction: row;
+        height: inherit;
+        justify-content: flex-start;
+        left: 0;
+        position: relative;
+        top: 0;
+        width: 100%;
+    }
+
+    header nav > ul ul {
+        border-block-end: 0;
+        box-shadow: var(--nav-dropdown-shadow);
+        z-index: -1;
+    }
+
+    header nav form {
+        height: 100%;
+    }
+
+    header nav a,
+    header nav ul button {
+        background: var(--nav-parent-background);
+        border-block-end: 0;
+        color: var(--nav-color);
+        height: 100%;
+    }
+
+    header nav .dropdown a {
+        background: var(--nav-child-background);
+        font-weight: var(--font-weight-4);
+        padding-inline-start: var(--size-3);
+    }
+
+    header nav a:hover,
+    header nav ul button:hover {
+        background: var(--nav-parent-background-hover);
+        box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
+        color: var(--nav-indicator);
+    }
+
+    header nav a:focus,
+    header nav ul button:focus {
+        background: var(--nav-parent-background-focus);
+        box-shadow: inset 0 0 0 3px var(--nav-indicator);
+        color: var(--nav-indicator);
+    }
+
+    header nav a:active,
+    header nav ul button:active {
+        background: var(--nav-parent-background-active);
+        box-shadow: none;
+        color: var(--nav-indicator);
+    }
+
+    header nav .dropdown li + li a {
+        border-block-start: var(--border-size-1) solid var(--nav-border);
+    }
+
+    header nav .dropdown a:hover {
+        background: var(--nav-child-background-hover);
+        box-shadow: inset 3px 0 0 0 var(--nav-indicator);
+    }
+
+    header nav .dropdown a:focus {
+        background: var(--nav-child-background-focus);
+    }
+
+    header nav .dropdown a:active {
+        background: var(--nav-child-background-active);
+    }
+
+    header nav button[aria-expanded="true"] {
+        background: var(--nav-parent-background-expanded);
+    }
+
+    header nav.secondary ul {
+        flex-direction: column;
+    }
+
+    header nav a[aria-current] {
+        box-shadow: inset 0 -6px 0 0 var(--nav-current-color);
+    }
+
+    header nav a[aria-current]:hover {
+        box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
+    }
+
+    header nav a[aria-current]:focus {
+        box-shadow: inset 0 0 0 3px var(--nav-indicator);
+    }
+
+    header nav a[aria-current]:active {
+        box-shadow: none;
+    }
+
+    header nav .dropdown a[aria-current] {
+        box-shadow: inset 6px 0 0 0 var(--nav-current-color);
+    }
+
+    header nav .dropdown a[aria-current]:hover {
+        box-shadow: inset 3px 0 0 0 var(--nav-indicator);
+    }
+
+    header nav .dropdown a[aria-current]:focus {
+        box-shadow: inset 0 0 0 3px var(--nav-indicator);
+    }
+
+    .sign-out {
+        margin-inline-start: auto;
+    }
+}

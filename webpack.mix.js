@@ -1,12 +1,12 @@
 const mix = require("laravel-mix");
 const openProps = require("open-props");
-const postcssCustomMedia = require("postcss-custom-media");
+const postcssEasyImport = require("postcss-easy-import");
 const postcssJitProps = require("postcss-jit-props");
 require("laravel-mix-sri");
 
 mix.js("resources/js/app.js", "public/js").extract();
 
-mix.sass("resources/css/app.scss", "public/css");
+mix.css("resources/css/app.css", "public/css");
 
 mix.generateIntegrityHash();
 
@@ -23,9 +23,7 @@ mix.browserSync({
 mix.options({
     processCssUrls: false,
     postCss: [
-        postcssCustomMedia({
-            importFrom: "./node_modules/open-props/media.min.css"
-        }),
+        postcssEasyImport(),
         postcssJitProps(openProps)
     ]
 });

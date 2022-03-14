@@ -4,7 +4,7 @@
         <h1 itemprop="name">{{ __('story.index_title') }}</h1>
     </x-slot>
 
-   <div class="flow">
+   <div class="stack">
     @forelse($stories as $story)
     <article>
         <h2>

@@ -58,7 +58,7 @@
             </ul>
         </nav>
 
-        <div class="flow">
+        <div class="stack">
         @if(request()->routeIs(locale() . '.projects.show'))
             <h2>{{ __('Project overview') }}</h2>
             @can('update', $project)

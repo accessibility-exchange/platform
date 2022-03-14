@@ -23,6 +23,10 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('dashboard');
 
+Route::multilingual('/people-and-organizations', function () {
+    return '';
+})->name('people-and-organizations');
+
 Route::multilingual('/settings', [UserController::class, 'settings'])
     ->middleware(['auth'])
     ->name('users.settings');

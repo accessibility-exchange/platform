@@ -1,6 +1,6 @@
-<div class="flow">
+<div class="stack">
     @if((count($project->participants)) >= 5)
-    <div class="access flow">
+    <div class="access stack">
         <h2>{{ __('Access needs') }}</h2>
         <p><em>{{ __('An aggregated list of the consulting team’s access needs') }}</em></p>
         <ul role="list">

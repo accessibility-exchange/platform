@@ -12,7 +12,7 @@
     <li class="tag">Budgeting</li>
 </ul>
 <x-heading :level="$level">Work experience</x-heading>
-<ul class="flow" role="list">
+<ul class="stack" role="list">
     <li>
         <strong>Community Coordinator at a local organization</strong><br />
         May 2020–present

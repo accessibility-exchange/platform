@@ -26,7 +26,7 @@
 </ul>
 
 @if($project->priority_outreach)
-<x-markdown class="flow">{{ $project->priority_outreach }}</x-markdown>
+<x-markdown class="stack">{{ $project->priority_outreach }}</x-markdown>
 @endif
 @endif
 
@@ -51,4 +51,4 @@
 
 <x-heading :level="$level">{{ __('Anything else?') }}</x-heading>
 
-<x-markdown class="flow">{{ $project->anything_else }}</x-markdown>
+<x-markdown class="stack">{{ $project->anything_else }}</x-markdown>

@@ -1,10 +1,10 @@
-<div class="flow">
+<div class="stack">
     <h2>{{ __('Participant shortlist') }}</h2>
     @if((count($project->participants)) < $project->min)
     <p><em>{{ __('According to your project details, you need to add at least :number more participants to your shortlist.', ['number' => $project->min - (count($project->confirmedParticipants) + count($project->requestedParticipants) + count($project->shortlistedParticipants))]) }}</em></p>
     @endif
     @if((count($project->participants)) >= 5)
-    <div class="access flow">
+    <div class="access stack">
         <h3>{{ __('Access needs') }}</h3>
         <p><em>{{ __('An aggregated list of the consulting team’s access needs') }}</em></p>
         <ul role="list">
@@ -14,11 +14,11 @@
         </ul>
         <p class="align-end"><a href="{{ localized_route('collections.index') }}">{{ __('Find access providers in the Resource Hub') }}</a></p>
     </div>
-    <div class="diversity flow">
+    <div class="diversity stack">
         <h3>{{ __('Diversity of participants') }}</h3>
         <div class="columns">
 
-            <div class="column flow">
+            <div class="column stack">
                 <h4>{{ __('On your shortlist:') }}</h4>
                 <p><strong>{{ __('Lived experience') }}</strong></p>
                 <ul>
@@ -41,7 +41,7 @@
                 </ul>
                 @endif
             </div>
-            <div class="column flow">
+            <div class="column stack">
                 <h4>{{ __('Missing from your shortlist:') }}</h4>
                 <p><strong>{{ __('Lived experience') }}</strong></p>
                 <ul>

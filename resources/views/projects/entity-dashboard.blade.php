@@ -32,7 +32,7 @@
             </ol>
         </section>
 
-        <section class="step flow" aria-labelledby="step-{{ $step }}-region">
+        <section class="step stack" aria-labelledby="step-{{ $step }}-region">
             <h2 id="step-{{ $step }}-region">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
             @isset($steps[$step]['subtitle'])
             <p class="subtitle">{{ $steps[$step]['subtitle'] }}</p>
@@ -42,7 +42,7 @@
 
             <progress id="step" max="100" value="{{ $project->getProgress($step) / count($substeps[$step]) * 100 }}"></progress>
 
-            <ol role="list" class="substeps flow">
+            <ol role="list" class="substeps stack">
                 @foreach($substeps[$step] as $substep)
                 <li class="substep">
                     <p class="substep__description">

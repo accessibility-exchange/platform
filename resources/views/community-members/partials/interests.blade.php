@@ -26,5 +26,5 @@
 
 @if($communityMember->areas_of_interest)
 <x-heading :level="$level">{{ __('Other areas of interest') }}</x-heading>
-<x-markdown class="flow">{{ $communityMember->areas_of_interest }}</x-markdown>
+<x-markdown class="stack">{{ $communityMember->areas_of_interest }}</x-markdown>
 @endif

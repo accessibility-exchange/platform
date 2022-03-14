@@ -45,7 +45,7 @@
             </ul>
         </nav>
 
-        <div class="flow">
+        <div class="stack">
         @if(request()->routeIs(locale() . '.community-members.show'))
             <h2>{{ __('About :name', ['name' => $communityMember->firstName()]) }}</h2>
             @include('community-members.partials.about', ['level' => 3])

@@ -1,0 +1,7 @@
+footer > .switcher > :nth-child(2) {
+    flex-grow: 2;
+}
+
+footer > .switcher > .switcher {
+    --threshold: calc(var(--measure) / 2);
+}

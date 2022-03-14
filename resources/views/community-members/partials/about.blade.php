@@ -6,7 +6,7 @@
 @endcan
 
 @if($communityMember->bio)
-<x-markdown class="flow">{{ $communityMember->bio }}</x-markdown>
+<x-markdown class="stack">{{ $communityMember->bio }}</x-markdown>
 @endif
 
 @if($communityMember->links)

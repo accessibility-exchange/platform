@@ -1,0 +1,13 @@
+/* This file contains very basic styles. */
+html:focus-within {
+    scroll-behavior: auto;
+}
+
+body {
+    background: var(--body-background);
+}
+
+main {
+    margin-inline: auto;
+    max-width: var(--measure);
+}

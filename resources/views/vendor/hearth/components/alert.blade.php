@@ -1,4 +1,4 @@
-<div class="alert alert--{{ $type }} flow">
+<div class="alert alert--{{ $type }} stack">
     <p class="title">@switch($type)
         @case('error')
             <x-heroicon-o-x-circle />

@@ -8,7 +8,7 @@
 
     <x-markdown>{{ $collection->description }}</x-markdown>
 
-    <div class="flow">
+    <div class="stack">
         <h2>{{ __('Search') }}</h2>
         <form class="search" action="" method="post">
             @csrf
@@ -18,7 +18,7 @@
         </form>
     </div>
     <div class="resources">
-        <div class="filters flow">
+        <div class="filters stack">
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Topic') }}</x-slot>

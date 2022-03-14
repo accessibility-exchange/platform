@@ -1,0 +1,119 @@
+progress {
+    appearance: none;
+    background-color: var(--ll-accent-background-color);
+    border: var(--ll-border-thin);
+    border-radius: var(--ll-border-radius);
+    height: var(--step-0);
+    margin: var(--step-0) 0;
+    width: 100%;
+}
+
+progress::-webkit-progress-bar {
+    background-color: var(--ll-accent-background-color);
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--ll-accent-color);
+}
+
+progress::-moz-progress-bar {
+    background-color: var(--ll-accent-color);
+}
+
+.substeps .substep {
+    display: flex;
+    flex-direction: column;
+    gap: var(--step-0);
+}
+
+.substeps .substep + .substep {
+    border-block-start: var(--ll-border-thin);
+    padding-block-start: var(--step-0);
+}
+
+.substep__progress * + form {
+    margin-block-start: var(--step-0);
+}
+
+.substep__progress__status {
+    align-items: center;
+    display: flex;
+    gap: var(--step--5);
+}
+
+.overview li {
+    padding-inline-start: var(--step-1);
+    text-indent: calc(-1 * var(--step-1));
+}
+
+.access,
+.diversity {
+    border-radius: var(--ll-border-radius);
+    padding: var(--step-0);
+}
+
+.access {
+    border: var(--ll-border-thin);
+}
+
+.diversity {
+    background: var(--ll-accent-background-color);
+}
+
+.diversity .columns {
+    display: flex;
+    flex-direction: column;
+    gap: var(--step-0);
+}
+
+.access ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.access li {
+    flex: 0 0 50%;
+    padding-inline-end: var(--step-0);
+}
+
+@media (min-width: 1024px) {
+    .manage {
+        display: grid;
+        gap: calc(2 * var(--step-0));
+        grid-template-columns: auto calc(100% / 3);
+        grid-template-rows: repeat(2, auto);
+    }
+
+    .overview {
+        grid-column: 2 / 3;
+        grid-row: 1 / 1;
+    }
+
+    .diversity .columns {
+        flex-direction: row;
+    }
+
+    .step {
+        grid-column: 1 / 2;
+        grid-row: 1 / 3;
+    }
+
+    .substeps .substep {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .substeps .substep .substep__description {
+        width: 65%;
+    }
+
+    .grid {
+        display: grid;
+        gap: var(--step-0);
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid > p {
+        grid-column: 1 / 3;
+    }
+}

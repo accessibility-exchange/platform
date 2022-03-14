@@ -8,7 +8,7 @@
 
     <h2>{{ __('Preview') }}</h2>
 
-    <div class="preview flow">
+    <div class="preview stack">
         <div class="meta">
             <h3>{{ $project->name }}</h3>
             <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
@@ -23,7 +23,7 @@
             @endif
         </div>
 
-        <div class="flow" id="project-overview">
+        <div class="stack" id="project-overview">
             <h3>{{ __('Project overview') }}</h3>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('project overview') . '</span>']) !!}</a></p>
@@ -32,7 +32,7 @@
             @include('projects.partials.project-overview', ['level' => 4])
         </div>
 
-        <div class="flow" id="who-were-looking-for">
+        <div class="stack" id="who-were-looking-for">
             <h3>{{ __('Who we’re looking for') }}</h3>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('who we’re looking for') . '</span>']) !!}</a></p>
@@ -41,7 +41,7 @@
             @include('projects.partials.who-were-looking-for', ['level' => 4])
         </div>
 
-        <div class="flow" id="accessibility-and-accomodations">
+        <div class="stack" id="accessibility-and-accomodations">
             <h3>{{ __('Accessibility and accomodations') }}</h3>
             @can('update', $project)
             <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('accessibility and accomodations') . '</span>']) !!}</a></p>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="steps flow">
+    <div class="steps stack">
         <h2>{{ __('Steps to publish') }}</h2>
 
         <p>

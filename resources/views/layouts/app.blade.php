@@ -8,24 +8,24 @@
 
         @isset($aside)
         <!-- Sidebar -->
-        <aside class="flow">
+        <aside class="stack">
             {{ $aside }}
         </aside>
         @endif
 
         <!-- Main Content -->
         <main id="main">
-            <article class="wrapper flow" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+            <article class="wrapper stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Flash Messages -->
                 @include('partials.flash-messages')
 
                 <!-- Page Heading -->
-                <header class="flow">
+                <header class="stack">
                     {{ $header }}
                 </header>
 
                 <!-- Page Content -->
-                <div class="content flow">
+                <div class="content stack">
                     {{ $slot }}
                 </div>
             </article>

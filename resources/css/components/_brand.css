@@ -1,0 +1,55 @@
+/* This file contains all styles related to the brand component. */
+.brand {
+    color: var(--brand-color);
+    display: inline-block;
+    height: var(--size-8);
+    margin-block: var(--size-4);
+    width: auto;
+}
+
+.brand svg {
+    height: inherit;
+}
+
+[data-theme] .logo {
+    display: none;
+    width: auto;
+}
+
+[data-theme] .logo--themeable {
+    display: block;
+}
+
+[data-theme="light"] .logo {
+    display: block;
+}
+
+[data-theme="light"] .logo--themeable {
+    display: none;
+}
+
+@media (prefers-color-scheme: light) {
+    [data-theme="system"] .logo {
+        display: block;
+    }
+
+    [data-theme="system"] .logo--themeable {
+        display: none;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    [data-theme="system"] .logo--themeable {
+        display: block;
+    }
+
+    [data-theme="system"] .logo {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .brand {
+        height: var(--size-9);
+    }
+}

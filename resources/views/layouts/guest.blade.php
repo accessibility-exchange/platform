@@ -3,9 +3,9 @@
     <head>
         @include('partials.head', ['title' => $title ?? __('app.name')])
     </head>
-    <body>
+    <body glass="guest">
         <main>
-            <div class="wrapper flow">
+            <div class="cover">
                 {{ $slot }}
             </div>
         </main>
