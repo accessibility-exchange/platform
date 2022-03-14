@@ -16,7 +16,8 @@
     },
     "lint-staged": {
         "resources/css/**/*.css": [
-            "stylelint"
+            "stylelint",
+            "prettier --write"
         ],
         "resources/js/**/*.js": [
             "eslint"
