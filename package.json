@@ -44,8 +44,6 @@
         "postcss-jit-props": "^1.0.4",
         "prettier": "^2.5.1",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.43.5",
-        "sass-loader": "^12.3.0",
         "stylelint": "^14.1.0",
         "stylelint-config-prettier": "^9.0.3",
         "stylelint-config-standard": "^25.0.0",
