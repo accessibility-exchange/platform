@@ -1,9 +1,10 @@
 .switcher {
     --threshold: var(--measure);
+    --gap: var(--size-3);
 
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s1);
+    gap: var(--gap);
 }
 
 .switcher > * {

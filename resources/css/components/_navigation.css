@@ -4,7 +4,6 @@
     display: flex;
     gap: var(--size-3);
     justify-content: flex-start;
-    padding-inline: var(--size-3);
 }
 
 .nav > :nth-child(2) {

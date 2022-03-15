@@ -6,19 +6,6 @@
     position: relative;
 }
 
-[role="banner"] .wrapper {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    padding-inline: var(--size-3);
-}
-
-@media (min-width: 1024px) {
-    [role="banner"] .wrapper {
-        box-sizing: content-box;
-        margin-inline: auto;
-        padding-inline: var(--size-5);
-        width: 100%;
-    }
+[role="banner"] > .center {
+    --gutter: var(--size-3);
 }

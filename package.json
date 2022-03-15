@@ -12,6 +12,7 @@
         "lint:scripts": "eslint *.js resources/js/**/*.js",
         "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
+        "format": "prettier --write resources/**/*.css",
         "postinstall": "husky install"
     },
     "lint-staged": {

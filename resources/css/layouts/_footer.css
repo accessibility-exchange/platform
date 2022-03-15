@@ -1,7 +1,72 @@
-footer > .switcher > :nth-child(2) {
+footer {
+    background: var(--tae-blue-7);
+    color: var(--tae-white);
+}
+
+footer h2,
+footer h3 {
+    color: var(--tae-grey-2);
+}
+
+footer h2 {
+    font-size: var(--font-size-2);
+    font-size: var(--tae-font-size-fluid-2);
+}
+
+footer h3 {
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-6);
+}
+
+footer a,
+footer .brand {
+    color: inherit;
+    font-weight: var(--font-weight-6);
+}
+
+footer .brand {
+    margin-block: 0;
+}
+
+footer .center {
+    padding: var(--size-9) var(--size-3);
+}
+
+footer nav .stack {
+    --space: var(--size-1);
+}
+
+footer .grow\:2 {
     flex-grow: 2;
+}
+
+footer .switcher {
+    --gap: var(--size-5);
 }
 
 footer > .switcher > .switcher {
     --threshold: calc(var(--measure) / 2);
+}
+
+@media (min-width: 48rem) {
+    footer h2 {
+        font-size: var(--font-size-3);
+        font-size: var(--tae-font-size-fluid-2);
+    }
+
+    footer h3 {
+        font-size: var(--font-size-1);
+    }
+}
+
+@media (min-width: 75rem) {
+    footer h2 {
+        font-size: var(--font-size-4);
+        font-size: var(--tae-font-size-fluid-2);
+        font-weight: var(--font-weight-4);
+    }
+
+    footer h3 {
+        font-size: var(--font-size-1);
+    }
 }

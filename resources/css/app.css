@@ -1,5 +1,5 @@
-@import "modern-css-reset";
-@import "abstracts/*";
+@import "_reset.css";
+@import "_props.css";
 @import "base/*";
 @import "blocks/*";
 @import "layouts/*";

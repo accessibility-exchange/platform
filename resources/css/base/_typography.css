@@ -52,7 +52,7 @@ h4 {
     font-weight: var(--font-weight-6);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
     h1 {
         font-size: var(--font-size-9);
         font-size: var(--tae-font-size-fluid-5);
@@ -76,7 +76,7 @@ h4 {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 75rem) {
     h1 {
         font-size: var(--font-size-10);
         font-size: var(--tae-font-size-fluid-5);
