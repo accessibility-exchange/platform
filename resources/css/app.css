@@ -1,8 +1,10 @@
 @import "modern-css-reset";
 @import "abstracts/*";
 @import "base/*";
+@import "blocks/*";
 @import "layouts/*";
 @import "components/*";
 @import "compositions/*";
+@import "utilities/*";
 @import "routes/*";
 @import "themes/*";

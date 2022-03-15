@@ -1,6 +1,6 @@
 <x-nav-dropdown {{ $attributes->merge() }}>
     <x-slot name="trigger">
-        <x-heroicon-o-translate aria-hidden="true" /> {{ __('Language') }}
+        <x-heroicon-o-translate aria-hidden="true" /> <span>{{ __('Language') }}</span>
     </x-slot>
 
     <x-slot name="content">

@@ -35,8 +35,8 @@
     --theme-button-secondary-background: #b96;
     --theme-button-secondary-border: #000;
     --theme-button-secondary-color: #000;
-    --theme-contact-bar-background: var(--body-background);
-    --theme-contact-bar-border: var(--divider-color);
+    --theme-help-bar-background: var(--body-background);
+    --theme-help-bar-border: var(--divider-color);
     --theme-banner-background: var(--body-background);
     --theme-banner-border: var(--divider-color);
     --theme-nav-color: var(--link-color);

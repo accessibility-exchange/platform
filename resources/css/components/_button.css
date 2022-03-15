@@ -78,36 +78,36 @@ input[type="reset"]:focus {
     outline-offset: calc(var(--size-1) / 2);
 }
 
-button.button--borderless,
-button.button--borderless[type="submit"],
-input.button--borderless[type="submit"] {
+button.borderless,
+button.borderless[type="submit"],
+input.borderless[type="submit"] {
     background: inherit;
     border: 0;
     color: currentcolor;
     padding-inline: var(--size-3);
 }
 
-button.button--borderless:hover,
-button.button--borderless[type="submit"]:hover,
-input.button--borderless[type="submit"]:hover {
+button.borderless:hover,
+button.borderless[type="submit"]:hover,
+input.borderless[type="submit"]:hover {
     background: var(--button-borderless-background-hover);
     color: var(--button-borderless-color-hover);
 }
 
-button.button--borderless:focus,
-button.button--borderless[type="submit"]:focus,
-input.button--borderless[type="submit"]:focus {
+button.borderless:focus,
+button.borderless[type="submit"]:focus,
+input.borderless[type="submit"]:focus {
     color: var(--button-borderless-color-focus);
     outline: var(--button-borderless-outline) solid calc(var(--size-1) / 2);
     outline-offset: calc(var(--size-1) / 2);
 }
 
-button.button--borderless:active,
-button.button--borderless[type="submit"]:active,
-input.button--borderless[type="submit"]:active {
+button.borderless:active,
+button.borderless[type="submit"]:active,
+input.borderless[type="submit"]:active {
     color: var(--button-borderless-color-active);
 }
 
-.button--borderless svg {
+.borderless svg {
     height: 1.25em;
 }

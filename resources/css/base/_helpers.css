@@ -18,10 +18,6 @@
     }
 }
 
-.semibold {
-    font-weight: var(--font-weight-6);
-}
-
 .float-left {
     float: left;
     margin-inline-end: var(--size-3);
@@ -46,28 +42,4 @@
     position: absolute;
     white-space: nowrap;
     width: 1px;
-}
-
-.visually-hidden--lg-n-below {
-    @media (max-width: 1023px) {
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;
-    }
-}
-
-.visually-hidden--md-n-below {
-    @media (max-width: 767px) {
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        white-space: nowrap;
-        width: 1px;
-    }
 }

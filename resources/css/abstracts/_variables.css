@@ -179,29 +179,26 @@
     );
     --tag-button-border: var(--theme-tag-button-border, var(--tae-blue-6));
     --tag-button-color: var(--theme-tag-button-color, white);
-    --contact-bar-border: var(--theme-contact-bar-border, transparent);
-    --contact-bar-background: var(
-        --theme-contact-bar-background,
-        var(--tae-blue-7)
-    );
-    --contact-bar-color: var(--theme-contact-bar-color, var(--tae-grey-2));
+    --help-bar-border: var(--theme-help-bar-border, transparent);
+    --help-bar-background: var(--theme-help-bar-background, var(--tae-blue-7));
+    --help-bar-color: var(--theme-help-bar-color, var(--tae-grey-2));
     --banner-border: var(--theme-banner-border, var(--tae-grey-3));
     --banner-shadow: var(--theme-banner-shadow, 0 0 10px 0 rgb(0 0 0 / 15%));
     --brand-color: var(--theme-brand-color, var(--link-color));
-    --nav-parent-background-mobile: var(
-        --theme-nav-parent-background-mobile,
+    --nav-background-mobile: var(
+        --theme-nav-background-mobile,
         var(--tae-blue-7)
     );
-    --nav-parent-background-hover-mobile: var(
-        --theme-nav-parent-background-hover-mobile,
+    --nav-background-hover-mobile: var(
+        --theme-nav-background-hover-mobile,
         var(--tae-blue-8)
     );
-    --nav-parent-background-focus-mobile: var(
-        --theme-nav-parent-background-focus-mobile,
+    --nav-background-focus-mobile: var(
+        --theme-nav-background-focus-mobile,
         var(--tae-blue-8)
     );
-    --nav-parent-background-active-mobile: var(
-        --theme-nav-parent-background-active-mobile,
+    --nav-background-active-mobile: var(
+        --theme-nav-background-active-mobile,
         black
     );
     --nav-border-mobile: var(--theme-nav-border-mobile, var(--tae-blue-8));
@@ -209,22 +206,6 @@
     --nav-indicator-mobile: var(
         --theme-nav-indicator-mobile,
         var(--tae-grey-1)
-    );
-    --nav-child-background-mobile: var(
-        --theme-nav-child-background-mobile,
-        var(--tae-blue-8)
-    );
-    --nav-child-background-hover-mobile: var(
-        --theme-nav-child-background-hover-mobile,
-        var(--tae-blue-7)
-    );
-    --nav-child-background-focus-mobile: var(
-        --theme-nav-child-background-focus-mobile,
-        var(--tae-blue-7)
-    );
-    --nav-child-background-active-mobile: var(
-        --theme-nav-child-background-active-mobile,
-        var(--tae-blue-6)
     );
     --nav-parent-background: var(--theme-nav-parent-background, white);
     --nav-parent-background-hover: var(

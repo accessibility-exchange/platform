@@ -35,7 +35,7 @@
     --theme-button-secondary-background: #fff;
     --theme-button-secondary-border: #6c6c6c;
     --theme-button-secondary-color: #6c6c6c;
-    --theme-contact-bar-background: var(--body-background);
+    --theme-help-bar-background: var(--body-background);
     --breadcrumb-chevron: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%236c6c6c"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>');
     --select-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%236c6c6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --select-error-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%236c6c6c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');

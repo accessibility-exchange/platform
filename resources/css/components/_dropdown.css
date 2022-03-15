@@ -17,7 +17,6 @@
     align-items: center;
     display: flex;
     height: var(--size-8);
-    padding-inline-start: var(--size-8);
 }
 
 .dropdown__parent[aria-expanded] .indicator {

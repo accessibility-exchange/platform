@@ -1,13 +1,11 @@
 {
-    "phpcs.executablePath": "vendor/bin/phpcs",
     "cssvar.files": [
-        "./resources/css/abstracts/_variables.scss",
-        "./node_modules/open-props/open-props.min.css",
+        "./resources/css/abstracts/_variables.css",
     ],
     "css.validate": false,
-    "scss.validate": false,
-    "stylelint.validate": ["scss"],
+    "stylelint.validate": ["css"],
     "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-      }
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    }
 }

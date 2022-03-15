@@ -1,7 +1,7 @@
 <!-- Primary Navigation Menu -->
-<nav class="primary" x-data="{ open: true }" aria-label="{{ __('main menu') }}" @click.away="open = false">
-    <button class="button--borderless hidden--lg-n-above" x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false">
-        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span class="visually-hidden--md-n-below">{{ __('Menu') }}</span>
+<nav class="primary flex align:center" x-data="{ 'open': false }" aria-label="{{ __('main menu') }}" @click.away="open = false">
+    <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open" @keyup.escape.window="open = false">
+        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span>{{ __('Menu') }}</span>
     </button>
     <ul role="list">
         @auth
@@ -18,7 +18,7 @@
         </li>
         @endif
         @else
-        <li>
+        <li class="account">
             <x-nav-link :href="localized_route('register')">
                 {{ __('hearth::auth.create_account') }}
             </x-nav-link>
@@ -41,13 +41,13 @@
                 {{ __('Resources and training') }}
             </x-nav-link>
         </li>
-        <li>
+        <li class="account">
             <x-nav-link href="{{ localized_route('users.settings') }}" :active="request()->routeIs(locale() . '.users.settings')">
                 <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
             </x-nav-link>
         </li>
         <!-- Authentication -->
-        <li class="sign-out" x-data="{}">
+        <li x-data>
             <x-nav-link :href="localized_route('logout')" x-on:click.prevent="$refs.form.submit()">
                 {{ __('hearth::auth.sign_out') }}
             </x-nav-link>

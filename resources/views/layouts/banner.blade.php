@@ -1,8 +1,8 @@
 <header role="banner">
     @include('components.skip-link')
-    @include('partials.contact-bar')
+    @include('partials.help-bar')
     <div class="center center:wide">
-        <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+        <div class="nav">
             @include('components.brand')
             <!-- Language Switcher -->
             <nav class="languages" aria-label="{{ __('languages') }}">
@@ -10,9 +10,7 @@
                     <x-hearth-language-switcher />
                 </ul>
             </nav>
+            @include('components.navigation')
         </div>
-    </div>
-    <div class="center center:wide">
-        @include('components.navigation')
     </div>
 </header>
