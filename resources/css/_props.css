@@ -263,6 +263,12 @@
         --theme-expander-border-active,
         var(--tae-blue-6)
     );
+    --footer-background: var(--theme-footer-background, var(--tae-blue-7));
+    --footer-color: var(--theme-footer-color, var(--tae-white));
+    --footer-heading-color: var(
+        --theme-footer-heading-color,
+        var(--tae-grey-2)
+    );
 
     /* Typography */
     --tae-font-family-base: "Open Sans", sans-serif;

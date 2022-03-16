@@ -1,11 +1,11 @@
 footer {
-    background: var(--tae-blue-7);
-    color: var(--tae-white);
+    background: var(--footer-background);
+    color: var(--footer-color);
 }
 
 footer h2,
 footer h3 {
-    color: var(--tae-grey-2);
+    color: var(--footer-heading-color);
 }
 
 footer h2 {
