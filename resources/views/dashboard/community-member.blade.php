@@ -1,4 +1,4 @@
-<div class="columns">
+<div class="center center:wide columns">
     <div class="column stack">
         <div class="box stack">
             <h2>{{ __('Getting started') }}</h2>

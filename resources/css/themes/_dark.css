@@ -87,6 +87,12 @@
     --theme-nav-child-background-focus: var(--tae-graphite-7);
     --theme-nav-child-background-active: var(--tae-graphite-6);
     --theme-nav-current-color: var(--tae-lavender-2);
+    --theme-expander-color: var(--tae-turquoise-1);
+    --theme-expander-border: var(--tae-turquoise-1);
+    --theme-expander-color-focus: var(--tae-turquoise-1);
+    --theme-expander-background-active: var(--tae-graphite-6);
+    --theme-expander-color-active: var(--tae-turquoise-1);
+    --theme-expander-border-active: var(--tae-turquoise-1);
     --select-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23EAEDF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --select-error-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23f6a7a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --checkbox-checkmark: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%232b2e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
@@ -190,6 +196,12 @@
         --theme-nav-child-background-focus: var(--tae-graphite-7);
         --theme-nav-child-background-active: var(--tae-graphite-6);
         --theme-nav-current-color: var(--tae-lavender-2);
+        --theme-expander-color: var(--tae-turquoise-1);
+        --theme-expander-border: var(--tae-turquoise-1);
+        --theme-expander-color-focus: var(--tae-turquoise-1);
+        --theme-expander-background-active: var(--tae-graphite-6);
+        --theme-expander-color-active: var(--tae-turquoise-1);
+        --theme-expander-border-active: var(--tae-turquoise-1);
         --select-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23EAEDF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
         --select-error-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23f6a7a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
         --checkbox-checkmark: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%232b2e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');

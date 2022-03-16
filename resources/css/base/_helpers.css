@@ -1,5 +1,5 @@
 /* This file contains CSS helper classes. */
-.js [x-cloak] {
+[x-cloak] {
     display: none !important;
 }
 

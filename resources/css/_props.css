@@ -245,6 +245,24 @@
         var(--tae-grey-2)
     );
     --nav-current-color: var(--theme-nav-current-color, var(--tae-lavender-3));
+    --expander-color: var(--theme-expander-color, var(--tae-blue-6));
+    --expander-border: var(--theme-expander-border, var(--tae-blue-6));
+    --expander-color-focus: var(
+        --theme-expander-color-focus,
+        var(--tae-blue-7)
+    );
+    --expander-background-active: var(
+        --theme-expander-background-active,
+        var(--tae-grey-2)
+    );
+    --expander-color-active: var(
+        --theme-expander-color-active,
+        var(--tae-blue-7)
+    );
+    --expander-border-active: var(
+        --theme-expander-border-active,
+        var(--tae-blue-6)
+    );
 
     /* Typography */
     --tae-font-family-base: "Open Sans", sans-serif;
