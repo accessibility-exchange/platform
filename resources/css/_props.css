@@ -269,6 +269,16 @@
         --theme-footer-heading-color,
         var(--tae-grey-2)
     );
+    --defined-term-color: var(--theme-defined-term-color, var(--tae-blue-6));
+    --definition-background: var(
+        --theme-definition-background,
+        var(--tae-grey-2)
+    );
+    --definition-color: var(--theme-definition-color, var(--tae-black));
+    --definition-shadow: var(
+        --theme-definition-shadow,
+        0 0 10px rgb(0 0 0 / 15%)
+    );
 
     /* Typography */
     --tae-font-family-base: "Open Sans", sans-serif;

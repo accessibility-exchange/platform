@@ -53,6 +53,7 @@
         "stylelint-use-logical-spec": "^3.2.2"
     },
     "dependencies": {
+        "@popperjs/core": "^2.11.4",
         "alpinejs": "^3.9.0",
         "axios": "^0.26.0",
         "luxon": "^2.3.1",

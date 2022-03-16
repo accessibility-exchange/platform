@@ -1,6 +1,7 @@
 footer {
     background: var(--footer-background);
     color: var(--footer-color);
+    margin-block-start: auto;
 }
 
 footer h2,
