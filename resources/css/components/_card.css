@@ -29,7 +29,8 @@
     box-shadow: var(--card-shadow-hover), var(--card-federally-regulated-organization-shadow);
 }
 
-.card.federally-regulated-organization:focus-within {
+.card.federally-regulated-organization:focus-within,
+.card.federally-regulated-organization:has(a:active) {
     box-shadow: var(--card-federally-regulated-organization-shadow-focus-within);
 }
 
@@ -41,6 +42,20 @@
     box-shadow: var(--card-shadow-hover), var(--card-community-organization-shadow);
 }
 
-.card.community-organization:focus-within {
+.card.community-organization:focus-within,
+.card.community-organization:has(a:active) {
     box-shadow: var(--card-community-organization-shadow-focus-within);
+}
+
+.card.community-member {
+    box-shadow: var(--card-shadow), var(--card-community-member-shadow);
+}
+
+.card.community-member:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-community-member-shadow);
+}
+
+.card.community-member:focus-within,
+.card.community-member:has(a:active) {
+    box-shadow: var(--card-community-member-shadow-focus-within);
 }

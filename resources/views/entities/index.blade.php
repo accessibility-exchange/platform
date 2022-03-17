@@ -8,15 +8,15 @@
 
     <div class="grid">
         @forelse($entities as $entity)
-        <article class="box stack card federally-regulated-organization">
-            <h2 class="h3">
+        <x-card class="federally-regulated-organization">
+            <x-slot name="title">
                 <a href="{{ localized_route('entities.show', $entity) }}">{{ $entity->name }}</a>
-            </h2>
+            </x-slot>
             <p>
                 <strong>{{ __('Federally regulated organization') }}</strong><br />
-                <strong class="weight:semibold">{{__('Sector:') }}</strong> @foreach($entity->sectors as $sector){{ $sector->name }}@if(!$loop->last), @endif @endforeach
+                <strong class="weight:semibold">{{__('Sector') }}:</strong> @foreach($entity->sectors as $sector){{ $sector->name }}@if(!$loop->last), @endif @endforeach
             </p>
-        </article>
+        </x-card>
         @empty
         <p>{{ __('No regulated entities found.') }}</p>
         @endforelse

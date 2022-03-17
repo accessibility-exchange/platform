@@ -16,7 +16,7 @@
     width: auto;
 }
 
-[data-theme] .logo--themeable {
+[data-theme] .logo.logo--themeable {
     display: block;
 }
 
@@ -24,7 +24,7 @@
     display: block;
 }
 
-[data-theme="light"] .logo--themeable {
+[data-theme="light"] .logo.logo--themeable {
     display: none;
 }
 
@@ -33,13 +33,13 @@
         display: block;
     }
 
-    [data-theme="system"] .logo--themeable {
+    [data-theme="system"] .logo.logo--themeable {
         display: none;
     }
 }
 
 @media (prefers-color-scheme: dark) {
-    [data-theme="system"] .logo--themeable {
+    [data-theme="system"] .logo.logo--themeable {
         display: block;
     }
 
