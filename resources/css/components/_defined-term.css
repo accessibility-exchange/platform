@@ -28,7 +28,7 @@
     background: var(--definition-background);
     border-radius: var(--radius-1);
     box-shadow: var(--definition-shadow);
-    color: var(--definitio);
+    color: var(--definition-color);
     display: block;
     font-weight: var(--font-weight-4);
     max-width: var(--size-14);
