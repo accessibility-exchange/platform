@@ -28,12 +28,6 @@
     margin-inline-start: var(--size-3);
 }
 
-.box {
-    border: var(--border-size-2);
-    border-radius: var(--radius-1);
-    padding: var(--size-3);
-}
-
 .visually-hidden {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);

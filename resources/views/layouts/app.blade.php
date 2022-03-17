@@ -15,20 +15,20 @@
 
         <!-- Main Content -->
         <main id="main">
-            <article class="wrapper stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
-                <!-- Flash Messages -->
-                @include('partials.flash-messages')
-
-                <!-- Page Heading -->
-                <header class="stack">
-                    {{ $header }}
-                </header>
-
-                <!-- Page Content -->
-                <div class="content stack">
-                    {{ $slot }}
-                </div>
-            </article>
+            <div class="center">
+                <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+                    <!-- Flash Messages -->
+                    @include('partials.flash-messages')
+                    <!-- Page Heading -->
+                    <header class="stack">
+                        {{ $header }}
+                    </header>
+                    <!-- Page Content -->
+                    <div class="content stack">
+                        {{ $slot }}
+                    </div>
+                </article>
+            </div>
         </main>
 
         @include('layouts.footer')

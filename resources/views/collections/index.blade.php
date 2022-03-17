@@ -19,9 +19,9 @@
     </div>
     <div class="stack">
         <h2>{{ __('Resources based on your role') }}</h2>
-        <div class="cards cards--collections">
+        <div class="stack cards cards--collections">
             @foreach($roleCollections as $collection)
-            <div class="card card--collection stack">
+            <div class="box card card--collection stack">
                 <h3 id="{{ Str::slug($collection->title) }}">{{ $collection->title }}</h3>
                 <p>{{ $collection->description }}</p>
                 <p class="actions"><a class="button" href="{{ localized_route('collections.show', $collection)}}" aria-describedby="{{ Str::slug($collection->title) }}">{{ __('Visit resources') }}</a></p>
@@ -29,9 +29,9 @@
             @endforeach
         </div>
         <h2>{{ __('Resource based on topics') }}</h2>
-        <div class="cards cards--collections">
+        <div class="stack cards cards--collections">
             @foreach($topicCollections as $collection)
-            <div class="card card--collection stack">
+            <div class="box card card--collection stack">
                 <h3 id="{{ Str::slug($collection->title) }}">{{ $collection->title }}</h3>
                 <p>{{ $collection->description }}</p>
                 <p class="actions"><a class="button" href="{{ localized_route('collections.show', $collection)}}" aria-describedby="{{ Str::slug($collection->title) }}">{{ __('Visit resources') }}</a></p>

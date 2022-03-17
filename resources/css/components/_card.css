@@ -1,0 +1,38 @@
+.card {
+    box-shadow: var(--card-shadow);
+    position: relative;
+}
+
+.card a {
+    text-decoration: none;
+}
+
+.card a::before {
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.card a:focus {
+    outline: none;
+}
+
+.card.federally-regulated-organization {
+    box-shadow: var(--card-shadow),
+        var(--card-federally-regulated-organization-shadow);
+}
+
+.card.federally-regulated-organization:hover {
+    box-shadow: var(--card-shadow-hover),
+        var(--card-federally-regulated-organization-shadow);
+}
+
+.card.federally-regulated-organization:focus-within {
+    box-shadow: var(
+        --card-federally-regulated-organization-shadow-focus-within
+    );
+}

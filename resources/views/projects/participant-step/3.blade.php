@@ -1,5 +1,5 @@
 <div class="stack">
-    <div class="box stack">
+    <div class="stack">
         <h3>{{ __('Materials') }}</h3>
         <h4>{{ __('Accessibility plan – :language', ['language' => get_locale_name('en', locale())]) }}</h4>
         <p>{{ __('Description of this document.') }}</p>

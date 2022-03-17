@@ -6,6 +6,6 @@
     padding-inline: var(--gutter, 0);
 }
 
-.center\:wide {
+.center.center\:wide {
     max-inline-size: calc(2 * var(--measure));
 }

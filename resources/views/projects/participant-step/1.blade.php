@@ -1,12 +1,12 @@
 <div class="stack">
-    <div class="box stack">
+    <div class="stack">
         <h3>{{ __('Meeting information') }}</h3>
         <h4>{{ __('Date and time') }}</h4>
         <p>{{ Carbon\Carbon::now()->locale(locale())->isoFormat('LLLL') }}</p>
         <h4>{{ __('Location') }}</h4>
         <p>{{ __('Virtual meeting') }}: <a href="https://zoom.us/1234567">https://zoom.us/1234567</a></p>
     </div>
-    <div class="box stack">
+    <div class="stack">
         <h3>{{ __('Access and accomodations') }}</h3>
         <h4>{{ __('For communication') }}</h4>
         <ul role="list">
@@ -23,7 +23,7 @@
             <li><x-heroicon-o-dots-circle-horizontal width="24" height="24" aria-hidden="true" /> <strong>{{ __('Language interpretation for :language', ['language' => get_locale_name('fr', locale())]) }}</strong> – {{ __('booking in progress') }}</li>
         </ul>
     </div>
-    <div class="box stack">
+    <div class="stack">
         <h3>{{ __('Materials') }}</h3>
         <h4>{{ __('Detailed project fact sheet – :language', ['language' => get_locale_name('en', locale())]) }}</h4>
         <p>{{ __('Description of this document.') }}</p>

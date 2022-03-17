@@ -20,7 +20,7 @@
         @endcan
     </x-slot>
 
-    <div class="box stack">
+    <div class="stack">
         <article class="update stack">
             <h2>{{ __('Update: October 15, 2021') }}</h2>
             <p>{{ __('A brief excerpt from this update.') }}

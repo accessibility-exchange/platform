@@ -1,6 +1,6 @@
 <div class="columns">
     <div class="column stack">
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
             @if(!$currentUser->entity())
             <x-expander level="3">
@@ -29,7 +29,7 @@
         </div>
 
         @if($currentUser->entity())
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('My entity page') }}</h2>
             <p>
                 <a href="{{ localized_route('entities.show', $currentUser->entity()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
@@ -37,11 +37,11 @@
             </p>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif
@@ -50,7 +50,7 @@
 
     <div class="column stack">
         @if($currentUser->entity())
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('My active projects') }}</h2>
             @if(count($currentUser->entity()->projects) > 0)
                 @foreach($currentUser->entity()->projects as $project)
@@ -62,11 +62,11 @@
             @endif
         </div>
         @else
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif

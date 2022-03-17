@@ -1,6 +1,6 @@
 <div class="center center:wide columns">
     <div class="column stack">
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
             @if(!$currentUser->communityMember)
             <x-expander level="3">
@@ -29,7 +29,7 @@
         </div>
 
         @if($currentUser->communityMember)
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('My page') }}</h2>
             <p>
                 <a href="{{ localized_route('community-members.show', ['communityMember' => $currentUser->communityMember]) }}"><strong>{{ __('Visit my page') }}</strong>@if($currentUser->communityMember->checkStatus('draft')) ({{ __('draft') }})@endif</a><br />
@@ -37,11 +37,11 @@
             </p>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif
@@ -49,7 +49,7 @@
 
     <div class="column stack">
         @if($currentUser->communityMember)
-        <div class="box stack">
+        <div class="stack">
             <h2>{{ __('My active projects') }}</h2>
             @if(count($currentUser->communityMember->projects) > 0)
                 @foreach($currentUser->communityMember->projects as $project)
@@ -61,11 +61,11 @@
             @endif
         </div>
         @else
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif

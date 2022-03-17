@@ -12,6 +12,9 @@ body {
 }
 
 main {
-    margin-inline: auto;
-    max-width: var(--measure);
+    padding-block: var(--size-7);
+}
+
+main > .center {
+    --gutter: var(--size-3);
 }
