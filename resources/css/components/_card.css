@@ -22,17 +22,25 @@
 }
 
 .card.federally-regulated-organization {
-    box-shadow: var(--card-shadow),
-        var(--card-federally-regulated-organization-shadow);
+    box-shadow: var(--card-shadow), var(--card-federally-regulated-organization-shadow);
 }
 
 .card.federally-regulated-organization:hover {
-    box-shadow: var(--card-shadow-hover),
-        var(--card-federally-regulated-organization-shadow);
+    box-shadow: var(--card-shadow-hover), var(--card-federally-regulated-organization-shadow);
 }
 
 .card.federally-regulated-organization:focus-within {
-    box-shadow: var(
-        --card-federally-regulated-organization-shadow-focus-within
-    );
+    box-shadow: var(--card-federally-regulated-organization-shadow-focus-within);
+}
+
+.card.community-organization {
+    box-shadow: var(--card-shadow), var(--card-community-organization-shadow);
+}
+
+.card.community-organization:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-community-organization-shadow);
+}
+
+.card.community-organization:focus-within {
+    box-shadow: var(--card-community-organization-shadow-focus-within);
 }
