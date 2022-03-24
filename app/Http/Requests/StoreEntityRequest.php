@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Organization;
+use App\Models\Entity;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateOrganizationRequest extends FormRequest
+class StoreEntityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,8 @@ class CreateOrganizationRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Organization::class),
+                Rule::unique(Entity::class),
+
             ],
             'locality' => ['required', 'string', 'max:255'],
             'region' => [
@@ -49,7 +50,7 @@ class CreateOrganizationRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('validation.organization.name_exists'),
+            'name.unique' => __('A regulated entity with this name already exists.'),
         ];
     }
 }

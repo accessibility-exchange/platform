@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Resource;
+use App\Models\CommunityMember;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateResourceRequest extends FormRequest
+class StoreCommunityMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,15 +27,16 @@ class CreateResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => [
+            'user_id' => [
+                Rule::unique(CommunityMember::class),
+            ],
+            'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Resource::class),
-
+                Rule::unique(CommunityMember::class),
             ],
-            'summary' => 'required|string',
-            'user_id' => 'required',
+            'roles' => 'required|array|in:participant,consultant,connector',
         ];
     }
 
@@ -46,7 +48,9 @@ class CreateResourceRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.unique' => __('validation.custom.resource.title_exists'),
+            'name.unique' => __('A community member page with this name already exists.'),
+            'user_id.unique' => __('You already have a community member page. Would you like to edit it instead?'),
+            'links.*.url' => __('The link must be a valid web address.'),
         ];
     }
 }
