@@ -70,6 +70,7 @@ require __DIR__ . '/defined-terms.php';
 require __DIR__ . '/organizations.php';
 require __DIR__ . '/entities.php';
 require __DIR__ . '/projects.php';
+require __DIR__ . '/engagements.php';
 require __DIR__ . '/resources.php';
 require __DIR__ . '/collections.php';
 require __DIR__ . '/stories.php';

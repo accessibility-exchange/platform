@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateCommunityMemberRequest;
 use App\Http\Requests\DestroyCommunityMemberRequest;
+use App\Http\Requests\StoreCommunityMemberRequest;
 use App\Http\Requests\UpdateCommunityMemberAccessAndAccomodationsRequest;
 use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
@@ -55,10 +55,10 @@ class CommunityMemberController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreateCommunityMemberRequest  $request
+     * @param  \App\Http\Requests\StoreCommunityMemberRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateCommunityMemberRequest $request): RedirectResponse
+    public function store(StoreCommunityMemberRequest $request): RedirectResponse
     {
         $data = $request->validated();
 

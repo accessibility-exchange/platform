@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Project;
+use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateProjectRequest extends FormRequest
+class UpdateEngagementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +14,9 @@ class UpdateProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $project = $this->route('project');
+
+        return $project && $this->user()->can('update', $project);
     }
 
     /**
@@ -25,24 +26,19 @@ class UpdateProjectRequest extends FormRequest
      */
     public function rules()
     {
-        $project = $this->route('project');
+        $engagement = $this->route('engagement');
 
         return [
             'name.*' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Project::class)->ignore($project->id),
+                UniqueTranslationRule::for('engagements')->ignore($engagement->id),
             ],
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
-            'start_date' => 'required|date',
-            'end_date' => 'date|nullable',
-            'goals' => 'string|nullable',
-            'impact' => 'string|nullable',
-            'out_of_scope' => 'string|nullable',
-            'virtual_consultation' => 'boolean',
-            'timeline' => 'string|nullable',
+            'goals.*' => 'string|nullable',
+            'recruitment' => 'string|required|in:automatic,open',
         ];
     }
 
@@ -54,8 +50,8 @@ class UpdateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.*.unique_translation' => __('A project with this name already exists.'),
-            'name.*.required_without' => __('A project name field must be provided in at least one language.'),
+            'name.*.unique_translation' => __('An engagement with this name already exists.'),
+            'name.*.required_without' => __('An engagement name field must be provided in at least one language.'),
         ];
     }
 }

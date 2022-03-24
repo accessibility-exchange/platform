@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\DestroyProjectRequest;
+use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\CommunityMember;
 use App\Models\Entity;
@@ -45,11 +45,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\CreateProjectRequest  $request
+     * @param \App\Http\Requests\StoreProjectRequest  $request
      * @param \App\Models\Entity  $entity
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateProjectRequest $request, Entity $entity): RedirectResponse
+    public function store(StoreProjectRequest $request, Entity $entity): RedirectResponse
     {
         $data = $request->validated();
         $data['start_date'] = Carbon::createFromFormat('Y-m-d', $data['start_date']);

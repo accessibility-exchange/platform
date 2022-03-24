@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\AcceptInvitation;
-use App\Http\Requests\CreateInvitationRequest;
+use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -16,10 +16,10 @@ class InvitationController extends Controller
     /**
      * Create an invitation.
      *
-     * @param  \App\Http\Requests\CreateInvitationRequest  $request
+     * @param  \App\Http\Requests\StoreInvitationRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function create(CreateInvitationRequest $request)
+    public function create(StoreInvitationRequest $request)
     {
         $validated = $request->validated();
 

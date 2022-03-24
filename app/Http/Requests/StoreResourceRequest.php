@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
-use App\Models\User;
+use App\Models\Resource;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateEntityRequest extends FormRequest
+class StoreResourceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +15,7 @@ class CreateEntityRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->id == $this->user_id;
     }
 
     /**
@@ -27,18 +26,15 @@ class CreateEntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'title' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Entity::class),
+                Rule::unique(Resource::class),
 
             ],
-            'locality' => ['required', 'string', 'max:255'],
-            'region' => [
-                'required',
-                Rule::in(get_region_codes()),
-            ],
+            'summary' => 'required|string',
+            'user_id' => 'required',
         ];
     }
 
@@ -50,7 +46,7 @@ class CreateEntityRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('A regulated entity with this name already exists.'),
+            'title.unique' => __('validation.custom.resource.title_exists'),
         ];
     }
 }

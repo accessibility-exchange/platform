@@ -33,6 +33,7 @@
         </section>
 
         <section class="step flow" aria-labelledby="step-{{ $step }}-region">
+            <p><a href="{{ localized_route('engagements.create', $project) }}">{{ __('Add engagement') }}</a></p>
             <h2 id="step-{{ $step }}-region">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
             @isset($steps[$step]['subtitle'])
             <p class="subtitle">{{ $steps[$step]['subtitle'] }}</p>

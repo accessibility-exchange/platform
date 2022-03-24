@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateEntityRequest;
 use App\Http\Requests\DestroyEntityRequest;
+use App\Http\Requests\StoreEntityRequest;
 use App\Http\Requests\UpdateEntityRequest;
 use App\Models\Entity;
 use Illuminate\Http\RedirectResponse;
@@ -39,10 +39,10 @@ class EntityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreateEntityRequest  $request
+     * @param  \App\Http\Requests\StoreEntityRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateEntityRequest $request): RedirectResponse
+    public function store(StoreEntityRequest $request): RedirectResponse
     {
         $entity = Entity::create($request->validated());
 
