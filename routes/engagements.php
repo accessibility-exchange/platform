@@ -24,6 +24,5 @@ Route::multilingual('/projects/{project}/engagements/{engagement}/update', [Enga
     ->name('engagements.update');
 
 Route::multilingual('/projects/{project}/engagements/{engagement}/manage', [EngagementController::class, 'manage'])
-    ->middleware(['auth', 'can:manage,engagement'])
-    ->method('put')
+    ->middleware(['auth', 'can:update,engagement'])
     ->name('engagements.manage');

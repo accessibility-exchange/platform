@@ -28,12 +28,14 @@ class UpdateProjectRequest extends FormRequest
         $project = $this->route('project');
 
         return [
-            'name' => [
+            'name.*' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique(Project::class)->ignore($project->id),
             ],
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
             'start_date' => 'required|date',
             'end_date' => 'date|nullable',
             'goals' => 'string|nullable',
@@ -52,7 +54,8 @@ class UpdateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('A project with this name already exists.'),
+            'name.*.unique_translation' => __('A project with this name already exists.'),
+            'name.*.required_without' => __('A project name field must be provided in at least one language.'),
         ];
     }
 }

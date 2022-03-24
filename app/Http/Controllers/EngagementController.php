@@ -12,16 +12,6 @@ use Illuminate\View\View;
 class EngagementController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param \App\Models\Project  $project
@@ -47,7 +37,7 @@ class EngagementController extends Controller
 
         flash(__('Your engagement has been created.'), 'success');
 
-        return redirect(\localized_route('engagements.show', ['engagement' => $engagement, 'project' => $project]));
+        return redirect(\localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
     }
 
     /**
@@ -65,12 +55,31 @@ class EngagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\Http\Response
      */
-    public function edit(Engagement $engagement)
+    public function edit(Project $project, Engagement $engagement)
     {
-        //
+        return view('engagements.edit', ['engagement' => $engagement, 'project' => $project]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateEngagementRequest  $request
+     * @param \App\Models\Project  $project
+     * @param  \App\Models\Engagement  $engagement
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateEngagementRequest $request, Project $project, Engagement $engagement)
+    {
+        $engagement->fill($request->validated());
+        $engagement->save();
+
+        flash(__('Your engagement has been updated.'), 'success');
+
+        return redirect(\localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
     }
 
     /**
@@ -83,18 +92,6 @@ class EngagementController extends Controller
     public function manage(Project $project, Engagement $engagement)
     {
         return view('engagements.manage', ['engagement' => $engagement, 'project' => $project]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateEngagementRequest  $request
-     * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateEngagementRequest $request, Engagement $engagement)
-    {
-        //
     }
 
     /**

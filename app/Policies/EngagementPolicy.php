@@ -42,7 +42,7 @@ class EngagementPolicy
      */
     public function update(User $user, Engagement $engagement)
     {
-        //
+        return $user->can('update', $engagement->project);
     }
 
     /**
