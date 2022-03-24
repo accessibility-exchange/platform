@@ -18,7 +18,7 @@ class EngagementPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class EngagementPolicy
      */
     public function view(User $user, Engagement $engagement)
     {
-        //
+        return true;
     }
 
     /**

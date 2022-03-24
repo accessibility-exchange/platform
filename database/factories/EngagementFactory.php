@@ -16,6 +16,7 @@ class EngagementFactory extends Factory
     {
         return [
             'name' => ['en' => 'Focus group'],
+            'goals' => ['en' => 'What are we going to do?'],
             'project_id' => Project::factory(),
             'recruitment' => 'automatic',
         ];

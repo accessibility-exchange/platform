@@ -45,4 +45,51 @@ class EngagementTest extends TestCase
 
         $response->assertRedirect($url);
     }
+
+    public function test_users_without_entity_admin_role_cannot_create_engagements()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->get(localized_route('engagements.create', $project));
+        $response->assertForbidden();
+    }
+
+    public function test_users_can_view_engagements()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $engagement = Engagement::factory()->create();
+
+        $response = $this->actingAs($user)->get(localized_route('engagements.show', ['project' => $engagement->project, 'engagement' => $engagement->id]));
+        $response->assertOk();
+    }
+
+    public function test_guests_cannot_view_engagements()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $engagement = Engagement::factory()->create();
+
+        $response = $this->get(localized_route('engagements.show', ['project' => $engagement->project, 'engagement' => $engagement->id]));
+        $response->assertRedirect(localized_route('login'));
+    }
 }
