@@ -149,7 +149,7 @@ class ProjectTest extends TestCase
         $response->assertOk();
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
-            'name' => 'My renamed accessibility project',
+            'name' => ['en' => 'My renamed accessibility project'],
             'start_date' => $project->start_date,
             'end_date' => null,
         ]);

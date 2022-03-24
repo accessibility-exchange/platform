@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateResourceRequest;
 use App\Http\Requests\DestroyResourceRequest;
+use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
 use App\Models\ContentType;
 use App\Models\Format;
@@ -45,10 +45,10 @@ class ResourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreateResourceRequest  $request
+     * @param  \App\Http\Requests\StoreResourceRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateResourceRequest $request)
+    public function store(StoreResourceRequest $request)
     {
         $resource = Resource::create($request->validated());
 

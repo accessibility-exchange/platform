@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateOrganizationRequest;
 use App\Http\Requests\DestroyOrganizationRequest;
+use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
 
@@ -36,10 +36,10 @@ class OrganizationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreateOrganizationRequest  $request
+     * @param  \App\Http\Requests\StoreOrganizationRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateOrganizationRequest $request)
+    public function store(StoreOrganizationRequest $request)
     {
         $organization = Organization::create($request->validated());
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateStoryRequest;
 use App\Http\Requests\DestroyStoryRequest;
+use App\Http\Requests\StoreStoryRequest;
 use App\Http\Requests\UpdateStoryRequest;
 use App\Models\Format;
 use App\Models\Phase;
@@ -43,10 +43,10 @@ class StoryController extends Controller
     /**
      * Store a newly created story in storage.
      *
-     * @param  \App\Http\Requests\CreateStoryRequest  $request
+     * @param  \App\Http\Requests\StoreStoryRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateStoryRequest $request)
+    public function store(StoreStoryRequest $request)
     {
         $story = Story::create($request->validated());
 

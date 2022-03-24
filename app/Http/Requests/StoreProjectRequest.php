@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProjectRequest extends FormRequest
+class StoreProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -47,7 +47,7 @@ class CreateProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.*.unique' => __('A project with this name already exists.'),
+            'name.*.unique_translation' => __('A project with this name already exists.'),
             'name.*.required_without' => __('A project name field must be provided in either English or French.'),
         ];
     }
