@@ -93,15 +93,4 @@ class EngagementController extends Controller
     {
         return view('engagements.manage', ['engagement' => $engagement, 'project' => $project]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Engagement $engagement)
-    {
-        //
-    }
 }

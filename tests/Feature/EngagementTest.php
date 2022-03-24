@@ -92,4 +92,69 @@ class EngagementTest extends TestCase
         $response = $this->get(localized_route('engagements.show', ['project' => $engagement->project, 'engagement' => $engagement->id]));
         $response->assertRedirect(localized_route('login'));
     }
+
+    public function test_users_with_entity_admin_role_can_edit_engagements()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+        $engagement = Engagement::factory()->create([
+            'project_id' => $project->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
+            'name' => ['en' => 'My renamed engagement'],
+            'recruitment' => 'automatic',
+        ]);
+
+        $updated_engagement = Engagement::where('name->en', 'My renamed engagement')->first();
+
+        $response->assertRedirect(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+    }
+
+    public function test_users_without_entity_admin_role_cannot_edit_engagements()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $other_user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+        $engagement = Engagement::factory()->create([
+            'project_id' => $project->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+        $response->assertForbidden();
+
+        $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
+            'name' => ['en' => 'My renamed engagement'],
+        ]);
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+        $response->assertForbidden();
+
+        $response = $this->actingAs($other_user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
+            'name' => ['en' => 'My renamed engagement'],
+        ]);
+        $response->assertForbidden();
+    }
 }
