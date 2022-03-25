@@ -1,6 +1,66 @@
 a {
+    border-radius: var(--radius-1);
     color: var(--link-color);
     font-weight: var(--font-weight-7);
+    position: relative;
+}
+
+a:hover {
+    color: var(--link-color-hover);
+}
+
+a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+a:focus::after {
+    border-radius: var(--radius-1);
+    bottom: calc(-1 * var(--size-1));
+    content: "";
+    display: block;
+    left: calc(-1 * var(--size-1));
+    outline: var(--border-size-2) solid var(--link-outline-focus);
+    position: absolute;
+    right: calc(-1 * var(--size-1));
+    top: calc(-1 * var(--size-1));
+}
+
+a:active {
+    background: var(--link-background-active);
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-background-active);
+    color: var(--link-color-active);
+    text-decoration: none;
+}
+
+a:focus:active::after {
+    display: none;
+}
+
+a:visited {
+    color: var(--link-color-visited);
+}
+
+.dark a {
+    color: var(--link-dark-color);
+}
+
+.dark a:hover {
+    color: var(--link-dark-color-hover);
+}
+
+.dark a:focus::after {
+    outline: var(--border-size-2) solid var(--link-dark-outline-focus);
+}
+
+.dark a:active {
+    background: var(--link-dark-background-active);
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-dark-background-active);
+    color: var(--link-dark-color-active);
+}
+
+.dark a:visited {
+    color: var(--link-dark-color-visited);
 }
 
 a.cta {
@@ -40,4 +100,34 @@ a.cta:active {
     background: var(--cta-background-active);
     border-color: var(--cta-border-active);
     color: var(--cta-color-active);
+}
+
+a.cta:focus:active {
+    outline: none;
+}
+
+.dark a.cta {
+    background: var(--cta-dark-background);
+    border: var(--border-size-2) solid var(--cta-dark-border);
+    color: var(--cta-dark-color);
+}
+
+.dark a.cta:hover {
+    background: var(--cta-dark-background-hover);
+    border-color: var(--cta-dark-border-hover);
+    color: var(--cta-dark-color-hover);
+}
+
+.dark a.cta:focus {
+    outline: var(--cta-dark-outline) solid calc(var(--size-1) / 2);
+}
+
+.dark a.cta:active {
+    background: var(--cta-dark-background-active);
+    border-color: var(--cta-dark-border-active);
+    color: var(--cta-dark-color-active);
+}
+
+.dark a.cta:focus:active {
+    outline: none;
 }

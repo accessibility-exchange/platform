@@ -60,32 +60,6 @@
     padding: var(--size-3);
 }
 
-.help-bar .center :last-child button {
-    --button-primary-background: var(--tae-grey-2);
-    --button-primary-border: var(--tae-grey-2);
-    --button-primary-color: var(--tae-blue-7);
-    --button-primary-outline: var(--tae-grey-2);
-    --button-primary-background-hover: var(--tae-grey-1);
-    --button-primary-border-hover: var(--tae-grey-1);
-    --button-primary-color-hover: var(--tae-blue-8);
-    --button-primary-color-active: var(--tae-blue-7);
-    --button-primary-background-active: white;
-    --button-primary-border-active: white;
-}
-
-.help-bar .cta {
-    --cta-background: var(--tae-grey-2);
-    --cta-border: var(--tae-grey-2);
-    --cta-color: var(--tae-blue-7);
-    --cta-outline: var(--tae-grey-2);
-    --cta-background-hover: var(--tae-grey-1);
-    --cta-border-hover: var(--tae-grey-1);
-    --cta-color-hover: var(--tae-blue-8);
-    --cta-color-active: var(--tae-blue-7);
-    --cta-background-active: white;
-    --cta-border-active: white;
-}
-
 @media (min-width: 60rem) {
     .help-bar {
         height: var(--size-9);
