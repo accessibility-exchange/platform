@@ -1,8 +1,8 @@
 files:
-  - source: /resources/lang/en/*.php
-    translation: /resources/lang/%two_letters_code%/%original_file_name%
-  - source: /resources/lang/en.json
-    translation: /resources/%two_letters_code%.json
+  - source: /lang/en/*.php
+    translation: /lang/%two_letters_code%/%original_file_name%
+  - source: /lang/en.json
+    translation: /%two_letters_code%.json
 pull_request_title: 'chore(l10n): update translations'
 pull_request_labels:
   - localization
