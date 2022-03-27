@@ -13,9 +13,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        $entity = $this->route('entity');
-
-        return $entity && $this->user()->can('update', $entity);
+        return $this->user()->can('update', $this->entity);
     }
 
     /**

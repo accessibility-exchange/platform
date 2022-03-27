@@ -12,7 +12,7 @@ class Impact extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name',
@@ -21,7 +21,7 @@ class Impact extends Model
     /**
      * The attributes that which should be cast to other types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'name' => 'array',

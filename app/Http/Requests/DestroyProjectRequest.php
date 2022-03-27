@@ -14,9 +14,7 @@ class DestroyProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        $project = $this->route('project');
-
-        return $project && $this->user()->can('delete', $project);
+        return $this->user()->can('delete', $this->project);
     }
 
     /**

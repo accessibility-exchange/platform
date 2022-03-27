@@ -14,9 +14,7 @@ class DestroyOrganizationRequest extends FormRequest
      */
     public function authorize()
     {
-        $organization = $this->route('organization');
-
-        return $organization && $this->user()->can('delete', $organization);
+        return $this->user()->can('delete', $this->organization);
     }
 
     /**

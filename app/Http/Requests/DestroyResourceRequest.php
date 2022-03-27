@@ -14,9 +14,7 @@ class DestroyResourceRequest extends FormRequest
      */
     public function authorize()
     {
-        $resource = $this->route('resource');
-
-        return $resource && $this->user()->can('delete', $resource);
+        return $this->user()->can('delete', $this->resource);
     }
 
     /**

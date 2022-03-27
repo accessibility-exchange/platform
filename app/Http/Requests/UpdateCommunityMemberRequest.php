@@ -16,9 +16,7 @@ class UpdateCommunityMemberRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('update', $communityMember);
+        return $this->user()->can('update', $this->communityMember);
     }
 
     /**
@@ -28,8 +26,6 @@ class UpdateCommunityMemberRequest extends FormRequest
      */
     public function rules()
     {
-        $communityMember = $this->route('communityMember');
-
         return [
             'user_id' => [
                 Rule::unique(CommunityMember::class),
@@ -38,7 +34,7 @@ class UpdateCommunityMemberRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(CommunityMember::class)->ignore($communityMember->id),
+                Rule::unique(CommunityMember::class)->ignore($this->communityMember->id),
 
             ],
             'locality' => 'nullable|string|max:255',

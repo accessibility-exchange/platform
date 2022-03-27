@@ -26,7 +26,7 @@ class Project extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name',
@@ -75,7 +75,7 @@ class Project extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'name' => 'array',
@@ -559,6 +559,7 @@ class Project extends Model
             4 => __('Holding consultations'),
             5 => __('Writing report'),
             6 => __('Completed'),
+            default => __('Publishing project')
         };
     }
 
@@ -750,7 +751,7 @@ class Project extends Model
      */
     public function absentLivedExperiences(): array
     {
-        $livedExperiences = LivedExperience::all()->pluck('name')->toArray();
+        $livedExperiences = LivedExperience::pluck('name')->toArray();
 
         return array_diff($livedExperiences, $this->presentLivedExperiences());
     }
@@ -772,7 +773,7 @@ class Project extends Model
      */
     public function absentCommunities(): array
     {
-        $communities = Community::all()->pluck('name')->toArray();
+        $communities = Community::pluck('name')->toArray();
 
         return array_diff($communities, $this->presentCommunities());
     }

@@ -52,6 +52,10 @@ class CreateNewUser implements CreatesNewUsers
 
         Cookie::queue('locale', \locale());
 
+        session()->forget('name');
+        session()->forget('email');
+        session()->forget('context');
+
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
@@ -59,9 +63,5 @@ class CreateNewUser implements CreatesNewUsers
             'context' => $input['context'],
             'locale' => $input['locale'],
         ]);
-
-        session()->forget('name');
-        session()->forget('email');
-        session()->forget('context');
     }
 }

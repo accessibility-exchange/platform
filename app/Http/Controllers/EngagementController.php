@@ -27,7 +27,7 @@ class EngagementController extends Controller
      *
      * @param  \App\Http\Requests\StoreEngagementRequest  $request
      * @param \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreEngagementRequest $request, Project $project): RedirectResponse
     {
@@ -45,7 +45,7 @@ class EngagementController extends Controller
      *
      * @param \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Project $project, Engagement $engagement)
     {
@@ -57,7 +57,7 @@ class EngagementController extends Controller
      *
      * @param \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Project $project, Engagement $engagement)
     {
@@ -70,7 +70,7 @@ class EngagementController extends Controller
      * @param  \App\Http\Requests\UpdateEngagementRequest  $request
      * @param \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateEngagementRequest $request, Project $project, Engagement $engagement)
     {
@@ -87,7 +87,7 @@ class EngagementController extends Controller
      *
      * @param \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function manage(Project $project, Engagement $engagement)
     {
