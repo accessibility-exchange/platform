@@ -4,15 +4,15 @@
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
         "lint:js": "eslint *.js resources/js/**/*.js",
         "lint:sass": "stylelint resources/css/**/*.scss",
         "lint": "run-s lint:*",
-        "postinstall": "husky install"
+        "postinstall": "husky install && npm run dev",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "watch": "mix watch"
     },
     "lint-staged": {
         "*.scss": [
@@ -39,17 +39,17 @@
         "lint-staged": "^12.1.2",
         "npm-run-all": "^4.1.5",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.43.5",
-        "sass-loader": "^12.3.0",
+        "sass": "^1.35",
+        "sass-loader": "^12.1",
         "stylelint": "^14.1.0",
         "stylelint-config-standard-scss": "^3.0.0",
         "stylelint-order": "^5.0.0",
         "stylelint-use-logical-spec": "^3.2.2"
     },
     "dependencies": {
-        "@fluid-project/looseleaf": "^1.6.1",
-        "alpinejs": "^3.9.0",
-        "axios": "^0.26.0",
-        "luxon": "2.3.1"
+        "@fluid-project/looseleaf": "^1.6",
+        "alpinejs": "^3.9",
+        "axios": "^0.26",
+        "luxon": "^2.3"
     }
 }

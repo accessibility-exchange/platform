@@ -28,7 +28,7 @@
             <x-hearth-radio-buttons name="recruitment" :options="[
                 'automatic' => __('With the Accessibility Exchange’s automatic matching system'),
                 'open' => __('With an open call for participants'),
-            ]" :selected="old('recruitment', session('recruitment')) ?? false" hinted />
+            ]" :checked="old('recruitment', session('recruitment')) ?? false" hinted />
         </fieldset>
 
         <x-hearth-button>{{ __('Create engagement') }}</x-hearth-button>

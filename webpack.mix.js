@@ -14,7 +14,6 @@ if (mix.inProduction()) {
 }
 
 mix.browserSync({
-    port: 8080,
     proxy: "localhost",
     open: false
 });

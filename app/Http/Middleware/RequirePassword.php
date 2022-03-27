@@ -17,9 +17,9 @@ class RequirePassword extends RequirePasswordMiddleware
      * @param  string|null  $redirectToRoute
      * @return mixed
      */
-    public function handle($request, Closure $next, $redirectToRoute = null)
+    public function handle($request, Closure $next, $redirectToRoute = null, $passwordTimeoutSeconds = null)
     {
-        if ($this->shouldConfirmPassword($request)) {
+        if ($this->shouldConfirmPassword($request, $passwordTimeoutSeconds)) {
             if ($request->expectsJson()) {
                 return $this->responseFactory->json([
                     'message' => 'Password confirmation required.',
