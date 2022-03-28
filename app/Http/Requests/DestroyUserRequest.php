@@ -50,8 +50,22 @@ class DestroyUserRequest extends FormRequest
                         $validator->errors()->add(
                             'organizations',
                             __(
-                                'organization.error_new_administrator_required_before_user_deletion',
+                                'You must assign a new administrator to :organization before deleting your account.',
                                 ['organization' => '<a href="' . localized_route('organizations.edit', $organization) . '">' . $organization->name . '</a>'],
+                            )
+                        );
+                    }
+                }
+            }
+
+            if (count($this->user()->entities) > 0) {
+                foreach ($this->user()->entities as $entity) {
+                    if ($entity->administrators()->count() === 1 && $this->user()->isAdministratorOf($entity)) {
+                        $validator->errors()->add(
+                            'entities',
+                            __(
+                                'You must assign a new administrator to :entity before deleting your account.',
+                                ['entity' => '<a href="' . localized_route('entities.edit', $entity) . '">' . $entity->name . '</a>'],
                             )
                         );
                     }
