@@ -23,7 +23,7 @@
     @if(request()->get('step'))
         @include('auth.register.steps.' . request()->get('step'))
     @else
-        @include('auth.register.steps.0')
+        @include('auth.register.steps.1')
     @endif
 
     <p>
