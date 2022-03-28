@@ -10,20 +10,9 @@ a:hover {
 }
 
 a:focus {
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-outline-focus);
     outline: none;
     text-decoration: none;
-}
-
-a:focus::after {
-    border-radius: var(--radius-1);
-    bottom: calc(-1 * var(--size-1));
-    content: "";
-    display: block;
-    left: calc(-1 * var(--size-1));
-    outline: var(--border-size-2) solid var(--link-outline-focus);
-    position: absolute;
-    right: calc(-1 * var(--size-1));
-    top: calc(-1 * var(--size-1));
 }
 
 a:active {
@@ -31,10 +20,6 @@ a:active {
     box-shadow: 0 0 0 var(--border-size-2) var(--link-background-active);
     color: var(--link-color-active);
     text-decoration: none;
-}
-
-a:focus:active::after {
-    display: none;
 }
 
 a:visited {
@@ -49,8 +34,9 @@ a:visited {
     color: var(--link-dark-color-hover);
 }
 
-.dark a:focus::after {
-    outline: var(--border-size-2) solid var(--link-dark-outline-focus);
+.dark a:focus {
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-dark-outline-focus);
+    outline: none;
 }
 
 .dark a:active {

@@ -134,6 +134,11 @@
         --theme-body-background: var(--tae-graphite-8);
         --theme-body-color: var(--tae-grey-2);
         --theme-link-color: var(--tae-turquoise-1);
+        --theme-link-color-hover: var(--tae-turquoise-2);
+        --theme-link-color-visited: var(--tae-turquoise-2);
+        --theme-link-outline-focus: var(--tae-turquoise-1);
+        --theme-link-color-active: var(--tae-turquoise-1);
+        --theme-link-background-active: var(--tae-graphite-6);
         --theme-cta-background: var(--tae-grey-2);
         --theme-cta-border: var(--tae-grey-2);
         --theme-cta-color: var(--tae-blue-7);
