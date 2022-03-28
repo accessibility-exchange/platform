@@ -1,16 +1,16 @@
-<div class="alert alert--{{ $type }} flow" role="alert">
+<div class="alert alert--{{ $type }} stack">
     <p class="title">@switch($type)
         @case('error')
-            <x-heroicon-s-exclamation-circle class="icon" />
+            <x-heroicon-o-x-circle />
             @break
         @case('warning')
-            <x-heroicon-s-exclamation class="icon" />
+            <x-heroicon-o-exclamation-circle />
             @break
         @case('success')
-            <x-heroicon-s-check-circle class="icon" />
+            <x-heroicon-o-check-circle />
             @break
         @default
-        <x-heroicon-s-information-circle class="icon" />
+            <x-heroicon-o-information-circle />
     @endswitch{{ $title }}</p>
     {{ $slot }}
 </div>

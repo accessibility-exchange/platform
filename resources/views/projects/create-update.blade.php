@@ -15,7 +15,7 @@
             <ol role="list">
                 @for ($i = 1; $i < 6; $i++)
                 <li>@if($project->currentEntityStep() > $i)
-                    <x-heroicon-s-check-circle class="icon" width="24" height="24" />
+                    <x-heroicon-s-check-circle width="24" height="24" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('completed') }}</span>
                     @elseif($project->currentEntityStep() === $i)
                     <x-progress-icon :started="true" progress="0" />
@@ -32,7 +32,7 @@
             </ol>
         </section>
 
-        <section class="step flow" aria-labelledby="step">
+        <section class="step stack" aria-labelledby="step">
             <h2 id="step">{{  __('Share a project update') }}</h2>
             <p>{{ __('Share a project update to share with your consulting team on the progress of your implementation.') }}</p>
             <p>{{ __('This is optional, but it is great at building trust with project participants, and increases the likelihood that they’ll come back for future consultations.') }}</p>

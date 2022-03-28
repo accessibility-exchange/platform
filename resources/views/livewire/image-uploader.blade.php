@@ -1,4 +1,4 @@
-<div class="flow">
+<div class="stack">
     @if($image instanceof \Spatie\MediaLibrary\MediaCollections\Models\Media)
     <img src="{{ $image->getUrl('thumb') }}" @if($alt) alt="{{ $alt }}" @endif />
     <button type="button" wire:click.prevent="remove">{{ __('Remove image') }}</button>

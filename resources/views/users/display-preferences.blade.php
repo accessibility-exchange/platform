@@ -1,7 +1,10 @@
 <x-app-layout>
     <x-slot name="title">{{ __('Display preferences') }}</x-slot>
     <x-slot name="header">
-        <p class="breadcrumb"><x-heroicon-o-chevron-left width="24" height="24" /><a href="{{ localized_route('users.settings') }}">{{ __('Settings') }}</a></p>
+        <ol class="breadcrumbs" role="list">
+            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('users.settings') }}">{{ __('Settings') }}</a></li>
+        </ol>
         <h1>
             {{ __('Display preferences') }}
         </h1>
@@ -10,7 +13,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('users.update_display_preferences') }}" method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('users.update_display_preferences') }}" method="POST" novalidate>
         @csrf
 
         @method('PUT')

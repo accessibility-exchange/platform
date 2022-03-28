@@ -1,11 +1,11 @@
 <div class="columns">
-    <div class="column flow">
-        <div class="box flow">
+    <div class="column stack">
+        <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
             @if(!$currentUser->entity())
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your entity page') }}</x-slot>
-                <div class="flow">
+                <div class="stack">
                     <p>{{ __('Share more about your organization so that community members can get to know you.') }}</p>
                     <p><a class="button" href="{{ localized_route('entities.create') }}">{{ __('Create your page') }}</a></p>
                 </div>
@@ -13,7 +13,7 @@
             @else
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
-                <div class="flow">
+                <div class="stack">
                     <p>{{ __('Create a new project page so that community members can begin to express their interest in working with you.') }}</p>
                     <p><a class="button" href="{{ localized_route('projects.create', $currentUser->entity()) }}">{{ __('Create project page') }}</a></p>
                 </div>
@@ -21,7 +21,7 @@
             @endif
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Learn about engaging the disability community') }}</x-slot>
-                <div class="flow">
+                <div class="stack">
                     <p>{{ __('Browse through our resources and learn more.') }}</p>
                     <p><a class="button" href="{{ localized_route('collections.index') }}">{{ __('Explore the resource hub') }}</a></p>
                 </div>
@@ -29,7 +29,7 @@
         </div>
 
         @if($currentUser->entity())
-        <div class="box flow">
+        <div class="stack">
             <h2>{{ __('My entity page') }}</h2>
             <p>
                 <a href="{{ localized_route('entities.show', $currentUser->entity()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
@@ -37,20 +37,20 @@
             </p>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif
 
     </div>
 
-    <div class="column flow">
+    <div class="column stack">
         @if($currentUser->entity())
-        <div class="box flow">
+        <div class="stack">
             <h2>{{ __('My active projects') }}</h2>
             @if(count($currentUser->entity()->projects) > 0)
                 @foreach($currentUser->entity()->projects as $project)
@@ -62,11 +62,11 @@
             @endif
         </div>
         @else
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
         </div>
 
-        <div class="box">
+        <div class="stack">
             <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
         </div>
         @endif

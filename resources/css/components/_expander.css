@@ -1,0 +1,75 @@
+.expander {
+    position: relative;
+}
+
+.expander .title {
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-4);
+}
+
+.expander button {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    color: var(--expander-color);
+    display: flex;
+    font-size: inherit;
+    font-weight: var(--font-weight-6);
+    height: var(--size-9);
+    justify-content: space-between;
+    margin-inline-start: calc(-1 * var(--size-2));
+    padding: 0 var(--size-2);
+    position: relative;
+    text-align: start;
+    width: calc(100% + 2 * var(--size-2));
+}
+
+.expander button::before {
+    border-block-start: var(--border-size-1) solid var(--expander-border);
+    content: "";
+    display: block;
+    left: var(--size-2);
+    position: absolute;
+    top: 0;
+    width: calc(100% - 2 * var(--size-2));
+}
+
+.expander button:hover::before {
+    border-block-start-width: var(border-size-2);
+}
+
+.expander button:focus {
+    border-block-start-color: transparent;
+    color: var(--expander-color-focus);
+    outline: var(--border-size-2) solid var(--expander-color-focus);
+    outline-offset: 0;
+}
+
+.expander button:focus::before {
+    border-block-start-color: transparent;
+}
+
+.expander button:active {
+    background-color: var(--expander-background-active);
+    color: var(--expander-color-active);
+}
+
+.expander button:focus:active {
+    outline: none;
+}
+
+.expander button:active::before {
+    border-block-start: var(--border-size-2) solid var(--expander-border-active);
+}
+
+.expander button svg {
+    width: 1.5em;
+}
+
+.expander button .indicator {
+    transition: transform 0.2s ease-in-out;
+}
+
+.expander button[aria-expanded="true"] .indicator {
+    transform: rotate(-180deg);
+}

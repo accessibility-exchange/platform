@@ -1,7 +1,7 @@
-<div class="flow">
-    <ul role="list" class="flow">
+<div class="stack">
+    <ul role="list" class="stack">
         @foreach($experiences as $i => $experience)
-        <li class="flow">
+        <li class="stack">
             <div class="field @error("work_and_volunteer_experiences.{$i}.title") field--error @enderror">
                 <x-hearth-label :for="'work_and_volunteer_experiences_' . $i . '_title'" :value="__('Title of role')" />
                 <x-hearth-input :id="'work_and_volunteer_experiences_' . $i . '_title'" :name="'work_and_volunteer_experiences[' . $i . '][title]'" :value="$experience['title']" />

@@ -1,0 +1,39 @@
+/* This file contains CSS helper classes. */
+[x-cloak] {
+    display: none !important;
+}
+
+[role="list"] {
+    padding-inline-start: 0;
+}
+
+@media (max-width: 1023px) {
+    .hidden--lg-n-below {
+        display: none !important;
+    }
+}
+@media (min-width: 1024px) {
+    .hidden--lg-n-above {
+        display: none !important;
+    }
+}
+
+.float-left {
+    float: left;
+    margin-inline-end: var(--size-3);
+}
+
+.float-right {
+    float: right;
+    margin-inline-start: var(--size-3);
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}

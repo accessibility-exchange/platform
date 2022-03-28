@@ -1,0 +1,91 @@
+.help-bar {
+    background: var(--theme-help-bar-background, var(--help-bar-background));
+    border-block-end: var(--border-size-1) dashed var(--help-bar-border);
+    color: var(--help-bar-color);
+    height: var(--size-9);
+}
+
+.help-bar .center {
+    --gutter: var(--size-3);
+
+    align-items: center;
+    display: flex;
+    height: var(--size-9);
+    justify-content: space-between;
+}
+
+.help-bar a {
+    color: var(--help-bar-color);
+    font-weight: var(--font-weight-4);
+}
+
+.help-bar [aria-expanded] {
+    --button-borderless-outline: var(--tae-grey-2);
+    --button-borderless-color-hover: var(--tae-grey-2);
+    --button-borderless-background-hover: black;
+    --button-borderless-color-focus: var(--tae-grey-2);
+    --button-borderless-color-active: var(--tae-grey-1);
+}
+
+.help-bar [aria-expanded] .indicator {
+    transition: transform 0.2s ease-in-out;
+}
+
+.help-bar [aria-expanded="true"] .indicator {
+    transform: rotate(-180deg);
+}
+
+.help-bar .responsive-switcher {
+    --space: 0;
+
+    background: var(--theme-help-bar-background, var(--help-bar-background));
+    display: none;
+    left: 0;
+    position: absolute;
+    top: var(--size-9);
+    width: 100vw;
+}
+
+.help-bar [aria-expanded="true"] + .responsive-switcher {
+    display: flex;
+}
+
+.help-bar .responsive-switcher div {
+    align-items: center;
+    border-block-start: var(--border-size-1) solid white;
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--size-9);
+    padding: var(--size-3);
+}
+
+@media (min-width: 60rem) {
+    .help-bar {
+        height: var(--size-9);
+    }
+
+    .help-bar [aria-expanded] {
+        display: none;
+    }
+
+    .help-bar .responsive-switcher {
+        --space: var(--size-7);
+
+        display: flex;
+        left: 0;
+        position: relative;
+        top: 0;
+        width: auto;
+    }
+
+    .help-bar .responsive-switcher div {
+        border-block-start: 0;
+        padding: 0;
+    }
+
+    .help-bar .exit {
+        margin-block-start: 0;
+        margin-inline-start: auto;
+    }
+}

@@ -20,13 +20,13 @@
         @endcan
     </x-slot>
 
-    <div class="box flow">
-        <article class="update flow">
+    <div class="stack">
+        <article class="update stack">
             <h2>{{ __('Update: October 15, 2021') }}</h2>
             <p>{{ __('A brief excerpt from this update.') }}
                 <p><a href="#">{{  __('Read more') }} <span class="visually-hidden">– {{ __('Update: October 15, 2021') }}</span></a></p>
         </article>
-        <article class="update flow">
+        <article class="update stack">
             <h2>{{ __('Update: November 1, 2021') }}</h2>
             <p>{{ __('A brief excerpt from this update.') }}
                 <p><a href="#">{{  __('Read more') }} <span class="visually-hidden">– {{ __('Update: November 1, 2021') }}</span></a></p>

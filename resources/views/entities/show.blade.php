@@ -18,7 +18,7 @@
         </nav>
 
         @if(request()->routeIs(locale() . '.entities.show'))
-        <div class="flow" id="about">
+        <div class="stack" id="about">
             <h2>{{ __('About') }}</h2>
             @can('update', $entity)
             <p><a class="button" href="{{ localized_route('entities.edit', $entity) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a></p>
@@ -27,7 +27,7 @@
             @include('entities.boilerplate.about', ['level' => 3])
         </div>
         @elseif(request()->routeIs(locale() . '.entities.show-accessibility-and-inclusion'))
-        <div class="flow" id="accessibility-and-inclusion">
+        <div class="stack" id="accessibility-and-inclusion">
             <h2>{{ __('Accessibility and inclusion') }}</h2>
             @can('update', $entity)
             <p><a class="button" href="{{ localized_route('entities.edit', $entity) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Accessibility and inclusion') . '</span>']) !!}</a></p>
@@ -36,13 +36,13 @@
             @include('entities.boilerplate.accessibility-and-inclusion', ['level' => 3])
         </div>
         @elseif(request()->routeIs(locale() . '.entities.show-projects'))
-        <div class="flow" id="projects">
+        <div class="stack" id="projects">
             <h2>{{ __('Projects') }}</h2>
             @can('update', $entity)
                 <p><a class="button" href="{{ localized_route('projects.create', $entity) }}">{{ __('Create a project') }}</a></p>
             @endcan
 
-            <div class="flow">
+            <div class="stack">
                 <h3>{{  __('Current projects') }}</h3>
                 @forelse ($entity->currentProjects as $project)
                 <x-project-card :project="$project" :level="4" :showEntity="false" />

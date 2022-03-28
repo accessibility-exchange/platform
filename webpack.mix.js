@@ -1,11 +1,12 @@
 const mix = require("laravel-mix");
+const openProps = require("open-props");
+const postcssEasyImport = require("postcss-easy-import");
+const postcssJitProps = require("postcss-jit-props");
 require("laravel-mix-sri");
-
-mix.copyDirectory("resources/fonts", "public/fonts");
 
 mix.js("resources/js/app.js", "public/js").extract();
 
-mix.sass("resources/css/app.scss", "public/css");
+mix.css("resources/css/app.css", "public/css");
 
 mix.generateIntegrityHash();
 
@@ -19,6 +20,10 @@ mix.browserSync({
 });
 
 mix.options({
-    processCssUrls: false
+    processCssUrls: false,
+    postCss: [
+        postcssEasyImport(),
+        postcssJitProps(openProps)
+    ]
 });
 

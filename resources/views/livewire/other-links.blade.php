@@ -1,7 +1,7 @@
-<div class="flow">
-    <ul role="list" class="flow">
+<div class="stack">
+    <ul role="list" class="stack">
         @foreach($links as $i => $link)
-        <li class="flow">
+        <li class="stack">
             <div class="field @error("other_links.{$i}.title") field--error @enderror">
                 <x-hearth-label :for="'other_links_title_' . $i" :value="__('Website title')" />
                 <x-hearth-input :id="'other_links_title_' . $i" :name="'other_links[' . $i . '][title]'" :value="$link['title']" />

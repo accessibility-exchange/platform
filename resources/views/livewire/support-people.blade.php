@@ -1,7 +1,7 @@
-<div class="flow">
-    <ul role="list" class="flow">
+<div class="stack">
+    <ul role="list" class="stack">
         @foreach($people as $i => $person)
-        <li class="flow">
+        <li class="stack">
             <div class="field @error("support_people.{$i}.name") field-error @enderror">
                 <x-hearth-label :for="'support_people_' . $i . '_name'" :value="__('Contact name')" />
                 <x-hearth-hint :for="'support_people_' . $i . '_name'">{{ __('This does not have to be their legal name.') }}</x-hearth-hint>

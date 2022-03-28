@@ -1,0 +1,15 @@
+.field__privacy {
+    background-color: var(--ll-accent-color);
+    border-radius: var(--ll-border-radius);
+    color: var(--ll-background-color);
+    margin-block: 1em;
+    padding: var(--step-0);
+}
+
+.field__privacy--private {
+    background-color: var(--ll-text-color-error);
+}
+
+.field__privacy--public {
+    background-color: var(--ll-text-color-success);
+}

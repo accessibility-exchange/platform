@@ -1,6 +1,6 @@
 @if(count($project->reviews) > 0)
 <x-heading :level="$level">{{ __('Overall score') }}</x-heading>
-<div class="scores flow">
+<div class="scores stack">
     <div class="scores__score">
         <span class="score__attribute">{{ __('Met access needs') }}</span>
         <span class="score__value"><x-dots class="score__indicator" :value="$project->averageRatingFor('met_access_needs')" /> {{ $project->averageRatingFor('met_access_needs') }}/5</span>

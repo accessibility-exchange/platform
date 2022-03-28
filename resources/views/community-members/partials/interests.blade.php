@@ -11,7 +11,7 @@
 <x-heading :level="$level">{{ __('Types of regulated entities that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
 <ul role="list" class="tags">
     @foreach($communityMember->sectors as $sector)
-    <li>{{ $sector->name }}</li>
+    <li class="tag">{{ $sector->name }}</li>
     @endforeach
 </ul>
 @endif
@@ -19,12 +19,12 @@
 <x-heading :level="$level">{{ __('Areas within a regulated entity that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
 <ul role="list" class="tags">
     @foreach($communityMember->impacts as $impact)
-    <li>{{ $impact->name }}</li>
+    <li class="tag">{{ $impact->name }}</li>
     @endforeach
 </ul>
 @endif
 
 @if($communityMember->areas_of_interest)
 <x-heading :level="$level">{{ __('Other areas of interest') }}</x-heading>
-<x-markdown class="flow">{{ $communityMember->areas_of_interest }}</x-markdown>
+<x-markdown class="stack">{{ $communityMember->areas_of_interest }}</x-markdown>
 @endif

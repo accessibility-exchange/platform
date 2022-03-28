@@ -6,7 +6,7 @@
 <x-heading :level="$level">{{ __('Lived experience') }}</x-heading>
 <ul role="list" class="tags">
     @foreach($communityMember->livedExperiences as $livedExperience)
-    <li>{{ $livedExperience->name }}</li>
+    <li class="tag">{{ $livedExperience->name }}</li>
     @endforeach
 </ul>
 @endif

@@ -1,14 +1,6 @@
 {
-    "/js/app.js": "/js/app.js?id=68d436658d8f38cc03d6",
-    "/js/manifest.js": "/js/manifest.js?id=fb3b55931b28f8ad90cb",
-    "/css/app.css": "/css/app.css?id=47526c8d7d9ea6e95651",
-    "/js/vendor.js": "/js/vendor.js?id=a28df4ad2534cf640147",
-    "/fonts/atkinson-hyperlegible-bold.woff": "/fonts/atkinson-hyperlegible-bold.woff?id=7949ba2c4a03d3a76eef",
-    "/fonts/atkinson-hyperlegible-bold.woff2": "/fonts/atkinson-hyperlegible-bold.woff2?id=83fbaf49c81f05c146c1",
-    "/fonts/atkinson-hyperlegible-bolditalic.woff": "/fonts/atkinson-hyperlegible-bolditalic.woff?id=fd40aa8ee415de3dbe4f",
-    "/fonts/atkinson-hyperlegible-bolditalic.woff2": "/fonts/atkinson-hyperlegible-bolditalic.woff2?id=02e3b33432a8f3e07938",
-    "/fonts/atkinson-hyperlegible-italic.woff": "/fonts/atkinson-hyperlegible-italic.woff?id=b4b69cd636335c03ad03",
-    "/fonts/atkinson-hyperlegible-italic.woff2": "/fonts/atkinson-hyperlegible-italic.woff2?id=8cd4a4efe2f3da8ee9b0",
-    "/fonts/atkinson-hyperlegible-regular.woff": "/fonts/atkinson-hyperlegible-regular.woff?id=2d9ac1921fce2a7ad25c",
-    "/fonts/atkinson-hyperlegible-regular.woff2": "/fonts/atkinson-hyperlegible-regular.woff2?id=a8c35e3a66c3cd09cc88"
+    "/js/app.js": "/js/app.js?id=61d460095759bec5336ef51695bb6b28",
+    "/js/manifest.js": "/js/manifest.js?id=17ec8f60b932b6a2b94af9ea0041c965",
+    "/css/app.css": "/css/app.css?id=53db283b8c763a232882ba0309c4e7fd",
+    "/js/vendor.js": "/js/vendor.js?id=2401c12b7dd79e80e4ff91af1e1dc380"
 }

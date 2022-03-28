@@ -1,4 +1,4 @@
-<article class="card card--community-member flow">
+<article class="box card card--community-member stack">
     <header>
         <x-heading :level="$level"><a href="{{ localized_route('community-members.show', $communityMember) }}">{{ $communityMember->name }}</a></x-heading>
         <p><strong>{{ __('Individual community member') }}</strong></p>

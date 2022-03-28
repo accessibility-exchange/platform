@@ -15,7 +15,7 @@
             <ol role="list">
                 @for ($i = 1; $i < 6; $i++)
                 <li>@if($project->currentEntityStep() > $i)
-                    <x-heroicon-s-check-circle class="icon" width="24" height="24" />
+                    <x-heroicon-s-check-circle width="24" height="24" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('completed') }}</span>
                     @elseif($project->currentEntityStep() === $i)
                     <x-progress-icon :started="true" progress="0" />
@@ -32,7 +32,7 @@
             </ol>
         </section>
 
-        <section class="step flow" aria-labelledby="step-{{ $step }}-region">
+        <section class="step stack" aria-labelledby="step-{{ $step }}-region">
             <p><a href="{{ localized_route('engagements.create', $project) }}">{{ __('Add engagement') }}</a></p>
             <h2 id="step-{{ $step }}-region">{{ $step }}. {{ $steps[$step]['title'] }}</h2>
             @isset($steps[$step]['subtitle'])
@@ -43,7 +43,7 @@
 
             <progress id="step" max="100" value="{{ $project->getProgress($step) / count($substeps[$step]) * 100 }}"></progress>
 
-            <ol role="list" class="substeps flow">
+            <ol role="list" class="substeps stack">
                 @foreach($substeps[$step] as $substep)
                 <li class="substep">
                     <p class="substep__description">

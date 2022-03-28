@@ -18,11 +18,7 @@
         <x-auth-session-status :status="session('status')" />
 
         <!-- Validation Errors -->
-        @if ($errors->any())
-            <x-hearth-alert type="error">
-                <p>{{ __('hearth::auth.error_intro') }}</p>
-            </x-hearth-alert>
-        @endif
+        <x-auth-validation-errors />
 
         <form method="POST" action="{{ route('password.email') }}" novalidate>
             @csrf

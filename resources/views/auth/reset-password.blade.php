@@ -10,12 +10,8 @@
             {{ __('Reset your password') }}
         </x-slot>
 
-        <!-- Validation Errors -->
-        @if ($errors->any())
-        <x-hearth-alert type="error">
-            <p>{{ __('hearth::auth.error_intro') }}</p>
-        </x-hearth-alert>
-        @endif
+       <!-- Validation Errors -->
+       <x-auth-validation-errors />
 
         <form method="POST" action="{{ localized_route('password.update') }}" novalidate>
             @csrf

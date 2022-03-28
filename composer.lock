@@ -4689,16 +4689,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "8ced2afadd9ce455e2d5919d27c57e344bae4a09"
+                "reference": "8505afd4fea63b81a85d3b7b53ac3cb8dc347c28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8ced2afadd9ce455e2d5919d27c57e344bae4a09",
-                "reference": "8ced2afadd9ce455e2d5919d27c57e344bae4a09",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8505afd4fea63b81a85d3b7b53ac3cb8dc347c28",
+                "reference": "8505afd4fea63b81a85d3b7b53ac3cb8dc347c28",
                 "shasum": ""
             },
             "require": {
@@ -4743,9 +4743,6 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "4.x-dev"
-                },
                 "captainhook": {
                     "force-install": true
                 }
@@ -4770,7 +4767,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.3.0"
+                "source": "https://github.com/ramsey/uuid/tree/4.3.1"
             },
             "funding": [
                 {
@@ -4782,7 +4779,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-26T22:00:50+00:00"
+            "time": "2022-03-27T21:42:02+00:00"
         },
         {
             "name": "shiftonelabs/laravel-cascade-deletes",
@@ -5715,16 +5712,16 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "3.3.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "9eba691f8ce88481b949887a0f694b69c812168c"
+                "reference": "e3b102ef0f0a0bfbba1eca5961a8e33207c76028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/9eba691f8ce88481b949887a0f694b69c812168c",
-                "reference": "9eba691f8ce88481b949887a0f694b69c812168c",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/e3b102ef0f0a0bfbba1eca5961a8e33207c76028",
+                "reference": "e3b102ef0f0a0bfbba1eca5961a8e33207c76028",
                 "shasum": ""
             },
             "require": {
@@ -5734,7 +5731,7 @@
             },
             "require-dev": {
                 "orchestra/testbench": "^6.23|^7.0",
-                "phpunit/phpunit": "^9.5.1",
+                "pestphp/pest": "^1.20",
                 "spatie/laravel-translatable": "^5.0|^6.0"
             },
             "type": "library",
@@ -5763,7 +5760,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-sluggable/issues",
-                "source": "https://github.com/spatie/laravel-sluggable/tree/3.3.1"
+                "source": "https://github.com/spatie/laravel-sluggable/tree/3.4.0"
             },
             "funding": [
                 {
@@ -5771,7 +5768,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-09T07:24:43+00:00"
+            "time": "2022-03-28T11:21:33+00:00"
         },
         {
             "name": "spatie/laravel-translatable",

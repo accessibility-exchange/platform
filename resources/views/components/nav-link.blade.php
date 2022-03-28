@@ -2,12 +2,10 @@
 
 @php
 $current = ($active ?? false)
-            ? ['aria-current' => 'page']
-            : [];
+            ? ['aria-current' => 'page', 'class' => 'nav-link']
+            : ['class' => 'nav-link'];
 @endphp
 
-<li>
-    <a {{ $attributes->merge($current) }}>
-        {{ $slot }}
-    </a>
-</li>
+<a {{ $attributes->merge($current) }}>
+    {{ $slot }}
+</a>

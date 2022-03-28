@@ -1,0 +1,27 @@
+/* This file contains all styles related to the navigation component. */
+[role="region"][aria-labelledby][tabindex] {
+    border-radius: var(--ll-border-radius);
+    overflow: auto;
+}
+
+[role="region"][aria-labelledby][tabindex]:focus {
+    box-shadow: var(--ll-input-focus-box-shadow);
+    outline: none;
+}
+
+table {
+    border-collapse: collapse;
+    min-width: 100%;
+}
+
+thead {
+    border-block-end: var(--ll-border-medium);
+    border-color: var(--ll-border-color);
+    border-radius: var(--ll-border-radius);
+}
+
+th,
+td {
+    padding: var(--step--5);
+    text-align: start;
+}

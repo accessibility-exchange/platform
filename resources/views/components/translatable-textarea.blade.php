@@ -8,7 +8,7 @@
     <div class="expander field @error($name . '.' . $locale) field--error @enderror" x-data="{expanded: false, value: '{{ old($name . '.' . $locale, $model ? $model->getTranslation($name, $locale, false) : '') }}', badgeText: '{{ __('Content added') }}'}">
         <p class="expander__summary" id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_locale_name($locale)])) }}">
             <button type="button" x-bind:aria-expanded="expanded.toString()" x-on:click="expanded = !expanded" aria-describedby="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_locale_name($locale)])) }}-status">
-                {{ __(':label (:locale)', ['label' => $label, 'locale' => get_locale_name($locale)]) }} <x-heroicon-s-plus x-show="! expanded" aria-hidden="true" class="icon" /><x-heroicon-s-minus x-show="expanded" aria-hidden="true" class="icon" />
+                {{ __(':label (:locale)', ['label' => $label, 'locale' => get_locale_name($locale)]) }} <x-heroicon-s-plus x-show="! expanded" aria-hidden="true" /><x-heroicon-s-minus x-show="expanded" aria-hidden="true" />
             </button>
         </p>
         <span class="badge" id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_locale_name($locale)])) }}-status" x-show="value && ! expanded" x-text="value ? badgeText : ''"></span>

@@ -1,0 +1,11 @@
+/* This file contains all styles related to the banner layout. */
+[role="banner"] {
+    background-color: var(--theme-banner-background, white);
+    border-block-end: var(--border-size-1) solid var(--banner-border);
+    box-shadow: var(--banner-shadow);
+    position: relative;
+}
+
+[role="banner"] > .center {
+    --gutter: var(--size-3);
+}

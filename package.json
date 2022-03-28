@@ -4,9 +4,10 @@
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
+        "format": "prettier --write resources/**/*.css",
         "hot": "mix watch --hot",
-        "lint:js": "eslint *.js resources/js/**/*.js",
-        "lint:sass": "stylelint resources/css/**/*.scss",
+        "lint:scripts": "eslint *.js resources/js/**/*.js",
+        "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
         "postinstall": "husky install && npm run dev",
         "prod": "npm run production",
@@ -15,10 +16,11 @@
         "watch": "mix watch"
     },
     "lint-staged": {
-        "*.scss": [
-            "stylelint"
+        "resources/css/**/*.css": [
+            "stylelint",
+            "prettier --write"
         ],
-        "*.js": [
+        "resources/js/**/*.js": [
             "eslint"
         ],
         "*.php": [
@@ -37,19 +39,24 @@
         "laravel-mix": "^6.0.39",
         "laravel-mix-sri": "^1.0.7",
         "lint-staged": "^12.1.2",
+        "modern-css-reset": "^1.4.0",
         "npm-run-all": "^4.1.5",
+        "postcss-custom-media": "^8.0.0",
+        "postcss-easy-import": "^4.0.0",
+        "postcss-jit-props": "^1.0.4",
+        "prettier": "^2.5.1",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.35",
-        "sass-loader": "^12.1",
         "stylelint": "^14.1.0",
-        "stylelint-config-standard-scss": "^3.0.0",
+        "stylelint-config-prettier": "^9.0.3",
+        "stylelint-config-standard": "^25.0.0",
         "stylelint-order": "^5.0.0",
         "stylelint-use-logical-spec": "^3.2.2"
     },
     "dependencies": {
-        "@fluid-project/looseleaf": "^1.6",
-        "alpinejs": "^3.9",
-        "axios": "^0.26",
-        "luxon": "^2.3"
+        "@popperjs/core": "^2.11.4",
+        "alpinejs": "^3.9.0",
+        "axios": "^0.26.0",
+        "luxon": "^2.3.1",
+        "open-props": "^1.3.9"
     }
 }

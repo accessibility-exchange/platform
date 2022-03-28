@@ -9,6 +9,11 @@
 
     @include('community-members.partials.progress')
 
+    <p>
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
+
     <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
 
     <fieldset>
@@ -84,7 +89,7 @@
         @endforeach
     </fieldset>
 
-    <fieldset class="flow">
+    <fieldset class="stack">
         <legend>{{ __('Other websites (optional)') }}</legend>
         <p class="field__hint">{{ __('This could be your personal website, a blog or portfolio, or articles about your work.') }}</p>
         <livewire:other-links :links="$communityMember->other_links ?? [['title' => '', 'url' => '']]" />

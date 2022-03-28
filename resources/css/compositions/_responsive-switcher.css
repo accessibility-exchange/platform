@@ -1,0 +1,12 @@
+.responsive-switcher {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space, 1.5rem);
+}
+
+@media (min-width: 60rem) {
+    .responsive-switcher {
+        align-items: center;
+        flex-direction: row;
+    }
+}

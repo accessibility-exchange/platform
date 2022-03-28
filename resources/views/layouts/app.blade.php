@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js" data-theme="{{ Cookie::get('theme', 'system') }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="no-js" data-theme="{{ Cookie::get('theme', 'light') }}">
     <head>
         @include('partials.head', ['title' => $title ?? __('app.name')])
     </head>
@@ -8,27 +8,27 @@
 
         @isset($aside)
         <!-- Sidebar -->
-        <aside class="flow">
+        <aside class="stack">
             {{ $aside }}
         </aside>
         @endif
 
         <!-- Main Content -->
         <main id="main">
-            <article class="wrapper flow" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
-                <!-- Flash Messages -->
-                @include('partials.flash-messages')
-
-                <!-- Page Heading -->
-                <header class="flow">
-                    {{ $header }}
-                </header>
-
-                <!-- Page Content -->
-                <div class="content flow">
-                    {{ $slot }}
-                </div>
-            </article>
+            <div class="center">
+                <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+                    <!-- Flash Messages -->
+                    @include('partials.flash-messages')
+                    <!-- Page Heading -->
+                    <header class="stack">
+                        {{ $header }}
+                    </header>
+                    <!-- Page Content -->
+                    <div class="content stack">
+                        {{ $slot }}
+                    </div>
+                </article>
+            </div>
         </main>
 
         @include('layouts.footer')

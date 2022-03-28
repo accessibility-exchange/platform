@@ -6,7 +6,7 @@
         <p class="subtitle">{{ __('Browse different resources to find what can help you throughout a consultation phase based on your role and responsibilities.') }}</p>
     </x-slot>
 
-    <div class="flow">
+    <div class="stack">
         <h2>{{ __('Search') }}</h2>
         <form class="search" action="" method="post">
             @csrf
@@ -16,7 +16,7 @@
         </form>
     </div>
     <div class="resources">
-        <div class="filters flow">
+        <div class="filters stack">
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Topic') }}</x-slot>
@@ -74,9 +74,9 @@
                 </ul>
             </x-expander>
         </div>
-        <div class="cards">
+        <div class="stack cards">
             @forelse($resources as $resource)
-            <article class="card card--resource">
+            <article class="box card card--resource">
                 <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ $types->random()->name }}</p>
                 <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span aria-hidden="true">&middot;</span> <span class="visually-hidden">{{ __('Language') }}:</span> {{ get_locale_name(Arr::random($languages)) }}</p>
                 <h2>

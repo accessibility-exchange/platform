@@ -1,0 +1,12 @@
+.box {
+    background-color: var(--box-background);
+    border: 0 solid;
+    color: var(--box-color);
+    outline: var(--border-thin) solid transparent;
+    outline-offset: calc(var(--border-thin) * -1);
+    padding: var(--size-5) var(--size-7) var(--size-7);
+}
+
+.box * {
+    color: inherit;
+}

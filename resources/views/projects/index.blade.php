@@ -6,7 +6,7 @@
         </h1>
     </x-slot>
 
-   <div class="projects flow">
+   <div class="projects stack">
         @forelse($projects as $project)
         <x-project-card :project="$project" :level="2" />
         @empty
