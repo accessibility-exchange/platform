@@ -15,9 +15,7 @@ class UpdateOrganizationRequest extends FormRequest
      */
     public function authorize()
     {
-        $organization = $this->route('organization');
-
-        return $organization && $this->user()->can('update', $organization);
+        return $this->user()->can('update', $this->organization);
     }
 
     /**
@@ -27,14 +25,12 @@ class UpdateOrganizationRequest extends FormRequest
      */
     public function rules()
     {
-        $organization = $this->route('organization');
-
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Organization::class)->ignore($organization->id),
+                Rule::unique(Organization::class)->ignore($this->organization->id),
 
             ],
             'locality' => ['required', 'string', 'max:255'],

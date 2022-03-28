@@ -15,9 +15,7 @@ class UpdateCommunityMemberAccessAndAccomodationsRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('update', $communityMember);
+        return $this->user()->can('update', $this->communityMember);
     }
 
     /**
@@ -31,7 +29,7 @@ class UpdateCommunityMemberAccessAndAccomodationsRequest extends FormRequest
             'access_needs' => [
                 'nullable',
                 'array',
-                Rule::in(AccessSupport::all()->pluck('id')->toArray()),
+                Rule::in(AccessSupport::pluck('id')->toArray()),
             ],
             'meeting_types' => 'required|array|min:1|in:in_person,web_conference,phone',
         ];

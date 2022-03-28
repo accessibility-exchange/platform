@@ -10,5 +10,5 @@ return [
     'grey-dark' => 'Grey on dark grey theme',
     'light-dark' => 'Light grey on dark grey theme',
     'grey-white' => 'Grey on white theme',
-    'black-brown' => 'Black on brown theme'
+    'black-brown' => 'Black on brown theme',
 ];

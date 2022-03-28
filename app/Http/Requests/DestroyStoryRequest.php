@@ -14,9 +14,7 @@ class DestroyStoryRequest extends FormRequest
      */
     public function authorize()
     {
-        $story = $this->route('story');
-
-        return $story && $this->user()->can('delete', $story);
+        return $this->user()->can('delete', $this->story);
     }
 
     /**

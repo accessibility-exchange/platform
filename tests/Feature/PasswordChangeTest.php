@@ -26,6 +26,7 @@ class PasswordChangeTest extends TestCase
                 "password_confirmation" => "new_password",
             ]);
 
+        $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route("users.admin"));
     }
 
@@ -41,6 +42,7 @@ class PasswordChangeTest extends TestCase
                 "password_confirmation" => "new_password",
             ]);
 
+        $response->assertSessionHasErrors();
         $response->assertRedirect(localized_route("users.admin"));
     }
 
@@ -56,6 +58,23 @@ class PasswordChangeTest extends TestCase
                 "password_confirmation" => "different_new_password",
             ]);
 
+        $response->assertSessionHasErrors();
+        $response->assertRedirect(localized_route("users.admin"));
+    }
+
+    public function test_password_cannot_be_updated_with_password_that_does_not_meet_requirements()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->from(localized_route("users.admin"))
+            ->actingAs($user)
+            ->put(localized_route("user-password.update"), [
+                "current_password" => "password",
+                "password" => "pass",
+                "password_confirmation" => "pass",
+            ]);
+
+        $response->assertSessionHasErrors();
         $response->assertRedirect(localized_route("users.admin"));
     }
 }

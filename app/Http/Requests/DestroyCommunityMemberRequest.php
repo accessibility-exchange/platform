@@ -14,9 +14,7 @@ class DestroyCommunityMemberRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('delete', $communityMember);
+        return $this->user()->can('delete', $this->communityMember);
     }
 
     /**

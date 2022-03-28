@@ -14,9 +14,7 @@ class UpdateEngagementRequest extends FormRequest
      */
     public function authorize()
     {
-        $project = $this->route('project');
-
-        return $project && $this->user()->can('update', $project);
+        return $this->user()->can('update', $this->project);
     }
 
     /**
@@ -26,14 +24,12 @@ class UpdateEngagementRequest extends FormRequest
      */
     public function rules()
     {
-        $engagement = $this->route('engagement');
-
         return [
             'name.*' => [
                 'required',
                 'string',
                 'max:255',
-                UniqueTranslationRule::for('engagements')->ignore($engagement->id),
+                UniqueTranslationRule::for('engagements')->ignore($this->engagement->id),
             ],
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',

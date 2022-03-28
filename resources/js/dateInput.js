@@ -24,7 +24,7 @@ export default () => ({
             this.date = "";
         }
     },
-    dateToComponents(date) {
+    dateToComponents(date, error) {
         if (date) {
             let year, month, day;
             [year, month, day] = date.split("-");
@@ -41,6 +41,8 @@ export default () => ({
                 this.dateTime = false;
                 this.error = true;
             }
+        } else if (error) {
+            this.error = true;
         }
     }
 });

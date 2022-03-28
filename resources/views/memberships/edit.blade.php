@@ -15,7 +15,7 @@
         @method('PUT')
         <fieldset @error('membership') class="field--error" @enderror>
             <legend>{{ __('organization.label_user_role') }}</legend>
-            <x-hearth-radio-buttons name="role" :options="$roles" :selected="old('role', $membership->role)" />
+            <x-hearth-radio-buttons name="role" :options="$roles" :checked="old('role', $membership->role)" />
             <x-hearth-error for="role" field="membership" />
         </fieldset>
         <a class="button" href="{{ localized_route($memberable->getRoutePrefix() . '.edit', $memberable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>

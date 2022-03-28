@@ -21,14 +21,14 @@
 
     <fieldset class="field @error('sectors') field--error @enderror">
         <legend>{{ __('What types of regulated entity are you interested in? (optional)') }}</legend>
-        <x-hearth-checkboxes name="sectors" :options="$sectors" :selected="old('sectors', $communityMember->sectors->pluck('id')->toArray())" />
+        <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $communityMember->sectors->pluck('id')->toArray())" />
         <x-hearth-error for="sectors" />
     </fieldset>
 
     <fieldset class="field @error('impacts') field--error @enderror">
         <legend>{{ __('What areas would you most like to impact within a regulated entity? (optional)') }}</legend>
         <x-hearth-hint for="impacts">{{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}</x-hearth-hint>
-        <x-hearth-checkboxes name="impacts" :options="$impacts" :selected="old('impacts', $communityMember->impacts->pluck('id')->toArray())" />
+        <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $communityMember->impacts->pluck('id')->toArray())" />
         <x-hearth-error for="impacts" />
     </fieldset>
 
@@ -44,7 +44,7 @@
     <fieldset>
         <legend>{{ __('Service preference (optional)') }}</legend>
         <x-hearth-hint for="service_preference">{{ __('Which type of services do you want to consult on? Check all that apply.') }}</x-hearth-hint>
-        <x-hearth-checkboxes name="service_preference" :options="$servicePreferences" :selected="old('service_preference', $communityMember->service_preference ?? [])" />
+        <x-hearth-checkboxes name="service_preference" :options="$servicePreferences" :checked="old('service_preference', $communityMember->service_preference ?? [])" />
         <x-hearth-error for="service_preference" />
     </fieldset>
 

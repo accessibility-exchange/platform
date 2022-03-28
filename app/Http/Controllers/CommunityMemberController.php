@@ -97,13 +97,13 @@ class CommunityMemberController extends Controller
         return view('community-members.edit', [
             'communityMember' => $communityMember,
             'regions' => get_regions(['CA'], \locale()),
-            'sectors' => Sector::all()->pluck('name', 'id')->toArray(),
-            'impacts' => Impact::all()->pluck('name', 'id')->toArray(),
+            'sectors' => Sector::pluck('name', 'id')->toArray(),
+            'impacts' => Impact::pluck('name', 'id')->toArray(),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
-            'livedExperiences' => LivedExperience::all()->pluck('name', 'id')->toArray(),
+            'livedExperiences' => LivedExperience::pluck('name', 'id')->toArray(),
             'ageGroups' => [
                 'youth' => __('Youth (18–24)'),
                 'adult' => __('Adult (25–64)'),
@@ -131,7 +131,7 @@ class CommunityMemberController extends Controller
                 'web_conference' => __('Virtual – web conference'),
                 'phone' => __('Virtual – phone call'),
             ],
-            'accessNeeds' => AccessSupport::all()->pluck('name', 'id')->toArray(),
+            'accessNeeds' => AccessSupport::pluck('name', 'id')->toArray(),
         ]);
     }
 

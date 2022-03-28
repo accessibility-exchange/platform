@@ -8,6 +8,12 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Collection
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Story[] $stories
+ */
 class Collection extends Model
 {
     use HasFactory;
@@ -17,7 +23,7 @@ class Collection extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'title',

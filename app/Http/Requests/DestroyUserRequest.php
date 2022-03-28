@@ -44,6 +44,33 @@ class DestroyUserRequest extends FormRequest
                     __('hearth::auth.wrong_password')
                 );
             }
+            if (count($this->user()->organizations) > 0) {
+                foreach ($this->user()->organizations as $organization) {
+                    if ($organization->administrators()->count() === 1 && $this->user()->isAdministratorOf($organization)) {
+                        $validator->errors()->add(
+                            'organizations',
+                            __(
+                                'You must assign a new administrator to :organization before deleting your account.',
+                                ['organization' => '<a href="' . localized_route('organizations.edit', $organization) . '">' . $organization->name . '</a>'],
+                            )
+                        );
+                    }
+                }
+            }
+
+            if (count($this->user()->entities) > 0) {
+                foreach ($this->user()->entities as $entity) {
+                    if ($entity->administrators()->count() === 1 && $this->user()->isAdministratorOf($entity)) {
+                        $validator->errors()->add(
+                            'entities',
+                            __(
+                                'You must assign a new administrator to :entity before deleting your account.',
+                                ['entity' => '<a href="' . localized_route('entities.edit', $entity) . '">' . $entity->name . '</a>'],
+                            )
+                        );
+                    }
+                }
+            }
         })->validateWithBag('destroyAccount');
 
         return;

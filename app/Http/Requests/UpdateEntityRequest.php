@@ -15,9 +15,7 @@ class UpdateEntityRequest extends FormRequest
      */
     public function authorize()
     {
-        $entity = $this->route('entity');
-
-        return $entity && $this->user()->can('update', $entity);
+        return $this->user()->can('update', $this->entity);
     }
 
     /**
@@ -27,14 +25,12 @@ class UpdateEntityRequest extends FormRequest
      */
     public function rules()
     {
-        $entity = $this->route('entity');
-
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Entity::class)->ignore($entity->id),
+                Rule::unique(Entity::class)->ignore($this->entity->id),
 
             ],
             'locality' => ['required', 'string', 'max:255'],

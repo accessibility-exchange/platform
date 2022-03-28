@@ -15,9 +15,7 @@ class UpdateStoryRequest extends FormRequest
      */
     public function authorize()
     {
-        $story = $this->route('story');
-
-        return $story && $this->user()->can('update', $story);
+        return $this->user()->can('update', $this->story);
     }
 
     /**
@@ -27,14 +25,12 @@ class UpdateStoryRequest extends FormRequest
      */
     public function rules()
     {
-        $story = $this->route('story');
-
         return [
             'title' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Story::class)->ignore($story->id),
+                Rule::unique(Story::class)->ignore($this->story->id),
 
             ],
             'summary' => 'required|string',

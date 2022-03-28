@@ -13,9 +13,7 @@ class UpdateCommunityMemberCommunicationPreferencesRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('update', $communityMember);
+        return $this->user()->can('update', $this->communityMember);
     }
 
     /**

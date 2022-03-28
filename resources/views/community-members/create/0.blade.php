@@ -9,7 +9,7 @@
             'participant' => __('Participant'),
             'consultant' => __('Consultant'),
             'connector' => __('Community connector')
-        ]" :selected="old('roles', session('roles')) ?? []" />
+        ]" :checked="old('roles', session('roles')) ?? []" />
         <x-hearth-error for="roles" />
     </fieldset>
 

@@ -25,14 +25,12 @@ class UpdateProjectRequest extends FormRequest
      */
     public function rules()
     {
-        $project = $this->route('project');
-
         return [
             'name.*' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Project::class)->ignore($project->id),
+                Rule::unique(Project::class)->ignore($this->project->id),
             ],
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
