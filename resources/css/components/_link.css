@@ -11,7 +11,7 @@ a:hover {
 
 a:focus {
     box-shadow: 0 0 0 var(--border-size-2) var(--link-outline-focus);
-    outline: none;
+    outline: 1px solid transparent;
     text-decoration: none;
 }
 
@@ -36,7 +36,7 @@ a:visited {
 
 .dark a:focus {
     box-shadow: 0 0 0 var(--border-size-2) var(--link-dark-outline-focus);
-    outline: none;
+    outline: 1px solid transparent;
 }
 
 .dark a:active {
@@ -88,10 +88,6 @@ a.cta:active {
     color: var(--cta-color-active);
 }
 
-a.cta:focus:active {
-    outline: none;
-}
-
 .dark a.cta {
     background: var(--cta-dark-background);
     border: var(--border-size-2) solid var(--cta-dark-border);
@@ -112,8 +108,4 @@ a.cta:focus:active {
     background: var(--cta-dark-background-active);
     border-color: var(--cta-dark-border-active);
     color: var(--cta-dark-color-active);
-}
-
-.dark a.cta:focus:active {
-    outline: none;
 }

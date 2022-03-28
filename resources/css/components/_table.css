@@ -6,7 +6,7 @@
 
 [role="region"][aria-labelledby][tabindex]:focus {
     box-shadow: var(--ll-input-focus-box-shadow);
-    outline: none;
+    outline: 1px solid transparent;
 }
 
 table {

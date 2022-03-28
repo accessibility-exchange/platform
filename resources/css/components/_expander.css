@@ -54,10 +54,6 @@
     color: var(--expander-color-active);
 }
 
-.expander button:focus:active {
-    outline: none;
-}
-
 .expander button:active::before {
     border-block-start: var(--border-size-2) solid var(--expander-border-active);
 }
