@@ -15,9 +15,7 @@ class UpdateResourceRequest extends FormRequest
      */
     public function authorize()
     {
-        $resource = $this->route('resource');
-
-        return $resource && $this->user()->can('update', $resource);
+        return $this->user()->can('update', $this->resource);
     }
 
     /**
@@ -27,14 +25,12 @@ class UpdateResourceRequest extends FormRequest
      */
     public function rules()
     {
-        $resource = $this->route('resource');
-
         return [
             'title' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Resource::class)->ignore($resource->id),
+                Rule::unique(Resource::class)->ignore($this->resource->id),
 
             ],
             'summary' => 'required|string',

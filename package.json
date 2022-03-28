@@ -4,16 +4,16 @@
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "format": "prettier --write resources/**/*.css",
         "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production",
         "lint:scripts": "eslint *.js resources/js/**/*.js",
         "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
-        "format": "prettier --write resources/**/*.css",
-        "postinstall": "husky install"
+        "postinstall": "husky install && npm run dev",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "watch": "mix watch"
     },
     "lint-staged": {
         "resources/css/**/*.css": [

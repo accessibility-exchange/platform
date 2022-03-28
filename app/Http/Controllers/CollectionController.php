@@ -13,7 +13,7 @@ class CollectionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -30,7 +30,7 @@ class CollectionController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Collection  $collection
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Collection $collection)
     {

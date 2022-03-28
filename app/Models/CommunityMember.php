@@ -30,7 +30,7 @@ class CommunityMember extends Model implements HasMedia
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name',
@@ -66,7 +66,7 @@ class CommunityMember extends Model implements HasMedia
     /**
      * The attributes that which should be cast to other types.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'hide_location' => 'boolean',
@@ -344,7 +344,7 @@ class CommunityMember extends Model implements HasMedia
                 flash(__('Your community member page has been updated.'), 'success');
             }
 
-            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
         } elseif ($request->input('save_and_previous')) {
             if ($this->checkStatus('draft')) {
                 flash(__('Your draft community member page has been updated.'), 'success');
@@ -372,13 +372,13 @@ class CommunityMember extends Model implements HasMedia
         } elseif ($request->input('publish')) {
             $this->publish();
 
-            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
         } elseif ($request->input('unpublish')) {
             $this->unpublish();
 
-            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+            return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
         }
 
-        return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step ?? 1]));
+        return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
     }
 }

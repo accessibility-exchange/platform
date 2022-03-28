@@ -23,13 +23,13 @@
 
     <fieldset class="field @error('lived_experiences') field--error @enderror">
         <legend>{{ __('Which of these describe your lived experience? (optional)') }}</legend>
-        <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :selected="old('lived_experiences', $communityMember->livedExperiences->pluck('id')->toArray())" />
+        <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old('lived_experiences', $communityMember->livedExperiences->pluck('id')->toArray())" />
         <x-hearth-error for="lived_experiences" />
     </fieldset>
 
     <fieldset class="field @error('age_group') field--error @enderror">
         <legend>{{ __('What is your age group (optional)') }}</legend>
-        <x-hearth-radio-buttons name="age_group" :options="$ageGroups" :selected="old('age_group', $communityMember->age_group)" />
+        <x-hearth-radio-buttons name="age_group" :options="$ageGroups" :checked="old('age_group', $communityMember->age_group)" />
         <x-hearth-error for="age_group" />
     </fieldset>
 

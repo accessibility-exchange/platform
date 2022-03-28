@@ -26,13 +26,13 @@
 
     <fieldset class="field @error('meeting_types') field--error @enderror">
         <legend>{{ __('What types of meetings are you able to participate in?') }}</legend>
-        <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :selected="old('meeting_types', $communityMember->meeting_types ?? [])" />
+        <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :checked="old('meeting_types', $communityMember->meeting_types ?? [])" />
         <x-hearth-error for="meeting_types" />
     </fieldset>
 
     <fieldset class="field @error('access_needs') field--error @enderror">
         <legend>{{ __('What are your access needs?') }}</legend>
-        <x-hearth-checkboxes name="access_needs" :options="$accessNeeds" :selected="old('access_needs', $communityMember->accessSupports->pluck('id')->toArray() ?? [])" />
+        <x-hearth-checkboxes name="access_needs" :options="$accessNeeds" :checked="old('access_needs', $communityMember->accessSupports->pluck('id')->toArray() ?? [])" />
         <x-hearth-error for="access_needs" />
     </fieldset>
 

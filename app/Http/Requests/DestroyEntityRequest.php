@@ -14,9 +14,7 @@ class DestroyEntityRequest extends FormRequest
      */
     public function authorize()
     {
-        $entity = $this->route('entity');
-
-        return $entity && $this->user()->can('delete', $entity);
+        return $this->user()->can('delete', $this->entity);
     }
 
     /**

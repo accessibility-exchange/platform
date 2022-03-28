@@ -16,9 +16,7 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('update', $communityMember);
+        return $this->user()->can('update', $this->communityMember);
     }
 
     /**
@@ -33,12 +31,12 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
             'sectors' => [
                 'nullable',
                 'array',
-                Rule::in(Sector::all()->pluck('id')->toArray()),
+                Rule::in(Sector::pluck('id')->toArray()),
             ],
             'impacts' => [
                 'nullable',
                 'array',
-                Rule::in(Impact::all()->pluck('id')->toArray()),
+                Rule::in(Impact::pluck('id')->toArray()),
             ],
             'service_preference' => 'nullable|array|in:digital,non-digital',
         ];

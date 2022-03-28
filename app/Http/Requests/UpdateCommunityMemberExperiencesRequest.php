@@ -15,9 +15,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
      */
     public function authorize()
     {
-        $communityMember = $this->route('communityMember');
-
-        return $communityMember && $this->user()->can('update', $communityMember);
+        return $this->user()->can('update', $this->communityMember);
     }
 
     /**
@@ -31,7 +29,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
             'lived_experiences' => [
                 'nullable',
                 'array'  ,
-                Rule::in(LivedExperience::all()->pluck('id')->toArray()),
+                Rule::in(LivedExperience::pluck('id')->toArray()),
             ],
             'other_lived_experience' => 'nullable|string',
             'age_group' => 'nullable|string|in:youth,adult,senior',
