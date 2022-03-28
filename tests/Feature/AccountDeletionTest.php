@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -32,6 +33,20 @@ class AccountDeletionTest extends TestCase
 
         $response = $this->actingAs($user)->from(localized_route('users.admin'))->delete(localized_route('users.destroy'), [
             'current_password' => 'wrong_password',
+        ]);
+
+        $response->assertRedirect(localized_route('users.admin'));
+    }
+
+    public function test_users_cannot_delete_their_own_accounts_without_assigning_other_admin_to_organization()
+    {
+        $user = User::factory()->create();
+        $organization = Organization::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+
+        $response = $this->actingAs($user)->from(localized_route('users.admin'))->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
         ]);
 
         $response->assertRedirect(localized_route('users.admin'));
