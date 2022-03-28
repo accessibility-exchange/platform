@@ -7,9 +7,7 @@
                 <span class="visually-hidden">{{ __('app.name') }}</span>
             </a>
             <h1 class="align-center">{{ $title }}</h1>
+            {{ $slot }}
         </div>
-    </div>
-    <div class="stack">
-        {{ $slot }}
     </div>
 </div>

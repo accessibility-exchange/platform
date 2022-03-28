@@ -17,7 +17,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('password.confirm') }}">
+        <form class="stack" method="POST" action="{{ localized_route('password.confirm') }}">
             @csrf
 
             <!-- Password -->

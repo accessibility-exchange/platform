@@ -16,7 +16,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('login-store') }}" novalidate>
+        <form class="stack" method="POST" action="{{ localized_route('login-store') }}" novalidate>
             @csrf
 
             <!-- Email Address -->

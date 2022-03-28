@@ -13,7 +13,7 @@
        <!-- Validation Errors -->
        <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('password.update') }}" novalidate>
+        <form class="stack" method="POST" action="{{ localized_route('password.update') }}" novalidate>
             @csrf
 
             <!-- Password Reset Token -->

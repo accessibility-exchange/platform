@@ -16,7 +16,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('two-factor.login') }}" x-data="{ recovery: false }" novalidate>
+        <form class="stack" method="POST" action="{{ localized_route('two-factor.login') }}" x-data="{ recovery: false }" novalidate>
             @csrf
 
             <p x-show="! recovery">

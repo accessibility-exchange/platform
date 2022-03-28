@@ -20,7 +20,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors />
 
-        <form method="POST" action="{{ route('password.email') }}" novalidate>
+        <form class="stack" method="POST" action="{{ route('password.email') }}" novalidate>
             @csrf
 
             <!-- Email Address -->
