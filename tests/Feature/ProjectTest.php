@@ -31,8 +31,6 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($user)->post(localized_route('projects.create', $entity), [
             'entity_id' => $entity->id,
             'name' => ['en' => 'Test Project'],
-            'start_date' => '2021-01-01',
-            'end_date' => '2021-12-31',
         ]);
 
         $url = localized_route('projects.show', ['project' => 'test-project']);
@@ -150,8 +148,6 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
             'name' => ['en' => 'My renamed accessibility project'],
-            'start_date' => $project->start_date,
-            'end_date' => null,
         ]);
 
         $updated_project = Project::where('name->en', 'My renamed accessibility project')->first();
@@ -179,8 +175,6 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
             'name' => 'My updated project name',
-            'start_date' => $project->start_date,
-            'end_date' => null,
         ]);
         $response->assertForbidden();
 
@@ -189,8 +183,6 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($other_user)->put(localized_route('projects.update', $project), [
             'name' => 'My updated project name',
-            'start_date' => $project->start_date,
-            'end_date' => null,
         ]);
         $response->assertForbidden();
     }

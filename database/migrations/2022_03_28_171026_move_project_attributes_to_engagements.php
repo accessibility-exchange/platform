@@ -14,8 +14,6 @@ return new class extends Migration {
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->dropColumn([
-                'start_date',
-                'end_date',
                 'regions',
                 'virtual_consultation',
                 'timeline',
@@ -80,8 +78,6 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
             $table->json('regions')->nullable();
             $table->renameColumn('scope', 'impact');
             $table->boolean('virtual_consultation')->nullable();

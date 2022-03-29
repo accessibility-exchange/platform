@@ -95,6 +95,8 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2020 Accessibility Plan',
                 'entity_id' => $entity->id,
+                'start_date' => '2020-01-01',
+                'end_date' => '2020-12-31',
             ]);
 
         $completedProject->impacts()->attach($communicationImpact->id);
@@ -107,6 +109,8 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2022 Accessibility Plan',
                 'entity_id' => $entity->id,
+                'start_date' => '2022-01-01',
+                'end_date' => '2022-12-31',
             ]);
 
         $recruitingProject->impacts()->attach($programsAndServicesImpact->id);
@@ -119,6 +123,8 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2021 Accessibility Plan',
                 'entity_id' => $entity->id,
+                'start_date' => '2021-01-01',
+                'end_date' => '2021-12-31',
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);

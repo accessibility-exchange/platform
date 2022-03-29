@@ -31,6 +31,8 @@ class Project extends Model
     protected $fillable = [
         'name',
         'entity_id',
+        'start_date',
+        'end_date',
         'published_at',
         'goals',
         'scope',
@@ -44,6 +46,8 @@ class Project extends Model
      */
     protected $casts = [
         'name' => 'array',
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
     ];
 
