@@ -17,7 +17,6 @@
     font-weight: var(--font-weight-6);
     height: var(--size-9);
     justify-content: space-between;
-    margin-inline-start: calc(-1 * var(--size-2));
     padding: 0 var(--size-2);
     position: relative;
     text-align: start;

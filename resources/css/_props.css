@@ -48,6 +48,13 @@
     --link-dark-background-active: var(--theme-link-dark-background-active, var(--tae-graphite-6));
     --cta-background: var(--theme-cta-background, var(--tae-blue-7));
     --cta-color: var(--theme-cta-color, white);
+    --cta-outline: var(--theme-cta-outline, var(--tae-blue-7));
+    --cta-background-hover: var(--theme-cta-background-hover, var(--tae-blue-8));
+    --cta-border-hover: var(--theme-cta-border-hover, var(--tae-blue-8));
+    --cta-color-hover: var(--theme-cta-color-hover, white);
+    --cta-color-active: var(--theme-cta-color-active, white);
+    --cta-background-active: var(--theme-cta-background-active, var(--tae-blue-6));
+    --cta-border-active: var(--theme-cta-border-active, var(--tae-blue-6));
     --cta-dark-background: var(--theme-cta-dark-background, var(--tae-grey-2));
     --cta-dark-border: var(--theme-cta-dark-border, var(--tae-grey-2));
     --cta-dark-color: var(--theme-cta-dark-color, var(--tae-blue-7));

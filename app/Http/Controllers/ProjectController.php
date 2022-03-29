@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyProjectRequest;
+use App\Http\Requests\StoreProjectContextRequest;
+use App\Http\Requests\StoreProjectFocusRequest;
+use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
-use Carbon\Carbon;
+use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -39,7 +43,80 @@ class ProjectController extends Controller
      */
     public function create(Entity $entity): View
     {
-        return view('projects.create', ['entity' => $entity]);
+        $languages = (new LanguageRepository)->getAll();
+
+        foreach ($languages as $key => $language) {
+            $languages[$key] = $language->getName();
+        }
+
+        $languages = $languages + [
+            'ase' => __('American Sign Language'),
+            'fcs' => __('Quebec Sign Language'),
+        ];
+
+        return view('projects.create', [
+            'entity' => $entity,
+            'languages' => [
+                '' => __('Choose a language…'),
+
+            ] + Arr::sort($languages),
+        ]);
+    }
+
+    /**
+     * Store a new project's context in the session.
+     *
+     * @param  \App\Http\Requests\StoreProjectContextRequest  $request
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeContext(StoreProjectContextRequest $request, Entity $entity): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('context', $data['context']);
+
+        if ($data['context'] === 'new') {
+            session()->forget('ancestor');
+        }
+
+        if ($data['context'] === 'follow-up') {
+            session()->put('ancestor', $data['ancestor']);
+        }
+
+        return redirect(\localized_route('projects.create', ['entity' => $entity, 'step' => 2]));
+    }
+
+    /**
+     * Store a new project's initial focus in the session.
+     *
+     * @param  \App\Http\Requests\StoreProjectFocusRequest  $request
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeFocus(StoreProjectFocusRequest $request, Entity $entity): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('focus', $data['focus']);
+
+        return redirect(\localized_route('projects.create', ['entity' => $entity, 'step' => 3]));
+    }
+
+    /**
+     * Store a new project's languages in the session.
+     *
+     * @param  \App\Http\Requests\StoreProjectLanguagesRequest  $request
+     * @param \App\Models\Entity  $entity
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeLanguages(StoreProjectLanguagesRequest $request, Entity $entity): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('languages', $data['languages']);
+
+        return redirect(\localized_route('projects.create', ['entity' => $entity, 'step' => 4]));
     }
 
     /**
@@ -52,16 +129,12 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request, Entity $entity): RedirectResponse
     {
         $data = $request->validated();
-        $data['start_date'] = Carbon::createFromFormat('Y-m-d', $data['start_date']);
-        $data['end_date'] = $data['end_date']
-            ? Carbon::createFromFormat('Y-m-d', $data['end_date'])
-            : $data['end_date'];
 
         $project = Project::create($data);
 
         flash(__('Your project has been created.'), 'success');
 
-        return redirect(\localized_route('projects.show', ['project' => $project]));
+        return redirect(\localized_route('projects.edit', ['project' => $project]));
     }
 
     /**

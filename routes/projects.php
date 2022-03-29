@@ -10,6 +10,21 @@ Route::multilingual('/entities/{entity}/projects/create', [ProjectController::cl
     ->middleware(['auth', 'can:createProject,entity'])
     ->name('projects.create');
 
+Route::multilingual('/entities/{entity}/projects/create/store-context', [ProjectController::class, 'storeContext'])
+    ->method('post')
+    ->middleware(['auth', 'can:createProject,entity'])
+    ->name('projects.store-context');
+
+Route::multilingual('/entities/{entity}/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
+    ->method('post')
+    ->middleware(['auth', 'can:createProject,entity'])
+    ->name('projects.store-focus');
+
+Route::multilingual('/entities/{entity}/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
+    ->method('post')
+    ->middleware(['auth', 'can:createProject,entity'])
+    ->name('projects.store-languages');
+
 Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'store'])
     ->method('post')
     ->name('projects.store');
