@@ -287,33 +287,11 @@ namespace App\Models{
 /**
  * App\Models\Engagement
  *
- * @property array $name
- * @property int $project_id
- * @property string $recruitment
- * @property array $goals
- * @property mixed|null $timeline
- * @property mixed|null $events
- * @property mixed|null $reporting
- * @property mixed|null $contacts
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Project $project
+ * @property-read \App\Models\Project|null $project
  * @method static \Database\Factories\EngagementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement query()
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereContacts($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereEvents($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereGoals($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereRecruitment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereReporting($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereTimeline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereUpdatedAt($value)
  */
     class Engagement extends \Eloquent
     {
@@ -573,48 +551,23 @@ namespace App\Models{
  * @property int $id
  * @property array $name
  * @property string $slug
- * @property \Illuminate\Support\Carbon $start_date
- * @property \Illuminate\Support\Carbon|null $end_date
  * @property int $entity_id
- * @property array|null $regions
  * @property array|null $goals
- * @property array|null $impact
+ * @property array|null $scope
  * @property array|null $out_of_scope
- * @property bool|null $virtual_consultation
- * @property array|null $timeline
- * @property array|null $payment_terms
- * @property bool|null $payment_negotiable
- * @property bool|null $existing_clients
- * @property bool|null $prospective_clients
- * @property bool|null $employees
- * @property array|null $priority_outreach
- * @property array|null $locality
- * @property array|null $location_description
- * @property int|null $min
- * @property int|null $max
- * @property array|null $anything_else
- * @property bool|null $flexible_deadlines
- * @property bool|null $flexible_breaks
  * @property \Illuminate\Support\Carbon|null $published_at
- * @property bool|null $found_participants
- * @property bool|null $confirmed_participants
- * @property bool|null $scheduled_planning_meeting
- * @property bool|null $notified_of_planning_meeting
- * @property bool|null $prepared_project_orientation
- * @property bool|null $prepared_contractual_documents
- * @property bool|null $booked_access_services_for_planning
- * @property bool|null $finished_planning_meeting
- * @property bool|null $scheduled_consultation_meetings
- * @property bool|null $notified_of_consultation_meetings
- * @property bool|null $prepared_consultation_materials
- * @property bool|null $booked_access_services_for_consultations
- * @property bool|null $finished_consultation_meetings
- * @property bool|null $prepared_accessibility_plan
- * @property bool|null $prepared_follow_up_plan
- * @property bool|null $shared_plans_with_participants
- * @property int|null $published_accessibility_plan
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $ancestor_id
+ * @property mixed|null $outcomes
+ * @property int|null $public_outcomes
+ * @property string|null $team_size
+ * @property int|null $has_consultant
+ * @property string|null $consultant_name
+ * @property string|null $consultant_email
+ * @property string|null $consultant_phone
+ * @property mixed|null $consultant_responsibilities
+ * @property mixed|null $team_training
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AccessSupport[] $accessSupports
  * @property-read int|null $access_supports_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunicationTool[] $communicationTools
@@ -650,51 +603,26 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project query()
  * @method static \Illuminate\Database\Eloquent\Builder|Project status($status)
  * @method static \Illuminate\Database\Eloquent\Builder|Project statusIn($statuses)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereAnythingElse($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereBookedAccessServicesForConsultations($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereBookedAccessServicesForPlanning($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereConfirmedParticipants($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereAncestorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantResponsibilities($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereEmployees($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEntityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereExistingClients($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFinishedConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFinishedPlanningMeeting($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFlexibleBreaks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFlexibleDeadlines($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFoundParticipants($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereGoals($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereHasConsultant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereImpact($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereLocality($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereLocationDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereMin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereNotifiedOfConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereNotifiedOfPlanningMeeting($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePaymentNegotiable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePaymentTerms($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedAccessibilityPlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedConsultationMaterials($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedContractualDocuments($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedFollowUpPlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedProjectOrientation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePriorityOutreach($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereProspectiveClients($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAccessibilityPlan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereRegions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereScheduledConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereScheduledPlanningMeeting($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSharedPlansWithParticipants($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereTimeline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTraining($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereVirtualConsultation($value)
  */
     class Project extends \Eloquent
     {

@@ -95,25 +95,6 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2020 Accessibility Plan',
                 'entity_id' => $entity->id,
-                'start_date' => '2020-01-01',
-                'end_date' => '2020-12-31',
-                'found_participants' => true,
-                'confirmed_participants' => true,
-                'scheduled_planning_meeting' => true,
-                'notified_of_planning_meeting' => true,
-                'prepared_project_orientation' => true,
-                'prepared_contractual_documents' => true,
-                'booked_access_services_for_planning' => true,
-                'finished_planning_meeting' => true,
-                'scheduled_consultation_meetings' => true,
-                'notified_of_consultation_meetings' => true,
-                'prepared_consultation_materials' => true,
-                'booked_access_services_for_consultations' => true,
-                'finished_consultation_meetings' => true,
-                'prepared_accessibility_plan' => true,
-                'prepared_follow_up_plan' => true,
-                'shared_plans_with_participants' => true,
-                'published_accessibility_plan' => true,
             ]);
 
         $completedProject->impacts()->attach($communicationImpact->id);
@@ -126,8 +107,6 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2022 Accessibility Plan',
                 'entity_id' => $entity->id,
-                'start_date' => '2022-01-01',
-                'end_date' => '2022-12-31',
             ]);
 
         $recruitingProject->impacts()->attach($programsAndServicesImpact->id);
@@ -140,16 +119,6 @@ class DevSeeder extends Seeder
             ->create([
                 'name' => '2021 Accessibility Plan',
                 'entity_id' => $entity->id,
-                'start_date' => '2021-01-01',
-                'end_date' => '2021-12-31',
-                'found_participants' => true,
-                'confirmed_participants' => true,
-                'scheduled_planning_meeting' => true,
-                'notified_of_planning_meeting' => true,
-                'prepared_project_orientation' => true,
-                'prepared_contractual_documents' => true,
-                'booked_access_services_for_planning' => true,
-                'finished_planning_meeting' => true,
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);
