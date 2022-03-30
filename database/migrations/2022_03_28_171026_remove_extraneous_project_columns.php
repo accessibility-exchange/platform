@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+class RemoveExtraneousProjectColumns extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -65,11 +66,6 @@ return new class extends Migration {
             $table->json('consultant_responsibilities')->nullable();
             $table->json('team_training')->nullable();
         });
-
-        Schema::table('engagements', function (Blueprint $table) {
-            $table->rename('events', 'meetings');
-            $table->json('other_reporting')->nullable();
-        });
     }
 
     /**
@@ -128,11 +124,6 @@ return new class extends Migration {
                 'consultant_responsibilities',
                 'team_training',
             ]);
-        });
-
-        Schema::table('engagements', function (Blueprint $table) {
-            $table->rename('meetings', 'events');
-            $table->json('events')->nullable();
         });
     }
 };

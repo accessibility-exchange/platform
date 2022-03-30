@@ -100,10 +100,6 @@ class DevSeeder extends Seeder
             ]);
 
         $completedProject->impacts()->attach($communicationImpact->id);
-        $completedProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
 
         $recruitingProject = Project::factory()
             ->create([
@@ -114,10 +110,6 @@ class DevSeeder extends Seeder
             ]);
 
         $recruitingProject->impacts()->attach($programsAndServicesImpact->id);
-        $recruitingProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
 
         $consultingProject = Project::factory()
             ->create([
@@ -128,9 +120,5 @@ class DevSeeder extends Seeder
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);
-        $consultingProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
     }
 }

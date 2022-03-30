@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
@@ -254,24 +253,6 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_with_entity_admin_role_can_create_project_updates()
-    {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $entity = Entity::factory()
-            ->hasAttached($user, ['role' => 'admin'])
-            ->create();
-        $project = Project::factory()->create([
-            'entity_id' => $entity->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(localized_route('projects.create-update', $project));
-        $response->assertOk();
-    }
-
     public function test_projects_appear_in_chronological_groups()
     {
         if (! config('hearth.entities.enabled')) {
@@ -299,67 +280,5 @@ class ProjectTest extends TestCase
         $this->assertEquals(count($entity->pastProjects), 1);
         $this->assertEquals(count($entity->currentProjects), 1);
         $this->assertEquals(count($entity->futureProjects), 1);
-    }
-
-    public function test_community_members_can_express_interest_in_projects()
-    {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $admin_user = User::factory()->create();
-        $communityMember = CommunityMember::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $entity = Entity::factory()
-            ->hasAttached($admin_user, ['role' => 'admin'])
-            ->create();
-        $project = Project::factory()->create([
-            'entity_id' => $entity->id,
-            'published_at' => Carbon::now(),
-        ]);
-
-        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('community-members.express-interest', $communityMember), [
-            'project_id' => $project->id,
-        ]);
-
-        $response->assertRedirect(localized_route('projects.show', $project));
-
-        $this->assertTrue($project->interestedCommunityMembers->contains($communityMember));
-
-        $response = $this->from(localized_route('projects.show', $project))->actingAs($user)->post(localized_route('community-members.remove-interest', $communityMember), [
-            'project_id' => $project->id,
-        ]);
-
-        $response->assertRedirect(localized_route('projects.show', $project));
-
-        $project = $project->fresh();
-
-        $this->assertFalse($project->interestedCommunityMembers->contains($communityMember));
-    }
-
-    public function test_confirmed_participants_can_participate_in_projects()
-    {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $entity = Entity::factory()->create();
-        $project = Project::factory()->create([
-            'entity_id' => $entity->id,
-            'published_at' => Carbon::now(),
-        ]);
-        $communityMember = CommunityMember::factory()->create();
-        $project->participants()->attach($communityMember->id, ['status' => 'confirmed']);
-
-        $response = $this->actingAs($communityMember->user)->get(localized_route('projects.participate', $project));
-
-        $response->assertOk();
-
-        $response = $this->actingAs($communityMember->user)->get(localized_route('projects.index-updates', $project));
-
-        $response->assertOk();
     }
 }

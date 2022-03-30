@@ -148,8 +148,6 @@ namespace App\Models{
  * @property-read int|null $access_supports_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
  * @property-read int|null $communities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
- * @property-read int|null $current_projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entity[] $entities
  * @property-read int|null $entities_count
  * @property-read string $phone_number
@@ -161,12 +159,8 @@ namespace App\Models{
  * @property-read int|null $media_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
- * @property-read int|null $past_projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethod[] $paymentMethods
  * @property-read int|null $payment_methods_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projectsOfInterest
  * @property-read int|null $projects_of_interest_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
@@ -571,35 +565,11 @@ namespace App\Models{
  * @property string|null $consultant_phone
  * @property mixed|null $consultant_responsibilities
  * @property mixed|null $team_training
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AccessSupport[] $accessSupports
- * @property-read int|null $access_supports_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunicationTool[] $communicationTools
- * @property-read int|null $communication_tools_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
- * @property-read int|null $communities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $confirmedParticipants
- * @property-read int|null $confirmed_participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ConsultingMethod[] $consultingMethods
- * @property-read int|null $consulting_methods_count
  * @property-read \App\Models\Entity $entity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $exitedParticipants
- * @property-read int|null $exited_participants_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $interestedCommunityMembers
- * @property-read int|null $interested_community_members_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
- * @property-read int|null $participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethod[] $paymentMethods
- * @property-read int|null $payment_methods_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $requestedParticipants
- * @property-read int|null $requested_participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $shortlistedParticipants
- * @property-read int|null $shortlisted_participants_count
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()

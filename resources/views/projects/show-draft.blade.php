@@ -12,7 +12,6 @@
         <div class="meta">
             <h3>{{ $project->name }}</h3>
             <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-            <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
         </div>
 
         <div class="stack" id="project-overview">

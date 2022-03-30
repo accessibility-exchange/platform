@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -229,35 +228,6 @@ class CommunityMember extends Model implements HasMedia
     /**
      * The projects that the community member belongs to.
      */
-    public function projects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class);
-    }
-
-    /**
-     * The past projects that the community member belongs to.
-     */
-    public function pastProjects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class)
-            ->whereDate('end_date', '<', Carbon::now())
-            ->orderBy('start_date');
-    }
-
-    /**
-     * The current projects that the community member belongs to.
-     */
-    public function currentProjects(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class)
-            ->whereDate('start_date', '<=', Carbon::now())
-            ->whereDate('end_date', '>=', Carbon::now())
-            ->orderBy('start_date');
-    }
-
-    /**
-     * The projects that the community member belongs to.
-     */
     public function projectsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'projects_of_interest');
@@ -269,56 +239,6 @@ class CommunityMember extends Model implements HasMedia
     public function entities(): BelongsToMany
     {
         return $this->belongsToMany(Entity::class);
-    }
-
-    public function projectMatches(Project $project): array
-    {
-        $matches = [
-            [
-                'name' => __('In your location'),
-                'value' => in_array($this->region, $project->regions),
-            ],
-            [
-                'name' => __('Accepts your payment methods'),
-                'value' => (count($this->paymentMethods->intersect($project->paymentMethods))) > 0 ? true : false,
-            ],
-            [
-                'name' => __('Interested in your sector'),
-                'value' => (count($this->sectors->intersect($project->sectors))) > 0 ? true : false,
-            ],
-            [
-                'name' => __('Interested in your project area'),
-                'value' => (count($this->impacts->intersect($project->impacts))) > 0 ? true : false,
-            ],
-        ];
-
-        if (count($project->communities) > 0) {
-            $matches[] = [
-                'name' => __('Community'),
-                'value' => (count($this->communities->intersect($project->communities))) > 0 ? true : false,
-            ];
-        }
-
-        return $matches;
-    }
-
-    public function projectMatch(Project $project): string
-    {
-        $projectMatches = $this->projectMatches($project);
-        $matchCount = array_filter($projectMatches, function ($key) {
-            return $key['value'];
-        });
-        $percentage = count($matchCount) / count($projectMatches);
-
-        if ($percentage == 1) {
-            return __('Matches <strong>all</strong> project criteria');
-        } elseif ($percentage > 0.5) {
-            return __('Matches <strong>most</strong> project criteria');
-        } elseif ($percentage > 0) {
-            return __('Matches <strong>some</strong> project criteria');
-        }
-
-        return __('Doesn’t match any project criteria');
     }
 
     public function publish(): void
