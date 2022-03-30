@@ -143,15 +143,15 @@ class Project extends Model
     {
         if ($this->end_date) {
             if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
-                return $this->start_date->translatedFormat('F') . '&mdash;' . $this->end_date->translatedFormat('F Y');
+                return $this->start_date->translatedFormat('F') . '&ndash;' . $this->end_date->translatedFormat('F Y');
             } else {
-                return $this->start_date->translatedFormat('F Y') . '&mdash;' . $this->end_date->translatedFormat('F Y');
+                return $this->start_date->translatedFormat('F Y') . '&ndash;' . $this->end_date->translatedFormat('F Y');
             }
         }
 
         return $this->start_date > Carbon::now()
-            ? __('project.starting', ['date' => $this->start_date->translatedFormat('F Y')])
-            : __('project.started', ['date' => $this->start_date->translatedFormat('F Y')]);
+            ? __('Starting :date', ['date' => $this->start_date->translatedFormat('F Y')])
+            : __('Started :date', ['date' => $this->start_date->translatedFormat('F Y')]);
     }
 
     /**

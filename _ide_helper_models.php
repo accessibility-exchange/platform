@@ -281,11 +281,35 @@ namespace App\Models{
 /**
  * App\Models\Engagement
  *
- * @property-read \App\Models\Project|null $project
+ * @property array $name
+ * @property int $project_id
+ * @property string $recruitment
+ * @property array $goals
+ * @property mixed|null $timeline
+ * @property mixed|null $meetings
+ * @property mixed|null $reporting
+ * @property mixed|null $other_reporting
+ * @property mixed|null $contacts
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Project $project
  * @method static \Database\Factories\EngagementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereContacts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereGoals($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereMeetings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereOtherReporting($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereRecruitment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereReporting($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereTimeline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereUpdatedAt($value)
  */
     class Engagement extends \Eloquent
     {
