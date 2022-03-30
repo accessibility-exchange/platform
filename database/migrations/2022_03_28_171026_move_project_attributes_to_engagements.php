@@ -53,6 +53,8 @@ return new class extends Migration {
                 ->on('projects')
                 ->nullable();
             $table->renameColumn('impact', 'scope');
+            $table->date('start_date')->nullable()->change();
+            $table->json('languages')->nullable();
             $table->json('outcomes')->nullable();
             $table->boolean('public_outcomes')->nullable();
             $table->string('team_size')->nullable();
@@ -80,6 +82,7 @@ return new class extends Migration {
         Schema::table('projects', function (Blueprint $table) {
             $table->json('regions')->nullable();
             $table->renameColumn('scope', 'impact');
+            $table->date('start_date')->nullable(false)->change();
             $table->boolean('virtual_consultation')->nullable();
             $table->json('timeline')->nullable();
             $table->json('payment_terms')->nullable();
@@ -114,6 +117,7 @@ return new class extends Migration {
             $table->boolean('published_accessibility_plan')->nullable();
             $table->dropColumn([
                 'ancestor_id',
+                'languages',
                 'outcomes',
                 'public_outcomes',
                 'team_size',

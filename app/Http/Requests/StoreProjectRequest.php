@@ -27,8 +27,6 @@ class StoreProjectRequest extends FormRequest
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
             'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:projects',
             'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:projects',
-            'start_date' => 'required|date',
-            'end_date' => 'date|nullable',
             'entity_id' => 'required|integer',
             'ancestor_id' => 'nullable|integer',
         ];

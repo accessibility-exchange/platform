@@ -6,14 +6,6 @@
         </h1>
         <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
         <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
-        @if($project->started())
-        <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
-        @else
-        <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
-        @endif
-        @if($project->completed())
-        <p><strong>{{ __('Completed') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
-        @endif
         @if(!$project->completed() && Auth::user()->communityMember)
         @if($project->confirmedParticipants->contains(Auth::user()->communityMember))
         <p><a href="{{ localized_route('projects.participate', $project) }}" class="button">{{ __('Project dashboard') }}</a></p>

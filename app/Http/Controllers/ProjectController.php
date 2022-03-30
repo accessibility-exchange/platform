@@ -10,6 +10,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\CommunityMember;
 use App\Models\Entity;
+use App\Models\Impact;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
 use CommerceGuys\Intl\Language\LanguageRepository;
@@ -130,6 +131,8 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
+        $data['languages'] = session()->get('languages');
+
         $project = Project::create($data);
 
         flash(__('Your project has been created.'), 'success');
@@ -160,7 +163,10 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): View
     {
-        return view('projects.edit', ['project' => $project]);
+        return view('projects.edit', [
+            'project' => $project,
+            'impacts' => Impact::pluck('name', 'id')->toArray(),
+        ]);
     }
 
     /**
@@ -174,6 +180,8 @@ class ProjectController extends Controller
     {
         $project->fill($request->validated());
         $project->save();
+
+        $project->impacts()->sync($data['impacts'] ?? []);
 
         flash(__('Your project has been updated.'), 'success');
 

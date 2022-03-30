@@ -28,12 +28,31 @@ class ProjectTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
         $response->assertOk();
 
-        $response = $this->actingAs($user)->post(localized_route('projects.create', $entity), [
-            'entity_id' => $entity->id,
-            'name' => ['en' => 'Test Project'],
+        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $entity), [
+            'context' => 'new',
         ]);
 
-        $url = localized_route('projects.show', ['project' => 'test-project']);
+        $response->assertSessionHas('context', 'new');
+
+        $response = $this->actingAs($user)->post(localized_route('projects.store-focus', $entity), [
+            'focus' => 'define',
+        ]);
+
+        $response->assertSessionHas('focus', 'define');
+
+        $response = $this->actingAs($user)->post(localized_route('projects.store-languages', $entity), [
+            'languages' => ['en', 'fr', 'ase', 'fcs'],
+        ]);
+
+        $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+
+        $response = $this->actingAs($user)->post(localized_route('projects.store', $entity), [
+            'entity_id' => $entity->id,
+            'name' => ['en' => 'Test Project'],
+            'start_date' => '2022-04-01',
+        ]);
+
+        $url = localized_route('projects.edit', ['project' => 'test-project']);
 
         $response->assertSessionHasNoErrors();
 
@@ -147,12 +166,10 @@ class ProjectTest extends TestCase
         $response->assertOk();
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
-            'name' => ['en' => 'My renamed accessibility project'],
+            'goals' => ['en' => 'Some new goals'],
         ]);
 
-        $updated_project = Project::where('name->en', 'My renamed accessibility project')->first();
-
-        $response->assertRedirect(localized_route('projects.show', $updated_project));
+        $response->assertRedirect(localized_route('projects.show', $project));
     }
 
     public function test_users_without_entity_admin_role_cannot_edit_projects()
@@ -321,69 +338,6 @@ class ProjectTest extends TestCase
         $project = $project->fresh();
 
         $this->assertFalse($project->interestedCommunityMembers->contains($communityMember));
-    }
-
-    public function test_community_members_can_be_attached_to_projects()
-    {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $shortlisted_community_member = CommunityMember::factory()->create();
-        $requested_community_member = CommunityMember::factory()->create();
-
-        $entity = Entity::factory()
-            ->hasAttached($user, ['role' => 'admin'])
-            ->create();
-        $project = Project::factory()->create([
-            'entity_id' => $entity->id,
-            'published_at' => Carbon::now(),
-        ]);
-
-        $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
-
-        $response->assertOk();
-
-        $response->assertSee('Participant shortlist');
-
-        $response = $this->actingAs($user)->get(localized_route('projects.find-all-participants', $project));
-
-        $response->assertOk();
-
-        // Add two community_members to shortlist.
-        $response = $this->actingAs($user)->from(localized_route('projects.find-all-participants', $project))->put(localized_route('projects.add-participant', $project), [
-            'participant_id' => $shortlisted_community_member->id,
-        ]);
-
-        $response->assertSessionHasNoErrors();
-
-        $response = $this->actingAs($user)->from(localized_route('projects.find-all-participants', $project))->put(localized_route('projects.add-participant', $project), [
-            'participant_id' => $requested_community_member->id,
-        ]);
-
-        $response->assertSessionHasNoErrors();
-
-        $project = $project->fresh();
-
-        $this->assertEquals(2, count($project->shortlistedParticipants));
-
-        // Request service from one community_member.
-        $response = $this->actingAs($user)->from(localized_route('projects.manage', $project))->put(localized_route('projects.update-participant', $project), [
-            'participant_id' => $requested_community_member->id,
-            'status' => 'requested',
-        ]);
-
-        $response->assertSessionHasNoErrors();
-
-        $project = $project->fresh();
-
-        $this->assertEquals(1, count($project->shortlistedParticipants));
-        $this->assertEquals(1, count($project->requestedParticipants));
-
-        // Verify community_member project counts.
-        $this->assertEquals(1, count($shortlisted_community_member->projects));
-        $this->assertEquals(1, count($requested_community_member->projects));
     }
 
     public function test_confirmed_participants_can_participate_in_projects()

@@ -551,6 +551,8 @@ namespace App\Models{
  * @property int $id
  * @property array $name
  * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
  * @property int $entity_id
  * @property array|null $goals
  * @property array|null $scope
@@ -559,8 +561,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $ancestor_id
- * @property mixed|null $outcomes
- * @property int|null $public_outcomes
+ * @property array|null $languages
+ * @property array|null $outcomes
+ * @property bool|null $public_outcomes
  * @property string|null $team_size
  * @property int|null $has_consultant
  * @property string|null $consultant_name
@@ -609,10 +612,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantResponsibilities($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEntityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereGoals($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereHasConsultant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLanguages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
@@ -620,6 +625,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTraining($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)

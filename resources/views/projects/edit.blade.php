@@ -1,25 +1,19 @@
 
-<x-app-layout>
-    <x-slot name="title">{{ __('Create new project') }}</x-slot>
+<x-app-wide-layout>
+    <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
-        <h1>
-            @switch(request()->get('step'))
-            @case(1)
-            {{ __('Create new project') }}
-            @break
-            @default
-            {{ __('Create new project') }}
-        @endswitch
-        </h1>
+        <h1>{{ $project->name }}</h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    @if(request()->get('step'))
+    <div class="center">
+        @if(request()->get('step'))
         @include('projects.edit.steps.' . request()->get('step'))
-    @else
+        @else
         @include('projects.edit.steps.1')
-    @endif
+        @endif
+    </div>
 
-</x-app-layout>
+</x-app-wide-layout>

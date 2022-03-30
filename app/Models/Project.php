@@ -31,12 +31,15 @@ class Project extends Model
     protected $fillable = [
         'name',
         'entity_id',
+        'languages',
         'start_date',
         'end_date',
         'published_at',
         'goals',
         'scope',
         'out_of_scope',
+        'outcomes',
+        'public_outcomes',
     ];
 
     /**
@@ -46,9 +49,11 @@ class Project extends Model
      */
     protected $casts = [
         'name' => 'array',
+        'languages' => 'array',
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
+        'public_outcomes' => 'boolean',
     ];
 
     /**
@@ -61,6 +66,7 @@ class Project extends Model
         'goals',
         'scope',
         'out_of_scope',
+        'outcomes',
     ];
 
     /**

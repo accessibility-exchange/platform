@@ -9,10 +9,6 @@
         <x-hearth-input type="hidden" name="ancestor_id" :value="session()->get('ancestor')" />
 
         <x-translatable-input name="name" :locales="session()->get('languages')" :label="__('Project name')" :value="old('name', '')" />
-
-        <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', '')" />
-
-        <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', '')" />
     </fieldset>
 
     <p class="repel">

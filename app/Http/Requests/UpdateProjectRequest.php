@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Project;
+use App\Models\Impact;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,21 +26,18 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name.*' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(Project::class)->ignore($this->project->id),
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+            'goals.*' => 'string|nullable',
+            'scope.*' => 'string|nullable',
+            'impacts' => [
+                'nullable',
+                'array',
+                Rule::in(Impact::pluck('id')->toArray()),
             ],
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
-            'start_date' => 'required|date',
-            'end_date' => 'date|nullable',
-            'goals' => 'string|nullable',
-            'impact' => 'string|nullable',
-            'out_of_scope' => 'string|nullable',
-            'virtual_consultation' => 'boolean',
-            'timeline' => 'string|nullable',
+            'out_of_scope.*' => 'string|nullable',
+            'outcomes.*' => 'string|nullable',
+            'public_outcomes' => 'boolean',
         ];
     }
 
