@@ -9,7 +9,7 @@
 
     <h3>{{ __('Project goals') }}</h3>
 
-    <x-translatable-textarea name="goals" :label="__('What are your goals for this project?')" :model="$project" />
+    <x-translatable-textarea name="goals" :label="__('What are your goals for this project? (required)')" :model="$project" />
 
     <h3>{{ __('Project scope') }}</h3>
 
@@ -32,6 +32,11 @@
     <h3>{{ __('Project outcomes') }}</h3>
 
     <x-translatable-textarea name="outcomes" :label="__('What are the tangible outcomes of this project?')" :model="$project" />
+
+    <fieldset class="field @error('public_outcomes') field--error @enderror stack">
+        <legend>{{ __('Will the outcomes be made publicly available?') }}</legend>
+        <x-hearth-radio-buttons name="public_outcomes" :label="__('Will the outcomes be made publicly available?')" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('public_outcomes', $project->public_outcomes)"  />
+    </fieldset>
 
     <x-hearth-button>{{ __('Create project') }}</x-hearth-button>
 </form>

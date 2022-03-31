@@ -1,12 +1,12 @@
 <x-app-wide-layout>
-    <x-slot name="title">{{ $project->name }}</x-slot>
+    <x-slot name="title">{{ $project->name }}@if($project->checkStatus('draft')) ({{ __('draft') }})@endif</x-slot>
     <x-slot name="header">
         <h1 id="project">
-            {{ $project->name }}
+            {{ $project->name }}@if($project->checkStatus('draft')) ({{ __('draft') }})@endif
         </h1>
         <p><strong>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</strong></p>
         <p><strong>{{ __('Project status') }}:</strong> @if($project->started()){{ __('In progress') }}@else{{ __('Not started') }}@endif</p>
-        @if($project->started())
+        @if($project->start_date && $project->started())
         <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @endif
         @if(Auth::user()->communityMember)
@@ -33,7 +33,7 @@
                 <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish')" />
             </form>
         @endif
-        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Project dashboard') }}</a>
+        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a>
         @endcan
     </x-slot>
 

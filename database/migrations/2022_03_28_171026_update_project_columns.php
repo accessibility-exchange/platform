@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RemoveExtraneousProjectColumns extends Migration
+class UpdateProjectColumns extends Migration
 {
     /**
      * Run the migrations.
@@ -59,12 +59,15 @@ class RemoveExtraneousProjectColumns extends Migration
             $table->json('outcomes')->nullable();
             $table->boolean('public_outcomes')->nullable();
             $table->string('team_size')->nullable();
+            $table->boolean('team_has_disability_or_deaf_lived_experience')->default(false);
+            $table->boolean('team_has_other_lived_experience')->default(false);
+            $table->json('team_languages')->nullable();
             $table->boolean('has_consultant')->nullable();
             $table->string('consultant_name')->nullable();
             $table->string('consultant_email')->nullable();
             $table->string('consultant_phone')->nullable();
             $table->json('consultant_responsibilities')->nullable();
-            $table->json('team_training')->nullable();
+            $table->json('team_trainings')->nullable();
         });
     }
 
@@ -117,12 +120,15 @@ class RemoveExtraneousProjectColumns extends Migration
                 'outcomes',
                 'public_outcomes',
                 'team_size',
+                'team_has_disability_or_deaf_lived_experience',
+                'team_has_other_lived_experience',
+                'team_languages',
                 'has_consultant',
                 'consultant_name',
                 'consultant_email',
                 'consultant_phone',
                 'consultant_responsibilities',
-                'team_training',
+                'team_trainings',
             ]);
         });
     }

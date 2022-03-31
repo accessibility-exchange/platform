@@ -583,17 +583,24 @@ namespace App\Models{
  * @property array|null $outcomes
  * @property bool|null $public_outcomes
  * @property string|null $team_size
- * @property int|null $has_consultant
+ * @property bool $team_has_disability_or_deaf_lived_experience
+ * @property bool $team_has_other_lived_experience
+ * @property array|null $team_languages
+ * @property bool|null $has_consultant
  * @property string|null $consultant_name
  * @property string|null $consultant_email
  * @property string|null $consultant_phone
- * @property mixed|null $consultant_responsibilities
- * @property mixed|null $team_training
+ * @property array|null $consultant_responsibilities
+ * @property array|null $team_trainings
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
+ * @property-read int|null $engagements_count
  * @property-read \App\Models\Entity $entity
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $upcomingEngagements
+ * @property-read int|null $upcoming_engagements_count
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
@@ -620,8 +627,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasDisabilityOrDeafLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasOtherLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamLanguages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTraining($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTrainings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  */
     class Project extends \Eloquent

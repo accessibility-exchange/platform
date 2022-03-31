@@ -29,6 +29,8 @@ class UpdateProjectRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'goals.*' => 'string|nullable',
+            'goals.en' => 'required_without:goals.fr|nullable|string',
+            'goals.fr' => 'required_without:goals.en|nullable|string',
             'scope.*' => 'string|nullable',
             'impacts' => [
                 'nullable',

@@ -147,10 +147,6 @@ class ProjectController extends Controller
      */
     public function show(Project $project): View
     {
-        if ($project->checkStatus('draft')) {
-            return view('projects.show-draft', ['project' => $project]);
-        }
-
         return view('projects.show', ['project' => $project]);
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Sluggable\HasSlug;
@@ -38,6 +39,16 @@ class Project extends Model
         'out_of_scope',
         'outcomes',
         'public_outcomes',
+        'team_size',
+        'team_has_disability_or_deaf_lived_experience',
+        'team_has_other_lived_experience',
+        'team_languages',
+        'has_consultant',
+        'consultant_name',
+        'consultant_email',
+        'consultant_phone',
+        'consultant_responsibilities',
+        'team_trainings',
     ];
 
     /**
@@ -52,6 +63,11 @@ class Project extends Model
         'end_date' => 'datetime:Y-m-d',
         'published_at' => 'datetime:Y-m-d',
         'public_outcomes' => 'boolean',
+        'team_has_disability_or_deaf_lived_experience' => 'boolean',
+        'team_has_other_lived_experience' => 'boolean',
+        'team_languages' => 'array',
+        'has_consultant' => 'boolean',
+        'team_trainings' => 'array',
     ];
 
     /**
@@ -65,6 +81,7 @@ class Project extends Model
         'scope',
         'out_of_scope',
         'outcomes',
+        'consultant_responsibilities',
     ];
 
     /**
@@ -137,10 +154,14 @@ class Project extends Model
     /**
      * Get the project's timespan.
      *
-     * @return string
+     * @return string|false
      */
-    public function timespan(): string
+    public function timespan(): mixed
     {
+        if (! $this->start_date) {
+            return false;
+        }
+
         if ($this->end_date) {
             if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
                 return $this->start_date->translatedFormat('F') . '&ndash;' . $this->end_date->translatedFormat('F Y');
@@ -182,5 +203,26 @@ class Project extends Model
     public function sectors(): BelongsToMany
     {
         return $this->entity->belongsToMany(Sector::class);
+    }
+
+    /**
+     * The engagements that are part of this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function engagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class);
+    }
+
+    /**
+     * The engagements that are part of this project which have not yet started.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function upcomingEngagements(): HasMany
+    {
+        // TODO: Filter engagements
+        return $this->engagements();
     }
 }

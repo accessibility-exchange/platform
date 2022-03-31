@@ -127,6 +127,15 @@ class ProjectTest extends TestCase
 
         $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
         $response->assertOk();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show-team', $project));
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show-engagements', $project));
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
+        $response->assertOk();
     }
 
     public function test_guests_cannot_view_projects()
