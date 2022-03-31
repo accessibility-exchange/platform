@@ -23,16 +23,16 @@ jobs:
       - name: Deploy stack
         uses: appleboy/ssh-action@master
         with:
-          host:           ${{ secrets.SSH_HOSTNAME }}
-          username:       ${{ secrets.SSH_USERNAME }}
-          key:            ${{ secrets.SSH_PRIVATE_KEY }}
-          port:           ${{ secrets.SSH_PORT }}
-          proxy_host:     ${{ secrets.SSH_PROXY_HOSTNAME }}
+          host: ${{ secrets.SSH_HOSTNAME }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOSTNAME }}
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
-          proxy_key:      ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
-          proxy_port:     ${{ secrets.SSH_PROXY_PORT }}
+          proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
+          proxy_port: ${{ secrets.SSH_PROXY_PORT }}
           script: |
-            cd /srv/aina-dev && \
+            cd /srv/tae-dev && \
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
@@ -47,7 +47,7 @@ jobs:
         run: sleep 15
 
       - name: Smoke test
-        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://aina-dev.inclusivedesign.ca
+        run: curl --location --no-buffer --retry 120 --retry-delay 1 https://tae-dev.inclusivedesign.ca
 
       - name: Update deployment status
         uses: bobheadxi/deployments@v0.6.0
@@ -57,4 +57,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env_url: https://aina-dev.inclusivedesign.ca
+          env_url: https://tae-dev.inclusivedesign.ca
