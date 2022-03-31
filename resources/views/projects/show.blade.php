@@ -39,59 +39,39 @@
 
     <div class="with-sidebar">
         <div class="stack">
-            {{-- TODO: Sidebar. --}}
+            <nav aria-labelledby="project">
+                <ul role="list">
+                    <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">
+                        {{ __('Project overview') }}
+                    </x-nav-link>
+                    <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->routeIs(locale() . '.projects.show-team')">
+                        {{ __('Project team') }}
+                    </x-nav-link>
+                    <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->routeIs(locale() . '.projects.show-engagements')">
+                        {{ __('Engagements') }}
+                    </x-nav-link>
+                    <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->routeIs(locale() . '.projects.show-outcomes')">
+                        {{ __('Outcomes and reports') }}
+                    </x-nav-link>
+                </ul>
+            </nav>
         </div>
         <div class="stack">
+            @if(request()->routeIs(locale() . '.projects.show'))
             <h2>{{ __('Project overview') }}</h2>
-
-            @if($project->goals)
-            <h3>{{ __('Project goals') }}</h3>
-
-            <x-markdown class="stack">{{ $project->goals }}</x-markdown>
-            @endif
-
-            @if($project->scope || $project->impacts || $project->out_of_scope)
-                <h3>{{ __('Project impact') }}</h3>
-
-                @if($project->scope)
-                <h4>{{ __('Who will this project impact?') }}</h4>
-
-                <x-markdown class="stack">{{ $project->scope }}</x-markdown>
-                @endif
-
-                @if($project->impacts)
-                <h4>{{ __('What areas of your organization will this project impact?') }}</h4>
-
-                <ul role="list" class="tags">
-                    @foreach($project->impacts as $impact)
-                    <li class="tag">{{ $impact->name }}</li>
-                    @endforeach
-                </ul>
-                @endif
-
-                @if($project->out_of_scope)
-                <h4>{{ __('What is out of scope?') }}</h4>
-
-                <x-markdown class="stack">{{ $project->out_of_scope }}</x-markdown>
-                @endif
-            @endif
-
-            @if($project->start_date || $project->end_date)
-            <h3>{{ __('Project timeframe') }}</h3>
-
-            <p>{!! $project->timespan() !!}</p>
-            @endif
-
-            @if($project->outcomes)
-            <h3>{{ __('Project outcomes') }}</h3>
-
-            <h4>{{ __('What are the tangible outcomes of this project?') }}</h4>
-
-            <x-markdown class="stack">{{ $project->outcomes }}</x-markdown>
-            @endif
-
-            {{-- TODO: Engagements. --}}
+            @include('projects.partials.overview')
+        @elseif(request()->routeIs(locale() . '.projects.show-team'))
+            <h2>{{ __('Project team') }}</h2>
+            @include('projects.partials.team')
+        @elseif(request()->routeIs(locale() . '.projects.show-engagements'))
+            <h2>{{ __('Engagements') }}</h2>
+            @include('projects.partials.engagements')
+        @elseif(request()->routeIs(locale() . '.projects.show-outcomes'))
+            <h2>{{ __('Outcomes and reports') }}</h2>
+            @include('projects.partials.outcomes')
+        @endif
         </div>
     </div>
+    {{-- TODO: Contact project team. --}}
 
 </x-app-wide-layout>

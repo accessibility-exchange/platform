@@ -33,6 +33,18 @@ Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->middleware(['auth'])
     ->name('projects.show');
 
+Route::multilingual('/projects/{project}/team', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-team');
+
+Route::multilingual('/projects/{project}/engagements', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-engagements');
+
+Route::multilingual('/projects/{project}/outcomes', [ProjectController::class, 'show'])
+    ->middleware(['auth'])
+    ->name('projects.show-outcomes');
+
 Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
     ->middleware(['auth', 'can:update,project'])
     ->name('projects.edit');
