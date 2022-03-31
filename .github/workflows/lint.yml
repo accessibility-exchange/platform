@@ -1,4 +1,4 @@
-name: Lint JS and Sass assets
+name: Lint JS and CSS assets
 
 on:
   push:
