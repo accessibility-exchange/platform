@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectLanguagesRequest extends FormRequest
+class UpdateProjectOutcomesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreProjectLanguagesRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,7 +24,7 @@ class StoreProjectLanguagesRequest extends FormRequest
     public function rules()
     {
         return [
-            'languages' => 'required|array|min:1',
+            //
         ];
     }
 }

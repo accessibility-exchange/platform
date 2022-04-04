@@ -7,7 +7,10 @@ use App\Http\Requests\StoreProjectContextRequest;
 use App\Http\Requests\StoreProjectFocusRequest;
 use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectOutcomesRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Requests\UpdateProjectTeamRequest;
+use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\Project;
@@ -60,6 +63,7 @@ class ProjectController extends Controller
                 '' => __('Choose a language…'),
 
             ] + Arr::sort($languages),
+            'impacts' => Impact::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -136,7 +140,7 @@ class ProjectController extends Controller
 
         flash(__('Your project has been created.'), 'success');
 
-        return redirect(\localized_route('projects.edit', ['project' => $project]));
+        return redirect(\localized_route('projects.edit', ['project' => $project, 'step' => 2]));
     }
 
     /**
@@ -158,9 +162,26 @@ class ProjectController extends Controller
      */
     public function edit(Project $project): View
     {
+        $languages = (new LanguageRepository)->getAll();
+
+        foreach ($languages as $key => $language) {
+            $languages[$key] = $language->getName();
+        }
+
+        $languages = $languages + [
+            'ase' => __('American Sign Language'),
+            'fcs' => __('Quebec Sign Language'),
+        ];
+
         return view('projects.edit', [
             'project' => $project,
+            'languages' => [
+                '' => __('Choose a language…'),
+            ] + Arr::sort($languages),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
+            'consultants' => [
+                '' => __('Choose an accessibility consultant…'),
+            ] + CommunityMember::pluck('name', 'id')->toArray(), // TODO: Only select accessibility consultants
         ]);
     }
 
@@ -178,11 +199,45 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->save();
 
-        $project->impacts()->sync($data['impacts'] ?? []);
+        if (isset($data['impacts'])) {
+            $project->impacts()->sync($data['impacts'] ?? []);
+        }
 
-        flash(__('Your project has been updated.'), 'success');
+        return $project->handleUpdateRequest($request, 1);
+    }
 
-        return redirect(\localized_route('projects.show', $project));
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateProjectTeamRequest  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateTeam(UpdateProjectTeamRequest $request, Project $project): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $project->fill($data);
+        $project->save();
+
+        return $project->handleUpdateRequest($request, 2);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateProjectOutcomesRequest  $request
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateOutcomes(UpdateProjectOutcomesRequest $request, Project $project): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $project->fill($data);
+        $project->save();
+
+        return $project->handleUpdateRequest($request, 1);
     }
 
     /**

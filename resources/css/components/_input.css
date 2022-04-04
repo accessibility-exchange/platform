@@ -189,6 +189,7 @@ legend {
 /** Errors **/
 .field--error,
 .field--error .field__hint,
+.field--error legend,
 .field__error {
     color: var(--input-error-color);
 }

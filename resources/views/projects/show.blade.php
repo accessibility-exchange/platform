@@ -40,19 +40,27 @@
     <div class="with-sidebar">
         <div class="stack">
             <nav aria-labelledby="project">
-                <ul role="list">
-                    <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">
-                        {{ __('Project overview') }}
-                    </x-nav-link>
-                    <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->routeIs(locale() . '.projects.show-team')">
-                        {{ __('Project team') }}
-                    </x-nav-link>
-                    <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->routeIs(locale() . '.projects.show-engagements')">
-                        {{ __('Engagements') }}
-                    </x-nav-link>
-                    <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->routeIs(locale() . '.projects.show-outcomes')">
-                        {{ __('Outcomes and reports') }}
-                    </x-nav-link>
+                <ul class="stack" role="list">
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">
+                            {{ __('Project overview') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->routeIs(locale() . '.projects.show-team')">
+                            {{ __('Project team') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->routeIs(locale() . '.projects.show-engagements')">
+                            {{ __('Engagements') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->routeIs(locale() . '.projects.show-outcomes')">
+                            {{ __('Outcomes and reports') }}
+                        </x-nav-link>
+                    </li>
                 </ul>
             </nav>
         </div>

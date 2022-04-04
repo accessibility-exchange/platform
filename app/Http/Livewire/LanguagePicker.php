@@ -6,12 +6,13 @@ use Livewire\Component;
 
 class LanguagePicker extends Component
 {
+    public string $name = 'languages';
     public array $languages = [];
     public array $availableLanguages = [];
 
-    public function mount(array $languages)
+    public function mount(array $languages, string $name)
     {
-        $this->languages = old('languages', $languages);
+        $this->languages = old($this->name, $languages);
     }
 
     public function addLanguage(): void

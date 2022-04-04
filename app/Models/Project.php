@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class Project extends Model
@@ -19,7 +18,6 @@ class Project extends Model
     use HasFactory;
     use HasStatus;
     use HasTranslations;
-    use HasSlug;
     use Notifiable;
 
     /**
@@ -43,10 +41,10 @@ class Project extends Model
         'team_has_disability_or_deaf_lived_experience',
         'team_has_other_lived_experience',
         'team_languages',
+        'contacts',
         'has_consultant',
         'consultant_name',
-        'consultant_email',
-        'consultant_phone',
+        'consultant_id',
         'consultant_responsibilities',
         'team_trainings',
     ];
@@ -66,6 +64,7 @@ class Project extends Model
         'team_has_disability_or_deaf_lived_experience' => 'boolean',
         'team_has_other_lived_experience' => 'boolean',
         'team_languages' => 'array',
+        'contacts' => 'array',
         'has_consultant' => 'boolean',
         'team_trainings' => 'array',
     ];
@@ -118,28 +117,6 @@ class Project extends Model
             'shared_plans_with_participants',
         ],
     ];
-
-    /**
-     * Get the options for generating the slug.
-     *
-     * @return \Spatie\Sluggable\SlugOptions
-     */
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
 
     /**
      * Has the project started?
@@ -215,6 +192,15 @@ class Project extends Model
         return $this->hasMany(Engagement::class);
     }
 
+    public function consultant_origin()
+    {
+        if ($this->consultant_name) {
+            return 'external';
+        }
+
+        return 'platform';
+    }
+
     /**
      * The engagements that are part of this project which have not yet started.
      *
@@ -224,5 +210,36 @@ class Project extends Model
     {
         // TODO: Filter engagements
         return $this->engagements();
+    }
+
+    public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
+    {
+        if (! $request->input('publish') || ! $request->input('unpublish')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft project has been updated.'), 'success');
+            } else {
+                flash(__('Your project has been updated.'), 'success');
+            }
+        }
+
+        if ($request->input('save')) {
+            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+        } elseif ($request->input('save_and_previous')) {
+            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step - 1]));
+        } elseif ($request->input('save_and_next')) {
+            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step + 1]));
+        } elseif ($request->input('preview')) {
+            return redirect(\localized_route('projects.show', $this));
+        } elseif ($request->input('publish')) {
+            $this->publish();
+
+            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+        } elseif ($request->input('unpublish')) {
+            $this->unpublish();
+
+            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+        }
+
+        return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
     }
 }

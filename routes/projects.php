@@ -54,6 +54,11 @@ Route::multilingual('/projects/{project}/update', [ProjectController::class, 'up
     ->method('put')
     ->name('projects.update');
 
+Route::multilingual('/projects/{project}/update-team', [ProjectController::class, 'updateTeam'])
+    ->middleware(['auth', 'can:update,project'])
+    ->method('put')
+    ->name('projects.update-team');
+
 Route::multilingual('/projects/{project}/update-publication-status', [ProjectController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,project'])
     ->method('put')

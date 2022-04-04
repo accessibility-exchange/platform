@@ -568,7 +568,6 @@ namespace App\Models{
  *
  * @property int $id
  * @property array $name
- * @property string $slug
  * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
  * @property int $entity_id
@@ -586,10 +585,10 @@ namespace App\Models{
  * @property bool $team_has_disability_or_deaf_lived_experience
  * @property bool $team_has_other_lived_experience
  * @property array|null $team_languages
+ * @property array|null $contacts
  * @property bool|null $has_consultant
  * @property string|null $consultant_name
- * @property string|null $consultant_email
- * @property string|null $consultant_phone
+ * @property int|null $consultant_id
  * @property array|null $consultant_responsibilities
  * @property array|null $team_trainings
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
@@ -608,10 +607,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project status($status)
  * @method static \Illuminate\Database\Eloquent\Builder|Project statusIn($statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereAncestorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantResponsibilities($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereContacts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEntityId($value)
@@ -625,7 +624,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasDisabilityOrDeafLivedExperience($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasOtherLivedExperience($value)

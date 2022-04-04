@@ -257,37 +257,21 @@ class CommunityMember extends Model implements HasMedia
 
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
     {
-        if ($request->input('save')) {
+        if (! $request->input('publish') || ! $request->input('unpublish')) {
             if ($this->checkStatus('draft')) {
                 flash(__('Your draft community member page has been updated.'), 'success');
             } else {
                 flash(__('Your community member page has been updated.'), 'success');
             }
+        }
 
+        if ($request->input('save')) {
             return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
         } elseif ($request->input('save_and_previous')) {
-            if ($this->checkStatus('draft')) {
-                flash(__('Your draft community member page has been updated.'), 'success');
-            } else {
-                flash(__('Your community member page has been updated.'), 'success');
-            }
-
             return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step - 1]));
         } elseif ($request->input('save_and_next')) {
-            if ($this->checkStatus('draft')) {
-                flash(__('Your draft community member page has been updated.'), 'success');
-            } else {
-                flash(__('Your community member page has been updated.'), 'success');
-            }
-
             return redirect(\localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step + 1]));
         } elseif ($request->input('preview')) {
-            if ($this->checkStatus('draft')) {
-                flash(__('Your draft community member page has been updated.'), 'success');
-            } else {
-                flash(__('Your community member page has been updated.'), 'success');
-            }
-
             return redirect(\localized_route('community-members.show', $this));
         } elseif ($request->input('publish')) {
             $this->publish();

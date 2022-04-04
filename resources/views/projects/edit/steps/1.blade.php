@@ -7,6 +7,10 @@
     @method('put')
     @csrf
 
+    <h3>{{ __('Project name') }}</h3>
+
+    <x-translatable-input name="name" :label="__('Project name')" :model="$project" />
+
     <h3>{{ __('Project goals') }}</h3>
 
     <x-translatable-textarea name="goals" :label="__('What are your goals for this project? (required)')" :model="$project" />
@@ -25,9 +29,9 @@
 
     <h3>{{ __('Project timeframe') }}</h3>
 
-    <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', '')" />
+    <x-hearth-date-input :label="__('Project start date')" name="start_date" :value="old('start_date', $project->start_date)" />
 
-    <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', '')" />
+    <x-hearth-date-input :label="__('Project end date')" name="end_date" :value="old('end_date', $project->end_date)" />
 
     <h3>{{ __('Project outcomes') }}</h3>
 
@@ -35,8 +39,12 @@
 
     <fieldset class="field @error('public_outcomes') field--error @enderror stack">
         <legend>{{ __('Will the outcomes be made publicly available?') }}</legend>
-        <x-hearth-radio-buttons name="public_outcomes" :label="__('Will the outcomes be made publicly available?')" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('public_outcomes', $project->public_outcomes)"  />
+        <x-hearth-radio-buttons name="public_outcomes" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('public_outcomes', $project->public_outcomes)"  />
     </fieldset>
 
-    <x-hearth-button>{{ __('Create project') }}</x-hearth-button>
+    <p class="repel">
+        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
+        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+    </p>
 </form>

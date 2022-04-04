@@ -15,6 +15,7 @@ class UpdateProjectColumns extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->dropColumn([
+                'slug',
                 'regions',
                 'virtual_consultation',
                 'timeline',
@@ -59,13 +60,16 @@ class UpdateProjectColumns extends Migration
             $table->json('outcomes')->nullable();
             $table->boolean('public_outcomes')->nullable();
             $table->string('team_size')->nullable();
-            $table->boolean('team_has_disability_or_deaf_lived_experience')->default(false);
-            $table->boolean('team_has_other_lived_experience')->default(false);
+            $table->boolean('team_has_disability_or_deaf_lived_experience')->nullable();
+            $table->boolean('team_has_other_lived_experience')->nullable();
             $table->json('team_languages')->nullable();
+            $table->json('contacts')->nullable();
             $table->boolean('has_consultant')->nullable();
             $table->string('consultant_name')->nullable();
-            $table->string('consultant_email')->nullable();
-            $table->string('consultant_phone')->nullable();
+            $table->bigInteger('consultant_id')
+                ->references('id')
+                ->on('community_members')
+                ->nullable();
             $table->json('consultant_responsibilities')->nullable();
             $table->json('team_trainings')->nullable();
         });
@@ -79,6 +83,7 @@ class UpdateProjectColumns extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
+            $table->string('slug');
             $table->json('regions')->nullable();
             $table->renameColumn('scope', 'impact');
             $table->date('start_date')->nullable(false)->change();
@@ -123,10 +128,10 @@ class UpdateProjectColumns extends Migration
                 'team_has_disability_or_deaf_lived_experience',
                 'team_has_other_lived_experience',
                 'team_languages',
+                'contacts',
                 'has_consultant',
                 'consultant_name',
-                'consultant_email',
-                'consultant_phone',
+                'consultant_id',
                 'consultant_responsibilities',
                 'team_trainings',
             ]);
