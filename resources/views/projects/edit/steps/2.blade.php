@@ -34,7 +34,7 @@
 
     <fieldset class="field stack">
         <legend class="h4">{{ __('Team contacts') }}</legend>
-        <livewire:contact-people />
+        <livewire:contacts :contacts="old('contacts', $project->contacts ?? [['name' => '', 'email' => '', 'phone' => '']])" />
     </fieldset>
 
     <div class="stack" x-data="{ hasConsultant: '{{ old('has_consultant', $project->has_consultant) }}' }">
@@ -61,7 +61,7 @@
 
     <fieldset class="field stack">
         <legend class="h4">{{ __('Team trainings') }}</legend>
-        <livewire:trainings />
+        <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => '']])">
     </fieldset>
 
     <p class="repel">

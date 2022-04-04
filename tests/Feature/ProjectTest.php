@@ -49,11 +49,16 @@ class ProjectTest extends TestCase
             'entity_id' => $entity->id,
             'name' => ['en' => 'Test Project'],
             'start_date' => '2022-04-01',
+            'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
+            'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
         ]);
 
-        $url = localized_route('projects.edit', ['project' => 'test-project']);
+        $project = Project::all()->first();
+        $url = localized_route('projects.edit', ['project' => $project, 'step' => 2]);
 
         $response->assertSessionHasNoErrors();
+
+        $this->assertEquals($project->name, 'Test Project');
 
         $response->assertRedirect($url);
     }
@@ -177,7 +182,7 @@ class ProjectTest extends TestCase
             'goals' => ['en' => 'Some new goals'],
         ]);
 
-        $response->assertRedirect(localized_route('projects.show', $project));
+        $response->assertRedirect(localized_route('projects.edit', $project));
     }
 
     public function test_users_without_entity_admin_role_cannot_edit_projects()

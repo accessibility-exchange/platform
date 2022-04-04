@@ -5,7 +5,7 @@
     <fieldset class="stack">
         <legend class="h2">{{ __('Project languages') }}</legend>
         <x-hearth-hint for="languages">{{ __('What language are you able to provide the details of your project in?') }}</x-hearth-hint>
-        <livewire:language-picker name="languages" :languages="['en', 'fr', 'ase', 'fcs']" :availableLanguages="$languages" />
+        <livewire:language-picker :languages="['en', 'fr', 'ase', 'fcs']" :availableLanguages="$languages" />
     </fieldset>
 
     <p class="repel">

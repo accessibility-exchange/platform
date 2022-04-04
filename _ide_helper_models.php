@@ -582,8 +582,8 @@ namespace App\Models{
  * @property array|null $outcomes
  * @property bool|null $public_outcomes
  * @property string|null $team_size
- * @property bool $team_has_disability_or_deaf_lived_experience
- * @property bool $team_has_other_lived_experience
+ * @property bool|null $team_has_disability_or_deaf_lived_experience
+ * @property bool|null $team_has_other_lived_experience
  * @property array|null $team_languages
  * @property array|null $contacts
  * @property bool|null $has_consultant

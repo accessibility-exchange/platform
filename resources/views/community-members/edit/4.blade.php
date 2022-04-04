@@ -46,7 +46,7 @@
 
     <fieldset>
         <legend>{{ __('What languages do you use?') }}</legend>
-        <livewire:language-picker name="languages" :languages="$communityMember->languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
+        <livewire:language-picker :languages="$communityMember->languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
     </fieldset>
 
     <p>

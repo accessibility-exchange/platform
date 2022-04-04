@@ -67,6 +67,7 @@ class Project extends Model
         'contacts' => 'array',
         'has_consultant' => 'boolean',
         'team_trainings' => 'array',
+        'team_trainings.*.date' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -210,6 +211,20 @@ class Project extends Model
     {
         // TODO: Filter engagements
         return $this->engagements();
+    }
+
+    public function publish(): void
+    {
+        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->save();
+        flash(__('Your project page has been published.'), 'success');
+    }
+
+    public function unpublish(): void
+    {
+        $this->published_at = null;
+        $this->save();
+        flash(__('Your project page has been unpublished.'), 'success');
     }
 
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
