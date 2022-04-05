@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\SectorSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -382,8 +383,13 @@ class ProjectTest extends TestCase
         $entity = Entity::factory()->create();
         $past_project = Project::factory()->create([
             'entity_id' => $entity->id,
-            'start_date' => Carbon::now()->subMonths(4)->format('Y-m-d'),
-            'end_date' => Carbon::now()->subMonths(1)->format('Y-m-d'),
+            'start_date' => '2020-01-01',
+            'end_date' => '2020-12-31',
+        ]);
+        $past_project_multi_year = Project::factory()->create([
+            'entity_id' => $entity->id,
+            'start_date' => '2020-01-01',
+            'end_date' => '2021-12-31',
         ]);
         $current_project = Project::factory()->create([
             'entity_id' => $entity->id,
@@ -394,13 +400,26 @@ class ProjectTest extends TestCase
             'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
         ]);
 
-        $this->assertStringContainsString('&ndash;', $past_project->timeframe());
+        $this->assertStringContainsString('January&ndash;December 2020', $past_project->timeframe());
+        $this->assertStringContainsString('January 2020&ndash;December 2021', $past_project_multi_year->timeframe());
         $this->assertStringContainsString('Started', $current_project->timeframe());
         $this->assertStringContainsString('Starting', $future_project->timeframe());
 
-        $this->assertEquals(count($entity->projects), 3);
-        $this->assertEquals(count($entity->pastProjects), 1);
-        $this->assertEquals(count($entity->currentProjects), 1);
-        $this->assertEquals(count($entity->futureProjects), 1);
+        $this->assertEquals(4, count($entity->projects));
+        $this->assertEquals(2, count($entity->pastProjects));
+        $this->assertEquals(1, count($entity->currentProjects));
+        $this->assertEquals(1, count($entity->futureProjects));
+    }
+
+    public function test_project_sectors()
+    {
+        $this->seed(SectorSeeder::class);
+        $entity = Entity::factory()->create();
+        $entity->sectors()->attach([Sector::pluck('id')]);
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $this->assertEquals($entity->sectors, $project->sectors);
     }
 }
