@@ -1616,16 +1616,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "6ad1ad1d0a7f3eb3cb41e9e25615405bc6dc3dfd"
+                "reference": "31fcac5c18d202187e6a7716b3e0d9da84fe3d68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/6ad1ad1d0a7f3eb3cb41e9e25615405bc6dc3dfd",
-                "reference": "6ad1ad1d0a7f3eb3cb41e9e25615405bc6dc3dfd",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/31fcac5c18d202187e6a7716b3e0d9da84fe3d68",
+                "reference": "31fcac5c18d202187e6a7716b3e0d9da84fe3d68",
                 "shasum": ""
             },
             "require": {
@@ -1691,9 +1691,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/v2.0.0"
+                "source": "https://github.com/fluid-project/hearth/tree/v2.0.1"
             },
-            "time": "2022-03-24T18:01:01+00:00"
+            "time": "2022-03-29T19:33:53+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -2316,16 +2316,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.11.2",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "35c44f36f2a93fb7d3d8b38d6b7794913c69d414"
+                "reference": "a6caadc80e348755de0e1da221a6253d9f2c48f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/35c44f36f2a93fb7d3d8b38d6b7794913c69d414",
-                "reference": "35c44f36f2a93fb7d3d8b38d6b7794913c69d414",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/a6caadc80e348755de0e1da221a6253d9f2c48f9",
+                "reference": "a6caadc80e348755de0e1da221a6253d9f2c48f9",
                 "shasum": ""
             },
             "require": {
@@ -2375,7 +2375,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2022-03-04T20:27:28+00:00"
+            "time": "2022-03-29T14:37:05+00:00"
         },
         {
             "name": "laravel/framework",
