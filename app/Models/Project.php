@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -175,11 +176,11 @@ class Project extends Model
     /**
      * The engagements that are part of this project.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function engagements(): BelongsToMany
+    public function engagements(): HasMany
     {
-        return $this->belongsToMany(Engagement::class);
+        return $this->hasMany(Engagement::class);
     }
 
     public function consultant_origin()
@@ -194,9 +195,9 @@ class Project extends Model
     /**
      * The engagements that are part of this project which have not yet started.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function upcomingEngagements(): BelongsToMany
+    public function upcomingEngagements(): HasMany
     {
         return $this->engagements(); // TODO: Filter engagements
     }
