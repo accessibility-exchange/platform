@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\CommunityMember;
 use App\Models\Entity;
+use App\Models\Impact;
 use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
@@ -221,7 +222,7 @@ class ProjectTest extends TestCase
             'name' => ['en' => $project->name],
             'goals' => ['en' => 'Some new goals'],
             'scope' => ['en' => $project->scope],
-            'impacts' => [1],
+            'impacts' => [Impact::first()->id],
             'start_date' => $project->start_date,
             'save' => __('Save'),
         ]);
