@@ -62,6 +62,6 @@ class Engagement extends Model
      */
     public function participants(): BelongsToMany
     {
-        return $this->hasMany(CommunityMember::class)->withPivot('status');
+        return $this->belongsToMany(CommunityMember::class)->withPivot('status');
     }
 }

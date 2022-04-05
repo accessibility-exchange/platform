@@ -295,6 +295,8 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
+ * @property-read int|null $participants_count
  * @property-read \App\Models\Project $project
  * @method static \Database\Factories\EngagementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newModelQuery()

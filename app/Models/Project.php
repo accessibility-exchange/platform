@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -103,6 +102,7 @@ class Project extends Model
         return Attribute::make(
             get: function ($value) {
                 if ($value) {
+                    $trainings = json_decode($value, true);
                     $trainings = array_map(function ($training) {
                         $date = new Carbon($training['date']);
                         $training['date'] = $date->translatedFormat('F j, Y');
@@ -175,11 +175,11 @@ class Project extends Model
     /**
      * The engagements that are part of this project.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function engagements(): HasMany
+    public function engagements(): BelongsToMany
     {
-        return $this->hasMany(Engagement::class);
+        return $this->belongsToMany(Engagement::class);
     }
 
     public function consultant_origin()
@@ -194,9 +194,9 @@ class Project extends Model
     /**
      * The engagements that are part of this project which have not yet started.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function upcomingEngagements(): HasMany
+    public function upcomingEngagements(): BelongsToMany
     {
         return $this->engagements(); // TODO: Filter engagements
     }
