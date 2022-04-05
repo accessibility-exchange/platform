@@ -3,6 +3,8 @@
     {{ __('About your project') }}
 </h2>
 
+@include('projects.partials.progress')
+
 <form class="stack" id="create-project" action="{{ localized_route('projects.store', $entity) }}" method="post" novalidate>
     @csrf
 

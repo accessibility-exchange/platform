@@ -3,6 +3,8 @@
     {{ __('Project team') }}
 </h2>
 
+@include('projects.partials.progress')
+
 <form class="stack" id="edit-project" action="{{ localized_route('projects.update-team', $project) }}" method="POST" novalidate>
     @method('put')
     @csrf

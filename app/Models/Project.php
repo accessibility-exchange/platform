@@ -93,6 +93,11 @@ class Project extends Model
         return $this->start_date < Carbon::now();
     }
 
+    /**
+     * Get the project team's trainings.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
     public function teamTrainings(): Attribute
     {
         return Attribute::make(
@@ -193,15 +198,24 @@ class Project extends Model
      */
     public function upcomingEngagements(): HasMany
     {
-        // TODO: Filter engagements
-        return $this->engagements();
+        return $this->engagements(); // TODO: Filter engagements
     }
 
+    /**
+     * Get the Community Member assigned to the project as an accessibility consultant.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function accessibilityConsultant(): BelongsTo
     {
         return $this->belongsTo(CommunityMember::class, 'consultant_id');
     }
 
+    /**
+     * Get a description of the project team's lived experience.
+     *
+     * @return string
+     */
     public function teamExperience(): String
     {
         if ($this->team_has_disability_or_deaf_lived_experience && $this->team_has_other_lived_experience) {
@@ -219,6 +233,11 @@ class Project extends Model
         return __('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.');
     }
 
+    /**
+     * Publish the project.
+     *
+     * @return void
+     */
     public function publish(): void
     {
         $this->published_at = date('Y-m-d h:i:s', time());
@@ -226,6 +245,11 @@ class Project extends Model
         flash(__('Your project page has been published.'), 'success');
     }
 
+    /**
+     * Unpublish the project.
+     *
+     * @return void
+     */
     public function unpublish(): void
     {
         $this->published_at = null;
@@ -233,6 +257,11 @@ class Project extends Model
         flash(__('Your project page has been unpublished.'), 'success');
     }
 
+    /**
+     * Handle a request to update the project, redirecting to the appropriate page and displaying the appropriate flash message.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
     {
         if (! $request->input('publish') || ! $request->input('unpublish')) {

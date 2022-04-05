@@ -241,6 +241,11 @@ class CommunityMember extends Model implements HasMedia
         return $this->belongsToMany(Entity::class);
     }
 
+    /**
+     * Publish the community member page.
+     *
+     * @return void
+     */
     public function publish(): void
     {
         $this->published_at = date('Y-m-d h:i:s', time());
@@ -248,6 +253,11 @@ class CommunityMember extends Model implements HasMedia
         flash(__('Your community member page has been published.'), 'success');
     }
 
+    /**
+     * Unpublish the community member page.
+     *
+     * @return void
+     */
     public function unpublish(): void
     {
         $this->published_at = null;
@@ -255,6 +265,11 @@ class CommunityMember extends Model implements HasMedia
         flash(__('Your community member page has been unpublished.'), 'success');
     }
 
+    /**
+     * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
     {
         if (! $request->input('publish') || ! $request->input('unpublish')) {

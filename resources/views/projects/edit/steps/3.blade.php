@@ -3,4 +3,6 @@
     {{ __('Who we’re looking for (optional)') }}
 </h2>
 
+@include('projects.partials.progress')
+
 <p>{{ __('Coming soon.') }}</p>
