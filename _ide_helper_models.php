@@ -590,7 +590,8 @@ namespace App\Models{
  * @property string|null $consultant_name
  * @property int|null $consultant_id
  * @property array|null $consultant_responsibilities
- * @property array|null $team_trainings
+ * @property mixed|null $team_trainings
+ * @property-read \App\Models\CommunityMember|null $accessibilityConsultant
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
  * @property-read \App\Models\Entity $entity

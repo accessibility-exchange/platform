@@ -2,37 +2,31 @@
 
 <x-markdown class="stack">{{ $project->goals }}</x-markdown>
 
-@if($project->scope || !$project->impacts->isEmpty() || $project->out_of_scope)
-    <h3>{{ __('Project impact') }}</h3>
+<h3>{{ __('Project impact') }}</h3>
 
-    @if($project->scope)
-    <h4>{{ __('Who will this project impact?') }}</h4>
+<h4>{{ __('Who will this project impact?') }}</h4>
 
-    <x-markdown class="stack">{{ $project->scope }}</x-markdown>
-    @endif
+<x-markdown class="stack">{{ $project->scope }}</x-markdown>
 
-    @if(!$project->impacts->isEmpty())
-    <h4>{{ __('What areas of your organization will this project impact?') }}</h4>
+@if(!$project->impacts->isEmpty())
+<h4>{{ __('What areas of your organization will this project impact?') }}</h4>
 
-    <ul role="list" class="tags">
-        @foreach($project->impacts as $impact)
-        <li class="tag">{{ $impact->name }}</li>
-        @endforeach
-    </ul>
-    @endif
-
-    @if($project->out_of_scope)
-    <h4>{{ __('What is out of scope?') }}</h4>
-
-    <x-markdown class="stack">{{ $project->out_of_scope }}</x-markdown>
-    @endif
+<ul role="list" class="tags">
+    @foreach($project->impacts as $impact)
+    <li class="tag">{{ $impact->name }}</li>
+    @endforeach
+</ul>
 @endif
 
-@if($project->start_date || $project->end_date)
+@if($project->out_of_scope)
+<h4>{{ __('What is out of scope?') }}</h4>
+
+<x-markdown class="stack">{{ $project->out_of_scope }}</x-markdown>
+@endif
+
 <h3>{{ __('Project timeframe') }}</h3>
 
-<p>{!! $project->timespan() !!}</p>
-@endif
+<p>{!! $project->timeframe() !!}</p>
 
 @if($project->outcomes)
 <h3>{{ __('Project outcomes') }}</h3>

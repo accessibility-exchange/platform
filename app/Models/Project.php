@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -66,8 +67,6 @@ class Project extends Model
         'team_languages' => 'array',
         'contacts' => 'array',
         'has_consultant' => 'boolean',
-        'team_trainings' => 'array',
-        'team_trainings.*.date' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -85,41 +84,6 @@ class Project extends Model
     ];
 
     /**
-     * The project's steps and the number of corresponding substeps for each.
-     *
-     * @var array
-     */
-    public array $substeps = [
-        1 => [
-            'published_at',
-        ],
-        2 => [
-            'found_participants',
-            'confirmed_participants',
-        ],
-        3 => [
-            'scheduled_planning_meeting',
-            'notified_of_planning_meeting',
-            'prepared_project_orientation',
-            'prepared_contractual_documents',
-            'booked_access_services_for_planning',
-            'finished_planning_meeting',
-        ],
-        4 => [
-            'scheduled_consultation_meetings',
-            'notified_of_consultation_meetings',
-            'prepared_consultation_materials',
-            'booked_access_services_for_consultations',
-            'finished_consultation_meetings',
-        ],
-        5 => [
-            'prepared_accessibility_plan',
-            'prepared_follow_up_plan',
-            'shared_plans_with_participants',
-        ],
-    ];
-
-    /**
      * Has the project started?
      *
      * @return bool
@@ -129,12 +93,32 @@ class Project extends Model
         return $this->start_date < Carbon::now();
     }
 
+    public function teamTrainings(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if ($value) {
+                    $trainings = array_map(function ($training) {
+                        $date = new Carbon($training['date']);
+                        $training['date'] = $date->translatedFormat('F j, Y');
+
+                        return $training;
+                    }, $trainings);
+
+                    return $trainings;
+                }
+
+                return $value;
+            },
+        );
+    }
+
     /**
-     * Get the project's timespan.
+     * Get the project's timeframe.
      *
      * @return string|false
      */
-    public function timespan(): mixed
+    public function timeframe(): mixed
     {
         if (! $this->start_date) {
             return false;
@@ -211,6 +195,28 @@ class Project extends Model
     {
         // TODO: Filter engagements
         return $this->engagements();
+    }
+
+    public function accessibilityConsultant(): BelongsTo
+    {
+        return $this->belongsTo(CommunityMember::class, 'consultant_id');
+    }
+
+    public function teamExperience(): String
+    {
+        if ($this->team_has_disability_or_deaf_lived_experience && $this->team_has_other_lived_experience) {
+            return __('Our team includes people with disabilities and/or Deaf people as well as people from other equity-seeking groups.');
+        }
+
+        if ($this->team_has_disability_or_deaf_lived_experience) {
+            return __('Our team includes people with disabilities and/or Deaf people.');
+        }
+
+        if ($this->team_has_other_lived_experience) {
+            return __('Our team includes people from equity-seeking groups.');
+        }
+
+        return __('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.');
     }
 
     public function publish(): void

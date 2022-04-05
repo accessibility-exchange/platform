@@ -5,5 +5,5 @@
     @endforeach
     </div>
 @else
-<p>{{ __('No engagements.') }}</p>
+<p>{{ __('No engagements found.') }}</p>
 @endif
