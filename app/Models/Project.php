@@ -122,14 +122,10 @@ class Project extends Model
     /**
      * Get the project's timeframe.
      *
-     * @return string|false
+     * @return string
      */
-    public function timeframe(): mixed
+    public function timeframe(): String
     {
-        if (! $this->start_date) {
-            return false;
-        }
-
         if ($this->end_date) {
             if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
                 return $this->start_date->translatedFormat('F') . '&ndash;' . $this->end_date->translatedFormat('F Y');
@@ -183,7 +179,12 @@ class Project extends Model
         return $this->hasMany(Engagement::class);
     }
 
-    public function consultant_origin()
+    /**
+     * Determine whether a project's accessibility consultant was engaged throught the platform or externally.
+     *
+     * @return string
+     */
+    public function consultant_origin(): String
     {
         if ($this->consultant_name) {
             return 'external';

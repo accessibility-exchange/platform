@@ -7,6 +7,7 @@ use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\ImpactSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -203,6 +204,8 @@ class ProjectTest extends TestCase
             return $this->markTestSkipped('Entity support  is not enabled.');
         }
 
+        $this->seed(ImpactSeeder::class);
+
         $user = User::factory()->create();
         $entity = Entity::factory()
             ->hasAttached($user, ['role' => 'admin'])
@@ -218,12 +221,16 @@ class ProjectTest extends TestCase
             'name' => ['en' => $project->name],
             'goals' => ['en' => 'Some new goals'],
             'scope' => ['en' => $project->scope],
+            'impacts' => [1],
             'start_date' => $project->start_date,
             'save' => __('Save'),
         ]);
 
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+        $project = $project->fresh();
+        $this->assertEquals(count($project->impacts), 1);
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
             'name' => ['en' => $project->name],
@@ -279,6 +286,42 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_users_with_entity_admin_role_can_manage_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'admin'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
+        $response->assertOk();
+    }
+
+    public function test_users_without_entity_admin_role_cannot_manage_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $entity = Entity::factory()
+            ->hasAttached($user, ['role' => 'member'])
+            ->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
+        $response->assertForbidden();
+    }
+
     public function test_users_with_entity_admin_role_can_delete_projects()
     {
         if (! config('hearth.entities.enabled')) {
@@ -329,7 +372,7 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_projects_appear_in_chronological_groups()
+    public function test_project_timeframes()
     {
         if (! config('hearth.entities.enabled')) {
             return $this->markTestSkipped('Entity support  is not enabled.');
@@ -344,13 +387,15 @@ class ProjectTest extends TestCase
         $current_project = Project::factory()->create([
             'entity_id' => $entity->id,
             'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
-            'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
         ]);
         $future_project = Project::factory()->create([
             'entity_id' => $entity->id,
             'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
-            'end_date' => Carbon::now()->addMonths(4)->format('Y-m-d'),
         ]);
+
+        $this->assertStringContainsString('&ndash;', $past_project->timeframe());
+        $this->assertStringContainsString('Started', $current_project->timeframe());
+        $this->assertStringContainsString('Starting', $future_project->timeframe());
 
         $this->assertEquals(count($entity->projects), 3);
         $this->assertEquals(count($entity->pastProjects), 1);
