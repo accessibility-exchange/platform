@@ -7,7 +7,6 @@ use App\Http\Requests\StoreProjectContextRequest;
 use App\Http\Requests\StoreProjectFocusRequest;
 use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
-use App\Http\Requests\UpdateProjectOutcomesRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
 use App\Models\CommunityMember;
@@ -221,23 +220,6 @@ class ProjectController extends Controller
         $project->save();
 
         return $project->handleUpdateRequest($request, 2);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateProjectOutcomesRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateOutcomes(UpdateProjectOutcomesRequest $request, Project $project): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $project->fill($data);
-        $project->save();
-
-        return $project->handleUpdateRequest($request, 1);
     }
 
     /**

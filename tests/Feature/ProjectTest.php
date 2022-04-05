@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Project;
 use App\Models\User;
@@ -61,6 +62,17 @@ class ProjectTest extends TestCase
         $this->assertEquals($project->name, 'Test Project');
 
         $response->assertRedirect($url);
+
+        $previous_project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $entity), [
+            'context' => 'follow-up',
+            'ancestor' => $previous_project->id,
+        ]);
+        $response->assertSessionHas('context', 'follow-up');
+        $response->assertSessionHas('ancestor', $previous_project->id);
     }
 
     public function test_users_without_entity_admin_role_cannot_create_projects()
@@ -140,6 +152,30 @@ class ProjectTest extends TestCase
         $response->assertOk();
 
         $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
+        $response->assertOk();
+    }
+
+    public function test_community_members_can_express_interest_in_projects()
+    {
+        if (! config('hearth.entities.enabled')) {
+            return $this->markTestSkipped('Entity support  is not enabled.');
+        }
+
+        $user = User::factory()->create();
+        $communityMember = CommunityMember::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $entity = Entity::factory()->create();
+        $project = Project::factory()->create([
+            'entity_id' => $entity->id,
+        ]);
+
+        $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('community-members.express-interest', $communityMember), ['project_id' => $project->id]);
+        $response->assertSee('You have expressed your interest in this project.');
+        $response->assertOk();
+
+        $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('community-members.remove-interest', $communityMember), ['project_id' => $project->id]);
+        $response->assertSee('You have removed your expression of interest in this project.');
         $response->assertOk();
     }
 

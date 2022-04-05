@@ -148,6 +148,8 @@ namespace App\Models{
  * @property-read int|null $access_supports_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
  * @property-read int|null $communities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
+ * @property-read int|null $engagements_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entity[] $entities
  * @property-read int|null $entities_count
  * @property-read string $phone_number

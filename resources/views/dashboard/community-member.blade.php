@@ -50,14 +50,13 @@
     <div class="column stack">
         @if($currentUser->communityMember)
         <div class="stack">
-            <h2>{{ __('My active projects') }}</h2>
-            @if(count($currentUser->communityMember->projects) > 0)
-                @foreach($currentUser->communityMember->projects as $project)
-                <x-project-card :project="$project" />
+            <h2>{{ __('My active engagements') }}</h2>
+            @if(count($currentUser->communityMember->engagements) > 0)
+                @foreach($currentUser->communityMember->engagements as $engagement)
+                <x-engagement-card :engagement="$engagement" />
                 @endforeach
-            <p><a href="{{ localized_route('users.show_my_projects') }}">{{ __('Show all my projects') }}</a></p>
             @else
-            <p>{!! __('You have no active projects right now. To find a project to work on, :action and express your interest in ones that you want to work on.', ['action' => '<a href="' . localized_route('projects.index') . '">' . __('browse through our list of projects') . '</a>']) !!}</p>
+            <p>{{ __('You have no active engagements right now.') }}</p>
             @endif
         </div>
         @else

@@ -226,11 +226,19 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
-     * The projects that the community member belongs to.
+     * The projects that the community member is interested in.
      */
     public function projectsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'projects_of_interest');
+    }
+
+    /**
+     * The engagements that the community member belongs to.
+     */
+    public function engagements(): BelongsToMany
+    {
+        return $this->belongsToMany(Engagement::class);
     }
 
     /**
