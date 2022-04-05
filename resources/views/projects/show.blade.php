@@ -1,23 +1,16 @@
 <x-app-wide-layout>
-    <x-slot name="title">{{ $project->name }}</x-slot>
+    <x-slot name="title">{{ $project->name }}@if($project->checkStatus('draft')) ({{ __('draft') }})@endif</x-slot>
     <x-slot name="header">
         <h1 id="project">
-            {{ $project->name }}
+            {{ $project->name }}@if($project->checkStatus('draft')) ({{ __('draft') }})@endif
         </h1>
-        <p>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</p>
-        <p><strong>{{ __('Status:') }}</strong> {{ $project->step() }}</p>
-        @if($project->started())
+        <p><strong>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</strong></p>
+        <p><strong>{{ __('Project status') }}:</strong> @if($project->started()){{ __('In progress') }}@else{{ __('Not started') }}@endif</p>
+        @if($project->start_date && $project->started())
         <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
-        @else
-        <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @endif
-        @if($project->completed())
-        <p><strong>{{ __('Completed') }}:</strong> {{ $project->end_date->translatedFormat('F Y') }}</p>
-        @endif
-        @if(!$project->completed() && Auth::user()->communityMember)
-        @if($project->confirmedParticipants->contains(Auth::user()->communityMember))
-        <p><a href="{{ localized_route('projects.participate', $project) }}" class="button">{{ __('Project dashboard') }}</a></p>
-        @elseif(!Auth::user()->communityMember->projectsOfInterest->contains($project->id))
+        @if(Auth::user()->communityMember)
+        @if(!Auth::user()->communityMember->projectsOfInterest->contains($project->id))
         <form action="{{ localized_route('community-members.express-interest', Auth::user()->communityMember) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
@@ -33,55 +26,60 @@
         @endif
         @can('update', $project)
         @if($project->checkStatus('published'))
-            @if(!$project->hasBuiltTeam())
             <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST" novalidate>
                 @csrf
                 @method('PUT')
 
-                <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish my project')" />
+                <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish')" />
             </form>
-            @endif
         @endif
-        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Project dashboard') }}</a>
+        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a>
         @endcan
     </x-slot>
 
-    <div class="has-nav-secondary">
-        <nav class="secondary" aria-labelledby="project">
-            <ul role="list">
-                <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">{{ __('Project overview') }}</x-nav-link>
-                <x-nav-link :href="localized_route('projects.show-who-were-looking-for', $project)" :active="request()->routeIs(locale() . '.projects.show-who-were-looking-for')">{{ __('Who we’re looking for') }}</x-nav-link>
-                <x-nav-link :href="localized_route('projects.show-accessibility-and-accomodations', $project)" :active="request()->routeIs(locale() . '.projects.show-accessibility-and-accomodations')">{{ __('Accessibility and accomodations') }}</x-nav-link>
-                @if($project->completed())
-                <x-nav-link :href="localized_route('projects.show-community-experiences', $project)" :active="request()->routeIs(locale() . '.projects.show-community-experiences')">{{ __('Community experiences') }}</x-nav-link>
-                @endif
-            </ul>
-        </nav>
-
+    <div class="with-sidebar">
         <div class="stack">
-        @if(request()->routeIs(locale() . '.projects.show'))
+            <nav aria-labelledby="project">
+                <ul class="stack" role="list">
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">
+                            {{ __('Project overview') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->routeIs(locale() . '.projects.show-team')">
+                            {{ __('Project team') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->routeIs(locale() . '.projects.show-engagements')">
+                            {{ __('Engagements') }}
+                        </x-nav-link>
+                    </li>
+                    <li>
+                        <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->routeIs(locale() . '.projects.show-outcomes')">
+                            {{ __('Outcomes and reports') }}
+                        </x-nav-link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="stack">
+            @if(request()->routeIs(locale() . '.projects.show'))
             <h2>{{ __('Project overview') }}</h2>
-            @can('update', $project)
-            <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('project overview') . '</span>']) !!}</a></p>
-            @endcan
-            @include('projects.partials.project-overview', ['level' => 3])
-        @elseif(request()->routeIs(locale() . '.projects.show-who-were-looking-for'))
-            <h2>{{ __('Who we’re looking for') }}</h2>
-            @can('update', $project)
-            <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('who we’re looking for') . '</span>']) !!}</a></p>
-            @endcan
-            @include('projects.partials.who-were-looking-for', ['level' => 3])
-        @elseif(request()->routeIs(locale() . '.projects.show-accessibility-and-accomodations'))
-            <h2>{{ __('Accessibility and accomodations') }}</h2>
-            @can('update', $project)
-            <p><a class="button" href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('accessibility and accomodations') . '</span>']) !!}</a></p>
-            @endcan
-            @include('projects.partials.accessibility-and-accomodations', ['level' => 3])
-        @elseif(request()->routeIs(locale() . '.projects.show-community-experiences'))
-            <h2>{{ __('Community experiences') }}</h2>
-            @include('projects.partials.community-experiences', ['level' => 3])
+            @include('projects.partials.overview')
+        @elseif(request()->routeIs(locale() . '.projects.show-team'))
+            <h2>{{ __('Project team') }}</h2>
+            @include('projects.partials.team')
+        @elseif(request()->routeIs(locale() . '.projects.show-engagements'))
+            <h2>{{ __('Engagements') }}</h2>
+            @include('projects.partials.engagements')
+        @elseif(request()->routeIs(locale() . '.projects.show-outcomes'))
+            <h2>{{ __('Outcomes and reports') }}</h2>
+            @include('projects.partials.outcomes')
         @endif
         </div>
     </div>
+    {{-- TODO: Contact project team. --}}
 
 </x-app-wide-layout>

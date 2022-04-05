@@ -167,14 +167,7 @@ class UserController extends Controller
      */
     public function showMyProjects(): mixed
     {
-        if (Auth::user()->communityMember) {
-            $communityMember = Auth::user()->communityMember;
-            $communityMember->load('pastProjects', 'currentProjects');
-
-            return view('community-members.my-projects', [
-                'communityMember' => $communityMember,
-            ]);
-        } elseif (Auth::user()->entity()) {
+        if (Auth::user()->entity()) {
             $entity = Auth::user()->entity();
             $entity->load('pastProjects', 'currentProjects');
 

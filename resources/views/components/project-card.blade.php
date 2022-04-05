@@ -3,16 +3,9 @@
     @if($showEntity)
     <p>{!! __('Accessibility project by :entity', ['entity' => '<strong>' . $project->entity->name . '</strong>']) !!}</p>
     @endif
-    <p><strong>{{ __('Status') }}:</strong> @if($project->step())
-        {{ $project->step() }}
-    @endif
-    </p>
     @if($project->started())
     <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
     @else
     <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
-    @endif
-    @if($project->completed())
-    <p><strong>{{ __('Completed') }}:</strong> {{ $project->end_date->format('F Y') }}</p>
     @endif
 </article>

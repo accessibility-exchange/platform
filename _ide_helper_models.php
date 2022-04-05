@@ -148,8 +148,8 @@ namespace App\Models{
  * @property-read int|null $access_supports_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
  * @property-read int|null $communities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
- * @property-read int|null $current_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
+ * @property-read int|null $engagements_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entity[] $entities
  * @property-read int|null $entities_count
  * @property-read string $phone_number
@@ -161,12 +161,8 @@ namespace App\Models{
  * @property-read int|null $media_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
- * @property-read int|null $past_projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethod[] $paymentMethods
  * @property-read int|null $payment_methods_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projectsOfInterest
  * @property-read int|null $projects_of_interest_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
@@ -292,12 +288,15 @@ namespace App\Models{
  * @property string $recruitment
  * @property array $goals
  * @property mixed|null $timeline
- * @property mixed|null $events
+ * @property mixed|null $meetings
  * @property mixed|null $reporting
+ * @property mixed|null $other_reporting
  * @property mixed|null $contacts
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
+ * @property-read int|null $participants_count
  * @property-read \App\Models\Project $project
  * @method static \Database\Factories\EngagementFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement newModelQuery()
@@ -305,10 +304,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement query()
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereContacts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereEvents($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereGoals($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereMeetings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereOtherReporting($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereRecruitment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereReporting($value)
@@ -572,129 +572,70 @@ namespace App\Models{
  *
  * @property int $id
  * @property array $name
- * @property string $slug
- * @property \Illuminate\Support\Carbon $start_date
+ * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
  * @property int $entity_id
- * @property array|null $regions
  * @property array|null $goals
- * @property array|null $impact
+ * @property array|null $scope
  * @property array|null $out_of_scope
- * @property bool|null $virtual_consultation
- * @property array|null $timeline
- * @property array|null $payment_terms
- * @property bool|null $payment_negotiable
- * @property bool|null $existing_clients
- * @property bool|null $prospective_clients
- * @property bool|null $employees
- * @property array|null $priority_outreach
- * @property array|null $locality
- * @property array|null $location_description
- * @property int|null $min
- * @property int|null $max
- * @property array|null $anything_else
- * @property bool|null $flexible_deadlines
- * @property bool|null $flexible_breaks
  * @property \Illuminate\Support\Carbon|null $published_at
- * @property bool|null $found_participants
- * @property bool|null $confirmed_participants
- * @property bool|null $scheduled_planning_meeting
- * @property bool|null $notified_of_planning_meeting
- * @property bool|null $prepared_project_orientation
- * @property bool|null $prepared_contractual_documents
- * @property bool|null $booked_access_services_for_planning
- * @property bool|null $finished_planning_meeting
- * @property bool|null $scheduled_consultation_meetings
- * @property bool|null $notified_of_consultation_meetings
- * @property bool|null $prepared_consultation_materials
- * @property bool|null $booked_access_services_for_consultations
- * @property bool|null $finished_consultation_meetings
- * @property bool|null $prepared_accessibility_plan
- * @property bool|null $prepared_follow_up_plan
- * @property bool|null $shared_plans_with_participants
- * @property int|null $published_accessibility_plan
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AccessSupport[] $accessSupports
- * @property-read int|null $access_supports_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunicationTool[] $communicationTools
- * @property-read int|null $communication_tools_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
- * @property-read int|null $communities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $confirmedParticipants
- * @property-read int|null $confirmed_participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ConsultingMethod[] $consultingMethods
- * @property-read int|null $consulting_methods_count
+ * @property int|null $ancestor_id
+ * @property array|null $languages
+ * @property array|null $outcomes
+ * @property bool|null $public_outcomes
+ * @property string|null $team_size
+ * @property bool|null $team_has_disability_or_deaf_lived_experience
+ * @property bool|null $team_has_other_lived_experience
+ * @property array|null $team_languages
+ * @property array|null $contacts
+ * @property bool|null $has_consultant
+ * @property string|null $consultant_name
+ * @property int|null $consultant_id
+ * @property array|null $consultant_responsibilities
+ * @property mixed|null $team_trainings
+ * @property-read \App\Models\CommunityMember|null $accessibilityConsultant
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
+ * @property-read int|null $engagements_count
  * @property-read \App\Models\Entity $entity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $exitedParticipants
- * @property-read int|null $exited_participants_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $interestedCommunityMembers
- * @property-read int|null $interested_community_members_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
- * @property-read int|null $participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PaymentMethod[] $paymentMethods
- * @property-read int|null $payment_methods_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $requestedParticipants
- * @property-read int|null $requested_participants_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Review[] $reviews
- * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $shortlistedParticipants
- * @property-read int|null $shortlisted_participants_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $upcomingEngagements
+ * @property-read int|null $upcoming_engagements_count
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project query()
  * @method static \Illuminate\Database\Eloquent\Builder|Project status($status)
  * @method static \Illuminate\Database\Eloquent\Builder|Project statusIn($statuses)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereAnythingElse($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereBookedAccessServicesForConsultations($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereBookedAccessServicesForPlanning($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereConfirmedParticipants($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereAncestorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantResponsibilities($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereContacts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereEmployees($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEntityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereExistingClients($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFinishedConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFinishedPlanningMeeting($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFlexibleBreaks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFlexibleDeadlines($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereFoundParticipants($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereGoals($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereHasConsultant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereImpact($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereLocality($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereLocationDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereMax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereMin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLanguages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereNotifiedOfConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereNotifiedOfPlanningMeeting($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePaymentNegotiable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePaymentTerms($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedAccessibilityPlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedConsultationMaterials($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedContractualDocuments($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedFollowUpPlan($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePreparedProjectOrientation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePriorityOutreach($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereProspectiveClients($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAccessibilityPlan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereRegions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereScheduledConsultationMeetings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereScheduledPlanningMeeting($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSharedPlansWithParticipants($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereTimeline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasDisabilityOrDeafLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasOtherLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamLanguages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTrainings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereVirtualConsultation($value)
  */
     class Project extends \Eloquent
     {
