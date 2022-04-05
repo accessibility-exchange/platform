@@ -95,18 +95,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the user's stories.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Story>
-     */
-    public function stories(): HasMany
-    {
-        return $this->hasMany(Story::class);
-    }
-
-    /**
      * Get the user's memberships.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -37,7 +37,7 @@
             </x-nav-link>
         </li>
         <li>
-            <x-nav-link :href="localized_route('collections.index')" :active="request()->routeIs(locale() . '.collections.index')">
+            <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->routeIs(locale() . '.resource-collections.index')">
                 {{ __('Resources and training') }}
             </x-nav-link>
         </li>

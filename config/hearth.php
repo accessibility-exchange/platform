@@ -15,7 +15,4 @@ return [
     'resources' => [
         'enabled' => true,
     ],
-    'stories' => [
-        'enabled' => true,
-    ],
 ];

@@ -23,7 +23,7 @@
                 <x-slot name="summary">{{ __('Learn about engaging the disability community') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Browse through our resources and learn more.') }}</p>
-                    <p><a class="button" href="{{ localized_route('collections.index') }}">{{ __('Explore the resource hub') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('resource-collections.index') }}">{{ __('Explore the resource hub') }}</a></p>
                 </div>
             </x-expander>
         </div>

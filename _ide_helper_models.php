@@ -37,38 +37,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Collection
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
- * @property-read \Illuminate\Database\Eloquent\Collection|\Story[] $stories
- * @property int $id
- * @property int|null $user_id
- * @property array $title
- * @property array $description
- * @property string $slug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $resources_count
- * @property-read int|null $stories_count
- * @method static \Database\Factories\CollectionFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection query()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUserId($value)
- */
-    class Collection extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
  * App\Models\CommunicationTool
  *
  * @property int $id
@@ -654,8 +622,6 @@ namespace App\Models{
  * @property string $summary
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Collection[] $collections
- * @property-read int|null $collections_count
  * @property-read \App\Models\ContentType|null $contentType
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Format[] $formats
  * @property-read int|null $formats_count
@@ -663,6 +629,8 @@ namespace App\Models{
  * @property-read int|null $original_format_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Phase[] $phases
  * @property-read int|null $phases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ResourceCollection[] $resourceCollections
+ * @property-read int|null $resource_collections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Topic[] $topics
  * @property-read int|null $topics_count
  * @method static \Database\Factories\ResourceFactory factory(...$parameters)
@@ -679,6 +647,36 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Resource whereUserId($value)
  */
     class Resource extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
+ * App\Models\ResourceCollection
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
+ * @property int $id
+ * @property int|null $user_id
+ * @property array $title
+ * @property array $description
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $resources_count
+ * @method static \Database\Factories\ResourceCollectionFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUserId($value)
+ */
+    class ResourceCollection extends \Eloquent
     {
     }
 }
@@ -746,36 +744,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Story
- *
- * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $slug
- * @property string $summary
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Collection[] $collections
- * @property-read int|null $collections_count
- * @method static \Database\Factories\StoryFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Story newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Story newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Story query()
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereSummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereUserId($value)
- */
-    class Story extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
  * App\Models\Topic
  *
  * @property int $id
@@ -823,8 +791,6 @@ namespace App\Models{
  * @property-read int|null $organizations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resource[] $resources
  * @property-read int|null $resources_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Story[] $stories
- * @property-read int|null $stories_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
