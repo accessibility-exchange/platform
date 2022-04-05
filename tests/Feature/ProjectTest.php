@@ -215,10 +215,36 @@ class ProjectTest extends TestCase
         $response->assertOk();
 
         $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+            'name' => ['en' => $project->name],
             'goals' => ['en' => 'Some new goals'],
+            'scope' => ['en' => $project->scope],
+            'start_date' => $project->start_date,
+            'save' => __('Save'),
         ]);
 
-        $response->assertRedirect(localized_route('projects.edit', $project));
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+        $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+            'name' => ['en' => $project->name],
+            'goals' => ['en' => 'Some newer goals'],
+            'scope' => ['en' => $project->scope],
+            'start_date' => $project->start_date,
+            'save_and_next' => __('Save and next'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
+
+        $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+            'team_count' => '42',
+            'team_languages' => ['en'],
+            'has_consultant' => false,
+            'save_and_previous' => __('Save and previous'),
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
     }
 
     public function test_users_without_entity_admin_role_cannot_edit_projects()
