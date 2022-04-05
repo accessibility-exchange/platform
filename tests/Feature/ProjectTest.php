@@ -6,6 +6,7 @@ use App\Models\CommunityMember;
 use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\Project;
+use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
@@ -415,11 +416,11 @@ class ProjectTest extends TestCase
     {
         $this->seed(SectorSeeder::class);
         $entity = Entity::factory()->create();
-        $entity->sectors()->attach([Sector::pluck('id')]);
+        $entity->sectors()->attach(Sector::pluck('id')->toArray());
         $project = Project::factory()->create([
             'entity_id' => $entity->id,
         ]);
 
-        $this->assertEquals($entity->sectors, $project->sectors);
+        $this->assertEquals($entity->sectors->toArray(), $project->sectors->toArray());
     }
 }
