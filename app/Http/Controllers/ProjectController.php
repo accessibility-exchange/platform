@@ -232,15 +232,9 @@ class ProjectController extends Controller
     public function updatePublicationStatus(Request $request, Project $project): RedirectResponse
     {
         if ($request->input('unpublish')) {
-            $project->published_at = null;
-            $project->save();
-
-            flash(__('Your project has been unpublished.'), 'success');
+            $project->unpublish();
         } elseif ($request->input('publish')) {
-            $project->published_at = date('Y-m-d h:i:s', time());
-            $project->save();
-
-            flash(__('Your project has been published.'), 'success');
+            $project->publish();
         }
 
         return redirect(\localized_route('projects.show', $project));

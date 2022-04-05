@@ -423,4 +423,56 @@ class ProjectTest extends TestCase
 
         $this->assertEquals($entity->sectors->toArray(), $project->sectors->toArray());
     }
+
+    public function test_consultant_origin()
+    {
+        $community_member = CommunityMember::factory()->create();
+
+        $project_with_external_consultant = Project::factory()->create([
+            'has_consultant' => true,
+            'consultant_name' => 'Joe Consultant',
+        ]);
+
+        $project_with_platform_consultant = Project::factory()->create([
+            'has_consultant' => true,
+            'consultant_id' => $community_member->id,
+        ]);
+
+        $this->assertEquals('external', $project_with_external_consultant->consultant_origin());
+        $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin());
+        $this->assertEquals($community_member->id, $project_with_platform_consultant->accessibilityConsultant->id);
+    }
+
+    public function test_team_experience()
+    {
+        $project = Project::factory()->create([
+            'team_has_disability_or_deaf_lived_experience' => true,
+        ]);
+
+        $this->assertEquals('Our team includes people with disabilities and/or Deaf people.', $project->teamExperience());
+
+        $project->update([
+            'team_has_other_lived_experience' => true,
+        ]);
+
+        $project = $project->fresh();
+
+        $this->assertEquals('Our team includes people with disabilities and/or Deaf people as well as people from other equity-seeking groups.', $project->teamExperience());
+
+        $project->update([
+            'team_has_disability_or_deaf_lived_experience' => false,
+        ]);
+
+        $project = $project->fresh();
+
+        $this->assertEquals('Our team includes people from equity-seeking groups.', $project->teamExperience());
+
+        $project->update([
+            'team_has_other_lived_experience' => false,
+        ]);
+
+        $project = $project->fresh();
+
+        $this->assertEquals('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.', $project->teamExperience());
+    }
 }
