@@ -22,7 +22,7 @@ class Contacts extends Component
         $this->contacts[] = ['name' => '', 'phone' => '', 'email' => ''];
     }
 
-    public function removePerson(int $i): void
+    public function removeContact(int $i): void
     {
         unset($this->contacts[$i]);
 
