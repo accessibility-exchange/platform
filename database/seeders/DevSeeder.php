@@ -97,30 +97,9 @@ class DevSeeder extends Seeder
                 'entity_id' => $entity->id,
                 'start_date' => '2020-01-01',
                 'end_date' => '2020-12-31',
-                'found_participants' => true,
-                'confirmed_participants' => true,
-                'scheduled_planning_meeting' => true,
-                'notified_of_planning_meeting' => true,
-                'prepared_project_orientation' => true,
-                'prepared_contractual_documents' => true,
-                'booked_access_services_for_planning' => true,
-                'finished_planning_meeting' => true,
-                'scheduled_consultation_meetings' => true,
-                'notified_of_consultation_meetings' => true,
-                'prepared_consultation_materials' => true,
-                'booked_access_services_for_consultations' => true,
-                'finished_consultation_meetings' => true,
-                'prepared_accessibility_plan' => true,
-                'prepared_follow_up_plan' => true,
-                'shared_plans_with_participants' => true,
-                'published_accessibility_plan' => true,
             ]);
 
         $completedProject->impacts()->attach($communicationImpact->id);
-        $completedProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
 
         $recruitingProject = Project::factory()
             ->create([
@@ -131,10 +110,6 @@ class DevSeeder extends Seeder
             ]);
 
         $recruitingProject->impacts()->attach($programsAndServicesImpact->id);
-        $recruitingProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
 
         $consultingProject = Project::factory()
             ->create([
@@ -142,20 +117,8 @@ class DevSeeder extends Seeder
                 'entity_id' => $entity->id,
                 'start_date' => '2021-01-01',
                 'end_date' => '2021-12-31',
-                'found_participants' => true,
-                'confirmed_participants' => true,
-                'scheduled_planning_meeting' => true,
-                'notified_of_planning_meeting' => true,
-                'prepared_project_orientation' => true,
-                'prepared_contractual_documents' => true,
-                'booked_access_services_for_planning' => true,
-                'finished_planning_meeting' => true,
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);
-        $consultingProject->paymentMethods()->attach([
-            $cashPaymentMethod->id,
-            $giftCardPaymentMethod->id,
-        ]);
     }
 }

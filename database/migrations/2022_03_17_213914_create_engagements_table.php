@@ -21,8 +21,9 @@ class CreateEngagementsTable extends Migration
             $table->string('recruitment')->default('automatic');
             $table->json('goals');
             $table->json('timeline')->nullable();
-            $table->json('events')->nullable();
+            $table->json('meetings')->nullable();
             $table->json('reporting')->nullable();
+            $table->json('other_reporting')->nullable();
             $table->json('contacts')->nullable();
             $table->id();
             $table->timestamps();

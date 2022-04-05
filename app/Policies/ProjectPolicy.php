@@ -36,18 +36,6 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Project  $project
-     * @return mixed
-     */
-    public function participate(User $user, Project $project)
-    {
-        return $project->confirmedParticipants->contains($user->communityMember);
-    }
-
-    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user

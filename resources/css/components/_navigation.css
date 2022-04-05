@@ -65,6 +65,52 @@
     box-shadow: inset 0 0 0 3px var(--nav-current-color);
 }
 
+.with-sidebar .nav-link {
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-1);
+    color: var(--link-color);
+    display: inline;
+    font-weight: var(--font-weight-6);
+    padding-inline: 0;
+    text-decoration: underline;
+}
+
+.with-sidebar .nav-link:hover {
+    background: transparent;
+    box-shadow: none;
+    color: var(--link-color-hover);
+}
+
+.with-sidebar .nav-link:focus {
+    background: transparent;
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-outline-focus);
+    outline: 1px solid transparent;
+    text-decoration: none;
+}
+
+.with-sidebar .nav-link:active {
+    background: var(--link-background-active);
+    box-shadow: 0 0 0 var(--border-size-2) var(--link-background-active);
+    color: var(--link-color-active);
+    text-decoration: none;
+}
+
+.with-sidebar .nav-link[aria-current] {
+    box-shadow: none;
+    font-weight: var(--font-weight-7);
+    text-decoration-color: var(--nav-current-color);
+    text-decoration-thickness: var(--border-size-2);
+}
+
+.with-sidebar .nav-link[aria-current]:hover {
+    box-shadow: none;
+}
+
+.with-sidebar .nav-link[aria-current]:focus {
+    box-shadow: 0 0 0 var(--border-size-2) var(--nav-current-color);
+}
+
 button.nav-button {
     background: inherit;
     border: 0;

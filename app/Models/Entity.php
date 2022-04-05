@@ -172,6 +172,10 @@ class Entity extends Model
         return $this->hasMany(Project::class)
             ->whereDate('start_date', '<=', Carbon::now())
             ->whereDate('end_date', '>=', Carbon::now())
+            ->orWhere(function ($query) {
+                $query->whereDate('start_date', '<=', Carbon::now())
+                    ->whereNull('end_date');
+            })
             ->orderBy('start_date');
     }
 
