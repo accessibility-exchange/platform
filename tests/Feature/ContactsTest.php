@@ -32,6 +32,6 @@ class ContactsTest extends TestCase
     {
         Livewire::test(Contacts::class, ['contacts' => [['name' => 'Daniel Addison', 'phone' => '1 (416) 555-5555', 'email' => 'daniel@example.com']]])
             ->call('removeContact', 0)
-            ->assertSet('contacts', [['name' => '', 'phone' => '', 'email' => '']]);
+            ->assertSet('contacts', []);
     }
 }
