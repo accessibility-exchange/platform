@@ -2,66 +2,51 @@ name: Run Lighthouse CI
 
 on:
   push:
-    branches: [ dev, prototype ]
-    paths:
-    - 'public/**.js'
-    - 'public/**.css'
-    - 'composer.json'
-    - 'composer.lock'
-    - '**.php'
-    - '**.blade.php'
+    branches: [dev, main]
   pull_request:
-    branches: [ dev, prototype ]
-    paths:
-    - 'public/**.js'
-    - 'public/**.css'
-    - 'composer.json'
-    - 'composer.lock'
-    - '**.php'
-    - '**.blade.php'
+    branches: [dev, main]
 
 jobs:
   lighthouse-ci:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.0'
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }} # https://github.com/GoogleChrome/lighthouse-ci/issues/172
-    - name: Cache Composer packages
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: php-${{ hashFiles('**/composer.lock') }}
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
-      run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Create test database
-      run: |
-        sudo systemctl start mysql.service
-        mysqladmin create accessibilityexchange --user="root" --password="root"
-    - name: Generate key
-      run: php artisan key:Generate
-    - name: Run database migration
-      run: |
-        php artisan migrate
-        php artisan storage:link
-        php artisan serve &
-      env:
-        DB_PASSWORD: root
-        DB_HOST: localhost
-    - name: Use Node 15.x
-      uses: actions/setup-node@v2
-      with:
-        node-version: 15
-    - name: Run Lighthouse CI
-      run: |
-        npm install -g @lhci/cli@0.7.x
-        lhci autorun
-      env:
-        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # https://github.com/GoogleChrome/lighthouse-ci/issues/172
+      - name: Cache Composer packages
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: php-${{ hashFiles('**/composer.lock') }}
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Create test database
+        run: |
+          sudo systemctl start mysql.service
+          mysqladmin create accessibilityexchange --user="root" --password="root"
+      - name: Generate key
+        run: php artisan key:Generate
+      - name: Run database migration
+        run: |
+          php artisan migrate
+          php artisan storage:link
+          php artisan serve &
+        env:
+          DB_PASSWORD: root
+          DB_HOST: localhost
+      - name: Use Node 15.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.7.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
