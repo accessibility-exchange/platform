@@ -14,10 +14,10 @@
             <h2 id="overview">{{ __('Project status') }}</h2>
             <ol role="list">
                 @for ($i = 1; $i < 6; $i++)
-                <li>@if($project->currentEntityStep() > $i)
+                <li>@if($project->currentRegulatedOrganizationStep() > $i)
                     <x-heroicon-s-check-circle width="24" height="24" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('completed') }}</span>
-                    @elseif($project->currentEntityStep() === $i)
+                    @elseif($project->currentRegulatedOrganizationStep() === $i)
                     <x-progress-icon :started="true" progress="0" />
                     <span class="visually-hidden" id="step-{{ $i }}">{{ __('in progress') }}</span>
                     @else

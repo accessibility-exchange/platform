@@ -20,7 +20,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->entity);
+        return $user->isAdministratorOf($project->regulatedOrganization);
     }
 
     /**
@@ -32,7 +32,7 @@ class ProjectPolicy
      */
     public function manage(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->entity);
+        return $user->isAdministratorOf($project->regulatedOrganization);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->entity);
+        return $user->isAdministratorOf($project->regulatedOrganization);
     }
 
     /**
@@ -56,7 +56,7 @@ class ProjectPolicy
      */
     public function createEngagement(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->entity)
+        return $user->isAdministratorOf($project->regulatedOrganization)
             ? Response::allow()
             : Response::deny('You cannot create an engagement for this project.');
     }

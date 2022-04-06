@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEntitiesTable extends Migration
+class CreateRegulatedOrganizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEntitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('entities', function (Blueprint $table) {
+        Schema::create('regulated_organizations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('slug');
@@ -30,6 +30,6 @@ class CreateEntitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entities');
+        Schema::dropIfExists('regulated_organizations');
     }
 }

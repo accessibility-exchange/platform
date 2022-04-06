@@ -5,11 +5,11 @@
 
 @include('projects.partials.progress')
 
-<form class="stack" id="create-project" action="{{ localized_route('projects.store', $entity) }}" method="post" novalidate>
+<form class="stack" id="create-project" action="{{ localized_route('projects.store', $regulatedOrganization) }}" method="post" novalidate>
     @csrf
 
     <fieldset class="field @error('name') field--error @enderror stack">
-        <x-hearth-input type="hidden" name="entity_id" :value="$entity->id" />
+        <x-hearth-input type="hidden" name="regulated_organization_id" :value="$regulatedOrganization->id" />
 
         <x-hearth-input type="hidden" name="ancestor_id" :value="session()->get('ancestor')" />
 

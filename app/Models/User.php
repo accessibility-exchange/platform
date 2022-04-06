@@ -123,13 +123,13 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the regulated entities that belong to this user.
+     * Get the federally regulated organizations that belong to this user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function entities(): MorphToMany
+    public function regulatedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(Entity::class, 'membership')
+        return $this->morphedByMany(RegulatedOrganization::class, 'membership')
             ->using('\App\Models\Membership')
             ->withPivot('id')
             ->withPivot('role')
@@ -137,22 +137,22 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the regulated entity that belongs to this user.
+     * Get the federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\Entity|false
+     * @return \App\Models\RegulatedOrganization|false
      */
-    public function entity(): mixed
+    public function regulatedOrganization(): mixed
     {
-        return $this->entities->first();
+        return $this->regulatedOrganizations->first();
     }
 
     public function projects()
     {
         $projects = collect([]);
 
-        foreach ($this->entities as $entity) {
-            if (count($entity->projects) > 0) {
-                $projects = $projects->merge($entity->projects);
+        foreach ($this->regulatedOrganizations as $regulatedOrganization) {
+            if (count($regulatedOrganization->projects) > 0) {
+                $projects = $projects->merge($regulatedOrganization->projects);
             }
         }
 

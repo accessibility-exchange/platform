@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\CommunityMember;
-use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
@@ -18,40 +18,36 @@ class ProjectTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_users_with_entity_admin_role_can_create_projects()
+    public function test_users_with_regulated_organization_admin_role_can_create_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 
-        $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
+        $response = $this->actingAs($user)->get(localized_route('projects.create', $regulatedOrganization));
         $response->assertOk();
 
-        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $entity), [
+        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $regulatedOrganization), [
             'context' => 'new',
         ]);
 
         $response->assertSessionHas('context', 'new');
 
-        $response = $this->actingAs($user)->post(localized_route('projects.store-focus', $entity), [
+        $response = $this->actingAs($user)->post(localized_route('projects.store-focus', $regulatedOrganization), [
             'focus' => 'define',
         ]);
 
         $response->assertSessionHas('focus', 'define');
 
-        $response = $this->actingAs($user)->post(localized_route('projects.store-languages', $entity), [
+        $response = $this->actingAs($user)->post(localized_route('projects.store-languages', $regulatedOrganization), [
             'languages' => ['en', 'fr', 'ase', 'fcs'],
         ]);
 
         $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
 
-        $response = $this->actingAs($user)->post(localized_route('projects.store', $entity), [
-            'entity_id' => $entity->id,
+        $response = $this->actingAs($user)->post(localized_route('projects.store', $regulatedOrganization), [
+            'regulated_organization_id' => $regulatedOrganization->id,
             'name' => ['en' => 'Test Project'],
             'start_date' => '2022-04-01',
             'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
@@ -68,10 +64,10 @@ class ProjectTest extends TestCase
         $response->assertRedirect($url);
 
         $previous_project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
-        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $entity), [
+        $response = $this->actingAs($user)->post(localized_route('projects.store-context', $regulatedOrganization), [
             'context' => 'follow-up',
             'ancestor' => $previous_project->id,
         ]);
@@ -79,33 +75,29 @@ class ProjectTest extends TestCase
         $response->assertSessionHas('ancestor', $previous_project->id);
     }
 
-    public function test_users_without_entity_admin_role_cannot_create_projects()
+    public function test_users_without_regulated_organization_admin_role_cannot_create_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support is not enabled.');
-        }
-
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
 
-        $response = $this->actingAs($user)->get(localized_route('projects.create', $entity));
+        $response = $this->actingAs($user)->get(localized_route('projects.create', $regulatedOrganization));
         $response->assertForbidden();
 
-        $response = $this->actingAs($other_user)->get(localized_route('projects.create', $entity));
+        $response = $this->actingAs($other_user)->get(localized_route('projects.create', $regulatedOrganization));
         $response->assertForbidden();
     }
 
     public function test_projects_can_be_published_and_unpublished()
     {
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
@@ -133,14 +125,10 @@ class ProjectTest extends TestCase
 
     public function test_users_can_view_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $user = User::factory()->create();
-        $entity = Entity::factory()->create();
+        $regulatedOrganization = RegulatedOrganization::factory()->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.index'));
@@ -161,17 +149,13 @@ class ProjectTest extends TestCase
 
     public function test_community_members_can_express_interest_in_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $user = User::factory()->create();
         $communityMember = CommunityMember::factory()->create([
             'user_id' => $user->id,
         ]);
-        $entity = Entity::factory()->create();
+        $regulatedOrganization = RegulatedOrganization::factory()->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('community-members.express-interest', $communityMember), ['project_id' => $project->id]);
@@ -185,13 +169,9 @@ class ProjectTest extends TestCase
 
     public function test_guests_cannot_view_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $entity = Entity::factory()->create();
+        $regulatedOrganization = RegulatedOrganization::factory()->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->get(localized_route('projects.index'));
@@ -201,20 +181,16 @@ class ProjectTest extends TestCase
         $response->assertRedirect(localized_route('login'));
     }
 
-    public function test_users_with_entity_admin_role_can_edit_projects()
+    public function test_users_with_regulated_organization_admin_role_can_edit_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $this->seed(ImpactSeeder::class);
 
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
@@ -257,19 +233,15 @@ class ProjectTest extends TestCase
         $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
     }
 
-    public function test_users_without_entity_admin_role_cannot_edit_projects()
+    public function test_users_without_regulated_organization_admin_role_cannot_edit_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support is not enabled.');
-        }
-
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
@@ -289,54 +261,42 @@ class ProjectTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_users_with_entity_admin_role_can_manage_projects()
+    public function test_users_with_regulated_organization_admin_role_can_manage_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
         $response->assertOk();
     }
 
-    public function test_users_without_entity_admin_role_cannot_manage_projects()
+    public function test_users_without_regulated_organization_admin_role_cannot_manage_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support is not enabled.');
-        }
-
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
         $response->assertForbidden();
     }
 
-    public function test_users_with_entity_admin_role_can_delete_projects()
+    public function test_users_with_regulated_organization_admin_role_can_delete_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
@@ -349,19 +309,15 @@ class ProjectTest extends TestCase
         $response->assertRedirect(localized_route('dashboard'));
     }
 
-    public function test_users_without_entity_admin_role_cannot_delete_projects()
+    public function test_users_without_regulated_organization_admin_role_cannot_delete_projects()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support is not enabled.');
-        }
-
         $user = User::factory()->create();
         $other_user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'member'])
             ->create();
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
         $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
@@ -377,27 +333,23 @@ class ProjectTest extends TestCase
 
     public function test_project_timeframes()
     {
-        if (! config('hearth.entities.enabled')) {
-            return $this->markTestSkipped('Entity support  is not enabled.');
-        }
-
-        $entity = Entity::factory()->create();
+        $regulatedOrganization = RegulatedOrganization::factory()->create();
         $past_project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
             'start_date' => '2020-01-01',
             'end_date' => '2020-12-31',
         ]);
         $past_project_multi_year = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
             'start_date' => '2020-01-01',
             'end_date' => '2021-12-31',
         ]);
         $current_project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
             'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
         ]);
         $future_project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
             'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
         ]);
 
@@ -406,22 +358,22 @@ class ProjectTest extends TestCase
         $this->assertStringContainsString('Started', $current_project->timeframe());
         $this->assertStringContainsString('Starting', $future_project->timeframe());
 
-        $this->assertEquals(4, count($entity->projects));
-        $this->assertEquals(2, count($entity->pastProjects));
-        $this->assertEquals(1, count($entity->currentProjects));
-        $this->assertEquals(1, count($entity->futureProjects));
+        $this->assertEquals(4, count($regulatedOrganization->projects));
+        $this->assertEquals(2, count($regulatedOrganization->pastProjects));
+        $this->assertEquals(1, count($regulatedOrganization->currentProjects));
+        $this->assertEquals(1, count($regulatedOrganization->futureProjects));
     }
 
     public function test_project_sectors()
     {
         $this->seed(SectorSeeder::class);
-        $entity = Entity::factory()->create();
-        $entity->sectors()->attach(Sector::pluck('id')->toArray());
+        $regulatedOrganization = RegulatedOrganization::factory()->create();
+        $regulatedOrganization->sectors()->attach(Sector::pluck('id')->toArray());
         $project = Project::factory()->create([
-            'entity_id' => $entity->id,
+            'regulated_organization_id' => $regulatedOrganization->id,
         ]);
 
-        $this->assertEquals($entity->sectors->toArray(), $project->sectors->toArray());
+        $this->assertEquals($regulatedOrganization->sectors->toArray(), $project->sectors->toArray());
     }
 
     public function test_consultant_origin()

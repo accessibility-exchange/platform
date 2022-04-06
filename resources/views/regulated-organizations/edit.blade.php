@@ -1,38 +1,38 @@
 
 <x-app-layout>
-    <x-slot name="title">{{ __('Edit regulated entity “:name”', ['name' => $entity->name]) }}</x-slot>
+    <x-slot name="title">{{ __('Edit federally regulated organization “:name”', ['name' => $regulatedOrganization->name]) }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('Edit regulated entity “:name”', ['name' => $entity->name]) }}
+            {{ __('Edit federally regulated organization “:name”', ['name' => $regulatedOrganization->name]) }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('entities.update', $entity) }}" method="POST" novalidate>
+    <form action="{{ localized_route('regulated-organizations.update', $regulatedOrganization) }}" method="POST" novalidate>
         @csrf
         @method('PUT')
 
         <div class="field">
-            <x-hearth-label for="name" :value="__('Regulated entity name')" />
-            <x-hearth-input id="name" type="text" name="name" :value="old('name', $entity->name)" required />
+            <x-hearth-label for="name" :value="__('Regulated federally regulated organization name')" />
+            <x-hearth-input id="name" type="text" name="name" :value="old('name', $regulatedOrganization->name)" required />
             </div>
         <div class="field">
             <x-hearth-label for="locality" :value="__('forms.label_locality')" />
-            <x-hearth-input id="locality" type="text" name="locality" :value="old('locality', $entity->locality)" required />
+            <x-hearth-input id="locality" type="text" name="locality" :value="old('locality', $regulatedOrganization->locality)" required />
         </div>
         <div class="field">
             <x-hearth-label for="region" :value="__('forms.label_region')" />
-            <x-hearth-select id="region" name="region" :selected="old('region', $entity->region)" required :options="$regions"/>
+            <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$regions"/>
             </div>
 
         <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
     </form>
 
-    <h2>{{ __('Regulated entity members') }}</h2>
+    <h2>{{ __('Regulated federally regulated organization members') }}</h2>
 
-    <div role="region" aria-label="{{ __('Regulated entity members') }}" tabindex="0">
+    <div role="region" aria-label="{{ __('Regulated federally regulated organization members') }}" tabindex="0">
         <table>
             <thead>
                 <tr>
@@ -43,7 +43,7 @@
                   <th></th>
                 </tr>
             </thead>
-            @foreach ($entity->users as $user)
+            @foreach ($regulatedOrganization->users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ __('Active') }}</td>
@@ -55,7 +55,7 @@
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('Remove :user from :entity', ['user' => $user->name, 'entity' => $entity->name])">
+                        <x-hearth-button class="link" :aria-label="__('Remove :user from :entity', ['user' => $user->name, 'regulatedOrganization' => $regulatedOrganization->name])">
                             {{ __('Remove') }}
                         </x-hearth-button>
                     </form>
@@ -67,7 +67,7 @@
 
     <h2>{{ __('invitation.invitations_title') }}</h2>
 
-    @if($entity->invitations->count() > 0)
+    @if($regulatedOrganization->invitations->count() > 0)
     <div role="region" aria-label="{{ __('invitation.invitations_title') }}" tabindex="0">
         <table>
             <thead>
@@ -78,7 +78,7 @@
                   <th></th>
                 </tr>
             </thead>
-            @foreach ($entity->invitations as $invitation)
+            @foreach ($regulatedOrganization->invitations as $invitation)
             <tr>
                 <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
                 <td>{{ __('invitation.member_invited') }}</td>
@@ -104,8 +104,8 @@
 
     <form action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
-        <x-hearth-input type="hidden" name="inviteable_id" :value="$entity->id"></x-hearth-input>
-        <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($entity)"></x-hearth-input>
+        <x-hearth-input type="hidden" name="inviteable_id" :value="$regulatedOrganization->id"></x-hearth-input>
+        <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($regulatedOrganization)"></x-hearth-input>
         <div class="field">
             <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
             <x-hearth-input type="email" name="email" :value="old('email')" required />
@@ -123,12 +123,12 @@
     </form>
 
     <h2>
-        {{ __('Delete regulated entity') }}
+        {{ __('Delete federally regulated organization') }}
     </h2>
 
-    <p>{{ __('Your regulated entity will be deleted and cannot be recovered. If you still want to delete your regulated entity, please enter your current password to proceed.') }}</p>
+    <p>{{ __('Your federally regulated organization will be deleted and cannot be recovered. If you still want to delete your federally regulated organization, please enter your current password to proceed.') }}</p>
 
-    <form action="{{ localized_route('entities.destroy', $entity) }}" method="POST" novalidate>
+    <form action="{{ localized_route('regulated-organizations.destroy', $regulatedOrganization) }}" method="POST" novalidate>
         @csrf
         @method('DELETE')
 
@@ -139,7 +139,7 @@
         </div>
 
         <x-hearth-button>
-            {{ __('Delete regulated entity') }}
+            {{ __('Delete federally regulated organization') }}
         </x-hearth-button>
     </form>
 </x-app-layout>

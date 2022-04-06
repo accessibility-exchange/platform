@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 
-class DestroyEntityRequest extends FormRequest
+class DestroyRegulatedOrganizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class DestroyEntityRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('delete', $this->entity);
+        return $this->user()->can('delete', $this->regulatedOrganization);
     }
 
     /**
@@ -44,7 +44,7 @@ class DestroyEntityRequest extends FormRequest
                     __('The provided password does not match your current password.')
                 );
             }
-        })->validateWithBag('destroyEntity');
+        })->validateWithBag('destroyRegulatedOrganization');
 
         return;
     }

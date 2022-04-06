@@ -20,13 +20,13 @@
     <x-privacy-indicator level="public" :value="__('This information will be on your public page. It is visible to anyone with an account on this website.')" />
 
     <fieldset class="field @error('sectors') field--error @enderror">
-        <legend>{{ __('What types of regulated entity are you interested in? (optional)') }}</legend>
+        <legend>{{ __('What types of federally regulated organization are you interested in? (optional)') }}</legend>
         <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $communityMember->sectors->pluck('id')->toArray())" />
         <x-hearth-error for="sectors" />
     </fieldset>
 
     <fieldset class="field @error('impacts') field--error @enderror">
-        <legend>{{ __('What areas would you most like to impact within a regulated entity? (optional)') }}</legend>
+        <legend>{{ __('What areas would you most like to impact within a federally regulated organization? (optional)') }}</legend>
         <x-hearth-hint for="impacts">{{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}</x-hearth-hint>
         <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $communityMember->impacts->pluck('id')->toArray())" />
         <x-hearth-error for="impacts" />

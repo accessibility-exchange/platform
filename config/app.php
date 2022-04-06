@@ -242,6 +242,6 @@ return [
     'contexts' => [
         'community-member',
         'organization',
-        'entity',
+        'regulated-organization',
     ],
 ];

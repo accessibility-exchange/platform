@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Entity;
 use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -53,10 +53,10 @@ class AccountDeletionTest extends TestCase
         $response->assertRedirect(localized_route('users.admin'));
     }
 
-    public function test_users_cannot_delete_their_own_accounts_without_assigning_other_admin_to_entity()
+    public function test_users_cannot_delete_their_own_accounts_without_assigning_other_admin_to_regulatedOrganization()
     {
         $user = User::factory()->create();
-        $entity = Entity::factory()
+        $regulatedOrganization = RegulatedOrganization::factory()
             ->hasAttached($user, ['role' => 'admin'])
             ->create();
 

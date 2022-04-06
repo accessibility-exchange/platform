@@ -17,7 +17,7 @@
 
     <h3>{{ __('Lived experiences') }}</h3>
 
-    <p>{{ __('Entities may look for people with specific lived experiences. They may also try to consult with people across different disabilities and identities. Any information you provide will be used to help match you to an entity looking for someone like you.') }}</p>
+    <p>{{ __('Entities may look for people with specific lived experiences. They may also try to consult with people across different disabilities and identities. Any information you provide will be used to help match you to an federally regulated organization looking for someone like you.') }}</p>
 
     <x-privacy-indicator level="private" :value="__('Only organizations who work with you will be able to access this information.')" />
 

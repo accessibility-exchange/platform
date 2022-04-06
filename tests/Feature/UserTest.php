@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Entity;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -121,12 +121,12 @@ class UserTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
         $response->assertRedirect(localized_route('dashboard'));
 
-        $entityUser = User::factory()->create();
-        $entity = Entity::factory()
-            ->hasAttached($entityUser, ['role' => 'admin'])
+        $regulatedOrganizationUser = User::factory()->create();
+        $regulatedOrganization = RegulatedOrganization::factory()
+            ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
             ->create();
 
-        $response = $this->actingAs($entityUser)->get(localized_route('users.show_my_projects'));
+        $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('users.show_my_projects'));
         $response->assertOk();
     }
 

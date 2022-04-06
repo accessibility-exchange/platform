@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunityMemberEntityTable extends Migration
+class CreateResourceCollectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateCommunityMemberEntityTable extends Migration
      */
     public function up()
     {
-        Schema::create('community_member_entity', function (Blueprint $table) {
-            $table->foreignId('entity_id')
+        Schema::create('resource_collections', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')
+                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('community_member_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->json('title');
+            $table->json('description');
+            $table->string('slug');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +33,6 @@ class CreateCommunityMemberEntityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_member_entity');
+        Schema::dropIfExists('resource_collections');
     }
 }

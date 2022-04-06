@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
+use App\Models\RegulatedOrganization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateEntityRequest extends FormRequest
+class UpdateRegulatedOrganizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,7 @@ class UpdateEntityRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->entity);
+        return $this->user()->can('update', $this->regulatedOrganization);
     }
 
     /**
@@ -30,7 +30,7 @@ class UpdateEntityRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(Entity::class)->ignore($this->entity->id),
+                Rule::unique(RegulatedOrganization::class)->ignore($this->regulatedOrganization->id),
 
             ],
             'locality' => ['required', 'string', 'max:255'],

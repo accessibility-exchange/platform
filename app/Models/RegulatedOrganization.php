@@ -15,7 +15,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class Entity extends Model
+class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
@@ -70,7 +70,7 @@ class Entity extends Model
      */
     public function getRouteKeyPlaceholder(): string
     {
-        return 'entity';
+        return 'regulatedOrganization';
     }
 
     /**
@@ -80,11 +80,11 @@ class Entity extends Model
      */
     public function getRoutePrefix(): string
     {
-        return 'entities';
+        return 'regulated-organizations';
     }
 
     /**
-     * Get the users that are associated with this entity.
+     * Get the users that are associated with this federally regulated organization.
      */
     public function users(): MorphToMany
     {
@@ -97,7 +97,7 @@ class Entity extends Model
     }
 
     /**
-     * Does the entity have more than one administrator?
+     * Does the federally regulated organization have more than one administrator?
      */
     public function administrators(): MorphToMany
     {
@@ -107,7 +107,7 @@ class Entity extends Model
     }
 
     /**
-     * Determine if the given email address belongs to a user in the entity.
+     * Determine if the given email address belongs to a user in the federally regulated organization.
      *
      * @param  string  $email
      * @return bool
@@ -120,7 +120,7 @@ class Entity extends Model
     }
 
     /**
-     * Determine if the given email address belongs to an administrator in the entity.
+     * Determine if the given email address belongs to an administrator in the federally regulated organization.
      *
      * @param  string  $email
      * @return bool
@@ -133,7 +133,7 @@ class Entity extends Model
     }
 
     /**
-     * Get the invitations associated with this entity.
+     * Get the invitations associated with this federally regulated organization.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
@@ -143,7 +143,7 @@ class Entity extends Model
     }
 
     /**
-     * The sectors that belong to the entity.
+     * The sectors that belong to the federally regulated organization.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -153,7 +153,7 @@ class Entity extends Model
     }
 
     /**
-     * Get the projects that belong to this entity.
+     * Get the projects that belong to this federally regulated organization.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -163,7 +163,7 @@ class Entity extends Model
     }
 
     /**
-     * Get the projects that belong to this entity that are in progress.
+     * Get the projects that belong to this federally regulated organization that are in progress.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -180,7 +180,7 @@ class Entity extends Model
     }
 
     /**
-     * Get the projects that belong to this entity that have been completed.
+     * Get the projects that belong to this federally regulated organization that have been completed.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -192,7 +192,7 @@ class Entity extends Model
     }
 
     /**
-     * Get the projects that belong to this entity that haven't started yet.
+     * Get the projects that belong to this federally regulated organization that haven't started yet.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -204,12 +204,12 @@ class Entity extends Model
     }
 
     /**
-     * The community members who have identified themselves with the entity.
+     * The community members who have identified themselves with the federally regulated organization.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function communityMembers(): BelongsToMany
     {
-        return $this->belongsToMany(CommunityMember::class);
+        return $this->belongsToMany(CommunityMember::class, 'community_member_regulated_org');
     }
 }

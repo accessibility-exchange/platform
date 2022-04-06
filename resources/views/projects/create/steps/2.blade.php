@@ -1,5 +1,5 @@
 
-<form class="stack" id="create-project" action="{{ localized_route('projects.store-focus', $entity) }}" method="post" novalidate>
+<form class="stack" id="create-project" action="{{ localized_route('projects.store-focus', $regulatedOrganization) }}" method="post" novalidate>
     @csrf
 
     <fieldset class="field @error('focus') field--error @enderror stack">

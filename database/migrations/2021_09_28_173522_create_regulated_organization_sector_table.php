@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEntitySectorTable extends Migration
+class CreateRegulatedOrganizationSectorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateEntitySectorTable extends Migration
      */
     public function up()
     {
-        Schema::create('entity_sector', function (Blueprint $table) {
-            $table->foreignId('entity_id')
+        Schema::create('regulated_organization_sector', function (Blueprint $table) {
+            $table->foreignId('regulated_organization_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('sector_id')
@@ -30,6 +30,6 @@ class CreateEntitySectorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('entity_sector');
+        Schema::dropIfExists('regulated_organization_sector');
     }
 }

@@ -1,5 +1,5 @@
 
-<form class="stack" id="create-project" action="{{ localized_route('projects.store-languages', $entity) }}" method="post" novalidate>
+<form class="stack" id="create-project" action="{{ localized_route('projects.store-languages', $regulatedOrganization) }}" method="post" novalidate>
     @csrf
 
     <fieldset class="stack">

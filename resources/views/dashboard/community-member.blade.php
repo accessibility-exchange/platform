@@ -15,7 +15,7 @@
                 <x-slot name="summary">{{ __('Find entities to follow') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Once you follow some entities that you’re interested in, you will be notified whenever they begin a community consultation process.') }}</p>
-                    <p><a class="button" href="{{ localized_route('entities.index') }}">{{ __('Find entities') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('regulated-organizations.index') }}">{{ __('Find entities') }}</a></p>
                 </div>
             </x-expander>
             @endif

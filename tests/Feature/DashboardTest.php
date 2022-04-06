@@ -22,12 +22,12 @@ class DashboardTest extends TestCase
         $response->assertSee('Create your community member page');
 
         $user = User::factory()->create([
-            'context' => 'entity',
+            'context' => 'regulated-organization',
         ]);
 
         $response = $this->actingAs($user)->get(localized_route('dashboard'));
 
         $response->assertStatus(200);
-        $response->assertSee('Create your entity page');
+        $response->assertSee('Create your federally regulated organization page');
     }
 }

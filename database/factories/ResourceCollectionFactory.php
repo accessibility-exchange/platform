@@ -2,17 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Entity;
+use App\Models\ResourceCollection;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EntityFactory extends Factory
+class ResourceCollectionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Entity::class;
+    protected $model = ResourceCollection::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +23,9 @@ class EntityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company(),
-            'locality' => $this->faker->city(),
-            'region' => $this->faker->provinceAbbr(),
+            'user_id' => User::factory(),
+            'title' => 'Test Resource Collection',
+            'description' => $this->faker->sentence(),
         ];
     }
 }

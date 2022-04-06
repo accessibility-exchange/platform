@@ -72,7 +72,7 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
 require __DIR__ . '/community-members.php';
 require __DIR__ . '/defined-terms.php';
 require __DIR__ . '/organizations.php';
-require __DIR__ . '/entities.php';
+require __DIR__ . '/regulated-organizations.php';
 require __DIR__ . '/projects.php';
 require __DIR__ . '/engagements.php';
 require __DIR__ . '/resources.php';

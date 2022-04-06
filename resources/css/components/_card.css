@@ -21,17 +21,17 @@
     outline: 1px solid transparent;
 }
 
-.card.federally-regulated-organization {
-    box-shadow: var(--card-shadow), var(--card-federally-regulated-organization-shadow);
+.card.regulated-organization {
+    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow);
 }
 
-.card.federally-regulated-organization:hover {
-    box-shadow: var(--card-shadow-hover), var(--card-federally-regulated-organization-shadow);
+.card.regulated-organization:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-regulated-organization-shadow);
 }
 
-.card.federally-regulated-organization:focus-within,
-.card.federally-regulated-organization:has(a:active) {
-    box-shadow: var(--card-federally-regulated-organization-shadow-focus-within);
+.card.regulated-organization:focus-within,
+.card.regulated-organization:has(a:active) {
+    box-shadow: var(--card-regulated-organization-shadow-focus-within);
 }
 
 .card.community-organization {

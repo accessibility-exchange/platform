@@ -58,14 +58,14 @@ class DestroyUserRequest extends FormRequest
                 }
             }
 
-            if (count($this->user()->entities) > 0) {
-                foreach ($this->user()->entities as $entity) {
-                    if ($entity->administrators()->count() === 1 && $this->user()->isAdministratorOf($entity)) {
+            if (count($this->user()->regulatedOrganizations) > 0) {
+                foreach ($this->user()->regulatedOrganizations as $regulatedOrganization) {
+                    if ($regulatedOrganization->administrators()->count() === 1 && $this->user()->isAdministratorOf($regulatedOrganization)) {
                         $validator->errors()->add(
-                            'entities',
+                            'regulatedOrganizations',
                             __(
                                 'You must assign a new administrator to :entity before deleting your account.',
-                                ['entity' => '<a href="' . localized_route('entities.edit', $entity) . '">' . $entity->name . '</a>'],
+                                ['regulatedOrganization' => '<a href="' . localized_route('regulated-organizations.edit', $regulatedOrganization) . '">' . $regulatedOrganization->name . '</a>'],
                             )
                         );
                     }

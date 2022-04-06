@@ -40,7 +40,7 @@
     <h3>{{ __('Communication with you') }}</h3>
 
     <fieldset>
-        <legend>{{ __('How do you want to be contacted when a regulated entity wants to consult with you?') }}</legend>
+        <legend>{{ __('How do you want to be contacted when a federally regulated organization wants to consult with you?') }}</legend>
         <x-hearth-checkboxes name="preferred_contact_methods" :options="$contactMethods" :checked="old('preferred_contact_methods', $communityMember->preferred_contact_methods ?? [])" />
     </fieldset>
 

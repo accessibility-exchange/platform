@@ -244,9 +244,9 @@ class CommunityMember extends Model implements HasMedia
     /**
      * The entities that the community member has identified themself with.
      */
-    public function entities(): BelongsToMany
+    public function regulatedOrganizations(): BelongsToMany
     {
-        return $this->belongsToMany(Entity::class);
+        return $this->belongsToMany(RegulatedOrganization::class, 'community_member_regulated_org');
     }
 
     /**

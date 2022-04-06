@@ -193,7 +193,7 @@ class CommunityMemberTest extends TestCase
 
     public function test_entity_users_can_not_create_community_member_pages()
     {
-        $user = User::factory()->create(['context' => 'entity']);
+        $user = User::factory()->create(['context' => 'regulated-organization']);
 
         $response = $this->actingAs($user)->get(localized_route('community-members.create'));
         $response->assertForbidden();

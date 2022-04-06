@@ -28,7 +28,7 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'entity_id',
+        'regulated_organization_id',
         'languages',
         'start_date',
         'end_date',
@@ -140,13 +140,13 @@ class Project extends Model
     }
 
     /**
-     * The entity that created the project.
+     * The federally regulated organization that created the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function entity(): BelongsTo
+    public function regulatedOrganization(): BelongsTo
     {
-        return $this->belongsTo(Entity::class);
+        return $this->belongsTo(RegulatedOrganization::class);
     }
 
     /**
@@ -166,7 +166,7 @@ class Project extends Model
      */
     public function sectors(): BelongsToMany
     {
-        return $this->entity->belongsToMany(Sector::class);
+        return $this->regulatedOrganization->belongsToMany(Sector::class);
     }
 
     /**

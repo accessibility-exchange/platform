@@ -9,9 +9,6 @@ return [
             'admin',
         ],
     ],
-    'entities' => [
-        'enabled' => true,
-    ],
     'resources' => [
         'enabled' => true,
     ],

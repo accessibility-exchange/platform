@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,7 +17,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->entity);
+        return $this->user()->can('update', $this->regulatedOrganization);
     }
 
     /**
@@ -28,10 +28,10 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'entity_id' => [
+            'regulated_organization_id' => [
                 'required',
                 'integer',
-                Rule::in(Entity::pluck('id')->toArray()),
+                Rule::in(RegulatedOrganization::pluck('id')->toArray()),
             ],
             'ancestor_id' => [
                 'nullable',

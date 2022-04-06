@@ -8,6 +8,6 @@ return [
     'verification.verify' => '/verification-de-courriel/{id}/{hash}',
     'projects' => 'projets',
     'projects/{project}' => 'projets/{project}',
-    'entities/{entity}/accessibility-and-inclusion' => 'entites/{entity}/accessibilite-et-inclusion',
-    'entities/{entity}/projects' => 'entites/{entity}/projets',
+    'entities/{regulatedOrganization}/accessibility-and-inclusion' => 'entites/{regulatedOrganization}/accessibilite-et-inclusion',
+    'entities/{regulatedOrganization}/projects' => 'entites/{regulatedOrganization}/projets',
 ];

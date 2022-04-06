@@ -2,12 +2,12 @@
     <div class="column stack">
         <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
-            @if(!$currentUser->entity())
+            @if(!$currentUser->regulatedOrganization())
             <x-expander level="3">
-                <x-slot name="summary">{{ __('Create your entity page') }}</x-slot>
+                <x-slot name="summary">{{ __('Create your federally regulated organization page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Share more about your organization so that community members can get to know you.') }}</p>
-                    <p><a class="button" href="{{ localized_route('entities.create') }}">{{ __('Create your page') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('regulated-organizations.create') }}">{{ __('Create your page') }}</a></p>
                 </div>
             </x-expander>
             @else
@@ -15,7 +15,7 @@
                 <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Create a new project page so that community members can begin to express their interest in working with you.') }}</p>
-                    <p><a class="button" href="{{ localized_route('projects.create', $currentUser->entity()) }}">{{ __('Create project page') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('projects.create', $currentUser->regulatedOrganization()) }}">{{ __('Create project page') }}</a></p>
                 </div>
             </x-expander>
             @endif
@@ -28,12 +28,12 @@
             </x-expander>
         </div>
 
-        @if($currentUser->entity())
+        @if($currentUser->regulatedOrganization())
         <div class="stack">
-            <h2>{{ __('My entity page') }}</h2>
+            <h2>{{ __('My federally regulated organization page') }}</h2>
             <p>
-                <a href="{{ localized_route('entities.show', $currentUser->entity()) }}"><strong>{{ __('Visit my entity page') }}</strong><br />
-                <a href="{{ localized_route('entities.edit', $currentUser->entity()) }}">{{ __('Edit my entity page') }}</a>
+                <a href="{{ localized_route('regulated-organizations.show', $currentUser->regulatedOrganization()) }}"><strong>{{ __('Visit my federally regulated organization page') }}</strong><br />
+                <a href="{{ localized_route('regulated-organizations.edit', $currentUser->regulatedOrganization()) }}">{{ __('Edit my federally regulated organization page') }}</a>
             </p>
         </div>
 
@@ -49,16 +49,16 @@
     </div>
 
     <div class="column stack">
-        @if($currentUser->entity())
+        @if($currentUser->regulatedOrganization())
         <div class="stack">
             <h2>{{ __('My active projects') }}</h2>
-            @if(count($currentUser->entity()->projects) > 0)
-                @foreach($currentUser->entity()->projects as $project)
+            @if(count($currentUser->regulatedOrganization()->projects) > 0)
+                @foreach($currentUser->regulatedOrganization()->projects as $project)
                 <x-project-card :project="$project" />
                 @endforeach
             <p><a href="{{ localized_route('users.show_my_projects') }}">{{ __('Show all my projects') }}</a></p>
             @else
-            <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', $currentUser->entity()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
+            <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', $currentUser->regulatedOrganization()) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
             @endif
         </div>
         @else

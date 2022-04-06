@@ -8,8 +8,8 @@
 
 <x-heading :level="$level">{{ __('Current projects') }}</x-heading>
 
-@forelse($entity->currentProjects as $project)
-<x-project-card :project="$project" :level="4" :showEntity="false" />
+@forelse($regulatedOrganization->currentProjects as $project)
+<x-project-card :project="$project" :level="4" :showRegulatedOrganization="false" />
 @empty
 <p>{{ __('No projects found.') }}</p>
 @endforelse
