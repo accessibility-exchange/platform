@@ -6,17 +6,9 @@ updates:
       interval: "monthly"
     allow:
       - dependency-type: "production"
-    assignees:
-      - "greatislander"
-    reviewers:
-      - "greatislander"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "monthly"
     allow:
       - dependency-type: "production"
-    assignees:
-      - "greatislander"
-    reviewers:
-      - "greatislander"
