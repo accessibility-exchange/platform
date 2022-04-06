@@ -110,8 +110,8 @@ class CommunityMember extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-              ->width(200)
-              ->height(200);
+                ->width(200)
+                ->height(200);
     }
 
     /**
