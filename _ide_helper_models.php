@@ -225,6 +225,34 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Criterion
+ *
+ * @property int $id
+ * @property int $matching_strategy_id
+ * @property string $criteriable_type
+ * @property int $criteriable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $criteriable
+ * @property-read \App\Models\MatchingStrategy $matchingStrategy
+ * @method static \Database\Factories\CriterionFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCriteriableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCriteriableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereMatchingStrategyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereUpdatedAt($value)
+ */
+    class Criterion extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
  * App\Models\DefinedTerm
  *
  * @property int $id
@@ -263,6 +291,7 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
  * @property-read int|null $participants_count
  * @property-read \App\Models\Project $project
@@ -376,6 +405,33 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience whereUpdatedAt($value)
  */
     class LivedExperience extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
+ * App\Models\MatchingStrategy
+ *
+ * @property int $id
+ * @property string|null $matchable_type
+ * @property int|null $matchable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Criterion[] $criteria
+ * @property-read int|null $criteria_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $matchable
+ * @method static \Database\Factories\MatchingStrategyFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereUpdatedAt($value)
+ */
+    class MatchingStrategy extends \Eloquent
     {
     }
 }

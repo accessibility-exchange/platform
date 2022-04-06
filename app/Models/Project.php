@@ -294,4 +294,14 @@ class Project extends Model
 
         return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
     }
+
+    /**
+     * The matching strategy attached to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function matchingStrategy(): MorphOne
+    {
+        return $this->morphOne(MatchingStrategy::class, 'matchable');
+    }
 }
