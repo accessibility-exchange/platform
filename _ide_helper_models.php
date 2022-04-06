@@ -231,6 +231,7 @@ namespace App\Models{
  * @property int $matching_strategy_id
  * @property string $criteriable_type
  * @property int $criteriable_id
+ * @property float $weight
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $criteriable
@@ -245,6 +246,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereMatchingStrategyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereWeight($value)
  */
     class Criterion extends \Eloquent
     {
@@ -576,6 +578,7 @@ namespace App\Models{
  * @property-read int|null $engagements_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
+ * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \App\Models\RegulatedOrganization $regulatedOrganization
@@ -733,46 +736,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUserId($value)
  */
     class ResourceCollection extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
- * App\Models\Review
- *
- * @property int $id
- * @property int $community_member_id
- * @property int $project_id
- * @property string|null $body
- * @property int $met_access_needs
- * @property int $open_to_feedback
- * @property int $kind_and_patient
- * @property int $valued_input
- * @property int $respectful_of_identity
- * @property int $sensitive_to_comfort_levels
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\CommunityMember $communityMember
- * @property-read \App\Models\Project $project
- * @method static \Database\Factories\ReviewFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Review newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Review newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Review query()
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereCommunityMemberId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereKindAndPatient($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereMetAccessNeeds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereOpenToFeedback($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereRespectfulOfIdentity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereSensitiveToComfortLevels($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereValuedInput($value)
- */
-    class Review extends \Eloquent
     {
     }
 }

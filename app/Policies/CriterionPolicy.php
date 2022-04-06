@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\Criterion;
-use App\Models\MatchingStrategy;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -38,12 +37,11 @@ class CriterionPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\MatchingStrategy  $matchingStrategy
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, MatchingStrategy $matchingStrategy)
+    public function create(User $user)
     {
-        return $user->can('update', $matchingStrategy);
+        return false;
     }
 
     /**
@@ -55,7 +53,7 @@ class CriterionPolicy
      */
     public function update(User $user, Criterion $criterion)
     {
-        return $user->can('update', $criterion->matchingStrategy);
+        return $user->can('update', $criterion->matchingStrategy());
     }
 
     /**$strateg
@@ -67,6 +65,6 @@ class CriterionPolicy
      */
     public function delete(User $user, Criterion $criterion)
     {
-        return $user->can('update', $criterion->matchingStrategy);
+        return $user->can('update', $criterion->matchingStrategy());
     }
 }

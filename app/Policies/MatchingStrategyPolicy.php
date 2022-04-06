@@ -53,7 +53,7 @@ class MatchingStrategyPolicy
      */
     public function update(User $user, MatchingStrategy $matchingStrategy)
     {
-        return $user->can('update', $matchingStrategy->matchable);
+        return $user->can('update', $matchingStrategy->matchable());
     }
 
     /**
@@ -65,6 +65,6 @@ class MatchingStrategyPolicy
      */
     public function delete(User $user, MatchingStrategy $matchingStrategy)
     {
-        return $user->can('update', $matchingStrategy->matchable);
+        return $user->can('update', $matchingStrategy->matchable());
     }
 }
