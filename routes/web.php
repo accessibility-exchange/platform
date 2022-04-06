@@ -79,5 +79,4 @@ require __DIR__ . '/resources.php';
 require __DIR__ . '/resource-collections.php';
 require __DIR__ . '/memberships.php';
 require __DIR__ . '/invitations.php';
-require __DIR__ . '/updates.php';
 require __DIR__ . '/fortify.php';
