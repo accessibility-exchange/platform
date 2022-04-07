@@ -164,9 +164,9 @@ class CommunityMember extends Model implements HasMedia
      * @param string $value
      * @return string
      */
-    public function getPhoneNumberAttribute($value): string
+    public function getPhoneAttribute($value): string
     {
-        return str_replace(['-', '(', ')', '.', ' '], '', $this->phone);
+        return str_replace(['-', '(', ')', '.', ' '], '', $value);
     }
 
     /**

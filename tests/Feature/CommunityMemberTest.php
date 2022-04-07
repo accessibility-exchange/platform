@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CommunityMember;
+use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Sector;
 use App\Models\User;
@@ -32,6 +33,12 @@ test('users can create community member pages', function () {
         'hide_location' => 1,
         'pronouns' => '',
         'bio' => '',
+        'links' => [
+            'linkedin' => 'https://linkedin.com/in/someone',
+            'twitter' => '',
+            'instagram' => '',
+            'facebook' => '',
+        ],
         'other_links' => [
             [
                 'title' => 'My website',
@@ -40,6 +47,10 @@ test('users can create community member pages', function () {
         ],
         'save' => __('Save'),
     ]);
+
+    $communityMember = $communityMember->fresh();
+
+    expect($communityMember->links)->toHaveKey('linkedin')->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
@@ -172,6 +183,10 @@ test('users can create community member pages', function () {
         'languages' => ['en'],
         'save_and_next' => __('Save and next'),
     ]);
+
+    $communityMember = $communityMember->fresh();
+
+    expect($communityMember->phone)->toEqual('9021234567');
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
@@ -474,4 +489,12 @@ test('published community members appear on community member index', function ()
 
     $response = $this->actingAs($user)->get(localized_route('community-members.index'));
     $response->assertSee($communityMember->name);
+});
+
+test('community members can participate in engagements', function () {
+    $participant = CommunityMember::factory()->create();
+    $engagement = Engagement::factory()->create();
+    $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
+
+    expect($participant->engagements)->toHaveCount(1);
 });
