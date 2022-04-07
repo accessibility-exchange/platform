@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\CommunityMember;
 use App\Models\Impact;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
@@ -17,8 +18,6 @@ test('users with organization or regulated organization admin role can create pr
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
-
-    ray($user->projectable());
 
     $response = $this->actingAs($user)->get(localized_route('projects.create'));
     $response->assertOk();
@@ -317,30 +316,66 @@ test('users without regulated organization admin role cannot delete projects', f
 });
 
 test('projects have timeframes', function () {
+    $organization = Organization::factory()->create();
+    $org_past_project = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+        'start_date' => '2020-01-01',
+        'end_date' => '2020-12-31',
+    ]);
+    $org_past_project_multi_year = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+        'start_date' => '2020-01-01',
+        'end_date' => '2021-12-31',
+    ]);
+    $org_current_project = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+        'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
+    ]);
+    $org_future_project = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+        'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
+    ]);
+
+    $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
+    $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
+    $this->assertStringContainsString('Started', $org_current_project->timeframe());
+    $this->assertStringContainsString('Starting', $org_future_project->timeframe());
+
+    $this->assertEquals(4, count($organization->projects));
+    $this->assertEquals(2, count($organization->pastProjects));
+    $this->assertEquals(1, count($organization->currentProjects));
+    $this->assertEquals(1, count($organization->futureProjects));
+
     $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $past_project = Project::factory()->create([
+    $regulated_org_past_project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'start_date' => '2020-01-01',
         'end_date' => '2020-12-31',
     ]);
-    $past_project_multi_year = Project::factory()->create([
+    $regulated_org_past_project_multi_year = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'start_date' => '2020-01-01',
         'end_date' => '2021-12-31',
     ]);
-    $current_project = Project::factory()->create([
+    $regulated_org_current_project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
     ]);
-    $future_project = Project::factory()->create([
+    $regulated_org_future_project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
     ]);
 
-    $this->assertStringContainsString('January&ndash;December 2020', $past_project->timeframe());
-    $this->assertStringContainsString('January 2020&ndash;December 2021', $past_project_multi_year->timeframe());
-    $this->assertStringContainsString('Started', $current_project->timeframe());
-    $this->assertStringContainsString('Starting', $future_project->timeframe());
+    $this->assertStringContainsString('January&ndash;December 2020', $regulated_org_past_project->timeframe());
+    $this->assertStringContainsString('January 2020&ndash;December 2021', $regulated_org_past_project_multi_year->timeframe());
+    $this->assertStringContainsString('Started', $regulated_org_current_project->timeframe());
+    $this->assertStringContainsString('Starting', $regulated_org_future_project->timeframe());
+
+    ray($regulatedOrganization->currentProjects);
 
     $this->assertEquals(4, count($regulatedOrganization->projects));
     $this->assertEquals(2, count($regulatedOrganization->pastProjects));

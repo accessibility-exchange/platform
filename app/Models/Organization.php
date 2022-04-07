@@ -146,10 +146,9 @@ class Organization extends Model
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
-            ->whereDate('end_date', '>=', Carbon::now())
-            ->orWhere(function ($query) {
-                $query->whereDate('start_date', '<=', Carbon::now())
-                    ->whereNull('end_date');
+            ->where(function ($query) {
+                $query->whereDate('end_date', '>=', Carbon::now())
+                    ->orWhereNull('end_date');
             })
             ->orderBy('start_date');
     }
