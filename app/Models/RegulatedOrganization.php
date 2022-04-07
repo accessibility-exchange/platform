@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
@@ -155,21 +154,22 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function projects(): HasMany
+    public function projects(): MorphMany
     {
-        return $this->hasMany(Project::class)->orderBy('start_date');
+        return $this->morphMany(Project::class, 'projectable')
+            ->orderBy('start_date');
     }
 
     /**
      * Get the projects that belong to this federally regulated organization that are in progress.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function currentProjects(): HasMany
+    public function currentProjects(): MorphMany
     {
-        return $this->hasMany(Project::class)
+        return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
             ->whereDate('end_date', '>=', Carbon::now())
             ->orWhere(function ($query) {
@@ -182,11 +182,11 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that have been completed.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function pastProjects(): HasMany
+    public function pastProjects(): MorphMany
     {
-        return $this->hasMany(Project::class)
+        return $this->morphMany(Project::class, 'projectable')
             ->whereDate('end_date', '<', Carbon::now())
             ->orderBy('start_date');
     }
@@ -194,11 +194,11 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that haven't started yet.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function futureProjects(): HasMany
+    public function futureProjects(): MorphMany
     {
-        return $this->hasMany(Project::class)
+        return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
     }

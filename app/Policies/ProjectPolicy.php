@@ -12,6 +12,17 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can create models.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        return ! is_null($user->projectable()) && $user->isAdministratorOf($user->projectable());
+    }
+
+    /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
@@ -20,7 +31,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->regulatedOrganization);
+        return $user->isAdministratorOf($project->projectable);
     }
 
     /**
@@ -32,7 +43,7 @@ class ProjectPolicy
      */
     public function manage(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->regulatedOrganization);
+        return $user->isAdministratorOf($project->projectable);
     }
 
     /**
@@ -44,7 +55,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->regulatedOrganization);
+        return $user->isAdministratorOf($project->projectable);
     }
 
     /**
@@ -56,7 +67,7 @@ class ProjectPolicy
      */
     public function createEngagement(User $user, Project $project)
     {
-        return $user->isAdministratorOf($project->regulatedOrganization)
+        return $user->isAdministratorOf($project->projectable)
             ? Response::allow()
             : Response::deny('You cannot create an engagement for this project.');
     }

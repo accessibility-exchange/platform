@@ -55,7 +55,7 @@
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('Remove :user from :entity', ['user' => $user->name, 'regulatedOrganization' => $regulatedOrganization->name])">
+                        <x-hearth-button class="link" :aria-label="__('Remove :user from :regulatedOrganization', ['user' => $user->name, 'regulatedOrganization' => $regulatedOrganization->name])">
                             {{ __('Remove') }}
                         </x-hearth-button>
                     </form>

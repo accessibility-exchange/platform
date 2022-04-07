@@ -6,26 +6,26 @@ Route::multilingual('/projects', [ProjectController::class, 'index'])
     ->middleware(['auth'])
     ->name('projects.index');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects/create', [ProjectController::class, 'create'])
-    ->middleware(['auth', 'can:createProject,regulatedOrganization'])
+Route::multilingual('/projects/create', [ProjectController::class, 'create'])
+    ->middleware(['auth','can:create,App\Models\Project'])
     ->name('projects.create');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects/create/store-context', [ProjectController::class, 'storeContext'])
+Route::multilingual('/projects/create/store-context', [ProjectController::class, 'storeContext'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,regulatedOrganization'])
+    ->middleware(['auth'])
     ->name('projects.store-context');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
+Route::multilingual('/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,regulatedOrganization'])
+    ->middleware(['auth'])
     ->name('projects.store-focus');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
+Route::multilingual('/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,regulatedOrganization'])
+    ->middleware(['auth'])
     ->name('projects.store-languages');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects/create', [ProjectController::class, 'store'])
+Route::multilingual('/projects/create', [ProjectController::class, 'store'])
     ->method('post')
     ->name('projects.store');
 

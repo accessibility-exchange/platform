@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -133,5 +134,57 @@ class Organization extends Model
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'inviteable');
+    }
+
+    /**
+     * Get the projects that belong to this organization.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function projects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this organization that are in progress.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function currentProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->whereDate('end_date', '>=', Carbon::now())
+            ->orWhere(function ($query) {
+                $query->whereDate('start_date', '<=', Carbon::now())
+                    ->whereNull('end_date');
+            })
+            ->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this organization that have been completed.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function pastProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereDate('end_date', '<', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    /**
+     * Get the projects that belong to this organization that haven't started yet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function futureProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereDate('start_date', '>', Carbon::now())
+            ->orderBy('start_date');
     }
 }

@@ -479,10 +479,18 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
  * @property-read int|null $administrators_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
+ * @property-read int|null $current_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $futureProjects
+ * @property-read int|null $future_projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invitation[] $invitations
  * @property-read int|null $invitations_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
+ * @property-read int|null $past_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static \Database\Factories\OrganizationFactory factory(...$parameters)
@@ -552,7 +560,6 @@ namespace App\Models{
  * @property array $name
  * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
- * @property int $regulated_organization_id
  * @property array|null $goals
  * @property array|null $scope
  * @property array|null $out_of_scope
@@ -573,6 +580,8 @@ namespace App\Models{
  * @property int|null $consultant_id
  * @property array|null $consultant_responsibilities
  * @property mixed|null $team_trainings
+ * @property string $projectable_type
+ * @property int $projectable_id
  * @property-read \App\Models\CommunityMember|null $accessibilityConsultant
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
@@ -581,7 +590,8 @@ namespace App\Models{
  * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\RegulatedOrganization $regulatedOrganization
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $projectable
+ * @property-read \App\Models\RegulatedOrganization|null $regulatedOrganization
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $upcomingEngagements
  * @property-read int|null $upcoming_engagements_count
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
@@ -604,9 +614,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereRegulatedOrganizationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasDisabilityOrDeafLivedExperience($value)

@@ -24,7 +24,7 @@ class StoreProjectFocusRequest extends FormRequest
     public function rules()
     {
         return [
-            'focus' => 'required|string|in:define,design,run',
+            'focus' => 'required|string|in:learn,engage,deepen-understanding',
         ];
     }
 }

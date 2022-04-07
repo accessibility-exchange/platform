@@ -64,7 +64,7 @@ class DestroyUserRequest extends FormRequest
                         $validator->errors()->add(
                             'regulatedOrganizations',
                             __(
-                                'You must assign a new administrator to :entity before deleting your account.',
+                                'You must assign a new administrator to :regulatedOrganization before deleting your account.',
                                 ['regulatedOrganization' => '<a href="' . localized_route('regulated-organizations.edit', $regulatedOrganization) . '">' . $regulatedOrganization->name . '</a>'],
                             )
                         );

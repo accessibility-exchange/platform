@@ -1,13 +1,13 @@
 
-<form class="stack" id="create-project" action="{{ localized_route('projects.store-focus', $regulatedOrganization) }}" method="post" novalidate>
+<form class="stack" id="create-project" action="{{ localized_route('projects.store-focus') }}" method="post" novalidate>
     @csrf
 
     <fieldset class="field @error('focus') field--error @enderror stack">
         <legend class="h2">{{ __('Where do you want to start your project?') }}</legend>
         <x-hearth-radio-buttons name="focus" :options="[
-            'define' => ['label' => __('Collaboratively define the areas of consultation'), 'hint' => __('Discover the areas of your organization that are important to members of the disability and Deaf community.')],
-            'design' => ['label' => __('Design the consultation'), 'hint' => __('Collaboratively design the most accessible and inclusive way for the disability and Deaf community to participate in your consultation.')],
-            'run' => ['label' => __('Run the consultation'), 'hint' => __('Set up and run consultations with people from the disability and Deaf community.')]
+            'learn' => ['label' => __('Learn'), 'hint' => __('Access resources about disability and learn how to do inclusive and accessible consultation. Connect with disability and Deaf organizations to get support for planning your consultation process with the community.')],
+            'engage' => ['label' => __('Engage'), 'hint' => __('Publish accessibility projects and consultation engagements on the Accessibility Exchange website to access the site’s matching services. Connect with the disability and Deaf organizations to refine your consultation plan and recruit from specific communities.')],
+            'deepen-understanding' => ['label' => __('Deepen understanding'), 'hint' => __('Connect with the disability and Deaf organizations to develop a system analysis of what you have learned from the community members.')]
         ]" :checked="old('focus', session('focus')) ?? ''" />
 
         <x-hearth-error for="focus" />

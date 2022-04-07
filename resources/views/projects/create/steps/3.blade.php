@@ -1,5 +1,5 @@
 
-<form class="stack" id="create-project" action="{{ localized_route('projects.store-languages', $regulatedOrganization) }}" method="post" novalidate>
+<form class="stack" id="create-project" action="{{ localized_route('projects.store-languages') }}" method="post" novalidate>
     @csrf
 
     <fieldset class="stack">
@@ -10,6 +10,6 @@
 
     <p class="repel">
         <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-            <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
+        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
     </p>
 </form>

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 
@@ -107,11 +108,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the consulting organizations that belong to this user.
+     * Get the community organizations that belong to this user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\MorphToMany<Organization>
      */
     public function organizations(): MorphToMany
     {
@@ -139,20 +138,59 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\RegulatedOrganization|false
+     * @return \App\Models\RegulatedOrganization|null
      */
     public function regulatedOrganization(): mixed
     {
         return $this->regulatedOrganizations->first();
     }
 
-    public function projects()
+    /**
+     * Get the federally regulated organization that belongs to this user.
+     *
+     * @return \App\Models\Organization|null
+     */
+    public function organization(): mixed
+    {
+        return $this->organizations->first();
+    }
+
+    /**
+     * Get the organization or federally regulated organization that belongs to this user.
+     *
+     * @return \App\Models\Organization|\App\Models\RegulatedOrganization|null
+     */
+    public function projectable(): mixed
+    {
+        if ($this->context === 'organization') {
+            return $this->organization();
+        }
+
+        if ($this->context === 'regulated-organization') {
+            return $this->regulatedOrganization();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the projects associated with all organizations and regulated organizations that belong to this user.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function projects(): Collection
     {
         $projects = collect([]);
 
-        foreach ($this->regulatedOrganizations as $regulatedOrganization) {
-            if (count($regulatedOrganization->projects) > 0) {
-                $projects = $projects->merge($regulatedOrganization->projects);
+        if ($this->context === 'organization') {
+            if ($this->organization()->projects->isNotEmpty()) {
+                $projects = $projects->merge($this->organization()->projects);
+            }
+        }
+
+        if ($this->context === 'regulated-organization') {
+            if ($this->regulatedOrganization()->projects->isNotEmpty()) {
+                $projects = $projects->merge($this->regulatedOrganization()->projects);
             }
         }
 

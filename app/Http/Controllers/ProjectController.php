@@ -12,12 +12,12 @@ use App\Http\Requests\UpdateProjectTeamRequest;
 use App\Models\CommunityMember;
 use App\Models\Impact;
 use App\Models\Project;
-use App\Models\RegulatedOrganization;
 use App\Statuses\ProjectStatus;
 use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -40,10 +40,9 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Models\RegulatedOrganization  $regulatedOrganization
      * @return \Illuminate\View\View
      */
-    public function create(RegulatedOrganization $regulatedOrganization): View
+    public function create(): View
     {
         $languages = (new LanguageRepository)->getAll();
 
@@ -57,23 +56,25 @@ class ProjectController extends Controller
         ];
 
         return view('projects.create', [
-            'regulatedOrganization' => $regulatedOrganization,
             'languages' => [
                 '' => __('Choose a language…'),
 
             ] + Arr::sort($languages),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
-        ]);
+            'projectable' => Auth::user()->projectable(),
+            'ancestors' => [
+                '' => __('Choose a project…'),
+            ] + Arr::sort(Auth::user()->projectable()->projects->pluck('name', 'id')->toArray()),
+         ]);
     }
 
     /**
      * Store a new project's context in the session.
      *
      * @param  \App\Http\Requests\StoreProjectContextRequest  $request
-     * @param \App\Models\RegulatedOrganization  $regulatedOrganization
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeContext(StoreProjectContextRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    public function storeContext(StoreProjectContextRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
@@ -87,49 +88,46 @@ class ProjectController extends Controller
             session()->put('ancestor', $data['ancestor']);
         }
 
-        return redirect(\localized_route('projects.create', ['regulatedOrganization' => $regulatedOrganization, 'step' => 2]));
+        return redirect(\localized_route('projects.create', ['step' => 2]));
     }
 
     /**
      * Store a new project's initial focus in the session.
      *
      * @param  \App\Http\Requests\StoreProjectFocusRequest  $request
-     * @param \App\Models\RegulatedOrganization  $regulatedOrganization
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeFocus(StoreProjectFocusRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    public function storeFocus(StoreProjectFocusRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
         session()->put('focus', $data['focus']);
 
-        return redirect(\localized_route('projects.create', ['regulatedOrganization' => $regulatedOrganization, 'step' => 3]));
+        return redirect(\localized_route('projects.create', ['step' => 3]));
     }
 
     /**
      * Store a new project's languages in the session.
      *
      * @param  \App\Http\Requests\StoreProjectLanguagesRequest  $request
-     * @param \App\Models\RegulatedOrganization  $regulatedOrganization
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeLanguages(StoreProjectLanguagesRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    public function storeLanguages(StoreProjectLanguagesRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
         session()->put('languages', $data['languages']);
 
-        return redirect(\localized_route('projects.create', ['regulatedOrganization' => $regulatedOrganization, 'step' => 4]));
+        return redirect(\localized_route('projects.create', ['step' => 4]));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\StoreProjectRequest  $request
-     * @param \App\Models\RegulatedOrganization  $regulatedOrganization
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreProjectRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    public function store(StoreProjectRequest $request): RedirectResponse
     {
         $data = $request->validated();
 

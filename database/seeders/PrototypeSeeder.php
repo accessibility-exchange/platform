@@ -95,7 +95,7 @@ class PrototypeSeeder extends Seeder
         $completedProject = Project::factory()
             ->create([
                 'name' => '2020 Accessibility Plan',
-                'regulated_organization_id' => $regulatedOrganization->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2020-01-01',
                 'end_date' => '2020-12-31',
                 'found_participants' => true,
@@ -126,7 +126,7 @@ class PrototypeSeeder extends Seeder
         $recruitingProject = Project::factory()
             ->create([
                 'name' => '2022 Accessibility Plan',
-                'regulated_organization_id' => $regulatedOrganization->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2022-01-01',
                 'end_date' => '2022-12-31',
             ]);
@@ -140,7 +140,7 @@ class PrototypeSeeder extends Seeder
         $consultingProject = Project::factory()
             ->create([
                 'name' => '2021 Accessibility Plan',
-                'regulated_organization_id' => $regulatedOrganization->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2021-01-01',
                 'end_date' => '2021-12-31',
                 'found_participants' => true,

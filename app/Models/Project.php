@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -29,7 +30,8 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'regulated_organization_id',
+        'projectable_id',
+        'projectable_type',
         'languages',
         'start_date',
         'end_date',
@@ -163,11 +165,15 @@ class Project extends Model
     /**
      * The sectors that the project is working within.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|null
      */
-    public function sectors(): BelongsToMany
+    public function sectors(): Mixed
     {
-        return $this->regulatedOrganization->belongsToMany(Sector::class);
+        if ($this->projectable_type === 'App\Models\RegulatedOrganization') {
+            return $this->projectable->belongsToMany(Sector::class);
+        }
+
+        return null;
     }
 
     /**
@@ -304,5 +310,15 @@ class Project extends Model
     public function matchingStrategy(): MorphOne
     {
         return $this->morphOne(MatchingStrategy::class, 'matchable');
+    }
+
+    /**
+     * Get the model that the project belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function projectable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'projectable_type', 'projectable_id');
     }
 }

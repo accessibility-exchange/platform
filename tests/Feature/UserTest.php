@@ -107,13 +107,13 @@ test('users can access my projects page', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show_my_projects'));
     $response->assertRedirect(localized_route('dashboard'));
 
-    $regulatedOrganizationUser = User::factory()->create();
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
     ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
     ->create();
     $project = Project::factory()->create([
-    'regulated_organization_id' => $regulatedOrganization->id,
-]);
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
 
     $this->assertEquals(1, count($regulatedOrganizationUser->projects()));
 
