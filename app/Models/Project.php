@@ -163,20 +163,6 @@ class Project extends Model
     }
 
     /**
-     * The sectors that the project is working within.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|null
-     */
-    public function sectors(): Mixed
-    {
-        if ($this->projectable_type === 'App\Models\RegulatedOrganization') {
-            return $this->projectable->belongsToMany(Sector::class);
-        }
-
-        return null;
-    }
-
-    /**
      * The engagements that are part of this project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

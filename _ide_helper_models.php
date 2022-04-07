@@ -366,11 +366,25 @@ namespace App\Models{
 /**
  * App\Models\Invitation
  *
+ * @property int $id
+ * @property string $inviteable_type
+ * @property int $inviteable_id
+ * @property string $email
+ * @property string $role
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $inviteable
  * @method static \Database\Factories\InvitationFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereInviteableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereInviteableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereUpdatedAt($value)
  */
     class Invitation extends \Eloquent
     {
@@ -381,9 +395,17 @@ namespace App\Models{
 /**
  * App\Models\LivedExperience
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LivedExperience whereUpdatedAt($value)
  */
     class LivedExperience extends \Eloquent
     {
@@ -394,6 +416,11 @@ namespace App\Models{
 /**
  * App\Models\MatchingStrategy
  *
+ * @property int $id
+ * @property string|null $matchable_type
+ * @property int|null $matchable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Criterion[] $criteria
  * @property-read int|null $criteria_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $matchable
@@ -401,6 +428,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereUpdatedAt($value)
  */
     class MatchingStrategy extends \Eloquent
     {
@@ -411,10 +443,24 @@ namespace App\Models{
 /**
  * App\Models\Membership
  *
+ * @property int $id
+ * @property int $user_id
+ * @property string $membership_type
+ * @property int $membership_id
+ * @property string $role
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Membership newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Membership newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Membership query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereMembershipId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereMembershipType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Membership whereUserId($value)
  */
     class Membership extends \Eloquent
     {
@@ -425,6 +471,13 @@ namespace App\Models{
 /**
  * App\Models\Organization
  *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $locality
+ * @property string $region
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
  * @property-read int|null $administrators_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
@@ -445,6 +498,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Organization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Organization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Organization query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereLocality($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereUpdatedAt($value)
  */
     class Organization extends \Eloquent
     {
@@ -455,9 +515,17 @@ namespace App\Models{
 /**
  * App\Models\PaymentMethod
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMethod whereUpdatedAt($value)
  */
     class PaymentMethod extends \Eloquent
     {
@@ -468,9 +536,17 @@ namespace App\Models{
 /**
  * App\Models\Phase
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Phase newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Phase newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Phase query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Phase whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Phase whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Phase whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Phase whereUpdatedAt($value)
  */
     class Phase extends \Eloquent
     {
@@ -481,6 +557,32 @@ namespace App\Models{
 /**
  * App\Models\Project
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
+ * @property array|null $goals
+ * @property array|null $scope
+ * @property array|null $out_of_scope
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $ancestor_id
+ * @property array|null $languages
+ * @property array|null $outcomes
+ * @property bool|null $public_outcomes
+ * @property string|null $team_size
+ * @property bool|null $team_has_disability_or_deaf_lived_experience
+ * @property bool|null $team_has_other_lived_experience
+ * @property array|null $team_languages
+ * @property array|null $contacts
+ * @property bool|null $has_consultant
+ * @property string|null $consultant_name
+ * @property int|null $consultant_id
+ * @property array|null $consultant_responsibilities
+ * @property mixed|null $team_trainings
+ * @property string $projectable_type
+ * @property int $projectable_id
  * @property-read \App\Models\CommunityMember|null $accessibilityConsultant
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
@@ -499,6 +601,32 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project query()
  * @method static \Illuminate\Database\Eloquent\Builder|Project status($status)
  * @method static \Illuminate\Database\Eloquent\Builder|Project statusIn($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereAncestorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereConsultantResponsibilities($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereContacts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereGoals($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereHasConsultant($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLanguages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasDisabilityOrDeafLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamHasOtherLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamLanguages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTeamTrainings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  */
     class Project extends \Eloquent
     {
@@ -509,6 +637,13 @@ namespace App\Models{
 /**
  * App\Models\RegulatedOrganization
  *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $locality
+ * @property string $region
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
  * @property-read int|null $administrators_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $communityMembers
@@ -533,6 +668,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereLocality($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereUpdatedAt($value)
  */
     class RegulatedOrganization extends \Eloquent
     {
@@ -543,6 +685,14 @@ namespace App\Models{
 /**
  * App\Models\Resource
  *
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $content_type_id
+ * @property string $title
+ * @property string $slug
+ * @property string $summary
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\ContentType|null $contentType
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Format[] $formats
  * @property-read int|null $formats_count
@@ -558,6 +708,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Resource newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Resource newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Resource query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereContentTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereSummary($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Resource whereUserId($value)
  */
     class Resource extends \Eloquent
     {
@@ -569,11 +727,25 @@ namespace App\Models{
  * App\Models\ResourceCollection
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
+ * @property int $id
+ * @property int|null $user_id
+ * @property array $title
+ * @property array $description
+ * @property string $slug
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $resources_count
  * @method static \Database\Factories\ResourceCollectionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUserId($value)
  */
     class ResourceCollection extends \Eloquent
     {
@@ -584,9 +756,17 @@ namespace App\Models{
 /**
  * App\Models\Sector
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sector query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Sector whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sector whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sector whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Sector whereUpdatedAt($value)
  */
     class Sector extends \Eloquent
     {
@@ -597,9 +777,17 @@ namespace App\Models{
 /**
  * App\Models\Topic
  *
+ * @property int $id
+ * @property array $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Topic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Topic newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Topic query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Topic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Topic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Topic whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Topic whereUpdatedAt($value)
  */
     class Topic extends \Eloquent
     {
@@ -615,6 +803,8 @@ namespace App\Models{
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
  * @property string $locale
  * @property string $theme
  * @property string $context
@@ -646,6 +836,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorRecoveryCodes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
     class User extends \Eloquent implements \Illuminate\Contracts\Translation\HasLocalePreference, \Illuminate\Contracts\Auth\MustVerifyEmail

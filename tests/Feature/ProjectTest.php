@@ -7,11 +7,9 @@ use App\Models\Impact;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
-use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\SectorSeeder;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -375,23 +373,10 @@ test('projects have timeframes', function () {
     $this->assertStringContainsString('Started', $regulated_org_current_project->timeframe());
     $this->assertStringContainsString('Starting', $regulated_org_future_project->timeframe());
 
-    ray($regulatedOrganization->currentProjects);
-
     $this->assertEquals(4, count($regulatedOrganization->projects));
     $this->assertEquals(2, count($regulatedOrganization->pastProjects));
     $this->assertEquals(1, count($regulatedOrganization->currentProjects));
     $this->assertEquals(1, count($regulatedOrganization->futureProjects));
-});
-
-test('projects reflect parent organization sectors', function () {
-    $this->seed(SectorSeeder::class);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $regulatedOrganization->sectors()->attach(Sector::pluck('id')->toArray());
-    $project = Project::factory()->create([
-        'projectable_id' => $regulatedOrganization->id,
-    ]);
-
-    $this->assertEquals($regulatedOrganization->sectors->toArray(), $project->sectors->toArray());
 });
 
 test('projects reflect consultant origin', function () {
