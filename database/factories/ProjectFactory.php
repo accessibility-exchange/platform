@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Entity;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +26,8 @@ class ProjectFactory extends Factory
         $start = $this->faker->dateTimeBetween('-6 months', '-1 months');
 
         return [
-            'entity_id' => Entity::factory(),
+            'projectable_type' => 'App\Models\RegulatedOrganization',
+            'projectable_id' => RegulatedOrganization::factory(),
             'name' => ['en' => 'My accessibility project – ' . Carbon::parse($start)->format('F Y')],
             'start_date' => $start,
             'published_at' => date('Y-m-d h:i:s', time()),

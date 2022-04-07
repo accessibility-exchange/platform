@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -28,7 +30,8 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'entity_id',
+        'projectable_id',
+        'projectable_type',
         'languages',
         'start_date',
         'end_date',
@@ -140,13 +143,13 @@ class Project extends Model
     }
 
     /**
-     * The entity that created the project.
+     * The federally regulated organization that created the project.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function entity(): BelongsTo
+    public function regulatedOrganization(): BelongsTo
     {
-        return $this->belongsTo(Entity::class);
+        return $this->belongsTo(RegulatedOrganization::class);
     }
 
     /**
@@ -157,16 +160,6 @@ class Project extends Model
     public function impacts(): BelongsToMany
     {
         return $this->belongsToMany(Impact::class);
-    }
-
-    /**
-     * The sectors that the project is working within.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function sectors(): BelongsToMany
-    {
-        return $this->entity->belongsToMany(Sector::class);
     }
 
     /**
@@ -293,5 +286,25 @@ class Project extends Model
         }
 
         return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+    }
+
+    /**
+     * The matching strategy attached to this project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
+    public function matchingStrategy(): MorphOne
+    {
+        return $this->morphOne(MatchingStrategy::class, 'matchable');
+    }
+
+    /**
+     * Get the model that the project belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function projectable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'projectable_type', 'projectable_id');
     }
 }

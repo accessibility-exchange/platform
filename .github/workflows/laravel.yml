@@ -45,7 +45,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          vendor/bin/phpunit --coverage-clover coverage.xml
+          composer test-coverage
         if: ${{ matrix.php == 8.0 }}
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         env:
@@ -54,7 +54,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          vendor/bin/phpunit
+          composer test
         if: ${{ matrix.php != 8.0 }}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2

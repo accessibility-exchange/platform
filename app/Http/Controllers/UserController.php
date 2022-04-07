@@ -167,12 +167,12 @@ class UserController extends Controller
      */
     public function showMyProjects(): mixed
     {
-        if (Auth::user()->entity()) {
-            $entity = Auth::user()->entity();
-            $entity->load('pastProjects', 'currentProjects');
+        if (Auth::user()->regulatedOrganization()) {
+            $regulatedOrganization = Auth::user()->regulatedOrganization();
+            $regulatedOrganization->load('pastProjects', 'currentProjects');
 
-            return view('entities.my-projects', [
-                'entity' => Auth::user()->entity(),
+            return view('regulated-organizations.my-projects', [
+                'regulatedOrganization' => Auth::user()->regulatedOrganization(),
             ]);
         }
 

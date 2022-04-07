@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('slug');
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->foreignId('entity_id')
+            $table->foreignId('regulated_organization_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->json('regions')->nullable();

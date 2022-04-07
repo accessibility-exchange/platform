@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,7 +16,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->entity);
+        return $this->user()->can('update', $this->user()->projectable());
     }
 
     /**
@@ -27,11 +26,14 @@ class StoreProjectRequest extends FormRequest
      */
     public function rules()
     {
+        $projectable_type = (string) $this->request->get('projectable_type');
+
         return [
-            'entity_id' => [
+            'projectable_type' => 'required|string|in:App\Models\Organization,App\Models\RegulatedOrganization',
+            'projectable_id' => [
                 'required',
                 'integer',
-                Rule::in(Entity::pluck('id')->toArray()),
+                Rule::in($projectable_type::pluck('id')->toArray()),
             ],
             'ancestor_id' => [
                 'nullable',

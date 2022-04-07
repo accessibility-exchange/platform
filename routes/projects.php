@@ -6,26 +6,26 @@ Route::multilingual('/projects', [ProjectController::class, 'index'])
     ->middleware(['auth'])
     ->name('projects.index');
 
-Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'create'])
-    ->middleware(['auth', 'can:createProject,entity'])
+Route::multilingual('/projects/create', [ProjectController::class, 'create'])
+    ->middleware(['auth','can:create,App\Models\Project'])
     ->name('projects.create');
 
-Route::multilingual('/entities/{entity}/projects/create/store-context', [ProjectController::class, 'storeContext'])
+Route::multilingual('/projects/create/store-context', [ProjectController::class, 'storeContext'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,entity'])
+    ->middleware(['auth'])
     ->name('projects.store-context');
 
-Route::multilingual('/entities/{entity}/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
+Route::multilingual('/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,entity'])
+    ->middleware(['auth'])
     ->name('projects.store-focus');
 
-Route::multilingual('/entities/{entity}/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
+Route::multilingual('/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
     ->method('post')
-    ->middleware(['auth', 'can:createProject,entity'])
+    ->middleware(['auth'])
     ->name('projects.store-languages');
 
-Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'store'])
+Route::multilingual('/projects/create', [ProjectController::class, 'store'])
     ->method('post')
     ->name('projects.store');
 

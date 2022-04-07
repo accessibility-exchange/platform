@@ -9,13 +9,7 @@ return [
             'admin',
         ],
     ],
-    'entities' => [
-        'enabled' => true,
-    ],
     'resources' => [
-        'enabled' => true,
-    ],
-    'stories' => [
         'enabled' => true,
     ],
 ];

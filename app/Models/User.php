@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 
@@ -95,18 +96,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the user's stories.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Story>
-     */
-    public function stories(): HasMany
-    {
-        return $this->hasMany(Story::class);
-    }
-
-    /**
      * Get the user's memberships.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -119,11 +108,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the consulting organizations that belong to this user.
+     * Get the community organizations that belong to this user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\MorphToMany<Organization>
      */
     public function organizations(): MorphToMany
     {
@@ -135,13 +122,13 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the regulated entities that belong to this user.
+     * Get the federally regulated organizations that belong to this user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function entities(): MorphToMany
+    public function regulatedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(Entity::class, 'membership')
+        return $this->morphedByMany(RegulatedOrganization::class, 'membership')
             ->using('\App\Models\Membership')
             ->withPivot('id')
             ->withPivot('role')
@@ -149,22 +136,61 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the regulated entity that belongs to this user.
+     * Get the federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\Entity|false
+     * @return \App\Models\RegulatedOrganization|null
      */
-    public function entity(): mixed
+    public function regulatedOrganization(): mixed
     {
-        return $this->entities->first();
+        return $this->regulatedOrganizations->first();
     }
 
-    public function projects()
+    /**
+     * Get the federally regulated organization that belongs to this user.
+     *
+     * @return \App\Models\Organization|null
+     */
+    public function organization(): mixed
+    {
+        return $this->organizations->first();
+    }
+
+    /**
+     * Get the organization or federally regulated organization that belongs to this user.
+     *
+     * @return \App\Models\Organization|\App\Models\RegulatedOrganization|null
+     */
+    public function projectable(): mixed
+    {
+        if ($this->context === 'organization') {
+            return $this->organization();
+        }
+
+        if ($this->context === 'regulated-organization') {
+            return $this->regulatedOrganization();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the projects associated with all organizations and regulated organizations that belong to this user.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function projects(): Collection
     {
         $projects = collect([]);
 
-        foreach ($this->entities as $entity) {
-            if (count($entity->projects) > 0) {
-                $projects = $projects->merge($entity->projects);
+        if ($this->context === 'organization') {
+            if ($this->organization()->projects->isNotEmpty()) {
+                $projects = $projects->merge($this->organization()->projects);
+            }
+        }
+
+        if ($this->context === 'regulated-organization') {
+            if ($this->regulatedOrganization()->projects->isNotEmpty()) {
+                $projects = $projects->merge($this->regulatedOrganization()->projects);
             }
         }
 

@@ -21,22 +21,22 @@ class ProjectCard extends Component
     public $level;
 
     /**
-     * Whether the project's parent entity should be shown on the card.
+     * Whether the project's parent federally regulated organization should be shown on the card.
      *
      * @var bool
      */
-    public $showEntity;
+    public $showRegulatedOrganization;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($project, $level = 3, $showEntity = true)
+    public function __construct($project, $level = 3, $showRegulatedOrganization = true)
     {
         $this->project = $project;
         $this->level = (int) $level;
-        $this->showEntity = $showEntity;
+        $this->showRegulatedOrganization = $showRegulatedOrganization;
     }
 
     /**
@@ -49,7 +49,7 @@ class ProjectCard extends Component
         return view('components.project-card', [
             'project' => $this->project,
             'level' => $this->level,
-            'showEntity' => $this->showEntity,
+            'showRegulatedOrganization' => $this->showRegulatedOrganization,
         ]);
     }
 }

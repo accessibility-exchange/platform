@@ -50,7 +50,7 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
     public function messages()
     {
         return [
-            'sectors.required' => __('You must choose at least one type of regulated entity.'),
+            'sectors.required' => __('You must choose at least one type of federally regulated organization.'),
             'impacts.required' => __('You must choose at least one area of impact.'),
         ];
     }

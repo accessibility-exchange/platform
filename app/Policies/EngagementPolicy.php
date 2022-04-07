@@ -44,4 +44,16 @@ class EngagementPolicy
     {
         return $user->can('update', $engagement->project);
     }
+
+    /**
+     * Determine whether the user can manage the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Engagement  $engagement
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function participate(User $user, Engagement $engagement)
+    {
+        return $engagement->confirmedParticipants->contains($user->communityMember);
+    }
 }

@@ -4,7 +4,7 @@
         <h1 id="project">
             {{ $project->name }}@if($project->checkStatus('draft')) ({{ __('draft') }})@endif
         </h1>
-        <p><strong>{!! __('Accessibility project by :entity', ['entity' => '<a href="' . localized_route('entities.show', $project->entity) . '">' . $project->entity->name . '</a>']) !!}</strong></p>
+        <p><strong>{!! __('Accessibility project by :projectable', ['projectable' => '<a href="' . localized_route('regulated-organizations.show', $project->projectable) . '">' . $project->projectable->name . '</a>']) !!}</strong></p>
         <p><strong>{{ __('Project status') }}:</strong> @if($project->started()){{ __('In progress') }}@else{{ __('Not started') }}@endif</p>
         @if($project->start_date && $project->started())
         <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>

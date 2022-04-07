@@ -37,38 +37,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Collection
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
- * @property-read \Illuminate\Database\Eloquent\Collection|\Story[] $stories
- * @property int $id
- * @property int|null $user_id
- * @property array $title
- * @property array $description
- * @property string $slug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $resources_count
- * @property-read int|null $stories_count
- * @method static \Database\Factories\CollectionFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection query()
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUserId($value)
- */
-    class Collection extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
  * App\Models\CommunicationTool
  *
  * @property int $id
@@ -125,7 +93,7 @@ namespace App\Models{
  * @property array|null $pronouns
  * @property array|null $picture_alt
  * @property string $creator
- * @property string|null $phone
+ * @property string $phone
  * @property string|null $email
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -150,9 +118,6 @@ namespace App\Models{
  * @property-read int|null $communities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entity[] $entities
- * @property-read int|null $entities_count
- * @property-read string $phone_number
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LivedExperience[] $livedExperiences
@@ -165,6 +130,8 @@ namespace App\Models{
  * @property-read int|null $payment_methods_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projectsOfInterest
  * @property-read int|null $projects_of_interest_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegulatedOrganization[] $regulatedOrganizations
+ * @property-read int|null $regulated_organizations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
  * @property-read int|null $sectors_count
  * @property-read \App\Models\User $user
@@ -257,6 +224,36 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Criterion
+ *
+ * @property int $id
+ * @property int $matching_strategy_id
+ * @property string $criteriable_type
+ * @property int $criteriable_id
+ * @property float $weight
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $criteriable
+ * @property-read \App\Models\MatchingStrategy $matchingStrategy
+ * @method static \Database\Factories\CriterionFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCriteriableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereCriteriableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereMatchingStrategyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Criterion whereWeight($value)
+ */
+    class Criterion extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
  * App\Models\DefinedTerm
  *
  * @property int $id
@@ -295,6 +292,9 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $confirmedParticipants
+ * @property-read int|null $confirmed_participants_count
+ * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
  * @property-read int|null $participants_count
  * @property-read \App\Models\Project $project
@@ -316,54 +316,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Engagement whereUpdatedAt($value)
  */
     class Engagement extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
- * App\Models\Entity
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string $locality
- * @property string $region
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
- * @property-read int|null $administrators_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $communityMembers
- * @property-read int|null $community_members_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
- * @property-read int|null $current_projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $futureProjects
- * @property-read int|null $future_projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invitation[] $invitations
- * @property-read int|null $invitations_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
- * @property-read int|null $past_projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
- * @property-read int|null $projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
- * @property-read int|null $sectors_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
- * @property-read int|null $users_count
- * @method static \Database\Factories\EntityFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Entity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Entity query()
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereLocality($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereRegion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Entity whereUpdatedAt($value)
- */
-    class Entity extends \Eloquent
     {
     }
 }
@@ -462,6 +414,33 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\MatchingStrategy
+ *
+ * @property int $id
+ * @property string|null $matchable_type
+ * @property int|null $matchable_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Criterion[] $criteria
+ * @property-read int|null $criteria_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $matchable
+ * @method static \Database\Factories\MatchingStrategyFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereMatchableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MatchingStrategy whereUpdatedAt($value)
+ */
+    class MatchingStrategy extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
  * App\Models\Membership
  *
  * @property int $id
@@ -501,10 +480,18 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
  * @property-read int|null $administrators_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
+ * @property-read int|null $current_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $futureProjects
+ * @property-read int|null $future_projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invitation[] $invitations
  * @property-read int|null $invitations_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
+ * @property-read int|null $past_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static \Database\Factories\OrganizationFactory factory(...$parameters)
@@ -574,7 +561,6 @@ namespace App\Models{
  * @property array $name
  * @property \Illuminate\Support\Carbon|null $start_date
  * @property \Illuminate\Support\Carbon|null $end_date
- * @property int $entity_id
  * @property array|null $goals
  * @property array|null $scope
  * @property array|null $out_of_scope
@@ -595,14 +581,18 @@ namespace App\Models{
  * @property int|null $consultant_id
  * @property array|null $consultant_responsibilities
  * @property mixed|null $team_trainings
+ * @property string $projectable_type
+ * @property int $projectable_id
  * @property-read \App\Models\CommunityMember|null $accessibilityConsultant
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
- * @property-read \App\Models\Entity $entity
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
+ * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $projectable
+ * @property-read \App\Models\RegulatedOrganization|null $regulatedOrganization
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $upcomingEngagements
  * @property-read int|null $upcoming_engagements_count
  * @method static \Database\Factories\ProjectFactory factory(...$parameters)
@@ -618,7 +608,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereContacts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereEndDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereEntityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereGoals($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereHasConsultant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
@@ -626,6 +615,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutOfScope($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereOutcomes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereProjectableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublicOutcomes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereScope($value)
@@ -644,6 +635,54 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\RegulatedOrganization
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $locality
+ * @property string $region
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
+ * @property-read int|null $administrators_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $communityMembers
+ * @property-read int|null $community_members_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $currentProjects
+ * @property-read int|null $current_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $futureProjects
+ * @property-read int|null $future_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invitation[] $invitations
+ * @property-read int|null $invitations_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $pastProjects
+ * @property-read int|null $past_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @property-read int|null $projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
+ * @property-read int|null $sectors_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\RegulatedOrganizationFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereLocality($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RegulatedOrganization whereUpdatedAt($value)
+ */
+    class RegulatedOrganization extends \Eloquent
+    {
+    }
+}
+
+namespace App\Models{
+/**
  * App\Models\Resource
  *
  * @property int $id
@@ -654,8 +693,6 @@ namespace App\Models{
  * @property string $summary
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Collection[] $collections
- * @property-read int|null $collections_count
  * @property-read \App\Models\ContentType|null $contentType
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Format[] $formats
  * @property-read int|null $formats_count
@@ -663,6 +700,8 @@ namespace App\Models{
  * @property-read int|null $original_format_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Phase[] $phases
  * @property-read int|null $phases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ResourceCollection[] $resourceCollections
+ * @property-read int|null $resource_collections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Topic[] $topics
  * @property-read int|null $topics_count
  * @method static \Database\Factories\ResourceFactory factory(...$parameters)
@@ -685,40 +724,30 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Review
+ * App\Models\ResourceCollection
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
  * @property int $id
- * @property int $community_member_id
- * @property int $project_id
- * @property string|null $body
- * @property int $met_access_needs
- * @property int $open_to_feedback
- * @property int $kind_and_patient
- * @property int $valued_input
- * @property int $respectful_of_identity
- * @property int $sensitive_to_comfort_levels
+ * @property int|null $user_id
+ * @property array $title
+ * @property array $description
+ * @property string $slug
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\CommunityMember $communityMember
- * @property-read \App\Models\Project $project
- * @method static \Database\Factories\ReviewFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Review newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Review newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Review query()
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereCommunityMemberId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereKindAndPatient($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereMetAccessNeeds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereOpenToFeedback($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereRespectfulOfIdentity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereSensitiveToComfortLevels($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereValuedInput($value)
+ * @property-read int|null $resources_count
+ * @method static \Database\Factories\ResourceCollectionFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ResourceCollection whereUserId($value)
  */
-    class Review extends \Eloquent
+    class ResourceCollection extends \Eloquent
     {
     }
 }
@@ -740,36 +769,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereUpdatedAt($value)
  */
     class Sector extends \Eloquent
-    {
-    }
-}
-
-namespace App\Models{
-/**
- * App\Models\Story
- *
- * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $slug
- * @property string $summary
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Collection[] $collections
- * @property-read int|null $collections_count
- * @method static \Database\Factories\StoryFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Story newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Story newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Story query()
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereSummary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Story whereUserId($value)
- */
-    class Story extends \Eloquent
     {
     }
 }
@@ -813,18 +812,16 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\CommunityMember|null $communityMember
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Entity[] $entities
- * @property-read int|null $entities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Membership[] $memberships
  * @property-read int|null $memberships_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Organization[] $organizations
  * @property-read int|null $organizations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegulatedOrganization[] $regulatedOrganizations
+ * @property-read int|null $regulated_organizations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Resource[] $resources
  * @property-read int|null $resources_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Story[] $stories
- * @property-read int|null $stories_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()

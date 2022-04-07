@@ -110,8 +110,8 @@ class CommunityMember extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-              ->width(200)
-              ->height(200);
+                ->width(200)
+                ->height(200);
     }
 
     /**
@@ -164,9 +164,9 @@ class CommunityMember extends Model implements HasMedia
      * @param string $value
      * @return string
      */
-    public function getPhoneNumberAttribute($value): string
+    public function getPhoneAttribute($value): string
     {
-        return str_replace(['-', '(', ')', '.', ' '], '', $this->phone);
+        return str_replace(['-', '(', ')', '.', ' '], '', $value);
     }
 
     /**
@@ -244,9 +244,9 @@ class CommunityMember extends Model implements HasMedia
     /**
      * The entities that the community member has identified themself with.
      */
-    public function entities(): BelongsToMany
+    public function regulatedOrganizations(): BelongsToMany
     {
-        return $this->belongsToMany(Entity::class);
+        return $this->belongsToMany(RegulatedOrganization::class, 'community_member_regulated_org');
     }
 
     /**
