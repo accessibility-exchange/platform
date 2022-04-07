@@ -293,6 +293,8 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $confirmedParticipants
+ * @property-read int|null $confirmed_participants_count
  * @property-read \App\Models\MatchingStrategy|null $matchingStrategy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CommunityMember[] $participants
  * @property-read int|null $participants_count

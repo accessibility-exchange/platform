@@ -67,6 +67,16 @@ class Engagement extends Model
     }
 
     /**
+     * The community members that are confirmed to be part of the engagement.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function confirmedParticipants(): BelongsToMany
+    {
+        return $this->belongsToMany(CommunityMember::class)->wherePivot('status', 'confirmed');
+    }
+
+    /**
      * The matching strategy attached to this engagement.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne

@@ -93,4 +93,16 @@ class EngagementController extends Controller
     {
         return view('engagements.manage', ['engagement' => $engagement, 'project' => $project]);
     }
+
+    /**
+     * Participate in the specified resource.
+     *
+     * @param \App\Models\Project  $project
+     * @param  \App\Models\Engagement  $engagement
+     * @return \Illuminate\View\View
+     */
+    public function participate(Project $project, Engagement $engagement)
+    {
+        return view('engagements.participate', ['engagement' => $engagement, 'project' => $project]);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CommunityMember;
 use App\Models\Engagement;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -154,4 +155,16 @@ test('users without regulated organization admin role cannot manage engagements'
 
     $response = $this->actingAs($other_user)->get(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
     $response->assertForbidden();
+});
+
+test('engagement participants can participate in engagements', function () {
+    $participant = CommunityMember::factory()->create();
+    $engagement = Engagement::factory()->create();
+    $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
+
+    $this->assertTrue($engagement->participants->isNotEmpty());
+    $this->assertTrue($engagement->confirmedParticipants->isNotEmpty());
+
+    $response = $this->actingAs($participant->user)->get(localized_route('engagements.participate', ['project' => $engagement->project, 'engagement' => $engagement]));
+    $response->assertOk();
 });
