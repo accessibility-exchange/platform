@@ -67,28 +67,4 @@ class ResourceCollectionPolicy
     {
         return false;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, ResourceCollection $resourceCollection)
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, ResourceCollection $resourceCollection)
-    {
-        return false;
-    }
 }

@@ -63,16 +63,6 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the route placeholder for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyPlaceholder(): string
-    {
-        return 'regulatedOrganization';
-    }
-
-    /**
      * Get the route prefix for the model.
      *
      * @return string
