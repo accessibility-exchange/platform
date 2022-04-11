@@ -3,7 +3,7 @@
     <head>
         @include('partials.head', ['title' => $title ?? __('app.name')])
     </head>
-    <body glass="guest">
+    <body class="guest">
         <main>
             <div class="cover">
                 {{ $slot }}

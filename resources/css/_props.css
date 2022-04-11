@@ -33,6 +33,7 @@
     --h1-color: var(--theme-h1-color, black);
     --heading-color: var(--theme-heading-color, var(--tae-graphite-8));
     --body-background: var(--theme-body-background, var(--tae-grey-1));
+    --guest-body-background: var(--theme-guest-body-background, var(--tae-grey-2));
     --body-color: var(--theme-body-color, var(--tae-graphite-7));
     --link-color: var(--theme-link-color, var(--tae-blue-6));
     --link-color-hover: var(--theme-link-color-hover, var(--tae-blue-7));

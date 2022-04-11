@@ -12,7 +12,7 @@
                 'label' => __('On behalf of a community organization'),
                 'hint' => __('I am a part of an organization that serves the disability and Deaf community'),
             ],
-            'entity' => [
+            'regulated-organization' => [
                 'label' => __('On behalf of a federally regulated organization'),
                 'hint' => __('I am a part of an organization or business who wants to work on accessibility projects'),
             ]

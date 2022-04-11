@@ -1,7 +1,7 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $regulatedOrganization->name }}</x-slot>
     <x-slot name="header">
-        <h1 id="entity">
+        <h1 id="regulated-organization">
             {{ $regulatedOrganization->name }}
         </h1>
     </x-slot>
@@ -9,7 +9,7 @@
     <p>{{ $regulatedOrganization->locality }}, {{ get_region_name($regulatedOrganization->region, ["CA"], locale()) }}</p>
 
     <div class="has-nav-secondary">
-        <nav class="secondary" aria-labelledby="entity">
+        <nav class="secondary" aria-labelledby="regulated-organization">
             <ul role="list">
                 <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show')">{{ __('About') }}</x-nav-link>
                 <x-nav-link :href="localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-accessibility-and-inclusion')">{{ __('Accessibility and inclusion') }}</x-nav-link>

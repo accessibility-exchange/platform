@@ -1,17 +1,14 @@
 /* This file contains all styles related to the auth card component. */
 .auth-card {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
+    --gutter: var(--size-7);
+
+    background: var(--body-background);
+    border-radius: var(--radius-3);
+    box-shadow: var(--banner-shadow);
+    padding: var(--gutter);
 }
 
-.auth-card > * {
-    max-width: calc(var(--size-content-3) / 2);
-    width: 100%;
-}
-
-.auth-card__logo {
-    text-align: center;
+.auth-card .logo {
+    margin-inline: auto;
+    max-width: calc(var(--measure) / 2);
 }
