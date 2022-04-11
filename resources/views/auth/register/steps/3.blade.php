@@ -6,14 +6,14 @@
     <!-- Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-        <x-hearth-input type="password" name="password" required autocomplete="new-password" />
+        <x-password-input name="password" autocomplete="new-password" />
         <x-hearth-error for="password" />
     </div>
 
     <!-- Confirm Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-        <x-hearth-input type="password" name="password_confirmation" required />
+        <x-password-input name="password_confirmation" />
         <x-hearth-error for="password" />
     </div>
 

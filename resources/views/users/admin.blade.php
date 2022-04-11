@@ -21,19 +21,19 @@
 
         <div class="field @error('current_password', 'updatePassword') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
-            <x-hearth-input id="current_password" type="password" name="current_password" required />
+            <x-password-input name="current_password" />
             <x-hearth-error for="current_password" bag="updatePassword" />
         </div>
 
         <div class="field @error('password', 'updatePassword') field--error @enderror">
             <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-            <x-hearth-input id="password" type="password" name="password" required />
+            <x-password-input name="password" />
             <x-hearth-error for="password" bag="updatePassword" />
         </div>
 
         <div class="field @error('password_confirmation', 'updatePassword') field--error @enderror">
             <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-            <x-hearth-input id="password_confirmation" type="password" name="password_confirmation" required />
+            <x-password-input name="password_confirmation" />
             <x-hearth-error for="password_confirmation" bag="updatePassword" />
         </div>
 

@@ -157,6 +157,27 @@ fieldset {
     padding: 0;
 }
 
+.password {
+    --gap: 0;
+
+    align-items: center;
+    position: relative;
+}
+
+.password input {
+    border-end-end-radius: 0;
+    border-start-end-radius: 0;
+    width: 100%;
+}
+
+.password button {
+    border-end-start-radius: 0;
+    border-start-start-radius: 0;
+    height: var(--size-8);
+    margin-inline: 0;
+    width: auto;
+}
+
 legend {
     color: var(--heading-color);
     font-family: var(--tae-font-family-base);
