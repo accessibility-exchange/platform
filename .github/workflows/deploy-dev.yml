@@ -40,6 +40,7 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate --force && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan view:clear && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan google-fonts:fetch && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
 
