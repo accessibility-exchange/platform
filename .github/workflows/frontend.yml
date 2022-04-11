@@ -2,74 +2,59 @@ name: Run front-end tests
 
 on:
   push:
-    branches: [ dev, prototype ]
-    paths:
-    - 'public/**.js'
-    - 'public/**.css'
-    - 'composer.json'
-    - 'composer.lock'
-    - '**.php'
-    - '**.blade.php'
+    branches: [dev, main]
   pull_request:
-    branches: [ dev, prototype ]
-    paths:
-    - 'public/**.js'
-    - 'public/**.css'
-    - 'composer.json'
-    - 'composer.lock'
-    - '**.php'
-    - '**.blade.php'
+    branches: [dev, main]
 
 jobs:
   frontend-tests:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.0'
-    - uses: actions/checkout@v2
-    - name: Cache Composer packages
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: php-${{ hashFiles('**/composer.lock') }}
-    - name: Create test database
-      run: |
-        sudo systemctl start mysql.service
-        mysqladmin create accessibilityexchange --user="root" --password="root"
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Generate key
-      run: php artisan key:generate
-    - name: Upgrade Chrome Driver
-      run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
-    - name: Start Chrome Driver
-      run: ./vendor/laravel/dusk/bin/chromedriver-linux &
-    - name: Run Laravel Server
-      run: |
-        php artisan migrate
-        php artisan storage:link
-        php artisan serve &
-      env:
-        DB_PASSWORD: root
-        DB_HOST: localhost
-    - name: Run Dusk Tests
-      env:
-        APP_URL: "http://127.0.0.1:8000"
-      run: php artisan dusk
-    - name: Upload Screenshots
-      if: failure()
-      uses: actions/upload-artifact@v2
-      with:
-        name: screenshots
-        path: tests/Browser/screenshots
-    - name: Upload Console Logs
-      if: failure()
-      uses: actions/upload-artifact@v2
-      with:
-        name: console
-        path: tests/Browser/console
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+      - uses: actions/checkout@v2
+      - name: Cache Composer packages
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: php-${{ hashFiles('**/composer.lock') }}
+      - name: Create test database
+        run: |
+          sudo systemctl start mysql.service
+          mysqladmin create accessibilityexchange --user="root" --password="root"
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+      - name: Run Laravel Server
+        run: |
+          php artisan migrate
+          php artisan storage:link
+          php artisan serve &
+        env:
+          DB_PASSWORD: root
+          DB_HOST: localhost
+      - name: Run Dusk Tests
+        env:
+          APP_URL: "http://127.0.0.1:8000"
+        run: php artisan dusk
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: tests/Browser/screenshots
+      - name: Upload Console Logs
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: console
+          path: tests/Browser/console

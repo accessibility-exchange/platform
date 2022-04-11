@@ -1,10 +1,7 @@
 .date {
     display: flex;
     flex-wrap: wrap;
-}
-
-.date .field + .field {
-    margin-inline-start: var(--step-0);
+    gap: var(--size-2);
 }
 
 .date .field--year input {

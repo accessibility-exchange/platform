@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+_ide_helper.php
 .nova
 .php-cs-fixer.cache
 .phpunit.result.cache

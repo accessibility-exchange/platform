@@ -22,12 +22,12 @@
                 <x-hearth-label :for="'work_and_volunteer_experiences_' . $i . '_current'" :value="__('I currently work here')" />
             </div>
             @if($loop->count > 1)
-            <button type="button" wire:click="removeExperience({{ $i }})">{{ __('Remove this experience') }}</button>
+            <button class="secondary" type="button" wire:click="removeExperience({{ $i }})">{{ __('Remove this experience') }}</button>
             @endif
         </li>
         @endforeach
     </ul>
     @if ($this->canAddMoreExperiences())
-    <button type="button" wire:click="addExperience">{{ __('Add another experience') }}</button>
+    <button class="secondary" type="button" wire:click="addExperience">{{ __('Add another experience') }}</button>
     @endif
 </div>

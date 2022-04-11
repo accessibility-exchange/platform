@@ -1,34 +1,23 @@
 <?php
 
-namespace Tests\Unit;
+test('get a nonexistent setting', function () {
+    $this->assertNull(settings('example'));
+});
 
-use Tests\TestCase;
+test('get a default setting', function () {
+    $this->assertEquals(settings('example', 'default value'), 'default value');
+});
 
-class SettingsTest extends TestCase
-{
-    public function test_get_nonexistent_setting()
-    {
-        $this->assertNull(settings('example'));
-    }
+test('put a setting', function () {
+    settings()->put('example', 'foo');
 
-    public function test_get_default_setting()
-    {
-        $this->assertEquals(settings('example', 'default value'), 'default value');
-    }
+    $this->assertEquals(settings('example'), 'foo');
 
-    public function test_put_setting()
-    {
-        settings()->put('example', 'foo');
+    settings()->forget('example');
+});
 
-        $this->assertEquals(settings('example'), 'foo');
-
-        settings()->forget('example');
-    }
-
-    public function test_forget_setting()
-    {
-        settings()->put('example', 'foo');
-        settings()->forget('example');
-        $this->assertNull(settings('example'));
-    }
-}
+test('forget a setting', function () {
+    settings()->put('example', 'foo');
+    settings()->forget('example');
+    $this->assertNull(settings('example'));
+});

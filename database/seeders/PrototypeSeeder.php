@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\CommunityMember;
-use App\Models\Entity;
 use App\Models\Impact;
 use App\Models\PaymentMethod;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -74,28 +74,28 @@ class PrototypeSeeder extends Seeder
         // Attach sector.
         $communityMemberPage->sectors()->attach($transportationSector->id);
 
-        $entityRepresentative = User::factory()
+        $regulatedOrganizationRepresentative = User::factory()
             ->create([
                 'name' => 'Daniel Addison',
                 'email' => 'daniel@example.com',
                 'email_verified_at' => now(),
-                'context' => 'entity',
+                'context' => 'regulated-organization',
             ]);
 
-        $entity = Entity::factory()
-            ->hasAttached($entityRepresentative, ['role' => 'admin'])
+        $regulatedOrganization = RegulatedOrganization::factory()
+            ->hasAttached($regulatedOrganizationRepresentative, ['role' => 'admin'])
             ->create([
                 'name' => 'Example Corporation',
                 'locality' => 'Toronto',
                 'region' => 'ON',
             ]);
 
-        $entity->sectors()->attach($transportationSector->id);
+        $regulatedOrganization->sectors()->attach($transportationSector->id);
 
         $completedProject = Project::factory()
             ->create([
                 'name' => '2020 Accessibility Plan',
-                'entity_id' => $entity->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2020-01-01',
                 'end_date' => '2020-12-31',
                 'found_participants' => true,
@@ -126,7 +126,7 @@ class PrototypeSeeder extends Seeder
         $recruitingProject = Project::factory()
             ->create([
                 'name' => '2022 Accessibility Plan',
-                'entity_id' => $entity->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2022-01-01',
                 'end_date' => '2022-12-31',
             ]);
@@ -140,7 +140,7 @@ class PrototypeSeeder extends Seeder
         $consultingProject = Project::factory()
             ->create([
                 'name' => '2021 Accessibility Plan',
-                'entity_id' => $entity->id,
+                'projectable_id' => $regulatedOrganization->id,
                 'start_date' => '2021-01-01',
                 'end_date' => '2021-12-31',
                 'found_participants' => true,

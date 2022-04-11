@@ -8,7 +8,7 @@
 {{-- Service preference --}}
 
 @if(!$communityMember->sectors->isEmpty())
-<x-heading :level="$level">{{ __('Types of regulated entities that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
+<x-heading :level="$level">{{ __('Types of federally regulated organizations that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
 <ul role="list" class="tags">
     @foreach($communityMember->sectors as $sector)
     <li class="tag">{{ $sector->name }}</li>
@@ -16,7 +16,7 @@
 </ul>
 @endif
 @if(!$communityMember->impacts->isEmpty())
-<x-heading :level="$level">{{ __('Areas within a regulated entity that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
+<x-heading :level="$level">{{ __('Areas within a federally regulated organization that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
 <ul role="list" class="tags">
     @foreach($communityMember->impacts as $impact)
     <li class="tag">{{ $impact->name }}</li>

@@ -13,11 +13,11 @@
                 <x-hearth-error :for="'other_links_' . $i . '_url'" :field="'other_links.' . $i . '.url'" />
             </div>
             @if($loop->count > 1)
-            <button type="button" wire:click="removeLink({{ $i }})">{{ __('Remove this website') }}</button>
+            <button class="secondary" type="button" wire:click="removeLink({{ $i }})">{{ __('Remove this website') }}</button>
             @endif
         @endforeach
     </ul>
     @if ($this->canAddMoreLinks())
-    <button type="button" wire:click="addLink">{{ __('Add another website') }}</button>
+    <button class="secondary" type="button" wire:click="addLink">{{ __('Add another website') }}</button>
     @endif
 </div>

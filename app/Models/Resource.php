@@ -46,11 +46,11 @@ class Resource extends Model
     }
 
     /**
-     * Get all of the collections for the resource.
+     * Get all of the resource collections for the resource.
      */
-    public function collections()
+    public function resourceCollections()
     {
-        return $this->morphToMany(Collection::class, 'collectionable');
+        return $this->belongsToMany(ResourceCollection::class);
     }
 
     /**

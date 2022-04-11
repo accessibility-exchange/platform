@@ -23,12 +23,12 @@
                 <x-hearth-label :for="'support_people_' . $i . '_page_creator'" :value="__('This person created my page on my behalf')" />
             </div>
             @if($loop->count > 1)
-            <button type="button" wire:click="removePerson({{ $i }})">{{ __('Remove this support person') }}</button>
+            <button class="secondary" type="button" wire:click="removePerson({{ $i }})">{{ __('Remove this support person') }}</button>
             @endif
         </li>
         @endforeach
     </ul>
     @if ($this->canAddMorePeople())
-    <button type="button" wire:click="addPerson">{{ __('Add a support person') }}</button>
+    <button class="secondary" type="button" wire:click="addPerson">{{ __('Add a support person') }}</button>
     @endif
 </div>

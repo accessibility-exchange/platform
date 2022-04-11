@@ -6,11 +6,26 @@ Route::multilingual('/projects', [ProjectController::class, 'index'])
     ->middleware(['auth'])
     ->name('projects.index');
 
-Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'create'])
-    ->middleware(['auth', 'can:createProject,entity'])
+Route::multilingual('/projects/create', [ProjectController::class, 'create'])
+    ->middleware(['auth','can:create,App\Models\Project'])
     ->name('projects.create');
 
-Route::multilingual('/entities/{entity}/projects/create', [ProjectController::class, 'store'])
+Route::multilingual('/projects/create/store-context', [ProjectController::class, 'storeContext'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('projects.store-context');
+
+Route::multilingual('/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('projects.store-focus');
+
+Route::multilingual('/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('projects.store-languages');
+
+Route::multilingual('/projects/create', [ProjectController::class, 'store'])
     ->method('post')
     ->name('projects.store');
 
@@ -18,17 +33,17 @@ Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
     ->middleware(['auth'])
     ->name('projects.show');
 
-Route::multilingual('/projects/{project}/who-were-looking-for', [ProjectController::class, 'show'])
+Route::multilingual('/projects/{project}/team', [ProjectController::class, 'show'])
     ->middleware(['auth'])
-    ->name('projects.show-who-were-looking-for');
+    ->name('projects.show-team');
 
-Route::multilingual('/projects/{project}/accessibility-and-accomodations', [ProjectController::class, 'show'])
+Route::multilingual('/projects/{project}/engagements', [ProjectController::class, 'show'])
     ->middleware(['auth'])
-    ->name('projects.show-accessibility-and-accomodations');
+    ->name('projects.show-engagements');
 
-Route::multilingual('/projects/{project}/community-experiences', [ProjectController::class, 'show'])
+Route::multilingual('/projects/{project}/outcomes', [ProjectController::class, 'show'])
     ->middleware(['auth'])
-    ->name('projects.show-community-experiences');
+    ->name('projects.show-outcomes');
 
 Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
     ->middleware(['auth', 'can:update,project'])
@@ -38,6 +53,11 @@ Route::multilingual('/projects/{project}/update', [ProjectController::class, 'up
     ->middleware(['auth', 'can:update,project'])
     ->method('put')
     ->name('projects.update');
+
+Route::multilingual('/projects/{project}/update-team', [ProjectController::class, 'updateTeam'])
+    ->middleware(['auth', 'can:update,project'])
+    ->method('put')
+    ->name('projects.update-team');
 
 Route::multilingual('/projects/{project}/update-publication-status', [ProjectController::class, 'updatePublicationStatus'])
     ->middleware(['auth', 'can:update,project'])

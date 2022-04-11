@@ -78,6 +78,7 @@ a.cta:hover {
 }
 
 a.cta:focus {
+    box-shadow: none;
     outline: var(--cta-outline) solid calc(var(--size-1) / 2);
     outline-offset: calc(var(--size-1) / 2);
 }
