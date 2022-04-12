@@ -36,7 +36,7 @@
 @endif
 @endif
 
-@if($project->team_trainings)
+@if($project->team_trainings && count($project->team_trainings))
 <h3>{{ __('Trainings') }}</h3>
 
 <p>{{ __('Members of our team have received the following trainings:') }}</p>

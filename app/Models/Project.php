@@ -70,6 +70,7 @@ class Project extends Model
         'team_languages' => 'array',
         'contacts' => 'array',
         'has_consultant' => 'boolean',
+        'team_trainings' => 'array',
     ];
 
     /**
@@ -113,17 +114,15 @@ class Project extends Model
                     }, $trainings);
                     $trainings = array_filter($trainings);
 
-                    $trainings = array_map(function ($training) {
+                    return array_map(function ($training) {
                         $date = new Carbon($training['date']);
-                        $training['date'] = $date->translatedFormat('F j, Y');
+                        $training['date'] = $date->translatedFormat('F Y');
 
                         return $training;
                     }, $trainings);
-
-                    return $trainings;
                 }
 
-                return $value;
+                return null;
             },
         );
     }

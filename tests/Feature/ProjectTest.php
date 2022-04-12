@@ -428,3 +428,21 @@ test('projects reflect team experience', function () {
 
     $this->assertEquals('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.', $project->teamExperience());
 });
+
+test('project retrieves team trainings properly', function () {
+    $project = Project::factory()->create([
+        'team_trainings' => [
+            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'https://acme.training'],
+        ],
+    ]);
+
+    expect($project->team_trainings[0]['date'])->toEqual('April 2022');
+
+    $projectWithNullTrainings = Project::factory()->create([
+        'team_trainings' => [
+            ['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => ''],
+        ],
+    ]);
+
+    expect($projectWithNullTrainings->team_trainings)->toBeEmpty();
+});
