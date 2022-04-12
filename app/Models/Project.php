@@ -107,11 +107,15 @@ class Project extends Model
             get: function ($value) {
                 if ($value) {
                     $trainings = json_decode($value, true);
+
                     $trainings = array_map(function ($training) {
-                        if (! empty(array_filter($training))) {
-                            $date = new Carbon($training['date']);
-                            $training['date'] = $date->translatedFormat('F j, Y');
-                        }
+                        return array_filter($training);
+                    }, $trainings);
+                    $trainings = array_filter($trainings);
+
+                    $trainings = array_map(function ($training) {
+                        $date = new Carbon($training['date']);
+                        $training['date'] = $date->translatedFormat('F j, Y');
 
                         return $training;
                     }, $trainings);
