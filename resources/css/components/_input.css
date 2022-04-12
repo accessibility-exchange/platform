@@ -203,6 +203,10 @@ legend {
     font-style: italic;
 }
 
+[type="radio"] ~ .field__hint {
+    margin-inline-start: var(--size-6);
+}
+
 /** Errors **/
 .field--error,
 .field--error .field__hint,

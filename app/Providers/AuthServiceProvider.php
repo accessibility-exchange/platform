@@ -17,6 +17,7 @@ use App\Policies\RegulatedOrganizationPolicy;
 use App\Policies\ResourceCollectionPolicy;
 use App\Policies\ResourcePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -43,5 +44,13 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Password::defaults(function () {
+            $rule = Password::min(8);
+
+            return $this->app->isProduction()
+                ? $rule->mixedCase()->numbers()->symbols()->uncompromised()
+                : $rule;
+        });
     }
 }

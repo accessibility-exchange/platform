@@ -31,6 +31,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'email',
         'password',
         'locale',
+        'signed_language',
         'theme',
         'context',
     ];

@@ -6,13 +6,6 @@
     <body>
         @include('layouts.banner')
 
-        @isset($aside)
-        <!-- Sidebar -->
-        <aside class="stack">
-            {{ $aside }}
-        </aside>
-        @endif
-
         <!-- Main Content -->
         <main id="main">
             <div class="center center:wide">

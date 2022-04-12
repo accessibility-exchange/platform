@@ -101,11 +101,27 @@ input[type="reset"] {
     width: 100%;
 }
 
+button.secondary:hover,
+button[type="reset"]:hover,
+input[type="reset"]:hover {
+    background-color: var(--button-secondary-background-hover);
+    border-color: var(--button-secondary-border-hover);
+    color: var(--button-secondary-color-hover);
+}
+
 button.secondary:focus,
 button[type="reset"]:focus,
 input[type="reset"]:focus {
     outline: var(--button-secondary-outline) solid calc(var(--size-1) / 2);
     outline-offset: calc(var(--size-1) / 2);
+}
+
+button.secondary:active,
+button[type="reset"]:active,
+input[type="reset"]:active {
+    background-color: var(--button-secondary-background-active);
+    border-color: var(--button-secondary-border-active);
+    color: var(--button-secondary-color-active);
 }
 
 button.borderless,

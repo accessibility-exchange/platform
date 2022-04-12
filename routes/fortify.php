@@ -21,26 +21,29 @@ use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
-    if (Features::enabled(Features::registration())) {
-        Route::multilingual('/register', [RegisteredUserController::class, 'create'])
-            ->middleware('guest')
-            ->name('register');
+    Route::multilingual('/register', [RegisteredUserController::class, 'create'])
+        ->middleware('guest')
+        ->name('register');
 
-        Route::multilingual('/register/save/context', [UserController::class, 'saveContext'])
-            ->method('post')
-            ->middleware('guest')
-            ->name('register-context');
+    Route::multilingual('/register/save/context', [UserController::class, 'saveContext'])
+        ->method('post')
+        ->middleware('guest')
+        ->name('register-context');
 
-        Route::multilingual('/register/save/details', [UserController::class, 'saveDetails'])
-            ->method('post')
-            ->middleware('guest')
-            ->name('register-details');
+    Route::multilingual('/register/save/details', [UserController::class, 'saveDetails'])
+        ->method('post')
+        ->middleware('guest')
+        ->name('register-details');
 
-        Route::multilingual('/register', [RegisteredUserController::class, 'store'])
-            ->method('post')
-            ->middleware('guest')
-            ->name('register-store');
-    }
+    Route::multilingual('/register/save/languages', [UserController::class, 'saveLanguages'])
+        ->method('post')
+        ->middleware('guest')
+        ->name('register-languages');
+
+    Route::multilingual('/register', [RegisteredUserController::class, 'store'])
+        ->method('post')
+        ->middleware('guest')
+        ->name('register-store');
 
     Route::multilingual('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware('guest')

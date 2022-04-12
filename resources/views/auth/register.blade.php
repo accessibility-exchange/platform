@@ -1,14 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
+        @if(request()->get('step') > 1)
+            <p class="h4">{{ __('Create an account') }}</p>
+        @endif
         <h1>
         @switch(request()->get('step'))
             @case(1)
-            {{ __('Your role') }}
+            {{ __('Create an account') }}
             @break
             @case(2)
-            {{ __('Your details') }}
+            {{ __('Your role') }}
             @break
             @case(3)
+            {{ __('Your details') }}
+            @break
+            @case(4)
             {{ __('Choose a password') }}
             @break
             @default
