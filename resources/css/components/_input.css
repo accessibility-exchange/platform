@@ -158,24 +158,20 @@ fieldset {
 }
 
 .password {
-    --gap: 0;
-
-    align-items: center;
-    position: relative;
-}
-
-.password input {
-    border-end-end-radius: 0;
-    border-start-end-radius: 0;
-    width: 100%;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
 }
 
 .password button {
-    border-end-start-radius: 0;
-    border-start-start-radius: 0;
-    height: var(--size-8);
-    margin-inline: 0;
+    min-width: 25%;
     width: auto;
+}
+
+.password .field {
+    background-color: var(--tae-grey-2);
+    border-radius: var(--radius-2);
+    padding: var(--size-2);
 }
 
 legend {
