@@ -6,9 +6,11 @@
 .env
 .env.backup
 _ide_helper.php
+.idea
 .nova
 .php-cs-fixer.cache
 .phpunit.result.cache
+.vscode
 Homestead.json
 Homestead.yaml
 npm-debug.log
