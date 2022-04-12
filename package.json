@@ -54,6 +54,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.11.5",
+        "accessible-autocomplete": "^2.0.4",
         "alpinejs": "^3.9.5",
         "axios": "^0.26.1",
         "luxon": "^2.3.1",
