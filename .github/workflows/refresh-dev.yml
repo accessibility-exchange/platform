@@ -25,8 +25,8 @@ jobs:
           proxy_port: ${{ secrets.SSH_PROXY_PORT }}
           script: |
             cd /srv/tae-dev && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan db:seed DevSeeder
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan db:seed DevSeeder --force
 
       - name: Wait
         run: sleep 15
