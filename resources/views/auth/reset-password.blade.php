@@ -13,7 +13,7 @@
        <!-- Validation Errors -->
        <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('password.update') }}" novalidate>
+        <form class="stack" method="POST" action="{{ localized_route('password.update') }}" novalidate>
             @csrf
 
             <!-- Password Reset Token -->
@@ -29,14 +29,14 @@
             <!-- Password -->
             <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <x-hearth-input type="password" name="password" required />
+                <x-password-input name="password" />
                 <x-hearth-error for="password" />
             </div>
 
             <!-- Confirm Password -->
             <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-                <x-hearth-input type="password" name="password_confirmation" required />
+                <x-password-input name="password_confirmation" />
                 <x-hearth-error for="password" />
             </div>
 

@@ -3,6 +3,7 @@
     --theme-h1-color: white;
     --theme-heading-color: var(--tae-grey-1);
     --theme-body-background: var(--tae-graphite-8);
+    --theme-body-guest-background: var(--tae-graphite-6);
     --theme-body-color: var(--tae-grey-2);
     --theme-link-color: var(--tae-turquoise-1);
     --theme-link-color-hover: var(--tae-turquoise-2);
@@ -132,6 +133,7 @@
         --theme-h1-color: white;
         --theme-heading-color: var(--tae-grey-1);
         --theme-body-background: var(--tae-graphite-8);
+        --theme-body-guest-background: var(--tae-graphite-6);
         --theme-body-color: var(--tae-grey-2);
         --theme-link-color: var(--tae-turquoise-1);
         --theme-link-color-hover: var(--tae-turquoise-2);

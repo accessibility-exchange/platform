@@ -140,7 +140,7 @@
 
         <div class="field @error('current_password', 'destroyOrganization') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
-            <x-hearth-input id="current_password" type="password" name="current_password" required />
+            <x-password-input name="current_password" />
             <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>
 

@@ -1,11 +1,20 @@
 .center {
-    box-sizing: content-box;
+    box-sizing: border-box;
     display: block;
     margin-inline: auto;
     max-inline-size: var(--measure);
     padding-inline: var(--gutter, 0);
+    width: 100%;
+}
+
+.center.center\:text {
+    text-align: center;
 }
 
 .center.center\:wide {
     max-inline-size: calc(2 * var(--measure));
+}
+
+.align\:center {
+    text-align: center;
 }

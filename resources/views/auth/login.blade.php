@@ -16,7 +16,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors />
 
-        <form method="POST" action="{{ localized_route('login-store') }}" novalidate>
+        <form class="stack" method="POST" action="{{ localized_route('login-store') }}" novalidate>
             @csrf
 
             <!-- Email Address -->
@@ -29,7 +29,7 @@
             <!-- Password -->
             <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-                <x-hearth-input name="password" type="password" required autocomplete="current-password" />
+                <x-password-input name="password" />
                 <x-hearth-error for="password" />
             </div>
 
