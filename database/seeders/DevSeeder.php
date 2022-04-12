@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class DevSeeder extends Seeder
@@ -20,7 +21,7 @@ class DevSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create('en_CA');
+        $faker = Faker::create('en_CA');
 
         $this->call([
             DatabaseSeeder::class,
