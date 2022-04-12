@@ -49,7 +49,7 @@
             <x-hearth-radio-buttons name="consultant_origin" :options="['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')]" :checked="old('consultant_origin', $project->consultant_origin())" x-model="consultantOrigin" />
             <div class="field @error('consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
                 <x-hearth-label for="consultant_id" :value="__('Consultant (required)')" />
-                <x-hearth-select name="consultant_id" :options="$consultants" :selected="old('consultant_id', $project->consultant_id)" />
+                <x-hearth-select x-data="autocomplete()" name="consultant_id" :options="$consultants" :selected="old('consultant_id', $project->consultant_id)" />
             </div>
             <div class="field @error('consultant_name') field--error @enderror stack" x-show="consultantOrigin == 'external'">
                 <x-hearth-label for="consultant_name" :value="__('Consultant name (required)')" />
