@@ -53,7 +53,8 @@ a.cta {
     align-items: center;
     appearance: none;
     background: var(--cta-background);
-    border: var(--border-size-2) solid var(--cta-border);
+    border: var(--border-size-2) solid;
+    border-color: var(--cta-border);
     border-radius: var(--radius-2);
     color: var(--cta-color);
     display: flex;
@@ -87,6 +88,28 @@ a.cta:active {
     background: var(--cta-background-active);
     border-color: var(--cta-border-active);
     color: var(--cta-color-active);
+}
+
+a.cta.secondary {
+    background: var(--cta-secondary-background);
+    border-color: var(--cta-secondary-border);
+    color: var(--cta-secondary-color);
+}
+
+a.cta.secondary:hover {
+    background: var(--cta-secondary-background-hover);
+    border-color: var(--cta-secondary-border-hover);
+    color: var(--cta-secondary-color-hover);
+}
+
+a.cta.secondary:focus {
+    outline: var(--cta-secondary-outline) solid calc(var(--size-1) / 2);
+}
+
+a.cta.secondary:active {
+    background: var(--cta-secondary-background-active);
+    border-color: var(--cta-secondary-border-active);
+    color: var(--cta-secondary-color-active);
 }
 
 .dark a.cta {

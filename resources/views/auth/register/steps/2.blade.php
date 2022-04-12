@@ -1,27 +1,34 @@
-<form class="stack" method="POST" action="{{ localized_route('register-details') }}" novalidate>
-    @csrf
-
-    <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
-
-    <!-- Name -->
-    <div class="field @error('name') field--error @enderror stack">
-        <x-hearth-label for="name" :value="__('hearth::user.label_name')" />
-        <x-hearth-input type="text" name="name" value="{{ old('name', session('name')) }}" required autofocus />
-        <x-hearth-error for="name" />
-    </div>
-
-    <!-- Email Address -->
-    <div class="field @error('email') field--error @enderror stack">
-        <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-        <x-hearth-input type="email" name="email" value="{{ old('email', session('email')) }}" required />
-        <x-hearth-error for="email" />
-    </div>
+<form class="stack" method="POST" action="{{ localized_route('register-context') }}" novalidate>
+    <fieldset class="field @error('context') field--error @enderror stack">
+        <legend>{{ __('How will you be using this website?') }}</legend>
+        <x-hearth-hint for="context">{{ __('If you fit more than one of the following groups, you’ll have to register separately.') }}</x-hearth-hint>
+        <x-hearth-radio-buttons name="context" :options="[
+            'community-member' => [
+                'label' => __('As a community member'),
+                'hint' => __('I have lived experience of being disabled or Deaf, and I want to work on accessibility projects'),
+            ],
+            'organization' => [
+                'label' => __('On behalf of a community organization'),
+                'hint' => __('I am a part of an organization that serves the disability and Deaf community'),
+            ],
+            'regulated-organization' => [
+                'label' => __('On behalf of a federally regulated organization'),
+                'hint' => __('I am a part of an organization or business who wants to work on accessibility projects'),
+            ],
+            'regulated-organization-employee' => [
+                'label' => __('As an employee of a federally regulated organization, looking for training'),
+                'hint' => __('Completing trainings assigned by my organization or business'),
+            ]
+        ]" :checked="old('context', session('context')) ?? false" hinted />
+        <x-hearth-error for="context" />
+    </fieldset>
 
     <p class="repel">
-        <a class="cta" href="{{ localized_route('register', ['step' => 1]) }}">{{ __('Back') }}</a>
+        <a class="cta secondary" href="{{ localized_route('register', ['step' => 1]) }}">{{ __('Back') }}</a>
 
         <x-hearth-button>
             {{ __('Next') }}
         </x-hearth-button>
     </p>
+    @csrf
 </form>

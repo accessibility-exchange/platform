@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyUserRequest;
 use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
+use App\Http\Requests\SaveUserLanguagesRequest;
 use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -69,7 +70,7 @@ class UserController extends Controller
         $data = $request->validated();
         session()->put('context', $data['context']);
 
-        return redirect(\localized_route('register', ['step' => 2]));
+        return redirect(\localized_route('register', ['step' => 3]));
     }
 
     /**
@@ -84,7 +85,24 @@ class UserController extends Controller
         session()->put('name', $data['name']);
         session()->put('email', $data['email']);
 
-        return redirect(\localized_route('register', ['step' => 3]));
+        return redirect(\localized_route('register', ['step' => 4]));
+    }
+
+    /**
+     * Store a new user's language preferences in the session.
+     *
+     * @param  \App\Http\Requests\SaveUserLanguagesRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        session()->put('locale', $data['locale']);
+        if ($data['signed_language']) {
+            session()->put('signed_language', $data['signed_language']);
+        }
+
+        return redirect(\localized_route('register', ['step' => 2]));
     }
 
     /**

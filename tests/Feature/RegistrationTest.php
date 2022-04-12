@@ -1,63 +1,66 @@
 <?php
 
-namespace Tests\Feature;
+test('registration screen can be rendered', function () {
+    $response = $this->get(localized_route('register'));
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+    $response->assertOk();
+});
 
-class RegistrationTest extends TestCase
-{
-    use RefreshDatabase;
+test('new users can register', function () {
+    $response = $this->from(localized_route('register', ['step' => 1]))
+        ->post(localized_route('register-languages'), [
+            'locale' => 'en',
+            'signed_language' => 'ase',
+        ]);
+    $response->assertRedirect(localized_route('register', ['step' => 2]));
+    $response->assertSessionHas('locale', 'en');
+    $response->assertSessionHas('signed_language', 'ase');
 
-    public function test_registration_screen_can_be_rendered()
-    {
-        $response = $this->get(localized_route('register'));
+    $response = $this->from(localized_route('register', ['step' => 2]))
+        ->withSession([
+            'locale' => 'en',
+            'signed_language' => 'ase',
+        ])
+        ->post(localized_route('register-context'), [
+            'context' => 'community-member',
+        ]);
+    $response->assertRedirect(localized_route('register', ['step' => 3]));
+    $response->assertSessionHas('context', 'community-member');
 
-        $response->assertOk();
-    }
-
-    public function test_new_users_can_register()
-    {
-        $response = $this->from(localized_route('register', ['step' => 1]))
-            ->post(localized_route('register-context'), [
-                'context' => 'community-member',
-            ]);
-        $response->assertRedirect(localized_route('register', ['step' => 2]));
-        $response->assertSessionHas('context', 'community-member');
-
-        $response = $this->from(localized_route('register', ['step' => 2]))
-            ->withSession([
-                'context' => 'community-member',
-            ])
-            ->post(localized_route('register-details'), [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        $response->assertRedirect(localized_route('register', ['step' => 3]));
-        $response->assertSessionHas('name', 'Test User');
-        $response->assertSessionHas('email', 'test@example.com');
-
-        $response = $this->withSession([
+    $response = $this->from(localized_route('register', ['step' => 3]))
+        ->withSession([
+            'locale' => 'en',
+            'signed_language' => 'ase',
+            'context' => 'community-member',
+        ])
+        ->post(localized_route('register-details'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'context' => 'community-member',
-        ])->post(localized_route('register-store'), [
-            'password' => 'password',
-            'password_confirmation' => 'password',
-            'locale' => 'en',
         ]);
+    $response->assertRedirect(localized_route('register', ['step' => 4]));
+    $response->assertSessionHas('name', 'Test User');
+    $response->assertSessionHas('email', 'test@example.com');
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(localized_route('dashboard'));
-    }
+    $response = $this->withSession([
+        'locale' => 'en',
+        'signed_language' => 'ase',
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'context' => 'community-member',
+    ])->post(localized_route('register-store'), [
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
 
-    public function test_new_users_can_not_register_without_valid_context()
-    {
-        $response = $this->from(localized_route('register', ['step' => 1]))
-            ->post(localized_route('register-context'), [
-                'context' => 'superadmin',
-            ]);
-        $response->assertRedirect(localized_route('register', ['step' => 1]));
-        $response->assertSessionHasErrors();
-    }
-}
+    $this->assertAuthenticated();
+    $response->assertRedirect(localized_route('dashboard'));
+});
+
+test('new users can not register without valid context', function () {
+    $response = $this->from(localized_route('register', ['step' => 1]))
+        ->post(localized_route('register-context'), [
+            'context' => 'superadmin',
+        ]);
+    $response->assertRedirect(localized_route('register', ['step' => 1]));
+    $response->assertSessionHasErrors();
+});

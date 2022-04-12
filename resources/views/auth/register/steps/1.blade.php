@@ -1,27 +1,29 @@
-<form class="stack" method="POST" action="{{ localized_route('register-context') }}" novalidate>
 
-    <fieldset class="field @error('context') field--error @enderror stack">
-        <legend>{{ __('How will you be using this website?') }}</legend>
-        <x-hearth-hint for="context">{{ __('If you fit more than one of the following groups, you’ll have to register separately.') }}</x-hearth-hint>
-        <x-hearth-radio-buttons name="context" :options="[
-            'community-member' => [
-                'label' => __('As a community member'),
-                'hint' => __('I have lived experience of being disabled or Deaf, and I want to work on accessibility projects'),
-            ],
-            'organization' => [
-                'label' => __('On behalf of a community organization'),
-                'hint' => __('I am a part of an organization that serves the disability and Deaf community'),
-            ],
-            'regulated-organization' => [
-                'label' => __('On behalf of a federally regulated organization'),
-                'hint' => __('I am a part of an organization or business who wants to work on accessibility projects'),
-            ]
-        ]" :checked="old('context', session('context')) ?? false" hinted />
-        <x-hearth-error for="context" />
+
+<form class="stack" method="POST" action="{{ localized_route('register-languages') }}" novalidate>
+    @csrf
+    <fieldset class="stack">
+        <legend>{{ __('Pick your website language') }}</legend>
+
+        <p>{{ __('Please select the language(s) in which you’ll be using the website. You will be able to choose a different language to work in for engagements if your first language isn’t shown here.') }}</p>
+
+        <div class="field @error('locale') field--error @enderror stack">
+            <x-hearth-label for="locale" :value="__('Spoken or written language (required)')" />
+            <x-hearth-locale-select name="locale" :selected="old('locale', locale())" />
+            <x-hearth-error for="locale" />
+        </div>
+
+        <div class="field @error('signed_language') field--error @enderror stack">
+            <x-hearth-label for="signed_language" :value="__('Signed language (optional)')" />
+            <x-hearth-hint for="signed_language">{{ __('When content is available in the sign language you select, it will appear as a video.') }}</x-hearth-hint>
+            <x-hearth-select name="signed_language" :options="['' => __('Choose a signed language…'), 'ase' => __('American Sign Language (ASL)'), 'fcs' => 'Langue des signes québécoise (LSQ)']" :selected="old('signed_language', '')" hinted />
+            <x-hearth-error for="signed_language" />
+        </div>
     </fieldset>
 
-    <x-hearth-button>
-        {{ __('Next') }}
-    </x-hearth-button>
-    @csrf
+    <p class="repel">
+        <x-hearth-button>
+            {{ __('Next') }}
+        </x-hearth-button>
+    </p>
 </form>

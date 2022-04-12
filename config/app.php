@@ -243,5 +243,6 @@ return [
         'community-member',
         'organization',
         'regulated-organization',
+        'regulated-organization-employee',
     ],
 ];
