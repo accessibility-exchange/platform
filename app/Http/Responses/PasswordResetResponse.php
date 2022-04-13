@@ -4,7 +4,6 @@ namespace App\Http\Responses;
 
 use Illuminate\Http\JsonResponse;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
-use Laravel\Fortify\Fortify;
 
 class PasswordResetResponse implements PasswordResetResponseContract
 {
@@ -36,6 +35,6 @@ class PasswordResetResponse implements PasswordResetResponseContract
     {
         return $request->wantsJson()
             ? new JsonResponse(['message' => trans($this->status)], 200)
-            : redirect(Fortify::redirects('password-reset', \localized_route('login')))->with('status', trans($this->status));
+            : redirect()->intended(\localized_route('login'))->with('status', trans($this->status));
     }
 }
