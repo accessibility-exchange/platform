@@ -10,12 +10,6 @@
             {{ __('Two-factor authentication') }}
         </x-slot>
 
-        <!-- Session Status -->
-        <x-auth-session-status :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors />
-
         <form class="stack" method="POST" action="{{ localized_route('two-factor.login') }}" x-data="{ recovery: false }" novalidate>
             @csrf
 

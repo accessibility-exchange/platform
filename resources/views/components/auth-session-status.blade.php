@@ -1,7 +1,7 @@
 @props(['status'])
 
 @if ($status)
-    <div {{ $attributes->merge([]) }}>
+    <x-hearth-alert type="success" {{ $attributes->merge([]) }}>
         {{ $status }}
-    </div>
+    </x-hearth-alert>
 @endif

@@ -20,12 +20,12 @@
         @else
         <li class="account">
             <x-nav-link :href="localized_route('register')">
-                {{ __('hearth::auth.create_account') }}
+                {{ __('Create an account') }}
             </x-nav-link>
         </li>
         <li>
             <x-nav-link :href="localized_route('login')">
-                {{ __('hearth::auth.sign_in') }}
+                {{ __('Sign in') }}
             </x-nav-link>
         </li>
         @endauth
@@ -49,7 +49,7 @@
         <!-- Authentication -->
         <li x-data>
             <x-nav-link :href="localized_route('logout')" x-on:click.prevent="$refs.form.submit()">
-                {{ __('hearth::auth.sign_out') }}
+                {{ __('Sign out') }}
             </x-nav-link>
             <form method="POST" action="{{ localized_route('logout') }}" x-ref="form">
                 @csrf

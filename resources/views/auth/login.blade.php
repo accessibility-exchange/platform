@@ -10,12 +10,6 @@
             {{ __('Sign in') }}
         </x-slot>
 
-        <!-- Session Status -->
-        <x-auth-session-status :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors />
-
         <form class="stack" method="POST" action="{{ localized_route('login-store') }}" novalidate>
             @csrf
 
@@ -33,19 +27,17 @@
                 <x-hearth-error for="password" />
             </div>
 
-            <!-- Remember Me -->
-            <div class="field">
-                <x-hearth-input name="remember" type="checkbox" />
-                <x-hearth-label for="remember" :value="__('hearth::auth.label_remember_me')" />
-            </div>
-
-            @if (Route::has('en.password.request'))
             <p>
                 <a href="{{ localized_route('password.request') }}">
                     {{ __('hearth::auth.forget_prompt') }}
                 </a>
             </p>
-            @endif
+
+            <!-- Remember Me -->
+            <div class="field">
+                <x-hearth-input name="remember" type="checkbox" />
+                <x-hearth-label for="remember" :value="__('hearth::auth.label_remember_me')" />
+            </div>
 
             <x-hearth-button>
                 {{ __('hearth::auth.sign_in') }}

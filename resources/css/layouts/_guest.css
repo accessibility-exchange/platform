@@ -6,3 +6,11 @@
 .guest main {
     padding-block: 0;
 }
+
+.guest .cover {
+    --height: calc(100vh - var(--size-9));
+}
+
+.stack.hero {
+    --space: var(--size-5);
+}

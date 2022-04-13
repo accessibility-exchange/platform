@@ -14,9 +14,6 @@
             {{ __('hearth::auth.confirm_intro') }}
         </div>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors />
-
         <form class="stack" method="POST" action="{{ localized_route('password.confirm') }}">
             @csrf
 

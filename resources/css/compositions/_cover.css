@@ -1,7 +1,9 @@
 .cover {
+    --height: 100vh;
+
     display: flex;
     flex-direction: column;
-    min-block-size: 100vh;
+    min-block-size: var(--height);
     padding: var(--size-5) var(--size-3);
 }
 
