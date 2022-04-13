@@ -2,7 +2,7 @@
 
 namespace App\Http\Responses;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class PasswordResetResponse implements PasswordResetResponseContract
@@ -29,12 +29,10 @@ class PasswordResetResponse implements PasswordResetResponseContract
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return mixed
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function toResponse($request)
+    public function toResponse($request): RedirectResponse
     {
-        return $request->wantsJson()
-            ? new JsonResponse(['message' => trans($this->status)], 200)
-            : redirect()->intended(\localized_route('login'))->with('status', trans($this->status));
+        return redirect()->intended(\localized_route('login'))->with('status', trans($this->status));
     }
 }
