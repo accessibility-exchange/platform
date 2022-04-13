@@ -14,12 +14,6 @@
             {{ __('hearth::auth.forgot_intro') }}
         </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors />
-
         <form class="stack" method="POST" action="{{ route('password.email') }}" novalidate>
             @csrf
 

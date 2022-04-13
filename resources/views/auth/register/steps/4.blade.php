@@ -9,7 +9,7 @@
         <x-hearth-hint for="password">
             {{ __('Passwords must be at least eight characters in length and include at least one uppercase letter, at least one number, and at least one special character.') }}
         </x-hearth-hint>
-        <x-password-input name="password" autocomplete="new-password" />
+        <x-password-input name="password" autocomplete="new-password" hinted />
         <x-hearth-error for="password" />
     </div>
 

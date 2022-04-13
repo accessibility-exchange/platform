@@ -11,14 +11,8 @@
         </x-slot>
 
         <div>
-            {{ __('hearth::auth.verification_intro') }}
+            {{ __('Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.') }}
         </div>
-
-        @if (session('status') == 'verification-link-sent')
-            <x-hearth-alert type="success">
-                {{ __('hearth::auth.verification_sent') }}
-            </x-hearth-alert>
-        @endif
 
         <div class="stack">
             <form method="POST" action="{{ route('verification.send') }}">
@@ -26,7 +20,7 @@
 
                 <div>
                     <x-hearth-button>
-                        {{ __('hearth::auth.resend_verification_email') }}
+                        {{ __('Resend verification email') }}
                     </x-hearth-button>
                 </div>
             </form>
@@ -35,7 +29,7 @@
                 @csrf
 
                 <button type="submit">
-                    {{ __('hearth::auth.sign_out') }}
+                    {{ __('Sign out') }}
                 </button>
             </form>
         </div>

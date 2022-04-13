@@ -4,7 +4,10 @@
         @include('partials.head', ['title' => $title ?? __('app.name')])
     </head>
     <body class="guest">
-        @include('layouts.banner')
+        <header role="banner">
+            @include('components.skip-link')
+            @include('partials.help-bar')
+        </header>
 
         <!-- Main Content -->
         <main id="main">

@@ -1,3 +1,7 @@
+form.stack {
+    --space: var(--size-5);
+}
+
 input,
 textarea,
 select {
