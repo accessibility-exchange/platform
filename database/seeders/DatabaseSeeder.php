@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AccessSupportSeeder::class,
             CommunicationToolSeeder::class,
+            CommunityRoleSeeder::class,
             CommunitySeeder::class,
             ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,

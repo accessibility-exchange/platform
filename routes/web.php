@@ -44,6 +44,11 @@ Route::multilingual('/role-selection', [UserController::class, 'showRoleSelectio
     ->middleware(['auth'])
     ->name('users.show-role-selection');
 
+Route::multilingual('/role/save', [UserController::class, 'saveRole'])
+    ->method('put')
+    ->middleware(['auth'])
+    ->name('users.save-role');
+
 Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('dashboard');
