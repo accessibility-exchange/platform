@@ -129,6 +129,10 @@ test('guests can not access my projects page', function () {
 test('users can view the introduction', function () {
     $user = User::factory()->create();
 
+    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+
+    $response->assertOk();
+
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
         ->put(localized_route('users.update-introduction-status'), [
