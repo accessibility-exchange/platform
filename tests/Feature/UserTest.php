@@ -1,9 +1,11 @@
 <?php
 
 
+use App\Models\CommunityRole;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\CommunityRoleSeeder;
 
 test('users can access settings', function () {
     $user = User::factory()->create();
@@ -177,9 +179,30 @@ test('users can view the introduction', function () {
 });
 
 test('users can select a role', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
+    $nonCommunityUser = User::factory()->create([
+        'context' => 'regulated-organization',
+    ]);
+
+    $response = $this->actingAs($nonCommunityUser)->get(localized_route('users.show-role-selection'));
+    $response->assertForbidden();
+
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(localized_route('users.show-role-selection'));
-
     $response->assertOk();
+
+    $firstRole = CommunityRole::first();
+
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-role-selection'))
+        ->put(localized_route('users.save-role'), [
+            'roles' => [$firstRole->id],
+        ]);
+
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $user = $user->fresh();
+    expect($user->communityRoles[0]->id)->toEqual($firstRole->id);
 });
