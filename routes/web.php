@@ -19,6 +19,19 @@ Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::multilingual('/introduction', [UserController::class, 'showIntroduction'])
+    ->middleware(['auth'])
+    ->name('users.show-introduction');
+
+Route::multilingual('/introduction/update', [UserController::class, 'updateIntroductionStatus'])
+    ->method('put')
+    ->middleware(['auth'])
+    ->name('users.update-introduction-status');
+
+Route::multilingual('/role-selection', [UserController::class, 'showRoleSelection'])
+    ->middleware(['auth'])
+    ->name('users.show-role-selection');
+
 Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('dashboard');

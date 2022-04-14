@@ -34,6 +34,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'signed_language',
         'theme',
         'context',
+        'finished_introduction',
     ];
 
     /**
@@ -55,6 +56,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'finished_introduction' => 'boolean',
     ];
 
     /**

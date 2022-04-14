@@ -125,3 +125,27 @@ test('guests can not access my projects page', function () {
     $response = $this->get(localized_route('users.show_my_projects'));
     $response->assertRedirect(localized_route('login'));
 });
+
+test('users can view the introduction', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-introduction'))
+        ->put(localized_route('users.update-introduction-status'), [
+            'finished_introduction' => 1,
+        ]);
+
+    $response->assertRedirect(localized_route('users.show-role-selection'));
+
+    $user = $user->fresh();
+
+    expect($user->finished_introduction)->toBeTrue();
+});
+
+test('users can select a role', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('users.show-role-selection'));
+
+    $response->assertOk();
+});

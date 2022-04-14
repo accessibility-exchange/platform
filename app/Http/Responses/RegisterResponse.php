@@ -15,12 +15,12 @@ class RegisterResponse implements RegisterResponseContract
      */
     public function toResponse($request)
     {
-        $dashboard = \localized_route('dashboard', [], Auth::user()->locale);
+        $introduction = \localized_route('users.show-introduction', [], Auth::user()->locale);
 
         if ($request->wantsJson()) {
             return response()->json(['two_factor' => false]);
         }
 
-        return redirect()->intended($dashboard);
+        return redirect()->intended($introduction);
     }
 }

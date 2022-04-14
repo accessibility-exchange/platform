@@ -53,7 +53,7 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(localized_route('dashboard'));
+    $response->assertRedirect(localized_route('users.show-introduction'));
 });
 
 test('new users can not register without valid context', function () {

@@ -7,6 +7,7 @@ use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
 use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
+use App\Http\Requests\UpdateUserIntroductionStatusRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,46 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('localize')->only('edit');
+    }
+
+    /**
+     * Show an introduction page for the logged-in user.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showIntroduction(): View
+    {
+        return view('users.show-introduction', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    /**
+     * Update the logged-in user's introduction status.
+     *
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateIntroductionStatus(UpdateUserIntroductionStatusRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        Auth::user()->fill($data);
+        Auth::user()->save();
+
+        return redirect(\localized_route('users.show-role-selection'));
+    }
+
+    /**
+     * Show a role selection page for the logged-in user.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRoleSelection(): View
+    {
+        return view('users.show-role-selection', [
+            'user' => Auth::user(),
+        ]);
     }
 
     /**
