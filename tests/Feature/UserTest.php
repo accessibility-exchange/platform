@@ -132,6 +132,28 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
+    $response->assertSee('Video for community members.');
+
+    $user->update(['context' => 'organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+
+    $response->assertOk();
+    $response->assertSee('Video for community organizations.');
+
+    $user->update(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+
+    $response->assertOk();
+    $response->assertSee('Video for regulated organizations.');
+
+    $user->update(['context' => 'regulated-organization-employee']);
+
+    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+
+    $response->assertOk();
+    $response->assertSee('Video for regulated organization employees.');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))

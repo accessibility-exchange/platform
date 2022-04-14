@@ -12,7 +12,9 @@
     </h2>
 
     <!-- Video -->
-    <div class="frame"></div>
+    <div class="frame">
+        {{ $user->introduction() }}
+    </div>
 
     <div class="center repel">
         <a class="cta secondary" href="{{ localized_route('users.show-role-selection') }}">{{ __('Skip for now') }}</a>

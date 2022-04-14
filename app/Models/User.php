@@ -73,9 +73,25 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      *
      * @return string
      */
-    public function preferredLocale()
+    public function preferredLocale(): string
     {
         return $this->locale;
+    }
+
+    /**
+     * Get the introduction for the user.
+     *
+     * @return string
+     */
+    public function introduction(): string
+    {
+        return match ($this->context) {
+            'community-member' => __('Video for community members.'),
+            'organization' => __('Video for community organizations.'),
+            'regulated-organization' => __('Video for regulated organizations.'),
+            'regulated-organization-employee' => __('Video for regulated organization employees.'),
+            default => '',
+        };
     }
 
     /**
