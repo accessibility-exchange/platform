@@ -134,6 +134,18 @@ test('users can view the introduction', function () {
     $response->assertOk();
     $response->assertSee('Video for community members.');
 
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-introduction'))
+        ->put(localized_route('users.update-introduction-status'), [
+            'finished_introduction' => 1,
+        ]);
+
+    $response->assertRedirect(localized_route('users.show-role-selection'));
+
+    $user = $user->fresh();
+
+    expect($user->finished_introduction)->toBeTrue();
+
     $user->update(['context' => 'organization']);
 
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
@@ -161,11 +173,7 @@ test('users can view the introduction', function () {
             'finished_introduction' => 1,
         ]);
 
-    $response->assertRedirect(localized_route('users.show-role-selection'));
-
-    $user = $user->fresh();
-
-    expect($user->finished_introduction)->toBeTrue();
+    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can select a role', function () {

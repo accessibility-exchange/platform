@@ -19,6 +19,18 @@ Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::multilingual('/about/for-community-members', function () {
+    return view('about.for-community-members');
+})->name('about.for-community-members');
+
+Route::multilingual('/about/for-community-organizations', function () {
+    return view('about.for-community-organizations');
+})->name('about.for-community-organizations');
+
+Route::multilingual('/about/for-regulated-organizations', function () {
+    return view('about.for-regulated-organizations');
+})->name('about.for-regulated-organizations');
+
 Route::multilingual('/introduction', [UserController::class, 'showIntroduction'])
     ->middleware(['auth'])
     ->name('users.show-introduction');

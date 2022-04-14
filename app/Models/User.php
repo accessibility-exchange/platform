@@ -62,9 +62,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The relationships that should be deleted when a user is deleted.
      *
-     * @var array
+     * @var mixed
      */
-    protected $cascadeDeletes = [
+    protected mixed $cascadeDeletes = [
         'organizations',
     ];
 

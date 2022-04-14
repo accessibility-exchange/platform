@@ -9,5 +9,14 @@
         <h2>{{ __('What would you like to do on this website?') }}</h2>
     </x-slot>
 
-    <!-- TODO: Role selection -->
+    <p>{{ __('You can always change this later.') }} <a href="{{ localized_route('about.for-community-members') }}">{{ __('Learn more about these roles') }}</a></p>
+
+    <form class="stack" action="" method="post" novalidate>
+        <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', [])" />
+
+        <x-hearth-button>{{ _('Continue') }}</x-hearth-button>
+
+        @method('put')
+        @csrf
+    </form>
 </x-app-wide-layout>
