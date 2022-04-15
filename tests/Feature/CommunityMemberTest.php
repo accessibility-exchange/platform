@@ -11,13 +11,9 @@ test('users can create community member pages', function () {
 
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.create'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->post(localized_route('community-members.create'), [
+    $response = $this->actingAs($user)->post(localized_route('community-members.store'), [
         'user_id' => $user->id,
         'name' => $user->name,
-        'roles' => ['participant', 'consultant'],
     ]);
 
     $communityMember = CommunityMember::where('name', $user->name)->get()->first();
@@ -30,7 +26,6 @@ test('users can create community member pages', function () {
         'name' => $user->name,
         'locality' => 'Halifax',
         'region' => 'NS',
-        'hide_location' => 1,
         'pronouns' => '',
         'bio' => '',
         'links' => [
@@ -89,7 +84,6 @@ test('users can create community member pages', function () {
             'name' => $user->name,
             'locality' => 'Halifax',
             'region' => 'NS',
-            'hide_location' => 1,
             'pronouns' => '',
             'bio' => '',
             'other_links' => [
@@ -107,7 +101,6 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-interests', $communityMember), [
         'sectors' => [Sector::pluck('id')->first()],
         'impacts' => [Impact::pluck('id')->first()],
-        'areas_of_interest' => '',
         'save_and_previous' => __('Save and previous'),
     ]);
 
@@ -138,7 +131,7 @@ test('users can create community member pages', function () {
         'age_group' => 'adult',
         'lived_experience' => '',
         'skills_and_strengths' => '',
-        'work_and_volunteer_experiences' => [
+        'relevant_experiences' => [
             [
                 'title' => '',
                 'start_year' => '',
@@ -161,7 +154,7 @@ test('users can create community member pages', function () {
                 'phone' => '',
             ],
         ],
-        'preferred_contact_methods' => ['email'],
+        'preferred_contact_method' => 'email',
         'languages' => ['en'],
         'save_and_next' => __('Save and next'),
     ]);
@@ -179,7 +172,7 @@ test('users can create community member pages', function () {
                 'phone' => '438-123-4567',
             ],
         ],
-        'preferred_contact_methods' => ['email'],
+        'preferred_contact_method' => 'email',
         'languages' => ['en'],
         'save_and_next' => __('Save and next'),
     ]);
@@ -202,10 +195,7 @@ test('users can create community member pages', function () {
 test('entity users can not create community member pages', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.create'));
-    $response->assertForbidden();
-
-    $response = $this->from(localized_route('community-members.create'))->post(localized_route('community-members.create'), [
+    $response = $this->actingAs($user)->from(localized_route('dashboard'))->post(localized_route('community-members.store'), [
         'user_id' => $user->id,
         'name' => $user->name,
         'bio' => 'Hi, welcome to my page.',
@@ -220,10 +210,7 @@ test('users can not create community member pages for other users', function () 
     $user = User::factory()->create();
     $other_user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.create'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->post(localized_route('community-members.create'), [
+    $response = $this->actingAs($user)->post(localized_route('community-members.store'), [
         'user_id' => $other_user->id,
         'name' => $user->name,
         'bio' => 'Hi, welcome to my page.',
@@ -240,10 +227,7 @@ test('users can not create multiple community member pages', function () {
         'user_id' => $user->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.create'));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->post(localized_route('community-members.create'), [
+    $response = $this->actingAs($user)->post(localized_route('community-members.store'), [
         'user_id' => $user->id,
         'name' => $user->name,
         'bio' => 'Hi, welcome to my page.',
@@ -312,7 +296,6 @@ test('users can edit community member pages', function () {
         'bio' => $draft_community_member->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'creator' => $draft_community_member->creator,
     ]);
 
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $draft_community_member, 'step' => 1]));
@@ -334,7 +317,6 @@ test('users can not edit others community member pages', function () {
         'bio' => $communityMember->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'creator' => $communityMember->creator,
     ]);
     $response->assertForbidden();
 });

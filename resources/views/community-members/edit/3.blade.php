@@ -22,13 +22,13 @@
     <x-privacy-indicator level="private" :value="__('Only organizations who work with you will be able to access this information.')" />
 
     <fieldset class="field @error('lived_experiences') field--error @enderror">
-        <legend>{{ __('Which of these describe your lived experience? (optional)') }}</legend>
+        <legend>{{ __('Which of these describe your lived experience?') }}</legend>
         <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old('lived_experiences', $communityMember->livedExperiences->pluck('id')->toArray())" />
         <x-hearth-error for="lived_experiences" />
     </fieldset>
 
     <fieldset class="field @error('age_group') field--error @enderror">
-        <legend>{{ __('What is your age group (optional)') }}</legend>
+        <legend>{{ __('What is your age group') }}</legend>
         <x-hearth-radio-buttons name="age_group" :options="$ageGroups" :checked="old('age_group', $communityMember->age_group)" />
         <x-hearth-error for="age_group" />
     </fieldset>
@@ -43,7 +43,7 @@
 
     <fieldset>
         <div class="field @error('lived_experience') field--error @enderror">
-            <x-hearth-label for="lived_experience" :value="__('Do you want to share anything else about your lived experience? (optional)')" />
+            <x-hearth-label for="lived_experience" :value="__('Do you want to share anything else about your lived experience?')" />
             <x-hearth-textarea name="lived_experience" hinted>{{ old('lived_experience', $communityMember->lived_experience) }}</x-hearth-textarea>
             <x-hearth-error for="lived_experience" />
         </div>
@@ -57,7 +57,7 @@
 
     <fieldset>
         <div class="field @error('skills_and_strengths') field--error @enderror">
-            <x-hearth-label for="skills_and_strengths" :value="__('What are your skills and strengths? (optional)')" />
+            <x-hearth-label for="skills_and_strengths" :value="__('What are your skills and strengths?')" />
             <x-hearth-hint for="skills_and_strengths">{{ __('Feel free to list your skills and strengths, and say more about them.') }}</x-hearth-hint>
             <x-hearth-textarea name="skills_and_strengths" hinted>{{ old('skills_and_strengths', $communityMember->skills_and_strengths) }}</x-hearth-textarea>
             <x-hearth-error for="skills_and_strengths" />
@@ -67,7 +67,7 @@
     {{-- Upload a file --}}
 
     <fieldset class="stack">
-        <legend>{{ __('Work and volunteer experiences (optional)') }}</legend>
+        <legend>{{ __('Work and volunteer experiences') }}</legend>
         <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
         <livewire:work-and-volunteer-experiences :experiences="$communityMember->work_and_volunteer_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
     </fieldset>

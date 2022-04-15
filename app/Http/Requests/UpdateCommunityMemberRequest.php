@@ -42,7 +42,6 @@ class UpdateCommunityMemberRequest extends FormRequest
                 'required',
                 Rule::in(get_region_codes()),
             ],
-            'hide_location' => 'boolean',
             'pronouns' => 'nullable|string',
             'bio' => 'nullable|string',
             'links.*' => 'nullable|url',

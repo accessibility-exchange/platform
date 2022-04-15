@@ -31,28 +31,20 @@
         <p class="field__hint" id="address-hint">{{ __('Your location will be used if entities are looking to get feedback on their services in a certain place.') }}</p>
 
         <div class="field @error('region') field--error @enderror">
-            <x-hearth-label for="region" :value="__('Province or territory (optional)')" />
+            <x-hearth-label for="region" :value="__('Province or territory')" />
             <x-hearth-select name="region" :options="$regions" :selected="old('region', $communityMember->region)" hinted="address-hint" />
             <x-hearth-error for="region" />
         </div>
 
         <div class="field @error('locality') field--error @enderror">
-            <x-hearth-label for="locality" :value="__('City or town (optional)')" />
+            <x-hearth-label for="locality" :value="__('City or town')" />
             <x-hearth-input type="text" name="locality" value="{{ old('locality', $communityMember->locality) }}" hinted="address-hint locality-privacy" />
             <x-hearth-error for="locality" />
         </div>
-
-        <div class="field">
-            <x-hearth-checkbox name="hide_location" :checked="old('hide_location', $communityMember->hide_location ?? false)" />
-            <x-hearth-label for="hide_location" :value="__('Hide my location from anyone besides entities looking to hire me')" />
-        </div>
-
-        <x-info :value="__('If you hide your location, you will not show up on search results based on location.')" />
-
     </fieldset>
 
     <div class="field @error('pronouns') field--error @enderror">
-        <x-hearth-label for="pronouns" :value="__('Pronouns (optional)')" />
+        <x-hearth-label for="pronouns" :value="__('Pronouns')" />
         <x-hearth-hint for="pronouns">{{ __('For example: he/him, she/her, they/them.') }}</x-hearth-hint>
         <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $communityMember->pronouns) }}" hinted />
         <x-hearth-error for="pronouns" />
@@ -60,7 +52,7 @@
 
     <fieldset>
         <div class="field @error('bio') field--error @enderror">
-            <x-hearth-label for="bio" :value="__('Your bio (optional)')" />
+            <x-hearth-label for="bio" :value="__('Your bio')" />
             {{-- <p><a href="#">{{ __('Show an example') }}</a></p> --}}
             <x-hearth-hint for="bio">{{ __('This can include information about your background, and why you are interested in accessibility.') }}</x-hearth-hint>
             <x-hearth-textarea name="bio" hinted>{{ old('bio', $communityMember->bio) }}</x-hearth-textarea>
@@ -70,10 +62,10 @@
         {{-- TODO: Upload a file. --}}
     </fieldset>
 
-    <h3>{{ __('Social media and website links (optional)') }}</h3>
+    <h3>{{ __('Social media and website links') }}</h3>
 
     <fieldset>
-        <legend>{{ __('Social media (optional)') }}</legend>
+        <legend>{{ __('Social media') }}</legend>
 
         @foreach ([
             'linkedin' => 'LinkedIn',
@@ -90,7 +82,7 @@
     </fieldset>
 
     <fieldset class="stack">
-        <legend>{{ __('Other websites (optional)') }}</legend>
+        <legend>{{ __('Other websites') }}</legend>
         <p class="field__hint">{{ __('This could be your personal website, a blog or portfolio, or articles about your work.') }}</p>
         <livewire:other-links :links="$communityMember->other_links ?? [['title' => '', 'url' => '']]" />
     </fieldset>

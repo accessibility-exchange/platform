@@ -7,7 +7,12 @@
                 <x-slot name="summary">{{ __('Create your community member page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Once you create your page, entities can find you and ask you to consult on their projects.') }}</p>
-                    <p><a class="button" href="{{ localized_route('community-members.create') }}">{{ __('Create your page') }}</a></p>
+                    <form action="{{ localized_route('community-members.store') }}" method="post">
+                        @csrf
+                        <x-hearth-input type="hidden" name="user_id" :value="$currentUser->id" />
+                        <x-hearth-input type="hidden" name="name" :value="$currentUser->name" />
+                        <x-hearth-button class="secondary">{{ __('Create your page') }}</x-hearth-button>
+                    </form>
                 </div>
             </x-expander>
             @else

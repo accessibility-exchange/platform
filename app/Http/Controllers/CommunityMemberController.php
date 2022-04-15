@@ -35,24 +35,6 @@ class CommunityMemberController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create(): View
-    {
-        $this->authorize('create', CommunityMember::class);
-
-        return view('community-members.create', [
-            'regions' => get_regions(['CA'], \locale()),
-            'creators' => [
-                'self' => __('I’m creating it myself'),
-                'other' => __('Someone else is creating it for me'),
-            ],
-        ]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreCommunityMemberRequest  $request
@@ -63,8 +45,6 @@ class CommunityMemberController extends Controller
         $data = $request->validated();
 
         $communityMember = CommunityMember::create($data);
-
-        flash(__('Your draft community member page has been saved.'), 'success');
 
         return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
     }
@@ -153,10 +133,6 @@ class CommunityMemberController extends Controller
             } else {
                 $data['other_links'] = $other_links;
             }
-        }
-
-        if (! isset($data['hide_location'])) {
-            $data['hide_location'] = false;
         }
 
         $communityMember->fill($data);

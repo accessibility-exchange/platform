@@ -27,7 +27,6 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
     public function rules()
     {
         return [
-            'areas_of_interest' => 'nullable|string',
             'sectors' => [
                 'nullable',
                 'array',
@@ -38,7 +37,6 @@ class UpdateCommunityMemberInterestsRequest extends FormRequest
                 'array',
                 Rule::in(Impact::pluck('id')->toArray()),
             ],
-            'service_preference' => 'nullable|array|in:digital,non-digital',
         ];
     }
 

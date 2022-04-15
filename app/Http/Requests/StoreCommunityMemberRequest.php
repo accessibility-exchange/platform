@@ -36,7 +36,6 @@ class StoreCommunityMemberRequest extends FormRequest
                 'max:255',
                 Rule::unique(CommunityMember::class),
             ],
-            'roles' => 'required|array|in:participant,consultant,connector',
         ];
     }
 
@@ -50,7 +49,6 @@ class StoreCommunityMemberRequest extends FormRequest
         return [
             'name.unique' => __('A community member page with this name already exists.'),
             'user_id.unique' => __('You already have a community member page. Would you like to edit it instead?'),
-            'links.*.url' => __('The link must be a valid web address.'),
         ];
     }
 }

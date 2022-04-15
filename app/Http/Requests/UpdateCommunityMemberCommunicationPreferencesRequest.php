@@ -30,7 +30,7 @@ class UpdateCommunityMemberCommunicationPreferencesRequest extends FormRequest
             'support_people.*.email' => 'nullable|email|required_with:support_people.*.name',
             'support_people.*.phone' => 'nullable|string|required_with:support_people.*.name',
             'support_people.*.page_creator' => 'nullable|boolean',
-            'preferred_contact_methods' => 'required|array|min:1',
+            'preferred_contact_method' => 'required',
             'languages' => 'required|array|min:1',
         ];
     }
