@@ -81,7 +81,8 @@ input[type="submit"] svg {
 
 button.secondary,
 button[type="reset"],
-input[type="reset"] {
+input[type="reset"],
+input[type="submit"].secondary {
     align-items: center;
     appearance: none;
     background: var(--button-secondary-background);
@@ -103,7 +104,8 @@ input[type="reset"] {
 
 button.secondary:hover,
 button[type="reset"]:hover,
-input[type="reset"]:hover {
+input[type="reset"]:hover,
+input[type="submit"].secondary:hover {
     background-color: var(--button-secondary-background-hover);
     border-color: var(--button-secondary-border-hover);
     color: var(--button-secondary-color-hover);
@@ -111,14 +113,16 @@ input[type="reset"]:hover {
 
 button.secondary:focus,
 button[type="reset"]:focus,
-input[type="reset"]:focus {
+input[type="reset"]:focus,
+input[type="submit"].secondary:focus {
     outline: var(--button-secondary-outline) solid calc(var(--size-1) / 2);
     outline-offset: calc(var(--size-1) / 2);
 }
 
 button.secondary:active,
 button[type="reset"]:active,
-input[type="reset"]:active {
+input[type="reset"]:active,
+input[type="submit"].secondary:active {
     background-color: var(--button-secondary-background-active);
     border-color: var(--button-secondary-border-active);
     color: var(--button-secondary-color-active);

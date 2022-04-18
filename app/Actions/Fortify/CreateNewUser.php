@@ -19,7 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      * @param  array  $input
      * @return \App\Models\User
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
         $input['locale'] = session('locale');
         $input['signed_language'] = session('signed_language');
@@ -61,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
         session()->forget('name');
         session()->forget('email');
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
@@ -69,5 +69,14 @@ class CreateNewUser implements CreatesNewUsers
             'locale' => $input['locale'],
             'signed_language' => $input['signed_language'],
         ]);
+
+        if ($input['context'] === 'community-member') {
+            $user->communityMember()->create([
+                'user_id' => $user->id,
+                'name' => $user->name,
+            ]);
+        }
+
+        return $user;
     }
 }

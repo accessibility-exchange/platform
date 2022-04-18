@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -243,6 +244,62 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the roles belonging to the community member.
+     *
+     * @return BelongsToMany
+     */
+    public function communityRoles(): BelongsToMany
+    {
+        return $this->belongsToMany(CommunityRole::class);
+    }
+
+    /**
+     * Has the user added any details to the community member?
+     *
+     * @return bool
+     */
+    public function hasAddedDetails(): bool
+    {
+        return ! is_null($this->region);
+    }
+
+    /**
+     * Is the community member a participant?
+     *
+     * @return bool
+     */
+    public function isParticipant(): bool
+    {
+        $participantRole = CommunityRole::where('name->en', 'Consultation participant')->first();
+
+        return $this->communityRoles->contains($participantRole);
+    }
+
+    /**
+     * Is the community member an accessibility consultant?
+     *
+     * @return bool
+     */
+    public function isConsultant(): bool
+    {
+        $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+        return $this->communityRoles->contains($consultantRole);
+    }
+
+    /**
+     * Is the community member a community connector?
+     *
+     * @return bool
+     */
+    public function isConnector(): bool
+    {
+        $connectorRole = CommunityRole::where('name->en', 'Community connector')->first();
+
+        return $this->communityRoles->contains($connectorRole);
+    }
+
+    /**
      * Publish the community member page.
      *
      * @return void
@@ -267,9 +324,41 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get all the lived experiences that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function livedExperienceConnections(): MorphToMany
+    {
+        return $this->morphedByMany(LivedExperience::class, 'connectable');
+    }
+
+    /**
+     * Get all the communities that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function communityConnections(): MorphToMany
+    {
+        return $this->morphedByMany(Community::class, 'connectable');
+    }
+
+    /**
+     * Get all the age groups that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function ageGroupConnections(): MorphToMany
+    {
+        return $this->morphedByMany(AgeGroup::class, 'connectable');
+    }
+
+    /**
      * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param mixed $request
+     * @param int $step
+     * @return RedirectResponse
      */
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
     {

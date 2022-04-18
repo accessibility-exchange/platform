@@ -7,10 +7,14 @@ Route::controller(CommunityMemberController::class)->group(function () {
         ->middleware(['auth'])
         ->name('community-members.index');
 
-    Route::multilingual('/members/create', 'store')
-        ->method('post')
-        ->middleware(['auth', 'can:create,App\Models\CommunityMember'])
-        ->name('community-members.store');
+    Route::multilingual('/role-selection', [CommunityMemberController::class, 'showRoleSelection'])
+        ->middleware(['auth'])
+        ->name('community-members.show-role-selection');
+
+    Route::multilingual('/role/save', [CommunityMemberController::class, 'saveRole'])
+        ->method('put')
+        ->middleware(['auth'])
+        ->name('community-members.save-role');
 
     Route::multilingual('/members/{communityMember}', 'show')
         ->middleware(['auth', 'can:view,communityMember'])
@@ -52,7 +56,7 @@ Route::controller(CommunityMemberController::class)->group(function () {
         ->method('put')
         ->name('community-members.update-communication-preferences');
 
-    Route::multilingual('/members/{communityMember}/edit-access-and-accomodations', 'updateAccessAndAccomodations')
+    Route::multilingual('/members/{communityMember}/edit-access-and-accomodations', 'updateAccessAndAccommodations')
         ->middleware(['auth', 'can:update,communityMember'])
         ->method('put')
         ->name('community-members.update-access-and-accomodations');

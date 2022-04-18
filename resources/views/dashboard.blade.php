@@ -6,7 +6,7 @@
             {{ __('My dashboard') }}
         </h1>
         @if($currentUser->context == 'community-member')
-        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityRoles()->pluck('name')->toArray())  }}</p>
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityMember->communityRoles()->pluck('name')->toArray())  }}</p>
         @endif
     </x-slot>
 

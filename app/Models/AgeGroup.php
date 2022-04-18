@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Translatable\HasTranslations;
 
-class LivedExperience extends Model
+class AgeGroup extends Model
 {
     use HasTranslations;
 

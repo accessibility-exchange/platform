@@ -40,15 +40,6 @@ Route::multilingual('/introduction/update', [UserController::class, 'updateIntro
     ->middleware(['auth'])
     ->name('users.update-introduction-status');
 
-Route::multilingual('/role-selection', [UserController::class, 'showRoleSelection'])
-    ->middleware(['auth'])
-    ->name('users.show-role-selection');
-
-Route::multilingual('/role/save', [UserController::class, 'saveRole'])
-    ->method('put')
-    ->middleware(['auth'])
-    ->name('users.save-role');
-
 Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('dashboard');

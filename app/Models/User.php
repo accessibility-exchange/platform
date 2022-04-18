@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -93,16 +92,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'regulated-organization-employee' => __('Video for regulated organization employees.'),
             default => '',
         };
-    }
-
-    /**
-     * Get the community roles belonging to the user.
-     *
-     * @return BelongsToMany
-     */
-    public function communityRoles(): BelongsToMany
-    {
-        return $this->belongsToMany(CommunityRole::class);
     }
 
     /**

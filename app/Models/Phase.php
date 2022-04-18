@@ -32,7 +32,7 @@ class Phase extends Model
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'name',
     ];
 }

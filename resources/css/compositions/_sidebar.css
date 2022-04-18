@@ -1,6 +1,6 @@
 .with-sidebar {
     display: flex;
-    flex-wrap: wrap;
+    flex-flow: row-reverse wrap;
     gap: var(--size-3);
 }
 

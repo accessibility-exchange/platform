@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Community extends Model
@@ -32,7 +33,17 @@ class Community extends Model
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'name',
     ];
+
+    /**
+     * Get all the community connectors for the model.
+     *
+     * @returns MorphToMany
+     */
+    public function communityConnectors(): MorphToMany
+    {
+        return $this->morphToMany(CommunityMember::class, 'connectable');
+    }
 }

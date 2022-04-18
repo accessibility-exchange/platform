@@ -6,11 +6,8 @@ use App\Http\Requests\DestroyUserRequest;
 use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
-use App\Http\Requests\SaveUserRoleRequest;
 use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
 use App\Http\Requests\UpdateUserIntroductionStatusRequest;
-use App\Models\CommunityRole;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -55,57 +52,11 @@ class UserController extends Controller
         Auth::user()->save();
 
         $redirectTo = match (Auth::user()->context) {
-            'community-member' => localized_route('users.show-role-selection'),
+            'community-member' => localized_route('community-members.show-role-selection'),
             default => localized_route('dashboard'),
         };
 
         return redirect($redirectTo);
-    }
-
-    /**
-     * Show a role selection page for the logged-in user.
-     *
-     * @return View
-     * @throws AuthorizationException
-     */
-    public function showRoleSelection(): View
-    {
-        $this->authorize('selectRole', Auth::user());
-
-        $communityRoles = CommunityRole::all();
-
-        $roles = [];
-
-        foreach ($communityRoles as $role) {
-            $roles[$role->id] = [
-                'label' => $role->name,
-                'hint' => $role->description,
-            ];
-        }
-
-        return view('users.show-role-selection', [
-            'user' => Auth::user(),
-            'roles' => $roles,
-        ]);
-    }
-
-    /**
-     * Save roles for the logged-in user.
-     *
-     * @param SaveUserRoleRequest $request
-     * @return RedirectResponse
-     * @throws AuthorizationException
-     */
-    public function saveRole(SaveUserRoleRequest $request): RedirectResponse
-    {
-        $this->authorize('selectRole', Auth::user());
-
-        $data = $request->validated();
-
-        Auth::user()->communityRoles()->sync($data['roles'] ?? []);
-        Auth::user()->save();
-
-        return redirect(localized_route('dashboard'));
     }
 
     /**

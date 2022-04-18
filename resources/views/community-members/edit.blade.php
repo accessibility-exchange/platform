@@ -1,5 +1,5 @@
 
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ __('Edit your community member page') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -19,4 +19,4 @@
     @else
         @include('community-members.edit.1')
     @endif
-</x-app-layout>
+</x-app-wide-layout>

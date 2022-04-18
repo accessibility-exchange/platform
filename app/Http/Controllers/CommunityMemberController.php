@@ -3,29 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyCommunityMemberRequest;
+use App\Http\Requests\SaveCommunityMemberRoleRequest;
 use App\Http\Requests\StoreCommunityMemberRequest;
-use App\Http\Requests\UpdateCommunityMemberAccessAndAccomodationsRequest;
+use App\Http\Requests\UpdateCommunityMemberAccessAndAccommodationsRequest;
 use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
 use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
 use App\Models\AccessSupport;
+use App\Models\AgeGroup;
+use App\Models\Community;
 use App\Models\CommunityMember;
+use App\Models\CommunityRole;
 use App\Models\Impact;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\CommunityMemberStatus;
 use CommerceGuys\Intl\Language\LanguageRepository;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class CommunityMemberController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(): View
     {
@@ -46,14 +52,61 @@ class CommunityMemberController extends Controller
 
         $communityMember = CommunityMember::create($data);
 
+
+
         return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
+    }
+
+    /**
+     * Show a role selection page for the logged-in user.
+     *
+     * @return View
+     * @throws AuthorizationException
+     */
+    public function showRoleSelection(): View
+    {
+        $this->authorize('selectRole', Auth::user());
+
+        $communityRoles = CommunityRole::all();
+
+        $roles = [];
+
+        foreach ($communityRoles as $role) {
+            $roles[$role->id] = [
+                'label' => $role->name,
+                'hint' => $role->description,
+            ];
+        }
+
+        return view('community-members.show-role-selection', [
+            'communityMember' => Auth::user()->communityMember,
+            'roles' => $roles,
+        ]);
+    }
+
+    /**
+     * Save roles for the logged-in user.
+     *
+     * @param SaveCommunityMemberRoleRequest $request
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function saveRole(SaveCommunityMemberRoleRequest $request): RedirectResponse
+    {
+        $this->authorize('selectRole', Auth::user());
+
+        $data = $request->validated();
+
+        Auth::user()->communityMember->communityRoles()->sync($data['roles'] ?? []);
+
+        return redirect(localized_route('dashboard'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\View\View
+     * @param CommunityMember $communityMember
+     * @return View
      */
     public function show(CommunityMember $communityMember): View
     {
@@ -63,8 +116,8 @@ class CommunityMemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\View\View
+     * @param CommunityMember $communityMember
+     * @return View
      */
     public function edit(CommunityMember $communityMember): View
     {
@@ -79,16 +132,13 @@ class CommunityMemberController extends Controller
             'regions' => get_regions(['CA'], \locale()),
             'sectors' => Sector::pluck('name', 'id')->toArray(),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
+            'communities' => Community::pluck('name', 'id')->toArray(),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
             'livedExperiences' => LivedExperience::pluck('name', 'id')->toArray(),
-            'ageGroups' => [
-                'youth' => __('Youth (18–24)'),
-                'adult' => __('Adult (25–64)'),
-                'senior' => __('Senior (65+)'),
-            ],
+            'ageGroups' => AgeGroup::pluck('name', 'id')->toArray(),
             'livingSituations' => [
                 'urban' => __('Urban'),
                 'suburban' => __('Suburban'),
@@ -118,9 +168,9 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  UpdateCommunityMemberRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function update(UpdateCommunityMemberRequest $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -145,9 +195,9 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberInterestsRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  UpdateCommunityMemberInterestsRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function updateInterests(UpdateCommunityMemberInterestsRequest $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -170,9 +220,9 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberExperiencesRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateCommunityMemberExperiencesRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function updateExperiences(UpdateCommunityMemberExperiencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -203,9 +253,9 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  UpdateCommunityMemberCommunicationPreferencesRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function updateCommunicationPreferences(UpdateCommunityMemberCommunicationPreferencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -232,11 +282,11 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCommunityMemberAccessAndAccomodationsRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  UpdateCommunityMemberAccessAndAccommodationsRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
-    public function updateAccessAndAccomodations(UpdateCommunityMemberAccessAndAccomodationsRequest $request, CommunityMember $communityMember): RedirectResponse
+    public function updateAccessAndAccommodations(UpdateCommunityMemberAccessAndAccommodationsRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
 
@@ -252,9 +302,9 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource's status.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function updatePublicationStatus(Request $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -270,9 +320,9 @@ class CommunityMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Http\Requests\DestroyCommunityMemberRequest  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  DestroyCommunityMemberRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function destroy(DestroyCommunityMemberRequest $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -286,9 +336,9 @@ class CommunityMemberController extends Controller
     /**
      * Express interest in a project.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function expressInterest(Request $request, CommunityMember $communityMember): RedirectResponse
     {
@@ -306,9 +356,9 @@ class CommunityMemberController extends Controller
     /**
      * Remove interest in a project.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
      */
     public function removeInterest(Request $request, CommunityMember $communityMember): RedirectResponse
     {

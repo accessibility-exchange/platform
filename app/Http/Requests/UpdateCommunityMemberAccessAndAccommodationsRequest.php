@@ -6,7 +6,7 @@ use App\Models\AccessSupport;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateCommunityMemberAccessAndAccomodationsRequest extends FormRequest
+class UpdateCommunityMemberAccessAndAccommodationsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

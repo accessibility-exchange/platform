@@ -2,17 +2,14 @@
     <div class="column stack">
         <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
-            @if(!$currentUser->communityMember)
+            @if(!$currentUser->communityMember->hasAddedDetails())
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your community member page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Once you create your page, entities can find you and ask you to consult on their projects.') }}</p>
-                    <form action="{{ localized_route('community-members.store') }}" method="post">
-                        @csrf
-                        <x-hearth-input type="hidden" name="user_id" :value="$currentUser->id" />
-                        <x-hearth-input type="hidden" name="name" :value="$currentUser->name" />
-                        <x-hearth-button class="secondary">{{ __('Create your page') }}</x-hearth-button>
-                    </form>
+                    <p>
+                        <a href="{{ localized_route('community-members.edit', $currentUser->communityMember) }}" class="cta secondary">{{ __('Create your page') }}</a>
+                    </p>
                 </div>
             </x-expander>
             @else
@@ -33,7 +30,9 @@
             </x-expander>
         </div>
 
-        @if($currentUser->communityMember)
+        @ray($currentUser->communityMember->communityRoles)
+
+        @if($currentUser->communityMember->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My page') }}</h2>
             <p>
@@ -53,7 +52,7 @@
     </div>
 
     <div class="column stack">
-        @if($currentUser->communityMember)
+        @if($currentUser->communityMember->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My active engagements') }}</h2>
             @if(count($currentUser->communityMember->engagements) > 0)

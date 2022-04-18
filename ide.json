@@ -1,0 +1,15 @@
+{
+    "$schema": "http://laravel-ide.com/schema/laravel-ide-v1.json",
+    "blade": {
+        "components": {
+            "viewPaths": [
+                {
+                    "path": "vendor/fluid-project/hearth/resources/views/components",
+                    "namespace": "",
+                    "prefix": "hearth-",
+                    "viewNamespace": "hearth"
+                }
+            ]
+        }
+    }
+}

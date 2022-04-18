@@ -11,7 +11,7 @@
 
     <p>{{ __('You can always change this later.') }} <a href="{{ localized_route('about.for-community-members') }}">{{ __('Learn more about these roles') }}</a></p>
 
-    <form class="stack" action="{{ localized_route('users.save-role') }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('community-members.save-role') }}" method="post" novalidate>
         <fieldset class="field @error('roles') field--error @enderror">
             <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', [])" />
             <x-hearth-error for="roles" />

@@ -17,6 +17,6 @@ class UserPolicy
      */
     public function selectRole(User $user): bool
     {
-        return $user->context === 'community-member';
+        return ! is_null($user->communityMember);
     }
 }

@@ -12,12 +12,12 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('community_role_user', function (Blueprint $table) {
+        Schema::create('community_member_community_role', function (Blueprint $table) {
             $table->id();
             $table->foreignId('community_role_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('user_id')
+            $table->foreignId('community_member_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->timestamps();
