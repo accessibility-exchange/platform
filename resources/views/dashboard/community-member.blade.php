@@ -30,8 +30,6 @@
             </x-expander>
         </div>
 
-        @ray($currentUser->communityMember->communityRoles)
-
         @if($currentUser->communityMember->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My page') }}</h2>
