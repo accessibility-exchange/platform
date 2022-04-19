@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\CommunityMember;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -21,7 +20,7 @@ class UserFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $name = $this->faker->firstName() . ' ' . $this->faker->lastName();
 
@@ -35,24 +34,5 @@ class UserFactory extends Factory
             'theme' => 'system',
             'context' => 'community-member',
         ];
-    }
-
-    /**
-     * Configure the model factory.
-     *
-     * @return $this
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            if ($user->context === 'community-member') {
-                CommunityMember::factory()->for($user)->create([
-                    'published_at' => null,
-                    'locality' => null,
-                    'region' => null,
-                    'pronouns' => null,
-                ]);
-            }
-        });
     }
 }

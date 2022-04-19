@@ -61,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
         session()->forget('name');
         session()->forget('email');
 
-        $user = User::create([
+        return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
@@ -69,14 +69,5 @@ class CreateNewUser implements CreatesNewUsers
             'locale' => $input['locale'],
             'signed_language' => $input['signed_language'],
         ]);
-
-        if ($input['context'] === 'community-member') {
-            $user->communityMember()->create([
-                'user_id' => $user->id,
-                'name' => $user->name,
-            ]);
-        }
-
-        return $user;
     }
 }
