@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -24,28 +23,28 @@ test('users can edit basic information', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('user-profile-information.update'), [
-    'name' => 'Jonny Appleseed',
-    'email' => $user->email,
-    'locale' => $user->locale,
-]);
+        'name' => 'Jonny Appleseed',
+        'email' => $user->email,
+        'locale' => $user->locale,
+    ]);
     $response->assertRedirect(localized_route('users.edit'));
 
     $user = $user->fresh();
     $this->assertEquals($user->name, 'Jonny Appleseed');
 
     $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
-    'name' => 'Jonny Appleseed',
-    'email' => $user->email,
-    'locale' => $user->locale,
-]);
+        'name' => 'Jonny Appleseed',
+        'email' => $user->email,
+        'locale' => $user->locale,
+    ]);
     $response->assertOk();
     $response->assertSee('Your information has been updated.');
 
     $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
-    'name' => $user->name,
-    'email' => 'me@example.net',
-    'locale' => $user->locale,
-]);
+        'name' => $user->name,
+        'email' => 'me@example.net',
+        'locale' => $user->locale,
+    ]);
     $response->assertOk();
     $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
 
@@ -78,8 +77,8 @@ test('users can edit display preferences', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('users.update_display_preferences'), [
-    'theme' => 'system',
-]);
+        'theme' => 'system',
+    ]);
 
     $response->assertRedirect(localized_route('users.edit_display_preferences'));
 });

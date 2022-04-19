@@ -17,6 +17,6 @@ return [
     'sent' => 'Enviamos um email com o link para redefinir sua senha!',
     'throttled' => 'Por favor aguarde antes de tentar novamente.',
     'token' => 'Seu token de redefinição de senha é inválido.',
-    'user' => "Não conseguimos encontrar um usuário com esse endereço de email.",
+    'user' => 'Não conseguimos encontrar um usuário com esse endereço de email.',
 
 ];

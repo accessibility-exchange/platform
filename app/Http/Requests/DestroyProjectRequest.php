@@ -45,7 +45,5 @@ class DestroyProjectRequest extends FormRequest
                 );
             }
         })->validateWithBag('destroyProject');
-
-        return;
     }
 }

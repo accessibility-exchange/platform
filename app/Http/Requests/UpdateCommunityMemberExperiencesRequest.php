@@ -28,7 +28,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
         return [
             'lived_experiences' => [
                 'nullable',
-                'array'  ,
+                'array',
                 Rule::in(LivedExperience::pluck('id')->toArray()),
             ],
             'other_lived_experience' => 'nullable|string',

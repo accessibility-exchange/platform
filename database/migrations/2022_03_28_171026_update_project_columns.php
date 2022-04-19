@@ -137,4 +137,4 @@ class UpdateProjectColumns extends Migration
             ]);
         });
     }
-};
+}

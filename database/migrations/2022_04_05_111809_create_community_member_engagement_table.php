@@ -33,4 +33,4 @@ class CreateCommunityMemberEngagementTable extends Migration
     {
         Schema::dropIfExists('community_member_engagement');
     }
-};
+}

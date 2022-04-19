@@ -45,7 +45,5 @@ class DestroyCommunityMemberRequest extends FormRequest
                 );
             }
         })->validateWithBag('destroyCommunityMember');
-
-        return;
     }
 }

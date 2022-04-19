@@ -36,9 +36,6 @@ class ContentType extends Model
         'name',
     ];
 
-    /**
-     *
-     */
     public function resources()
     {
         return $this->hasMany(Resource::class);

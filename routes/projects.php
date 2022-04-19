@@ -7,7 +7,7 @@ Route::multilingual('/projects', [ProjectController::class, 'index'])
     ->name('projects.index');
 
 Route::multilingual('/projects/create', [ProjectController::class, 'create'])
-    ->middleware(['auth','can:create,App\Models\Project'])
+    ->middleware(['auth', 'can:create,App\Models\Project'])
     ->name('projects.create');
 
 Route::multilingual('/projects/create/store-context', [ProjectController::class, 'storeContext'])

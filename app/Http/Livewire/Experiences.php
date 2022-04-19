@@ -7,6 +7,7 @@ use Livewire\Component;
 class Experiences extends Component
 {
     public string $name;
+
     public array $experiences = [];
 
     public function mount(array $experiences, $name = 'experiences')

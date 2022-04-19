@@ -45,7 +45,5 @@ class DestroyRegulatedOrganizationRequest extends FormRequest
                 );
             }
         })->validateWithBag('destroyRegulatedOrganization');
-
-        return;
     }
 }

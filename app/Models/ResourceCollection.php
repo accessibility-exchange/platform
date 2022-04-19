@@ -11,7 +11,7 @@ use Spatie\Translatable\HasTranslations;
 /**
  * App\Models\ResourceCollection
  *
- * @property-read \Illuminate\Database\Eloquent\Collection|\Resource[] $resources
+ * @property-read \Illuminate\Database\Eloquent\Collection|\resource[] $resources
  */
 class ResourceCollection extends Model
 {
