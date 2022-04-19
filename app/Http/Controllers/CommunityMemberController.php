@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyCommunityMemberRequest;
 use App\Http\Requests\SaveCommunityMemberRoleRequest;
-use App\Http\Requests\StoreCommunityMemberRequest;
 use App\Http\Requests\UpdateCommunityMemberAccessAndAccommodationsRequest;
 use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
@@ -38,23 +37,6 @@ class CommunityMemberController extends Controller
         return view('community-members.index', [
             'communityMembers' => CommunityMember::status(new CommunityMemberStatus('published'))->orderBy('name')->get(),
         ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCommunityMemberRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(StoreCommunityMemberRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $communityMember = CommunityMember::create($data);
-
-
-
-        return redirect(\localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
     }
 
     /**
