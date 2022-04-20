@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->dropColumn(['creator', 'roles', 'hide_location', 'areas_of_interest', 'service_preference', 'other_lived_experience', 'preferred_contact_methods']);
             $table->renameColumn('work_and_volunteer_experiences', 'relevant_experiences');
             $table->json('working_languages')->nullable();
+            $table->json('other_lived_experience_connections')->nullable();
+            $table->json('other_community_connections')->nullable();
             $table->enum('preferred_contact_method', [
                 'email',
                 'phone',
@@ -42,7 +44,7 @@ return new class extends Migration {
             $table->json('other_lived_experience')->nullable();
             $table->json('preferred_contact_methods')->nullable();
             $table->renameColumn('relevant_experiences', 'work_and_volunteer_experiences');
-            $table->dropColumn(['working_languages', 'preferred_contact_method', 'preferred_contact_person', 'vrs']);
+            $table->dropColumn(['working_languages', 'preferred_contact_method', 'preferred_contact_person', 'vrs', 'other_lived_experience_connections', 'other_community_connections']);
         });
     }
 };

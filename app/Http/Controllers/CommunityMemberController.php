@@ -171,6 +171,16 @@ class CommunityMemberController extends Controller
 
         $communityMember->save();
 
+        if ($communityMember->isConnector()) {
+            $communityMember->livedExperienceConnections()->sync($data['lived_experience_connections'] ?? []);
+            if (isset($data['community_connections'])) {
+                $communityMember->communityConnections()->sync($data['community_connections'] ?? []);
+            }
+            if (isset($data['age_group_connections'])) {
+                $communityMember->ageGroupConnections()->sync($data['age_group_connections'] ?? []);
+            }
+        }
+
         return $communityMember->handleUpdateRequest($request, 1);
     }
 

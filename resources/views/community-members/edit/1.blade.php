@@ -42,18 +42,15 @@
             </fieldset>
 
             <div class="field @error('pronouns') field--error @enderror">
-                <x-hearth-label for="pronouns" :value="__('Pronouns (optional)')" />
+                <x-translatable-input name="pronouns" :model="$communityMember" :label="__('Pronouns (optional)')" hinted="pronouns-hint" />
                 <x-hearth-hint for="pronouns">{{ __('For example: he/him, she/her, they/them.') }}</x-hearth-hint>
-                <x-hearth-input type="text" name="pronouns" value="{{ old('pronouns', $communityMember->pronouns) }}" hinted />
                 <x-hearth-error for="pronouns" />
             </div>
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
-                    <x-hearth-label for="bio" :value="__('Your bio (required)')" />
-                     <p><a href="#">{{ __('Show an example') }}</a></p>
+                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$communityMember" hinted="bio-hint" />
                     <x-hearth-hint for="bio">{{ __('This can include information about your background, and why you are interested in accessibility.') }}</x-hearth-hint>
-                    <x-hearth-textarea name="bio" hinted>{{ old('bio', $communityMember->bio) }}</x-hearth-textarea>
                     <x-hearth-error for="bio" />
                 </div>
 
@@ -62,25 +59,40 @@
 
             <fieldset>
                 <legend>{{ __('What languages are you comfortable working in?') }}</legend>
-                <livewire:language-picker :languages="$communityMember->working_languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
+                <livewire:language-picker name="working_languages" :languages="$communityMember->working_languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
             </fieldset>
 
             @if($communityMember->isConnector())
-            <fieldset class="field @error('lived_experience_connections') field--error @enderror">
-                <legend>{{ __('Disability and Deaf communities you’re connected to') }}</legend>
+            <fieldset class="field @error('lived_experience_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+                <legend>{{ __('Disability and Deaf communities you’re connected to (required)') }}</legend>
+                <span x-text="otherValue"></span>
                 <x-hearth-hint for="lived_experience_connections">{{ __('Please select the disability and Deaf communities you can connect projects to.') }}</x-hearth-hint>
+                <p x-cloak>
+                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
+                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
+                </p>
                 <x-hearth-checkboxes name="lived_experience_connections" :options="$livedExperiences" :checked="old('lived_experience_connections', $communityMember->livedExperienceConnections->pluck('id')->toArray())" hinted="lived_experience_connections-hint" />
+                <x-translatable-input name="other_lived_experience_connections" :model="$communityMember"  :label="__('Other disability or Deaf community your connected to (optional)')" />
                 <x-hearth-error for="lived_experience_connections" />
             </fieldset>
-            <fieldset class="field @error('community_connections') field--error @enderror">
-                <legend>{{ __('Other equity-seeking communities you’re connected to') }}</legend>
+            <fieldset class="field @error('community_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+                <legend>{{ __('Other equity-seeking communities you’re connected to (optional)') }}</legend>
                 <x-hearth-hint for="community_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
+                <p x-cloak>
+                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
+                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
+                </p>
                 <x-hearth-checkboxes name="community_connections" :options="$communities" :checked="old('community_connections', $communityMember->communityConnections->pluck('id')->toArray())" hinted="community_connections-hint" />
                 <x-hearth-error for="community_connections" />
+                <x-translatable-input name="other_community_connections" :model="$communityMember" :label="__('Other equity-seeking community your connected to (optional)')" />
             </fieldset>
-            <fieldset class="field @error('age_group_connections') field--error @enderror">
-                <legend>{{ __('Age groups you’re connected to') }}</legend>
+            <fieldset class="field @error('age_group_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+                <legend>{{ __('Age groups you’re connected to (optional)') }}</legend>
                 <x-hearth-hint for="age_group_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
+                <p x-cloak>
+                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
+                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
+                </p>
                 <x-hearth-checkboxes name="age_group_connections" :options="$ageGroups" :checked="old('age_group_connections', $communityMember->ageGroupConnections->pluck('id')->toArray())" hinted="age_group_connections-hint" />
                 <x-hearth-error for="age_group_connections" />
             </fieldset>

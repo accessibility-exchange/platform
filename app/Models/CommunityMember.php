@@ -46,6 +46,8 @@ class CommunityMember extends Model implements HasMedia
         'preferred_contact_method',
         'preferred_contact_person',
         'working_languages',
+        'other_lived_experience_connections',
+        'other_community_connections',
         'vrs',
         'other_links',
         'status',
@@ -75,6 +77,10 @@ class CommunityMember extends Model implements HasMedia
         'rural_or_remote' => 'boolean',
         'vrs' => 'boolean',
         'meeting_types' => 'array',
+        'other_lived_experience_connections' => 'array',
+        'other_community_connections' => 'array',
+        'bio' => 'array',
+        'pronouns' => 'array',
     ];
 
     /**
@@ -88,6 +94,8 @@ class CommunityMember extends Model implements HasMedia
         'pronouns',
         'lived_experience',
         'skills_and_strengths',
+        'other_lived_experience_connections',
+        'other_community_connections',
     ];
 
     /**
