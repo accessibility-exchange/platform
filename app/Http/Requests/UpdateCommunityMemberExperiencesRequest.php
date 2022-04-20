@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\LivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateCommunityMemberExperiencesRequest extends FormRequest
 {
@@ -13,7 +11,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->communityMember);
     }
@@ -23,23 +21,15 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'lived_experiences' => [
-                'nullable',
-                'array',
-                Rule::in(LivedExperience::pluck('id')->toArray()),
-            ],
-            'other_lived_experience' => 'nullable|string',
-            'age_group' => 'nullable|string|in:youth,adult,senior',
-            'rural_or_remote' => 'boolean',
-            'lived_experience' => 'nullable|string',
-            'skills_and_strengths' => 'nullable|string',
-            'work_and_volunteer_experiences.*.title' => 'nullable|string',
-            'work_and_volunteer_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
-            'work_and_volunteer_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
-            'work_and_volunteer_experiences.*.current' => 'nullable|boolean',
+            'lived_experience' => 'nullable|array',
+            'skills_and_strengths' => 'nullable|array',
+            'relevant_experiences.*.title' => 'nullable|string',
+            'relevant_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
+            'relevant_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
+            'relevant_experiences.*.current' => 'nullable|boolean',
         ];
     }
 
@@ -48,7 +38,7 @@ class UpdateCommunityMemberExperiencesRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'work_and_volunteer_experiences.*.start_year.required_with' => __('Please provide the year you started this role.'),

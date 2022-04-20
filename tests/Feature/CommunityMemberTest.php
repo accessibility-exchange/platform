@@ -157,11 +157,9 @@ test('users can create community member pages', function () {
     ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]));
 
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
-        'lived_experiences' => [1],
-        'age_group' => 'adult',
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'work_and_volunteer_experiences' => [
@@ -176,11 +174,9 @@ test('users can create community member pages', function () {
     ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
 
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
-        'lived_experiences' => [1],
-        'age_group' => 'adult',
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'relevant_experiences' => [
@@ -194,7 +190,7 @@ test('users can create community member pages', function () {
     ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
 
     $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
         'email' => 'me@here.com',

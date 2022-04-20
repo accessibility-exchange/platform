@@ -42,6 +42,10 @@
             <x-hearth-button>
                 {{ __('hearth::auth.sign_in') }}
             </x-hearth-button>
+
+                <p>
+                    {{ __('Don’t have an account yet?') }} <a href="{{ localized_route('register') }}">{{ __('Create an account') }}</a>
+                </p>
         </form>
     </x-auth-card>
 </x-guest-layout>

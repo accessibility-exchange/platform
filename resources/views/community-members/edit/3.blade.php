@@ -1,10 +1,10 @@
-<form action="{{ localized_route('community-members.update-experiences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
+<form action="{{ localized_route('community-members.update-interests', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
 
     <h2>
         {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
-        {{ __('Experiences') }}
+        {{ __('Interests') }}
     </h2>
 
     @include('community-members.partials.progress')
@@ -15,61 +15,21 @@
         <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
     </p>
 
-    <h3>{{ __('Lived experiences') }}</h3>
+    <p>{{ __('This information is used to tell entities if you have any special interests. This entire page is optional.') }}</p>
 
-    <p>{{ __('Entities may look for people with specific lived experiences. They may also try to consult with people across different disabilities and identities. Any information you provide will be used to help match you to an federally regulated organization looking for someone like you.') }}</p>
+    <x-privacy-indicator level="public" :value="__('This information will be on your public page. It is visible to anyone with an account on this website.')" />
 
-    <x-privacy-indicator level="private" :value="__('Only organizations who work with you will be able to access this information.')" />
-
-    <fieldset class="field @error('lived_experiences') field--error @enderror">
-        <legend>{{ __('Which of these describe your lived experience?') }}</legend>
-        <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old('lived_experiences', $communityMember->livedExperiences->pluck('id')->toArray())" />
-        <x-hearth-error for="lived_experiences" />
+    <fieldset class="field @error('sectors') field--error @enderror">
+        <legend>{{ __('What types of federally regulated organization are you interested in?') }}</legend>
+        <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $communityMember->sectors->pluck('id')->toArray())" />
+        <x-hearth-error for="sectors" />
     </fieldset>
 
-    <fieldset class="field @error('age_group') field--error @enderror">
-        <legend>{{ __('What is your age group') }}</legend>
-        <x-hearth-radio-buttons name="age_group" :options="$ageGroups" :checked="old('age_group', $communityMember->age_group)" />
-        <x-hearth-error for="age_group" />
-    </fieldset>
-
-    <fieldset>
-        <legend>{{ __('What is your living situation?') }}</legend>
-        <div class="field">
-            <x-hearth-checkbox name="rural_or_remote" :checked="old('rural_or_remote', $communityMember->rural_or_remote) ?? false" />
-            <x-hearth-label for="rural_or_remote" :value="__('I live in a rural or remote area')" />
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <div class="field @error('lived_experience') field--error @enderror">
-            <x-hearth-label for="lived_experience" :value="__('Do you want to share anything else about your lived experience?')" />
-            <x-hearth-textarea name="lived_experience" hinted>{{ old('lived_experience', $communityMember->lived_experience) }}</x-hearth-textarea>
-            <x-hearth-error for="lived_experience" />
-        </div>
-    </fieldset>
-
-    {{-- Upload a file --}}
-
-    <h3>{{ __('Skills and strengths') }}</h3>
-
-    <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
-
-    <fieldset>
-        <div class="field @error('skills_and_strengths') field--error @enderror">
-            <x-hearth-label for="skills_and_strengths" :value="__('What are your skills and strengths?')" />
-            <x-hearth-hint for="skills_and_strengths">{{ __('Feel free to list your skills and strengths, and say more about them.') }}</x-hearth-hint>
-            <x-hearth-textarea name="skills_and_strengths" hinted>{{ old('skills_and_strengths', $communityMember->skills_and_strengths) }}</x-hearth-textarea>
-            <x-hearth-error for="skills_and_strengths" />
-        </div>
-    </fieldset>
-
-    {{-- Upload a file --}}
-
-    <fieldset class="stack">
-        <legend>{{ __('Work and volunteer experiences') }}</legend>
-        <x-privacy-indicator level="public" :value="__('Any member of the website can find this information.')" />
-        <livewire:work-and-volunteer-experiences :experiences="$communityMember->work_and_volunteer_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
+    <fieldset class="field @error('impacts') field--error @enderror">
+        <legend>{{ __('What areas would you most like to impact within a federally regulated organization?') }}</legend>
+        <x-hearth-hint for="impacts">{{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}</x-hearth-hint>
+        <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $communityMember->impacts->pluck('id')->toArray())" />
+        <x-hearth-error for="impacts" />
     </fieldset>
 
     <p>

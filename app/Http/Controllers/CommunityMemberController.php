@@ -187,31 +187,6 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateCommunityMemberInterestsRequest  $request
-     * @param CommunityMember $communityMember
-     * @return RedirectResponse
-     */
-    public function updateInterests(UpdateCommunityMemberInterestsRequest $request, CommunityMember $communityMember): RedirectResponse
-    {
-        $data = $request->validated();
-
-        if (! isset($data['service_preference'])) {
-            $data['service_preference'] = [];
-        }
-
-        $communityMember->fill($data);
-
-        $communityMember->save();
-
-        $communityMember->sectors()->sync($data['sectors'] ?? []);
-        $communityMember->impacts()->sync($data['impacts'] ?? []);
-
-        return $communityMember->handleUpdateRequest($request, 2);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateCommunityMemberExperiencesRequest  $request
      * @param CommunityMember $communityMember
      * @return RedirectResponse
@@ -238,6 +213,31 @@ class CommunityMemberController extends Controller
         $communityMember->save();
 
         $communityMember->livedExperiences()->sync($data['lived_experiences'] ?? []);
+
+        return $communityMember->handleUpdateRequest($request, 2);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateCommunityMemberInterestsRequest  $request
+     * @param CommunityMember $communityMember
+     * @return RedirectResponse
+     */
+    public function updateInterests(UpdateCommunityMemberInterestsRequest $request, CommunityMember $communityMember): RedirectResponse
+    {
+        $data = $request->validated();
+
+        if (! isset($data['service_preference'])) {
+            $data['service_preference'] = [];
+        }
+
+        $communityMember->fill($data);
+
+        $communityMember->save();
+
+        $communityMember->sectors()->sync($data['sectors'] ?? []);
+        $communityMember->impacts()->sync($data['impacts'] ?? []);
 
         return $communityMember->handleUpdateRequest($request, 3);
     }

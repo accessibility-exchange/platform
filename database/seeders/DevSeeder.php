@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\CommunityMember;
 use App\Models\Impact;
 use App\Models\PaymentMethod;
 use App\Models\Project;
@@ -40,39 +39,30 @@ class DevSeeder extends Seeder
         // Retrieve sector.
         $transportationSector = Sector::where('name->en', 'Transportation')->first();
 
-        $communityMember = User::factory()
+        $user = User::factory()
             ->create([
                 'name' => 'Jonny Appleseed',
                 'email' => 'jonny@example.net',
                 'email_verified_at' => now(),
             ]);
 
-        $communityMemberPage = CommunityMember::factory()
-            ->create([
-                'user_id' => $communityMember->id,
-                'name' => $communityMember->name,
-                'locality' => 'Toronto',
-                'region' => 'ON',
-                'pronouns' => 'He/him/his',
-                'email' => $communityMember->email,
-                'phone' => $faker->phoneNumber(),
-            ]);
+        $communityMember = $user->communityMember;
 
         // Attach impacts.
-        $communityMemberPage->impacts()->attach([
+        $communityMember->impacts()->attach([
             $communicationImpact->id,
             $programsAndServicesImpact->id,
             $transportationImpact->id,
         ]);
 
         // Attach payment methods.
-        $communityMemberPage->paymentMethods()->attach([
+        $communityMember->paymentMethods()->attach([
             $cashPaymentMethod->id,
             $giftCardPaymentMethod->id,
         ]);
 
         // Attach sector.
-        $communityMemberPage->sectors()->attach($transportationSector->id);
+        $communityMember->sectors()->attach($transportationSector->id);
 
         $regulatedOrganizationRepresentative = User::factory()
             ->create([
