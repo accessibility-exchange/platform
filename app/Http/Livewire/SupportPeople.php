@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class SupportPeople extends Component
 {
-    public $people = [];
+    public array $people = [];
 
     public function mount(array $people)
     {

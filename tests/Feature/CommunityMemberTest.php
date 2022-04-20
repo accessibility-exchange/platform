@@ -192,7 +192,7 @@ test('users can create community member pages', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
 
-    $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
+    $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-and-meeting-preferences', $communityMember), [
         'email' => 'me@here.com',
         'phone' => '902-123-4567',
         'support_people' => [
@@ -203,14 +203,15 @@ test('users can create community member pages', function () {
             ],
         ],
         'preferred_contact_method' => 'email',
-        'languages' => ['en'],
-        'save_and_next' => __('Save and next'),
+        'preferred_contact_person' => 'me',
+        'meeting_types' => ['in_person', 'web_conference'],
+        'save' => __('Save'),
     ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
 
-    $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-preferences', $communityMember), [
+    $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-and-meeting-preferences', $communityMember), [
         'email' => 'me@here.com',
         'phone' => '902-123-4567',
         'support_people' => [
@@ -221,8 +222,9 @@ test('users can create community member pages', function () {
             ],
         ],
         'preferred_contact_method' => 'email',
-        'languages' => ['en'],
-        'save_and_next' => __('Save and next'),
+        'preferred_contact_person' => 'Someone',
+        'meeting_types' => ['in_person', 'web_conference'],
+        'save' => __('Save'),
     ]);
 
     $communityMember = $communityMember->fresh();
@@ -230,14 +232,7 @@ test('users can create community member pages', function () {
     expect($communityMember->phone)->toEqual('9021234567');
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 5]));
-
-    $response = $this->actingAs($user)->put(localized_route('community-members.update-access-and-accomodations', $communityMember), [
-        'meeting_types' => ['in_person', 'web_conference'],
-        'save' => __('Save'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]));
 });
 
 test('entity users can not create community member pages', function () {

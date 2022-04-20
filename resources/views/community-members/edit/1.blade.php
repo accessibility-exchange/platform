@@ -2,14 +2,13 @@
     @csrf
     @method('PUT')
 
-
     <div class="with-sidebar">
 
         @include('community-members.partials.progress')
 
         <div class="stack">
             <h2>
-                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 5]) }}<br />
+                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('About you') }}
             </h2>
 

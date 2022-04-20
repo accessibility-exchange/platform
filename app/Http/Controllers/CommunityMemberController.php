@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyCommunityMemberRequest;
 use App\Http\Requests\SaveCommunityMemberRoleRequest;
-use App\Http\Requests\UpdateCommunityMemberAccessAndAccommodationsRequest;
-use App\Http\Requests\UpdateCommunityMemberCommunicationPreferencesRequest;
+use App\Http\Requests\UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest;
 use App\Http\Requests\UpdateCommunityMemberExperiencesRequest;
 use App\Http\Requests\UpdateCommunityMemberInterestsRequest;
 use App\Http\Requests\UpdateCommunityMemberRequest;
@@ -245,11 +244,11 @@ class CommunityMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateCommunityMemberCommunicationPreferencesRequest  $request
+     * @param  UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest  $request
      * @param CommunityMember $communityMember
      * @return RedirectResponse
      */
-    public function updateCommunicationPreferences(UpdateCommunityMemberCommunicationPreferencesRequest $request, CommunityMember $communityMember): RedirectResponse
+    public function updateCommunicationAndMeetingPreferences(UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
 
@@ -262,33 +261,11 @@ class CommunityMemberController extends Controller
             }
         }
 
-        $data['languages'] = array_filter($data['languages']);
-
         $communityMember->fill($data);
 
         $communityMember->save();
 
         return $communityMember->handleUpdateRequest($request, 4);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateCommunityMemberAccessAndAccommodationsRequest  $request
-     * @param CommunityMember $communityMember
-     * @return RedirectResponse
-     */
-    public function updateAccessAndAccommodations(UpdateCommunityMemberAccessAndAccommodationsRequest $request, CommunityMember $communityMember): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $communityMember->fill($data);
-
-        $communityMember->save();
-
-        $communityMember->accessSupports()->sync($data['access_needs'] ?? []);
-
-        return $communityMember->handleUpdateRequest($request, 5);
     }
 
     /**

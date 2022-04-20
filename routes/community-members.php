@@ -51,15 +51,10 @@ Route::controller(CommunityMemberController::class)->group(function () {
         ->method('put')
         ->name('community-members.update-experiences');
 
-    Route::multilingual('/members/{communityMember}/edit-communication-preferences', 'updateCommunicationPreferences')
+    Route::multilingual('/members/{communityMember}/edit-communication-and-meeting-preferences', 'updateCommunicationAndMeetingPreferences')
         ->middleware(['auth', 'can:update,communityMember'])
         ->method('put')
-        ->name('community-members.update-communication-preferences');
-
-    Route::multilingual('/members/{communityMember}/edit-access-and-accomodations', 'updateAccessAndAccommodations')
-        ->middleware(['auth', 'can:update,communityMember'])
-        ->method('put')
-        ->name('community-members.update-access-and-accomodations');
+        ->name('community-members.update-communication-and-meeting-preferences');
 
     Route::multilingual('/members/{communityMember}/change-status', 'updatePublicationStatus')
         ->middleware(['auth', 'can:update,communityMember'])

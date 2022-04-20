@@ -1,57 +1,32 @@
-<form action="{{ localized_route('community-members.update-communication-preferences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
+<form action="{{ localized_route('community-members.update-communication-and-meeting-preferences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
+    <div class="with-sidebar">
+        @include('community-members.partials.progress')
 
-    <h2>
-        {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
-        {{ __('Communication preferences') }}
-    </h2>
+        <div class="stack">
+            <h2>
+                {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
+                {{ __('Communication preferences') }}
+            </h2>
 
-    @include('community-members.partials.progress')
+            <p class="repel">
+                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
+                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+            </p>
 
-    <p>
-        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <x-hearth-input type="submit" name="save" :value="__('Save')" />
-        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
-    </p>
+            <livewire:communication-preferences :communityMember="$communityMember" />
 
-    <x-privacy-indicator level="private" :value="__('Only organizations who work with you will be able to access this information.')" />
+            <fieldset class="field @error('meeting_types') field--error @enderror">
+                <legend>{{ __('What types of meetings are you able to attend? (required)') }}</legend>
+                <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :checked="old('meeting_types', $communityMember->meeting_types ?? [])" />
+                <x-hearth-error for="meeting_types" />
+            </fieldset>
 
-    <h3>{{ __('Contact information') }}</h3>
-
-    <fieldset>
-        <legend>{{ __('For you') }}</legend>
-        <div class="field @error('email') field-error @enderror">
-            <x-hearth-label for="email" :value="__('Email')" />
-            <x-hearth-input type="email" name="email" :value="old('email', $communityMember->email ?? $communityMember->user->email)" required />
-            <x-hearth-error for="email" />
+            <p class="repel">
+                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
+                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+            </p>
         </div>
-        <div class="field @error('phone') field-error @enderror">
-            <x-hearth-label for="phone" :value="__('Phone')" />
-            <x-hearth-input type="tel" name="phone" :value="old('phone', $communityMember->phone)" required />
-            <x-hearth-error for="phone" />
-        </div>
-    </fieldset>
-    <fieldset>
-        <legend>{{ __('For your support people') }}</legend>
-        <livewire:support-people :people="$communityMember->support_people ?? [['name' => '', 'email' => '', 'phone' => '', 'page_creator' => false]]" />
-    </fieldset>
-
-    <h3>{{ __('Communication with you') }}</h3>
-
-    <fieldset>
-        <legend>{{ __('How do you want to be contacted when a federally regulated organization wants to consult with you?') }}</legend>
-        <x-hearth-checkboxes name="preferred_contact_methods" :options="$contactMethods" :checked="old('preferred_contact_methods', $communityMember->preferred_contact_methods ?? [])" />
-    </fieldset>
-
-    <fieldset>
-        <legend>{{ __('What languages do you use?') }}</legend>
-        <livewire:language-picker :languages="$communityMember->languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
-    </fieldset>
-
-    <p>
-        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <x-hearth-input type="submit" name="save" :value="__('Save')" />
-        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
-    </p>
+    </div>
 </form>
