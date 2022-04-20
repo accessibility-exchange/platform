@@ -352,9 +352,7 @@ test('users can not edit others community member pages', function () {
 
 test('users can delete community member pages', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->actingAs($user)->from(localized_route('community-members.edit', $communityMember))->delete(localized_route('community-members.destroy', $communityMember), [
         'current_password' => 'password',
@@ -364,9 +362,7 @@ test('users can delete community member pages', function () {
 
 test('users can not delete community member pages with wrong password', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->actingAs($user)->from(localized_route('community-members.edit', $communityMember))->delete(localized_route('community-members.destroy', $communityMember), [
         'current_password' => 'wrong_password',
@@ -390,12 +386,9 @@ test('users can not delete others community member pages', function () {
     $response->assertForbidden();
 });
 
-test('users can view own draft community member pages', function () {
+test('users can view their own draft community member pages', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-        'published_at' => null,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->actingAs($user)->get(localized_route('community-members.show', $communityMember));
     $response->assertOk();
@@ -415,9 +408,7 @@ test('users can not view others draft community member pages', function () {
 
 test('users can view private sections of own community member pages', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->actingAs($user)->get(localized_route('community-members.show-experiences', $communityMember));
     $response->assertOk();
@@ -426,9 +417,7 @@ test('users can view private sections of own community member pages', function (
 test('users can not view private sections of others community member pages', function () {
     $user = User::factory()->create();
     $other_user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->actingAs($other_user)->get(localized_route('community-members.show-experiences', $communityMember));
     $response->assertForbidden();
@@ -436,9 +425,7 @@ test('users can not view private sections of others community member pages', fun
 
 test('guests can not view community member pages', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
     $response = $this->get(localized_route('community-members.index'));
     $response->assertRedirect(localized_route('login'));
