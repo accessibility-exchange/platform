@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Http\Livewire\Experiences;
 
 test('experiences can be added', function () {
