@@ -38,3 +38,11 @@ test('a person can be removed', function () {
         ->call('removePerson', 0)
         ->assertSet('supportPeople', []);
 });
+
+test('contact methods can be retrieved for the community member', function () {
+    $communityMember = CommunityMember::factory()->create(['phone' => '902-123-4567']);
+
+    $this->livewire(CommunicationPreferences::class, ['communityMember' => $communityMember])
+        ->assertSeeHtml('<option value="email"')
+        ->assertSeeHtml('<option value="phone"');
+});
