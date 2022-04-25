@@ -6,7 +6,7 @@
             {{ __('My dashboard') }}
         </h1>
         @if($currentUser->context == 'community-member')
-        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityMember->communityRoles()->pluck('name')->toArray())  }}</p>
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityMember->communityRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('community-members.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
     </x-slot>
 

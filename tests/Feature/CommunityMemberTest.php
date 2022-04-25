@@ -44,6 +44,30 @@ test('non-community members cannot select a community role', function () {
     $response->assertForbidden();
 });
 
+test('community members can edit their roles', function () {
+    $this->seed(CommunityRoleSeeder::class);
+    $user = User::factory()->create();
+
+    $communityMember = $user->communityMember;
+
+    $participantRole = CommunityRole::where('name->en', 'Consultation participant')->first();
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
+    $communityMember->publish();
+
+    $communityMember = $communityMember->fresh();
+
+    $response = $this->actingAs($user)
+        ->from(localized_route('community-members.show-role-edit'))
+        ->put(localized_route('community-members.save-role'), [
+            'roles' => [$participantRole->id],
+        ]);
+
+    $communityMember = $communityMember->fresh();
+
+    expect($communityMember->checkStatus('published'))->toBeFalse();
+});
+
 test('users can create community member pages', function () {
     $this->seed();
 

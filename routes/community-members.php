@@ -7,9 +7,13 @@ Route::controller(CommunityMemberController::class)->group(function () {
         ->middleware(['auth'])
         ->name('community-members.index');
 
-    Route::multilingual('/role-selection', [CommunityMemberController::class, 'showRoleSelection'])
+    Route::multilingual('/role/select', [CommunityMemberController::class, 'showRoleSelection'])
         ->middleware(['auth'])
         ->name('community-members.show-role-selection');
+
+    Route::multilingual('/role/edit', [CommunityMemberController::class, 'showRoleEdit'])
+        ->middleware(['auth'])
+        ->name('community-members.show-role-edit');
 
     Route::multilingual('/role/save', [CommunityMemberController::class, 'saveRole'])
         ->method('put')
