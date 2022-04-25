@@ -286,6 +286,30 @@ test('community members with connector role must select connected identities', f
     expect($community->communityConnectors)->toHaveCount(1);
 });
 
+test('community members can have participant role', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
+    $user = User::factory()->create();
+    $communityMember = $user->communityMember;
+
+    $participantRole = CommunityRole::where('name->en', 'Consultation participant')->first();
+    $communityMember->communityRoles()->sync([$participantRole->id]);
+
+    expect($communityMember->isParticipant())->toBeTrue();
+});
+
+test('community members can have consultant role', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
+    $user = User::factory()->create();
+    $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
+
+    expect($communityMember->isConsultant())->toBeTrue();
+});
+
 test('users can edit community member pages', function () {
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
