@@ -46,3 +46,16 @@ test('contact methods can be retrieved for the community member', function () {
         ->assertSeeHtml('<option value="email"')
         ->assertSeeHtml('<option value="phone"');
 });
+
+test('contact methods can be retrieved for a support person', function () {
+    $communityMember = CommunityMember::factory()->create([
+        'support_people' => [
+            ['name' => 'Person 1', 'phone' => '438-123-4567', 'email' => 'person1@example.com'],
+        ],
+        'preferred_contact_person' => 'Person 1',
+    ]);
+
+    $this->livewire(CommunicationPreferences::class, ['communityMember' => $communityMember])
+        ->assertSeeHtml('<option value="email"')
+        ->assertSeeHtml('<option value="phone"');
+});
