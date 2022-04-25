@@ -284,6 +284,7 @@ test('community members with connector role must select connected identities', f
     expect($communityMember->ageGroupConnections)->toHaveCount(1);
     expect($livedExperience->communityConnectors)->toHaveCount(1);
     expect($community->communityConnectors)->toHaveCount(1);
+    expect($ageGroup->communityConnectors)->toHaveCount(1);
 });
 
 test('community members can have participant role', function () {
