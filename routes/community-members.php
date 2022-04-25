@@ -25,11 +25,11 @@ Route::controller(CommunityMemberController::class)->group(function () {
         ->name('community-members.show-interests');
 
     Route::multilingual('/members/{communityMember}/experiences', 'show')
-        ->middleware(['auth', 'can:viewPersonalDetails,communityMember'])
+        ->middleware(['auth', 'can:view,communityMember'])
         ->name('community-members.show-experiences');
 
     Route::multilingual('/members/{communityMember}/access-needs', 'show')
-        ->middleware(['auth', 'can:viewPersonalDetails,communityMember'])
+        ->middleware(['auth', 'can:view,communityMember'])
         ->name('community-members.show-access-needs');
 
     Route::multilingual('/members/{communityMember}/edit', 'edit')

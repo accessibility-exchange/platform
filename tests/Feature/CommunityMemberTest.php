@@ -423,21 +423,16 @@ test('users can not view others draft community member pages', function () {
     $response->assertForbidden();
 });
 
-test('users can view private sections of own community member pages', function () {
+test('users can view community member pages', function () {
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+    $communityMember->publish();
+    $communityMember = $communityMember->fresh();
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.show-experiences', $communityMember));
-    $response->assertOk();
-});
-
-test('users can not view private sections of others community member pages', function () {
-    $user = User::factory()->create();
     $other_user = User::factory()->create();
-    $communityMember = $user->communityMember;
 
-    $response = $this->actingAs($other_user)->get(localized_route('community-members.show-experiences', $communityMember));
-    $response->assertForbidden();
+    $response = $this->actingAs($other_user)->get(localized_route('community-members.show', $communityMember));
+    $response->assertOk();
 });
 
 test('guests can not view community member pages', function () {

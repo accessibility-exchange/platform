@@ -14,12 +14,12 @@ class CommunityMemberPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User  $user
-     * @param \App\Models\CommunityMember  $model
+     * @param User $user
+     * @param CommunityMember $model
      *
-     * @return mixed
+     * @return Response
      */
-    public function view(User $user, CommunityMember $model)
+    public function view(User $user, CommunityMember $model): Response
     {
         if ($model->checkStatus('draft')) {
             return $user->id === $model->user_id
@@ -31,27 +31,13 @@ class CommunityMemberPolicy
     }
 
     /**
-     * Determine whether the user can view personal details of the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return mixed
-     */
-    public function viewPersonalDetails(User $user, CommunityMember $communityMember)
-    {
-        return $user->id === $communityMember->user_id
-            ? Response::allow()
-            : Response::deny(__('You cannot view this community member page.'));
-    }
-
-    /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
+     * @param User $user
      *
-     * @return mixed
+     * @return Response
      */
-    public function create(User $user)
+    public function create(User $user): Response
     {
         if ($user->context === 'community-member') {
             return $user->communityMember
@@ -65,11 +51,11 @@ class CommunityMemberPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return mixed
+     * @param User $user
+     * @param CommunityMember $communityMember
+     * @return Response
      */
-    public function update(User $user, CommunityMember $communityMember)
+    public function update(User $user, CommunityMember $communityMember): Response
     {
         return $user->id === $communityMember->user_id
             ? Response::allow()
@@ -79,11 +65,11 @@ class CommunityMemberPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\CommunityMember  $communityMember
-     * @return mixed
+     * @param User $user
+     * @param CommunityMember $communityMember
+     * @return Response
      */
-    public function delete(User $user, CommunityMember $communityMember)
+    public function delete(User $user, CommunityMember $communityMember): Response
     {
         return $user->id === $communityMember->user_id
             ? Response::allow()
