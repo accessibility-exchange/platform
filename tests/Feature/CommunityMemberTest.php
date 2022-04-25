@@ -58,6 +58,12 @@ test('community members can edit their roles', function () {
     $communityMember = $communityMember->fresh();
 
     $response = $this->actingAs($user)
+        ->get(localized_route('community-members.show-role-edit'));
+
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-1" value="1" aria-describedby="roles-1-hint"   />', false);
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-2" value="2" aria-describedby="roles-2-hint" checked  />', false);
+
+    $response = $this->actingAs($user)
         ->from(localized_route('community-members.show-role-edit'))
         ->put(localized_route('community-members.save-role'), [
             'roles' => [$participantRole->id],
