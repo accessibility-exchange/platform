@@ -7,7 +7,9 @@ use Livewire\Component;
 class LanguagePicker extends Component
 {
     public string $name;
+
     public array $languages = [];
+
     public array $availableLanguages = [];
 
     public function mount(array $languages, string $name = 'languages')

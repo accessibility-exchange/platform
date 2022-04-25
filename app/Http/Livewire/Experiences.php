@@ -4,13 +4,16 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class WorkAndVolunteerExperiences extends Component
+class Experiences extends Component
 {
-    public $experiences = [];
+    public string $name;
 
-    public function mount(array $experiences)
+    public array $experiences = [];
+
+    public function mount(array $experiences, $name = 'experiences')
     {
-        $this->experiences = old('work_and_volunteer_experiences', $experiences);
+        $this->name = $name;
+        $this->experiences = old($this->name, $experiences);
     }
 
     public function addExperience(): void
@@ -36,6 +39,6 @@ class WorkAndVolunteerExperiences extends Component
 
     public function render()
     {
-        return view('livewire.work-and-volunteer-experiences');
+        return view('livewire.experiences');
     }
 }

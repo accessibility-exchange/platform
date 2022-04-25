@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CommunityMember;
+use App\Models\AgeGroup;
+use App\Models\Community;
+use App\Models\LivedExperience;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,7 +16,7 @@ class UpdateCommunityMemberRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->communityMember);
     }
@@ -24,27 +26,36 @@ class UpdateCommunityMemberRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'user_id' => [
-                Rule::unique(CommunityMember::class),
-            ],
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(CommunityMember::class)->ignore($this->communityMember->id),
-
-            ],
+            'name' => 'required|string|max:255',
             'locality' => 'nullable|string|max:255',
             'region' => [
                 'required',
                 Rule::in(get_region_codes()),
             ],
-            'hide_location' => 'boolean',
-            'pronouns' => 'nullable|string',
-            'bio' => 'nullable|string',
+            'pronouns' => 'nullable|array',
+            'bio' => 'required|array|required_array_keys:' . $this->communityMember->user->locale,
+            'working_languages' => 'required|array',
+            'lived_experience_connections' => [
+                'nullable',
+                Rule::requiredIf($this->communityMember->isConnector()),
+                'array',
+                Rule::in(array_merge(LivedExperience::pluck('id')->toArray(), ['other'])),
+            ],
+            'other_lived_experience_connections' => 'nullable|array',
+            'community_connections' => [
+                'nullable',
+                'array',
+                Rule::in(array_merge(Community::pluck('id')->toArray(), ['other'])),
+            ],
+            'other_community_connections' => 'nullable|array',
+            'age_group_connections' => [
+                'nullable',
+                'array',
+                Rule::in(AgeGroup::pluck('id')->toArray()),
+            ],
             'links.*' => 'nullable|url',
             'other_links.*.title' => 'nullable|string|required_with:other_links.*.url',
             'other_links.*.url' => 'nullable|url|required_with:other_links.*.title',
@@ -56,10 +67,9 @@ class UpdateCommunityMemberRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'name.unique' => __('A community member page with this name already exists.'),
             'links.*.url' => __('The link must be a valid web address.'),
             'other_links.*.url.url' => __('The link must be a valid web address.'),
             'other_links.*.url.required_with' => __('Please provide a link for the website.'),

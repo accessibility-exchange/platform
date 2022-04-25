@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -40,23 +41,22 @@ class CommunityMember extends Model implements HasMedia
         'links',
         'pronouns',
         'picture_alt',
-        'creator',
         'phone',
         'email',
-        'preferred_contact_methods',
-        'roles',
-        'hide_location',
+        'preferred_contact_method',
+        'preferred_contact_person',
+        'working_languages',
+        'other_lived_experience_connections',
+        'other_community_connections',
+        'vrs',
         'other_links',
-        'areas_of_interest',
-        'service_preference',
         'status',
         'user_id',
         'age_group',
         'rural_or_remote',
-        'other_lived_experience',
         'lived_experience',
         'skills_and_strengths',
-        'work_and_volunteer_experiences',
+        'relevant_experiences',
         'languages',
         'support_people',
         'meeting_types',
@@ -68,17 +68,19 @@ class CommunityMember extends Model implements HasMedia
      * @var array<string, string>
      */
     protected $casts = [
-        'hide_location' => 'boolean',
         'links' => 'array',
         'other_links' => 'array',
-        'service_preference' => 'array',
-        'roles' => 'array',
-        'work_and_volunteer_experiences' => 'array',
+        'relevant_experiences' => 'array',
         'support_people' => 'array',
         'languages' => 'array',
+        'working_languages' => 'array',
         'rural_or_remote' => 'boolean',
-        'preferred_contact_methods' => 'array',
+        'vrs' => 'boolean',
         'meeting_types' => 'array',
+        'other_lived_experience_connections' => 'array',
+        'other_community_connections' => 'array',
+        'bio' => 'array',
+        'pronouns' => 'array',
     ];
 
     /**
@@ -90,10 +92,10 @@ class CommunityMember extends Model implements HasMedia
         'picture_alt',
         'bio',
         'pronouns',
-        'areas_of_interest',
-        'other_lived_experience',
         'lived_experience',
         'skills_and_strengths',
+        'other_lived_experience_connections',
+        'other_community_connections',
     ];
 
     /**
@@ -250,6 +252,62 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the roles belonging to the community member.
+     *
+     * @return BelongsToMany
+     */
+    public function communityRoles(): BelongsToMany
+    {
+        return $this->belongsToMany(CommunityRole::class);
+    }
+
+    /**
+     * Has the user added any details to the community member?
+     *
+     * @return bool
+     */
+    public function hasAddedDetails(): bool
+    {
+        return ! is_null($this->region);
+    }
+
+    /**
+     * Is the community member a participant?
+     *
+     * @return bool
+     */
+    public function isParticipant(): bool
+    {
+        $participantRole = CommunityRole::where('name->en', 'Consultation participant')->first();
+
+        return $this->communityRoles->contains($participantRole);
+    }
+
+    /**
+     * Is the community member an accessibility consultant?
+     *
+     * @return bool
+     */
+    public function isConsultant(): bool
+    {
+        $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+        return $this->communityRoles->contains($consultantRole);
+    }
+
+    /**
+     * Is the community member a community connector?
+     *
+     * @return bool
+     */
+    public function isConnector(): bool
+    {
+        $connectorRole = CommunityRole::where('name->en', 'Community connector')->first();
+
+        return $this->communityRoles->contains($connectorRole);
+    }
+
+    /**
      * Publish the community member page.
      *
      * @return void
@@ -274,9 +332,41 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get all the lived experiences that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function livedExperienceConnections(): MorphToMany
+    {
+        return $this->morphedByMany(LivedExperience::class, 'connectable');
+    }
+
+    /**
+     * Get all the communities that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function communityConnections(): MorphToMany
+    {
+        return $this->morphedByMany(Community::class, 'connectable');
+    }
+
+    /**
+     * Get all the age groups that the community member can connect with.
+     *
+     * @return MorphToMany
+     */
+    public function ageGroupConnections(): MorphToMany
+    {
+        return $this->morphedByMany(AgeGroup::class, 'connectable');
+    }
+
+    /**
      * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @param mixed $request
+     * @param int $step
+     * @return RedirectResponse
      */
     public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
     {

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\CommunityMember;
 use App\Models\Engagement;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -138,7 +137,9 @@ test('users with regulated organization admin role can manage engagements', func
 });
 
 test('users without regulated organization admin role cannot manage engagements', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'context' => 'regulated-organization',
+    ]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -158,13 +159,14 @@ test('users without regulated organization admin role cannot manage engagements'
 });
 
 test('engagement participants can participate in engagements', function () {
-    $participant = CommunityMember::factory()->create();
+    $user = User::factory()->create();
+    $participant = $user->communityMember;
     $engagement = Engagement::factory()->create();
     $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
 
     $this->assertTrue($engagement->participants->isNotEmpty());
     $this->assertTrue($engagement->confirmedParticipants->isNotEmpty());
 
-    $response = $this->actingAs($participant->user)->get(localized_route('engagements.participate', ['project' => $engagement->project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.participate', ['project' => $engagement->project, 'engagement' => $engagement]));
     $response->assertOk();
 });

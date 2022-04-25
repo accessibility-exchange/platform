@@ -5,6 +5,9 @@
             <small>{{ $currentUser->name }}@if($currentUser->regulatedOrganization()), {{ $currentUser->regulatedOrganization()->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
+        @if($currentUser->context == 'community-member')
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityMember->communityRoles()->pluck('name')->toArray())  }}</p>
+        @endif
     </x-slot>
 
     @if($currentUser->context === 'community-member')

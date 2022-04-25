@@ -14,8 +14,7 @@
             </x-slot>
             <p>
                 <strong>{{ __('Community member') }}</strong>@if($communityMember->roles)<br />
-                <strong class="weight:semibold">{{ __('Role') }}:</strong> @foreach($communityMember->roles as $role){{ Str::title($role) }}@if(!$loop->last), @endif @endforeach @endif
-                {{-- TODO: fix roles --}}
+                <strong class="weight:semibold">{{ __('Role') }}:</strong> @foreach($communityMember->user->communityRoles()->pluck('name')->toArray() as $role){{ $role }}@if(!$loop->last), @endif @endforeach @endif
             </p>
             <p>
                 <strong class="weight:semibold">{{ __('Location') }}:</strong> {{ $communityMember->locality }}, {{ get_region_name($communityMember->region, ["CA"], locale()) }}

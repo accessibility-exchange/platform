@@ -19,7 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      * @param  array  $input
      * @return \App\Models\User
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
         $input['locale'] = session('locale');
         $input['signed_language'] = session('signed_language');

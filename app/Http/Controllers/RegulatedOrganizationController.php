@@ -53,7 +53,6 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('Your federally regulated organization has been created.'), 'success');
 
-
         return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
     }
 

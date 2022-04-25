@@ -14,13 +14,9 @@
                 <x-hearth-error :for="'support_people_' . $i . '_email'" :field="'support_people.' . $i . '.email'" />
             </div>
             <div class="field @error("support_people.{$i}.phone") field-error @enderror">
-                <x-hearth-label :for="'support_people_' . $i . '_phone'" :value="__('Phone')" />
+                <x-hearth-label :for="'support_people_' . $i . '_phone'" :value="__('Phone number')" />
                 <x-hearth-input type="tel" :id="'support_people_' . $i . '_phone'" :name="'support_people[' . $i . '][phone]'" :value="$person['phone']" required />
                 <x-hearth-error :for="'support_people_' . $i . '_phone'" :field="'support_people.' . $i . '.phone'" />
-            </div>
-            <div class="field">
-                <x-hearth-checkbox :id="'support_people_' . $i . '_page_creator'" :name="'support_people[' . $i . '][page_creator]'" :checked="$person['page_creator'] ?? false" />
-                <x-hearth-label :for="'support_people_' . $i . '_page_creator'" :value="__('This person created my page on my behalf')" />
             </div>
             @if($loop->count > 1)
             <button class="secondary" type="button" wire:click="removePerson({{ $i }})">{{ __('Remove this support person') }}</button>

@@ -29,4 +29,4 @@ class CreateMatchingStrategiesTable extends Migration
     {
         Schema::dropIfExists('matching_strategies');
     }
-};
+}

@@ -33,4 +33,4 @@ class CreateCriteriaTable extends Migration
     {
         Schema::dropIfExists('criteria');
     }
-};
+}

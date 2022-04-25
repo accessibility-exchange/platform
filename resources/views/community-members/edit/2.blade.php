@@ -1,56 +1,56 @@
-<form action="{{ localized_route('community-members.update-interests', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
+<form action="{{ localized_route('community-members.update-experiences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
 
-    <h2>
-        {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
-        {{ __('Interests') }}
-    </h2>
+    <div class="with-sidebar">
+        @include('community-members.partials.progress')
 
-    @include('community-members.partials.progress')
+        <div class="stack">
+            <h2>
+                {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 4]) }}<br />
+                {{ __('Experiences') }}
+            </h2>
 
-    <p>
-        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <x-hearth-input type="submit" name="save" :value="__('Save')" />
-        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
-    </p>
+            <p class="repel">
+                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
+                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+                <x-hearth-input class="secondary" type="submit" name="save_and_next" :value="__('Save and next')" />
+            </p>
 
-    <p>{{ __('This information is used to tell entities if you have any special interests. This entire page is optional.') }}</p>
+            <fieldset>
+                <legend>{{ __('Lived experience') }}</legend>
 
-    <x-privacy-indicator level="public" :value="__('This information will be on your public page. It is visible to anyone with an account on this website.')" />
+                <div class="field @error('lived_experience') field--error @enderror">
+                    <x-translatable-textarea name="lived_experience" :model="$communityMember" hinted="lived_experience-hint" :label="__('What are your lived experiences of disability or other intersectional identities? (optional)')" />
+                    <x-hearth-hint for="lived_experience">{{ __('Feel free to self-identify your experiences of disability, if you feel it is relevant to your work.') }}</x-hearth-hint>
+                    <x-hearth-error for="lived_experience" />
+                </div>
 
-    <fieldset class="field @error('sectors') field--error @enderror">
-        <legend>{{ __('What types of federally regulated organization are you interested in? (optional)') }}</legend>
-        <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $communityMember->sectors->pluck('id')->toArray())" />
-        <x-hearth-error for="sectors" />
-    </fieldset>
+                {{-- Upload a file --}}
+            </fieldset>
 
-    <fieldset class="field @error('impacts') field--error @enderror">
-        <legend>{{ __('What areas would you most like to impact within a federally regulated organization? (optional)') }}</legend>
-        <x-hearth-hint for="impacts">{{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}</x-hearth-hint>
-        <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $communityMember->impacts->pluck('id')->toArray())" />
-        <x-hearth-error for="impacts" />
-    </fieldset>
+            <fieldset>
+                <legend>{{ __('Skills and strengths') }}</legend>
 
-    <fieldset>
-        <div class="field @error('areas_of_interest') field--error @enderror">
-            <x-hearth-label for="areas_of_interest" :value="__('Areas of interest (optional)')" />
-            <x-hearth-hint for="areas_of_interest">{{ __('Are there other areas that you’re interested in that wasn’t listed in the previous question?') }}</x-hearth-hint>
-            <x-hearth-textarea name="areas_of_interest" hinted>{{ old('areas_of_interest', $communityMember->areas_of_interest) }}</x-hearth-textarea>
-            <x-hearth-error for="areas_of_interest" />
+                <div class="field @error('skills_and_strengths') field--error @enderror">
+                    <x-translatable-textarea name="skills_and_strengths" :model="$communityMember" :label="__('What are your skills and strengths? (optional)')" />
+                    <x-hearth-error for="skills_and_strengths" />
+                </div>
+
+                {{-- Upload a file --}}
+            </fieldset>
+
+            <fieldset class="stack">
+                <legend>{{ __('Relevant experiences') }}</legend>
+                <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}</x-hearth-hint>
+                <livewire:work-and-volunteer-experiences name="relevant_experiences" :experiences="$communityMember->relevant_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
+            </fieldset>
+
+            <p class="repel">
+                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
+                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+                <x-hearth-input class="secondary" type="submit" name="save_and_next" :value="__('Save and next')" />
+            </p>
         </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>{{ __('Service preference (optional)') }}</legend>
-        <x-hearth-hint for="service_preference">{{ __('Which type of services do you want to consult on? Check all that apply.') }}</x-hearth-hint>
-        <x-hearth-checkboxes name="service_preference" :options="$servicePreferences" :checked="old('service_preference', $communityMember->service_preference ?? [])" />
-        <x-hearth-error for="service_preference" />
-    </fieldset>
-
-    <p>
-        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <x-hearth-input type="submit" name="save" :value="__('Save')" />
-        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
-    </p>
+    </div>
 </form>

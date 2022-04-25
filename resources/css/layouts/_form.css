@@ -1,5 +1,10 @@
 /* This file contains all styles related to form layouts in the application. */
 
+.field > * + *,
+fieldset > * + * {
+    margin-block-start: var(--size-2);
+}
+
 /* fieldset legend,
 fieldset .field label {
     font-size: var(--step-1);

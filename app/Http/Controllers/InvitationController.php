@@ -31,7 +31,6 @@ class InvitationController extends Controller
 
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
-
         return redirect(\localized_route($inviteable->getRoutePrefix() . '.edit', $inviteable));
     }
 
@@ -57,7 +56,6 @@ class InvitationController extends Controller
             'success'
         );
 
-
         return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
     }
 
@@ -77,7 +75,6 @@ class InvitationController extends Controller
         $invitation->delete();
 
         flash(__('invitation.cancel_invitation_succeeded'), 'success');
-
 
         return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.edit', $invitation->inviteable));
     }

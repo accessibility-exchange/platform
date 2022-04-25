@@ -1,0 +1,17 @@
+.frame {
+    --n: 16;
+    --d: 9;
+
+    align-items: center;
+    aspect-ratio: var(--n) / var(--d);
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.frame > img,
+.frame > video {
+    block-size: 100%;
+    inline-size: 100%;
+    object-fit: cover;
+}

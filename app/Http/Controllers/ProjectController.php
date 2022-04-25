@@ -65,7 +65,7 @@ class ProjectController extends Controller
             'ancestors' => [
                 '' => __('Choose a project…'),
             ] + Arr::sort(Auth::user()->projectable()->projects->pluck('name', 'id')->toArray()),
-         ]);
+        ]);
     }
 
     /**

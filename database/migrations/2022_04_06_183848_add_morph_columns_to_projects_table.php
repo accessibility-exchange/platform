@@ -34,4 +34,4 @@ class AddMorphColumnsToProjectsTable extends Migration
             $table->dropMorphs('projectable');
         });
     }
-};
+}

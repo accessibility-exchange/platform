@@ -42,14 +42,14 @@ class AcceptInvitation
     {
         Validator::make(
             [
-                "email" => $email,
-                "role" => $role,
+                'email' => $email,
+                'role' => $role,
             ],
             $this->rules()
         )
             ->after($this->ensureInviteeIsNotAlreadyAMember($inviteable, $email))
             ->after($this->ensureCurrentUserIsInvitee(Auth::user(), $email))
-            ->validateWithBag("acceptInvitation");
+            ->validateWithBag('acceptInvitation');
     }
 
     /**

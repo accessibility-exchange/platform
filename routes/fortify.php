@@ -75,7 +75,6 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             ->middleware('guest')
             ->name('password.request');
 
-
         Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
             ->middleware('guest')
             ->name('password.reset');
@@ -132,13 +131,13 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
     if (Features::enabled(Features::twoFactorAuthentication())) {
         Route::multilingual('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
-            ->middleware(['guest:'.config('fortify.guard')])
+            ->middleware(['guest:' . config('fortify.guard')])
             ->name('two-factor.login');
 
         Route::multilingual('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store'])
             ->method('post')
             ->middleware(array_filter([
-                'guest:'.config('fortify.guard'),
+                'guest:' . config('fortify.guard'),
                 $twoFactorLimiter ? 'throttle:' . $twoFactorLimiter : null,
             ]));
 

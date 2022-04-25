@@ -7,11 +7,12 @@ use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
 use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
-use App\Models\User;
+use App\Http\Requests\UpdateUserIntroductionStatusRequest;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\View\View;
+use function localized_route;
 
 class UserController extends Controller
 {
@@ -26,9 +27,42 @@ class UserController extends Controller
     }
 
     /**
+     * Show an introduction page for the logged-in user.
+     *
+     * @return View
+     */
+    public function showIntroduction(): View
+    {
+        return view('users.show-introduction', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    /**
+     * Update the logged-in user's introduction status.
+     *
+     * @param UpdateUserIntroductionStatusRequest $request
+     * @return RedirectResponse
+     */
+    public function updateIntroductionStatus(UpdateUserIntroductionStatusRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        Auth::user()->fill($data);
+        Auth::user()->save();
+
+        $redirectTo = match (Auth::user()->context) {
+            'community-member' => localized_route('community-members.show-role-selection'),
+            default => localized_route('dashboard'),
+        };
+
+        return redirect($redirectTo);
+    }
+
+    /**
      * Show the dashboard view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function dashboard(): View
     {
@@ -40,7 +74,7 @@ class UserController extends Controller
     /**
      * Show the settings page for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function settings(): View
     {
@@ -50,7 +84,7 @@ class UserController extends Controller
     /**
      * Show the profile edit view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function edit(): View
     {
@@ -62,22 +96,22 @@ class UserController extends Controller
     /**
      * Store a new user's context in the session.
      *
-     * @param  \App\Http\Requests\SaveUserContextRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param SaveUserContextRequest $request
+     * @return RedirectResponse
      */
     public function saveContext(SaveUserContextRequest $request): RedirectResponse
     {
         $data = $request->validated();
         session()->put('context', $data['context']);
 
-        return redirect(\localized_route('register', ['step' => 3]));
+        return redirect(localized_route('register', ['step' => 3]));
     }
 
     /**
      * Store a new user's details in the session.
      *
-     * @param  \App\Http\Requests\SaveUserDetailsRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param SaveUserDetailsRequest $request
+     * @return RedirectResponse
      */
     public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
     {
@@ -85,14 +119,14 @@ class UserController extends Controller
         session()->put('name', $data['name']);
         session()->put('email', $data['email']);
 
-        return redirect(\localized_route('register', ['step' => 4]));
+        return redirect(localized_route('register', ['step' => 4]));
     }
 
     /**
      * Store a new user's language preferences in the session.
      *
-     * @param  \App\Http\Requests\SaveUserLanguagesRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param SaveUserLanguagesRequest $request
+     * @return RedirectResponse
      */
     public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
     {
@@ -102,13 +136,13 @@ class UserController extends Controller
             session()->put('signed_language', $data['signed_language']);
         }
 
-        return redirect(\localized_route('register', ['step' => 2]));
+        return redirect(localized_route('register', ['step' => 2]));
     }
 
     /**
      * Show the roles and permissions edit view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editRolesAndPermissions(): View
     {
@@ -120,7 +154,7 @@ class UserController extends Controller
     /**
      * Show the display preferences edit view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editDisplayPreferences(): View
     {
@@ -139,8 +173,8 @@ class UserController extends Controller
     /**
      * Show the display preferences edit view for the logged-in user.
      *
-     * @param  \App\Http\Requests\UpdateUserDisplayPreferencesRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateUserDisplayPreferencesRequest $request
+     * @return RedirectResponse
      */
     public function updateDisplayPreferences(UpdateUserDisplayPreferencesRequest $request): RedirectResponse
     {
@@ -153,13 +187,13 @@ class UserController extends Controller
 
         Cookie::queue('theme', $data['theme']);
 
-        return redirect(\localized_route('users.edit_display_preferences'));
+        return redirect(localized_route('users.edit_display_preferences'));
     }
 
     /**
      * Show the notification preferences edit view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function editNotificationPreferences(): View
     {
@@ -171,7 +205,7 @@ class UserController extends Controller
     /**
      * Show the password and security admin view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function admin(): View
     {
@@ -179,11 +213,11 @@ class UserController extends Controller
     }
 
     /**
-     * Show the my projects view for the logged-in user.
+     * Show the "my projects" view for the logged-in user.
      *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @return RedirectResponse|View
      */
-    public function showMyProjects(): mixed
+    public function showMyProjects(): RedirectResponse|View
     {
         if (Auth::user()->regulatedOrganization()) {
             $regulatedOrganization = Auth::user()->regulatedOrganization();
@@ -194,13 +228,13 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 
     /**
      * Show the account deletion view for the logged-in user.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function delete(): View
     {
@@ -210,8 +244,8 @@ class UserController extends Controller
     /**
      * Destroy a given user.
      *
-     * @param  \App\Http\Requests\DestroyUserRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param DestroyUserRequest $request
+     * @return RedirectResponse
      */
     public function destroy(DestroyUserRequest $request)
     {
@@ -227,6 +261,6 @@ class UserController extends Controller
 
         flash(__('hearth::user.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('welcome'));
+        return redirect(localized_route('welcome'));
     }
 }

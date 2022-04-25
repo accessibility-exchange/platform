@@ -36,12 +36,8 @@
             <ul role="list">
                 <x-nav-link :href="localized_route('community-members.show', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show')">{{ __('About') }}</x-nav-link>
                 <x-nav-link :href="localized_route('community-members.show-interests', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-interests')">{{ __('Interests') }}</x-nav-link>
-                @can('viewPersonalDetails', $communityMember)
                 <x-nav-link :href="localized_route('community-members.show-experiences', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-experiences')">{{ __('Experience') }}</x-nav-link>
-                @endcan
-                @can('viewPersonalDetails', $communityMember)
                 <x-nav-link :href="localized_route('community-members.show-access-needs', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-access-needs')">{{ __('Access needs') }}</x-nav-link>
-                @endcan
             </ul>
         </nav>
 

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\CommunityMember;
 use App\Models\Project;
+use App\Models\User;
+use App\Observers\UserObserver;
 use App\Settings;
 use App\Statuses\CommunityMemberStatus;
 use App\Statuses\ProjectStatus;
@@ -38,5 +40,6 @@ class AppServiceProvider extends ServiceProvider
 
         StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
+        User::observe(UserObserver::class);
     }
 }

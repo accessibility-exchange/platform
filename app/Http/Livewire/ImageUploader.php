@@ -10,7 +10,9 @@ class ImageUploader extends Component
     use WithFileUploads;
 
     public $name = false;
+
     public $image = null;
+
     public $alt = false;
 
     protected function rules()
