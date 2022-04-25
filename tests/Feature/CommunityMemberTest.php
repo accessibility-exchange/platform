@@ -13,6 +13,9 @@ use Database\Seeders\AgeGroupSeeder;
 use Database\Seeders\CommunityRoleSeeder;
 use Database\Seeders\CommunitySeeder;
 use Database\Seeders\LivedExperienceSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 test('community users can select a community role', function () {
     $this->seed(CommunityRoleSeeder::class);
