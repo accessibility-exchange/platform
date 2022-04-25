@@ -13,9 +13,6 @@ use Database\Seeders\AgeGroupSeeder;
 use Database\Seeders\CommunityRoleSeeder;
 use Database\Seeders\CommunitySeeder;
 use Database\Seeders\LivedExperienceSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('community users can select a community role', function () {
     $this->seed(CommunityRoleSeeder::class);
@@ -63,8 +60,8 @@ test('community members can edit their roles', function () {
     $response = $this->actingAs($user)
         ->get(localized_route('community-members.show-role-edit'));
 
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-1" value="1" aria-describedby="roles-1-hint"   />', false);
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-2" value="2" aria-describedby="roles-2-hint" checked  />', false);
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-' . $participantRole->id . '" value="' . $participantRole->id . '" aria-describedby="roles-' . $participantRole->id . '-hint"   />', false);
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-' . $consultantRole->id . '" value="' . $consultantRole->id . '" aria-describedby="roles-' . $consultantRole->id . '-hint" checked  />', false);
 
     $response = $this->actingAs($user)
         ->from(localized_route('community-members.show-role-edit'))
