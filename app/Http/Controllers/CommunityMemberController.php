@@ -66,6 +66,35 @@ class CommunityMemberController extends Controller
     }
 
     /**
+     * Show a role selection page for the logged-in user.
+     *
+     * @return View
+     * @throws AuthorizationException
+     */
+    public function showRoleEdit(): View
+    {
+        $this->authorize('selectRole', Auth::user());
+
+        $communityMember = Auth::user()->communityMember;
+        $communityRoles = CommunityRole::all();
+
+        $roles = [];
+
+        foreach ($communityRoles as $role) {
+            $roles[$role->id] = [
+                'label' => $role->name,
+                'hint' => $role->description,
+            ];
+        }
+
+        return view('community-members.show-role-edit', [
+            'communityMember' => $communityMember,
+            'roles' => $roles,
+            'selectedRoles' => $communityMember->communityRoles->pluck('id')->toArray(),
+        ]);
+    }
+
+    /**
      * Save roles for the logged-in user.
      *
      * @param SaveCommunityMemberRoleRequest $request
@@ -78,7 +107,13 @@ class CommunityMemberController extends Controller
 
         $data = $request->validated();
 
-        Auth::user()->communityMember->communityRoles()->sync($data['roles'] ?? []);
+        $communityMember = Auth::user()->communityMember;
+
+        $communityMember->communityRoles()->sync($data['roles'] ?? []);
+
+        if (! $communityMember->fresh()->isConsultant() && ! $communityMember->fresh()->isConnector()) {
+            $communityMember->unpublish();
+        }
 
         return redirect(localized_route('dashboard'));
     }
