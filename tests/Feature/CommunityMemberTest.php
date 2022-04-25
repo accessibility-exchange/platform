@@ -282,6 +282,8 @@ test('community members with connector role must select connected identities', f
     expect($communityMember->livedExperienceConnections)->toHaveCount(1);
     expect($communityMember->communityConnections)->toHaveCount(1);
     expect($communityMember->ageGroupConnections)->toHaveCount(1);
+    expect($livedExperience->communityConnectors)->toHaveCount(1);
+    expect($community->communityConnectors)->toHaveCount(1);
 });
 
 test('users can edit community member pages', function () {
