@@ -7,6 +7,11 @@
                 <x-hearth-input :id="$name . '_' . $i . '_title'" :name="$name . '[' . $i . '][title]'" :value="$experience['title']" />
                 <x-hearth-error :for="$name . '_' . $i . '_title'" :field="$name . '.' . $i . '.title'" />
             </div>
+            <div class="field @error("work_and_volunteer_experiences.{$i}.organization") field--error @enderror">
+                <x-hearth-label :for="$name . '_' . $i . '_organization'" :value="__('Name of organization')" />
+                <x-hearth-input :id="$name . '_' . $i . '_organization'" :name="$name . '[' . $i . '][organization]'" :value="$experience['organization'] ?? ''" />
+                <x-hearth-error :for="$name . '_' . $i . '_organization'" :field="$name . '.' . $i . '.organization'" />
+            </div>
             <div class="field @error("work_and_volunteer_experiences.{$i}.start_year") field--error @enderror">
                 <x-hearth-label :for="$name . '_start_year_' . $i" :value="__('Start year')" />
                 <x-hearth-input type="number" :id="$name . '_' . $i . '_start_year'" :name="$name . '[' . $i . '][start_year]'" :value="$experience['start_year']" />

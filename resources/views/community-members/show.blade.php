@@ -30,30 +30,37 @@
         @endcan
     </x-slot>
 
-
-    <div class="has-nav-secondary">
+    <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="community-member">
             <ul role="list">
-                <x-nav-link :href="localized_route('community-members.show', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show')">{{ __('About') }}</x-nav-link>
-                <x-nav-link :href="localized_route('community-members.show-interests', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-interests')">{{ __('Interests') }}</x-nav-link>
-                <x-nav-link :href="localized_route('community-members.show-experiences', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-experiences')">{{ __('Experience') }}</x-nav-link>
-                <x-nav-link :href="localized_route('community-members.show-access-needs', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-access-needs')">{{ __('Access needs') }}</x-nav-link>
+                <li>
+                    <x-nav-link :href="localized_route('community-members.show', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show')">{{ __('About') }}</x-nav-link>
+                </li>
+                <li>
+                    <x-nav-link :href="localized_route('community-members.show-experiences', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-experiences')">{{ __('Experience') }}</x-nav-link>
+                </li>
+                <li>
+                    <x-nav-link :href="localized_route('community-members.show-interests', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-interests')">{{ __('Interests') }}</x-nav-link>
+                </li>
+                <li>
+                    <x-nav-link :href="localized_route('community-members.show-access-needs', $communityMember)" :active="request()->routeIs(locale() . '.community-members.show-access-needs')">{{ __('Access needs') }}</x-nav-link>
+                </li>
             </ul>
         </nav>
 
         <div class="stack">
         @if(request()->routeIs(locale() . '.community-members.show'))
-            <h2>{{ __('About :name', ['name' => $communityMember->firstName()]) }}</h2>
-            @include('community-members.partials.about', ['level' => 3])
-        @elseif(request()->routeIs(locale() . '.community-members.show-interests'))
-            <h2>{{ __('Interests') }}</h2>
-            @include('community-members.partials.interests', ['level' => 3])
+            <h2 class="repel">{{ __('About') }} @can('update', $communityMember)<a class="cta secondary" href="{{ localized_route('community-members.edit', $communityMember) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
+            @include('community-members.partials.about')
         @elseif(request()->routeIs(locale() . '.community-members.show-experiences'))
-            <h2>{{ __('Experiences') }}</h2>
-            @include('community-members.partials.experiences', ['level' => 3])
+            <h2 class="repel">{{ __('Experiences') }} <a class="cta secondary" href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a></h2>
+            @include('community-members.partials.experiences')
+        @elseif(request()->routeIs(locale() . '.community-members.show-interests'))
+            <h2 class="repel">{{ __('Interests') }} <a class="cta secondary" href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a></h2>
+            @include('community-members.partials.interests')
         @elseif(request()->routeIs(locale() . '.community-members.show-access-needs'))
-            <h2>{{ __('Access needs') }}</h2>
-            @include('community-members.partials.access-needs', ['level' => 3])
+            <h2 class="repel">{{ __('Access needs') }}</h2>
+            @include('community-members.partials.access-needs')
         @endif
         </div>
     </div>
