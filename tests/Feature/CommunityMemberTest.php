@@ -125,6 +125,7 @@ test('users can create community member pages', function () {
     $communityMember = $communityMember->fresh();
 
     expect($communityMember->social_links)->toHaveKey('linked_in')->toHaveCount(1);
+    expect($communityMember->web_links)->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
@@ -196,9 +197,10 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
-        'work_and_volunteer_experiences' => [
+        'relevant_experiences' => [
             [
                 'title' => 'Some job',
+                'organization' => 'Some place',
                 'start_year' => '2021',
                 'end_year' => '',
                 'current' => 1,
@@ -210,12 +212,17 @@ test('users can create community member pages', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
 
+    $communityMember = $communityMember->fresh();
+
+    expect($communityMember->relevant_experiences)->toHaveCount(1);
+
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'relevant_experiences' => [
             [
                 'title' => '',
+                'organization' => '',
                 'start_year' => '',
                 'end_year' => '',
             ],
