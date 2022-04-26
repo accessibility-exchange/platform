@@ -1,13 +1,13 @@
 <form action="{{ localized_route('community-members.update-communication-and-meeting-preferences', $communityMember) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
-    <div class="with-sidebar">
+    <div class="with-sidebar with-sidebar:last">
         @include('community-members.partials.progress')
 
         <div class="stack">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
-                {{ __('Communication preferences') }}
+                {{ __('Communication and meeting preferences') }}
             </h2>
 
             <p class="repel">

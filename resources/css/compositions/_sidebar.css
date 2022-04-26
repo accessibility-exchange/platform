@@ -1,7 +1,13 @@
 .with-sidebar {
     display: flex;
-    flex-flow: row-reverse wrap;
-    gap: var(--size-3);
+    flex-flow: row wrap;
+    gap: var(--size-5);
+}
+
+.with-sidebar > :last-child {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: 50%;
 }
 
 .with-sidebar > :first-child {
@@ -9,7 +15,17 @@
     flex-grow: 1;
 }
 
-.with-sidebar > :last-child {
+.with-sidebar\:last {
+    flex-flow: row-reverse wrap;
+}
+
+.with-sidebar\:last > :first-child {
+    flex-basis: calc(var(--measure) / 2);
+    flex-grow: 1;
+    min-inline-size: auto;
+}
+
+.with-sidebar\:last > :last-child {
     flex-basis: 0;
     flex-grow: 999;
     min-inline-size: 50%;

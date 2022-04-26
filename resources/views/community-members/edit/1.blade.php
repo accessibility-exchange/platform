@@ -2,7 +2,7 @@
     @csrf
     @method('PUT')
 
-    <div class="with-sidebar">
+    <div class="with-sidebar with-sidebar:last">
 
         @include('community-members.partials.progress')
 
@@ -56,9 +56,15 @@
                 {{-- TODO: Upload a file. --}}
             </fieldset>
 
+            <div class="field @error('first_language') field--error @enderror stack">
+                <x-hearth-label for="first_language" :value="__('What is your first language? (required)')" />
+                <x-hearth-locale-select name="first_language" :selected="old('first_language', $communityMember->first_language ?? $communityMember->user->locale)" required />
+                <x-hearth-error for="first_language" />
+            </div>
+
             <fieldset>
-                <legend>{{ __('What languages are you comfortable working in?') }}</legend>
-                <livewire:language-picker name="working_languages" :languages="$communityMember->working_languages ?? [$communityMember->user->locale]" :availableLanguages="$languages" />
+                <legend>{{ __('What other languages are you comfortable working in?') }}</legend>
+                <livewire:language-picker name="working_languages" :languages="$communityMember->working_languages ?? []" :availableLanguages="$languages" />
             </fieldset>
 
             @if($communityMember->isConnector())
@@ -101,13 +107,13 @@
                 <legend>{{ __('Social media links') }}</legend>
 
                 @foreach ([
-                    'linkedin' => 'LinkedIn',
-                    'twitter' => 'Twitter',
-                    'instagram' => 'Instagram',
-                    'facebook' => 'Facebook'
-                ] as $key => $label)
+                    'linked_in',
+                    'twitter',
+                    'instagram',
+                    'facebook'
+                ] as $key)
                     <div class="field @error('links.' . $key) field--error @enderror">
-                        <x-hearth-label for="links_{{ $key }}" :value="__(':service (optional)', ['service' => $label] )" />
+                        <x-hearth-label for="links_{{ $key }}" :value="__(':service (optional)', ['service' => Str::studly($key)] )" />
                         <x-hearth-input id="links_{{ $key }}" name="links[{{ $key }}]" :value="old('links[' . $key . ']', $communityMember->links[$key] ?? '')" />
                         <x-hearth-error for="links_{{ $key }}" />
                     </div>

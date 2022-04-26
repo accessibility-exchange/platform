@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,7 @@ class CommunityMember extends Model implements HasMedia
         'email',
         'preferred_contact_method',
         'preferred_contact_person',
+        'first_language',
         'working_languages',
         'other_lived_experience_connections',
         'other_community_connections',
@@ -137,6 +139,21 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the community member's languages.
+     *
+     * @return Attribute
+     */
+    public function allLanguages(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => array_merge(
+                [$attributes['first_language']],
+                $attributes['working_languages'] ?? [],
+            ),
+        );
+    }
+
+    /**
      * Get the community member's links.
      *
      * @return array
@@ -151,11 +168,32 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the community member's relevant experiences.
+     *
+     * @return array
+     */
+    public function getRelevantExperiencesAttribute(): array
+    {
+        if (! is_null($this->attributes['relevant_experiences'])) {
+            $experiences = json_decode($this->attributes['relevant_experiences'], true);
+
+            $experiences = array_map(function ($experience) {
+                return array_filter($experience);
+            }, $experiences);
+            $experiences = array_filter($experiences);
+
+            return $experiences;
+        }
+
+        return [];
+    }
+
+    /**
      * Get the community member's first name.
      *
      * @return string
      */
-    public function firstName(): string
+    public function getfirstNameAttribute(): string
     {
         return (new NameParser())->parse($this->attributes['name'])->getFirstname();
     }
@@ -269,6 +307,16 @@ class CommunityMember extends Model implements HasMedia
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->region);
+    }
+
+    /**
+     * Is the community member publishable?
+     *
+     * @return bool
+     */
+    public function isPublishable(): bool
+    {
+        return $this->isConnector() || $this->isConsultant();
     }
 
     /**

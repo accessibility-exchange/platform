@@ -27,9 +27,10 @@ class CommunityMemberFactory extends Factory
             'name' => function (array $attributes) {
                 return User::find($attributes['user_id'])->name;
             },
-            'locality' => $this->faker->city(),
             'region' => $this->faker->provinceAbbr(),
-            'pronouns' => ['en' => $this->faker->randomElement(['He/him/his', 'She/her/hers', 'They/them/theirs'])],
+            'first_language' => function (array $attributes) {
+                return User::find($attributes['user_id'])->locale;
+            },
             'published_at' => date('Y-m-d h:i:s', time()),
         ];
     }

@@ -37,7 +37,8 @@ class UpdateCommunityMemberRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array',
             'bio' => 'required|array|required_array_keys:' . $this->communityMember->user->locale,
-            'working_languages' => 'required|array',
+            'first_language' => 'required|string',
+            'working_languages' => 'nullable|array',
             'lived_experience_connections' => [
                 'nullable',
                 Rule::requiredIf($this->communityMember->isConnector()),

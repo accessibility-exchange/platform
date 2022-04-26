@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f22c189fcd952a68ba01c5dfff74318",
+    "content-hash": "aa109bbf63856a1cc09d4c4c2d337625",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -533,6 +533,77 @@
                 "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v3"
             },
             "time": "2022-02-14T20:06:57+00:00"
+        },
+        {
+            "name": "codeat3/blade-forkawesome",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeat3/blade-forkawesome.git",
+                "reference": "d917b7852dcec97f5b5dbd2bbebdc007a4fa3bdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeat3/blade-forkawesome/zipball/d917b7852dcec97f5b5dbd2bbebdc007a4fa3bdb",
+                "reference": "d917b7852dcec97f5b5dbd2bbebdc007a4fa3bdb",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.1",
+                "illuminate/support": "^8.0|^9.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "codeat3/blade-icon-generation-helpers": "^0.1",
+                "codeat3/phpcs-styles": "^1.0",
+                "orchestra/testbench": "^6.0|^7.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Codeat3\\BladeForkAwesome\\BladeForkAwesomeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeat3\\BladeForkAwesome\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Swapnil Sarwe",
+                    "homepage": "https://swapnilsarwe.com"
+                },
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": " A package to easily make use of \"Fork Awesome Icons\" in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-forkawesome",
+            "keywords": [
+                "blade",
+                "forkawesome",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/codeat3/blade-forkawesome/issues",
+                "source": "https://github.com/codeat3/blade-forkawesome/tree/1.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/swapnilsarwe",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-02-04T09:36:39+00:00"
         },
         {
             "name": "codezero/laravel-unique-translation",
@@ -13537,5 +13608,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }

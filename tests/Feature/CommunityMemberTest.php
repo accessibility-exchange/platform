@@ -93,6 +93,10 @@ test('users can create community member pages', function () {
     $user = Auth::user();
     $communityMember = $user->communityMember;
 
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
+
     expect($communityMember)->toBeInstanceOf(CommunityMember::class);
 
     $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
@@ -101,9 +105,9 @@ test('users can create community member pages', function () {
         'region' => 'NS',
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => [$user->locale],
+        'first_language' => $user->locale,
         'links' => [
-            'linkedin' => 'https://linkedin.com/in/someone',
+            'linked_in' => 'https://linkedin.com/in/someone',
             'twitter' => '',
             'instagram' => '',
             'facebook' => '',
@@ -120,7 +124,7 @@ test('users can create community member pages', function () {
     $response->assertSessionHasNoErrors();
     $communityMember = $communityMember->fresh();
 
-    expect($communityMember->links)->toHaveKey('linkedin')->toHaveCount(1);
+    expect($communityMember->links)->toHaveKey('linked_in')->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
@@ -129,7 +133,7 @@ test('users can create community member pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => $communityMember->working_languages,
+        'first_language' => $communityMember->first_language,
         'publish' => __('Publish'),
     ]);
 
@@ -141,7 +145,7 @@ test('users can create community member pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => $communityMember->working_languages,
+        'first_language' => $communityMember->first_language,
         'unpublish' => __('Unpublish'),
     ]);
 
@@ -153,7 +157,7 @@ test('users can create community member pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => $communityMember->working_languages,
+        'first_language' => $communityMember->first_language,
         'preview' => __('Preview'),
     ]);
     $response->assertSessionHasNoErrors();
@@ -167,7 +171,7 @@ test('users can create community member pages', function () {
             'region' => 'NS',
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
-            'working_languages' => $communityMember->working_languages,
+            'first_language' => $communityMember->first_language,
             'other_links' => [
                 [
                     'title' => '',
@@ -290,7 +294,7 @@ test('community members with connector role must select connected identities', f
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => [$user->locale],
+        'first_language' => $user->locale,
     ]);
 
     $response->assertSessionHasErrors();
@@ -299,7 +303,7 @@ test('community members with connector role must select connected identities', f
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'working_languages' => [$user->locale],
+        'first_language' => $user->locale,
         'lived_experience_connections' => [$livedExperience->id],
         'community_connections' => [$community->id],
         'age_group_connections' => [$ageGroup->id],
@@ -342,8 +346,14 @@ test('community members can have consultant role', function () {
 });
 
 test('users can edit community member pages', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->get(localized_route('community-members.edit', $communityMember));
     $response->assertOk();
@@ -353,47 +363,55 @@ test('users can edit community member pages', function () {
         'bio' => ['en' => $communityMember->bio],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'working_languages' => ['en'],
+        'first_language' => $communityMember->first_language,
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
 
-    $draft_user = User::factory()->create();
-    $draft_community_member = $draft_user->communityMember;
+    $draftUser = User::factory()->create();
+    $draftCommunityMember = $draftUser->communityMember;
 
-    $response = $this->actingAs($draft_user)->get(localized_route('community-members.edit', $draft_community_member));
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $draftCommunityMember->communityRoles()->sync([$consultantRole->id]);
+
+    $response = $this->actingAs($draftUser)->get(localized_route('community-members.edit', $draftCommunityMember));
     $response->assertOk();
 
-    $response = $this->actingAs($draft_user)->put(localized_route('community-members.update', $draft_community_member), [
-        'name' => $draft_community_member->name,
-        'bio' => ['en' => $draft_community_member->bio],
+    $response = $this->actingAs($draftUser)->put(localized_route('community-members.update', $draftCommunityMember), [
+        'name' => $draftCommunityMember->name,
+        'bio' => ['en' => $draftCommunityMember->bio],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'working_languages' => ['en'],
+        'first_language' => $communityMember->first_language,
     ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $draft_community_member, 'step' => 1]));
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $draftCommunityMember, 'step' => 1]));
 });
 
 test('users can not edit others community member pages', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
-    $other_user = User::factory()->create();
+    $otherUser = User::factory()->create();
 
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $other_user->id,
-    ]);
+    $communityMember = $user->communityMember;
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.edit', $communityMember));
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
+
+    $response = $this->actingAs($otherUser)->get(localized_route('community-members.edit', $communityMember));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('community-members.update', $communityMember), [
+    $response = $this->actingAs($otherUser)->put(localized_route('community-members.update', $communityMember), [
         'name' => $communityMember->name,
         'bio' => $communityMember->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'working_languages' => ['en'],
+        'first_language' => $communityMember->first_language,
     ]);
     $response->assertForbidden();
 });
@@ -402,7 +420,7 @@ test('users can delete community member pages', function () {
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.edit', $communityMember))->delete(localized_route('community-members.destroy', $communityMember), [
+    $response = $this->actingAs($user)->delete(localized_route('community-members.destroy', $communityMember), [
         'current_password' => 'password',
     ]);
     $response->assertRedirect(localized_route('dashboard'));
@@ -412,31 +430,37 @@ test('users can not delete community member pages with wrong password', function
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.edit', $communityMember))->delete(localized_route('community-members.destroy', $communityMember), [
+    $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('community-members.destroy', $communityMember), [
         'current_password' => 'wrong_password',
     ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('community-members.edit', $communityMember));
+    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can not delete others community member pages', function () {
     $user = User::factory()->create();
-    $other_user = User::factory()->create();
+    $otherUser = User::factory()->create();
 
     $communityMember = CommunityMember::factory()->create([
-        'user_id' => $other_user->id,
+        'user_id' => $otherUser->id,
     ]);
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.edit', $communityMember))->delete(localized_route('community-members.destroy', $communityMember), [
+    $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('community-members.destroy', $communityMember), [
         'current_password' => 'password',
     ]);
     $response->assertForbidden();
 });
 
 test('users can view their own draft community member pages', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->get(localized_route('community-members.show', $communityMember));
     $response->assertOk();
@@ -444,31 +468,41 @@ test('users can view their own draft community member pages', function () {
 
 test('users can not view others draft community member pages', function () {
     $user = User::factory()->create();
-    $other_user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
-        'user_id' => $user->id,
-        'published_at' => null,
-    ]);
+    $otherUser = User::factory()->create();
+    $communityMember = $user->communityMember;
 
-    $response = $this->actingAs($other_user)->get(localized_route('community-members.show', $communityMember));
+    $response = $this->actingAs($otherUser)->get(localized_route('community-members.show', $communityMember));
     $response->assertForbidden();
 });
 
 test('users can view community member pages', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
+
     $communityMember->publish();
     $communityMember = $communityMember->fresh();
 
-    $other_user = User::factory()->create();
+    $otherUser = User::factory()->create();
 
-    $response = $this->actingAs($other_user)->get(localized_route('community-members.show', $communityMember));
+    $response = $this->actingAs($otherUser)->get(localized_route('community-members.show', $communityMember));
     $response->assertOk();
 });
 
 test('guests can not view community member pages', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->get(localized_route('community-members.index'));
     $response->assertRedirect(localized_route('login'));
@@ -478,8 +512,14 @@ test('guests can not view community member pages', function () {
 });
 
 test('community member pages can be published', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
         'publish' => true,
@@ -494,8 +534,14 @@ test('community member pages can be published', function () {
 });
 
 test('community member pages can be unpublished', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = $user->communityMember;
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
         'unpublish' => true,
@@ -510,18 +556,30 @@ test('community member pages can be unpublished', function () {
 });
 
 test('draft community members do not appear on community member index', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = CommunityMember::factory()->create([
         'published_at' => null,
     ]);
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->get(localized_route('community-members.index'));
     $response->assertDontSee($communityMember->name);
 });
 
 test('published community members appear on community member index', function () {
+    $this->seed(CommunityRoleSeeder::class);
+
     $user = User::factory()->create();
     $communityMember = CommunityMember::factory()->create();
+
+    $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
+
+    $communityMember->communityRoles()->sync([$consultantRole->id]);
 
     $response = $this->actingAs($user)->get(localized_route('community-members.index'));
     $response->assertSee($communityMember->name);
@@ -533,4 +591,9 @@ test('community members can participate in engagements', function () {
     $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
 
     expect($participant->engagements)->toHaveCount(1);
+});
+
+test('community member\'s first name can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create(['name' => 'Jonny Appleseed']);
+    expect($communityMember->first_name)->toEqual('Jonny');
 });

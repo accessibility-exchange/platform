@@ -5,9 +5,9 @@
                 <!-- Brand -->
                 <a class="brand" rel="home" href="{{ localized_route('welcome') }}">
                     @if(locale() == 'en')
-                    <x-tae-logo-mono-en />
+                    <x-tae-logo-mono-en class="logo" />
                     @elseif(locale() == 'fr')
-                    <x-tae-logo-mono-fr />
+                    <x-tae-logo-mono-fr class="logo" />
                     @endif
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </a>
