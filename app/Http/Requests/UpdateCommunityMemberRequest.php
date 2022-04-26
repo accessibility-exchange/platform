@@ -57,9 +57,9 @@ class UpdateCommunityMemberRequest extends FormRequest
                 'array',
                 Rule::in(AgeGroup::pluck('id')->toArray()),
             ],
-            'links.*' => 'nullable|url',
-            'other_links.*.title' => 'nullable|string|required_with:other_links.*.url',
-            'other_links.*.url' => 'nullable|url|required_with:other_links.*.title',
+            'social_links.*' => 'nullable|url',
+            'web_links.*.title' => 'nullable|string|required_with:other_links.*.url',
+            'web_links.*.url' => 'nullable|url|required_with:other_links.*.title',
         ];
     }
 
@@ -71,10 +71,10 @@ class UpdateCommunityMemberRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'links.*.url' => __('The link must be a valid web address.'),
-            'other_links.*.url.url' => __('The link must be a valid web address.'),
-            'other_links.*.url.required_with' => __('Please provide a link for the website.'),
-            'other_links.*.title.required_with' => __('Please provide a title for the link.'),
+            'social_links.*.url' => __('The link must be a valid web address.'),
+            'web_links.*.url.url' => __('The link must be a valid web address.'),
+            'web_links.*.url.required_with' => __('Please provide a link for the website.'),
+            'web_links.*.title.required_with' => __('Please provide a title for the link.'),
         ];
     }
 }

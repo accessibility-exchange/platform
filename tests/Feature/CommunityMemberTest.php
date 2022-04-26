@@ -106,13 +106,13 @@ test('users can create community member pages', function () {
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
         'first_language' => $user->locale,
-        'links' => [
+        'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
             'twitter' => '',
             'instagram' => '',
             'facebook' => '',
         ],
-        'other_links' => [
+        'web_links' => [
             [
                 'title' => 'My website',
                 'url' => 'https://example.com',
@@ -124,7 +124,7 @@ test('users can create community member pages', function () {
     $response->assertSessionHasNoErrors();
     $communityMember = $communityMember->fresh();
 
-    expect($communityMember->links)->toHaveKey('linked_in')->toHaveCount(1);
+    expect($communityMember->social_links)->toHaveKey('linked_in')->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 1]));
@@ -172,7 +172,7 @@ test('users can create community member pages', function () {
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
             'first_language' => $communityMember->first_language,
-            'other_links' => [
+            'web_links' => [
                 [
                     'title' => '',
                     'url' => '',

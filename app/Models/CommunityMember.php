@@ -39,7 +39,7 @@ class CommunityMember extends Model implements HasMedia
         'locality',
         'region',
         'bio',
-        'links',
+        'social_links',
         'pronouns',
         'picture_alt',
         'phone',
@@ -51,7 +51,7 @@ class CommunityMember extends Model implements HasMedia
         'other_lived_experience_connections',
         'other_community_connections',
         'vrs',
-        'other_links',
+        'web_links',
         'status',
         'user_id',
         'age_group',
@@ -70,8 +70,8 @@ class CommunityMember extends Model implements HasMedia
      * @var array<string, string>
      */
     protected $casts = [
-        'links' => 'array',
-        'other_links' => 'array',
+        'social_links' => 'array',
+        'web_links' => 'array',
         'relevant_experiences' => 'array',
         'support_people' => 'array',
         'languages' => 'array',
@@ -154,14 +154,28 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the community member's social links.
+     *
+     * @return array
+     */
+    public function getSocialLinksAttribute(): array
+    {
+        if (! is_null($this->attributes['social_links'])) {
+            return array_filter(json_decode($this->attributes['social_links'], true));
+        }
+
+        return [];
+    }
+
+    /**
      * Get the community member's links.
      *
      * @return array
      */
-    public function getLinksAttribute(): array
+    public function getWebLinksAttribute(): array
     {
-        if (! is_null($this->attributes['links'])) {
-            return array_filter(json_decode($this->attributes['links'], true));
+        if (! is_null($this->attributes['web_links'])) {
+            return array_filter(json_decode($this->attributes['web_links'], true));
         }
 
         return [];

@@ -31,17 +31,17 @@
                     <p>@if($communityMember->locality){{ $communityMember->locality }}, @endif{{ get_region_name($communityMember->region, ["CA"], locale()) }}</p>
                     <p><strong>{{ implode(', ', $communityMember->communityRoles()->pluck('name')->toArray()) }}</strong>@can('update', $communityMember) <a href="{{ localized_route('community-members.show-role-edit') }}">{{ __('Edit') }}</a>@endcan</p>
                 </div>
-                @if($communityMember->links && count($communityMember->links) > 0 || $communityMember->other_links && count($communityMember->other_links) > 0)
+                @if($communityMember->social_links && count($communityMember->social_links) > 0 || $communityMember->web_links && count($communityMember->web_links) > 0)
                 <ul role="list" class="cluster">
-                    @if($communityMember->links)
-                        @foreach($communityMember->links as $key => $value)
+                    @if($communityMember->social_links)
+                        @foreach($communityMember->social_links as $key => $value)
                         <li>
                             <a class="weight:semibold with-icon" href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                         </li>
                         @endforeach
                     @endif
-                    @if($communityMember->other_links)
-                        @foreach($communityMember->other_links as $link)
+                    @if($communityMember->web_links)
+                        @foreach($communityMember->web_links as $link)
                             <li>
                                 <a class="weight:semibold with-icon" href="{{ $link['url'] }}"><x-heroicon-o-globe-alt class="icon" /> {{ $link['title'] }}</a>
                             </li>

@@ -192,12 +192,12 @@ class CommunityMemberController extends Controller
     {
         $data = $request->validated();
 
-        if (isset($data['other_links'])) {
-            $other_links = array_filter(array_map('array_filter', $data['other_links']));
-            if (empty($other_links)) {
-                unset($data['other_links']);
+        if (isset($data['web_links'])) {
+            $web_links = array_filter(array_map('array_filter', $data['web_links']));
+            if (empty($web_links)) {
+                unset($data['web_links']);
             } else {
-                $data['other_links'] = $other_links;
+                $data['web_links'] = $web_links;
             }
         }
 
@@ -229,16 +229,12 @@ class CommunityMemberController extends Controller
     {
         $data = $request->validated();
 
-        if (! isset($data['rural_or_remote'])) {
-            $data['rural_or_remote'] = false;
-        }
-
-        if (isset($data['work_and_volunteer_experiences'])) {
-            $work_and_volunteer_experiences = array_filter(array_map('array_filter', $data['work_and_volunteer_experiences']));
-            if (empty($work_and_volunteer_experiences)) {
-                unset($data['work_and_volunteer_experiences']);
+        if (isset($data['relevant_experiences'])) {
+            $relevant_experiences = array_filter(array_map('array_filter', $data['relevant_experiences']));
+            if (empty($relevant_experiences)) {
+                unset($data['relevant_experiences']);
             } else {
-                $data['work_and_volunteer_experiences'] = $work_and_volunteer_experiences;
+                $data['relevant_experiences'] = $relevant_experiences;
             }
         }
 
@@ -261,10 +257,6 @@ class CommunityMemberController extends Controller
     public function updateInterests(UpdateCommunityMemberInterestsRequest $request, CommunityMember $communityMember): RedirectResponse
     {
         $data = $request->validated();
-
-        if (! isset($data['service_preference'])) {
-            $data['service_preference'] = [];
-        }
 
         $communityMember->fill($data);
 
