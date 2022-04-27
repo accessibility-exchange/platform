@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CommunityRole;
 use App\Models\Impact;
 use App\Models\PaymentMethod;
 use App\Models\Project;
@@ -47,6 +48,7 @@ class DevSeeder extends Seeder
             ]);
 
         $communityMember = $user->communityMember;
+        $communityMember->communityRoles()->sync(CommunityRole::pluck('id')->toArray());
 
         // Attach impacts.
         $communityMember->impacts()->attach([

@@ -11,6 +11,7 @@
         "php": "^8.0.2",
         "blade-ui-kit/blade-heroicons": "^1.3",
         "blade-ui-kit/blade-icons": "^1.2",
+        "codeat3/blade-forkawesome": "^1.8",
         "codezero/laravel-unique-translation": "^3.5",
         "doctrine/dbal": "^3.3",
         "elhebert/laravel-sri": "^3.1",

@@ -34,34 +34,34 @@ Route::controller(CommunityMemberController::class)->group(function () {
 
     Route::multilingual('/members/{communityMember}/access-needs', 'show')
         ->middleware(['auth', 'can:view,communityMember'])
-        ->name('community-members.show-access-needs');
+        ->name('community-members.show-communication-and-meeting-preferences');
 
     Route::multilingual('/members/{communityMember}/edit', 'edit')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->name('community-members.edit');
 
     Route::multilingual('/members/{communityMember}/edit', 'update')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->method('put')
         ->name('community-members.update');
 
     Route::multilingual('/members/{communityMember}/edit-interests', 'updateInterests')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->method('put')
         ->name('community-members.update-interests');
 
     Route::multilingual('/members/{communityMember}/edit-experiences', 'updateExperiences')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->method('put')
         ->name('community-members.update-experiences');
 
     Route::multilingual('/members/{communityMember}/edit-communication-and-meeting-preferences', 'updateCommunicationAndMeetingPreferences')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->method('put')
         ->name('community-members.update-communication-and-meeting-preferences');
 
     Route::multilingual('/members/{communityMember}/change-status', 'updatePublicationStatus')
-        ->middleware(['auth', 'can:update,communityMember'])
+        ->middleware(['auth', 'can:publish,communityMember'])
         ->method('put')
         ->name('community-members.update-publication-status');
 

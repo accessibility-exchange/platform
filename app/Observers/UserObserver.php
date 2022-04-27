@@ -18,6 +18,8 @@ class UserObserver
             $user->communityMember()->create([
                 'user_id' => $user->id,
                 'name' => $user->name,
+                'first_language' => $user->locale,
+                'languages' => [$user->locale],
             ]);
         }
     }

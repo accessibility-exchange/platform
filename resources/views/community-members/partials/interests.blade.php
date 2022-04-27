@@ -1,14 +1,7 @@
-@can('update', $communityMember)
-<x-privacy-indicator level="public">
-    <strong>{{ __('This information is public.') }}</strong> {{ __('It is visible to anyone with an account on this website.') }}
-</x-privacy-indicator>
-<p><a class="button" href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a></p>
-@endcan
 
-{{-- Service preference --}}
 
 @if(!$communityMember->sectors->isEmpty())
-<x-heading :level="$level">{{ __('Types of federally regulated organizations that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
+<h3>{{ __('Sectors of interest') }}</h3>
 <ul role="list" class="tags">
     @foreach($communityMember->sectors as $sector)
     <li class="tag">{{ $sector->name }}</li>
@@ -16,7 +9,7 @@
 </ul>
 @endif
 @if(!$communityMember->impacts->isEmpty())
-<x-heading :level="$level">{{ __('Areas within a federally regulated organization that :name is interested in', ['name' => $communityMember->firstName()]) }}</x-heading>
+<h3>{{ __('Areas of interest') }}</h3>
 <ul role="list" class="tags">
     @foreach($communityMember->impacts as $impact)
     <li class="tag">{{ $impact->name }}</li>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest extends For
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->communityMember);
     }
@@ -21,23 +22,50 @@ class UpdateCommunityMemberCommunicationAndMeetingPreferencesRequest extends For
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'email' => 'required_without:phone|nullable|email',
-            'phone' => 'required_without:email|nullable|string',
-            'vrs' => 'prohibited_unless:phone|nullable|boolean',
-            'support_people.*.name' => 'nullable|string',
-            'support_people.*.email' => 'exclude_without:support_people.*.name|nullable|email|required_without:support_people.*.phone',
-            'support_people.*.phone' => 'exclude_without:support_people.*.name|nullable|string|required_without:support_people.*.email',
-            'support_people.*.page_creator' => 'nullable|boolean',
-            'preferred_contact_method' => [
-                'required_with_all:email,phone',
-                'required_with_all:support_people.*.email,support_people.*.phone',
-                'in:email,phone,vrs',
-            ],
-            'preferred_contact_person' => 'required_with:support_people.*.name',
+            'preferred_contact_person' => 'required|in:me,support-person',
+            'email' => 'nullable|email',
+            'phone' => 'required_if:vrs,true|nullable|string',
+            'vrs' => 'nullable|boolean',
+            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string',
+            'support_person_email' => 'nullable|email',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string',
+            'support_person_vrs' => 'nullable|boolean',
+            'preferred_contact_method' => 'required|in:email,phone',
             'meeting_types' => 'required|array|min:1|in:in_person,web_conference,phone',
+        ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param Validator $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->sometimes('preferred_contact_method', 'in:email', function ($input) {
+            return $input->preferred_contact_person == 'me' && ! is_null($input->email) && is_null($input->phone) ||
+                $input->preferred_contact_person == 'support-person' && ! is_null($input->support_person_email) && is_null($input->support_person_phone);
+        });
+
+        $validator->sometimes('preferred_contact_method', 'in:phone', function ($input) {
+            return  $input->preferred_contact_person == 'me' && is_null($input->email) && ! is_null($input->phone) ||
+                $input->preferred_contact_person == 'support-person' && is_null($input->support_person_email) && ! is_null($input->support_person_phone);
+        });
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
         ];
     }
 }

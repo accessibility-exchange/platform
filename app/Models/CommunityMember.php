@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,18 +39,19 @@ class CommunityMember extends Model implements HasMedia
         'locality',
         'region',
         'bio',
-        'links',
+        'social_links',
         'pronouns',
         'picture_alt',
         'phone',
         'email',
         'preferred_contact_method',
         'preferred_contact_person',
+        'first_language',
         'working_languages',
         'other_lived_experience_connections',
         'other_community_connections',
         'vrs',
-        'other_links',
+        'web_links',
         'status',
         'user_id',
         'age_group',
@@ -58,7 +60,10 @@ class CommunityMember extends Model implements HasMedia
         'skills_and_strengths',
         'relevant_experiences',
         'languages',
-        'support_people',
+        'support_person_name',
+        'support_person_phone',
+        'support_person_email',
+        'support_person_vrs',
         'meeting_types',
     ];
 
@@ -68,14 +73,15 @@ class CommunityMember extends Model implements HasMedia
      * @var array<string, string>
      */
     protected $casts = [
-        'links' => 'array',
-        'other_links' => 'array',
+        'social_links' => 'array',
+        'web_links' => 'array',
         'relevant_experiences' => 'array',
         'support_people' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
         'rural_or_remote' => 'boolean',
         'vrs' => 'boolean',
+        'support_person_vrs' => 'boolean',
         'meeting_types' => 'array',
         'other_lived_experience_connections' => 'array',
         'other_community_connections' => 'array',
@@ -137,14 +143,63 @@ class CommunityMember extends Model implements HasMedia
     }
 
     /**
+     * Get the community member's languages.
+     *
+     * @return Attribute
+     */
+    public function allLanguages(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => array_merge(
+                [$attributes['first_language']],
+                $attributes['working_languages'] ?? [],
+            ),
+        );
+    }
+
+    /**
+     * Get the community member's social links.
+     *
+     * @return array
+     */
+    public function getSocialLinksAttribute(): array
+    {
+        if (! is_null($this->attributes['social_links'])) {
+            return array_filter(json_decode($this->attributes['social_links'], true));
+        }
+
+        return [];
+    }
+
+    /**
      * Get the community member's links.
      *
      * @return array
      */
-    public function getLinksAttribute(): array
+    public function getWebLinksAttribute(): array
     {
-        if (! is_null($this->attributes['links'])) {
-            return array_filter(json_decode($this->attributes['links'], true));
+        if (! is_null($this->attributes['web_links'])) {
+            return array_filter(json_decode($this->attributes['web_links'], true));
+        }
+
+        return [];
+    }
+
+    /**
+     * Get the community member's relevant experiences.
+     *
+     * @return array
+     */
+    public function getRelevantExperiencesAttribute(): array
+    {
+        if (! is_null($this->attributes['relevant_experiences'])) {
+            $experiences = json_decode($this->attributes['relevant_experiences'], true);
+
+            $experiences = array_map(function ($experience) {
+                return array_filter($experience);
+            }, $experiences);
+
+            return array_filter($experiences);
         }
 
         return [];
@@ -155,9 +210,129 @@ class CommunityMember extends Model implements HasMedia
      *
      * @return string
      */
-    public function firstName(): string
+    public function getFirstNameAttribute(): string
     {
         return (new NameParser())->parse($this->attributes['name'])->getFirstname();
+    }
+
+    /**
+     * Get the community member's primary contact person.
+     *
+     * @return string
+     */
+    public function getContactPersonAttribute(): string
+    {
+        return $this->preferred_contact_person === 'me' ? $this->first_name : $this->support_person_name;
+    }
+
+    /**
+     * Get the community member's primary contact point.
+     *
+     * @return string|null
+     */
+    public function getPrimaryContactPointAttribute(): string|null
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->phone :
+                $this->support_person_phone,
+            default => null,
+        };
+
+        if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
+            $contactPoint .= ".  \n" . __(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    /**
+     * Determine if the community member's contact person requires VRS for phone calls.
+     *
+     * @return bool
+     */
+    public function getRequiresVrsAttribute(): bool
+    {
+        return $this->preferred_contact_person === 'me' ?
+            $this->vrs :
+            $this->support_person_vrs;
+    }
+
+    /**
+     * Get a string which expresses the community member's primary contact method.
+     *
+     * @return string|null
+     */
+    public function getPrimaryContactMethodAttribute(): string|null
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
+                'email' => '[' . $this->primary_contact_point . '](mailto:' . $this->primary_contact_point . ')',
+            ]),
+            'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
+                'phone_number' => $this->primary_contact_point,
+            ]),
+            default => null
+        };
+    }
+
+    /**
+     * Get the community member's alternate contact point.
+     *
+     * @return string|null
+     */
+    public function getAlternateContactPointAttribute(): string|null
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->phone :
+                $this->support_person_phone,
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
+            default => null,
+        };
+
+        if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
+            $contactPoint .= "  \n" . __(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    /**
+     * Get the community member's alternate contact method.
+     *
+     * @return string|null
+     */
+    public function getAlternateContactMethodAttribute(): string|null
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => $this->alternate_contact_point,
+            'phone' => '[' . $this->alternate_contact_point . '](mailto:' . $this->alternate_contact_point . ')',
+            default => null
+        };
+    }
+
+    /**
+     * @param string $value
+     * @return string|null
+     */
+    public function getMeetingType(string $value): string|null
+    {
+        return match ($value) {
+            'in_person' => __('In person'),
+            'phone' => __('Virtual – phone'),
+            'web_conference' => __('Virtual – web conference'),
+            default => null
+        };
     }
 
     /**
@@ -166,7 +341,7 @@ class CommunityMember extends Model implements HasMedia
      * @param string $value
      * @return string
      */
-    public function getPhoneAttribute($value): string
+    public function getPhoneAttribute(string $value): string
     {
         return str_replace(['-', '(', ')', '.', ' '], '', $value);
     }
@@ -269,6 +444,16 @@ class CommunityMember extends Model implements HasMedia
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->region);
+    }
+
+    /**
+     * Is the community member publishable?
+     *
+     * @return bool
+     */
+    public function isPublishable(): bool
+    {
+        return $this->isConnector() || $this->isConsultant();
     }
 
     /**

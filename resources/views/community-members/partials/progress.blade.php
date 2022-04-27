@@ -12,7 +12,7 @@
             <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]) }}">{{ __('Interests') }}</a>
         </li>
         <li>
-            <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]) }}">{{ __('Communication preferences') }}</a>
+            <a href="{{ localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 4]) }}">{{ __('Communication and meeting preferences') }}</a>
         </li>
     </ol>
 

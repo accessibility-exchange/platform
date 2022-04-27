@@ -4,12 +4,12 @@ return [
     /*
      *  The host used to communicate with the Ray app.
      */
-    'host' => 'host.docker.internal',
+    'host' => env('RAY_HOST', 'localhost'),
 
     /*
      *  The port number used to communicate with the Ray app.
      */
-    'port' => 23517,
+    'port' => env('RAY_PORT', 23517),
 
     /*
      *  Absolute base path for your sites or projects in Homestead, Vagrant, Docker, or another remote development

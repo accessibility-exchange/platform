@@ -22,7 +22,7 @@ class Experiences extends Component
             return;
         }
 
-        $this->experiences[] = ['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false];
+        $this->experiences[] = ['title' => '', 'organization' => '', 'start_year' => '', 'end_year' => '', 'current' => false];
     }
 
     public function removeExperience(int $i): void

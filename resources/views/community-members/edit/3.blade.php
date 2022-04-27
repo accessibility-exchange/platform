@@ -2,7 +2,7 @@
     @csrf
     @method('PUT')
 
-    <div class="with-sidebar">
+    <div class="with-sidebar with-sidebar:last">
         @include('community-members.partials.progress')
 
         <div class="stack">

@@ -37,7 +37,8 @@ class UpdateCommunityMemberRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array',
             'bio' => 'required|array|required_array_keys:' . $this->communityMember->user->locale,
-            'working_languages' => 'required|array',
+            'first_language' => 'required|string',
+            'working_languages' => 'nullable|array',
             'lived_experience_connections' => [
                 'nullable',
                 Rule::requiredIf($this->communityMember->isConnector()),
@@ -56,9 +57,9 @@ class UpdateCommunityMemberRequest extends FormRequest
                 'array',
                 Rule::in(AgeGroup::pluck('id')->toArray()),
             ],
-            'links.*' => 'nullable|url',
-            'other_links.*.title' => 'nullable|string|required_with:other_links.*.url',
-            'other_links.*.url' => 'nullable|url|required_with:other_links.*.title',
+            'social_links.*' => 'nullable|url',
+            'web_links.*.title' => 'nullable|string|required_with:other_links.*.url',
+            'web_links.*.url' => 'nullable|url|required_with:other_links.*.title',
         ];
     }
 
@@ -70,10 +71,10 @@ class UpdateCommunityMemberRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'links.*.url' => __('The link must be a valid web address.'),
-            'other_links.*.url.url' => __('The link must be a valid web address.'),
-            'other_links.*.url.required_with' => __('Please provide a link for the website.'),
-            'other_links.*.title.required_with' => __('Please provide a title for the link.'),
+            'social_links.*.url' => __('The link must be a valid web address.'),
+            'web_links.*.url.url' => __('The link must be a valid web address.'),
+            'web_links.*.url.required_with' => __('Please provide a link for the website.'),
+            'web_links.*.title.required_with' => __('Please provide a title for the link.'),
         ];
     }
 }

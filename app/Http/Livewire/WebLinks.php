@@ -4,13 +4,13 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class OtherLinks extends Component
+class WebLinks extends Component
 {
     public $links = [];
 
     public function mount(array $links)
     {
-        $this->links = old('other_links', $links);
+        $this->links = old('web_links', $links);
     }
 
     public function addLink(): void
@@ -36,6 +36,6 @@ class OtherLinks extends Component
 
     public function render()
     {
-        return view('livewire.other-links');
+        return view('livewire.web-links');
     }
 }

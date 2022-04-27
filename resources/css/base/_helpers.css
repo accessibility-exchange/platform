@@ -18,12 +18,12 @@
     }
 }
 
-.float-left {
+.float\:left {
     float: left;
     margin-inline-end: var(--size-3);
 }
 
-.float-right {
+.float\:right {
     float: right;
     margin-inline-start: var(--size-3);
 }

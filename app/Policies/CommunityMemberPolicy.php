@@ -63,6 +63,20 @@ class CommunityMemberPolicy
     }
 
     /**
+     * Determine whether the user can publish the model.
+     *
+     * @param User $user
+     * @param CommunityMember $communityMember
+     * @return Response
+     */
+    public function publish(User $user, CommunityMember $communityMember): Response
+    {
+        return $user->id === $communityMember->user_id && $communityMember->isPublishable()
+            ? Response::allow()
+            : Response::deny(__('You cannot edit this community member page.'));
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param User $user

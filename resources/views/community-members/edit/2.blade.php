@@ -2,7 +2,7 @@
     @csrf
     @method('PUT')
 
-    <div class="with-sidebar">
+    <div class="with-sidebar with-sidebar:last">
         @include('community-members.partials.progress')
 
         <div class="stack">
@@ -43,7 +43,7 @@
             <fieldset class="stack">
                 <legend>{{ __('Relevant experiences') }}</legend>
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}</x-hearth-hint>
-                <livewire:work-and-volunteer-experiences name="relevant_experiences" :experiences="$communityMember->relevant_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
+                <livewire:experiences name="relevant_experiences" :experiences="$communityMember->relevant_experiences ?? [['title' => '', 'start_year' => '', 'end_year' => '', 'current' => false]]" />
             </fieldset>
 
             <p class="repel">
