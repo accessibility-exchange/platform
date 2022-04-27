@@ -228,9 +228,9 @@ class CommunityMember extends Model implements HasMedia
     /**
      * Get the community member's primary contact point.
      *
-     * @return string
+     * @return string|null
      */
-    public function getPrimaryContactPointAttribute(): string
+    public function getPrimaryContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
             'email' => $this->preferred_contact_person === 'me' ?
@@ -239,6 +239,7 @@ class CommunityMember extends Model implements HasMedia
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->phone :
                 $this->support_person_phone,
+            default => null,
         };
 
         if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
@@ -263,9 +264,9 @@ class CommunityMember extends Model implements HasMedia
     /**
      * Get a string which expresses the community member's primary contact method.
      *
-     * @return string
+     * @return string|null
      */
-    public function getPrimaryContactMethodAttribute(): string
+    public function getPrimaryContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
             'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
@@ -278,6 +279,7 @@ class CommunityMember extends Model implements HasMedia
                 'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
                 'phone_number' => $this->primary_contact_point,
             ]),
+            default => null
         };
     }
 
@@ -295,10 +297,11 @@ class CommunityMember extends Model implements HasMedia
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->email :
                 $this->support_person_email,
+            default => null,
         };
 
         if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
-            $contactPoint .= "  \n" . __(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+            $contactPoint .= "  \n" . __(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
         }
 
         return $contactPoint;
@@ -314,19 +317,21 @@ class CommunityMember extends Model implements HasMedia
         return match ($this->preferred_contact_method) {
             'email' => $this->alternate_contact_point,
             'phone' => '[' . $this->alternate_contact_point . '](mailto:' . $this->alternate_contact_point . ')',
+            default => null
         };
     }
 
     /**
      * @param string $value
-     * @return string
+     * @return string|null
      */
-    public function getMeetingType(string $value): string
+    public function getMeetingType(string $value): string|null
     {
         return match ($value) {
             'in_person' => __('In person'),
             'phone' => __('Virtual – phone'),
-            'web_conference' => __('Virtual – web conference')
+            'web_conference' => __('Virtual – web conference'),
+            default => null
         };
     }
 

@@ -615,7 +615,11 @@ test('community member\'s vrs requirement can be retrieved', function () {
 });
 
 test('community member\'s primary contact point can be retrieved', function () {
-    $communityMember = CommunityMember::factory()->create([
+    $communityMember = CommunityMember::factory()->create();
+
+    expect($communityMember->primary_contact_point)->toBeNull();
+
+    $communityMember->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
         'phone' => '9059999999',
@@ -644,7 +648,11 @@ test('community member\'s primary contact point can be retrieved', function () {
 });
 
 test('community member\'s primary contact method can be retrieved', function () {
-    $communityMember = CommunityMember::factory()->create([
+    $communityMember = CommunityMember::factory()->create();
+
+    expect($communityMember->primary_contact_method)->toBeNull();
+
+    $communityMember->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
         'phone' => '9059999999',
@@ -670,4 +678,78 @@ test('community member\'s primary contact method can be retrieved', function () 
     $communityMember->update(['preferred_contact_person' => 'me']);
 
     expect($communityMember->primary_contact_method)->toEqual("Call Jonny at 9059999999.  \nJonny requires VRS for phone calls.");
+});
+
+test('community member\'s alternate contact point can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create();
+
+    expect($communityMember->alternate_contact_point)->toBeNull();
+
+    $communityMember->update([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+        'phone' => '9059999999',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' =>  'phone',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9051111111',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($communityMember->alternate_contact_point)->toEqual('jonny@example.com');
+
+    $communityMember->update(['preferred_contact_person' => 'support-person']);
+
+    expect($communityMember->alternate_contact_point)->toEqual('jenny@example.com');
+
+    $communityMember->update(['preferred_contact_method' => 'email']);
+
+    expect($communityMember->alternate_contact_point)->toEqual('9051111111');
+
+    $communityMember->update(['preferred_contact_person' => 'me']);
+
+    expect($communityMember->alternate_contact_point)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
+});
+
+test('community member\'s alternate contact method can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create();
+
+    expect($communityMember->alternate_contact_method)->toBeNull();
+
+    $communityMember->update([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+        'phone' => '9059999999',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' =>  'phone',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9051111111',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($communityMember->alternate_contact_method)->toEqual('[jonny@example.com](mailto:jonny@example.com)');
+
+    $communityMember->update(['preferred_contact_person' => 'support-person']);
+
+    expect($communityMember->alternate_contact_method)->toEqual('[jenny@example.com](mailto:jenny@example.com)');
+
+    $communityMember->update(['preferred_contact_method' => 'email']);
+
+    expect($communityMember->alternate_contact_method)->toEqual('9051111111');
+
+    $communityMember->update(['preferred_contact_person' => 'me']);
+
+    expect($communityMember->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
+});
+
+test('community member meeting type can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create();
+    expect($communityMember->getMeetingType('in_person'))->toEqual('In person');
+    expect($communityMember->getMeetingType('phone'))->toEqual('Virtual – phone');
+    expect($communityMember->getMeetingType('web_conference'))->toEqual('Virtual – web conference');
+    expect($communityMember->getMeetingType('bad meeting'))->toBeNull();
 });
