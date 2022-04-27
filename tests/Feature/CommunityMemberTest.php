@@ -197,6 +197,19 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
+        'save_and_next' => __('Save and next'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
+
+    $communityMember = $communityMember->fresh();
+
+    expect($communityMember->relevant_experiences)->toHaveCount(0);
+
+    $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
+        'lived_experience' => '',
+        'skills_and_strengths' => '',
         'relevant_experiences' => [
             [
                 'title' => 'Some job',
@@ -215,23 +228,6 @@ test('users can create community member pages', function () {
     $communityMember = $communityMember->fresh();
 
     expect($communityMember->relevant_experiences)->toHaveCount(1);
-
-    $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
-        'lived_experience' => '',
-        'skills_and_strengths' => '',
-        'relevant_experiences' => [
-            [
-                'title' => '',
-                'organization' => '',
-                'start_year' => '',
-                'end_year' => '',
-            ],
-        ],
-        'save_and_next' => __('Save and next'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('community-members.edit', ['communityMember' => $communityMember, 'step' => 3]));
 
     $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-and-meeting-preferences', $communityMember), [
         'email' => 'me@here.com',
@@ -592,4 +588,86 @@ test('community members can participate in engagements', function () {
 test('community member\'s first name can be retrieved', function () {
     $communityMember = CommunityMember::factory()->create(['name' => 'Jonny Appleseed']);
     expect($communityMember->first_name)->toEqual('Jonny');
+});
+
+test('community member\'s contact person can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create(['name' => 'Jonny Appleseed', 'preferred_contact_person' => 'me', 'support_person_name' => 'Jenny Appleseed']);
+
+    expect($communityMember->contact_person)->toEqual('Jonny');
+
+    $communityMember->update(['preferred_contact_person' => 'support_person']);
+
+    expect($communityMember->contact_person)->toEqual('Jenny Appleseed');
+});
+
+test('community member\'s vrs requirement can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create([
+        'preferred_contact_person' => 'me',
+        'vrs' => true,
+        'support_person_vrs' => false,
+    ]);
+
+    expect($communityMember->requires_vrs)->toBeTrue();
+
+    $communityMember->update(['preferred_contact_person' => 'support_person']);
+
+    expect($communityMember->requires_vrs)->toBeFalse();
+});
+
+test('community member\'s primary contact point can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+        'phone' => '9059999999',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' =>  'email',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9051111111',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($communityMember->primary_contact_point)->toEqual('jonny@example.com');
+
+    $communityMember->update(['preferred_contact_person' => 'support-person']);
+
+    expect($communityMember->primary_contact_point)->toEqual('jenny@example.com');
+
+    $communityMember->update(['preferred_contact_method' => 'phone']);
+
+    expect($communityMember->primary_contact_point)->toEqual('9051111111');
+
+    $communityMember->update(['preferred_contact_person' => 'me']);
+
+    expect($communityMember->primary_contact_point)->toEqual("9059999999.  \nJonny requires VRS for phone calls");
+});
+
+test('community member\'s primary contact method can be retrieved', function () {
+    $communityMember = CommunityMember::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+        'phone' => '9059999999',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' =>  'email',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9051111111',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($communityMember->primary_contact_method)->toEqual('Send an email to Jonny at [jonny@example.com](mailto:jonny@example.com).');
+
+    $communityMember->update(['preferred_contact_person' => 'support-person']);
+
+    expect($communityMember->primary_contact_method)->toEqual('Send an email to Jonny’s support person, Jenny Appleseed, at [jenny@example.com](mailto:jenny@example.com).');
+
+    $communityMember->update(['preferred_contact_method' => 'phone']);
+
+    expect($communityMember->primary_contact_method)->toEqual('Call Jonny’s support person, Jenny Appleseed, at 9051111111.');
+
+    $communityMember->update(['preferred_contact_person' => 'me']);
+
+    expect($communityMember->primary_contact_method)->toEqual("Call Jonny at 9059999999.  \nJonny requires VRS for phone calls.");
 });

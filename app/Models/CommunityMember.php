@@ -198,9 +198,8 @@ class CommunityMember extends Model implements HasMedia
             $experiences = array_map(function ($experience) {
                 return array_filter($experience);
             }, $experiences);
-            $experiences = array_filter($experiences);
 
-            return $experiences;
+            return array_filter($experiences);
         }
 
         return [];
@@ -211,9 +210,124 @@ class CommunityMember extends Model implements HasMedia
      *
      * @return string
      */
-    public function getfirstNameAttribute(): string
+    public function getFirstNameAttribute(): string
     {
         return (new NameParser())->parse($this->attributes['name'])->getFirstname();
+    }
+
+    /**
+     * Get the community member's primary contact person.
+     *
+     * @return string
+     */
+    public function getContactPersonAttribute(): string
+    {
+        return $this->preferred_contact_person === 'me' ? $this->first_name : $this->support_person_name;
+    }
+
+    /**
+     * Get the community member's primary contact point.
+     *
+     * @return string
+     */
+    public function getPrimaryContactPointAttribute(): string
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->phone :
+                $this->support_person_phone,
+        };
+
+        if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
+            $contactPoint .= ".  \n" . __(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    /**
+     * Determine if the community member's contact person requires VRS for phone calls.
+     *
+     * @return bool
+     */
+    public function getRequiresVrsAttribute(): bool
+    {
+        return $this->preferred_contact_person === 'me' ?
+            $this->vrs :
+            $this->support_person_vrs;
+    }
+
+    /**
+     * Get a string which expresses the community member's primary contact method.
+     *
+     * @return string
+     */
+    public function getPrimaryContactMethodAttribute(): string
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
+                'email' => '[' . $this->primary_contact_point . '](mailto:' . $this->primary_contact_point . ')',
+            ]),
+            'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
+                'phone_number' => $this->primary_contact_point,
+            ]),
+        };
+    }
+
+    /**
+     * Get the community member's alternate contact point.
+     *
+     * @return string|null
+     */
+    public function getAlternateContactPointAttribute(): string|null
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->phone :
+                $this->support_person_phone,
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
+        };
+
+        if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
+            $contactPoint .= "  \n" . __(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    /**
+     * Get the community member's alternate contact method.
+     *
+     * @return string|null
+     */
+    public function getAlternateContactMethodAttribute(): string|null
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => $this->alternate_contact_point,
+            'phone' => '[' . $this->alternate_contact_point . '](mailto:' . $this->alternate_contact_point . ')',
+        };
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    public function getMeetingType(string $value): string
+    {
+        return match ($value) {
+            'in_person' => __('In person'),
+            'phone' => __('Virtual – phone'),
+            'web_conference' => __('Virtual – web conference')
+        };
     }
 
     /**
@@ -222,7 +336,7 @@ class CommunityMember extends Model implements HasMedia
      * @param string $value
      * @return string
      */
-    public function getPhoneAttribute($value): string
+    public function getPhoneAttribute(string $value): string
     {
         return str_replace(['-', '(', ')', '.', ' '], '', $value);
     }
