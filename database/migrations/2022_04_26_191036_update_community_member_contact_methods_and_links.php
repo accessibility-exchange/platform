@@ -13,6 +13,11 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('community_members', function (Blueprint $table) {
+            $table->dropColumn('support_people');
+            $table->string('support_person_name')->nullable();
+            $table->string('support_person_email')->nullable();
+            $table->string('support_person_phone')->nullable();
+            $table->boolean('support_person_vrs')->nullable();
             $table->renameColumn('links', 'social_links');
             $table->renameColumn('other_links', 'web_links');
         });
@@ -26,6 +31,8 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('community_members', function (Blueprint $table) {
+            $table->json('support_people')->nullable();
+            $table->dropColumn(['support_person_name', 'support_person_email', 'support_person_phone', 'support_person_vrs']);
             $table->renameColumn('social_links', 'links');
             $table->renameColumn('web_links', 'other_links');
         });

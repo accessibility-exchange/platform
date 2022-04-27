@@ -60,7 +60,10 @@ class CommunityMember extends Model implements HasMedia
         'skills_and_strengths',
         'relevant_experiences',
         'languages',
-        'support_people',
+        'support_person_name',
+        'support_person_phone',
+        'support_person_email',
+        'support_person_vrs',
         'meeting_types',
     ];
 
@@ -78,6 +81,7 @@ class CommunityMember extends Model implements HasMedia
         'working_languages' => 'array',
         'rural_or_remote' => 'boolean',
         'vrs' => 'boolean',
+        'support_person_vrs' => 'boolean',
         'meeting_types' => 'array',
         'other_lived_experience_connections' => 'array',
         'other_community_connections' => 'array',

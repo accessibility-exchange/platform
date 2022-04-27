@@ -236,13 +236,6 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-and-meeting-preferences', $communityMember), [
         'email' => 'me@here.com',
         'phone' => '902-123-4567',
-        'support_people' => [
-            [
-                'name' => '',
-                'email' => '',
-                'phone' => '',
-            ],
-        ],
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'me',
         'meeting_types' => ['in_person', 'web_conference'],
@@ -255,15 +248,11 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-communication-and-meeting-preferences', $communityMember), [
         'email' => 'me@here.com',
         'phone' => '902-123-4567',
-        'support_people' => [
-            [
-                'name' => 'Someone',
-                'email' => 'me@here.com',
-                'phone' => '438-123-4567',
-            ],
-        ],
+        'support_person_name' => 'Someone',
+        'support_person_email' => 'me@here.com',
+        'support_person_phone' => '438-123-4567',
         'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'Someone',
+        'preferred_contact_person' => 'support-person',
         'meeting_types' => ['in_person', 'web_conference'],
         'save' => __('Save'),
     ]);
