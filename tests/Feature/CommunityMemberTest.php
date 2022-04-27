@@ -197,6 +197,15 @@ test('users can create community member pages', function () {
     $response = $this->actingAs($user)->put(localized_route('community-members.update-experiences', $communityMember), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
+        'relevant_experiences' => [
+            [
+                'title' => '',
+                'organization' => '',
+                'start_year' => '',
+                'end_year' => '',
+                'current' => false,
+            ],
+        ],
         'save_and_next' => __('Save and next'),
     ]);
 
