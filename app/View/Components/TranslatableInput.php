@@ -47,7 +47,7 @@ class TranslatableInput extends Component
      *
      * @return void
      */
-    public function __construct($name, $label, $hint = null, $languages = null, $model = null)
+    public function __construct($name, $label, $hint = null, $model = null)
     {
         $this->name = $name;
         $this->label = $label;
