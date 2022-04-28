@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddTranslationRequest;
 use App\Http\Requests\DestroyTranslationRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class TranslationController extends Controller
 {
