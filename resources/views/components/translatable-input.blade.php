@@ -1,13 +1,18 @@
-<div class="field @error($name . '.' . locale()) field--error @enderror stack">
-    <x-hearth-label :for="$name . '_' . locale()" :value="__(':label (:locale)', ['label' => $label, 'locale' => get_locale_name(locale())])" />
-    @if($hint)
-        <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
-    @endif
-    <x-hearth-input type="text" :id="$name . '_' . locale()" :name="$name . '[' . locale() . ']'" :value="old($name . '.' . locale(), $model ? $model->getTranslation($name, locale(), false) : '')" :hinted="$name . '-hint'" />
-    <x-hearth-error :for="$name . '.' . locale()" />
-</div>
 @foreach($languages as $language)
-    @if($language !== locale())
+    @if($loop->first)
+        <div class="field @error($name . '.' . $language) field--error @enderror stack">
+            @if($language === locale())
+            <x-hearth-label :for="$name . '_' . $language" :value="$label" />
+            @else
+            <x-hearth-label :for="$name . '_' . $language" :value="$label . ' (' . get_locale_name($language) . ')'" />
+            @endif
+            @if($hint)
+                <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
+            @endif
+            <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'" />
+            <x-hearth-error :for="$name . '.' . $language" />
+        </div>
+    @else
         @if (is_signed_language($language))
         @else
         <div class="expander field @error($name . '.' . $language) field--error @enderror stack" x-data="{expanded: false, value: '{{ old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '') }}', badgeText: '{{ __('Content added') }}'}">

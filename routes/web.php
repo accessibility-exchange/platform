@@ -98,6 +98,7 @@ require __DIR__ . '/projects.php';
 require __DIR__ . '/engagements.php';
 require __DIR__ . '/resources.php';
 require __DIR__ . '/resource-collections.php';
+require __DIR__ . '/translations.php';
 require __DIR__ . '/memberships.php';
 require __DIR__ . '/invitations.php';
 require __DIR__ . '/fortify.php';

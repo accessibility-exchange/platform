@@ -6,12 +6,12 @@ if (! function_exists('settings')) {
     /**
      * Retrieve a setting from the settings Valuestore.
      *
-     * @param string $key The setting key.
-     * @param mixed $default A default value for the setting.
+     * @param string|null $key The setting key.
+     * @param mixed|null $default A default value for the setting.
      *
      * @return mixed
      */
-    function settings($key = null, $default = null): mixed
+    function settings(string $key = null, mixed $default = null): mixed
     {
         if ($key === null) {
             return app(Settings::class);
@@ -31,7 +31,7 @@ if (! function_exists('is_signed_language')) {
      *
      * @return bool
      */
-    function is_signed_language($locale)
+    function is_signed_language(string $locale): bool
     {
         return in_array($locale, ['ase', 'fcs']);
     }

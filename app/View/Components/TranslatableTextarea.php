@@ -49,11 +49,18 @@ class TranslatableTextarea extends Component
      */
     public function __construct($name, $label, $hint = null, $model = null)
     {
+        $languages = $model->languages ?? config('locales.supported');
+
+        if (($key = array_search(locale(), $languages)) !== false) {
+            unset($languages[$key]);
+            array_unshift($languages, locale());
+        }
+
         $this->name = $name;
         $this->label = $label;
         $this->hint = $hint;
         $this->model = $model;
-        $this->languages = $model->languages ?? config('locales.supported');
+        $this->languages = $languages;
     }
 
     /**

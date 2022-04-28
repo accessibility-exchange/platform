@@ -7,7 +7,7 @@
     font-weight: var(--font-weight-4);
 }
 
-.expander button {
+.expander .title button {
     align-items: center;
     background-color: transparent;
     border: 0;
@@ -23,7 +23,7 @@
     width: calc(100% + 2 * var(--size-2));
 }
 
-.expander button::before {
+.expander .title button::before {
     border-block-start: var(--border-size-1) solid var(--expander-border);
     content: "";
     display: block;
@@ -33,38 +33,38 @@
     width: calc(100% - 2 * var(--size-2));
 }
 
-.expander button:hover::before {
+.expander .title button:hover::before {
     border-block-start-width: var(border-size-2);
 }
 
-.expander button:focus {
+.expander .title button:focus {
     border-block-start-color: transparent;
     color: var(--expander-color-focus);
     outline: var(--border-size-2) solid var(--expander-color-focus);
     outline-offset: 0;
 }
 
-.expander button:focus::before {
+.expander .title button:focus::before {
     border-block-start-color: transparent;
 }
 
-.expander button:active {
+.expander .title button:active {
     background-color: var(--expander-background-active);
     color: var(--expander-color-active);
 }
 
-.expander button:active::before {
+.expander .title button:active::before {
     border-block-start: var(--border-size-2) solid var(--expander-border-active);
 }
 
-.expander button svg {
+.expander .title button svg {
     width: 1.5em;
 }
 
-.expander button .indicator {
+.expander .title button .indicator {
     transition: transform 0.2s ease-in-out;
 }
 
-.expander button[aria-expanded="true"] .indicator {
+.expander .title button[aria-expanded="true"] .indicator {
     transform: rotate(-180deg);
 }
