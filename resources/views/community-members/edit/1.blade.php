@@ -41,15 +41,13 @@
             </fieldset>
 
             <div class="field @error('pronouns') field--error @enderror">
-                <x-translatable-input name="pronouns" :model="$communityMember" :label="__('Pronouns (optional)')" hinted="pronouns-hint" />
-                <x-hearth-hint for="pronouns">{{ __('For example: he/him, she/her, they/them.') }}</x-hearth-hint>
+                <x-translatable-input name="pronouns" :model="$communityMember" :label="__('Pronouns (optional)')" :hint="__('For example: he/him, she/her, they/them.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
-                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$communityMember" hinted="bio-hint" />
-                    <x-hearth-hint for="bio">{{ __('This can include information about your background, and why you are interested in accessibility.') }}</x-hearth-hint>
+                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$communityMember" :hint="__('This can include information about your background, and why you are interested in accessibility.')" />
                     <x-hearth-error for="bio" />
                 </div>
 

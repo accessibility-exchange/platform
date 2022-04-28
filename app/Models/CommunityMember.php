@@ -338,12 +338,12 @@ class CommunityMember extends Model implements HasMedia
     /**
      * Get the community member's phone number.
      *
-     * @param string $value
-     * @return string
+     * @param string|null $value
+     * @return string|null
      */
-    public function getPhoneAttribute(string $value): string
+    public function getPhoneAttribute(string|null $value): string|null
     {
-        return str_replace(['-', '(', ')', '.', ' '], '', $value);
+        return ! is_null($value) ? str_replace(['-', '(', ')', '.', ' '], '', $value) : $value;
     }
 
     /**

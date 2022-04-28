@@ -22,9 +22,6 @@
         ],
         "resources/js/**/*.js": [
             "eslint"
-        ],
-        "*.php": [
-            "composer format"
         ]
     },
     "devDependencies": {

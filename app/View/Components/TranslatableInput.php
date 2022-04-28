@@ -22,11 +22,18 @@ class TranslatableInput extends Component
     public string $label;
 
     /**
+     * The hint for the input.
+     *
+     * @var string|null
+     */
+    public ?string $hint;
+
+    /**
      * The locales supported by the input.
      *
      * @var array
      */
-    public array $locales;
+    public array $languages;
 
     /**
      * The model to which the input field belongs.
@@ -40,18 +47,19 @@ class TranslatableInput extends Component
      *
      * @return void
      */
-    public function __construct($name, $label, $locales = null, $model = null)
+    public function __construct($name, $label, $hint = null, $languages = null, $model = null)
     {
         $this->name = $name;
         $this->label = $label;
-        $this->locales = $locales ?? config('locales.supported');
+        $this->hint = $hint;
+        $this->languages = $model->languages ?? config('locales.supported');
         $this->model = $model;
     }
 
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function render(): View
     {
