@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\CommunityMember;
 use App\Models\Impact;
 use App\Models\Organization;
