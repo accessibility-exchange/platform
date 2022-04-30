@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\CommunityMember;
-use function Pest\Faker\faker;
 
 test('adding a translation succeeds for a valid translatable model', function () {
     $communityMember = CommunityMember::factory()->create();
