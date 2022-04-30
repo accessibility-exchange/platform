@@ -29,3 +29,7 @@ test('get a written or spoken language exonym', function () {
 test('get a capitalized written or spoken language exonym', function () {
     expect(get_language_exonym('fr', 'fr'))->toEqual('Français');
 });
+
+test('get an invalid language exonym', function () {
+    expect(get_language_exonym('xyz'))->toBeNull();
+});
