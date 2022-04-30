@@ -45,7 +45,7 @@ class AddTranslationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'new_language.not_in' => __(':model is already translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_locale_name($this->get('new_language'))]),
+            'new_language.not_in' => __(':model is already translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_language_exonym($this->get('new_language'))]),
         ];
     }
 }

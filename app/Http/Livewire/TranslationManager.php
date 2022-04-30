@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -16,18 +15,7 @@ class TranslationManager extends Component
     {
         $this->model = $model;
 
-        $languages = (new LanguageRepository)->getAll();
-
-        foreach ($languages as $key => $language) {
-            $languages[$key] = $language->getName();
-        }
-
-        $languages = $languages + [
-            'ase' => __('American Sign Language'),
-            'fcs' => __('Quebec Sign Language'),
-        ];
-
-        $this->availableLanguages = ['' => __('Choose a language…')] + $languages;
+        $this->availableLanguages = ['' => __('Choose a language…')] + get_available_languages(true);
     }
 
     /**

@@ -17,7 +17,6 @@ use App\Models\Impact;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\CommunityMemberStatus;
-use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -137,12 +136,6 @@ class CommunityMemberController extends Controller
      */
     public function edit(CommunityMember $communityMember): View
     {
-        $languages = (new LanguageRepository)->getAll();
-
-        foreach ($languages as $key => $language) {
-            $languages[$key] = $language->getName();
-        }
-
         return view('community-members.edit', [
             'communityMember' => $communityMember,
             'regions' => get_regions(['CA'], \locale()),
@@ -171,7 +164,7 @@ class CommunityMemberController extends Controller
                 'vrs' => __('Phone call with Video Relay Service (VRS)'),
                 'support_person' => __('Contact my support person'),
             ],
-            'languages' => ['' => __('Choose a language…')] + $languages,
+            'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
             'meetingTypes' => [
                 'in_person' => __('In person'),
                 'web_conference' => __('Virtual – web conference'),

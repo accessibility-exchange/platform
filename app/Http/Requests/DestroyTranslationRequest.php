@@ -45,7 +45,7 @@ class DestroyTranslationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'language.in' => __(':model was not translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_locale_name($this->get('language'))]),
+            'language.in' => __(':model was not translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_language_exonym($this->get('language'))]),
         ];
     }
 }

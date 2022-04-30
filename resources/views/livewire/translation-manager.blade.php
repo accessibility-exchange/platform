@@ -1,7 +1,7 @@
 <x-expander level="2" :summary="__('Language settings')">
     @foreach($model->languages as $language)
         <div x-data="{modal: false}">
-            <p class="repel">{{ get_locale_name($language) }}@if(count($model->languages) > 1)<button class="secondary" x-on:click="modal = true">{{ __('Remove') }}<span class="visually-hidden"> {{ get_locale_name($language) }}</span></button>@endif</p>
+            <p class="repel">{{ get_language_exonym($language) }}@if(count($model->languages) > 1)<button class="secondary" x-on:click="modal = true">{{ __('Remove') }}<span class="visually-hidden"> {{ get_language_exonym($language) }}</span></button>@endif</p>
             @if(count($model->languages) > 1)
             <form class="stack" action="{{ localized_route('translations.destroy') }}" method="post" x-show="modal">
                 @csrf
@@ -9,7 +9,7 @@
 
                 <h3>{{ __('Remove language') }}</h3>
 
-                <p>{{ __('Are you sure you want to remove :language? Any translations that you’ve entered will be lost.', ['language' => get_locale_name($language)]) }}</p>
+                <p>{{ __('Are you sure you want to remove :language? Any translations that you’ve entered will be lost.', ['language' => get_language_exonym($language)]) }}</p>
 
                 <p class="repel">
                     <button type="button" x-on:click="modal = false">{{ __('Cancel') }}</button>
