@@ -1,0 +1,28 @@
+name: Update changelog
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: dev
+
+      - name: Update changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          release-notes: ${{ github.event.release.body }}
+          latest-version: ${{ github.event.release.name }}
+
+      - name: Commit updated changelog
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: dev
+          commit_message: "chore(docs): update changelog"
+          file_pattern: CHANGELOG.md
