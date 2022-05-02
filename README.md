@@ -2,9 +2,9 @@
 
 [![Project license](https://badgen.net/github/license/accessibility-exchange/platform)](https://github.com/accessibility-exchange/platform/releases/latest)
 [![Latest release](https://badgen.net/github/release/accessibility-exchange/platform)](https://github.com/accessibility-exchange/platform/releases/latest)
-[![Check status](https://badgen.net/github/checks/accessibility-exchange/platform/dev)](https://github.com/accessibility-exchange/platform/releases/latest)
+[![Check status](https://badgen.net/github/checks/accessibility-exchange/platform/dev)](https://github.com/accessibility-exchange/platform/actions)
 [![Code coverage](https://badgen.net/codecov/c/github/accessibility-exchange/platform)](https://codecov.io/gh/accessibility-exchange/platform/)
-[![Localization status](https://badges.crowdin.net/accessibility-exchange/localized.svg)](https://crowdin.com/project/accessibility-in-action)
+[![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
 
 The Accessibility Exchange is a two-year initiative managed by the
 [Institute for Research and Development on Inclusion and Society (IRIS)](https://irisinstitute.ca/) that sets out to
@@ -30,21 +30,18 @@ The platform requires the following:
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
 
-The deployment process should follow all of the recommended [optimization processes](https://laravel.com/docs/8.x/deployment#optimization).
+The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/8.x/deployment#optimization).
 
-## Development and prototyping environments
+## Development environments
 
-In development and prototyping environments, a deployment should be followed by loading the corresponding environment's snapshot:
+In development environments, a deployment should be followed by running a fresh migration and the development database seeder:
 
 ```bash
-php artisan snapshot:load dev|prototype --force
+php artisan migrate:fresh --force
+php artisan db:seed DevSeeder --force
 ```
 
-Snapshots must be maintained by the development team, and are stored in S3 buckets. See the original [pull request](https://github.com/accessibility-exchange/platform/pull/101)
-for more information.
-
-**NOTE: This will overwrite all existing database tables. [See the documentation](https://github.com/spatie/laravel-db-snapshots)
-for details.**
+**NOTE: This will overwrite all existing database tables.**
 
 ## Production environments
 
@@ -56,16 +53,17 @@ php artisan migrate
 
 ## Development
 
-Local development uses the [Laravel Sail](https://laravel.com/docs/8.x/sail) Docker environment.
+Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sail) Docker environment or [Laravel Valet](https://laravel.com/docs/9.x/valet).
 
-### Local development setup
+### Local development setup using Laravel Sail
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-2. Add an alias to your shell [as described here](https://laravel.com/docs/8.x/sail#configuring-a-bash-alias).
+2. Add an alias to your shell [as described here](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias).
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
     gh repo fork accessibility-exchange/platform --clone
+    cd platform
     ```
 
 4. Create a `.env` file from the included example file:
@@ -80,37 +78,102 @@ Local development uses the [Laravel Sail](https://laravel.com/docs/8.x/sail) Doc
     sail up -d
     ```
 
-6. Generate an application key:
+6. Install Composer and NPM dependencies:
+
+    ```bash
+    sail composer install
+    sail npm install
+    ```
+    
+7. Generate an application key:
 
     ```bash
     sail artisan key:generate
     ```
 
-7. Run the required database migrations:
+8. Run the required database migrations:
 
     ```bash
     sail artisan migrate
     ```
-
-### Working on the platform
-
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/8.x). Here's an overview
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Sail:
 
--   [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
--   [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
--   [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
+- [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
+
+### Local development setup using Laravel Valet
+
+1. Install [Homebrew](https://brew.sh).
+2. Install PHP 8.0 via Homebrew:
+   
+   ```bash
+   brew install php@8.0
+   ```
+   
+3. Install [Composer](https://getcomposer.org/).
+4. Install Valet:
+
+   ```bash
+   composer global require laravel/valet
+   valet install
+   ```
+
+5. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
+
+    ```bash
+    gh repo fork accessibility-exchange/platform --clone
+    cd platform
+    ```
+
+6. Create a `.env` file from the included example file:
+
+    ```bash
+    cp .env.example .env
+    ```
+   
+7. Install Composer and NPM dependencies:
+
+    ```bash
+    composer install
+    npm install
+    ```
+
+8. Generate an application key:
+
+    ```bash
+    php artisan key:generate
+    ```
+9. Create a database:
+
+    ```bash
+    mysql -uroot -e "create database accessibilityexchange;"
+    ```
+
+10. Run the required database migrations:
+
+     ```bash
+     php artisan migrate
+     ``` 
+   
+11. Tell Valet to serve the application:
+
+      ```bash
+      valet link
+      ```
+
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
+of how some key tasks can be carried out using Valet:
+
+- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
 
 ### Development workflow
 
 -   This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
     All commit messages and pull request titles must follow these standards.
--   The [`prototype`](https://github.com/accessibility-exchange/platform/tree/prototype) branch contains
-    prototyped features for use in co-design sessions. It must be regularly updated with changes from the [`dev`](https://github.com/accessibility-exchange/platform/tree/dev)
-    branch.
--   Feature prototyping must take place in a feature branch forked from the `prototype` branch. Feature prototype branches
-    must be named according to the format `try/<feature>`. Once a feature prototype is ready to merge into
-    `prototype`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 -   The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains refined features
     that have been prototyped and gone through one or more co-design sessions.
 -   Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
