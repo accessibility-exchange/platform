@@ -2,7 +2,9 @@ name: Update changelog
 
 on:
   release:
-    types: [released]
+    types:
+      - released
+      - prereleased
 
 jobs:
   update:
