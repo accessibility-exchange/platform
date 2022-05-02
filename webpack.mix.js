@@ -16,7 +16,7 @@ if (mix.inProduction()) {
 
 mix.browserSync({
     // If using Laravel Sail, change to "localhost"
-    proxy: "accessibilityexchange.test",
+    proxy: "platform.test",
     open: false
 });
 
