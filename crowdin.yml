@@ -2,9 +2,9 @@ files:
   - source: /resources/lang/en/*.php
     translation: /resources/lang/%two_letters_code%/%original_file_name%
   - source: /resources/lang/en.json
-    translation: /%two_letters_code%.json
-pull_request_title: 'chore(l10n): update translations'
+    translation: /resources/lang/%two_letters_code%.json
+pull_request_title: 'chore(localization): update translations'
 pull_request_labels:
   - localization
-commit_message: 'chore(l10n): translate %original_file_name% into %language%'
+commit_message: 'chore(localization): translate %original_file_name% into %language%'
 append_commit_message: false
