@@ -14,7 +14,7 @@ class StoreRegulatedOrganizationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +24,7 @@ class StoreRegulatedOrganizationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -34,11 +34,6 @@ class StoreRegulatedOrganizationRequest extends FormRequest
                 Rule::unique(RegulatedOrganization::class),
 
             ],
-            'locality' => ['required', 'string', 'max:255'],
-            'region' => [
-                'required',
-                Rule::in(get_region_codes()),
-            ],
         ];
     }
 
@@ -47,10 +42,10 @@ class StoreRegulatedOrganizationRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'name.unique' => __('A federally regulated organization with this name already exists.'),
+            'name.unique' => __('A regulated organization with this name already exists.'),
         ];
     }
 }

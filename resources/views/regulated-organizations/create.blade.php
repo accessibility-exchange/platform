@@ -1,31 +1,26 @@
 
 <x-app-layout>
-    <x-slot name="title">{{ __('Create a federally regulated organization') }}</x-slot>
+    <x-slot name="title">{{ __('Create regulated organization') }}</x-slot>
     <x-slot name="header">
         <h1>
-            {{ __('Create a federally regulated organization') }}
+            {{ __('Create regulated organization') }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('regulated-organizations.store') }}" method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="POST" novalidate>
         @csrf
         <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
         <div class="field">
-            <x-hearth-label for="name" :value="__('Regulated federally regulated organization name')" />
-            <x-hearth-input id="name" type="text" name="name" required />
-            </div>
-        <div class="field">
-            <x-hearth-label for="locality" :value="__('forms.label_locality')" />
-            <x-hearth-input id="locality" type="text" name="locality" required />
-        </div>
-        <div class="field">
-            <x-hearth-label for="region" :value="__('forms.label_region')" />
-            <x-hearth-select id="region" name="region" required :options="$regions"/>
+            <x-hearth-label for="name" :value="__('Regulated organization name')" />
+            <x-hearth-input name="name" required />
         </div>
 
-        <x-hearth-button>{{ __('Create federally regulated organization') }}</x-hearth-button>
+        <p class="repel">
+            <a class="cta secondary">{{ __('Cancel') }}</a>
+            <x-hearth-button>{{ __('Next') }}</x-hearth-button>
+        </p>
     </form>
 </x-app-layout>
