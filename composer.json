@@ -6,6 +6,7 @@
         "framework",
         "laravel"
     ],
+    "version": "0.0.0",
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
