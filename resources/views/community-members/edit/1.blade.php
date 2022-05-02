@@ -41,15 +41,13 @@
             </fieldset>
 
             <div class="field @error('pronouns') field--error @enderror">
-                <x-translatable-input name="pronouns" :model="$communityMember" :label="__('Pronouns (optional)')" hinted="pronouns-hint" />
-                <x-hearth-hint for="pronouns">{{ __('For example: he/him, she/her, they/them.') }}</x-hearth-hint>
+                <x-translatable-input name="pronouns" :model="$communityMember" :label="__('Pronouns (optional)')" :hint="__('For example: he/him, she/her, they/them.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
-                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$communityMember" hinted="bio-hint" />
-                    <x-hearth-hint for="bio">{{ __('This can include information about your background, and why you are interested in accessibility.') }}</x-hearth-hint>
+                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$communityMember" :hint="__('This can include information about your background, and why you are interested in accessibility.')" />
                     <x-hearth-error for="bio" />
                 </div>
 
@@ -70,7 +68,6 @@
             @if($communityMember->isConnector())
             <fieldset class="field @error('lived_experience_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Disability and Deaf communities you’re connected to (required)') }}</legend>
-                <span x-text="otherValue"></span>
                 <x-hearth-hint for="lived_experience_connections">{{ __('Please select the disability and Deaf communities you can connect projects to.') }}</x-hearth-hint>
                 <p x-cloak>
                     <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>

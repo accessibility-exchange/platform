@@ -13,19 +13,20 @@ use App\Models\CommunityMember;
 use App\Models\Impact;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
-use CommerceGuys\Intl\Language\LanguageRepository;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index(): View
     {
@@ -40,26 +41,15 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create(): View
     {
-        $languages = (new LanguageRepository)->getAll();
-
-        foreach ($languages as $key => $language) {
-            $languages[$key] = $language->getName();
-        }
-
-        $languages = $languages + [
-            'ase' => __('American Sign Language'),
-            'fcs' => __('Quebec Sign Language'),
-        ];
-
         return view('projects.create', [
             'languages' => [
                 '' => __('Choose a language…'),
 
-            ] + Arr::sort($languages),
+            ] + get_available_languages(true),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
             'projectable' => Auth::user()->projectable(),
             'ancestors' => [
@@ -71,8 +61,8 @@ class ProjectController extends Controller
     /**
      * Store a new project's context in the session.
      *
-     * @param  \App\Http\Requests\StoreProjectContextRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreProjectContextRequest $request
+     * @return RedirectResponse
      */
     public function storeContext(StoreProjectContextRequest $request): RedirectResponse
     {
@@ -94,8 +84,8 @@ class ProjectController extends Controller
     /**
      * Store a new project's initial focus in the session.
      *
-     * @param  \App\Http\Requests\StoreProjectFocusRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreProjectFocusRequest $request
+     * @return RedirectResponse
      */
     public function storeFocus(StoreProjectFocusRequest $request): RedirectResponse
     {
@@ -109,8 +99,8 @@ class ProjectController extends Controller
     /**
      * Store a new project's languages in the session.
      *
-     * @param  \App\Http\Requests\StoreProjectLanguagesRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreProjectLanguagesRequest $request
+     * @return RedirectResponse
      */
     public function storeLanguages(StoreProjectLanguagesRequest $request): RedirectResponse
     {
@@ -124,8 +114,10 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreProjectRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreProjectRequest $request
+     * @return RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
@@ -143,7 +135,7 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
+     * @param Project $project
      * @return \Illuminate\View\View
      */
     public function show(Project $project): View
@@ -154,27 +146,16 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @param Project $project
+     * @return View
      */
     public function edit(Project $project): View
     {
-        $languages = (new LanguageRepository)->getAll();
-
-        foreach ($languages as $key => $language) {
-            $languages[$key] = $language->getName();
-        }
-
-        $languages = $languages + [
-            'ase' => __('American Sign Language'),
-            'fcs' => __('Quebec Sign Language'),
-        ];
-
         return view('projects.edit', [
             'project' => $project,
             'languages' => [
                 '' => __('Choose a language…'),
-            ] + Arr::sort($languages),
+            ] + get_available_languages(true),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
             'consultants' => [
                 '' => __('Choose an accessibility consultant…'),
@@ -185,9 +166,9 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProjectRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateProjectRequest $request
+     * @param Project $project
+     * @return RedirectResponse
      */
     public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
@@ -206,9 +187,9 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProjectTeamRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateProjectTeamRequest $request
+     * @param Project $project
+     * @return RedirectResponse
      */
     public function updateTeam(UpdateProjectTeamRequest $request, Project $project): RedirectResponse
     {
@@ -223,9 +204,9 @@ class ProjectController extends Controller
     /**
      * Update the specified resource's status.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Project $project
+     * @return RedirectResponse
      */
     public function updatePublicationStatus(Request $request, Project $project): RedirectResponse
     {
@@ -241,9 +222,9 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\DestroyProjectRequest  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\RedirectResponse
+     * @param DestroyProjectRequest $request
+     * @param Project $project
+     * @return RedirectResponse
      */
     public function destroy(DestroyProjectRequest $request, Project $project): RedirectResponse
     {
@@ -257,9 +238,9 @@ class ProjectController extends Controller
     /**
      * Display the management UI for the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\View\View
+     * @param Request $request
+     * @param Project $project
+     * @return View
      */
     public function manage(Request $request, Project $project): View
     {

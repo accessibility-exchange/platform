@@ -6,7 +6,7 @@
 
 <ul>
     @foreach($communityMember->all_languages as $language)
-        <li>{{ get_locale_name($language) }}</li>
+        <li>{{ get_language_exonym($language) }}</li>
     @endforeach
 </ul>
 

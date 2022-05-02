@@ -28,6 +28,7 @@ class CommunityMemberFactory extends Factory
                 return User::find($attributes['user_id'])->name;
             },
             'region' => $this->faker->provinceAbbr(),
+            'languages' => ['en', 'fr'],
             'first_language' => function (array $attributes) {
                 return User::find($attributes['user_id'])->locale;
             },
