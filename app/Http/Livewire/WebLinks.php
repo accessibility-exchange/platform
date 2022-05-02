@@ -7,16 +7,17 @@ use Livewire\Component;
 
 class WebLinks extends Component
 {
-    public string $name;
-
     public array $links;
+
+    public string $name;
 
     /**
      * @param array $links
+     * @param string|null $name
      *
      * @return void
      */
-    public function mount(array $links): void
+    public function mount(array $links, string $name = null): void
     {
         $this->name = $name ?? 'web_links';
         $this->links = old($this->name, $links);
