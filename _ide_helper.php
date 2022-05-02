@@ -5,7 +5,7 @@
 
     /**
      * A helper file for Laravel, to provide autocomplete information to your IDE
-     * Generated for Laravel 9.7.0.
+     * Generated for Laravel 9.10.1.
      *
      * This file should not be included in your code, only analyzed by your IDE!
      *
@@ -2084,7 +2084,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $credentials
              * @param array|callable $callbacks
-             * @param false $remember
+             * @param bool $remember
              * @return bool
              * @static
              */
@@ -2666,6 +2666,20 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
+             * Register an anonymous component namespace.
+             *
+             * @param string $directory
+             * @param string|null $prefix
+             * @return void
+             * @static
+             */
+            public static function anonymousComponentNamespace($directory, $prefix = null)
+            {
+                /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
+                $instance->anonymousComponentNamespace($directory, $prefix);
+            }
+
+            /**
              * Register a class-based component namespace.
              *
              * @param string $namespace
@@ -2677,6 +2691,18 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
                 $instance->componentNamespace($namespace, $prefix);
+            }
+
+            /**
+             * Get the registered anonymous component namespaces.
+             *
+             * @return array
+             * @static
+             */
+            public static function getAnonymousComponentNamespaces()
+            {
+                /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
+                return $instance->getAnonymousComponentNamespaces();
             }
 
             /**
@@ -5014,6 +5040,71 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
+             * Register a custom macro.
+             *
+             * @param string $name
+             * @param object|callable $macro
+             * @return void
+             * @static
+             */
+            public static function macro($name, $macro)
+            {
+                \Illuminate\Database\DatabaseManager::macro($name, $macro);
+            }
+
+            /**
+             * Mix another object into the class.
+             *
+             * @param object $mixin
+             * @param bool $replace
+             * @return void
+             * @throws \ReflectionException
+             * @static
+             */
+            public static function mixin($mixin, $replace = true)
+            {
+                \Illuminate\Database\DatabaseManager::mixin($mixin, $replace);
+            }
+
+            /**
+             * Checks if macro is registered.
+             *
+             * @param string $name
+             * @return bool
+             * @static
+             */
+            public static function hasMacro($name)
+            {
+                return \Illuminate\Database\DatabaseManager::hasMacro($name);
+            }
+
+            /**
+             * Flush the existing macros.
+             *
+             * @return void
+             * @static
+             */
+            public static function flushMacros()
+            {
+                \Illuminate\Database\DatabaseManager::flushMacros();
+            }
+
+            /**
+             * Dynamically handle calls to the class.
+             *
+             * @param string $method
+             * @param array $parameters
+             * @return mixed
+             * @throws \BadMethodCallException
+             * @static
+             */
+            public static function macroCall($method, $parameters)
+            {
+                /** @var \Illuminate\Database\DatabaseManager $instance */
+                return $instance->macroCall($method, $parameters);
+            }
+
+            /**
              * Determine if the connected database is a MariaDB database.
              *
              * @return bool
@@ -5126,6 +5217,22 @@ namespace Illuminate\Support\Facades {
             {            //Method inherited from \Illuminate\Database\Connection
                 /** @var \Illuminate\Database\MySqlConnection $instance */
                 return $instance->selectOne($query, $bindings, $useReadPdo);
+            }
+
+            /**
+             * Run a select statement and return the first column of the first row.
+             *
+             * @param string $query
+             * @param array $bindings
+             * @param bool $useReadPdo
+             * @return mixed
+             * @throws \Illuminate\Database\MultipleColumnsSelectedException
+             * @static
+             */
+            public static function scalar($query, $bindings = [], $useReadPdo = true)
+            {            //Method inherited from \Illuminate\Database\Connection
+                /** @var \Illuminate\Database\MySqlConnection $instance */
+                return $instance->scalar($query, $bindings, $useReadPdo);
             }
 
             /**
@@ -7044,7 +7151,7 @@ namespace Illuminate\Support\Facades {
              * Define a new ability.
              *
              * @param string $ability
-             * @param callable|string $callback
+             * @param callable|array|string $callback
              * @return \Illuminate\Auth\Access\Gate
              * @throws \InvalidArgumentException
              * @static
@@ -7511,6 +7618,7 @@ namespace Illuminate\Support\Facades {
          * @method static \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
          * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
          * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
+         * @method static \Illuminate\Http\Client\PendingRequest connectTimeout(int $seconds)
          * @method static \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
          * @method static \Illuminate\Http\Client\PendingRequest dd()
          * @method static \Illuminate\Http\Client\PendingRequest dump()
@@ -7529,6 +7637,7 @@ namespace Illuminate\Support\Facades {
          * @method static \Illuminate\Http\Client\PendingRequest withUserAgent(string $userAgent)
          * @method static \Illuminate\Http\Client\PendingRequest withoutRedirecting()
          * @method static \Illuminate\Http\Client\PendingRequest withoutVerifying()
+         * @method static \Illuminate\Http\Client\PendingRequest throw(callable $callback = null)
          * @method static array pool(callable $callback)
          * @method static \Illuminate\Http\Client\Response delete(string $url, array $data = [])
          * @method static \Illuminate\Http\Client\Response get(string $url, array|string|null $query = null)
@@ -11676,7 +11785,7 @@ namespace Illuminate\Support\Facades {
              * Retrieve an old input item.
              *
              * @param string|null $key
-             * @param string|array|null $default
+             * @param \Illuminate\Database\Eloquent\Model|string|array|null $default
              * @return string|array|null
              * @static
              */
@@ -11947,6 +12056,34 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\Http\Request $instance */
                 return $instance->input($key, $default);
+            }
+
+            /**
+             * Retrieve input from the request as a Stringable instance.
+             *
+             * @param string $key
+             * @param mixed $default
+             * @return \Illuminate\Support\Stringable
+             * @static
+             */
+            public static function str($key, $default = null)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                return $instance->str($key, $default);
+            }
+
+            /**
+             * Retrieve input from the request as a Stringable instance.
+             *
+             * @param string $key
+             * @param mixed $default
+             * @return \Illuminate\Support\Stringable
+             * @static
+             */
+            public static function string($key, $default = null)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                return $instance->string($key, $default);
             }
 
             /**
@@ -19204,6 +19341,21 @@ namespace  {
                 }
 
                 /**
+                 * Find a model by its primary key or call a callback.
+                 *
+                 * @param mixed $id
+                 * @param \Closure|array $columns
+                 * @param \Closure|null $callback
+                 * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|mixed
+                 * @static
+                 */
+                public static function findOr($id, $columns = [], $callback = null)
+                {
+                    /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                    return $instance->findOr($id, $columns, $callback);
+                }
+
+                /**
                  * Get the first record matching the attributes or instantiate it.
                  *
                  * @param array $attributes
@@ -19635,6 +19787,18 @@ namespace  {
                 {
                     /** @var \Illuminate\Database\Eloquent\Builder $instance */
                     return $instance->setEagerLoads($eagerLoad);
+                }
+
+                /**
+                 * Flush the relationships being eagerly loaded.
+                 *
+                 * @return \Illuminate\Database\Eloquent\Builder|static
+                 * @static
+                 */
+                public static function withoutEagerLoads()
+                {
+                    /** @var \Illuminate\Database\Eloquent\Builder $instance */
+                    return $instance->withoutEagerLoads();
                 }
 
                 /**
