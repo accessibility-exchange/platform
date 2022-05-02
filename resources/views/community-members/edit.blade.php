@@ -14,7 +14,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <livewire:translation-manager :model="$communityMember" />
+    <x-translation-manager :model="$communityMember" />
 
     @if(request()->get('step'))
         @include('community-members.edit.' . request()->get('step'))
