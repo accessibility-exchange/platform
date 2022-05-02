@@ -9,7 +9,7 @@
         "lint:scripts": "eslint *.js resources/js/**/*.js",
         "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
-        "postinstall": "husky install && npm run dev",
+        "postinstall": "husky install && npm run prod",
         "prod": "npm run production",
         "production": "mix --production",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
