@@ -26,7 +26,7 @@ class TranslationManager extends Component
      *
      * @return void
      */
-    public function __construct($model = null, $availableLanguages = null)
+    public function __construct($model = null)
     {
         $this->model = $model;
         $this->availableLanguages = ['' => __('Choose a language…')] + get_available_languages(true);
