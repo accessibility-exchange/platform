@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
+use App\Http\Requests\StoreRegulatedOrganizationNameRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\RegulatedOrganization;
@@ -37,6 +38,21 @@ class RegulatedOrganizationController extends Controller
     }
 
     /**
+     * Store the regulated organization's name in the session.
+     *
+     * @param StoreRegulatedOrganizationNameRequest $request
+     * @return RedirectResponse
+     */
+    public function storeName(StoreRegulatedOrganizationNameRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('name', $data['name']);
+
+        return redirect(\localized_route('regulated-organizations.create', ['step' => 2]));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param StoreRegulatedOrganizationRequest $request
@@ -44,7 +60,13 @@ class RegulatedOrganizationController extends Controller
      */
     public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
     {
-        $regulatedOrganization = RegulatedOrganization::create($request->validated());
+        $data = $request->validated();
+
+        $data['name'] = session()->get('name');
+
+        $regulatedOrganization = RegulatedOrganization::create($data);
+
+        session()->forget('name');
 
         $regulatedOrganization->users()->attach(
             $request->user(),

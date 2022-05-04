@@ -22,10 +22,15 @@ class RegulatedOrganizationTest extends TestCase
         $response = $this->actingAs($user)->get(localized_route('regulated-organizations.create'));
         $response->assertOk();
 
-        $response = $this->actingAs($user)->post(localized_route('regulated-organizations.create'), [
+        $response = $this->actingAs($user)->post(localized_route('regulated-organizations.store-name'), [
             'name' => $user->name . ' Inc.',
-            'locality' => 'Halifax',
-            'region' => 'NS',
+        ]);
+
+        $response->assertRedirect(localized_route('regulated-organizations.create', ['step' => 2]));
+        $response->assertSessionHas('name', $user->name . ' Inc.');
+
+        $response = $this->actingAs($user)->withSession(['name' => $user->name . ' Inc.'])->post(localized_route('regulated-organizations.create'), [
+            'languages' => ['en', 'fr', 'ase', 'fcs'],
         ]);
 
         $url = localized_route('regulated-organizations.show', ['regulatedOrganization' => Str::slug($user->name . ' Inc.')]);
@@ -37,7 +42,7 @@ class RegulatedOrganizationTest extends TestCase
         $regulatedOrganization = RegulatedOrganization::where('name', $user->name . ' Inc.')->first();
 
         $this->assertTrue($user->isMemberOf($regulatedOrganization));
-        $this->assertEquals(count($user->memberships), 1);
+        $this->assertEquals(1, count($user->memberships));
     }
 
     public function test_users_primary_entity_can_be_retrieved()

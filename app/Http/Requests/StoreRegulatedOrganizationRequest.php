@@ -27,25 +27,7 @@ class StoreRegulatedOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(RegulatedOrganization::class),
-
-            ],
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        return [
-            'name.unique' => __('A regulated organization with this name already exists.'),
+            'languages' => 'required|array|min:1',
         ];
     }
 }

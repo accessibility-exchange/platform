@@ -10,6 +10,11 @@ Route::multilingual('/regulated-organizations/create', [RegulatedOrganizationCon
     ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
     ->name('regulated-organizations.create');
 
+Route::multilingual('/regulated-organizations/store-name', [RegulatedOrganizationController::class, 'storeName'])
+    ->method('post')
+    ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+    ->name('regulated-organizations.store-name');
+
 Route::multilingual('/regulated-organizations/create', [RegulatedOrganizationController::class, 'store'])
     ->method('post')
     ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])

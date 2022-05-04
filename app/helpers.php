@@ -45,7 +45,8 @@ if (! function_exists('get_available_languages')) {
                 $languages[$locale] = get_language_exonym($locale, locale());
             }
         }
-        Arr::sort($languages);
+
+        asort($languages);
 
         return $languages;
     }

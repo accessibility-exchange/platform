@@ -29,11 +29,28 @@ class RegulatedOrganization extends Model
      */
     protected $fillable = [
         'name',
+        'languages',
         'locality',
         'region',
     ];
 
-    protected $cascadeDeletes = ['users'];
+    /**
+     * The attributes that which should be cast to other types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+      'languages' => 'array',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string|array<string>
+     */
+    protected mixed $cascadeDeletes = [
+        'users'
+    ];
 
     /**
      * The attributes that are translatable.
