@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRegulatedOrganizationRequest extends FormRequest
 {

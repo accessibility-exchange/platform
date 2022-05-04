@@ -40,7 +40,7 @@ class RegulatedOrganization extends Model
      * @var array<string, string>
      */
     protected $casts = [
-      'languages' => 'array',
+        'languages' => 'array',
     ];
 
     /**
@@ -49,7 +49,7 @@ class RegulatedOrganization extends Model
      * @var string|array<string>
      */
     protected mixed $cascadeDeletes = [
-        'users'
+        'users',
     ];
 
     /**

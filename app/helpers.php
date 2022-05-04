@@ -2,7 +2,6 @@
 
 use App\Settings;
 use CommerceGuys\Intl\Language\LanguageRepository;
-use Illuminate\Support\Arr;
 
 if (! function_exists('settings')) {
     /**
