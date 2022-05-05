@@ -68,7 +68,7 @@
 
     <p class="repel">
         <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <x-hearth-input type="submit" name="save" :value="__('Save')" />
+        <button name="save">{{ __('Save') }}</button>
         <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
     </p>
 </form>

@@ -30,7 +30,7 @@
             <x-hearth-error for="region" />
         </div>
 
-        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
+        <button>{{ __('Save changes') }}</button>
     </form>
 
     <h2>{{ __('organization.members_title') }}</h2>
@@ -58,9 +58,9 @@
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('organization.action_remove_member_with_name', ['user' => $user->name, 'organization' => $organization->name])">
+                        <button class="link" :aria-label="__('organization.action_remove_member_with_name', ['user' => $user->name, 'organization' => $organization->name])">
                             {{ __('organization.action_remove_member') }}
-                        </x-hearth-button>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -90,9 +90,9 @@
                     <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
+                        <button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
                             {{ __('invitation.cancel_member_invitation_link') }}
-                        </x-hearth-button>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -123,9 +123,9 @@
             <x-hearth-error for="role" bag="inviteOrganizationMember" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('invitation.action_send_invitation') }}
-        </x-hearth-button>
+        </button>
     </form>
 
     <h2>
@@ -144,8 +144,8 @@
             <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('organization.action_delete') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

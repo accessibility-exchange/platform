@@ -33,8 +33,8 @@
             </script>
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('Save changes') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

@@ -29,7 +29,7 @@
             <x-hearth-error for="summary" />
         </div>
 
-        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
+        <button>{{ __('Save changes') }}</button>
     </form>
 
     <h2>
@@ -48,8 +48,8 @@
             <x-hearth-error for="current_password" bag="destroyResource" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('resource.action_delete') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

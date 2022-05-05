@@ -22,7 +22,7 @@
 
         <p class="repel">
             <button type="button" class="secondary" x-on:click="history.back()">{{ __('Cancel') }}</button>
-            <x-hearth-button>{{ _('Update') }}</x-hearth-button>
+            <button>{{ _('Update') }}</button>
         </p>
 
         @method('put')

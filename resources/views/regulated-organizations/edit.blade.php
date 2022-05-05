@@ -27,7 +27,7 @@
             <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$regions"/>
             </div>
 
-        <x-hearth-button>{{ __('Save changes') }}</x-hearth-button>
+        <button>{{ __('Save changes') }}</button>
     </form>
 
     <h2>{{ __('Regulated federally regulated organization members') }}</h2>
@@ -55,9 +55,9 @@
                     <form action="{{ route('memberships.destroy', $user->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('Remove :user from :regulatedOrganization', ['user' => $user->name, 'regulatedOrganization' => $regulatedOrganization->name])">
+                        <button class="link" :aria-label="__('Remove :user from :regulatedOrganization', ['user' => $user->name, 'regulatedOrganization' => $regulatedOrganization->name])">
                             {{ __('Remove') }}
-                        </x-hearth-button>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -87,9 +87,9 @@
                     <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <x-hearth-button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
+                        <button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
                             {{ __('invitation.cancel_member_invitation_link') }}
-                        </x-hearth-button>
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -117,9 +117,9 @@
             <x-hearth-error for="role" bag="inviteOrganizationMember" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('invitation.action_send_invitation') }}
-        </x-hearth-button>
+        </button>
     </form>
 
     <h2>
@@ -138,8 +138,8 @@
             <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('Delete federally regulated organization') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

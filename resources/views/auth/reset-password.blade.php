@@ -32,9 +32,9 @@
                 <x-hearth-error for="password" />
             </div>
 
-            <x-hearth-button>
+            <button>
                 {{ __('Save new password') }}
-            </x-hearth-button>
+            </button>
         </form>
     </x-auth-card>
 </x-guest-layout>

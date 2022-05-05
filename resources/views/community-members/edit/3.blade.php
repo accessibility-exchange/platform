@@ -12,9 +12,9 @@
             </h2>
 
             <p class="repel">
-                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
-                <x-hearth-input type="submit" name="save" :value="__('Save')" />
-                <x-hearth-input class="secondary" type="submit" name="save_and_next" :value="__('Save and next')" />
+                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
+                <button name="save">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
             </p>
 
             <fieldset class="field @error('sectors') field--error @enderror">
@@ -31,9 +31,9 @@
             </fieldset>
 
             <p class="repel">
-                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
-                <x-hearth-input type="submit" name="save" :value="__('Save')" />
-                <x-hearth-input class="secondary" type="submit" name="save_and_next" :value="__('Save and next')" />
+                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
+                <button name="save">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

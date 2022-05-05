@@ -39,9 +39,9 @@
                 <x-hearth-label for="remember" :value="__('hearth::auth.label_remember_me')" />
             </div>
 
-            <x-hearth-button>
+            <button>
                 {{ __('hearth::auth.sign_in') }}
-            </x-hearth-button>
+            </button>
 
                 <p>
                     {{ __('Don’t have an account yet?') }} <a href="{{ localized_route('register') }}">{{ __('Create an account') }}</a>
