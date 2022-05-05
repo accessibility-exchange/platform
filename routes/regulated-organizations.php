@@ -2,46 +2,64 @@
 
 use App\Http\Controllers\RegulatedOrganizationController;
 
-Route::multilingual('/regulated-organizations', [RegulatedOrganizationController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('regulated-organizations.index');
+Route::controller(RegulatedOrganizationController::class)
+    ->prefix('regulated-organizations')
+    ->name('regulated-organizations.')
+    ->group(function () {
+        Route::multilingual('', 'index')
+            ->middleware(['auth'])
+            ->name('index');
 
-Route::multilingual('/regulated-organizations/create', [RegulatedOrganizationController::class, 'create'])
-    ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
-    ->name('regulated-organizations.create');
+        Route::multilingual('/find-or-create', 'findOrCreate')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('find-or-create');
 
-Route::multilingual('/regulated-organizations/store-name', [RegulatedOrganizationController::class, 'storeName'])
-    ->method('post')
-    ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
-    ->name('regulated-organizations.store-name');
+        Route::multilingual('/type/select', 'showTypeSelection')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('show-type-selection');
 
-Route::multilingual('/regulated-organizations/create', [RegulatedOrganizationController::class, 'store'])
-    ->method('post')
-    ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
-    ->name('regulated-organizations.store');
+        Route::multilingual('/type/store', 'storeType')
+            ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('store-type');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}', [RegulatedOrganizationController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('regulated-organizations.show');
+        Route::multilingual('/create', 'create')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('create');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/accessibility-and-inclusion', [RegulatedOrganizationController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('regulated-organizations.show-accessibility-and-inclusion');
+        Route::multilingual('/store-name', 'storeName')
+            ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('store-name');
 
- Route::multilingual('/regulated-organizations/{regulatedOrganization}/projects', [RegulatedOrganizationController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('regulated-organizations.show-projects');
+        Route::multilingual('/create', 'store')
+            ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->name('store');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/edit', [RegulatedOrganizationController::class, 'edit'])
-    ->middleware(['auth', 'can:update,regulatedOrganization'])
-    ->name('regulated-organizations.edit');
+        Route::multilingual('/{regulatedOrganization}', 'show')
+            ->middleware(['auth'])
+            ->name('show');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/edit', [RegulatedOrganizationController::class, 'update'])
-    ->middleware(['auth', 'can:update,regulatedOrganization'])
-    ->method('put')
-    ->name('regulated-organizations.update');
+        Route::multilingual('/{regulatedOrganization}/accessibility-and-inclusion', 'show')
+            ->middleware(['auth'])
+            ->name('show-accessibility-and-inclusion');
 
-Route::multilingual('/regulated-organizations/{regulatedOrganization}/delete', [RegulatedOrganizationController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,regulatedOrganization'])
-    ->method('delete')
-    ->name('regulated-organizations.destroy');
+        Route::multilingual('/{regulatedOrganization}/projects', 'show')
+            ->middleware(['auth'])
+            ->name('show-projects');
+
+        Route::multilingual('/{regulatedOrganization}/edit', 'edit')
+            ->middleware(['auth', 'can:update,regulatedOrganization'])
+            ->name('edit');
+
+        Route::multilingual('/{regulatedOrganization}/edit', 'update')
+            ->middleware(['auth', 'can:update,regulatedOrganization'])
+            ->method('put')
+            ->name('update');
+
+        Route::multilingual('/{regulatedOrganization}/delete', 'destroy')
+            ->middleware(['auth', 'can:delete,regulatedOrganization'])
+            ->method('delete')
+            ->name('destroy');
+    });

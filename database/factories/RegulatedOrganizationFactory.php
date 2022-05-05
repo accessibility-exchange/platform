@@ -23,6 +23,7 @@ class RegulatedOrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
+            'type' => $this->faker->randomElement(['government', 'business', 'public-sector']),
             'locality' => $this->faker->city(),
             'region' => $this->faker->provinceAbbr(),
         ];

@@ -9,16 +9,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Route;
+use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
-    use HasSlug;
+    use HasStatus;
     use HasTranslations;
     use Notifiable;
 
@@ -32,6 +32,7 @@ class RegulatedOrganization extends Model
         'languages',
         'locality',
         'region',
+        'published_at',
     ];
 
     /**
@@ -41,6 +42,7 @@ class RegulatedOrganization extends Model
      */
     protected $casts = [
         'languages' => 'array',
+        'published_at' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -57,27 +59,9 @@ class RegulatedOrganization extends Model
      *
      * @var array
      */
-    public array $translatable = [];
-
-    /**
-     * Get the options for generating the slug.
-     */
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
+    public array $translatable = [
+        'name',
+    ];
 
     /**
      * Get the route prefix for the model.
@@ -87,6 +71,30 @@ class RegulatedOrganization extends Model
     public function getRoutePrefix(): string
     {
         return 'regulated-organizations';
+    }
+
+    /**
+     * Publish the regulated organization.
+     *
+     * @return void
+     */
+    public function publish(): void
+    {
+        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->save();
+        flash(__('Your regulated organization page has been published.'), 'success');
+    }
+
+    /**
+     * Unpublish the regulated organization.
+     *
+     * @return void
+     */
+    public function unpublish(): void
+    {
+        $this->published_at = null;
+        $this->save();
+        flash(__('Your regulated organization page has been unpublished.'), 'success');
     }
 
     /**
@@ -141,7 +149,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the invitations associated with this federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function invitations(): MorphMany
     {
@@ -151,7 +159,7 @@ class RegulatedOrganization extends Model
     /**
      * The sectors that belong to the federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function sectors(): BelongsToMany
     {
@@ -161,7 +169,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function projects(): MorphMany
     {
@@ -172,7 +180,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that are in progress.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function currentProjects(): MorphMany
     {
@@ -188,7 +196,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that have been completed.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function pastProjects(): MorphMany
     {
@@ -200,7 +208,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that haven't started yet.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function futureProjects(): MorphMany
     {
@@ -212,7 +220,7 @@ class RegulatedOrganization extends Model
     /**
      * The community members who have identified themselves with the federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function communityMembers(): BelongsToMany
     {

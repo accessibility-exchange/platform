@@ -45,7 +45,7 @@
             <x-hearth-radio-buttons name="has_consultant" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('has_consultant', $project->has_consultant)" x-model="hasConsultant" />
         </fieldset>
         <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin()) }}'}">
-            <legend class="h4">{{ _('Where did you find the accessibility consultant? (required)') }}</legend>
+            <legend class="h4">{{ __('Where did you find the accessibility consultant? (required)') }}</legend>
             <x-hearth-radio-buttons name="consultant_origin" :options="['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')]" :checked="old('consultant_origin', $project->consultant_origin())" x-model="consultantOrigin" />
             <div class="field @error('consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
                 <x-hearth-label for="consultant_id" :value="__('Consultant (required)')" />

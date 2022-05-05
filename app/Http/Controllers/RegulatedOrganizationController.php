@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
-use App\Http\Requests\StoreRegulatedOrganizationNameRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
+use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\RegulatedOrganization;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -25,6 +25,56 @@ class RegulatedOrganizationController extends Controller
     }
 
     /**
+     * Show the form for finding or creating a new resource.
+     *
+     * @return View
+     * @throws AuthorizationException
+     */
+    public function findOrCreate(): View
+    {
+        $this->authorize('create', RegulatedOrganization::class);
+
+        return view('regulated-organizations.find-or-create');
+    }
+
+    /**
+     * Show a role selection page for the logged-in user.
+     *
+     * @return View
+     * @throws AuthorizationException
+     */
+    public function showTypeSelection(): View
+    {
+        $this->authorize('create', RegulatedOrganization::class);
+
+        return view('regulated-organizations.show-type-selection', [
+            'types' => [
+                'government' => __('Government'),
+                'business' => __('Business'),
+                'public-sector' => [
+                    'label' => __('Other public sector organization'),
+                    'hint' => __('That is regulated by the Accessible Canada Act'),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Store the regulated organization's name in the session.
+     *
+     * @param StoreRegulatedOrganizationTypeRequest $request
+     * @return RedirectResponse
+     */
+    public function storeType(StoreRegulatedOrganizationTypeRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('type', $data['type']);
+
+        return redirect(\localized_route('regulated-organizations.create', ['step' => 1]));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return View
@@ -34,20 +84,24 @@ class RegulatedOrganizationController extends Controller
     {
         $this->authorize('create', RegulatedOrganization::class);
 
-        return view('regulated-organizations.create');
+        return view('regulated-organizations.create-initial', [
+            'type' => session()->get('type'),
+        ]);
     }
 
     /**
      * Store the regulated organization's name in the session.
      *
-     * @param StoreRegulatedOrganizationNameRequest $request
+     * @param StoreRegulatedOrganizationRequest $request
      * @return RedirectResponse
      */
-    public function storeName(StoreRegulatedOrganizationNameRequest $request): RedirectResponse
+    public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
-        session()->put('name', $data['name']);
+        $regulatedOrganization = RegulatedOrganization::create($data);
+
+        session()->forget('type');
 
         return redirect(\localized_route('regulated-organizations.create', ['step' => 2]));
     }
@@ -58,7 +112,7 @@ class RegulatedOrganizationController extends Controller
      * @param StoreRegulatedOrganizationRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
+    public function storeLanguages(StoreRegulatedOrganizationRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
