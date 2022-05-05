@@ -29,6 +29,6 @@
             ]" :checked="old('recruitment', $engagement->recruitment) ?? false" hinted />
         </fieldset>
 
-        <x-hearth-button>{{ __('Update engagement') }}</x-hearth-button>
+        <button>{{ __('Update engagement') }}</button>
     </form>
 </x-app-layout>

@@ -24,7 +24,7 @@
             </div>
 
             <p x-show="! recovery">
-                <x-hearth-button type="button" class="link" @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_recovery_code') }}</x-hearth-button>
+                <button type="button" class="link" @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_recovery_code') }}</button>
             </p>
 
             <p x-show="recovery">
@@ -38,12 +38,12 @@
             </div>
 
             <p x-show="recovery">
-                <x-hearth-button type="button" class="link" @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_code') }}</x-hearth-button>
+                <button type="button" class="link" @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_code') }}</button>
             </p>
 
-            <x-hearth-button>
+            <button>
                 {{ __('hearth::auth.sign_in') }}
-            </x-hearth-button>
+            </button>
         </form>
     </x-auth-card>
 </x-guest-layout>

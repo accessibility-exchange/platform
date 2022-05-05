@@ -26,9 +26,9 @@
     <p class="repel">
         <a class="cta secondary" href="{{ localized_route('register', ['step' => 1]) }}">{{ __('Back') }}</a>
 
-        <x-hearth-button>
+        <button>
             {{ __('Next') }}
-        </x-hearth-button>
+        </button>
     </p>
     @csrf
 </form>

@@ -14,13 +14,13 @@
         <form action="{{ localized_route('community-members.express-interest', Auth::user()->communityMember) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
-            <x-hearth-button type="submit">{{ __('I’m interested in this project') }}</x-hearth-button>
+            <button>{{ __('I’m interested in this project') }}</button>
         </form>
         @else
         <form action="{{ localized_route('community-members.remove-interest', Auth::user()->communityMember) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
-            <x-hearth-button type="submit">{{ __('I’m not interested in this project') }}</x-hearth-button>
+            <button type="submit">{{ __('I’m not interested in this project') }}</button>
         </form>
         @endif
         @endif

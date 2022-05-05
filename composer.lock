@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4f8b9ed5dcac84a3bc8903d5c7a38ab",
+    "content-hash": "bea0c157befb0f71c13830df625927ea",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1687,16 +1687,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "31fcac5c18d202187e6a7716b3e0d9da84fe3d68"
+                "reference": "4b1195a0b726d40920f8b034639a4ddef234c5f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/31fcac5c18d202187e6a7716b3e0d9da84fe3d68",
-                "reference": "31fcac5c18d202187e6a7716b3e0d9da84fe3d68",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/4b1195a0b726d40920f8b034639a4ddef234c5f9",
+                "reference": "4b1195a0b726d40920f8b034639a4ddef234c5f9",
                 "shasum": ""
             },
             "require": {
@@ -1717,10 +1717,13 @@
                 "brianium/paratest": "^6.2",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.0",
                 "orchestra/testbench": "^7.0",
                 "phpunit/phpunit": "^9.5",
-                "spatie/laravel-ray": "^1.26",
-                "vimeo/psalm": "^4.4"
+                "spatie/laravel-ray": "^1.26"
+            },
+            "suggest": {
+                "nunomaduro/larastan": "The included phpstan configuration requires Larastan"
             },
             "type": "library",
             "extra": {
@@ -1762,9 +1765,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/v2.0.1"
+                "source": "https://github.com/fluid-project/hearth/tree/v2.0.2"
             },
-            "time": "2022-03-29T19:33:53+00:00"
+            "time": "2022-05-05T11:30:52+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",

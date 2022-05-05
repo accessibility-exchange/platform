@@ -11,8 +11,8 @@
             </h2>
 
             <p class="repel">
-                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
-                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
+                <button name="save">{{ __('Save') }}</button>
             </p>
 
             <div class="stack" x-data="{contactPerson: '{{ old('preferred_contact_person', $communityMember->preferred_contact_person ?? 'me') }}'}">
@@ -84,8 +84,8 @@
             </fieldset>
 
             <p class="repel">
-                <x-hearth-input class="secondary" type="submit" name="save_and_previous" :value="__('Save and previous')" />
-                <x-hearth-input type="submit" name="save" :value="__('Save')" />
+                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
+                <button name="save">{{ __('Save') }}</button>
             </p>
         </div>
     </div>

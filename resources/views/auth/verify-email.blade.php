@@ -19,9 +19,9 @@
                 @csrf
 
                 <div>
-                    <x-hearth-button>
+                    <button>
                         {{ __('Resend verification email') }}
-                    </x-hearth-button>
+                    </button>
                 </div>
             </form>
 
