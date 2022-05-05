@@ -31,6 +31,6 @@
             ]" :checked="old('recruitment', session('recruitment')) ?? false" hinted />
         </fieldset>
 
-        <x-hearth-button>{{ __('Create engagement') }}</x-hearth-button>
+        <button>{{ __('Create engagement') }}</button>
     </form>
 </x-app-layout>

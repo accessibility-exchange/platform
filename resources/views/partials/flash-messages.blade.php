@@ -44,9 +44,9 @@
                     <form method="POST" action="{{ route('verification.send') }}">
                         @csrf
                         <div>
-                            <x-hearth-button>
+                            <button>
                                 {{ __('hearth::auth.resend_verification_email') }}
-                            </x-hearth-button>
+                            </button>
                         </div>
                     </form>
                 </x-hearth-alert>

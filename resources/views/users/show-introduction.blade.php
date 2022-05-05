@@ -23,7 +23,7 @@
             @csrf
 
             <input type="hidden" name="finished_introduction" value="1" />
-            <x-hearth-button>{{ __('Continue') }}</x-hearth-button>
+            <button>{{ __('Continue') }}</button>
         </form>
     </div>
 </x-app-wide-layout>

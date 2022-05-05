@@ -13,6 +13,6 @@
     </fieldset>
 
     <p class="repel">
-        <x-hearth-button>{{ __('Save and next') }}</x-hearth-button>
+        <button>{{ __('Save and next') }}</button>
     </p>
 </form>

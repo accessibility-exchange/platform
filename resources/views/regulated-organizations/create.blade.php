@@ -26,6 +26,6 @@
             <x-hearth-select id="region" name="region" required :options="$regions"/>
         </div>
 
-        <x-hearth-button>{{ __('Create federally regulated organization') }}</x-hearth-button>
+        <button>{{ __('Create federally regulated organization') }}</button>
     </form>
 </x-app-layout>

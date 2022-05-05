@@ -25,8 +25,8 @@
             <x-hearth-error for="current_password" bag="destroyAccount" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('hearth::user.action_delete_account') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

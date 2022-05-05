@@ -22,8 +22,8 @@
             <x-hearth-error for="current_password" bag="destroyCommunityMembers" />
         </div>
 
-        <x-hearth-button>
+        <button>
             {{ __('Delete my page') }}
-        </x-hearth-button>
+        </button>
     </form>
 </x-app-layout>

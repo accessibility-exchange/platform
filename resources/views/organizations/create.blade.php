@@ -30,6 +30,6 @@
             <x-hearth-error for="region" />
         </div>
 
-        <x-hearth-button>{{ __('organization.action_create') }}</x-hearth-button>
+        <button>{{ __('organization.action_create') }}</button>
     </form>
 </x-app-layout>

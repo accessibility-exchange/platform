@@ -22,8 +22,8 @@
     </fieldset>
 
     <p class="repel">
-        <x-hearth-button>
+        <button>
             {{ __('Next') }}
-        </x-hearth-button>
+        </button>
     </p>
 </form>

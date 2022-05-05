@@ -24,9 +24,9 @@
                 <x-hearth-error for="email" />
             </div>
 
-            <x-hearth-button>
+            <button>
                 {{ __('hearth::auth.forgot_submit') }}
-            </x-hearth-button>
+            </button>
         </form>
     </x-auth-card>
 </x-guest-layout>

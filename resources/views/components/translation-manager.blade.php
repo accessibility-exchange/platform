@@ -11,7 +11,7 @@
 
                         <p class="repel">
                             <button type="button" @click="hideModal">{{ __('Cancel') }}</button>
-                            <x-hearth-button class="secondary" type="submit">{{ __('Remove') }}</x-hearth-button>
+                            <button class="secondary">{{ __('Remove') }}</button>
                         </p>
 
                         <x-hearth-input name="translatable_type" type="hidden" :value="get_class($model)" />
@@ -40,7 +40,7 @@
 
                     <p class="repel">
                         <button class="secondary" type="button" @click="hideModal">{{ __('Cancel') }}</button>
-                        <x-hearth-button type="submit">{{ __('Add language') }}</x-hearth-button>
+                        <button>{{ __('Add language') }}</button>
                     </p>
 
                     <x-hearth-input name="translatable_type" type="hidden" :value="get_class($model)" />
