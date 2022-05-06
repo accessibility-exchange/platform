@@ -7,7 +7,6 @@ use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
-use App\Models\CommunityMember;
 use App\Models\RegulatedOrganization;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
