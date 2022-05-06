@@ -14,22 +14,22 @@ class RegulatedOrganizationPolicy
     /**
      * Determine whether the user can create federally regulated organizations.
      *
-     * @param  \App\Models\User  $user
-     * @return mixed
+     * @param User $user
+     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->context === 'regulated-organization';
     }
 
     /**
-     * Determine whether the user can create a project for an federally regulated organization.
+     * Determine whether the user can create a project for a federally regulated organization.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\RegulatedOrganization  $projectable
-     * @return mixed
+     * @param User $user
+     * @param RegulatedOrganization $projectable
+     * @return Response
      */
-    public function createProject(User $user, RegulatedOrganization $projectable)
+    public function createProject(User $user, RegulatedOrganization $projectable): Response
     {
         return $user->isAdministratorOf($projectable)
             ? Response::allow()
@@ -37,13 +37,13 @@ class RegulatedOrganizationPolicy
     }
 
     /**
-     * Determine whether the user can update an federally regulated organization.
+     * Determine whether the user can update a federally regulated organization.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\RegulatedOrganization  $regulatedOrganization
-     * @return mixed
+     * @param User $user
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return Response
      */
-    public function update(User $user, RegulatedOrganization $regulatedOrganization)
+    public function update(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $user->isAdministratorOf($regulatedOrganization)
             ? Response::allow()
@@ -66,13 +66,13 @@ class RegulatedOrganizationPolicy
     }
 
     /**
-     * Determine whether the user can delete an federally regulated organization.
+     * Determine whether the user can delete a federally regulated organization.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\RegulatedOrganization  $regulatedOrganization
-     * @return mixed
+     * @param User $user
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return Response
      */
-    public function delete(User $user, RegulatedOrganization $regulatedOrganization)
+    public function delete(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $user->isAdministratorOf($regulatedOrganization)
             ? Response::allow()
