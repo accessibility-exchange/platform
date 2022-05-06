@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\CommunityMember;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -48,6 +49,21 @@ class RegulatedOrganizationPolicy
         return $user->isAdministratorOf($regulatedOrganization)
             ? Response::allow()
             : Response::deny(__('You cannot edit this federally regulated organization.'));
+    }
+
+    /**
+     * Determine whether the user can publish the model.
+     *
+     * @param User $user
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return Response
+     */
+    public function publish(User $user, RegulatedOrganization $regulatedOrganization): Response
+    {
+        // TODO: Ensure model is ready for publishing first.
+        return $user->isAdministratorOf($regulatedOrganization)
+            ? Response::allow()
+            : Response::deny(__('You cannot publish this regulated organization.'));
     }
 
     /**

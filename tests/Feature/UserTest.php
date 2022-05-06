@@ -159,6 +159,14 @@ test('users can view the introduction', function () {
     $response->assertOk();
     $response->assertSee('Video for regulated organizations.');
 
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-introduction'))
+        ->put(localized_route('users.update-introduction-status'), [
+            'finished_introduction' => 1,
+        ]);
+
+    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
+
     $user->update(['context' => 'regulated-organization-employee']);
 
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));

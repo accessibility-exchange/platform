@@ -7,10 +7,12 @@ use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
+use App\Models\CommunityMember;
 use App\Models\RegulatedOrganization;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 class RegulatedOrganizationController extends Controller
@@ -189,6 +191,24 @@ class RegulatedOrganizationController extends Controller
         $regulatedOrganization->save();
 
         flash(__('Your federally regulated organization has been updated.'), 'success');
+
+        return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
+    }
+
+    /**
+     * Update the specified resource's status.
+     *
+     * @param  Request  $request
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return RedirectResponse
+     */
+    public function updatePublicationStatus(Request $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    {
+        if ($request->input('unpublish')) {
+            $regulatedOrganization->unpublish();
+        } elseif ($request->input('publish')) {
+            $regulatedOrganization->publish();
+        }
 
         return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
     }

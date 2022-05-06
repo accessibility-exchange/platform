@@ -35,6 +35,10 @@ test('users can create regulated organizations', function () {
     $this->assertTrue($user->isMemberOf($regulatedOrganization));
     $this->assertEquals(1, count($user->memberships));
 
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization));
+
+    $response->assertOk();
+
     $response = $this->actingAs($user)
         ->from(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization))
         ->post(localized_route('regulated-organizations.store-languages', $regulatedOrganization), [
@@ -106,6 +110,42 @@ test('non members can not edit regulated organizations', function () {
         'region' => 'NL',
     ]);
     $response->assertForbidden();
+});
+
+test('regulated organizations can be published', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
+        'publish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
+
+    $this->assertTrue($regulatedOrganization->checkStatus('published'));
+});
+
+test('community member pages can be unpublished', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
+        'unpublish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
+
+    $this->assertTrue($regulatedOrganization->checkStatus('draft'));
 });
 
 test('users with admin role can update other member roles', function () {
