@@ -8,6 +8,6 @@
 
     <p class="repel">
         <a class="cta secondary" href="{{ localized_route('dashboard') }}">{{ __('Cancel') }}</a>
-        <x-hearth-button>{{ __('Next') }}</x-hearth-button>
+        <button>{{ __('Next') }}</button>
     </p>
 </form>

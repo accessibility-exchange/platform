@@ -23,16 +23,18 @@
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
         <fieldset>
             <legend>{{ __('Your organization’s name') }}</legend>
-            <div class="field">
+            <div class="field @error('name.en') field--error @enderror">
                 <x-hearth-label for="name-en">{{ __('Name of organization — English') }}</x-hearth-label>
                 <x-hearth-input name="name[en]" id="name-en" :value="old('name.en', '')" />
+                <x-hearth-error for="name.en" />
             </div>
-            <div class="field">
+            <div class="field @error('name.fr') field--error @enderror">
                 <x-hearth-label for="name-fr">{{ __('Name of organization — French') }}</x-hearth-label>
                 <x-hearth-input name="name[fr]" id="name-fr" :value="old('name.fr', '')" />
+                <x-hearth-error for="name.fr" />
             </div>
 
-            <x-hearth-input type="hidden" name="type" value="$type" />
+            <x-hearth-input type="hidden" name="type" :value="$type" />
         </fieldset>
 
         <button>{{ __('Create') }}</button>

@@ -2,12 +2,12 @@
     <div class="column stack">
         <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
-            @if(!$currentUser->regulatedOrganization())
+            @if(!$currentUser->regulatedOrganization()->hasAddedDetails())
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your federally regulated organization page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Share more about your organization so that community members can get to know you.') }}</p>
-                    <p><a class="button" href="{{ localized_route('regulated-organizations.create') }}">{{ __('Create your page') }}</a></p>
+                    <p><a class="button" href="{{ localized_route('regulated-organizations.show-language-selection', $currentUser->regulatedOrganization()) }}">{{ __('Create your page') }}</a></p>
                 </div>
             </x-expander>
             @else
@@ -28,7 +28,7 @@
             </x-expander>
         </div>
 
-        @if($currentUser->regulatedOrganization())
+        @if($currentUser->regulatedOrganization()->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My federally regulated organization page') }}</h2>
             <p>
@@ -49,7 +49,7 @@
     </div>
 
     <div class="column stack">
-        @if($currentUser->regulatedOrganization())
+        @if($currentUser->regulatedOrganization()->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My active projects') }}</h2>
             @if(count($currentUser->regulatedOrganization()->projects) > 0)

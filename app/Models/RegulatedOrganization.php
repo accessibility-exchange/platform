@@ -29,6 +29,7 @@ class RegulatedOrganization extends Model
      */
     protected $fillable = [
         'name',
+        'type',
         'languages',
         'locality',
         'region',
@@ -225,5 +226,15 @@ class RegulatedOrganization extends Model
     public function communityMembers(): BelongsToMany
     {
         return $this->belongsToMany(CommunityMember::class, 'community_member_regulated_org');
+    }
+
+    /**
+     * Has the user added any details to the regulated organization?
+     *
+     * @return bool
+     */
+    public function hasAddedDetails(): bool
+    {
+        return ! is_null($this->languages);
     }
 }

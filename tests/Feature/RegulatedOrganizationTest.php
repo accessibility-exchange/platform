@@ -6,37 +6,42 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
 test('users can create regulated organizations', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.create'));
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'));
     $response->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('regulated-organizations.store-name'), [
-        'name' => $user->name . ' Inc.',
+    $response = $this->actingAs($user)->post(localized_route('regulated-organizations.store-type'), [
+        'type' => 'government',
     ]);
 
-    $response->assertRedirect(localized_route('regulated-organizations.create', ['step' => 2]));
-    $response->assertSessionHas('name', $user->name . ' Inc.');
+    $response->assertRedirect(localized_route('regulated-organizations.create'));
+    $response->assertSessionHas('type', 'government');
 
-    $response = $this->actingAs($user)->withSession(['name' => $user->name . ' Inc.'])->post(localized_route('regulated-organizations.create'), [
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
-    ]);
+    $response = $this->actingAs($user)
+        ->post(localized_route('regulated-organizations.store'), [
+            'type' => 'government',
+            'name' => ['en' => 'Government Agency', 'fr' => 'Agence gouvernementale'],
+        ]);
 
-    $url = localized_route('regulated-organizations.show', ['regulatedOrganization' => Str::slug($user->name . ' Inc.')]);
+    $response->assertRedirect(localized_route('dashboard'));
 
-    $response->assertSessionHasNoErrors();
-
-    $response->assertRedirect($url);
-
-    $regulatedOrganization = RegulatedOrganization::where('name', $user->name . ' Inc.')->first();
+    $regulatedOrganization = RegulatedOrganization::where('name->en', 'Government Agency')->first();
 
     $this->assertTrue($user->isMemberOf($regulatedOrganization));
     $this->assertEquals(1, count($user->memberships));
+
+    $response = $this->actingAs($user)
+        ->from(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization))
+        ->post(localized_route('regulated-organizations.store-languages', $regulatedOrganization), [
+            'languages' => ['en', 'fr', 'ase', 'fcs'],
+        ]);
+
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
 test('users primary entity can be retrieved', function () {

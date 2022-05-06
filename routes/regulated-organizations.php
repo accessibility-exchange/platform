@@ -27,15 +27,19 @@ Route::controller(RegulatedOrganizationController::class)
             ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
             ->name('create');
 
-        Route::multilingual('/store-name', 'storeName')
-            ->method('post')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
-            ->name('store-name');
-
         Route::multilingual('/create', 'store')
             ->method('post')
             ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
             ->name('store');
+
+        Route::multilingual('/{regulatedOrganization}/languages/select', 'showLanguageSelection')
+            ->middleware(['auth', 'can:update,regulatedOrganization'])
+            ->name('show-language-selection');
+
+        Route::multilingual('/{regulatedOrganization}/languages/store', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth', 'can:update,regulatedOrganization'])
+            ->name('store-languages');
 
         Route::multilingual('/{regulatedOrganization}', 'show')
             ->middleware(['auth'])

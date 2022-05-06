@@ -13,8 +13,8 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('regulated_organizations', function (Blueprint $table) {
+            $table->dropColumn('slug');
             $table->json('name')->change();
-            $table->json('slug')->change();
             $table->string('type');
         });
     }
@@ -28,7 +28,7 @@ return new class extends Migration {
     {
         Schema::table('regulated_organizations', function (Blueprint $table) {
             $table->string('name')->change();
-            $table->string('slug')->change();
+            $table->string('slug');
             $table->dropColumn('type');
         });
     }

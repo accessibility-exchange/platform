@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
+use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
@@ -38,7 +39,7 @@ class RegulatedOrganizationController extends Controller
     }
 
     /**
-     * Show a role selection page for the logged-in user.
+     * Show a type selection page for the regulated organization.
      *
      * @return View
      * @throws AuthorizationException
@@ -71,7 +72,7 @@ class RegulatedOrganizationController extends Controller
 
         session()->put('type', $data['type']);
 
-        return redirect(\localized_route('regulated-organizations.create', ['step' => 1]));
+        return redirect(\localized_route('regulated-organizations.create'));
     }
 
     /**
@@ -90,7 +91,7 @@ class RegulatedOrganizationController extends Controller
     }
 
     /**
-     * Store the regulated organization's name in the session.
+     * Store the model.
      *
      * @param StoreRegulatedOrganizationRequest $request
      * @return RedirectResponse
@@ -103,31 +104,40 @@ class RegulatedOrganizationController extends Controller
 
         session()->forget('type');
 
-        return redirect(\localized_route('regulated-organizations.create', ['step' => 2]));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreRegulatedOrganizationRequest $request
-     * @return RedirectResponse
-     */
-    public function storeLanguages(StoreRegulatedOrganizationRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $data['name'] = session()->get('name');
-
-        $regulatedOrganization = RegulatedOrganization::create($data);
-
-        session()->forget('name');
-
         $regulatedOrganization->users()->attach(
             $request->user(),
             ['role' => 'admin']
         );
 
-        return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
+        return redirect(\localized_route('dashboard'));
+    }
+
+    /**
+     * Show a language selection page for the logged-in user.
+     *
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return View
+     */
+    public function showLanguageSelection(RegulatedOrganization $regulatedOrganization): View
+    {
+        return view('regulated-organizations.show-language-selection', [
+            'regulatedOrganization' => $regulatedOrganization,
+        ]);
+    }
+
+    /**
+     * Update the languages of a resource.
+     *
+     * @param StoreRegulatedOrganizationLanguagesRequest $request
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return RedirectResponse
+     */
+    public function storeLanguages(StoreRegulatedOrganizationLanguagesRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    {
+        $regulatedOrganization->fill($request->validated());
+        $regulatedOrganization->save();
+
+        return redirect(\localized_route('regulated-organizations.edit', $regulatedOrganization));
     }
 
     /**
