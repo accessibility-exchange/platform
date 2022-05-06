@@ -74,8 +74,17 @@ class UserController extends Controller
      */
     public function dashboard(): View
     {
+        $currentUser = Auth::user();
+
+        $memberable = match ($currentUser->context) {
+            'organization' => $currentUser->organization() ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+            default => null,
+        };
+
         return view('dashboard', [
-            'currentUser' => Auth::user(),
+            'currentUser' => $currentUser,
+            'memberable' => $memberable,
         ]);
     }
 

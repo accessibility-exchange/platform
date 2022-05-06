@@ -98,9 +98,7 @@ class RegulatedOrganizationController extends Controller
      */
     public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
     {
-        $data = $request->validated();
-
-        $regulatedOrganization = RegulatedOrganization::create($data);
+        $regulatedOrganization = RegulatedOrganization::create($request->validated());
 
         session()->forget('type');
 
