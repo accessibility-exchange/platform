@@ -13,6 +13,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    {{-- TODO --}}
-    <p>Coming soon!</p>
+    @if($user->context == 'regulated-organization')
+        @include('users.roles-and-permissions.regulated-organization')
+    @endif
 </x-app-layout>

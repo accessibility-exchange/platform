@@ -164,16 +164,9 @@ class RegulatedOrganizationController extends Controller
      */
     public function edit(RegulatedOrganization $regulatedOrganization): View
     {
-        $roles = [];
-
-        foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.' . $role);
-        }
-
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
             'regions' => get_regions(['CA'], \locale()),
-            'roles' => $roles,
         ]);
     }
 
@@ -210,6 +203,19 @@ class RegulatedOrganizationController extends Controller
         }
 
         return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
+    }
+
+    /**
+     * Show the form for deleting the specified resource.
+     *
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return View
+     */
+    public function delete(RegulatedOrganization $regulatedOrganization): View
+    {
+        return view('regulated-organizations.delete', [
+            'regulatedOrganization' => $regulatedOrganization,
+        ]);
     }
 
     /**

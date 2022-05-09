@@ -2,7 +2,6 @@
     <div class="column stack">
         <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
-            @ray($memberable)
             @if($memberable && !$memberable->hasAddedDetails())
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your federally regulated organization page') }}</x-slot>

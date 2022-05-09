@@ -60,6 +60,10 @@ Route::multilingual('/settings/roles-and-permissions', [UserController::class, '
     ->middleware(['auth'])
     ->name('users.edit_roles_and_permissions');
 
+Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInviteable'])
+    ->middleware(['auth'])
+    ->name('users.invite-to-inviteable');
+
 Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
     ->middleware(['auth'])
     ->name('users.edit_display_preferences');

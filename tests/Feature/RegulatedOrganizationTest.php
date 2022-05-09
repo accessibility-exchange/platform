@@ -63,17 +63,19 @@ test('users with admin role can edit regulated organizations', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'languages' => ['en', 'fr', 'ase', 'fcs'],
+        ]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
-        'name' => $regulatedOrganization->name,
+        'name' => ['en' => $regulatedOrganization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
 test('users without admin role can not edit regulated organizations', function () {
@@ -130,7 +132,7 @@ test('regulated organizations can be published', function () {
     $this->assertTrue($regulatedOrganization->checkStatus('published'));
 });
 
-test('community member pages can be unpublished', function () {
+test('regulated organizations can be unpublished', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -227,7 +229,7 @@ test('users with admin role can invite members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->post(localized_route('invitations.create'), [
             'inviteable_id' => $regulatedOrganization->id,
             'inviteable_type' => get_class($regulatedOrganization),
@@ -247,7 +249,7 @@ test('users without admin role can not invite members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->post(localized_route('invitations.create'), [
             'inviteable_id' => $regulatedOrganization->id,
             'inviteable_type' => get_class($regulatedOrganization),
@@ -271,7 +273,7 @@ test('users with admin role can cancel invitations', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertSessionHasNoErrors();
@@ -291,7 +293,7 @@ test('users without admin role can not cancel invitations', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertForbidden();
@@ -308,7 +310,7 @@ test('existing members cannot be invited', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->post(localized_route('invitations.create'), [
             'inviteable_id' => $regulatedOrganization->id,
             'inviteable_type' => get_class($regulatedOrganization),
@@ -317,7 +319,7 @@ test('existing members cannot be invited', function () {
         ]);
 
     $response->assertSessionHasErrorsIn('inviteMember', ['email']);
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.invite-to-inviteable'));
 });
 
 test('invitation can be accepted', function () {
@@ -374,7 +376,7 @@ test('users with admin role can remove members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
@@ -397,7 +399,7 @@ test('users without admin role can not remove members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertForbidden();
@@ -417,11 +419,11 @@ test('only administrator can not remove themself', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('regulated-organizations.edit', ['regulatedOrganization' => $regulatedOrganization]))
+        ->from(localized_route('users.invite-to-inviteable'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.invite-to-inviteable'));
 });
 
 test('users with admin role can delete regulated organizations', function () {
@@ -431,7 +433,7 @@ test('users with admin role can delete regulated organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
     ]);
 
@@ -445,12 +447,12 @@ test('users with admin role can not delete entities with wrong password', functi
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'wrong_password',
     ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('regulated-organizations.delete', $regulatedOrganization));
 });
 
 test('users without admin role can not delete regulated organizations', function () {
@@ -460,7 +462,7 @@ test('users without admin role can not delete regulated organizations', function
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
     ]);
 
@@ -475,7 +477,7 @@ test('non members can not delete regulated organizations', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $otherRegulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $otherRegulatedOrganization), [
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $otherRegulatedOrganization), [
         'current_password' => 'password',
     ]);
 

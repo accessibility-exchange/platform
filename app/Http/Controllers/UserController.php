@@ -169,6 +169,33 @@ class UserController extends Controller
     }
 
     /**
+     * Show the roles and permissions edit view for the logged-in user.
+     *
+     * @return View
+     */
+    public function inviteToInviteable(): View
+    {
+        $currentUser = Auth::user();
+        $invitable = match ($currentUser->context) {
+            'organization' => $currentUser->organization() ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+            default => null,
+        };
+
+        $roles = [];
+
+        foreach (config('hearth.organizations.roles') as $role) {
+            $roles[$role] = __('roles.' . $role);
+        }
+
+        return view('users.roles-and-permissions.invite', [
+            'user' => $currentUser,
+            'inviteable' => $invitable,
+            'roles' => $roles,
+        ]);
+    }
+
+    /**
      * Show the display preferences edit view for the logged-in user.
      *
      * @return View

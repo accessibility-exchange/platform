@@ -67,6 +67,11 @@ Route::controller(RegulatedOrganizationController::class)
             ->method('put')
             ->name('update-publication-status');
 
+        Route::multilingual('/{regulatedOrganization}/delete', 'delete')
+            ->middleware(['auth', 'can:delete,regulatedOrganization'])
+            ->method('get')
+            ->name('delete');
+
         Route::multilingual('/{regulatedOrganization}/delete', 'destroy')
             ->middleware(['auth', 'can:delete,regulatedOrganization'])
             ->method('delete')
