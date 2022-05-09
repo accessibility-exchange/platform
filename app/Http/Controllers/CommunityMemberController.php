@@ -303,7 +303,7 @@ class CommunityMemberController extends Controller
             $communityMember->publish();
         }
 
-        return redirect(\localized_route('community-members.show', $communityMember));
+        return redirect(localized_route('community-members.show', $communityMember));
     }
 
     /**
@@ -319,7 +319,7 @@ class CommunityMemberController extends Controller
 
         flash(__('Your community member page has been deleted.'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 
     /**

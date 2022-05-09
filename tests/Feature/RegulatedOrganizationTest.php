@@ -170,7 +170,7 @@ test('users with admin role can update other member roles', function () {
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
         ]);
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('users without admin role can not update member roles', function () {
@@ -237,7 +237,7 @@ test('users with admin role can invite members', function () {
             'role' => 'member',
         ]);
 
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('users without admin role can not invite members', function () {
@@ -277,7 +277,7 @@ test('users with admin role can cancel invitations', function () {
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('users without admin role can not cancel invitations', function () {
@@ -376,11 +376,11 @@ test('users with admin role can remove members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.edit_roles_and_permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('users without admin role can not remove members', function () {
@@ -399,13 +399,13 @@ test('users without admin role can not remove members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.edit_roles_and_permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertForbidden();
 });
 
-test('only administrator can not remove themself', function () {
+test('sole administrator can not remove themself', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -419,11 +419,11 @@ test('only administrator can not remove themself', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.edit_roles_and_permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('users.invite-to-inviteable'));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('users with admin role can delete regulated organizations', function () {

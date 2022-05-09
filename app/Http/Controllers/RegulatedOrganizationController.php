@@ -73,7 +73,7 @@ class RegulatedOrganizationController extends Controller
 
         session()->put('type', $data['type']);
 
-        return redirect(\localized_route('regulated-organizations.create'));
+        return redirect(localized_route('regulated-organizations.create'));
     }
 
     /**
@@ -108,7 +108,7 @@ class RegulatedOrganizationController extends Controller
             ['role' => 'admin']
         );
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 
     /**
@@ -136,7 +136,7 @@ class RegulatedOrganizationController extends Controller
         $regulatedOrganization->fill($request->validated());
         $regulatedOrganization->save();
 
-        return redirect(\localized_route('regulated-organizations.edit', $regulatedOrganization));
+        return redirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     }
 
     /**
@@ -184,7 +184,7 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('Your federally regulated organization has been updated.'), 'success');
 
-        return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
+        return redirect(localized_route('regulated-organizations.show', $regulatedOrganization));
     }
 
     /**
@@ -202,7 +202,7 @@ class RegulatedOrganizationController extends Controller
             $regulatedOrganization->publish();
         }
 
-        return redirect(\localized_route('regulated-organizations.show', $regulatedOrganization));
+        return redirect(localized_route('regulated-organizations.show', $regulatedOrganization));
     }
 
     /**
@@ -231,6 +231,6 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('Your federally regulated organization has been deleted.'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 }

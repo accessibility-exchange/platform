@@ -22,6 +22,6 @@ class RegisterResponse implements RegisterResponseContract
             return response()->json(['two_factor' => false]);
         }
 
-        return redirect(\localized_route('users.show-introduction', [], Auth::user()->locale));
+        return redirect(localized_route('users.show-introduction', [], Auth::user()->locale));
     }
 }

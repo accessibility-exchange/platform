@@ -50,7 +50,7 @@ class OrganizationController extends Controller
 
         flash(__('organization.create_succeeded'), 'success');
 
-        return redirect(\localized_route('organizations.show', $organization));
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     /**
@@ -99,7 +99,7 @@ class OrganizationController extends Controller
 
         flash(__('organization.update_succeeded'), 'success');
 
-        return redirect(\localized_route('organizations.show', $organization));
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     /**
@@ -115,6 +115,6 @@ class OrganizationController extends Controller
 
         flash(__('organization.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 }
