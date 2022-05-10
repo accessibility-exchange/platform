@@ -37,24 +37,4 @@
 
         <button>{{ __('Save changes') }}</button>
     </form>
-    <h2>
-        {{ __('Delete federally regulated organization') }}
-    </h2>
-
-    <p>{{ __('Your federally regulated organization will be deleted and cannot be recovered. If you still want to delete your federally regulated organization, please enter your current password to proceed.') }}</p>
-
-    <form action="{{ localized_route('regulated-organizations.destroy', $regulatedOrganization) }}" method="POST" novalidate>
-        @csrf
-        @method('DELETE')
-
-        <div class="field">
-            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
-            <x-password-input name="current_password" />
-            <x-hearth-error for="current_password" bag="destroyOrganization" />
-        </div>
-
-        <button>
-            {{ __('Delete federally regulated organization') }}
-        </button>
-    </form>
 </x-app-wide-layout>

@@ -41,7 +41,7 @@ Route::multilingual('/introduction/update', [UserController::class, 'updateIntro
     ->name('users.update-introduction-status');
 
 Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'onboard'])
     ->name('dashboard');
 
 Route::multilingual('/people-and-organizations', function () {

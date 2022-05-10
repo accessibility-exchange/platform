@@ -65,6 +65,18 @@ test('users can edit roles and permissions', function () {
     $response->assertOk();
 });
 
+test('users can invite new members to their organization or regulated organization', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('users.invite-to-inviteable'));
+    $response->assertOk();
+    $response->assertSee('name="inviteable_id" id="inviteable_id" type="hidden" value="' . $regulatedOrganization->id . '"', false);
+    $response->assertSee('name="inviteable_type" id="inviteable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
+});
+
 test('guests can not edit roles and permissions', function () {
     $response = $this->get(localized_route('users.edit_roles_and_permissions'));
     $response->assertRedirect(localized_route('login'));
@@ -181,4 +193,10 @@ test('users can view the introduction', function () {
         ]);
 
     $response->assertRedirect(localized_route('dashboard'));
+
+    $newUser = User::factory()->create(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($newUser)->get(localized_route('dashboard'));
+
+    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
 });
