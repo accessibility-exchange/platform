@@ -16127,6 +16127,612 @@
                     /**
          * 
          *
+         * @see \Spatie\CollectionMacros\Macros\After::__invoke()
+         * @param mixed $currentItem
+         * @param mixed $fallback
+         * @static 
+         */ 
+        public static function after($currentItem, $fallback = null)
+        {
+                        return \Illuminate\Support\Collection::after($currentItem, $fallback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\At::__invoke()
+         * @param mixed $index
+         * @static 
+         */ 
+        public static function at($index)
+        {
+                        return \Illuminate\Support\Collection::at($index);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Before::__invoke()
+         * @param mixed $currentItem
+         * @param mixed $fallback
+         * @static 
+         */ 
+        public static function before($currentItem, $fallback = null)
+        {
+                        return \Illuminate\Support\Collection::before($currentItem, $fallback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\ChunkBy::__invoke()
+         * @param \Closure $callback
+         * @param bool $preserveKeys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function chunkBy($callback, $preserveKeys = false)
+        {
+                        return \Illuminate\Support\Collection::chunkBy($callback, $preserveKeys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\CollectBy::__invoke()
+         * @param mixed $key
+         * @param mixed $default
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function collectBy($key, $default = null)
+        {
+                        return \Illuminate\Support\Collection::collectBy($key, $default);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\EachCons::__invoke()
+         * @param int $chunkSize
+         * @param bool $preserveKeys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function eachCons($chunkSize, $preserveKeys = false)
+        {
+                        return \Illuminate\Support\Collection::eachCons($chunkSize, $preserveKeys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Eighth::__invoke()
+         * @static 
+         */ 
+        public static function eighth()
+        {
+                        return \Illuminate\Support\Collection::eighth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Extract::__invoke()
+         * @param mixed $keys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function extract($keys)
+        {
+                        return \Illuminate\Support\Collection::extract($keys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Fifth::__invoke()
+         * @static 
+         */ 
+        public static function fifth()
+        {
+                        return \Illuminate\Support\Collection::fifth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\FilterMap::__invoke()
+         * @param callable $callback
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function filterMap($callback)
+        {
+                        return \Illuminate\Support\Collection::filterMap($callback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\FirstOrPush::__invoke()
+         * @param mixed $callback
+         * @param mixed $value
+         * @param mixed $instance
+         * @static 
+         */ 
+        public static function firstOrPush($callback, $value, $instance = null)
+        {
+                        return \Illuminate\Support\Collection::firstOrPush($callback, $value, $instance);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Fourth::__invoke()
+         * @static 
+         */ 
+        public static function fourth()
+        {
+                        return \Illuminate\Support\Collection::fourth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\FromPairs::__invoke()
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function fromPairs()
+        {
+                        return \Illuminate\Support\Collection::fromPairs();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\GetNth::__invoke()
+         * @param int $nth
+         * @static 
+         */ 
+        public static function getNth($nth)
+        {
+                        return \Illuminate\Support\Collection::getNth($nth);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Glob::__invoke()
+         * @param string $pattern
+         * @param int $flags
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function glob($pattern, $flags = 0)
+        {
+                        return \Illuminate\Support\Collection::glob($pattern, $flags);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\GroupByModel::__invoke()
+         * @param mixed $callback
+         * @param bool $preserveKeys
+         * @param mixed $modelKey
+         * @param mixed $itemsKey
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function groupByModel($callback, $preserveKeys = false, $modelKey = 0, $itemsKey = 1)
+        {
+                        return \Illuminate\Support\Collection::groupByModel($callback, $preserveKeys, $modelKey, $itemsKey);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Head::__invoke()
+         * @static 
+         */ 
+        public static function head()
+        {
+                        return \Illuminate\Support\Collection::head();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\IfMacro::__invoke()
+         * @param mixed|null $if
+         * @param mixed|null $then
+         * @param mixed|null $else
+         * @return mixed|null 
+         * @static 
+         */ 
+        public static function if($if, $then = null, $else = null)
+        {
+                        return \Illuminate\Support\Collection::if($if, $then, $else);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\IfAny::__invoke()
+         * @param callable $callback
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function ifAny($callback)
+        {
+                        return \Illuminate\Support\Collection::ifAny($callback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\IfEmpty::__invoke()
+         * @param callable $callback
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function ifEmpty($callback)
+        {
+                        return \Illuminate\Support\Collection::ifEmpty($callback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\InsertAfter::__invoke()
+         * @param mixed $after
+         * @param mixed $item
+         * @param mixed $key
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function insertAfter($after, $item, $key = null)
+        {
+                        return \Illuminate\Support\Collection::insertAfter($after, $item, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\InsertAfterKey::__invoke()
+         * @param mixed $afterKey
+         * @param mixed $item
+         * @param mixed $key
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function insertAfterKey($afterKey, $item, $key = null)
+        {
+                        return \Illuminate\Support\Collection::insertAfterKey($afterKey, $item, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\InsertAt::__invoke()
+         * @param int $index
+         * @param mixed $item
+         * @param mixed $key
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function insertAt($index, $item, $key = null)
+        {
+                        return \Illuminate\Support\Collection::insertAt($index, $item, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\InsertBefore::__invoke()
+         * @param mixed $before
+         * @param mixed $item
+         * @param mixed $key
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function insertBefore($before, $item, $key = null)
+        {
+                        return \Illuminate\Support\Collection::insertBefore($before, $item, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\InsertBeforeKey::__invoke()
+         * @param mixed $beforeKey
+         * @param mixed $item
+         * @param mixed $key
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function insertBeforeKey($beforeKey, $item, $key = null)
+        {
+                        return \Illuminate\Support\Collection::insertBeforeKey($beforeKey, $item, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Ninth::__invoke()
+         * @static 
+         */ 
+        public static function ninth()
+        {
+                        return \Illuminate\Support\Collection::ninth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\None::__invoke()
+         * @param mixed $key
+         * @param mixed $value
+         * @return bool 
+         * @static 
+         */ 
+        public static function none($key, $value = null)
+        {
+                        return \Illuminate\Support\Collection::none($key, $value);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Paginate::__invoke()
+         * @param int $perPage
+         * @param string $pageName
+         * @param int|null $page
+         * @param int|null $total
+         * @param array $options
+         * @return \Illuminate\Pagination\LengthAwarePaginator 
+         * @static 
+         */ 
+        public static function paginate($perPage = 15, $pageName = 'page', $page = null, $total = null, $options = [])
+        {
+                        return \Illuminate\Support\Collection::paginate($perPage, $pageName, $page, $total, $options);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\ParallelMap::__invoke()
+         * @param callable $callback
+         * @param mixed $workers
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function parallelMap($callback, $workers = null)
+        {
+                        return \Illuminate\Support\Collection::parallelMap($callback, $workers);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Path::__invoke()
+         * @param mixed $key
+         * @param mixed $default
+         * @static 
+         */ 
+        public static function path($key, $default = null)
+        {
+                        return \Illuminate\Support\Collection::path($key, $default);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\PluckMany::__invoke()
+         * @param mixed $keys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function pluckMany($keys)
+        {
+                        return \Illuminate\Support\Collection::pluckMany($keys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\PluckToArray::__invoke()
+         * @param mixed $value
+         * @param mixed $key
+         * @return array 
+         * @static 
+         */ 
+        public static function pluckToArray($value, $key = null)
+        {
+                        return \Illuminate\Support\Collection::pluckToArray($value, $key);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Prioritize::__invoke()
+         * @param callable $callable
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function prioritize($callable)
+        {
+                        return \Illuminate\Support\Collection::prioritize($callable);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Recursive::__invoke()
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function recursive()
+        {
+                        return \Illuminate\Support\Collection::recursive();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Rotate::__invoke()
+         * @param int $offset
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function rotate($offset)
+        {
+                        return \Illuminate\Support\Collection::rotate($offset);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Second::__invoke()
+         * @static 
+         */ 
+        public static function second()
+        {
+                        return \Illuminate\Support\Collection::second();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\SectionBy::__invoke()
+         * @param mixed $key
+         * @param bool $preserveKeys
+         * @param mixed $sectionKey
+         * @param mixed $itemsKey
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function sectionBy($key, $preserveKeys = false, $sectionKey = 0, $itemsKey = 1)
+        {
+                        return \Illuminate\Support\Collection::sectionBy($key, $preserveKeys, $sectionKey, $itemsKey);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Seventh::__invoke()
+         * @static 
+         */ 
+        public static function seventh()
+        {
+                        return \Illuminate\Support\Collection::seventh();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\SimplePaginate::__invoke()
+         * @param int $perPage
+         * @param string $pageName
+         * @param int|null $page
+         * @param array $options
+         * @return \Illuminate\Pagination\Paginator 
+         * @static 
+         */ 
+        public static function simplePaginate($perPage = 15, $pageName = 'page', $page = null, $options = [])
+        {
+                        return \Illuminate\Support\Collection::simplePaginate($perPage, $pageName, $page, $options);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Sixth::__invoke()
+         * @static 
+         */ 
+        public static function sixth()
+        {
+                        return \Illuminate\Support\Collection::sixth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\SliceBefore::__invoke()
+         * @param mixed $callback
+         * @param bool $preserveKeys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function sliceBefore($callback, $preserveKeys = false)
+        {
+                        return \Illuminate\Support\Collection::sliceBefore($callback, $preserveKeys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Tail::__invoke()
+         * @param bool $preserveKeys
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function tail($preserveKeys = false)
+        {
+                        return \Illuminate\Support\Collection::tail($preserveKeys);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Tenth::__invoke()
+         * @static 
+         */ 
+        public static function tenth()
+        {
+                        return \Illuminate\Support\Collection::tenth();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Third::__invoke()
+         * @static 
+         */ 
+        public static function third()
+        {
+                        return \Illuminate\Support\Collection::third();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\ToPairs::__invoke()
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function toPairs()
+        {
+                        return \Illuminate\Support\Collection::toPairs();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Transpose::__invoke()
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function transpose()
+        {
+                        return \Illuminate\Support\Collection::transpose();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\TryCatch::__invoke()
+         * @static 
+         */ 
+        public static function try()
+        {
+                        return \Illuminate\Support\Collection::try();
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\Validate::__invoke()
+         * @param mixed $callback
+         * @return bool 
+         * @static 
+         */ 
+        public static function validate($callback)
+        {
+                        return \Illuminate\Support\Collection::validate($callback);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\WeightedRandom::__invoke()
+         * @param callable|string $weightAttribute
+         * @param mixed $default
+         * @static 
+         */ 
+        public static function weightedRandom($weightAttribute, $default = null)
+        {
+                        return \Illuminate\Support\Collection::weightedRandom($weightAttribute, $default);
+        }
+                    /**
+         * 
+         *
+         * @see \Spatie\CollectionMacros\Macros\WithSize::__invoke()
+         * @param int $size
+         * @return \Illuminate\Support\Collection 
+         * @static 
+         */ 
+        public static function withSize($size)
+        {
+                        return \Illuminate\Support\Collection::withSize($size);
+        }
+                    /**
+         * 
+         *
          * @see \Spatie\LaravelRay\RayServiceProvider::registerMacros()
          * @param string $description
          * @static 
@@ -16134,6 +16740,16 @@
         public static function ray($description = '')
         {
                         return \Illuminate\Support\Collection::ray($description);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Providers\AppServiceProvider::boot()
+         * @static 
+         */ 
+        public static function prepareForForm()
+        {
+                        return \Illuminate\Support\Collection::prepareForForm();
         }
          
     }

@@ -15,17 +15,24 @@ class SectorSeeder extends Seeder
     public function run()
     {
         $sectors = [
-            'Transportation',
-            'Financial services',
-            'Telecommunications',
-            'Radio and television broadcasting',
-            'Federal government benefit programs and services',
-            'Crown corporations',
+            'transportation',
+            'financial-services',
+            'telecommunications',
+            'broadcasting',
+            'government-programs-and-services',
+            'crown-corporations',
         ];
 
         foreach ($sectors as $sector) {
             Sector::firstOrCreate([
-                'name->en' => $sector,
+                'name' => [
+                    'en' => __('sector.' . $sector . '.name'),
+                    'fr' => trans('sector.' . $sector . '.name', [], 'fr'),
+                ],
+                'description' => [
+                    'en' => __('sector.' . $sector . '.description'),
+                    'fr' => trans('sector.' . $sector . '.description', [], 'fr'),
+                ],
             ]);
         }
     }

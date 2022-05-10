@@ -139,8 +139,8 @@ class CommunityMemberController extends Controller
         return view('community-members.edit', [
             'communityMember' => $communityMember,
             'regions' => get_regions(['CA'], locale()),
-            'sectors' => Sector::pluck('name', 'id')->toArray(),
-            'impacts' => Impact::pluck('name', 'id')->toArray(),
+            'sectors' => Sector::all()->prepareForForm(),
+            'impacts' => Impact::all()->prepareForForm(),
             'communities' => Community::pluck('name', 'id')->toArray(),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),

@@ -12,6 +12,7 @@ use App\Statuses\CommunityMemberStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
 
@@ -39,6 +40,18 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
+
+        Collection::macro('prepareForForm', function () {
+            /** @var Collection $this */
+            return $this->mapWithKeys(function ($item) {
+                return [
+                    $item->id => [
+                        'label' => $item->name,
+                        'hint' => $item->description,
+                    ],
+                ];
+            })->toArray();
+        });
 
         StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);

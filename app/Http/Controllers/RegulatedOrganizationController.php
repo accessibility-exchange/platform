@@ -168,7 +168,7 @@ class RegulatedOrganizationController extends Controller
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
             'regions' => get_regions(['CA'], locale()),
-            'sectors' => Sector::pluck('name', 'id')->toArray(),
+            'sectors' => Sector::all()->prepareForForm(),
         ]);
     }
 

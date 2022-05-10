@@ -16,6 +16,7 @@ class Sector extends Model
      */
     protected $fillable = [
         'name',
+        'description',
     ];
 
     /**
@@ -25,6 +26,7 @@ class Sector extends Model
      */
     protected $casts = [
         'name' => 'array',
+        'description' => 'array',
     ];
 
     /**
@@ -32,7 +34,8 @@ class Sector extends Model
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'name',
+        'description',
     ];
 }
