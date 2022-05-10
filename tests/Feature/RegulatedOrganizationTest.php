@@ -10,7 +10,14 @@ use Illuminate\Support\Facades\URL;
 uses(RefreshDatabase::class);
 
 test('users can create regulated organizations', function () {
+    $individualUser = User::factory()->create();
+    $response = $this->actingAs($individualUser)->get(localized_route('regulated-organizations.find-or-create'));
+    $response->assertForbidden();
+
     $user = User::factory()->create(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
+    $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'));
     $response->assertOk();
@@ -433,6 +440,9 @@ test('users with admin role can delete regulated organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization));
+    $response->assertOk();
+
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
     ]);
@@ -462,6 +472,9 @@ test('users without admin role can not delete regulated organizations', function
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization));
+    $response->assertForbidden();
+
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
     ]);
@@ -476,6 +489,9 @@ test('non members can not delete regulated organizations', function () {
     $otherRegulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $otherRegulatedOrganization));
+    $response->assertForbidden();
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $otherRegulatedOrganization), [
         'current_password' => 'password',
