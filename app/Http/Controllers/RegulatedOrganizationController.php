@@ -184,7 +184,7 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('Your federally regulated organization has been updated.'), 'success');
 
-        return redirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+        return redirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     }
 
     /**

@@ -76,6 +76,7 @@ test('users with admin role can edit regulated organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
             'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'type' => 'business',
         ]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
@@ -86,6 +87,7 @@ test('users with admin role can edit regulated organizations', function () {
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
+    $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 

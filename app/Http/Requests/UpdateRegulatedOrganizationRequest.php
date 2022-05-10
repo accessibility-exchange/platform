@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\RegulatedOrganization;
+use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,14 +26,21 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
+            'name.*' => [
+                'nullable',
                 'string',
                 'max:255',
-                Rule::unique(RegulatedOrganization::class)->ignore($this->regulatedOrganization->id),
-
+                UniqueTranslationRule::for('regulated_organizations')->ignore($this->regulatedOrganization->id),
             ],
-            'locality' => ['required', 'string', 'max:255'],
+            'name.en' => [
+                'required_without:name.fr',
+                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
+            ],
+            'name.fr' => [
+                'required_without:name.en',
+                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
+            ],
+            'locality' => 'required|string|max:255',
             'region' => [
                 'required',
                 Rule::in(get_region_codes()),
