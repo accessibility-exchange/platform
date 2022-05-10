@@ -33,6 +33,10 @@ class RegulatedOrganization extends Model
         'languages',
         'locality',
         'region',
+        'about',
+        'accessibility_and_inclusion_links',
+        'social_links',
+        'website_link',
         'published_at',
     ];
 
@@ -43,6 +47,7 @@ class RegulatedOrganization extends Model
      */
     protected $casts = [
         'languages' => 'array',
+        'accessibility_and_inclusion_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
     ];
 
@@ -62,7 +67,36 @@ class RegulatedOrganization extends Model
      */
     public array $translatable = [
         'name',
+        'about',
     ];
+
+    /**
+     * Get the community member's social links.
+     *
+     * @return array
+     */
+    public function getSocialLinksAttribute(): array
+    {
+        if (! is_null($this->attributes['social_links'])) {
+            return array_filter(json_decode($this->attributes['social_links'], true));
+        }
+
+        return [];
+    }
+
+    /**
+     * Get the community member's links.
+     *
+     * @return array
+     */
+    public function getAccessibilityAndInclusionLinksAttribute(): array
+    {
+        if (! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+            return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
+        }
+
+        return [];
+    }
 
     /**
      * Get the route prefix for the model.

@@ -3,6 +3,7 @@
 use App\Models\Invitation;
 use App\Models\Membership;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -71,6 +72,8 @@ test('users primary entity can be retrieved', function () {
 });
 
 test('users with admin role can edit regulated organizations', function () {
+    $this->seed();
+
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -86,6 +89,8 @@ test('users with admin role can edit regulated organizations', function () {
         'name' => ['en' => $regulatedOrganization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
+        'about' => ['en' => 'TODO.'],
+        'sectors' => [Sector::pluck('id')->first()],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));

@@ -58,8 +58,8 @@ class UpdateCommunityMemberRequest extends FormRequest
                 Rule::in(AgeGroup::pluck('id')->toArray()),
             ],
             'social_links.*' => 'nullable|url',
-            'web_links.*.title' => 'nullable|string|required_with:other_links.*.url',
-            'web_links.*.url' => 'nullable|url|required_with:other_links.*.title',
+            'web_links.*.title' => 'nullable|string|required_with:web_links.*.url',
+            'web_links.*.url' => 'nullable|url|required_with:web_links.*.title',
         ];
     }
 

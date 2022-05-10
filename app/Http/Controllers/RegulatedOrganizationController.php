@@ -8,6 +8,7 @@ use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -167,6 +168,7 @@ class RegulatedOrganizationController extends Controller
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
             'regions' => get_regions(['CA'], \locale()),
+            'sectors' => Sector::pluck('name', 'id')->toArray(),
         ]);
     }
 
@@ -179,8 +181,13 @@ class RegulatedOrganizationController extends Controller
      */
     public function update(UpdateRegulatedOrganizationRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
     {
-        $regulatedOrganization->fill($request->validated());
+        $data = $request->validated();
+
+        $regulatedOrganization->fill($data);
+
         $regulatedOrganization->save();
+
+        $regulatedOrganization->sectors()->sync($data['sectors'] ?? []);
 
         flash(__('Your federally regulated organization has been updated.'), 'success');
 
