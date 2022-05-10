@@ -40,11 +40,11 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'name.*' => ['nullable'] + $nameRules,
             'name.en' => [
                 'required_without:name.fr',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government')
+                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
             ] + $nameRules,
             'name.fr' => [
                 'required_without:name.en',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government')
+                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
             ] + $nameRules,
             'locality' => 'required|string|max:255',
             'region' => [
