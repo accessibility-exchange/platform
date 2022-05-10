@@ -97,7 +97,24 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(0);
     expect($regulatedOrganization->social_links)->toHaveCount(1)->toHaveKey('facebook');
+
+    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'name' => ['en' => $regulatedOrganization->name],
+        'locality' => 'St John\'s',
+        'region' => 'NL',
+        'about' => ['en' => 'TODO.'],
+        'sectors' => [Sector::pluck('id')->first()],
+        'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
+        'social_links' => ['facebook' => ''],
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(1);
+    expect($regulatedOrganization->social_links)->toHaveCount(0);
 });
 
 test('users without admin role can not edit regulated organizations', function () {
