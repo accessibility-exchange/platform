@@ -2,7 +2,6 @@
 
 use App\Settings;
 use CommerceGuys\Intl\Language\LanguageRepository;
-use Illuminate\Support\Arr;
 
 if (! function_exists('settings')) {
     /**
@@ -45,7 +44,8 @@ if (! function_exists('get_available_languages')) {
                 $languages[$locale] = get_language_exonym($locale, locale());
             }
         }
-        Arr::sort($languages);
+
+        asort($languages);
 
         return $languages;
     }

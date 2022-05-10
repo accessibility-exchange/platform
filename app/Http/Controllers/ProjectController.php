@@ -78,7 +78,7 @@ class ProjectController extends Controller
             session()->put('ancestor', $data['ancestor']);
         }
 
-        return redirect(\localized_route('projects.create', ['step' => 2]));
+        return redirect(localized_route('projects.create', ['step' => 2]));
     }
 
     /**
@@ -93,7 +93,7 @@ class ProjectController extends Controller
 
         session()->put('focus', $data['focus']);
 
-        return redirect(\localized_route('projects.create', ['step' => 3]));
+        return redirect(localized_route('projects.create', ['step' => 3]));
     }
 
     /**
@@ -108,7 +108,7 @@ class ProjectController extends Controller
 
         session()->put('languages', $data['languages']);
 
-        return redirect(\localized_route('projects.create', ['step' => 4]));
+        return redirect(localized_route('projects.create', ['step' => 4]));
     }
 
     /**
@@ -129,7 +129,7 @@ class ProjectController extends Controller
 
         flash(__('Your project has been created.'), 'success');
 
-        return redirect(\localized_route('projects.edit', ['project' => $project, 'step' => 2]));
+        return redirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
     }
 
     /**
@@ -216,7 +216,7 @@ class ProjectController extends Controller
             $project->publish();
         }
 
-        return redirect(\localized_route('projects.show', $project));
+        return redirect(localized_route('projects.show', $project));
     }
 
     /**
@@ -232,7 +232,7 @@ class ProjectController extends Controller
 
         flash(__('Your project has been deleted.'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 
     /**

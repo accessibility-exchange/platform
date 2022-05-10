@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Models\CommunityMember;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Settings;
 use App\Statuses\CommunityMemberStatus;
 use App\Statuses\ProjectStatus;
+use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
@@ -39,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
+        StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         User::observe(UserObserver::class);
     }

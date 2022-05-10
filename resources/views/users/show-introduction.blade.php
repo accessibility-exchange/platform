@@ -17,7 +17,7 @@
     </div>
 
     <div class="center repel">
-        <a class="cta secondary" href="{{ localized_route('community-members.show-role-selection') }}">{{ __('Skip for now') }}</a>
+        <a class="cta secondary" href="{{ $skipTo }}">{{ __('Skip for now') }}</a>
         <form class="width:full" action="{{ localized_route('users.update-introduction-status') }}" method="post">
             @method('put')
             @csrf

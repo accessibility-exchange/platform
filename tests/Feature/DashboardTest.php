@@ -1,33 +1,31 @@
 <?php
 
-namespace Tests\Feature;
-
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class DashboardTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    public function test_user_can_access_dashboard()
-    {
-        $user = User::factory()->create([
-            'context' => 'community-member',
-        ]);
+test('user can access dashboard', function () {
+    $user = User::factory()->create([
+        'context' => 'community-member',
+    ]);
 
-        $response = $this->actingAs($user)->get(localized_route('dashboard'));
+    $response = $this->actingAs($user)->get(localized_route('dashboard'));
 
-        $response->assertStatus(200);
-        $response->assertSee('Create your community member page');
+    $response->assertStatus(200);
+    $response->assertSee('Create your community member page');
 
-        $user = User::factory()->create([
-            'context' => 'regulated-organization',
-        ]);
+    $user = User::factory()->create([
+        'context' => 'regulated-organization',
+    ]);
 
-        $response = $this->actingAs($user)->get(localized_route('dashboard'));
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
 
-        $response->assertStatus(200);
-        $response->assertSee('Create your federally regulated organization page');
-    }
-}
+    $response = $this->actingAs($user)->get(localized_route('dashboard'));
+
+    $response->assertStatus(200);
+    $response->assertSee('Create your federally regulated organization page');
+});

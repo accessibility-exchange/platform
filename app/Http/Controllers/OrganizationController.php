@@ -29,7 +29,7 @@ class OrganizationController extends Controller
         $this->authorize('create', Organization::class);
 
         return view('organizations.create', [
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
         ]);
     }
 
@@ -50,7 +50,7 @@ class OrganizationController extends Controller
 
         flash(__('organization.create_succeeded'), 'success');
 
-        return redirect(\localized_route('organizations.show', $organization));
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     /**
@@ -80,7 +80,7 @@ class OrganizationController extends Controller
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
             'roles' => $roles,
         ]);
     }
@@ -99,7 +99,7 @@ class OrganizationController extends Controller
 
         flash(__('organization.update_succeeded'), 'success');
 
-        return redirect(\localized_route('organizations.show', $organization));
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     /**
@@ -115,6 +115,6 @@ class OrganizationController extends Controller
 
         flash(__('organization.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 }

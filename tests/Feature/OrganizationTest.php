@@ -141,7 +141,7 @@ class OrganizationTest extends TestCase
             ->put(localized_route('memberships.update', $membership), [
                 'role' => 'admin',
             ]);
-        $response->assertRedirect(localized_route('organizations.edit', $organization));
+        $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     public function test_users_without_admin_role_can_not_update_member_roles()
@@ -223,7 +223,7 @@ class OrganizationTest extends TestCase
                 'role' => 'member',
             ]);
 
-        $response->assertRedirect(localized_route('organizations.edit', $organization));
+        $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     public function test_users_without_admin_role_can_not_invite_members()
@@ -273,7 +273,7 @@ class OrganizationTest extends TestCase
             ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect(localized_route('organizations.edit', $organization));
+        $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     public function test_users_without_admin_role_can_not_cancel_invitations()
@@ -401,7 +401,7 @@ class OrganizationTest extends TestCase
             ->delete(route('memberships.destroy', $membership));
 
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect(localized_route('organizations.edit', $organization));
+        $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     public function test_users_without_admin_role_can_not_remove_members()

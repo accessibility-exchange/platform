@@ -22,7 +22,7 @@
 
         <p class="repel">
             <button type="button" class="secondary" x-on:click="history.back()">{{ __('Cancel') }}</button>
-            <button>{{ _('Update') }}</button>
+            <button>{{ __('Update') }}</button>
         </p>
 
         @method('put')

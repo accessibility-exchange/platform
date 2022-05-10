@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', \locale());
+Route::redirect('/', locale());
 Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -41,7 +41,7 @@ Route::multilingual('/introduction/update', [UserController::class, 'updateIntro
     ->name('users.update-introduction-status');
 
 Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'onboard'])
     ->name('dashboard');
 
 Route::multilingual('/people-and-organizations', function () {
@@ -59,6 +59,10 @@ Route::multilingual('/settings/basic-information', [UserController::class, 'edit
 Route::multilingual('/settings/roles-and-permissions', [UserController::class, 'editRolesAndPermissions'])
     ->middleware(['auth'])
     ->name('users.edit_roles_and_permissions');
+
+Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInviteable'])
+    ->middleware(['auth'])
+    ->name('users.invite-to-inviteable');
 
 Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
     ->middleware(['auth'])

@@ -37,7 +37,7 @@ class EngagementController extends Controller
 
         flash(__('Your engagement has been created.'), 'success');
 
-        return redirect(\localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
+        return redirect(localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
     }
 
     /**
@@ -79,7 +79,7 @@ class EngagementController extends Controller
 
         flash(__('Your engagement has been updated.'), 'success');
 
-        return redirect(\localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
+        return redirect(localized_route('engagements.manage', ['engagement' => $engagement, 'project' => $project]));
     }
 
     /**

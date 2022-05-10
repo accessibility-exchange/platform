@@ -19,12 +19,11 @@ class RegulatedOrganizationFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->company(),
-            'locality' => $this->faker->city(),
-            'region' => $this->faker->provinceAbbr(),
+            'type' => $this->faker->randomElement(['government', 'business', 'public-sector']),
         ];
     }
 }

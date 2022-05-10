@@ -33,6 +33,6 @@ class PasswordResetResponse implements PasswordResetResponseContract
      */
     public function toResponse($request): RedirectResponse
     {
-        return redirect()->intended(\localized_route('login'))->with('status', trans($this->status));
+        return redirect()->intended(localized_route('login'))->with('status', trans($this->status));
     }
 }

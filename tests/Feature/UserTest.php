@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -63,6 +64,32 @@ test('users can edit roles and permissions', function () {
 
     $response = $this->actingAs($user)->get(localized_route('users.edit_roles_and_permissions'));
     $response->assertOk();
+});
+
+test('users can invite new members to their organization or regulated organization', function () {
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('users.invite-to-inviteable'));
+    $response->assertOk();
+    $response->assertSee('name="inviteable_id" id="inviteable_id" type="hidden" value="' . $regulatedOrganization->id . '"', false);
+    $response->assertSee('name="inviteable_type" id="inviteable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('users.invite-to-inviteable'));
+    $response->assertOk();
+    $response->assertSee('name="inviteable_id" id="inviteable_id" type="hidden" value="' . $organization->id . '"', false);
+    $response->assertSee('name="inviteable_type" id="inviteable_type" type="hidden" value="App\Models\Organization"', false);
+
+    $individualUser = User::factory()->create();
+    $response = $this->actingAs($individualUser)->get(localized_route('users.invite-to-inviteable'));
+    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
 });
 
 test('guests can not edit roles and permissions', function () {
@@ -159,6 +186,14 @@ test('users can view the introduction', function () {
     $response->assertOk();
     $response->assertSee('Video for regulated organizations.');
 
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-introduction'))
+        ->put(localized_route('users.update-introduction-status'), [
+            'finished_introduction' => 1,
+        ]);
+
+    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
+
     $user->update(['context' => 'regulated-organization-employee']);
 
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
@@ -173,4 +208,10 @@ test('users can view the introduction', function () {
         ]);
 
     $response->assertRedirect(localized_route('dashboard'));
+
+    $newUser = User::factory()->create(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($newUser)->get(localized_route('dashboard'));
+
+    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
 });

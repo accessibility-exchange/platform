@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreRegulatedOrganizationRequest extends FormRequest
 {
@@ -14,7 +12,7 @@ class StoreRegulatedOrganizationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,33 +22,12 @@ class StoreRegulatedOrganizationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(RegulatedOrganization::class),
-
-            ],
-            'locality' => ['required', 'string', 'max:255'],
-            'region' => [
-                'required',
-                Rule::in(get_region_codes()),
-            ],
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'name.unique' => __('A federally regulated organization with this name already exists.'),
+            'type' => 'required|string|in:government,business,public-sector',
+            'name.en' => 'nullable|required_without:name.fr|required_if:type,government|string|max:255|unique_translation:regulated_organizations',
+            'name.fr' => 'nullable|required_without:name.en|required_if:type,government|string|max:255|unique_translation:regulated_organizations',
         ];
     }
 }

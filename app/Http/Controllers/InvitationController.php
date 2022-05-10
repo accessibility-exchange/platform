@@ -7,6 +7,7 @@ use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -16,8 +17,8 @@ class InvitationController extends Controller
     /**
      * Create an invitation.
      *
-     * @param  \App\Http\Requests\StoreInvitationRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreInvitationRequest $request
+     * @return RedirectResponse
      */
     public function create(StoreInvitationRequest $request)
     {
@@ -31,15 +32,15 @@ class InvitationController extends Controller
 
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
-        return redirect(\localized_route($inviteable->getRoutePrefix() . '.edit', $inviteable));
+        return redirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     /**
      * Accept the specified invitation.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invitation  $invitation
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Invitation $invitation
+     * @return RedirectResponse
      */
     public function accept(Request $request, Invitation $invitation)
     {
@@ -56,15 +57,16 @@ class InvitationController extends Controller
             'success'
         );
 
-        return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
+        return redirect(localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
     }
 
     /**
      * Cancel the specified invitation.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Invitation  $invitation
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Invitation $invitation
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function destroy(Request $request, Invitation $invitation)
     {
@@ -76,6 +78,6 @@ class InvitationController extends Controller
 
         flash(__('invitation.cancel_invitation_succeeded'), 'success');
 
-        return redirect(\localized_route($invitation->inviteable->getRoutePrefix() . '.edit', $invitation->inviteable));
+        return redirect(localized_route('users.edit_roles_and_permissions'));
     }
 }

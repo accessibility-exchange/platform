@@ -54,7 +54,7 @@ class ResourceController extends Controller
 
         flash(__('resource.create_succeeded'), 'success');
 
-        return redirect(\localized_route('resources.show', ['resource' => $resource]));
+        return redirect(localized_route('resources.show', ['resource' => $resource]));
     }
 
     /**
@@ -93,7 +93,7 @@ class ResourceController extends Controller
 
         flash(__('resource.update_succeeded'), 'success');
 
-        return redirect(\localized_route('resources.show', $resource));
+        return redirect(localized_route('resources.show', $resource));
     }
 
     /**
@@ -109,6 +109,6 @@ class ResourceController extends Controller
 
         flash(__('resource.destroy_succeeded'), 'success');
 
-        return redirect(\localized_route('dashboard'));
+        return redirect(localized_route('dashboard'));
     }
 }

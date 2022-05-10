@@ -33,8 +33,15 @@ class UserController extends Controller
      */
     public function showIntroduction(): View
     {
+        $skipTo = match (Auth::user()->context) {
+            'community-member' => localized_route('community-members.show-role-selection'),
+            'regulated-organization' => localized_route('regulated-organizations.find-or-create'),
+            default => localized_route('dashboard'),
+        };
+
         return view('users.show-introduction', [
             'user' => Auth::user(),
+            'skipTo' => $skipTo,
         ]);
     }
 
@@ -53,6 +60,7 @@ class UserController extends Controller
 
         $redirectTo = match (Auth::user()->context) {
             'community-member' => localized_route('community-members.show-role-selection'),
+            'regulated-organization' => localized_route('regulated-organizations.find-or-create'),
             default => localized_route('dashboard'),
         };
 
@@ -66,8 +74,16 @@ class UserController extends Controller
      */
     public function dashboard(): View
     {
+        $currentUser = Auth::user();
+
+        $memberable = match ($currentUser->context) {
+            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+            default => null,
+        };
+
         return view('dashboard', [
-            'currentUser' => Auth::user(),
+            'currentUser' => $currentUser,
+            'memberable' => $memberable,
         ]);
     }
 
@@ -149,6 +165,37 @@ class UserController extends Controller
         return view('users.roles-and-permissions', [
             'user' => Auth::user(),
         ]);
+    }
+
+    /**
+     * Show the roles and permissions edit view for the logged-in user.
+     *
+     * @return View|RedirectResponse
+     */
+    public function inviteToInviteable(): View|RedirectResponse
+    {
+        $currentUser = Auth::user();
+        $invitable = match ($currentUser->context) {
+            'organization' => $currentUser->organization() ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+            default => null,
+        };
+
+        if ($invitable) {
+            $roles = [];
+
+            foreach (config('hearth.organizations.roles') as $role) {
+                $roles[$role] = __('roles.' . $role);
+            }
+
+            return view('users.roles-and-permissions.invite', [
+                'user' => $currentUser,
+                'inviteable' => $invitable,
+                'roles' => $roles,
+            ]);
+        }
+
+        return redirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     /**

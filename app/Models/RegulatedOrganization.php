@@ -9,16 +9,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Route;
+use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
-    use HasSlug;
+    use HasStatus;
     use HasTranslations;
     use Notifiable;
 
@@ -29,37 +29,73 @@ class RegulatedOrganization extends Model
      */
     protected $fillable = [
         'name',
+        'type',
+        'languages',
         'locality',
         'region',
+        'about',
+        'accessibility_and_inclusion_links',
+        'social_links',
+        'website_link',
+        'published_at',
     ];
 
-    protected $cascadeDeletes = ['users'];
+    /**
+     * The attributes that which should be cast to other types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'languages' => 'array',
+        'accessibility_and_inclusion_links' => 'array',
+        'published_at' => 'datetime:Y-m-d',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string|array<string>
+     */
+    protected mixed $cascadeDeletes = [
+        'users',
+    ];
 
     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public array $translatable = [];
+    public array $translatable = [
+        'name',
+        'about',
+    ];
 
     /**
-     * Get the options for generating the slug.
+     * Get the community member's social links.
+     *
+     * @return array
      */
-    public function getSlugOptions(): SlugOptions
+    public function getSocialLinksAttribute(): array
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        if (! is_null($this->attributes['social_links'])) {
+            return array_filter(json_decode($this->attributes['social_links'], true));
+        }
+
+        return [];
     }
 
     /**
-     * Get the route key for the model.
+     * Get the community member's links.
      *
-     * @return string
+     * @return array
      */
-    public function getRouteKeyName(): string
+    public function getAccessibilityAndInclusionLinksAttribute(): array
     {
-        return 'slug';
+        if (! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+            return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
+        }
+
+        return [];
     }
 
     /**
@@ -70,6 +106,30 @@ class RegulatedOrganization extends Model
     public function getRoutePrefix(): string
     {
         return 'regulated-organizations';
+    }
+
+    /**
+     * Publish the regulated organization.
+     *
+     * @return void
+     */
+    public function publish(): void
+    {
+        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->save();
+        flash(__('Your regulated organization page has been published.'), 'success');
+    }
+
+    /**
+     * Unpublish the regulated organization.
+     *
+     * @return void
+     */
+    public function unpublish(): void
+    {
+        $this->published_at = null;
+        $this->save();
+        flash(__('Your regulated organization page has been unpublished.'), 'success');
     }
 
     /**
@@ -124,7 +184,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the invitations associated with this federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function invitations(): MorphMany
     {
@@ -134,7 +194,7 @@ class RegulatedOrganization extends Model
     /**
      * The sectors that belong to the federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function sectors(): BelongsToMany
     {
@@ -144,7 +204,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function projects(): MorphMany
     {
@@ -155,7 +215,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that are in progress.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function currentProjects(): MorphMany
     {
@@ -171,7 +231,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that have been completed.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function pastProjects(): MorphMany
     {
@@ -183,7 +243,7 @@ class RegulatedOrganization extends Model
     /**
      * Get the projects that belong to this federally regulated organization that haven't started yet.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function futureProjects(): MorphMany
     {
@@ -195,10 +255,20 @@ class RegulatedOrganization extends Model
     /**
      * The community members who have identified themselves with the federally regulated organization.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function communityMembers(): BelongsToMany
     {
         return $this->belongsToMany(CommunityMember::class, 'community_member_regulated_org');
+    }
+
+    /**
+     * Has the user added any details to the regulated organization?
+     *
+     * @return bool
+     */
+    public function hasAddedDetails(): bool
+    {
+        return ! is_null($this->languages);
     }
 }

@@ -273,24 +273,24 @@ class Project extends Model
         }
 
         if ($request->input('save')) {
-            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+            return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step]));
         } elseif ($request->input('save_and_previous')) {
-            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step - 1]));
+            return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step - 1]));
         } elseif ($request->input('save_and_next')) {
-            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step + 1]));
+            return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step + 1]));
         } elseif ($request->input('preview')) {
-            return redirect(\localized_route('projects.show', $this));
+            return redirect(localized_route('projects.show', $this));
         } elseif ($request->input('publish')) {
             $this->publish();
 
-            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+            return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step]));
         } elseif ($request->input('unpublish')) {
             $this->unpublish();
 
-            return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+            return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step]));
         }
 
-        return redirect(\localized_route('projects.edit', ['project' => $this, 'step' => $step]));
+        return redirect(localized_route('projects.edit', ['project' => $this, 'step' => $step]));
     }
 
     /**

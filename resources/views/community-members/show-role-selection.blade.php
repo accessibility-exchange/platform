@@ -17,7 +17,7 @@
             <x-hearth-error for="roles" />
         </fieldset>
 
-        <button>{{ _('Continue') }}</button>
+        <button>{{ __('Continue') }}</button>
 
         @method('put')
         @csrf

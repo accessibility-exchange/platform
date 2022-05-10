@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">
-            <small>{{ $currentUser->name }}@if($currentUser->regulatedOrganization()), {{ $currentUser->regulatedOrganization()->name }}@endif</small><br />
+            <small>{{ $currentUser->name }}@if($memberable), {{ $memberable->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
         @if($currentUser->context == 'community-member')
