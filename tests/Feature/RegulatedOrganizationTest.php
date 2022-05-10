@@ -91,9 +91,13 @@ test('users with admin role can edit regulated organizations', function () {
         'region' => 'NL',
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
+        'social_links' => ['facebook' => 'https://facebook.com/' . Str::slug($regulatedOrganization->name)],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->social_links)->toHaveCount(1)->toHaveKey('facebook');
 });
 
 test('users without admin role can not edit regulated organizations', function () {

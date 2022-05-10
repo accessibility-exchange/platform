@@ -148,9 +148,9 @@ class RegulatedOrganizationController extends Controller
      */
     public function show(RegulatedOrganization $regulatedOrganization): View
     {
-        if (Route::currentRouteName() === \locale() . '.regulated-organizations.show') {
+        if (Route::currentRouteName() === locale() . '.regulated-organizations.show') {
             $regulatedOrganization->load('currentProjects');
-        } elseif (Route::currentRouteName() === \locale() . '.regulated-organizations.show-projects') {
+        } elseif (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
             $regulatedOrganization->load('pastProjects', 'currentProjects');
         }
 
@@ -167,7 +167,7 @@ class RegulatedOrganizationController extends Controller
     {
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
             'sectors' => Sector::pluck('name', 'id')->toArray(),
         ]);
     }

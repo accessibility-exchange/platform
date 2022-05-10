@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', \locale());
+Route::redirect('/', locale());
 Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');

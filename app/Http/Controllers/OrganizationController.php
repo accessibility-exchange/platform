@@ -29,7 +29,7 @@ class OrganizationController extends Controller
         $this->authorize('create', Organization::class);
 
         return view('organizations.create', [
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
         ]);
     }
 
@@ -80,7 +80,7 @@ class OrganizationController extends Controller
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
             'roles' => $roles,
         ]);
     }

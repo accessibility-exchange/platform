@@ -138,7 +138,7 @@ class CommunityMemberController extends Controller
     {
         return view('community-members.edit', [
             'communityMember' => $communityMember,
-            'regions' => get_regions(['CA'], \locale()),
+            'regions' => get_regions(['CA'], locale()),
             'sectors' => Sector::pluck('name', 'id')->toArray(),
             'impacts' => Impact::pluck('name', 'id')->toArray(),
             'communities' => Community::pluck('name', 'id')->toArray(),
