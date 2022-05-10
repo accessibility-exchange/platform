@@ -29,7 +29,11 @@ test('users can create regulated organizations', function () {
     $response->assertRedirect(localized_route('regulated-organizations.create'));
     $response->assertSessionHas('type', 'government');
 
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.create'));
+    $response->assertOk();
+
     $response = $this->actingAs($user)
+        ->from(localized_route('regulated-organizations.create'))
         ->post(localized_route('regulated-organizations.store'), [
             'type' => 'government',
             'name' => ['en' => 'Government Agency', 'fr' => 'Agence gouvernementale'],
