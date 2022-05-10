@@ -77,7 +77,6 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         $memberable = match ($currentUser->context) {
-            'organization' => $currentUser->organization() ?? null,
             'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
             default => null,
         };
@@ -171,9 +170,9 @@ class UserController extends Controller
     /**
      * Show the roles and permissions edit view for the logged-in user.
      *
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function inviteToInviteable(): View
+    public function inviteToInviteable(): View|RedirectResponse
     {
         $currentUser = Auth::user();
         $invitable = match ($currentUser->context) {
@@ -182,17 +181,21 @@ class UserController extends Controller
             default => null,
         };
 
-        $roles = [];
+        if ($invitable) {
+            $roles = [];
 
-        foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.' . $role);
+            foreach (config('hearth.organizations.roles') as $role) {
+                $roles[$role] = __('roles.' . $role);
+            }
+
+            return view('users.roles-and-permissions.invite', [
+                'user' => $currentUser,
+                'inviteable' => $invitable,
+                'roles' => $roles,
+            ]);
         }
 
-        return view('users.roles-and-permissions.invite', [
-            'user' => $currentUser,
-            'inviteable' => $invitable,
-            'roles' => $roles,
-        ]);
+        return redirect(localized_route('users.edit_roles_and_permissions'));
     }
 
     /**
