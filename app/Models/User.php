@@ -105,9 +105,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the user's resources.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Resource>
+     * @return HasMany
      */
     public function resources(): HasMany
     {
@@ -117,9 +117,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the user's memberships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Membership>
+     * @return HasMany
      */
     public function memberships(): HasMany
     {
@@ -129,7 +129,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the community organizations that belong to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function organizations(): MorphToMany
     {
@@ -143,7 +143,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the federally regulated organizations that belong to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function regulatedOrganizations(): MorphToMany
     {
@@ -157,9 +157,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\RegulatedOrganization|null
+     * @return RegulatedOrganization|null
      */
-    public function regulatedOrganization(): mixed
+    public function regulatedOrganization(): RegulatedOrganization|null
     {
         return $this->regulatedOrganizations->first();
     }
@@ -167,9 +167,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\Organization|null
+     * @return Organization|null
      */
-    public function organization(): mixed
+    public function organization(): Organization|null
     {
         return $this->organizations->first();
     }
@@ -177,9 +177,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the organization or federally regulated organization that belongs to this user.
      *
-     * @return \App\Models\Organization|\App\Models\RegulatedOrganization|null
+     * @return Organization|RegulatedOrganization|null
      */
-    public function projectable(): mixed
+    public function projectable(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
             return $this->organization();
@@ -193,9 +193,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the projects associated with all organizations and regulated organizations that belong to this user.
+     * Get the projects associated with all organizations or regulated organizations that belong to this user.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function projects(): Collection
     {
@@ -222,7 +222,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      * @param mixed $memberable
      * @return bool
      */
-    public function isMemberOf($memberable)
+    public function isMemberOf(mixed $memberable): bool
     {
         return $memberable->hasUserWithEmail($this->email);
     }
@@ -233,7 +233,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      * @param mixed $memberable
      * @return bool
      */
-    public function isAdministratorOf($memberable)
+    public function isAdministratorOf(mixed $memberable): bool
     {
         return $memberable->hasAdministratorWithEmail($this->email);
     }
@@ -243,7 +243,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      *
      * @return bool
      */
-    public function twoFactorAuthEnabled()
+    public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);
     }

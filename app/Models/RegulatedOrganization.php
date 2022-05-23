@@ -12,6 +12,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Route;
 use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\Sluggable\HasTranslatableSlug;
+use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class RegulatedOrganization extends Model
@@ -20,6 +22,7 @@ class RegulatedOrganization extends Model
     use HasFactory;
     use HasStatus;
     use HasTranslations;
+    use HasTranslatableSlug;
     use Notifiable;
 
     /**
@@ -67,8 +70,29 @@ class RegulatedOrganization extends Model
      */
     public array $translatable = [
         'name',
+        'slug',
         'about',
     ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * Get the community member's social links.
