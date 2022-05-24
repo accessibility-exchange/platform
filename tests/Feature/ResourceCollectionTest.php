@@ -3,7 +3,6 @@
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
