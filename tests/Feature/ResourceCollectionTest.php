@@ -6,11 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
-test('resource_collections_can_be_translated', function () {
-    if (! config('hearth.resources.enabled')) {
-        return $this->markTestSkipped('Resource support is not enabled.');
-    }
-
+test('resource collections can be translated', function () {
     $resourceCollection = ResourceCollection::factory()->create();
 
     $titleTranslations = ['en' => 'title in English', 'fr' => 'title in French'];
@@ -39,21 +35,18 @@ test('resource_collections_can_be_translated', function () {
     $this->expectException(AttributeIsNotTranslatable::class);
     $resourceCollection->setTranslation('user_id', 'en', 'user_id in English');
 
-    $url_en = localized_route('resource-collections.show', $resourceCollection);
-    $url_fr = localized_route('resource-collections.show', $resourceCollection, 'fr');
-
-    expect($url_en)->toEqual('/en/resources/collection/title-in-english');
-    expect($url_fr)->toEqual('/fr/resources/collection/title-in-french');
+    $response = $this->actingAs(User::factory()->create())->get(localized_route('resource-collections.show', $resourceCollection));
+    $response->assertOk();
 });
 
-test('resource_collections_belong_to_user_get_deleted_on_user_delete', function () {
+test('resource collections belong to user get deleted on user delete', function () {
     $resourceCollection = ResourceCollection::factory()->create();
 
     $resourceCollection->user->delete();
     $this->assertModelMissing($resourceCollection);
 });
 
-test('single_user_can_have_multiple_resource_collections', function () {
+test('single user can have multiple resource collections', function () {
     $user = User::factory()->create();
     $resourceCollection = ResourceCollection::factory(5)
         ->for($user)
@@ -61,7 +54,7 @@ test('single_user_can_have_multiple_resource_collections', function () {
     $this->assertCount(5, $user->resourceCollections()->get());
 });
 
-test('many_resources_can_belong_in_single_resource_collection', function () {
+test('many resources can belong in single resource collection', function () {
     $resourceCollection = ResourceCollection::factory()->create();
 
     $resources = Resource::factory(3)->create();
@@ -75,7 +68,7 @@ test('many_resources_can_belong_in_single_resource_collection', function () {
     }
 });
 
-test('deleting_resource_belong_to_resource_collection', function () {
+test('deleting resource belong to resource collection', function () {
     $resourceCollection = ResourceCollection::factory()->create();
     $resource = Resource::factory()->create();
     $resourceCollection->resources()->sync($resource->id);

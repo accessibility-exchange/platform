@@ -10,15 +10,16 @@ use App\Models\Format;
 use App\Models\Phase;
 use App\Models\Resource;
 use App\Models\Topic;
+use Illuminate\Contracts\View\View;
 
 class ResourceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('resources.index', [
             'resources' => Resource::orderBy('title')->paginate(20),

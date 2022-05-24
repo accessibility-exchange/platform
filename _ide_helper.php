@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.13.0.
+ * Generated for Laravel 9.14.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -7104,7 +7104,7 @@
      * @method static \Illuminate\Http\Client\PendingRequest contentType(string $contentType)
      * @method static \Illuminate\Http\Client\PendingRequest dd()
      * @method static \Illuminate\Http\Client\PendingRequest dump()
-     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleep = 0, ?callable $when = null, bool $throw = true)
+     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, int $sleepMilliseconds = 0, ?callable $when = null, bool $throw = true)
      * @method static \Illuminate\Http\Client\PendingRequest sink(string|resource $to)
      * @method static \Illuminate\Http\Client\PendingRequest stub(callable $callback)
      * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
@@ -19204,7 +19204,7 @@ namespace  {
                 /**
              * Paginate the given query.
              *
-             * @param int|null $perPage
+             * @param int|null|\Closure $perPage
              * @param array $columns
              * @param string $pageName
              * @param int|null $page
@@ -20548,13 +20548,13 @@ namespace  {
              *
              * @param array $wheres
              * @param array $bindings
-             * @return void 
+             * @return \Illuminate\Database\Query\Builder 
              * @static 
              */ 
             public static function mergeWheres($wheres, $bindings)
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
-                                $instance->mergeWheres($wheres, $bindings);
+                                return $instance->mergeWheres($wheres, $bindings);
             }
              
                 /**

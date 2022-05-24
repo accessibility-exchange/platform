@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8133a6cd2d2ef32260394dce2e4d3df1",
+    "content-hash": "716507a02f0e3e481237d6296b99cbda",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1688,16 +1688,16 @@
         },
         {
             "name": "fluid-project/hearth",
-            "version": "dev-feat/join-requests",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "fe1e5a32b5eda9c704da9b8f5f4b6827521be3e7"
+                "reference": "c532437f04ba83a5506dc361b436402106cdd0d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/fe1e5a32b5eda9c704da9b8f5f4b6827521be3e7",
-                "reference": "fe1e5a32b5eda9c704da9b8f5f4b6827521be3e7",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/c532437f04ba83a5506dc361b436402106cdd0d0",
+                "reference": "c532437f04ba83a5506dc361b436402106cdd0d0",
                 "shasum": ""
             },
             "require": {
@@ -1727,6 +1727,7 @@
             "suggest": {
                 "nunomaduro/larastan": "The included phpstan configuration requires Larastan"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -1766,9 +1767,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fluid-project/hearth/issues",
-                "source": "https://github.com/fluid-project/hearth/tree/feat/join-requests"
+                "source": "https://github.com/fluid-project/hearth/tree/main"
             },
-            "time": "2022-05-20T15:54:12+00:00"
+            "time": "2022-05-24T18:12:56+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -2454,16 +2455,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v9.13.0",
+            "version": "v9.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "87b6cc8bc41d1cf85c7c1401cddde8570a3b95bb"
+                "reference": "5356f15d008c1b23088ccf21a5fb4aa2f87af034"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/87b6cc8bc41d1cf85c7c1401cddde8570a3b95bb",
-                "reference": "87b6cc8bc41d1cf85c7c1401cddde8570a3b95bb",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5356f15d008c1b23088ccf21a5fb4aa2f87af034",
+                "reference": "5356f15d008c1b23088ccf21a5fb4aa2f87af034",
                 "shasum": ""
             },
             "require": {
@@ -2629,7 +2630,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-17T14:07:43+00:00"
+            "time": "2022-05-24T14:03:46+00:00"
         },
         {
             "name": "laravel/serializable-closure",
