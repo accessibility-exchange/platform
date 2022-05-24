@@ -50,9 +50,13 @@ test('users with organization or regulated organization admin role can create pr
 
     $response->assertSessionHasNoErrors();
 
-    $this->assertEquals($project->name, 'Test Project');
+    $this->assertEquals('Test Project', $project->name);
 
     $response->assertRedirect($url);
+
+    $user = $user->fresh();
+
+    expect($user->projects())->toHaveCount(1);
 
     $previous_project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,

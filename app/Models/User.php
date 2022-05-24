@@ -204,23 +204,15 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the projects associated with all organizations or regulated organizations that belong to this user.
      *
-     * @return Collection|null
+     * @return Collection
      */
-    public function projects(): Collection|null
+    public function projects(): Collection
     {
-        if ($this->context === 'organization') {
-            if ($this->organization->projects->isNotEmpty()) {
-                return $this->organization->projects;
-            }
+        if ($this->projectable()->projects->isNotEmpty()) {
+            return $this->projectable()->projects;
         }
 
-        if ($this->context === 'regulated-organization') {
-            if ($this->regulatedOrganization->projects->isNotEmpty()) {
-                return $this->regulatedOrganization->projects;
-            }
-        }
-
-        return null;
+        return new Collection([]);
     }
 
     /**
