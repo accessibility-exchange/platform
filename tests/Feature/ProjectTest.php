@@ -45,7 +45,7 @@ test('users with organization or regulated organization admin role can create pr
         'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
     ]);
 
-    $project = Project::all()->first();
+    $project = Project::where('name->en', 'Test Project')->first();
     $url = localized_route('projects.edit', ['project' => $project, 'step' => 2]);
 
     $response->assertSessionHasNoErrors();
@@ -60,6 +60,65 @@ test('users with organization or regulated organization admin role can create pr
 
     $previous_project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+        'context' => 'follow-up',
+        'ancestor' => $previous_project->id,
+    ]);
+    $response->assertSessionHas('context', 'follow-up');
+    $response->assertSessionHas('ancestor', $previous_project->id);
+
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.create'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+        'context' => 'new',
+    ]);
+
+    $response->assertSessionHas('context', 'new');
+
+    $response = $this->actingAs($user)->post(localized_route('projects.store-focus'), [
+        'focus' => 'engage',
+    ]);
+
+    $response->assertSessionHas('focus', 'engage');
+
+    $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
+        'languages' => ['en', 'fr', 'ase', 'fcs'],
+    ]);
+
+    $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+
+    $response = $this->actingAs($user)->post(localized_route('projects.store'), [
+        'projectable_id' => $organization->id,
+        'projectable_type' => 'App\Models\Organization',
+        'name' => ['en' => 'Test Project 2'],
+        'start_date' => '2022-04-01',
+        'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
+        'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
+    ]);
+
+    $project = Project::where('name->en', 'Test Project 2')->first();
+    $url = localized_route('projects.edit', ['project' => $project, 'step' => 2]);
+
+    $response->assertSessionHasNoErrors();
+
+    $this->assertEquals('Test Project 2', $project->name);
+
+    $response->assertRedirect($url);
+
+    $user = $user->fresh();
+
+    expect($user->projects())->toHaveCount(1);
+
+    $previous_project = Project::factory()->create([
+        'projectable_id' => $organization->id,
     ]);
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
