@@ -74,10 +74,10 @@ test('single user can have multiple resource collections', function () {
 test('many resources can belong in single resource collection', function () {
     $resourceCollection = ResourceCollection::factory()->create();
 
-    $resources = Resource::factory(3)->create();
+    $resources = Resource::factory()->count(3)->create();
 
     foreach ($resources as $resource) {
-        $resourceCollection->resources()->sync($resource->id);
+        $resourceCollection->resources()->attach($resource->id);
         $this->assertDatabaseHas('resource_resource_collection', [
             'resource_collection_id' => $resourceCollection->id,
             'resource_id' => $resource->id,
@@ -85,6 +85,7 @@ test('many resources can belong in single resource collection', function () {
     }
 
     foreach ($resources as $resource) {
+        $resource = $resource->fresh();
         expect($resource->resourceCollections)->toHaveCount(1);
     }
 
