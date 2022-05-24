@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AcceptInvitationRequest;
-use App\Http\Requests\CreateInvitationRequest;
+use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
 use Hearth\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -18,10 +18,10 @@ class InvitationController extends Controller
     /**
      * Create an invitation.
      *
-     * @param CreateInvitationRequest $request
+     * @param StoreInvitationRequest $request
      * @return RedirectResponse
      */
-    public function create(CreateInvitationRequest $request)
+    public function create(StoreInvitationRequest $request)
     {
         $validated = $request->validated();
 
