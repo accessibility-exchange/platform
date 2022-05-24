@@ -6,6 +6,23 @@ use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
+test('resource hub can be accessed', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.index'));
+    $response->assertOk();
+});
+
+test('resource collections can be accessed', function () {
+    $user = User::factory()->create();
+    $resourceCollection = ResourceCollection::factory()->create([
+        'user_id' => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection));
+    $response->assertOk();
+});
+
 test('resource collections can be translated', function () {
     $resourceCollection = ResourceCollection::factory()->create();
 
@@ -66,6 +83,12 @@ test('many resources can belong in single resource collection', function () {
             'resource_id' => $resource->id,
         ]);
     }
+
+    foreach ($resources as $resource) {
+        expect($resource->resourceCollections)->toHaveCount(1);
+    }
+
+    expect($resourceCollection->resources)->toHaveCount(3);
 });
 
 test('deleting resource belong to resource collection', function () {
