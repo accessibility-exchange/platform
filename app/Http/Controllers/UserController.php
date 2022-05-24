@@ -77,7 +77,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         $memberable = match ($currentUser->context) {
-            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
             default => null,
         };
 
@@ -172,16 +172,16 @@ class UserController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function inviteToInviteable(): View|RedirectResponse
+    public function inviteToInvitationable(): View|RedirectResponse
     {
         $currentUser = Auth::user();
-        $invitable = match ($currentUser->context) {
-            'organization' => $currentUser->organization() ?? null,
-            'regulated-organization' => $currentUser->regulatedOrganization() ?? null,
+        $invitationable = match ($currentUser->context) {
+            'organization' => $currentUser->organization ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
             default => null,
         };
 
-        if ($invitable) {
+        if ($invitationable) {
             $roles = [];
 
             foreach (config('hearth.organizations.roles') as $role) {
@@ -190,12 +190,12 @@ class UserController extends Controller
 
             return view('users.roles-and-permissions.invite', [
                 'user' => $currentUser,
-                'inviteable' => $invitable,
+                'invitationable' => $invitationable,
                 'roles' => $roles,
             ]);
         }
 
-        return redirect(localized_route('users.edit_roles_and_permissions'));
+        return redirect(localized_route('users.edit-roles-and-permissions'));
     }
 
     /**
@@ -266,12 +266,12 @@ class UserController extends Controller
      */
     public function showMyProjects(): RedirectResponse|View
     {
-        if (Auth::user()->regulatedOrganization()) {
-            $regulatedOrganization = Auth::user()->regulatedOrganization();
+        if (Auth::user()->regulatedOrganization) {
+            $regulatedOrganization = Auth::user()->regulatedOrganization;
             $regulatedOrganization->load('pastProjects', 'currentProjects');
 
             return view('regulated-organizations.my-projects', [
-                'regulatedOrganization' => Auth::user()->regulatedOrganization(),
+                'regulatedOrganization' => Auth::user()->regulatedOrganization,
             ]);
         }
 

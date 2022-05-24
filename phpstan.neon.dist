@@ -1,0 +1,20 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app
+        - resources/lang
+        - routes
+
+    # exclude console.php because of false positive with $this in the closure.
+    # see: https://github.com/nunomaduro/larastan/issues/140
+    excludePaths:
+        - routes/console.php
+
+    # The level 9 is the highest level
+    level: 5
+
+    ignoreErrors: []
+    checkMissingIterableValueType: false

@@ -16,7 +16,7 @@
         "codezero/laravel-unique-translation": "^3.5",
         "doctrine/dbal": "^3.3",
         "elhebert/laravel-sri": "^3.1",
-        "fluid-project/hearth": "^2.0",
+        "fluid-project/hearth": "dev-feat/join-requests",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.4",
         "laravel/framework": "^9.10",

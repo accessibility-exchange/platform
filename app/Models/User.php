@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 
@@ -62,10 +64,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The relationships that should be deleted when a user is deleted.
      *
-     * @var mixed
+     * @var array
      */
     protected mixed $cascadeDeletes = [
         'organizations',
+        'regulatedOrganizations',
     ];
 
     /**
@@ -106,8 +109,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      * Get the user's resources.
      *
      * @return HasMany
-     *
-     * @return HasMany
      */
     public function resources(): HasMany
     {
@@ -115,9 +116,17 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the user's memberships.
+     * Get the user's resource collections.
      *
      * @return HasMany
+     */
+    public function resourceCollections(): HasMany
+    {
+        return $this->hasMany(ResourceCollection::class);
+    }
+
+    /**
+     * Get the user's memberships.
      *
      * @return HasMany
      */
@@ -127,66 +136,66 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the community organizations that belong to this user.
+     * Get the organizations that belong to this user.
      *
      * @return MorphToMany
      */
     public function organizations(): MorphToMany
     {
-        return $this->morphedByMany(Organization::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->withPivot('id')
-            ->withPivot('role')
+        return $this->morphedByMany(Organization::class, 'membershipable', 'memberships')
+            ->using(Membership::class)
+            ->as('membership')
+            ->withPivot(['role', 'id'])
             ->withTimestamps();
     }
 
     /**
-     * Get the federally regulated organizations that belong to this user.
+     * Get the regulated organizations that belong to this user.
      *
      * @return MorphToMany
      */
     public function regulatedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(RegulatedOrganization::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->withPivot('id')
-            ->withPivot('role')
+        return $this->morphedByMany(RegulatedOrganization::class, 'membershipable', 'memberships')
+            ->using(Membership::class)
+            ->as('membership')
+            ->withPivot(['role', 'id'])
             ->withTimestamps();
     }
 
     /**
-     * Get the federally regulated organization that belongs to this user.
+     * Get the organization that belongs to the user.
      *
-     * @return RegulatedOrganization|null
+     * @return mixed
      */
-    public function regulatedOrganization(): RegulatedOrganization|null
-    {
-        return $this->regulatedOrganizations->first();
-    }
-
-    /**
-     * Get the federally regulated organization that belongs to this user.
-     *
-     * @return Organization|null
-     */
-    public function organization(): Organization|null
+    public function getOrganizationAttribute(): mixed
     {
         return $this->organizations->first();
     }
 
     /**
-     * Get the organization or federally regulated organization that belongs to this user.
+     * Get the regulated organization that belongs to the user.
+     *
+     * @return mixed
+     */
+    public function getRegulatedOrganizationAttribute(): mixed
+    {
+        return $this->regulatedOrganizations->first();
+    }
+
+    /**
+     * Get the parent joinable model.
      *
      * @return Organization|RegulatedOrganization|null
      */
     public function projectable(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
-            return $this->organization();
+            return $this->organization;
         }
 
         if ($this->context === 'regulated-organization') {
-            return $this->regulatedOrganization();
+            return $this->regulatedOrganization;
         }
 
         return null;
@@ -195,47 +204,66 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the projects associated with all organizations or regulated organizations that belong to this user.
      *
-     * @return Collection
+     * @return Collection|null
      */
-    public function projects(): Collection
+    public function projects(): Collection|null
     {
-        $projects = collect([]);
-
         if ($this->context === 'organization') {
-            if ($this->organization()->projects->isNotEmpty()) {
-                $projects = $projects->merge($this->organization()->projects);
+            if ($this->organization->projects->isNotEmpty()) {
+                return $this->organization->projects;
             }
         }
 
         if ($this->context === 'regulated-organization') {
-            if ($this->regulatedOrganization()->projects->isNotEmpty()) {
-                $projects = $projects->merge($this->regulatedOrganization()->projects);
+            if ($this->regulatedOrganization->projects->isNotEmpty()) {
+                return $this->regulatedOrganization->projects;
             }
         }
 
-        return $projects;
+        return null;
     }
 
     /**
-     * Determine if the user is a member of a given memberable.
+     * Get the parent joinable model.
      *
-     * @param mixed $memberable
-     * @return bool
+     * @return MorphTo
      */
-    public function isMemberOf(mixed $memberable): bool
+    public function joinable(): MorphTo
     {
-        return $memberable->hasUserWithEmail($this->email);
+        return $this->morphTo();
     }
 
     /**
-     * Determine if the user is an administrator of a given memberable.
+     * Has the user requested to join a model?
      *
-     * @param mixed $memberable
+     * @param mixed $model
      * @return bool
      */
-    public function isAdministratorOf(mixed $memberable): bool
+    public function hasRequestedToJoin(mixed $model): bool
     {
-        return $memberable->hasAdministratorWithEmail($this->email);
+        return $this->joinable && $this->joinable->id === $model->id;
+    }
+
+    /**
+     * Determine if the user is a member of a given membershipable model.
+     *
+     * @param mixed $model
+     * @return bool
+     */
+    public function isMemberOf(mixed $model): bool
+    {
+        return $model->hasUserWithEmail($this->email);
+    }
+
+    /**
+     * Determine if the user is an administrator of a given model.
+     *
+     * @param mixed $model
+     * @return bool
+     */
+    public function isAdministratorOf(mixed $model): bool
+    {
+        return $model->hasAdministratorWithEmail($this->email);
     }
 
     /**

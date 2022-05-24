@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Invitation;
-use App\Models\Membership;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use Hearth\Models\Invitation;
+use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
 
@@ -68,7 +68,7 @@ test('users primary entity can be retrieved', function () {
 
     $user = $user->fresh();
 
-    $this->assertEquals($user->regulatedOrganization()->id, $regulatedOrganization->id);
+    $this->assertEquals($user->regulatedOrganization->id, $regulatedOrganization->id);
 });
 
 test('users with admin role can edit regulated organizations', function () {
@@ -199,8 +199,8 @@ test('users with admin role can update other member roles', function () {
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
@@ -209,7 +209,7 @@ test('users with admin role can update other member roles', function () {
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
         ]);
-    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
 test('users without admin role can not update member roles', function () {
@@ -220,8 +220,8 @@ test('users without admin role can not update member roles', function () {
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
@@ -237,15 +237,17 @@ test('users without admin role can not update member roles', function () {
 test('only administrator can not downgrade their role', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $yet_another_user = User::factory()->create(['context' => 'regulated-organization']);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($yet_another_user, ['role' => 'member'])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
@@ -255,7 +257,22 @@ test('only administrator can not downgrade their role', function () {
             'role' => 'member',
         ]);
 
-    $response->assertSessionHasErrors(['membership']);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+
+    $membership = Membership::where('user_id', $other_user->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
+        ->first();
+
+    $response = $this
+        ->actingAs($other_user)
+        ->from(localized_route('memberships.edit', $membership))
+        ->put(localized_route('memberships.update', $membership), [
+            'role' => 'member',
+        ]);
+
+    $response->assertSessionHasErrors(['role']);
     $response->assertRedirect(localized_route('memberships.edit', $membership));
 });
 
@@ -268,15 +285,15 @@ test('users with admin role can invite members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.invite-to-invitationable'))
         ->post(localized_route('invitations.create'), [
-            'inviteable_id' => $regulatedOrganization->id,
-            'inviteable_type' => get_class($regulatedOrganization),
+            'invitationable_id' => $regulatedOrganization->id,
+            'invitationable_type' => get_class($regulatedOrganization),
             'email' => 'newuser@here.com',
             'role' => 'member',
         ]);
 
-    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
+    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
 test('users without admin role can not invite members', function () {
@@ -288,10 +305,10 @@ test('users without admin role can not invite members', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.invite-to-invitationable'))
         ->post(localized_route('invitations.create'), [
-            'inviteable_id' => $regulatedOrganization->id,
-            'inviteable_type' => get_class($regulatedOrganization),
+            'invitationable_id' => $regulatedOrganization->id,
+            'invitationable_type' => get_class($regulatedOrganization),
             'email' => 'newuser@here.com',
             'role' => 'member',
         ]);
@@ -305,18 +322,18 @@ test('users with admin role can cancel invitations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
     $invitation = Invitation::factory()->create([
-        'inviteable_id' => $regulatedOrganization->id,
-        'inviteable_type' => get_class($regulatedOrganization),
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
         'email' => 'me@here.com',
     ]);
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.invite-to-invitationable'))
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
+    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
 test('users without admin role can not cancel invitations', function () {
@@ -325,14 +342,14 @@ test('users without admin role can not cancel invitations', function () {
         ->hasAttached($user, ['role' => 'member'])
         ->create();
     $invitation = Invitation::factory()->create([
-        'inviteable_id' => $regulatedOrganization->id,
-        'inviteable_type' => get_class($regulatedOrganization),
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
         'email' => 'me@here.com',
     ]);
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.invite-to-invitationable'))
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertForbidden();
@@ -349,24 +366,24 @@ test('existing members cannot be invited', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.invite-to-inviteable'))
+        ->from(localized_route('users.invite-to-invitationable'))
         ->post(localized_route('invitations.create'), [
-            'inviteable_id' => $regulatedOrganization->id,
-            'inviteable_type' => get_class($regulatedOrganization),
+            'invitationable_id' => $regulatedOrganization->id,
+            'invitationable_type' => get_class($regulatedOrganization),
             'email' => $other_user->email,
             'role' => 'member',
         ]);
 
     $response->assertSessionHasErrorsIn('inviteMember', ['email']);
-    $response->assertRedirect(localized_route('users.invite-to-inviteable'));
+    $response->assertRedirect(localized_route('users.invite-to-invitationable'));
 });
 
 test('invitation can be accepted', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
-        'inviteable_id' => $regulatedOrganization->id,
-        'inviteable_type' => get_class($regulatedOrganization),
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
         'email' => $user->email,
     ]);
 
@@ -385,8 +402,8 @@ test('invitation cannot be accepted by different user', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
     $invitation = Invitation::factory()->create([
-        'inviteable_id' => $regulatedOrganization->id,
-        'inviteable_type' => get_class($regulatedOrganization),
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
         'email' => $user->email,
     ]);
 
@@ -409,17 +426,17 @@ test('users with admin role can remove members', function () {
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.edit_roles_and_permissions'))
+        ->from(localized_route('users.edit-roles-and-permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
 test('users without admin role can not remove members', function () {
@@ -432,13 +449,13 @@ test('users without admin role can not remove members', function () {
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.edit_roles_and_permissions'))
+        ->from(localized_route('users.edit-roles-and-permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertForbidden();
@@ -452,17 +469,17 @@ test('sole administrator can not remove themself', function () {
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
-        ->where('membership_type', 'App\Models\RegulatedOrganization')
-        ->where('membership_id', $regulatedOrganization->id)
+        ->where('membershipable_type', 'App\Models\RegulatedOrganization')
+        ->where('membershipable_id', $regulatedOrganization->id)
         ->first();
 
     $response = $this
         ->actingAs($user)
-        ->from(localized_route('users.edit_roles_and_permissions'))
+        ->from(localized_route('users.edit-roles-and-permissions'))
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('users.edit_roles_and_permissions'));
+    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
 test('users with admin role can delete regulated organizations', function () {

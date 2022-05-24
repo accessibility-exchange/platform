@@ -410,13 +410,13 @@ namespace App\Models{
  * App\Models\Invitation
  *
  * @property int $id
- * @property string $inviteable_type
- * @property int $inviteable_id
+ * @property string $invitationable_type
+ * @property int $invitationable_id
  * @property string $email
  * @property string $role
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $inviteable
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $invitationable
  * @method static \Database\Factories\InvitationFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newQuery()
@@ -424,8 +424,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereInviteableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereInviteableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereinvitationableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereinvitationableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereUpdatedAt($value)
  */
@@ -484,8 +484,8 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property string $membership_type
- * @property int $membership_id
+ * @property string $membershipable_type
+ * @property int $membershipable_id
  * @property string $role
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

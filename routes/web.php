@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JoinController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,11 +59,11 @@ Route::multilingual('/settings/basic-information', [UserController::class, 'edit
 
 Route::multilingual('/settings/roles-and-permissions', [UserController::class, 'editRolesAndPermissions'])
     ->middleware(['auth'])
-    ->name('users.edit_roles_and_permissions');
+    ->name('users.edit-roles-and-permissions');
 
-Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInviteable'])
+Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInvitationable'])
     ->middleware(['auth'])
-    ->name('users.invite-to-inviteable');
+    ->name('users.invite-to-invitationable');
 
 Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
     ->middleware(['auth'])
@@ -93,6 +94,21 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['auth'])
     ->name('users.destroy');
+
+Route::multilingual('/requests/cancel', [JoinController::class, 'cancel'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('requests.cancel');
+
+Route::multilingual('/requests/{user:id}/deny', [JoinController::class, 'deny'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('requests.deny');
+
+Route::multilingual('/requests/{user:id}/approve', [JoinController::class, 'approve'])
+    ->method('post')
+    ->middleware(['auth'])
+    ->name('requests.approve');
 
 require __DIR__ . '/community-members.php';
 require __DIR__ . '/defined-terms.php';

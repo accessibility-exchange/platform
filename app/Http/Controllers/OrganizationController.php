@@ -6,15 +6,18 @@ use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('organizations.index', ['organizations' => Organization::orderBy('name')->get()]);
     }
@@ -22,12 +25,10 @@ class OrganizationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
-        $this->authorize('create', Organization::class);
-
         return view('organizations.create', [
             'regions' => get_regions(['CA'], locale()),
         ]);
@@ -36,10 +37,10 @@ class OrganizationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreOrganizationRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param StoreOrganizationRequest $request
+     * @return RedirectResponse
      */
-    public function store(StoreOrganizationRequest $request)
+    public function store(StoreOrganizationRequest $request): RedirectResponse
     {
         $organization = Organization::create($request->validated());
 
@@ -56,10 +57,10 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\View\View
+     * @param Organization $organization
+     * @return View
      */
-    public function show(Organization $organization)
+    public function show(Organization $organization): View
     {
         return view('organizations.show', ['organization' => $organization]);
     }
@@ -67,10 +68,10 @@ class OrganizationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\View\View
+     * @param Organization $organization
+     * @return View
      */
-    public function edit(Organization $organization)
+    public function edit(Organization $organization): View
     {
         $roles = [];
 
@@ -88,11 +89,11 @@ class OrganizationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateOrganizationRequest  $request
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateOrganizationRequest $request
+     * @param Organization $organization
+     * @return RedirectResponse
      */
-    public function update(UpdateOrganizationRequest $request, Organization $organization)
+    public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
     {
         $organization->fill($request->validated());
         $organization->save();
@@ -103,13 +104,27 @@ class OrganizationController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param Organization $organization
+     * @return RedirectResponse
+     */
+    public function join(Request $request, Organization $organization): RedirectResponse
+    {
+        $organization->requestsToJoin()->save($request->user());
+
+        flash(__('You have successfully requested to join :organization. You will be notified when an administrator has approved or denied your request.', ['organization' => $organization->name]), 'success');
+
+        return redirect(localized_route('organizations.show', $organization));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Http\Requests\DestroyOrganizationRequest  $request
-     * @param  \App\Models\Organization  $organization
-     * @return \Illuminate\Http\RedirectResponse
+     * @param DestroyOrganizationRequest $request
+     * @param Organization $organization
+     * @return RedirectResponse
      */
-    public function destroy(DestroyOrganizationRequest $request, Organization $organization)
+    public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse
     {
         $organization->delete();
 

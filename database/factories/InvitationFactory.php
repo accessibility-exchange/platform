@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Invitation;
 use App\Models\Organization;
+use Hearth\Models\Invitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvitationFactory extends Factory
@@ -20,15 +20,15 @@ class InvitationFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $roles = config('hearth.organizations.roles');
 
         return [
             'email' => $this->faker->unique()->safeEmail(),
             'role' => $roles[$this->faker->numberBetween(0, count($roles) - 1)],
-            'inviteable_id' => Organization::factory(),
-            'inviteable_type' => 'App\Models\Organization',
+            'invitationable_id' => Organization::factory(),
+            'invitationable_type' => 'App\Models\Organization',
         ];
     }
 }

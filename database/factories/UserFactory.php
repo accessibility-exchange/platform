@@ -22,7 +22,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->firstName() . ' ' . $this->faker->lastName();
+        $name = $this->faker->name();
 
         return [
             'name' => $name,

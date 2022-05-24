@@ -12,14 +12,30 @@ class RegulatedOrganizationPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can create federally regulated organizations.
+     * Determine whether the user can create models.
      *
      * @param User $user
-     * @return bool
+     * @return Response
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return $user->context === 'regulated-organization';
+        return $user->context === 'regulated-organization' && ! $user->joinable && $user->regulatedOrganizations->isEmpty()
+            ? Response::allow()
+            : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
+    }
+
+    /**
+     * Determine whether the user can join the model.
+     *
+     * @param User $user
+     * @param RegulatedOrganization $organization
+     * @return Response
+     */
+    public function join(User $user, RegulatedOrganization $organization): Response
+    {
+        return $user->context === 'regulated-organization' && ! $user->joinable && $user->regulatedOrganizations->isEmpty()
+            ? Response::allow()
+            : Response::deny(__('You cannot join this organization.'));
     }
 
     /**

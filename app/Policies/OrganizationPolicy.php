@@ -14,39 +14,69 @@ class OrganizationPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
-     * @return mixed
+     * @param User $user
+     * @return Response
      */
-    public function create(User $user)
+    public function create(User $user): Response
     {
-        return $user->context === 'community-member';
+        return $user->context === 'organization' && ! $user->joinable && $user->organizations->isEmpty()
+            ? Response::allow()
+            : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
+    }
+
+    /**
+     * Determine whether the user can join the model.
+     *
+     * @param User $user
+     * @param Organization $organization
+     * @return Response
+     */
+    public function join(User $user, Organization $organization): Response
+    {
+        return $user->context === 'organization' && ! $user->joinable && $user->organizations->isEmpty()
+            ? Response::allow()
+            : Response::deny(__('You cannot join this organization.'));
+    }
+
+    /**
+     * Determine whether the user can create a project for a federally regulated organization.
+     *
+     * @param User $user
+     * @param Organization $projectable
+     * @return Response
+     */
+    public function createProject(User $user, Organization $projectable): Response
+    {
+        return $user->isAdministratorOf($projectable)
+            ? Response::allow()
+            : Response::deny(__('You cannot create a project for this federally regulated organization.'));
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Organization  $organization
-     * @return mixed
+     * @param User $user
+     * @param Organization $organization
+     * @return Response
      */
-    public function update(User $user, Organization $organization)
+    public function update(User $user, Organization $organization): Response
     {
         return $user->isAdministratorOf($organization)
             ? Response::allow()
-            : Response::deny('You cannot edit this organization.');
+            : Response::deny(__('You cannot edit this organization.'));
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Organization  $organization
-     * @return mixed
+     * @param User $user
+     * @param Organization $organization
+     * @return Response
      */
-    public function delete(User $user, Organization $organization)
+    public function delete(User $user, Organization $organization): Response
     {
         return $user->isAdministratorOf($organization)
             ? Response::allow()
-            : Response::deny('You cannot delete this organization.');
+            : Response::deny(__('You cannot delete this organization.'));
     }
 }

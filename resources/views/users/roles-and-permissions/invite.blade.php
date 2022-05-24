@@ -3,7 +3,7 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('users.settings') }}">{{ __('Settings') }}</a></li>
-            <li><a href="{{ localized_route('users.edit_roles_and_permissions') }}">{{ __('Roles and permissions') }}</a></li>
+            <li><a href="{{ localized_route('users.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         </ol>
         <h1>
             {{ __('Invite new member') }}
@@ -15,7 +15,7 @@
 
     <h2>{{ __('invitation.invitations_title') }}</h2>
 
-    @if($inviteable->invitations->count() > 0)
+    @if($invitationable->invitations->count() > 0)
         <div role="region" aria-label="{{ __('invitation.invitations_title') }}" tabindex="0">
             <table>
                 <thead>
@@ -26,7 +26,7 @@
                     <th></th>
                 </tr>
                 </thead>
-                @foreach ($inviteable->invitations as $invitation)
+                @foreach ($invitationable->invitations as $invitation)
                     <tr>
                         <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
                         <td>{{ __('invitation.member_invited') }}</td>
@@ -52,8 +52,8 @@
 
     <form class="stack" action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf
-        <x-hearth-input type="hidden" name="inviteable_id" :value="$inviteable->id"></x-hearth-input>
-        <x-hearth-input type="hidden" name="inviteable_type" :value="get_class($inviteable)"></x-hearth-input>
+        <x-hearth-input type="hidden" name="invitationable_id" :value="$invitationable->id"></x-hearth-input>
+        <x-hearth-input type="hidden" name="invitationable_type" :value="get_class($invitationable)"></x-hearth-input>
         <div class="field">
             <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
             <x-hearth-input type="email" name="email" :value="old('email')" required />

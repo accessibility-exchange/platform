@@ -8,6 +8,19 @@
 
     <p>{{ $regulatedOrganization->locality }}, {{ get_region_name($regulatedOrganization->region, ["CA"], locale()) }}</p>
 
+    @can('join', $regulatedOrganization)
+        <form action="{{ localized_route('regulated-organizations.join', $regulatedOrganization) }}" method="POST">
+            @csrf
+            <button>{{ __('Request to join') }}</button>
+        </form>
+    @endcan
+    @if(Auth::user()->hasRequestedToJoin($regulatedOrganization))
+        <form action="{{ localized_route('requests.cancel') }}" method="POST">
+            @csrf
+            <button>{{ __('Cancel request to join :regulated-organization', ['regulated-organization' => $regulatedOrganization->name]) }}</button>
+        </form>
+    @endif
+
     <div class="has-nav-secondary">
         <nav class="secondary" aria-labelledby="regulated-organization">
             <ul role="list">

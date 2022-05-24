@@ -23,9 +23,9 @@ class ResourceCollectionFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
-            'title' => 'Test Resource Collection',
+            'title' => $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
+            'user_id' => User::factory(),
         ];
     }
 }

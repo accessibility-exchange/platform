@@ -54,7 +54,7 @@ test('password can be reset with valid token', function () {
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertSessionHas('status', 'You have successfully reset your password.');
+        $response->assertSessionHas('status', 'Your password has been reset!');
 
         return true;
     });

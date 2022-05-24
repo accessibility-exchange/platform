@@ -20,7 +20,7 @@ class RedirectToPreferredLocale
 
         if (
             $locale
-            && in_array($locale, \locales())
+            && in_array($locale, locales())
             && $locale !== $request->segment(1)
         ) {
             return redirect(\current_route($locale));

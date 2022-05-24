@@ -21,7 +21,7 @@ class RedirectForOnboarding
     {
         $user = Auth::user();
 
-        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization()) {
+        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization) {
             return redirect(localized_route('regulated-organizations.find-or-create'));
         }
 

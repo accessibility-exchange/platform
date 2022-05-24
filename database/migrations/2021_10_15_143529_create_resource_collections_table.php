@@ -16,12 +16,11 @@ class CreateResourceCollectionsTable extends Migration
         Schema::create('resource_collections', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
-                ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
             $table->json('title');
+            $table->json('slug');
             $table->json('description');
-            $table->string('slug');
             $table->timestamps();
         });
     }

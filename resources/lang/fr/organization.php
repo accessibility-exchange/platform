@@ -28,4 +28,5 @@ return [
     'action_cancel_user_role_update' => 'Annuler',
     'action_remove_member' => 'Enlever',
     'action_remove_member_with_name' => 'Enlever :user de :organization',
+    'error_new_administrator_required_before_user_deletion' => 'You must assign a new administrator to your organization, :organization, before deleting your account.',
 ];

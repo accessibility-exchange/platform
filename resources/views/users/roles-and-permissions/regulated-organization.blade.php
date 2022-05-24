@@ -11,7 +11,7 @@
             <th></th>
         </tr>
         </thead>
-        @foreach ($user->regulatedOrganization()->users as $user)
+        @foreach ($user->regulatedOrganization->users as $user)
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ __('Active') }}</td>

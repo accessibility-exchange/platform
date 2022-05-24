@@ -14,10 +14,10 @@ class ResourcePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
-     * @return mixed
+     * @param User $user
+     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return true;
     }
@@ -25,11 +25,11 @@ class ResourcePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Resource  $resource
-     * @return mixed
+     * @param User $user
+     * @param resource $resource
+     * @return Response
      */
-    public function update(User $user, Resource $resource)
+    public function update(User $user, Resource $resource): Response
     {
         return $user->id === $resource->user_id
             ? Response::allow()
@@ -39,11 +39,11 @@ class ResourcePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Resource  $resource
-     * @return mixed
+     * @param User $user
+     * @param resource $resource
+     * @return Response
      */
-    public function delete(User $user, Resource $resource)
+    public function delete(User $user, Resource $resource): Response
     {
         return $user->id === $resource->user_id
             ? Response::allow()

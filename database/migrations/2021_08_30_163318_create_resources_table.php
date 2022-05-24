@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResourcesTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -22,9 +21,9 @@ class CreateResourcesTable extends Migration
                 ->nullable()
                 ->constrained()
                 ->onDelete('cascade');
-            $table->string('title');
-            $table->string('slug');
-            $table->longText('summary');
+            $table->json('title');
+            $table->json('slug');
+            $table->json('summary');
             $table->timestamps();
         });
     }
@@ -38,4 +37,4 @@ class CreateResourcesTable extends Migration
     {
         Schema::dropIfExists('resources');
     }
-}
+};
