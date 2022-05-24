@@ -39,20 +39,6 @@ class RegulatedOrganizationPolicy
     }
 
     /**
-     * Determine whether the user can create a project for a federally regulated organization.
-     *
-     * @param User $user
-     * @param RegulatedOrganization $projectable
-     * @return Response
-     */
-    public function createProject(User $user, RegulatedOrganization $projectable): Response
-    {
-        return $user->isAdministratorOf($projectable)
-            ? Response::allow()
-            : Response::deny(__('You cannot create a project for this federally regulated organization.'));
-    }
-
-    /**
      * Determine whether the user can update a federally regulated organization.
      *
      * @param User $user
