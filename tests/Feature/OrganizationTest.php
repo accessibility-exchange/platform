@@ -543,7 +543,7 @@ test('user can request to join organization', function () {
         ->post(localized_route('organizations.join', $organization));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    $response->assertRedirect(localized_route('dashboard'));
 
     $organization = $organization->fresh();
 

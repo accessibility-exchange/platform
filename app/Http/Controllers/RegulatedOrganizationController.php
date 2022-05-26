@@ -224,7 +224,7 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('You have successfully requested to join :regulatedOrganization. You will be notified when an administrator has approved or denied your request.', ['regulatedOrganization' => $regulatedOrganization->name]), 'success');
 
-        return back();
+        return redirect(localized_route('dashboard'));
     }
 
     /**

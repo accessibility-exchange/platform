@@ -594,7 +594,7 @@ test('user can request to join regulated organization', function () {
         ->post(localized_route('regulated-organizations.join', $regulatedOrganization));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertRedirect(localized_route('dashboard'));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
