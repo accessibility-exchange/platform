@@ -7,7 +7,7 @@ return [
     'cancel_member_invitation_link' => 'Annuler l\'invitation',
     'cancel_member_invitation_link_with_email' => 'Annuler l\'invitation pour :email',
     'create_invitation_succeeded' => 'Votre invitation a été envoyée.',
-    'invited_user_already_belongs_to_a_team' => 'This user already belongs to a team.',
+    'invited_user_already_belongs_to_a_team' => 'Cet utilisateur appartient déjà à une équipe.',
     'invited_user_already_belongs_to_this_team' => 'Cet utilisateur appartient déjà à cette équipe.',
     'cancel_invitation_succeeded' => 'L\'invitation a été annulée.',
     'email_not_valid' => 'Vous êtes connecté en tant que :email, mais cette invitation est pour une autre adresse e-mail.',
