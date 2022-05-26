@@ -231,4 +231,18 @@ class RegulatedOrganization extends Model
     {
         return ! is_null($this->languages);
     }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public static function getType(string $type): string
+    {
+        return match ($type) {
+            'government' => __('government organization'),
+            'business' => __('business'),
+            'public-sector' => __('public sector organization'),
+            default => __('regulated organization')
+        };
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -33,12 +34,7 @@ class StoreRegulatedOrganizationRequest extends FormRequest
 
     public function messages(): array
     {
-        $type = match ($this->get('type')) {
-            'government' => __('government organization'),
-            'business' => __('business'),
-            'public-sector' => __('public sector organization'),
-            default => __('regulated organization')
-        };
+        $type = app(RegulatedOrganization::class)->getType($this->type);
 
         return [
             'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => $type]),

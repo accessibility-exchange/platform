@@ -1,33 +1,9 @@
 <x-app-layout>
     <x-slot name="title">
-        @switch($type)
-            @case('government')
-            {{ __('Create new government organization') }}
-            @break
-            @case('business')
-            {{ __('Create new business') }}
-            @break
-            @case('public-sector')
-            {{ __('Create new public sector organization') }}
-            @break
-            @default
-            {{ __('Create new regulated organization') }}
-        @endswitch
+        {{ app(App\Models\RegulatedOrganization::class)->getType($type) }}
     </x-slot>
     <x-slot name="header">
-        @switch($type)
-            @case('government')
-                <h1>{{ __('Create new government organization') }}</h1>
-                @break
-            @case('business')
-                <h1>{{ __('Create new business') }}</h1>
-                @break
-            @case('public-sector')
-                <h1>{{ __('Create new public sector organization') }}</h1>
-            @break
-            @default
-                <h1>{{ __('Create new regulated organization') }}</h1>
-        @endswitch
+        <h1>{{ __('Create new :type', ['type' => app(App\Models\RegulatedOrganization::class)->getType($type)]) }}</h1>
     </x-slot>
 
     @foreach(['en', 'fr'] as $locale)
@@ -37,7 +13,7 @@
                 $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
                 @endphp
                 <x-hearth-alert type="error">
-                    {{ __('There is already a :type with the name “:name” on this website. You can request to join this :type, or create one with a different name.', ['type' => $type, 'name' => old('name.' . $locale)]) }}
+                    {{ __('There is already a :type with the name “:name” on this website. You can request to join this :type, or create one with a different name.', ['type' => app(App\Models\RegulatedOrganization::class)->getType($type), 'name' => old('name.' . $locale)]) }}
                 </x-hearth-alert>
                 <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
                 <form action="{{ localized_route('regulated-organizations.join', $regulatedOrganization) }}" method="POST">
