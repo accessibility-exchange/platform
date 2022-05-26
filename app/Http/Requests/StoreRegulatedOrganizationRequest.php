@@ -30,4 +30,19 @@ class StoreRegulatedOrganizationRequest extends FormRequest
             'name.fr' => 'nullable|required_without:name.en|required_if:type,government|string|max:255|unique_translation:regulated_organizations',
         ];
     }
+
+    public function messages(): array
+    {
+        $type = match ($this->get('type')) {
+            'government' => __('government organization'),
+            'business' => __('business'),
+            'public-sector' => __('public sector organization'),
+            default => __('regulated organization')
+        };
+
+        return [
+            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => $type]),
+            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => $type]),
+        ];
+    }
 }

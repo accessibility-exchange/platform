@@ -1,27 +1,55 @@
-<x-app-wide-layout>
-    <x-slot name="title">{{ __('Welcome to the Accessibility Exchange') }}</x-slot>
-    <x-slot name="header">
-        <h1>
-            {{ __('Welcome to') }}<br />
-            {{ __('The Accessibility Exchange') }}
-        </h1>
+<x-app-layout>
+    <x-slot name="title">
         @switch($type)
             @case('government')
-                <h2>{{ __('Create new government organization') }}</h2>
-                @break
+            {{ __('Create new government organization') }}
+            @break
             @case('business')
-                <h2>{{ __('Create new business') }}</h2>
-                @break
+            {{ __('Create new business') }}
+            @break
             @case('public-sector')
-                <h2>{{ __('Create new public sector organization') }}</h2>
+            {{ __('Create new public sector organization') }}
             @break
             @default
-                <h2>{{ __('Create new regulated organization') }}</h2>
+            {{ __('Create new regulated organization') }}
+        @endswitch
+    </x-slot>
+    <x-slot name="header">
+        @switch($type)
+            @case('government')
+                <h1>{{ __('Create new government organization') }}</h1>
+                @break
+            @case('business')
+                <h1>{{ __('Create new business') }}</h1>
+                @break
+            @case('public-sector')
+                <h1>{{ __('Create new public sector organization') }}</h1>
+            @break
+            @default
+                <h1>{{ __('Create new regulated organization') }}</h1>
         @endswitch
     </x-slot>
 
+    @foreach(['en', 'fr'] as $locale)
+        @error('name.' . $locale)
+        <div class="stack">
+            @php
+            $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
+            @endphp
+            <x-hearth-alert type="error">
+                {{ __('There is already a :type with the name “:name” on this website. You can request to join this :type, or create one with a different name.', ['type' => $type, 'name' => old('name.' . $locale)]) }}
+            </x-hearth-alert>
+            <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
+            <form action="{{ localized_route('regulated-organizations.join', $regulatedOrganization) }}" method="POST">
+                @csrf
+                <button class="secondary">{{ __('Request to join') }}</button>
+            </form>
+        </div>
+        @enderror
+    @endforeach
+
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
-        <fieldset>
+        <fieldset class="stack">
             <legend>{{ __('Your organization’s name') }}</legend>
             <div class="field @error('name.en') field--error @enderror">
                 <x-hearth-label for="name-en">{{ __('Name of organization — English') }}</x-hearth-label>
@@ -41,4 +69,4 @@
 
         @csrf
     </form>
-</x-app-wide-layout>
+</x-app-layout>

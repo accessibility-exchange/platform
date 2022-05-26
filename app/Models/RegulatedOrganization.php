@@ -106,7 +106,7 @@ class RegulatedOrganization extends Model
      */
     public function getSocialLinksAttribute(): array
     {
-        if (! is_null($this->attributes['social_links'])) {
+        if (isset($this->attributes['social_links']) && ! is_null($this->attributes['social_links'])) {
             return array_filter(json_decode($this->attributes['social_links'], true));
         }
 
@@ -114,13 +114,13 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the community member's links.
+     * Get the community member's accessibility and inclusion links.
      *
      * @return array
      */
     public function getAccessibilityAndInclusionLinksAttribute(): array
     {
-        if (! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+        if (isset($this->attributes['accessibility_and_inclusion_links']) && ! is_null($this->attributes['accessibility_and_inclusion_links'])) {
             return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
         }
 
@@ -220,16 +220,6 @@ class RegulatedOrganization extends Model
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
-    }
-
-    /**
-     * The community members who have identified themselves with the federally regulated organization.
-     *
-     * @return BelongsToMany
-     */
-    public function communityMembers(): BelongsToMany
-    {
-        return $this->belongsToMany(CommunityMember::class, 'community_member_regulated_org');
     }
 
     /**

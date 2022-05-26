@@ -82,6 +82,8 @@ test('users with admin role can edit regulated organizations', function () {
             'type' => 'business',
         ]);
 
+    expect($regulatedOrganization->social_links)->toBeArray()->toBeEmpty();
+
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $response->assertOk();
 
