@@ -19,7 +19,7 @@ return [
     'create_succeeded' => 'Votre organisation a été créée.',
     'update_succeeded' => 'Votre organisation a été mise à jour.',
     'destroy_succeeded' => 'Votre organisation a été supprimée.',
-    'edit_title' => 'Modifier l\'organisation',
+    'edit_title' => 'Edit organization',
     'edit_organization' => 'Modifier l\'organisation',
     'edit_user_role_link' => 'Modifier',
     'edit_user_role_link_with_name' => 'Modifier le rôle de :user',
