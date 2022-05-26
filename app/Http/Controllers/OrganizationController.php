@@ -114,7 +114,7 @@ class OrganizationController extends Controller
 
         flash(__('You have successfully requested to join :organization. You will be notified when an administrator has approved or denied your request.', ['organization' => $organization->name]), 'success');
 
-        return redirect(localized_route('organizations.show', $organization));
+        return back();
     }
 
     /**

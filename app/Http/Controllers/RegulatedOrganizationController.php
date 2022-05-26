@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationTypeRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
+use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -210,6 +211,20 @@ class RegulatedOrganizationController extends Controller
         }
 
         return redirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    }
+
+    /**
+     * @param Request $request
+     * @param RegulatedOrganization $regulatedOrganization
+     * @return RedirectResponse
+     */
+    public function join(Request $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
+    {
+        $regulatedOrganization->requestsToJoin()->save($request->user());
+
+        flash(__('You have successfully requested to join :regulatedOrganization. You will be notified when an administrator has approved or denied your request.', ['regulatedOrganization' => $regulatedOrganization->name]), 'success');
+
+        return back();
     }
 
     /**
