@@ -27,7 +27,7 @@ class JoinController extends Controller
 
         flash(__('You have cancelled your request to join :team.', ['team' => $joinable->name]), 'success');
 
-        return redirect(localized_route($joinable->getRoutePrefix() . '.show', $joinable));
+        return back();
     }
 
     /**
@@ -52,7 +52,7 @@ class JoinController extends Controller
 
         flash(__('You have approved :name’s request to join :team and they are now a member.', ['name' => $user->name, 'team' => $joinable->name]), 'success');
 
-        return redirect(localized_route($joinable->getRoutePrefix() . '.edit', $joinable));
+        return back();
     }
 
     /**
@@ -75,6 +75,6 @@ class JoinController extends Controller
 
         flash(__('You have denied :name’s request to join :team.', ['name' => $user->name, 'team' => $joinable->name]), 'success');
 
-        return redirect(localized_route($joinable->getRoutePrefix() . '.edit', $joinable));
+        return back();
     }
 }

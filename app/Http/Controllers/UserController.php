@@ -162,8 +162,11 @@ class UserController extends Controller
      */
     public function editRolesAndPermissions(): View
     {
+        $user = Auth::user();
+
         return view('users.roles-and-permissions', [
-            'user' => Auth::user(),
+            'user' => $user,
+            'regulatedOrganization' => $user->context === 'regulated-organization' ? $user->regulatedOrganization : null,
         ]);
     }
 
