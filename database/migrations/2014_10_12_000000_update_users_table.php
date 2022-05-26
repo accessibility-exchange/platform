@@ -12,13 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('organizations', function (Blueprint $table) {
-            $table->id();
-            $table->json('name');
-            $table->json('slug');
-            $table->string('locality');
-            $table->string('region');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('locale')->default('en');
+            $table->string('theme')->default('light');
+            $table->string('context')->default('community-member');
         });
     }
 
@@ -29,6 +26,8 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('organizations');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['locale', 'theme', 'context']);
+        });
     }
 };

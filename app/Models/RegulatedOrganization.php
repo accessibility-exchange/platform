@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Hearth\Traits\HasInvitations;
+use Hearth\Traits\HasMembers;
+use Hearth\Traits\HasRequestsToJoin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Route;
 use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\Sluggable\HasTranslatableSlug;
+use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 class RegulatedOrganization extends Model
@@ -20,6 +24,10 @@ class RegulatedOrganization extends Model
     use HasFactory;
     use HasStatus;
     use HasTranslations;
+    use HasTranslatableSlug;
+    use HasInvitations;
+    use HasMembers;
+    use HasRequestsToJoin;
     use Notifiable;
 
     /**
@@ -67,8 +75,29 @@ class RegulatedOrganization extends Model
      */
     public array $translatable = [
         'name',
+        'slug',
         'about',
     ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * Get the community member's social links.
@@ -77,7 +106,7 @@ class RegulatedOrganization extends Model
      */
     public function getSocialLinksAttribute(): array
     {
-        if (! is_null($this->attributes['social_links'])) {
+        if (isset($this->attributes['social_links']) && ! is_null($this->attributes['social_links'])) {
             return array_filter(json_decode($this->attributes['social_links'], true));
         }
 
@@ -85,13 +114,13 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the community member's links.
+     * Get the community member's accessibility and inclusion links.
      *
      * @return array
      */
     public function getAccessibilityAndInclusionLinksAttribute(): array
     {
-        if (! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+        if (isset($this->attributes['accessibility_and_inclusion_links']) && ! is_null($this->attributes['accessibility_and_inclusion_links'])) {
             return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
         }
 
@@ -130,65 +159,6 @@ class RegulatedOrganization extends Model
         $this->published_at = null;
         $this->save();
         flash(__('Your regulated organization page has been unpublished.'), 'success');
-    }
-
-    /**
-     * Get the users that are associated with this federally regulated organization.
-     */
-    public function users(): MorphToMany
-    {
-        return $this->morphToMany(User::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->as('membership')
-            ->withPivot('id')
-            ->withPivot('role')
-            ->withTimestamps();
-    }
-
-    /**
-     * Does the federally regulated organization have more than one administrator?
-     */
-    public function administrators(): MorphToMany
-    {
-        return $this->morphToMany(User::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->wherePivot('role', 'admin');
-    }
-
-    /**
-     * Determine if the given email address belongs to a user in the federally regulated organization.
-     *
-     * @param  string  $email
-     * @return bool
-     */
-    public function hasUserWithEmail(string $email): bool
-    {
-        return $this->users->contains(function ($user) use ($email) {
-            return $user->email === $email;
-        });
-    }
-
-    /**
-     * Determine if the given email address belongs to an administrator in the federally regulated organization.
-     *
-     * @param  string  $email
-     * @return bool
-     */
-    public function hasAdministratorWithEmail(string $email): bool
-    {
-        return $this->administrators->contains(function ($user) use ($email) {
-            return $user->email === $email;
-        });
-    }
-
-    /**
-     * Get the invitations associated with this federally regulated organization.
-     *
-     * @return MorphMany
-     */
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'inviteable');
     }
 
     /**
@@ -253,16 +223,6 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * The community members who have identified themselves with the federally regulated organization.
-     *
-     * @return BelongsToMany
-     */
-    public function communityMembers(): BelongsToMany
-    {
-        return $this->belongsToMany(CommunityMember::class, 'community_member_regulated_org');
-    }
-
-    /**
      * Has the user added any details to the regulated organization?
      *
      * @return bool
@@ -270,5 +230,19 @@ class RegulatedOrganization extends Model
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->languages);
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     */
+    public static function getType(string $type): string
+    {
+        return match ($type) {
+            'government' => __('government organization'),
+            'business' => __('business'),
+            'public-sector' => __('public sector organization'),
+            default => __('regulated organization')
+        };
     }
 }

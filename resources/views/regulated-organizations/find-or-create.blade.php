@@ -12,7 +12,7 @@
     <h3>{{ __('Search for your regulated organization') }}</h3>
     <p>{{ __('Check if your regulated organization is already on this website.') }}</p>
 
-    {{-- TODO: Search form--}}
+    <livewire:membershipable-search membershipable="App\Models\RegulatedOrganization" />
 
     <h3>{{ __('Create a new regulated organization') }}</h3>
     <p>{{ __('Create a new regulated organization if it’s not already on the website.') }}</p>

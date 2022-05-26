@@ -14,9 +14,9 @@ class StoreInvitationRequest extends FormRequest
      */
     public function authorize()
     {
-        $inviteable = $this->input('inviteable_type')::where('id', $this->input('inviteable_id'))->first();
+        $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
 
-        return $inviteable && $this->user()->can('update', $inviteable);
+        return $invitationable && $this->user()->can('update', $invitationable);
     }
 
     /**
@@ -26,14 +26,14 @@ class StoreInvitationRequest extends FormRequest
      */
     public function rules()
     {
-        $inviteable_type = $this->input('inviteable_type');
-        $inviteable_id = $this->input('inviteable_id');
+        $invitationable_type = $this->input('invitationable_type');
+        $invitationable_id = $this->input('invitationable_id');
 
         return [
-            'email' => ['required', 'email', Rule::unique('invitations')->where(function ($query) use ($inviteable_type, $inviteable_id) {
+            'email' => ['required', 'email', Rule::unique('invitations')->where(function ($query) use ($invitationable_type, $invitationable_id) {
                 $query
-                    ->where('inviteable_type', $inviteable_type)
-                    ->where('inviteable_id', $inviteable_id);
+                    ->where('invitationable_type', $invitationable_type)
+                    ->where('invitationable_id', $invitationable_id);
             })],
             'role' => ['required', 'string', Rule::in(config('hearth.organizations.roles'))],
         ];
@@ -47,11 +47,11 @@ class StoreInvitationRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        $inviteable = $this->input('inviteable_type')::where('id', $this->input('inviteable_id'))->first();
+        $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
 
-        $validator->after(function ($validator) use ($inviteable) {
+        $validator->after(function ($validator) use ($invitationable) {
             $validator->errors()->addIf(
-                $inviteable->hasUserWithEmail($this->email),
+                $invitationable->hasUserWithEmail($this->email),
                 'email',
                 __('invitation.invited_user_already_belongs_to_team')
             );

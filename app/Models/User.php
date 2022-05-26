@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 
@@ -62,10 +64,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * The relationships that should be deleted when a user is deleted.
      *
-     * @var mixed
+     * @var array
      */
     protected mixed $cascadeDeletes = [
         'organizations',
+        'regulatedOrganizations',
     ];
 
     /**
@@ -105,9 +108,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Get the user's resources.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Resource>
+     * @return HasMany
      */
     public function resources(): HasMany
     {
@@ -115,11 +116,19 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the user's resource collections.
+     *
+     * @return HasMany
+     */
+    public function resourceCollections(): HasMany
+    {
+        return $this->hasMany(ResourceCollection::class);
+    }
+
+    /**
      * Get the user's memberships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     *
-     * @psalm-return \Illuminate\Database\Eloquent\Relations\HasMany<Membership>
+     * @return HasMany
      */
     public function memberships(): HasMany
     {
@@ -127,115 +136,126 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the community organizations that belong to this user.
+     * Get the organizations that belong to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function organizations(): MorphToMany
     {
-        return $this->morphedByMany(Organization::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->withPivot('id')
-            ->withPivot('role')
+        return $this->morphedByMany(Organization::class, 'membershipable', 'memberships')
+            ->using(Membership::class)
+            ->as('membership')
+            ->withPivot(['role', 'id'])
             ->withTimestamps();
     }
 
     /**
-     * Get the federally regulated organizations that belong to this user.
+     * Get the regulated organizations that belong to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function regulatedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(RegulatedOrganization::class, 'membership')
-            ->using('\App\Models\Membership')
-            ->withPivot('id')
-            ->withPivot('role')
+        return $this->morphedByMany(RegulatedOrganization::class, 'membershipable', 'memberships')
+            ->using(Membership::class)
+            ->as('membership')
+            ->withPivot(['role', 'id'])
             ->withTimestamps();
     }
 
     /**
-     * Get the federally regulated organization that belongs to this user.
+     * Get the organization that belongs to the user.
      *
-     * @return \App\Models\RegulatedOrganization|null
+     * @return mixed
      */
-    public function regulatedOrganization(): mixed
-    {
-        return $this->regulatedOrganizations->first();
-    }
-
-    /**
-     * Get the federally regulated organization that belongs to this user.
-     *
-     * @return \App\Models\Organization|null
-     */
-    public function organization(): mixed
+    public function getOrganizationAttribute(): mixed
     {
         return $this->organizations->first();
     }
 
     /**
-     * Get the organization or federally regulated organization that belongs to this user.
+     * Get the regulated organization that belongs to the user.
      *
-     * @return \App\Models\Organization|\App\Models\RegulatedOrganization|null
+     * @return mixed
      */
-    public function projectable(): mixed
+    public function getRegulatedOrganizationAttribute(): mixed
+    {
+        return $this->regulatedOrganizations->first();
+    }
+
+    /**
+     * Get the parent joinable model.
+     *
+     * @return Organization|RegulatedOrganization|null
+     */
+    public function projectable(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
-            return $this->organization();
+            return $this->organization;
         }
 
         if ($this->context === 'regulated-organization') {
-            return $this->regulatedOrganization();
+            return $this->regulatedOrganization;
         }
 
         return null;
     }
 
     /**
-     * Get the projects associated with all organizations and regulated organizations that belong to this user.
+     * Get the projects associated with all organizations or regulated organizations that belong to this user.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function projects(): Collection
     {
-        $projects = collect([]);
-
-        if ($this->context === 'organization') {
-            if ($this->organization()->projects->isNotEmpty()) {
-                $projects = $projects->merge($this->organization()->projects);
-            }
+        if ($this->projectable()->projects->isNotEmpty()) {
+            return $this->projectable()->projects;
         }
 
-        if ($this->context === 'regulated-organization') {
-            if ($this->regulatedOrganization()->projects->isNotEmpty()) {
-                $projects = $projects->merge($this->regulatedOrganization()->projects);
-            }
-        }
-
-        return $projects;
+        return new Collection([]);
     }
 
     /**
-     * Determine if the user is a member of a given memberable.
+     * Get the parent joinable model.
      *
-     * @param mixed $memberable
-     * @return bool
+     * @return MorphTo
      */
-    public function isMemberOf($memberable)
+    public function joinable(): MorphTo
     {
-        return $memberable->hasUserWithEmail($this->email);
+        return $this->morphTo();
     }
 
     /**
-     * Determine if the user is an administrator of a given memberable.
+     * Has the user requested to join a model?
      *
-     * @param mixed $memberable
+     * @param mixed $model
      * @return bool
      */
-    public function isAdministratorOf($memberable)
+    public function hasRequestedToJoin(mixed $model): bool
     {
-        return $memberable->hasAdministratorWithEmail($this->email);
+        return $this->joinable && $this->joinable->id === $model->id;
+    }
+
+    /**
+     * Determine if the user is a member of a given membershipable model.
+     *
+     * @param mixed $model
+     * @return bool
+     */
+    public function isMemberOf(mixed $model): bool
+    {
+        return $model->hasUserWithEmail($this->email);
+    }
+
+    /**
+     * Determine if the user is an administrator of a given model.
+     *
+     * @param mixed $model
+     * @return bool
+     */
+    public function isAdministratorOf(mixed $model): bool
+    {
+        return $model->hasAdministratorWithEmail($this->email);
     }
 
     /**
@@ -243,7 +263,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      *
      * @return bool
      */
-    public function twoFactorAuthEnabled()
+    public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);
     }

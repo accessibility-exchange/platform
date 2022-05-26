@@ -1,128 +1,149 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\Resource;
+use App\Models\ResourceCollection;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
-use Tests\TestCase;
+use Illuminate\Support\Facades\App;
+use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
-class ResourceTest extends TestCase
-{
-    use RefreshDatabase;
+test('users can create resources', function () {
+    $user = User::factory()->create();
 
-    public function test_users_can_create_resources()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
+    $response = $this->actingAs($user)->get(localized_route('resources.create'));
+    $response->assertOk();
 
-        $user = User::factory()->create();
+    $response = $this->actingAs($user)->post(localized_route('resources.create'), [
+        'user_id' => $user->id,
+        'title' => 'Test resource',
+        'summary' => 'This is my resource.',
+    ]);
 
-        $response = $this->actingAs($user)->get(localized_route('resources.create'));
-        $response->assertOk();
+    $resource = Resource::where('title->en', 'Test resource')->first();
 
-        $response = $this->actingAs($user)->post(localized_route('resources.create'), [
-            'user_id' => $user->id,
-            'title' => 'Test resource',
-            'language' => 'en',
-            'summary' => 'This is my resource.',
+    $url = localized_route('resources.show', $resource);
+
+    $response->assertSessionHasNoErrors();
+
+    $response->assertRedirect($url);
+
+    expect($user->resources)->toHaveCount(1);
+});
+
+test('users can edit resources belonging to them', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
+        'title' => $resource->title,
+        'summary' => 'This is my updated resource.',
+    ]);
+    $response->assertRedirect(localized_route('resources.show', $resource));
+});
+
+test('resources can be translated', function () {
+    $resource = Resource::factory()->create();
+
+    $resource->setTranslation('title', 'en', 'title in English');
+    $resource->setTranslation('title', 'fr', 'title in French');
+
+    $this->assertEquals('title in English', $resource->title);
+    App::setLocale('fr');
+    $this->assertEquals('title in French', $resource->title);
+
+    $this->assertEquals('title in English', $resource->getTranslation('title', 'en'));
+    $this->assertEquals('title in French', $resource->getTranslation('title', 'fr'));
+
+    $translations = ['en' => 'title in English', 'fr' => 'title in French'];
+
+    $this->assertEquals($translations, $resource->getTranslations('title'));
+
+    $this->expectException(AttributeIsNotTranslatable::class);
+    $resource->setTranslation('user_id', 'en', 'user_id in English');
+});
+
+test('users can not edit resources belonging to others', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
+        'title' => $resource->title,
+        'summary' => 'This is my updated resource.',
+    ]);
+    $response->assertForbidden();
+});
+
+test('users can delete resources belonging to them', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
+        'current_password' => 'password',
+    ]);
+
+    $response->assertRedirect(localized_route('dashboard'));
+});
+
+test('users can not delete resources belonging to them with wrong password', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
+        'current_password' => 'wrong_password',
+    ]);
+
+    $response->assertSessionHasErrors();
+    $response->assertRedirect(localized_route('resources.edit', $resource));
+});
+
+test('users can not delete resources belonging to others', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create();
+
+    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
+        'current_password' => 'password',
+    ]);
+
+    $response->assertForbidden();
+});
+
+test('single resource can be in many resource collections', function () {
+    $resource = Resource::factory()->create();
+
+    $resourceCollections = ResourceCollection::factory(3)->create();
+
+    foreach ($resourceCollections as $resourceCollection) {
+        $resource->resourceCollections()->sync($resourceCollection->id);
+        $this->assertDatabaseHas('resource_resource_collection', [
+            'resource_collection_id' => $resourceCollection->id,
+            'resource_id' => $resource->id,
         ]);
-
-        $url = localized_route('resources.show', ['resource' => Str::slug('Test resource')]);
-
-        $response->assertSessionHasNoErrors();
-
-        $response->assertRedirect($url);
     }
+});
 
-    public function test_users_can_edit_resources_belonging_to_them()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
+test('deleting resource collection with resource', function () {
+    $resource = Resource::factory()->create();
+    $resourceCollection = ResourceCollection::factory()->create();
+    $resource->resourceCollections()->sync($resourceCollection->id);
 
-        $user = User::factory()->create();
-        $resource = Resource::factory()->create(['user_id' => $user->id]);
+    $this->assertDatabaseHas('resource_collections', [
+        'id' => $resourceCollection->id,
+    ]);
 
-        $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
-        $response->assertOk();
+    $this->assertDatabaseHas('resource_resource_collection', [
+        'resource_collection_id' => $resourceCollection->id,
+        'resource_id' => $resource->id,
+    ]);
 
-        $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
-            'title' => $resource->title,
-            'language' => $resource->language,
-            'summary' => 'This is my updated resource.',
-        ]);
-        $response->assertRedirect(localized_route('resources.show', $resource));
-    }
+    $resourceCollection->delete();
 
-    public function test_users_can_not_edit_resources_belonging_to_others()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $resource = Resource::factory()->create();
-
-        $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
-        $response->assertForbidden();
-
-        $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
-            'title' => $resource->title,
-            'language' => $resource->language,
-            'summary' => 'This is my updated resource.',
-        ]);
-        $response->assertForbidden();
-    }
-
-    public function test_users_can_delete_resources_belonging_to_them()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $resource = Resource::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-            'current_password' => 'password',
-        ]);
-
-        $response->assertRedirect(localized_route('dashboard'));
-    }
-
-    public function test_users_can_not_delete_resources_belonging_to_them_with_wrong_password()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $resource = Resource::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-            'current_password' => 'wrong_password',
-        ]);
-
-        $response->assertSessionHasErrors();
-        $response->assertRedirect(localized_route('resources.edit', $resource));
-    }
-
-    public function test_users_can_not_delete_resources_belonging_to_others()
-    {
-        if (! config('hearth.resources.enabled')) {
-            return $this->markTestSkipped('Resource support is not enabled.');
-        }
-
-        $user = User::factory()->create();
-        $resource = Resource::factory()->create();
-
-        $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-            'current_password' => 'password',
-        ]);
-
-        $response->assertForbidden();
-    }
-}
+    $this->assertDatabaseMissing('resource_resource_collection', [
+        'resource_collection_id' => $resourceCollection->id,
+        'resource_id' => $resource->id,
+    ]);
+});

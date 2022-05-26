@@ -19,7 +19,7 @@ return [
     'create_succeeded' => 'Your organization has been created.',
     'update_succeeded' => 'Your organization has been updated.',
     'destroy_succeeded' => 'Your organization has been deleted.',
-    'edit_title' => 'Edit organization “:name”',
+    'edit_title' => 'Edit organization',
     'edit_organization' => 'Edit organization',
     'edit_user_role_link' => 'Edit',
     'edit_user_role_link_with_name' => 'Edit :user’s role',
@@ -28,4 +28,5 @@ return [
     'action_cancel_user_role_update' => 'Cancel',
     'action_remove_member' => 'Remove',
     'action_remove_member_with_name' => 'Remove :user from :organization',
+    'error_new_administrator_required_before_user_deletion' => 'You must assign a new administrator to your organization, :organization, before deleting your account.',
 ];

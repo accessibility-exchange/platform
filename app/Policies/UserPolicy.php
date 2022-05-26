@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -13,10 +14,12 @@ class UserPolicy
      * Determine whether the user can select a role.
      *
      * @param User $user
-     * @return bool
+     * @return Response
      */
-    public function selectRole(User $user): bool
+    public function selectRole(User $user): Response
     {
-        return ! is_null($user->communityMember);
+        return ! is_null($user->communityMember)
+            ? Response::allow()
+            : Response::deny(__('You cannot select a role.'));
     }
 }

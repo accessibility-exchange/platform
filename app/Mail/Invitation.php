@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Invitation as InvitationModel;
+use Hearth\Models\Invitation as InvitationModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -16,14 +16,14 @@ class Invitation extends Mailable
     /**
      * The invitation.
      *
-     * @var \App\Models\Invitation
+     * @var \Hearth\Models\Invitation
      */
     protected $invitation;
 
     /**
      * Create a new message instance.
      *
-     * @param  \App\Models\Invitation  $invitation
+     * @param  \Hearth\Models\Invitation  $invitation
      * @return void
      */
     public function __construct(InvitationModel $invitation)

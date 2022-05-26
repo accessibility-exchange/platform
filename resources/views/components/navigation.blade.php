@@ -10,7 +10,7 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
-        @if(Auth::user()->communityMember || Auth::user()->regulatedOrganization())
+        @if(Auth::user()->communityMember || Auth::user()->regulatedOrganization)
         <li>
             <x-nav-link :href="localized_route('projects.index')" :active="request()->routeIs(locale() . '.projects.index')">
                 {{ __('Projects') }}

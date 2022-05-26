@@ -8,7 +8,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('membership.edit_user_role_intro', ['user' => $user->name, 'memberable' => $memberable->name]) }}</p>
+    <p>{{ __('membership.edit_user_role_intro', ['user' => $user->name, 'membershipable' => $membershipable->name]) }}</p>
 
     <form action="{{ localized_route('memberships.update', $membership) }}" method="POST" novalidate>
         @csrf
@@ -18,7 +18,7 @@
             <x-hearth-radio-buttons name="role" :options="$roles" :checked="old('role', $membership->role)" />
             <x-hearth-error for="role" field="membership" />
         </fieldset>
-        <a class="button" href="{{ localized_route($memberable->getRoutePrefix() . '.edit', $memberable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>
+        <a class="button" href="{{ localized_route($membershipable->getRoutePrefix() . '.edit', $membershipable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>
         <button>{{ __('organization.action_update_user_role') }}</button>
     </form>
 </x-app-layout>

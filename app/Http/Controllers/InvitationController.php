@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\AcceptInvitation;
+use App\Http\Requests\AcceptInvitationRequest;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
-use App\Models\Invitation;
+use Hearth\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 
@@ -24,40 +25,36 @@ class InvitationController extends Controller
     {
         $validated = $request->validated();
 
-        $inviteable = $request->input('inviteable_type')::where('id', $request->input('inviteable_id'))->first();
+        $invitationable = $request->input('invitationable_type')::where('id', $request->input('invitationable_id'))->first();
 
-        $invitation = $inviteable->invitations()->create($validated);
+        $invitation = $invitationable->invitations()->create($validated);
 
         Mail::to($validated['email'])->send(new InvitationMessage($invitation));
 
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
-        return redirect(localized_route('users.edit_roles_and_permissions'));
+        return redirect(localized_route('users.edit-roles-and-permissions'));
     }
 
     /**
      * Accept the specified invitation.
      *
-     * @param Request $request
+     * @param AcceptInvitationRequest $request
      * @param Invitation $invitation
      * @return RedirectResponse
      */
-    public function accept(Request $request, Invitation $invitation)
+    public function accept(AcceptInvitationRequest $request, Invitation $invitation)
     {
-        app(AcceptInvitation::class)->accept(
-            $invitation->inviteable,
-            $invitation->email,
-            $invitation->role
-        );
+        $validated = $request->validated();
 
-        $invitation->delete();
+        $invitation->accept();
 
         flash(
-            __('invitation.accept_invitation_succeeded', ['inviteable' => $invitation->inviteable->name]),
+            __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
             'success'
         );
 
-        return redirect(localized_route($invitation->inviteable->getRoutePrefix() . '.show', $invitation->inviteable));
+        return redirect(localized_route($invitation->invitationable->getRoutePrefix() . '.show', $invitation->invitationable));
     }
 
     /**
@@ -66,11 +63,10 @@ class InvitationController extends Controller
      * @param Request $request
      * @param Invitation $invitation
      * @return RedirectResponse
-     * @throws AuthorizationException
      */
     public function destroy(Request $request, Invitation $invitation)
     {
-        if (! Gate::forUser($request->user())->check('update', $invitation->inviteable)) {
+        if (! Gate::forUser($request->user())->check('update', $invitation->invitationable)) {
             throw new AuthorizationException();
         }
 
@@ -78,6 +74,6 @@ class InvitationController extends Controller
 
         flash(__('invitation.cancel_invitation_succeeded'), 'success');
 
-        return redirect(localized_route('users.edit_roles_and_permissions'));
+        return redirect(localized_route('users.edit-roles-and-permissions'));
     }
 }

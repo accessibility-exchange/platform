@@ -7,15 +7,16 @@ use App\Models\Format;
 use App\Models\Phase;
 use App\Models\ResourceCollection;
 use App\Models\Topic;
+use Illuminate\Contracts\View\View;
 
 class ResourceCollectionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $roleCollectionIds = settings()->get('roleCollectionIds', [1, 2, 3]);
         $topicCollectionIds = settings()->get('topicCollectionIds', [4, 5, 6, 7]);
@@ -29,10 +30,10 @@ class ResourceCollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\View\View
+     * @param ResourceCollection $resourceCollection
+     * @return View
      */
-    public function show(ResourceCollection $resourceCollection)
+    public function show(ResourceCollection $resourceCollection): View
     {
         return view('resource-collections.show', [
             'resourceCollection' => $resourceCollection,

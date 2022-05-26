@@ -4,20 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-/**
- * App\Models\ResourceCollection
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\resource[] $resources
- */
 class ResourceCollection extends Model
 {
     use HasFactory;
-    use HasSlug;
     use HasTranslations;
+    use HasTranslatableSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -31,13 +28,14 @@ class ResourceCollection extends Model
     ];
 
     /**
-     * The attributes that are transterms
+     * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatable = [
+    public array $translatable = [
         'title',
         'description',
+        'slug',
     ];
 
     /**
@@ -55,15 +53,27 @@ class ResourceCollection extends Model
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
     /**
-     * Get all of the resources that are assigned this collection.
+     * Get user of this resource collection
+     *
+     * @return BelongsTo
      */
-    public function resources()
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get all the resources that are assigned this collection.
+     *
+     * @return BelongsToMany
+     */
+    public function resources(): BelongsToMany
     {
         return $this->belongsToMany(Resource::class);
     }

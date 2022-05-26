@@ -456,21 +456,19 @@ test('users can not delete others community member pages', function () {
 test('users can view their own draft community member pages', function () {
     $this->seed(CommunityRoleSeeder::class);
 
-    $user = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create(['published_at' => null]);
 
     $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
 
     $communityMember->communityRoles()->sync([$consultantRole->id]);
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.show', $communityMember));
+    $response = $this->actingAs($communityMember->user)->get(localized_route('community-members.show', $communityMember));
     $response->assertOk();
 });
 
 test('users can not view others draft community member pages', function () {
-    $user = User::factory()->create();
     $otherUser = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create(['published_at' => null]);
 
     $response = $this->actingAs($otherUser)->get(localized_route('community-members.show', $communityMember));
     $response->assertForbidden();
@@ -479,8 +477,7 @@ test('users can not view others draft community member pages', function () {
 test('users can view community member pages', function () {
     $this->seed(CommunityRoleSeeder::class);
 
-    $user = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create();
 
     $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
 
@@ -498,8 +495,7 @@ test('users can view community member pages', function () {
 test('guests can not view community member pages', function () {
     $this->seed(CommunityRoleSeeder::class);
 
-    $user = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create();
 
     $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
 
@@ -515,14 +511,13 @@ test('guests can not view community member pages', function () {
 test('community member pages can be published', function () {
     $this->seed(CommunityRoleSeeder::class);
 
-    $user = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create();
 
     $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
 
     $communityMember->communityRoles()->sync([$consultantRole->id]);
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
+    $response = $this->actingAs($communityMember->user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
         'publish' => true,
     ]);
 
@@ -537,14 +532,13 @@ test('community member pages can be published', function () {
 test('community member pages can be unpublished', function () {
     $this->seed(CommunityRoleSeeder::class);
 
-    $user = User::factory()->create();
-    $communityMember = $user->communityMember;
+    $communityMember = CommunityMember::factory()->create();
 
     $consultantRole = CommunityRole::where('name->en', 'Accessibility consultant')->first();
 
     $communityMember->communityRoles()->sync([$consultantRole->id]);
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
+    $response = $this->actingAs($communityMember->user)->from(localized_route('community-members.show', $communityMember))->put(localized_route('community-members.update-publication-status', $communityMember), [
         'unpublish' => true,
     ]);
 

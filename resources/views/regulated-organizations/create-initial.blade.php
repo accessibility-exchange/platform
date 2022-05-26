@@ -1,27 +1,32 @@
-<x-app-wide-layout>
-    <x-slot name="title">{{ __('Welcome to the Accessibility Exchange') }}</x-slot>
+<x-app-layout>
+    <x-slot name="title">
+        {{ app(App\Models\RegulatedOrganization::class)->getType($type) }}
+    </x-slot>
     <x-slot name="header">
-        <h1>
-            {{ __('Welcome to') }}<br />
-            {{ __('The Accessibility Exchange') }}
-        </h1>
-        @switch($type)
-            @case('government')
-                <h2>{{ __('Create new government organization') }}</h2>
-                @break
-            @case('business')
-                <h2>{{ __('Create new business') }}</h2>
-                @break
-            @case('public-sector')
-                <h2>{{ __('Create new public sector organization') }}</h2>
-            @break
-            @default
-                <h2>{{ __('Create new regulated organization') }}</h2>
-        @endswitch
+        <h1>{{ __('Create new :type', ['type' => app(App\Models\RegulatedOrganization::class)->getType($type)]) }}</h1>
     </x-slot>
 
+    @foreach(['en', 'fr'] as $locale)
+        @error('name.' . $locale)
+            <div class="stack">
+                @php
+                $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
+                @endphp
+                <x-hearth-alert type="error">
+                    {{ __('There is already a :type with the name “:name” on this website. You can request to join this :type, or create one with a different name.', ['type' => app(App\Models\RegulatedOrganization::class)->getType($type), 'name' => old('name.' . $locale)]) }}
+                </x-hearth-alert>
+                <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
+                <form action="{{ localized_route('regulated-organizations.join', $regulatedOrganization) }}" method="POST">
+                    @csrf
+                    <button class="secondary">{{ __('Request to join') }}</button>
+                </form>
+            </div>
+            @break
+        @enderror
+    @endforeach
+
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
-        <fieldset>
+        <fieldset class="stack">
             <legend>{{ __('Your organization’s name') }}</legend>
             <div class="field @error('name.en') field--error @enderror">
                 <x-hearth-label for="name-en">{{ __('Name of organization — English') }}</x-hearth-label>
@@ -41,4 +46,4 @@
 
         @csrf
     </form>
-</x-app-wide-layout>
+</x-app-layout>
