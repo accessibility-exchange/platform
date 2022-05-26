@@ -586,11 +586,11 @@ test('user can request to join regulated organization', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertSee('Request to join');
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create', $regulatedOrganization));
+    $response->assertSee('Search for your regulated organization');
 
     $response = $this->actingAs($user)
-        ->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+        ->from(localized_route('regulated-organizations.find-or-create'))
         ->post(localized_route('regulated-organizations.join', $regulatedOrganization));
 
     $response->assertSessionHasNoErrors();
@@ -608,8 +608,8 @@ test('user with outstanding join request cannot request to join regulated organi
     $regulatedOrganization->requestsToJoin()->save($user);
     $otherRegulatedOrganization = RegulatedOrganization::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $otherRegulatedOrganization));
-    $response->assertDontSee('Request to join');
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
+    $response->assertForbidden();
 
     $response = $this->actingAs($user)
         ->from(localized_route('regulated-organizations.show', $otherRegulatedOrganization))
@@ -624,8 +624,8 @@ test('user with existing membership cannot request to join regulated organizatio
     $regulatedOrganization->users()->attach($user, ['role' => 'admin']);
     $otherRegulatedOrganization = RegulatedOrganization::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $otherRegulatedOrganization));
-    $response->assertDontSee('Request to join');
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
+    $response->assertForbidden();
 
     $response = $this->actingAs($user)
         ->from(localized_route('regulated-organizations.show', $otherRegulatedOrganization))
