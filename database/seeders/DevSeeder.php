@@ -25,7 +25,7 @@ class DevSeeder extends Seeder
 
         $this->call([
             DatabaseSeeder::class,
-            ResourceCollectionSeeder::class,
+            // ResourceCollectionSeeder::class,
         ]);
 
         // Retrieve impacts.
