@@ -2,6 +2,6 @@
 
 return [
     'admin' => 'Administrateur',
-    'manager' => 'Manager',
+    'manager' => 'Responsable',
     'member' => 'Membre',
 ];
