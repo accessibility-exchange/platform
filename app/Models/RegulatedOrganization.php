@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Route;
 use Makeable\EloquentStatus\HasStatus;
@@ -233,16 +235,33 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * @param string $type
-     * @return string
+     * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
+     *
+     * @param mixed $request
+     * @return RedirectResponse
      */
-    public static function getType(string $type): string
+    public function handleUpdateRequest(mixed $request): RedirectResponse
     {
-        return match ($type) {
-            'government' => __('government organization'),
-            'business' => __('business'),
-            'public-sector' => __('public sector organization'),
-            default => __('regulated organization')
-        };
+        if (! $request->input('publish') || ! $request->input('unpublish')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft regulated organization page has been updated.'), 'success');
+            } else {
+                flash(__('Your regulated organization page has been updated.'), 'success');
+            }
+        }
+
+        if ($request->input('preview')) {
+            return redirect(localized_route('regulated-organizations.show', $this));
+        } elseif ($request->input('publish')) {
+            $this->publish();
+
+            return redirect(localized_route('regulated-organizations.edit', $this));
+        } elseif ($request->input('unpublish')) {
+            $this->unpublish();
+
+            return redirect(localized_route('regulated-organizations.edit', $this));
+        }
+
+        return redirect(localized_route('regulated-organizations.edit', $this));
     }
 }
