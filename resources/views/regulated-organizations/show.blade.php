@@ -42,56 +42,18 @@
                     <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show')">{{ __('About') }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-accessibility-and-inclusion')">{{ __('Accessibility and inclusion') }}</x-nav-link>
-                </li>
-                <li>
                     <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
                 </li>
             </ul>
         </nav>
         <div class="stack">
-
-        @if(request()->routeIs(locale() . '.regulated-organizations.show'))
-        <div class="stack" id="about">
-            <h2>{{ __('About') }}</h2>
-            @can('update', $regulatedOrganization)
-            <p><a class="button" href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a></p>
-            @endcan
-
-            @include('regulated-organizations.boilerplate.about', ['level' => 3])
-        </div>
-        @elseif(request()->routeIs(locale() . '.regulated-organizations.show-accessibility-and-inclusion'))
-        <div class="stack" id="accessibility-and-inclusion">
-            <h2>{{ __('Accessibility and inclusion') }}</h2>
-            @can('update', $regulatedOrganization)
-            <p><a class="button" href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Accessibility and inclusion') . '</span>']) !!}</a></p>
-            @endcan
-
-            @include('regulated-organizations.boilerplate.accessibility-and-inclusion', ['level' => 3])
-        </div>
-        @elseif(request()->routeIs(locale() . '.regulated-organizations.show-projects'))
-        <div class="stack" id="projects">
-            <h2>{{ __('Projects') }}</h2>
-            @can('update', $regulatedOrganization)
-                <p><a class="button" href="{{ localized_route('projects.create', $regulatedOrganization) }}">{{ __('Create a project') }}</a></p>
-            @endcan
-
-            <div class="stack">
-                <h3>{{  __('Current projects') }}</h3>
-                @forelse ($regulatedOrganization->currentProjects as $project)
-                <x-project-card :project="$project" :level="4" :showRegulatedOrganization="false" />
-                @empty
-                <p>{{ __('No projects found.') }}</p>
-                @endforelse
-                <h3>{{  __('Completed projects') }}</h3>
-                @forelse ($regulatedOrganization->pastProjects as $project)
-                <x-project-card :project="$project" :level="4" :showRegulatedOrganization="false" />
-                @empty
-                <p>{{ __('No projects found.') }}</p>
-                @endforelse
-            </div>
-        </div>
-        @endif
+            @if(request()->routeIs(locale() . '.regulated-organizations.show'))
+                <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
+                @include('regulated-organizations.partials.about')
+            @elseif(request()->routeIs(locale() . '.regulated-organizations.show-projects'))
+                <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ localized_route('projects.create', $regulatedOrganization) }}">{{ __('Create a project') }}</a>@endcan</h2>
+                @include('regulated-organizations.partials.projects')
+            @endif
         </div>
     </div>
 </x-app-wide-layout>

@@ -593,9 +593,6 @@ test('users can view regulated organizations', function () {
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization));
-    $response->assertOk();
-
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));
     $response->assertOk();
 });
@@ -607,9 +604,6 @@ test('guests can not view regulated organizations', function () {
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertRedirect(localized_route('login'));
-
-    $response = $this->get(localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization));
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));

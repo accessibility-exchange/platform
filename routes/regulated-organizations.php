@@ -45,18 +45,14 @@ Route::controller(RegulatedOrganizationController::class)
             ->middleware(['auth'])
             ->name('show');
 
+        Route::multilingual('/{regulatedOrganization}/projects', 'show')
+            ->middleware(['auth'])
+            ->name('show-projects');
+
         Route::multilingual('/{regulatedOrganization}/join', 'join')
             ->method('post')
             ->middleware(['auth', 'verified', 'can:join,regulatedOrganization'])
             ->name('join');
-
-        Route::multilingual('/{regulatedOrganization}/accessibility-and-inclusion', 'show')
-            ->middleware(['auth'])
-            ->name('show-accessibility-and-inclusion');
-
-        Route::multilingual('/{regulatedOrganization}/projects', 'show')
-            ->middleware(['auth'])
-            ->name('show-projects');
 
         Route::multilingual('/{regulatedOrganization}/edit', 'edit')
             ->middleware(['auth', 'can:update,regulatedOrganization'])
