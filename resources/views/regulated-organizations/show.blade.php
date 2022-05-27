@@ -1,12 +1,32 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $regulatedOrganization->name }}</x-slot>
     <x-slot name="header">
-        <h1 id="regulated-organization">
-            {{ $regulatedOrganization->name }}
-        </h1>
+        <div class="stack">
+            <h1 id="regulated-organization">
+                {{ $regulatedOrganization->name }}
+            </h1>
+            <div class="meta stack">
+                <p><strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong> &middot; {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}</p>
+            </div>
+            @if($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0 || $regulatedOrganization->website_link)
+                <ul role="list" class="cluster">
+                    @if($regulatedOrganization->website_link)
+                        <li>
+                            <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website') }}</a>
+                        </li>
+                    @endif
+                    @if($regulatedOrganization->social_links)
+                        @foreach($regulatedOrganization->social_links as $key => $value)
+                            <li>
+                                <a class="weight:semibold with-icon" href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
+            @endif
+        </div>
     </x-slot>
 
-    <p>{{ $regulatedOrganization->locality }}, {{ get_region_name($regulatedOrganization->region, ["CA"], locale()) }}</p>
 
     @if(Auth::user()->hasRequestedToJoin($regulatedOrganization))
         <form action="{{ localized_route('requests.cancel') }}" method="POST">
@@ -15,14 +35,21 @@
         </form>
     @endif
 
-    <div class="has-nav-secondary">
+    <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="regulated-organization">
             <ul role="list">
-                <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show')">{{ __('About') }}</x-nav-link>
-                <x-nav-link :href="localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-accessibility-and-inclusion')">{{ __('Accessibility and inclusion') }}</x-nav-link>
-                <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
+                <li>
+                    <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show')">{{ __('About') }}</x-nav-link>
+                </li>
+                <li>
+                    <x-nav-link :href="localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-accessibility-and-inclusion')">{{ __('Accessibility and inclusion') }}</x-nav-link>
+                </li>
+                <li>
+                    <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
+                </li>
             </ul>
         </nav>
+        <div class="stack">
 
         @if(request()->routeIs(locale() . '.regulated-organizations.show'))
         <div class="stack" id="about">
@@ -65,5 +92,6 @@
             </div>
         </div>
         @endif
+        </div>
     </div>
 </x-app-wide-layout>
