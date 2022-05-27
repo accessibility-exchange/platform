@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ __('Roles and permissions') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -14,6 +14,6 @@
     @include('partials.validation-errors')
 
     @if($user->context == 'regulated-organization')
-        @include('users.roles-and-permissions.regulated-organization')
+        @include('regulated-organizations.settings.roles-and-permissions')
     @endif
-</x-app-layout>
+</x-app-wide-layout>

@@ -11,25 +11,25 @@ Route::controller(RegulatedOrganizationController::class)
             ->name('index');
 
         Route::multilingual('/find-or-create', 'findOrCreate')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('find-or-create');
 
         Route::multilingual('/type/select', 'showTypeSelection')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('show-type-selection');
 
         Route::multilingual('/type/store', 'storeType')
             ->method('post')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('store-type');
 
         Route::multilingual('/create', 'create')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('create');
 
         Route::multilingual('/create', 'store')
             ->method('post')
-            ->middleware(['auth', 'can:create,App\Models\RegulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('store');
 
         Route::multilingual('/{regulatedOrganization}/languages/select', 'showLanguageSelection')
@@ -47,7 +47,7 @@ Route::controller(RegulatedOrganizationController::class)
 
         Route::multilingual('/{regulatedOrganization}/join', 'join')
             ->method('post')
-            ->middleware(['auth', 'can:join,regulatedOrganization'])
+            ->middleware(['auth', 'verified', 'can:join,regulatedOrganization'])
             ->name('join');
 
         Route::multilingual('/{regulatedOrganization}/accessibility-and-inclusion', 'show')

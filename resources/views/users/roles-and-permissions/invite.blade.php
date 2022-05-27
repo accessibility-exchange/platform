@@ -13,42 +13,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <h2>{{ __('invitation.invitations_title') }}</h2>
-
-    @if($invitationable->invitations->count() > 0)
-        <div role="region" aria-label="{{ __('invitation.invitations_title') }}" tabindex="0">
-            <table>
-                <thead>
-                <tr>
-                    <th>{{ __('invitation.invitation_email') }}</th>
-                    <th>{{ __('invitation.invitation_status') }}</th>
-                    <th>{{ __('invitation.invitation_role') }}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                @foreach ($invitationable->invitations as $invitation)
-                    <tr>
-                        <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
-                        <td>{{ __('invitation.member_invited') }}</td>
-                        <td>{{ __('roles.' . $invitation->role) }}</td>
-                        <td>
-                            <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <button class="link" :aria-label="__('invitation.cancel_member_invitation_link_with_email', ['email' => $invitation->email])">
-                                    {{ __('invitation.cancel_member_invitation_link') }}
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-        </div>
-    @endif
-
-    <h3>{{ __('invitation.invite_title') }}</h3>
-
-    <p>{{ __('invitation.invite_intro') }}</p>
+    <p>{{ __('Invite someone to become a member of your organization. If they do not have an account on this website yet, they will be invited to create one first.') }}</p>
 
     <form class="stack" action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
         @csrf

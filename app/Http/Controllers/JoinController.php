@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApproveJoinRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,24 +34,24 @@ class JoinController extends Controller
     /**
      * Approve a request to join a team.
      *
-     * @param Request $request
+     * @param ApproveJoinRequest $request
      * @param User $user
      * @return RedirectResponse
      */
-    public function approve(Request $request, User $user): RedirectResponse
+    public function approve(ApproveJoinRequest $request, User $user): RedirectResponse
     {
         $joinable = $user->joinable;
 
-        Gate::forUser($request->user())->authorize('update', $joinable);
+        $data = $request->validated();
 
         $user->forceFill([
             'joinable_type' => null,
             'joinable_id' => null,
         ])->save();
 
-        $joinable->users()->attach($user);
+        $joinable->users()->attach($user, ['role' => $data['role']]);
 
-        flash(__('You have approved :name’s request to join :team and they are now a member.', ['name' => $user->name, 'team' => $joinable->name]), 'success');
+        flash(__('You have approved :name’s request to join :team and granted them :role privileges.', ['name' => $user->name, 'team' => $joinable->name, 'role' => __('roles.' . $data['role'])]), 'success');
 
         return back();
     }

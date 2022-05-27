@@ -11,12 +11,12 @@ Route::multilingual('/organizations', [OrganizationController::class, 'index'])
     ->name('organizations.index');
 
 Route::multilingual('/organizations/create', [OrganizationController::class, 'create'])
-    ->middleware(['auth', 'can:create,App\Models\Organization'])
+    ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
     ->name('organizations.create');
 
 Route::multilingual('/organizations/create', [OrganizationController::class, 'store'])
     ->method('post')
-    ->middleware(['auth', 'can:create,App\Models\Organization'])
+    ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
     ->name('organizations.store');
 
 Route::multilingual('/organizations/{organization}', [OrganizationController::class, 'show'])
@@ -25,7 +25,7 @@ Route::multilingual('/organizations/{organization}', [OrganizationController::cl
 
 Route::multilingual('/organizations/{organization}/join', [OrganizationController::class, 'join'])
     ->method('post')
-    ->middleware(['auth', 'can:join,organization'])
+    ->middleware(['auth', 'verified', 'can:join,organization'])
     ->name('organizations.join');
 
 Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])
