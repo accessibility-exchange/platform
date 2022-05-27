@@ -185,15 +185,6 @@ class CommunityMemberController extends Controller
     {
         $data = $request->validated();
 
-        if (isset($data['web_links'])) {
-            $web_links = array_filter(array_map('array_filter', $data['web_links']));
-            if (empty($web_links)) {
-                unset($data['web_links']);
-            } else {
-                $data['web_links'] = $web_links;
-            }
-        }
-
         $communityMember->fill($data);
 
         $communityMember->save();
