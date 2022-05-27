@@ -6,6 +6,7 @@ return [
         'enabled' => true,
         'roles' => [
             'member',
+            'manager',
             'admin',
         ],
     ],

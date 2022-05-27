@@ -57,7 +57,7 @@ class MembershipController extends Controller
         }
 
         return redirect(
-            localized_route($membership->membershipable()->getRoutePrefix() . '.edit', $membership->membershipable())
+            localized_route('users.edit-roles-and-permissions')
         );
     }
 
@@ -98,7 +98,7 @@ class MembershipController extends Controller
         }
 
         return redirect(
-            localized_route($membership->membershipable()->getRoutePrefix() . '.edit', $membership->membershipable())
+            localized_route('users.edit-roles-and-permissions')
         );
     }
 }

@@ -132,7 +132,7 @@ test('users with admin role can update other member roles', function () {
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
         ]);
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
 test('users without admin role can not update member roles', function () {
@@ -380,7 +380,7 @@ test('users with admin role can remove members', function () {
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
 test('users without admin role can not remove members', function () {
@@ -610,7 +610,9 @@ test('admin can approve request to join organization', function () {
     $response = $this->actingAs($admin)->get(localized_route('organizations.edit', $organization));
     $response->assertSee('Approve ' . $user->name . '’s request');
 
-    $response = $this->actingAs($admin)->post(localized_route('requests.approve', $user));
+    $response = $this->actingAs($admin)->post(localized_route('requests.approve', $user), [
+        'role' => 'admin',
+    ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', $organization));
@@ -619,7 +621,7 @@ test('admin can approve request to join organization', function () {
     $organization = $organization->fresh();
 
     $this->assertNull($user->joinable);
-    $this->assertTrue($organization->hasUserWithEmail($user->email));
+    $this->assertTrue($organization->hasAdministratorWithEmail($user->email));
 });
 
 test('admin can deny request to join organization', function () {

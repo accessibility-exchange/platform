@@ -163,9 +163,15 @@ class UserController extends Controller
     public function editRolesAndPermissions(): View
     {
         $user = Auth::user();
+        $roles = [];
+
+        foreach (config('hearth.organizations.roles') as $role) {
+            $roles[$role] = __('roles.' . $role);
+        }
 
         return view('users.roles-and-permissions', [
             'user' => $user,
+            'roles' => $roles,
             'regulatedOrganization' => $user->context === 'regulated-organization' ? $user->regulatedOrganization : null,
         ]);
     }
