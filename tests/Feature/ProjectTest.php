@@ -405,9 +405,9 @@ test('projects have timeframes', function () {
     $this->assertStringContainsString('Starting', $org_future_project->timeframe());
 
     $this->assertEquals(4, count($organization->projects));
-    $this->assertEquals(2, count($organization->pastProjects));
-    $this->assertEquals(1, count($organization->currentProjects));
-    $this->assertEquals(1, count($organization->futureProjects));
+    $this->assertEquals(2, count($organization->completedProjects));
+    $this->assertEquals(1, count($organization->inProgressProjects));
+    $this->assertEquals(1, count($organization->upcomingProjects));
 
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $regulated_org_past_project = Project::factory()->create([
@@ -435,9 +435,9 @@ test('projects have timeframes', function () {
     $this->assertStringContainsString('Starting', $regulated_org_future_project->timeframe());
 
     $this->assertEquals(4, count($regulatedOrganization->projects));
-    $this->assertEquals(2, count($regulatedOrganization->pastProjects));
-    $this->assertEquals(1, count($regulatedOrganization->currentProjects));
-    $this->assertEquals(1, count($regulatedOrganization->futureProjects));
+    $this->assertEquals(2, count($regulatedOrganization->completedProjects));
+    $this->assertEquals(1, count($regulatedOrganization->inProgressProjects));
+    $this->assertEquals(1, count($regulatedOrganization->upcomingProjects));
 });
 
 test('projects reflect consultant origin', function () {

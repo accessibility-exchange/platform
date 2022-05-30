@@ -1,12 +1,19 @@
-<h3>{{  __('Current projects') }}</h3>
-@forelse ($regulatedOrganization->currentProjects as $project)
-    <x-project-card :project="$project" :level="4" :showRegulatedOrganization="false" />
+<h3>{{  __('Upcoming') }}</h3>
+@forelse ($regulatedOrganization->upcomingProjects as $project)
+    <x-project-card :project="$project" :level="4" />
 @empty
     <p>{{ __('No projects found.') }}</p>
 @endforelse
-<h3>{{  __('Completed projects') }}</h3>
-@forelse ($regulatedOrganization->pastProjects as $project)
-    <x-project-card :project="$project" :level="4" :showRegulatedOrganization="false" />
+<h3>{{  __('In progress') }}</h3>
+@forelse ($regulatedOrganization->inProgressProjects as $project)
+    <x-project-card :project="$project" :level="4" />
 @empty
     <p>{{ __('No projects found.') }}</p>
 @endforelse
+<x-expander level="3" :summary="__('Completed')">
+    @forelse ($regulatedOrganization->completedProjects as $project)
+        <x-project-card :project="$project" :level="4" />
+    @empty
+        <p>{{ __('No projects found.') }}</p>
+    @endforelse
+</x-expander>

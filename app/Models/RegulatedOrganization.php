@@ -185,11 +185,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that are in progress.
+     * Get the projects that belong to this regulated organization that are in progress.
      *
      * @return MorphMany
      */
-    public function currentProjects(): MorphMany
+    public function inProgressProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
@@ -201,11 +201,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that have been completed.
+     * Get the projects that belong to this regulated organization that have been completed.
      *
      * @return MorphMany
      */
-    public function pastProjects(): MorphMany
+    public function completedProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('end_date', '<', Carbon::now())
@@ -213,11 +213,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that haven't started yet.
+     * Get the projects that belong to this regulated organization that haven't started yet.
      *
      * @return MorphMany
      */
-    public function futureProjects(): MorphMany
+    public function upcomingProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())

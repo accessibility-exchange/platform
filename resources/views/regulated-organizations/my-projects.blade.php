@@ -9,7 +9,7 @@
     <p><a href="{{ localized_route('projects.create', $regulatedOrganization) }}" class="button">{{ __('Create new project') }}</a></p>
 
     <h2>{{ __('Active projects') }}</h2>
-    @forelse($regulatedOrganization->currentProjects as $project)
+    @forelse($regulatedOrganization->inProgressProjects as $project)
     <x-project-card :project="$project" :showRegulatedOrganization="false" />
     <p><a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty
@@ -17,7 +17,7 @@
     @endforelse
 
     <h2>{{ __('Completed projects') }}</h2>
-    @forelse($regulatedOrganization->pastProjects as $project)
+    @forelse($regulatedOrganization->completedProjects as $project)
     <x-project-card :project="$project" :showRegulatedOrganization="false" />
     <p><a class="button" href="{{ localized_route('projects.create-update', $project) }}">{{ __('Provide team update') }}</a> <a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty

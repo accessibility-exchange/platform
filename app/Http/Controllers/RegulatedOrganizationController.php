@@ -149,10 +149,8 @@ class RegulatedOrganizationController extends Controller
      */
     public function show(RegulatedOrganization $regulatedOrganization): View
     {
-        if (Route::currentRouteName() === locale() . '.regulated-organizations.show') {
-            $regulatedOrganization->load('currentProjects');
-        } elseif (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
-            $regulatedOrganization->load('pastProjects', 'currentProjects');
+        if (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
+            $regulatedOrganization->load('completedProjects', 'inProgressProjects', 'upcomingProjects');
         }
 
         return view('regulated-organizations.show', compact('regulatedOrganization'));

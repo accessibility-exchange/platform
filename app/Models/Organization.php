@@ -102,7 +102,7 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function currentProjects(): MorphMany
+    public function inProgressProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
@@ -118,7 +118,7 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function pastProjects(): MorphMany
+    public function completedProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('end_date', '<', Carbon::now())
@@ -130,7 +130,7 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function futureProjects(): MorphMany
+    public function upcomingProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
