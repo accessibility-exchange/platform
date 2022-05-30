@@ -26,13 +26,14 @@
                 @can('update', $regulatedOrganization)
                     @if($regulatedOrganization->checkStatus('draft'))
                         <p class="stack">
-                            <x-hearth-input type="submit" class="secondary" name="preview" value="{{ __('Preview') }}" />
-                            <x-hearth-input type="submit" name="publish" value="{{ __('Publish') }}" />
+                            <x-hearth-input type="submit" class="secondary" name="preview" value="{{ __('Preview page') }}" />
+                            <x-hearth-input type="submit" name="publish" value="{{ __('Publish page') }}" />
                         </p>
                         <p>{{ __('Once you publish your page, other users on this website can access your page.') }}</p>
                     @else
                         <p class="stack">
                             <x-hearth-input type="submit" name="unpublish" value="{{ __('Unpublish page') }}" />
+                            <a href="{{ localized_route('regulated-organizations.show', $regulatedOrganization) }}" class="cta">{{ __('View page') }}</a>
                         </p>
                     @endif
                 @endcan
