@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BlocklistController;
 use App\Http\Controllers\RegulatedOrganizationController;
 
 Route::controller(RegulatedOrganizationController::class)

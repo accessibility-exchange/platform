@@ -18,8 +18,8 @@ use App\Policies\RegulatedOrganizationPolicy;
 use App\Policies\ResourceCollectionPolicy;
 use App\Policies\ResourcePolicy;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider

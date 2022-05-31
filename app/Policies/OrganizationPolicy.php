@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\Organization;
-use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;

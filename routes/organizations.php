@@ -1,7 +1,6 @@
 
 <?php
 
-use App\Http\Controllers\BlocklistController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OrganizationController;

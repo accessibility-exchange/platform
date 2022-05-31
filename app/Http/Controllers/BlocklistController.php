@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlockRequest;
 use App\Http\Requests\UnblockRequest;
-use App\Models\Organization;
-use App\Models\RegulatedOrganization;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class BlocklistController extends Controller
 {
