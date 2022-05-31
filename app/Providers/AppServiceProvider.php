@@ -15,6 +15,7 @@ use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
+use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
         StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
+        Translatable::fallback(fallbackLocale: 'en');
         User::observe(UserObserver::class);
     }
 }

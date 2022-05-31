@@ -10,6 +10,11 @@
                 <span class="badge">{{ __('Draft mode') }}</span>
             @endif
         </div>
+        @if($regulatedOrganization->checkStatus('published'))
+            <p>
+                <a href="{{ localized_route('regulated-organizations.show', $regulatedOrganization) }}">{{ __('View page') }}</a>
+            </p>
+        @endif
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -33,7 +38,6 @@
                     @else
                         <p class="stack">
                             <x-hearth-input type="submit" name="unpublish" value="{{ __('Unpublish page') }}" />
-                            <a href="{{ localized_route('regulated-organizations.show', $regulatedOrganization) }}" class="cta">{{ __('View page') }}</a>
                         </p>
                     @endif
                 @endcan

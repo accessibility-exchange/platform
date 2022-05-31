@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultimodalTranslations;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
@@ -29,6 +30,7 @@ class RegulatedOrganization extends Model
     use HasTranslatableSlug;
     use HasInvitations;
     use HasMembers;
+    use HasMultimodalTranslations;
     use HasRequestsToJoin;
     use Notifiable;
 

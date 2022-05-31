@@ -1,9 +1,9 @@
 <x-app-wide-layout>
-    <x-slot name="title">{{ $regulatedOrganization->name }}</x-slot>
+    <x-slot name="title">{{ $regulatedOrganization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         <div class="stack">
             <h1 id="regulated-organization">
-                {{ $regulatedOrganization->name }}
+                {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
             </h1>
             <div class="meta stack">
                 <p><strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong> &middot; {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}</p>
@@ -12,7 +12,7 @@
                 <ul role="list" class="cluster">
                     @if($regulatedOrganization->website_link)
                         <li>
-                            <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website') }}</a>
+                            <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
                         </li>
                     @endif
                     @if($regulatedOrganization->social_links)
@@ -33,9 +33,11 @@
             <button>{{ __('Cancel request to join :regulated-organization', ['regulated-organization' => $regulatedOrganization->name]) }}</button>
         </form>
     @endif
-    
+
     @can('update', $regulatedOrganization)
-    <x-translation-manager :model="$regulatedOrganization" />
+        <x-translation-manager :model="$regulatedOrganization" />
+    @else
+        <x-language-changer :model="$regulatedOrganization" />
     @endcan
 
     <div class="with-sidebar">

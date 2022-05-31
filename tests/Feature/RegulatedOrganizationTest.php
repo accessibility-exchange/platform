@@ -585,7 +585,7 @@ test('non members can not delete regulated organizations', function () {
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs']]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
     $response->assertOk();
@@ -722,4 +722,32 @@ test('admin can deny request to join regulated organization', function () {
 
     $this->assertNull($user->joinable);
     $this->assertFalse($regulatedOrganization->hasUserWithEmail($user->email));
+});
+
+test('user can view regulated organization in different languages', function () {
+    $user = User::factory()->create();
+    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+        'name' => [
+            'en' => 'Canada Revenue Agency',
+            'fr' => 'Agence du revenue du Canada',
+            'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
+        ],
+        'languages' => [
+            'en',
+            'fr',
+            'ase',
+            'fcs',
+            'iu',
+        ],
+    ]);
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertSee('Canada Revenue Agency');
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'iu']));
+    $response->assertSee('ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ');
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
+    $response->assertSee('Agence du revenue du Canada');
 });
