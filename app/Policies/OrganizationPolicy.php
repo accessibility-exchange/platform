@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -38,6 +39,16 @@ class OrganizationPolicy
             : Response::deny(__('You cannot join this organization.'));
     }
 
+    public function view(User $user, Organization $organization): Response
+    {
+        return $organization->blockedBy($user)
+            ? Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
+                'organization' => '<strong>' . $organization->name . '</strong>',
+                'unblock' => '<a href="' . localized_route('blocklist.show') . '">' . __('unblock them') . '</a>',
+            ]))
+            : Response::allow();
+    }
+
     /**
      * Determine whether the user can update the model.
      *
@@ -50,6 +61,13 @@ class OrganizationPolicy
         return $user->isAdministratorOf($organization)
             ? Response::allow()
             : Response::deny(__('You cannot edit this organization.'));
+    }
+
+    public function block(User $user, Organization $organization): Response
+    {
+        return $user->isMemberOf($organization)
+            ? Response::deny(__('You cannot block the :type that you belong to.', ['type' => __('organization')]))
+            : Response::allow();
     }
 
     /**

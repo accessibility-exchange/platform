@@ -28,14 +28,24 @@ class RegulatedOrganizationPolicy
      * Determine whether the user can join the model.
      *
      * @param User $user
-     * @param RegulatedOrganization $organization
+     * @param RegulatedOrganization $regulatedOrganization
      * @return Response
      */
-    public function join(User $user, RegulatedOrganization $organization): Response
+    public function join(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $user->context === 'regulated-organization' && ! $user->joinable && $user->regulatedOrganizations->isEmpty()
             ? Response::allow()
             : Response::deny(__('You cannot join this organization.'));
+    }
+
+    public function view(User $user, RegulatedOrganization $regulatedOrganization): Response
+    {
+        return $regulatedOrganization->blockedBy($user)
+            ? Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
+                'regulatedOrganization' => '<strong>' . $regulatedOrganization->name . '</strong>',
+                'unblock' => '<a href="' . localized_route('blocklist.show') . '">' . __('unblock them') . '</a>',
+            ]))
+            : Response::allow();
     }
 
     /**
@@ -50,6 +60,13 @@ class RegulatedOrganizationPolicy
         return $user->isAdministratorOf($regulatedOrganization)
             ? Response::allow()
             : Response::deny(__('You cannot edit this federally regulated organization.'));
+    }
+
+    public function block(User $user, RegulatedOrganization $regulatedOrganization): Response
+    {
+        return $user->isMemberOf($regulatedOrganization)
+            ? Response::deny(__('You cannot block the :type that you belong to.', ['type' => __('regulated-organization.types.' . $regulatedOrganization->type)]))
+            : Response::allow();
     }
 
     /**

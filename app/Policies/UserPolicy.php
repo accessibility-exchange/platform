@@ -10,16 +10,18 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can select a role.
-     *
-     * @param User $user
-     * @return Response
-     */
     public function selectRole(User $user): Response
     {
         return ! is_null($user->communityMember)
             ? Response::allow()
             : Response::deny(__('You cannot select a role.'));
+    }
+
+    public function block(User $user): Response
+    {
+        return true;
+        return $user->context === 'community-member'
+            ? Response::allow()
+            : Response::deny(__('You cannot block individuals or organizations.'));
     }
 }

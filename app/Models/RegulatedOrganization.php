@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
@@ -233,7 +234,21 @@ class RegulatedOrganization extends Model
      */
     public function hasAddedDetails(): bool
     {
-        return ! is_null($this->languages);
+        return ! is_null($this->region);
+    }
+
+    public function blocks(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'blockable');
+    }
+
+    public function blockedBy(?User $user): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $this->blocks()->where('user_id', $user->id)->exists();
     }
 
     /**

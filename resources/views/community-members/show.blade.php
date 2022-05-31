@@ -11,7 +11,8 @@
             @endif
             <div class="stack">
                 <h1 class="repel">
-                    <span id="community-member">{{ $communityMember->name }}</span> @can('update', $communityMember)
+                    <span id="community-member">{{ $communityMember->name }}</span>
+                    @can('update', $communityMember)
                         <form action="{{ localized_route('community-members.update-publication-status', $communityMember) }}" method="POST" novalidate>
                             @csrf
                             @method('PUT')
@@ -22,6 +23,9 @@
                                 <x-hearth-input class="secondary" type="submit" name="publish" :value="__('Publish')" />
                             @endif
                         </form>
+                    @endcan
+                    @can('block', $communityMember)
+                        <x-block-modal :blockable="$communityMember" />
                     @endcan
                 </h1>
                 <div class="meta">

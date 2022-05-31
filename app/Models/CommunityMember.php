@@ -575,4 +575,18 @@ class CommunityMember extends Model implements HasMedia
 
         return redirect(localized_route('community-members.edit', ['communityMember' => $this, 'step' => $step]));
     }
+
+    public function blocks(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'blockable');
+    }
+
+    public function blockedBy(?User $user): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $this->blocks()->where('user_id', $user->id)->exists();
+    }
 }

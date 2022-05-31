@@ -258,6 +258,21 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return $model->hasAdministratorWithEmail($this->email);
     }
 
+    public function blockedOrganizations(): MorphToMany
+    {
+        return $this->morphedByMany(Organization::class, 'blockable');
+    }
+
+    public function blockedRegulatedOrganizations(): MorphToMany
+    {
+        return $this->morphedByMany(RegulatedOrganization::class, 'blockable');
+    }
+
+    public function blockedIndividuals(): MorphToMany
+    {
+        return $this->morphedByMany(CommunityMember::class, 'blockable');
+    }
+
     /**
      * Is two-factor authentication enabled for this user?
      *

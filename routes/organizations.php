@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\BlocklistController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OrganizationController;
@@ -20,7 +21,7 @@ Route::multilingual('/organizations/create', [OrganizationController::class, 'st
     ->name('organizations.store');
 
 Route::multilingual('/organizations/{organization}', [OrganizationController::class, 'show'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'can:view,organization'])
     ->name('organizations.show');
 
 Route::multilingual('/organizations/{organization}/join', [OrganizationController::class, 'join'])

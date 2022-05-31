@@ -5,8 +5,11 @@
             <h1 id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
             </h1>
-            <div class="meta stack">
-                <p><strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong> &middot; {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}</p>
+            <div class="meta repel">
+                    <span><strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong> &middot; {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}</span>
+                    @can('block', $regulatedOrganization)
+                        <x-block-modal :blockable="$regulatedOrganization" />
+                    @endcan
             </div>
             @if($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0 || $regulatedOrganization->website_link)
                 <ul role="list" class="cluster">

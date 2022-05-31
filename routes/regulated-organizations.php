@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlocklistController;
 use App\Http\Controllers\RegulatedOrganizationController;
 
 Route::controller(RegulatedOrganizationController::class)
@@ -42,11 +43,11 @@ Route::controller(RegulatedOrganizationController::class)
             ->name('store-languages');
 
         Route::multilingual('/{regulatedOrganization}', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'can:view,regulatedOrganization'])
             ->name('show');
 
         Route::multilingual('/{regulatedOrganization}/projects', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'can:view,regulatedOrganization'])
             ->name('show-projects');
 
         Route::multilingual('/{regulatedOrganization}/join', 'join')

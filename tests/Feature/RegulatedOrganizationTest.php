@@ -148,7 +148,6 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $regulatedOrganization = $regulatedOrganization->fresh();
-    ray($regulatedOrganization->accessibility_and_inclusion_links);
 });
 
 test('users without admin role can not edit regulated organizations', function () {
