@@ -16,13 +16,4 @@ class UserPolicy
             ? Response::allow()
             : Response::deny(__('You cannot select a role.'));
     }
-
-    public function block(User $user): Response
-    {
-        return true;
-
-        return $user->context === 'community-member'
-            ? Response::allow()
-            : Response::deny(__('You cannot block individuals or organizations.'));
-    }
 }

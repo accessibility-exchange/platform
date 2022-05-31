@@ -42,7 +42,7 @@ class OrganizationPolicy
     {
         return $organization->blockedBy($user)
             ? Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
-                'organization' => '<strong>' . $organization->name . '</strong>',
+                'organization' => '<strong>' . $organization->getTranslation('name', locale()) . '</strong>',
                 'unblock' => '<a href="' . localized_route('blocklist.show') . '">' . __('unblock them') . '</a>',
             ]))
             : Response::allow();
