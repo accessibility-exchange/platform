@@ -94,9 +94,10 @@ test('users with admin role can edit regulated organizations', function () {
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
         'social_links' => ['facebook' => 'https://facebook.com/' . Str::slug($regulatedOrganization->name)],
+        'preview' => 'Preview',
     ]);
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(0);
@@ -110,13 +111,43 @@ test('users with admin role can edit regulated organizations', function () {
         'sectors' => [Sector::pluck('id')->first()],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
         'social_links' => ['facebook' => ''],
+        'publish' => 'Publish',
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(1);
     expect($regulatedOrganization->social_links)->toHaveCount(0);
+
+    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'name' => ['en' => $regulatedOrganization->name],
+        'locality' => 'St John\'s',
+        'region' => 'NL',
+        'about' => ['en' => 'TODO.'],
+        'sectors' => [Sector::pluck('id')->first()],
+        'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
+        'social_links' => ['facebook' => ''],
+        'unpublish' => 'Unpublish',
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
+
+    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'name' => ['en' => $regulatedOrganization->name],
+        'locality' => 'St John\'s',
+        'region' => 'NL',
+        'about' => ['en' => 'TODO.'],
+        'sectors' => [Sector::pluck('id')->first()],
+        'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
+        'social_links' => ['facebook' => ''],
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $regulatedOrganization = $regulatedOrganization->fresh();
 });
 
 test('users without admin role can not edit regulated organizations', function () {
@@ -553,15 +584,12 @@ test('non members can not delete regulated organizations', function () {
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs']]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
     $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization));
     $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));
@@ -575,9 +603,6 @@ test('guests can not view regulated organizations', function () {
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertRedirect(localized_route('login'));
-
-    $response = $this->get(localized_route('regulated-organizations.show-accessibility-and-inclusion', $regulatedOrganization));
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));
@@ -696,4 +721,32 @@ test('admin can deny request to join regulated organization', function () {
 
     $this->assertNull($user->joinable);
     $this->assertFalse($regulatedOrganization->hasUserWithEmail($user->email));
+});
+
+test('user can view regulated organization in different languages', function () {
+    $user = User::factory()->create();
+    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+        'name' => [
+            'en' => 'Canada Revenue Agency',
+            'fr' => 'Agence du revenue du Canada',
+            'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
+        ],
+        'languages' => [
+            'en',
+            'fr',
+            'ase',
+            'fcs',
+            'iu',
+        ],
+    ]);
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertSee('Canada Revenue Agency');
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'iu']));
+    $response->assertSee('ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ');
+
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
+    $response->assertSee('Agence du revenue du Canada');
 });

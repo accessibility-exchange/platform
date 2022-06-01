@@ -1,11 +1,12 @@
-<article class="box card card--project">
-    <h3 @if($level !== 3)aria-level="{{ $level }}" @endif><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></h3>
-    @if($showRegulatedOrganization)
-    <p>{!! __('Accessibility project by :projectable', ['projectable' => '<strong>' . $project->projectable->name . '</strong>']) !!}</p>
-    @endif
+<x-card class="project">
+    <x-slot name="title"><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></x-slot>
+    <p>
+        <strong>{{ __('Project by :projectable', ['projectable' => $project->projectable->name]) }}</strong><br />
+        <span class="weight:semibold">{{ __('Sector:') }}</span> {{ implode(', ', $project->projectable->sectors()->pluck('name')->toArray()) }}
+    </p>
     @if($project->started())
-    <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
+        <p><span class="badge">{{ __('In progress') }}</span></p>
     @else
-    <p><strong>{{ __('Starting') }}:</strong> {{ $project->start_date->format('F Y') }}</p>
+        <p><span class="badge">{{ __('Upcoming') }}</span></p>
     @endif
-</article>
+</x-card>

@@ -110,6 +110,7 @@ Route::multilingual('/requests/{user:id}/approve', [JoinController::class, 'appr
     ->middleware(['auth'])
     ->name('requests.approve');
 
+require __DIR__ . '/blocklist.php';
 require __DIR__ . '/community-members.php';
 require __DIR__ . '/defined-terms.php';
 require __DIR__ . '/organizations.php';

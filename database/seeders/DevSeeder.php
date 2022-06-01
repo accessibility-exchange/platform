@@ -78,6 +78,7 @@ class DevSeeder extends Seeder
             ->hasAttached($regulatedOrganizationRepresentative, ['role' => 'admin'])
             ->create([
                 'name' => 'Example Corporation',
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
                 'locality' => 'Toronto',
                 'region' => 'ON',
             ]);

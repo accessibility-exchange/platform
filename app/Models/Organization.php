@@ -9,6 +9,7 @@ use Hearth\Traits\HasRequestsToJoin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasTranslatableSlug;
@@ -102,7 +103,7 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function currentProjects(): MorphMany
+    public function inProgressProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
@@ -118,7 +119,7 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function pastProjects(): MorphMany
+    public function completedProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('end_date', '<', Carbon::now())
@@ -130,10 +131,24 @@ class Organization extends Model
      *
      * @return MorphMany
      */
-    public function futureProjects(): MorphMany
+    public function upcomingProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
+    }
+
+    public function blocks(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'blockable');
+    }
+
+    public function blockedBy(?User $user): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $this->blocks()->where('user_id', $user->id)->exists();
     }
 }

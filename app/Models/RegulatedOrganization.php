@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultimodalTranslations;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Route;
 use Makeable\EloquentStatus\HasStatus;
@@ -27,6 +31,7 @@ class RegulatedOrganization extends Model
     use HasTranslatableSlug;
     use HasInvitations;
     use HasMembers;
+    use HasMultimodalTranslations;
     use HasRequestsToJoin;
     use Notifiable;
 
@@ -183,11 +188,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that are in progress.
+     * Get the projects that belong to this regulated organization that are in progress.
      *
      * @return MorphMany
      */
-    public function currentProjects(): MorphMany
+    public function inProgressProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '<=', Carbon::now())
@@ -199,11 +204,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that have been completed.
+     * Get the projects that belong to this regulated organization that have been completed.
      *
      * @return MorphMany
      */
-    public function pastProjects(): MorphMany
+    public function completedProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('end_date', '<', Carbon::now())
@@ -211,11 +216,11 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the projects that belong to this federally regulated organization that haven't started yet.
+     * Get the projects that belong to this regulated organization that haven't started yet.
      *
      * @return MorphMany
      */
-    public function futureProjects(): MorphMany
+    public function upcomingProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
@@ -229,20 +234,51 @@ class RegulatedOrganization extends Model
      */
     public function hasAddedDetails(): bool
     {
-        return ! is_null($this->languages);
+        return ! is_null($this->region);
+    }
+
+    public function blocks(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'blockable');
+    }
+
+    public function blockedBy(?User $user): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $this->blocks()->where('user_id', $user->id)->exists();
     }
 
     /**
-     * @param string $type
-     * @return string
+     * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
+     *
+     * @param mixed $request
+     * @return RedirectResponse
      */
-    public static function getType(string $type): string
+    public function handleUpdateRequest(mixed $request): RedirectResponse
     {
-        return match ($type) {
-            'government' => __('government organization'),
-            'business' => __('business'),
-            'public-sector' => __('public sector organization'),
-            default => __('regulated organization')
-        };
+        if (! $request->input('publish') || ! $request->input('unpublish')) {
+            if ($this->checkStatus('draft')) {
+                flash(__('Your draft regulated organization page has been updated.'), 'success');
+            } else {
+                flash(__('Your regulated organization page has been updated.'), 'success');
+            }
+        }
+
+        if ($request->input('preview')) {
+            return redirect(localized_route('regulated-organizations.show', $this));
+        } elseif ($request->input('publish')) {
+            $this->publish();
+
+            return redirect(localized_route('regulated-organizations.edit', $this));
+        } elseif ($request->input('unpublish')) {
+            $this->unpublish();
+
+            return redirect(localized_route('regulated-organizations.edit', $this));
+        }
+
+        return redirect(localized_route('regulated-organizations.edit', $this));
     }
 }

@@ -14,7 +14,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->regulatedOrganization);
     }
@@ -24,7 +24,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $nameRules = [
             'string',

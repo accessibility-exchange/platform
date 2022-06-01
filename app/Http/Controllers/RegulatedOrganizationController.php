@@ -149,13 +149,17 @@ class RegulatedOrganizationController extends Controller
      */
     public function show(RegulatedOrganization $regulatedOrganization): View
     {
-        if (Route::currentRouteName() === locale() . '.regulated-organizations.show') {
-            $regulatedOrganization->load('currentProjects');
-        } elseif (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
-            $regulatedOrganization->load('pastProjects', 'currentProjects');
+        if (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
+            $regulatedOrganization->load('completedProjects', 'inProgressProjects', 'upcomingProjects');
         }
 
-        return view('regulated-organizations.show', compact('regulatedOrganization'));
+        $language = request()->query('language');
+
+        if (! in_array($language, $regulatedOrganization->languages)) {
+            $language = false;
+        }
+
+        return view('regulated-organizations.show', array_merge(compact('regulatedOrganization'), ['language' => $language ?? locale()]));
     }
 
     /**
@@ -192,7 +196,7 @@ class RegulatedOrganizationController extends Controller
 
         flash(__('Your federally regulated organization has been updated.'), 'success');
 
-        return redirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+        return $regulatedOrganization->handleUpdateRequest($request);
     }
 
     /**

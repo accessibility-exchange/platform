@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\User;
 use App\Policies\CommunityMemberPolicy;
 use App\Policies\EngagementPolicy;
 use App\Policies\OrganizationPolicy;
@@ -16,7 +17,9 @@ use App\Policies\ProjectPolicy;
 use App\Policies\RegulatedOrganizationPolicy;
 use App\Policies\ResourceCollectionPolicy;
 use App\Policies\ResourcePolicy;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 
 class AuthServiceProvider extends ServiceProvider
@@ -44,6 +47,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Gate::define('block', function (User $user) {
+            return $user->context === 'community-member'
+                ? Response::allow()
+                : Response::deny(__('You cannot block individuals or organizations.'));
+        });
 
         Password::defaults(function () {
             $rule = Password::min(8);

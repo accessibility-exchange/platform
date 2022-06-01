@@ -7,7 +7,7 @@
     </x-slot>
 
     <h2>{{ __('Active projects') }}</h2>
-    @forelse($communityMember->currentProjects as $project)
+    @forelse($communityMember->inProgressProjects as $project)
     <x-project-card :project="$project" />
     <p><a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty
@@ -15,7 +15,7 @@
     @endforelse
 
     <h2>{{ __('Completed projects') }}</h2>
-    @forelse($communityMember->pastProjects as $project)
+    @forelse($communityMember->completedProjects as $project)
     <x-project-card :project="$project" />
     <p><a href="{{ localized_route('projects.manage', $project) }}">{{ __('Go to project dashboard') }}</a></p>
     @empty

@@ -19,5 +19,5 @@
         <button>{{ __('Next') }}</button>
 
         @csrf
-    </form>x
+    </form>
 </x-app-wide-layout>

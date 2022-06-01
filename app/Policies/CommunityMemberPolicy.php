@@ -27,7 +27,12 @@ class CommunityMemberPolicy
                 : Response::deny(__('You cannot view this community member page.'));
         }
 
-        return Response::allow();
+        return $model->blockedBy($user)
+            ? Response::deny(__('You’ve blocked :individual. If you want to visit this page, you can :unblock and return to this page.', [
+                'individual' => '<strong>' . $model->name . '</strong>',
+                'unblock' => '<a href="' . localized_route('blocklist.show') . '">' . __('unblock them') . '</a>',
+            ]))
+            : Response::allow();
     }
 
     /**
@@ -46,6 +51,13 @@ class CommunityMemberPolicy
         }
 
         return Response::deny(__('You cannot create a community member page.'));
+    }
+
+    public function block(User $user, CommunityMember $communityMember): Response
+    {
+        return $user->communityMember->id === $communityMember->id
+            ? Response::deny(__('You cannot block yourself.'))
+            : Response::allow();
     }
 
     /**

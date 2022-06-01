@@ -9,3 +9,8 @@
     border-radius: var(--ll-border-radius);
     padding: var(--step-0);
 }
+
+.filter-impact--hide,
+.filter-status--hide {
+    display: none;
+}

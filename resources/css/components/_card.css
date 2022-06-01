@@ -3,6 +3,11 @@
     position: relative;
 }
 
+.card + *,
+.stack > .card + * {
+    margin-block-start: var(--size-8);
+}
+
 .card a {
     text-decoration: none;
 }
@@ -18,6 +23,7 @@
 }
 
 .card a:focus {
+    box-shadow: none;
     outline: 1px solid transparent;
 }
 
@@ -58,4 +64,17 @@
 .card.community-member:focus-within,
 .card.community-member:has(a:active) {
     box-shadow: var(--card-community-member-shadow-focus-within);
+}
+
+.card.project {
+    box-shadow: var(--card-shadow), var(--card-project-shadow);
+}
+
+.card.project:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-project-shadow);
+}
+
+.card.project:focus-within,
+.card.project:has(a:active) {
+    box-shadow: var(--card-project-shadow-focus-within);
 }

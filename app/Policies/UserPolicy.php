@@ -10,12 +10,6 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can select a role.
-     *
-     * @param User $user
-     * @return Response
-     */
     public function selectRole(User $user): Response
     {
         return ! is_null($user->communityMember)

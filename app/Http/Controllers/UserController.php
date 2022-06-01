@@ -277,7 +277,7 @@ class UserController extends Controller
     {
         if (Auth::user()->regulatedOrganization) {
             $regulatedOrganization = Auth::user()->regulatedOrganization;
-            $regulatedOrganization->load('pastProjects', 'currentProjects');
+            $regulatedOrganization->load('completedProjects', 'inProgressProjects');
 
             return view('regulated-organizations.my-projects', [
                 'regulatedOrganization' => Auth::user()->regulatedOrganization,

@@ -62,7 +62,7 @@ class Kernel extends HttpKernel
         'password.confirm' => \App\Http\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'localize' => \App\Http\Middleware\RedirectToPreferredLocale::class,
         'onboard' => \App\Http\Middleware\RedirectForOnboarding::class,
     ];
