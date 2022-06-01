@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
@@ -101,20 +100,6 @@ class OrganizationController extends Controller
         flash(__('organization.update_succeeded'), 'success');
 
         return redirect(localized_route('organizations.show', $organization));
-    }
-
-    /**
-     * @param Request $request
-     * @param Organization $organization
-     * @return RedirectResponse
-     */
-    public function join(Request $request, Organization $organization): RedirectResponse
-    {
-        $organization->requestsToJoin()->save($request->user());
-
-        flash(__('You have successfully requested to join :organization. You will be notified when an administrator has approved or denied your request.', ['organization' => $organization->name]), 'success');
-
-        return redirect(localized_route('dashboard'));
     }
 
     /**

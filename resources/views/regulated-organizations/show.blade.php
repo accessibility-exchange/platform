@@ -30,13 +30,6 @@
         </div>
     </x-slot>
 
-    @if(Auth::user()->hasRequestedToJoin($regulatedOrganization))
-        <form action="{{ localized_route('requests.cancel') }}" method="POST">
-            @csrf
-            <button>{{ __('Cancel request to join :regulated-organization', ['regulated-organization' => $regulatedOrganization->name]) }}</button>
-        </form>
-    @endif
-
     @can('update', $regulatedOrganization)
         <x-translation-manager :model="$regulatedOrganization" />
     @else

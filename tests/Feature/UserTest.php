@@ -192,7 +192,7 @@ test('users can view the introduction', function () {
             'finished_introduction' => 1,
         ]);
 
-    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
+    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
     $user->update(['context' => 'regulated-organization-employee']);
 
@@ -213,5 +213,5 @@ test('users can view the introduction', function () {
 
     $response = $this->actingAs($newUser)->get(localized_route('dashboard'));
 
-    $response->assertRedirect(localized_route('regulated-organizations.find-or-create'));
+    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 });

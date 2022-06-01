@@ -10,10 +10,6 @@ Route::controller(RegulatedOrganizationController::class)
             ->middleware(['auth'])
             ->name('index');
 
-        Route::multilingual('/find-or-create', 'findOrCreate')
-            ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
-            ->name('find-or-create');
-
         Route::multilingual('/type/select', 'showTypeSelection')
             ->middleware(['auth', 'verified', 'can:create,App\Models\RegulatedOrganization'])
             ->name('show-type-selection');
@@ -48,11 +44,6 @@ Route::controller(RegulatedOrganizationController::class)
         Route::multilingual('/{regulatedOrganization}/projects', 'show')
             ->middleware(['auth', 'can:view,regulatedOrganization'])
             ->name('show-projects');
-
-        Route::multilingual('/{regulatedOrganization}/join', 'join')
-            ->method('post')
-            ->middleware(['auth', 'verified', 'can:join,regulatedOrganization'])
-            ->name('join');
 
         Route::multilingual('/{regulatedOrganization}/edit', 'edit')
             ->middleware(['auth', 'can:update,regulatedOrganization'])

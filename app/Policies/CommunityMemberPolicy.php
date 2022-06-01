@@ -35,24 +35,6 @@ class CommunityMemberPolicy
             : Response::allow();
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return Response
-     */
-    public function create(User $user): Response
-    {
-        if ($user->context === 'community-member') {
-            return $user->communityMember
-                ? Response::deny(__('You already have a community member page.'))
-                : Response::allow();
-        }
-
-        return Response::deny(__('You cannot create a community member page.'));
-    }
-
     public function block(User $user, CommunityMember $communityMember): Response
     {
         return $user->communityMember->id === $communityMember->id

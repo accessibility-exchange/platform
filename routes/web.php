@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\JoinController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -94,21 +93,6 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['auth'])
     ->name('users.destroy');
-
-Route::multilingual('/requests/cancel', [JoinController::class, 'cancel'])
-    ->method('post')
-    ->middleware(['auth'])
-    ->name('requests.cancel');
-
-Route::multilingual('/requests/{user:id}/deny', [JoinController::class, 'deny'])
-    ->method('post')
-    ->middleware(['auth'])
-    ->name('requests.deny');
-
-Route::multilingual('/requests/{user:id}/approve', [JoinController::class, 'approve'])
-    ->method('post')
-    ->middleware(['auth'])
-    ->name('requests.approve');
 
 require __DIR__ . '/blocklist.php';
 require __DIR__ . '/community-members.php';

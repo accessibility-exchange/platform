@@ -6,16 +6,13 @@ use App\Traits\HasMultimodalTranslations;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
-use Hearth\Traits\HasRequestsToJoin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Route;
 use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasTranslatableSlug;
@@ -32,7 +29,6 @@ class RegulatedOrganization extends Model
     use HasInvitations;
     use HasMembers;
     use HasMultimodalTranslations;
-    use HasRequestsToJoin;
     use Notifiable;
 
     /**

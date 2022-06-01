@@ -13,13 +13,9 @@
                 $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
                 @endphp
                 <x-hearth-alert type="error">
-                    {{ __('There is already a :type with the name “:name” on this website. You can request to join this :type, or create one with a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
+                    {{ __('There is already a :type with the name “:name” on this website. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
                 </x-hearth-alert>
                 <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
-                <form action="{{ localized_route('regulated-organizations.join', $regulatedOrganization) }}" method="POST">
-                    @csrf
-                    <button class="secondary">{{ __('Request to join') }}</button>
-                </form>
             </div>
             @break
         @enderror
