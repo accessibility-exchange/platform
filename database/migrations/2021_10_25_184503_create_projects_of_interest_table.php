@@ -14,7 +14,7 @@ class CreateProjectsOfInterestTable extends Migration
     public function up()
     {
         Schema::create('projects_of_interest', function (Blueprint $table) {
-            $table->foreignId('community_member_id')
+            $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('project_id')

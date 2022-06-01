@@ -68,7 +68,7 @@ class UpdateProjectColumns extends Migration
             $table->string('consultant_name')->nullable();
             $table->bigInteger('consultant_id')
                 ->references('id')
-                ->on('community_members')
+                ->on('individuals')
                 ->nullable();
             $table->json('consultant_responsibilities')->nullable();
             $table->json('team_trainings')->nullable();

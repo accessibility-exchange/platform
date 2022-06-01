@@ -29,7 +29,7 @@ class RegulatedOrganizationPolicy
         return $regulatedOrganization->blockedBy($user)
             ? Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
                 'regulatedOrganization' => '<strong>' . $regulatedOrganization->getTranslation('name', locale()) . '</strong>',
-                'unblock' => '<a href="' . localized_route('blocklist.show') . '">' . __('unblock them') . '</a>',
+                'unblock' => '<a href="' . localized_route('block-list.show') . '">' . __('unblock them') . '</a>',
             ]))
             : Response::allow();
     }

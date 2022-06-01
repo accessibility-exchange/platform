@@ -14,8 +14,8 @@ class UserObserver
      */
     public function created(User $user)
     {
-        if ($user->context === 'community-member') {
-            $user->communityMember()->create([
+        if ($user->context === 'individual') {
+            $user->individual()->create([
                 'user_id' => $user->id,
                 'name' => $user->name,
                 'first_language' => $user->locale,

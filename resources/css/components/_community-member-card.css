@@ -1,10 +1,10 @@
-.card--community-member {
+.card--individual {
     border: var(--ll-border-medium);
     border-radius: var(--ll-border-radius);
     padding: var(--step-0);
 }
 
-.card--community-member .actions {
+.card--individual .actions {
     display: flex;
     gap: var(--step--2);
 }

@@ -88,7 +88,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     public function introduction(): string
     {
         return match ($this->context) {
-            'community-member' => __('Video for community members.'),
+            'individual' => __('Video for individuals.'),
             'organization' => __('Video for community organizations.'),
             'regulated-organization' => __('Video for regulated organizations.'),
             'regulated-organization-employee' => __('Video for regulated organization employees.'),
@@ -97,11 +97,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the community member page associated with the user.
+     * Get the individual page associated with the user.
      */
-    public function communityMember(): HasOne
+    public function individual(): HasOne
     {
-        return $this->hasOne(CommunityMember::class);
+        return $this->hasOne(Individual::class);
     }
 
     /**
@@ -248,7 +248,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     public function blockedIndividuals(): MorphToMany
     {
-        return $this->morphedByMany(CommunityMember::class, 'blockable')->orderBy('name');
+        return $this->morphedByMany(Individual::class, 'blockable')->orderBy('name');
     }
 
     public function organizationsForNotification(): MorphToMany

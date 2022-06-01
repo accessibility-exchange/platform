@@ -6,7 +6,7 @@
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your federally regulated organization page') }}</x-slot>
                 <div class="stack">
-                    <p>{{ __('Share more about your organization so that community members can get to know you.') }}</p>
+                    <p>{{ __('Share more about your organization so that individuals can get to know you.') }}</p>
                     <p><a class="button" href="{{ localized_route('regulated-organizations.show-language-selection', $memberable) }}">{{ __('Create your page') }}</a></p>
                 </div>
             </x-expander>
@@ -14,7 +14,7 @@
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
                 <div class="stack">
-                    <p>{{ __('Create a new project page so that community members can begin to express their interest in working with you.') }}</p>
+                    <p>{{ __('Create a new project page so that individuals can begin to express their interest in working with you.') }}</p>
                     <p><a class="button" href="{{ localized_route('projects.create') }}">{{ __('Create project page') }}</a></p>
                 </div>
             </x-expander>

@@ -16,7 +16,7 @@ class AddNotificationableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notificationable_type' => 'required|string|in:App\Models\CommunityMember,App\Models\Organization,App\Models\RegulatedOrganization',
+            'notificationable_type' => 'required|string|in:App\Models\Individual,App\Models\Organization,App\Models\RegulatedOrganization',
             'notificationable_id' => 'required|integer|exists:' . $this->input('notificationable_type') . ',id',
         ];
     }

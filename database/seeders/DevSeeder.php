@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\CommunityRole;
 use App\Models\Impact;
+use App\Models\IndividualRole;
 use App\Models\PaymentMethod;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -47,24 +47,24 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
             ]);
 
-        $communityMember = $user->communityMember;
-        $communityMember->communityRoles()->sync(CommunityRole::pluck('id')->toArray());
+        $individual = $user->individual;
+        $individual->individualRoles()->sync(IndividualRole::pluck('id')->toArray());
 
         // Attach impacts.
-        $communityMember->impacts()->attach([
+        $individual->impacts()->attach([
             $communicationImpact->id,
             $programsAndServicesImpact->id,
             $transportationImpact->id,
         ]);
 
         // Attach payment methods.
-        $communityMember->paymentMethods()->attach([
+        $individual->paymentMethods()->attach([
             $cashPaymentMethod->id,
             $giftCardPaymentMethod->id,
         ]);
 
         // Attach sector.
-        $communityMember->sectors()->attach($transportationSector->id);
+        $individual->sectors()->attach($transportationSector->id);
 
         $regulatedOrganizationRepresentative = User::factory()
             ->create([

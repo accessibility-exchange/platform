@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\CommunityMember;
+use App\Models\Individual;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Settings;
-use App\Statuses\CommunityMemberStatus;
+use App\Statuses\IndividualStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
             })->toArray();
         });
 
-        StatusManager::bind(CommunityMember::class, CommunityMemberStatus::class);
+        StatusManager::bind(Individual::class, IndividualStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         Translatable::fallback(fallbackLocale: 'en');

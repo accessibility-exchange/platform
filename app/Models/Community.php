@@ -44,6 +44,6 @@ class Community extends Model
      */
     public function communityConnectors(): MorphToMany
     {
-        return $this->morphToMany(CommunityMember::class, 'connectable');
+        return $this->morphToMany(Individual::class, 'connectable');
     }
 }

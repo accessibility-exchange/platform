@@ -240,7 +240,7 @@ return [
     */
 
     'contexts' => [
-        'community-member',
+        'individual',
         'organization',
         'regulated-organization',
         'regulated-organization-employee',

@@ -19,9 +19,9 @@ Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::multilingual('/about/for-community-members', function () {
-    return view('about.for-community-members');
-})->name('about.for-community-members');
+Route::multilingual('/about/for-individuals', function () {
+    return view('about.for-individuals');
+})->name('about.for-individuals');
 
 Route::multilingual('/about/for-community-organizations', function () {
     return view('about.for-community-organizations');
@@ -94,8 +94,8 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('users.destroy');
 
-require __DIR__ . '/blocklist.php';
-require __DIR__ . '/community-members.php';
+require __DIR__ . '/block-list.php';
+require __DIR__ . '/individuals.php';
 require __DIR__ . '/defined-terms.php';
 require __DIR__ . '/organizations.php';
 require __DIR__ . '/regulated-organizations.php';

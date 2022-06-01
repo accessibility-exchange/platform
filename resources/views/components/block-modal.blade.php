@@ -9,21 +9,21 @@
 
                 <ul>
                     <li>{{ __('access their page') }}</li>
-                    @if(get_class($blockable) !== 'App\Models\CommunityMember')
+                    @if(get_class($blockable) !== 'App\Models\Individual')
                     <li>{{ __('access their projects or engagements') }}</li>
                     @endif
                 </ul>
 
-                @if(Auth::user()->communityMember)
-                    @if(Auth::user()->communityMember->isConsultant() || Auth::user()->communityMember->isConnector() || Auth::user()->communityMember->isParticipant())
+                @if(Auth::user()->individual)
+                    @if(Auth::user()->individual->isConsultant() || Auth::user()->individual->isConnector() || Auth::user()->individual->isParticipant())
                     <p>{{ __('They will not be able to:') }}</p>
 
                     <ul>
-                        @if(Auth::user()->communityMember->isConsultant() || Auth::user()->communityMember->isConnector())
+                        @if(Auth::user()->individual->isConsultant() || Auth::user()->individual->isConnector())
                         <li>{{ __('access your page') }}</li>
                         <li>{{ __('see you in search results') }}</li>
                         @endif
-                        @if(Auth::user()->communityMember->isParticipant())
+                        @if(Auth::user()->individual->isParticipant())
                         <li>{{ __('match you to their projects or engagements') }}</li>
                         @endif
                     </ul>
@@ -34,7 +34,7 @@
 
                 <p><strong>{{ __('Are you sure you want to block :blockable?', ['blockable' => $blockable->name]) }}</strong></p>
 
-                <form class="stack" action="{{ localized_route('blocklist.block') }}" method="POST">
+                <form class="stack" action="{{ localized_route('block-list.block') }}" method="POST">
                     <p class="repel">
                         <button class="secondary" type="button" @click="hideModal">{{ __('Cancel') }}</button>
                         <button @click="hideModal();">{{ __('Block') }}</button>

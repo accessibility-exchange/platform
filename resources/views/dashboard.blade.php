@@ -5,13 +5,13 @@
             <small>{{ $currentUser->name }}@if($memberable), {{ $memberable->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
-        @if($currentUser->context == 'community-member')
-        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->communityMember->communityRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('community-members.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
+        @if($currentUser->context == 'individual')
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->individual->individualRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
     </x-slot>
 
-    @if($currentUser->context === 'community-member')
-        @include('dashboard.community-member')
+    @if($currentUser->context === 'individual')
+        @include('dashboard.individual')
     @elseif ($currentUser->context === 'regulated-organization')
         @include('dashboard.regulated-organization')
     @endif

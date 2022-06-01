@@ -82,15 +82,15 @@ Route::multilingual('/projects/{project}/update-progress', [ProjectController::c
     ->method('put')
     ->name('projects.update-progress');
 
-Route::multilingual('/projects/{project}/find-participants/interested', [ProjectController::class, 'findInterestedCommunityMembers'])
+Route::multilingual('/projects/{project}/find-participants/interested', [ProjectController::class, 'findInterestedIndividuals'])
     ->middleware(['auth', 'can:manage,project'])
     ->name('projects.find-interested-participants');
 
-Route::multilingual('/projects/{project}/find-participants/related', [ProjectController::class, 'findRelatedCommunityMembers'])
+Route::multilingual('/projects/{project}/find-participants/related', [ProjectController::class, 'findRelatedIndividuals'])
     ->middleware(['auth', 'can:manage,project'])
     ->name('projects.find-related-participants');
 
-Route::multilingual('/projects/{project}/find-participants/all', [ProjectController::class, 'findAllCommunityMembers'])
+Route::multilingual('/projects/{project}/find-participants/all', [ProjectController::class, 'findAllIndividuals'])
     ->middleware(['auth', 'can:manage,project'])
     ->name('projects.find-all-participants');
 

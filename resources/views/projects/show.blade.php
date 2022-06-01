@@ -9,15 +9,15 @@
         @if($project->start_date && $project->started())
         <p><strong>{{ __('Started') }}:</strong> {{ $project->start_date->translatedFormat('F Y') }}</p>
         @endif
-        @if(Auth::user()->communityMember)
-        @if(!Auth::user()->communityMember->projectsOfInterest->contains($project->id))
-        <form action="{{ localized_route('community-members.express-interest', Auth::user()->communityMember) }}" method="post">
+        @if(Auth::user()->individual)
+        @if(!Auth::user()->individual->projectsOfInterest->contains($project->id))
+        <form action="{{ localized_route('individuals.express-interest', Auth::user()->individual) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
             <button>{{ __('I’m interested in this project') }}</button>
         </form>
         @else
-        <form action="{{ localized_route('community-members.remove-interest', Auth::user()->communityMember) }}" method="post">
+        <form action="{{ localized_route('individuals.remove-interest', Auth::user()->individual) }}" method="post">
             @csrf
             <x-hearth-input type="hidden" name="project_id" :value="$project->id" />
             <button type="submit">{{ __('I’m not interested in this project') }}</button>

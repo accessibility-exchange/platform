@@ -12,7 +12,7 @@ class UserPolicy
 
     public function selectRole(User $user): Response
     {
-        return ! is_null($user->communityMember)
+        return ! is_null($user->individual)
             ? Response::allow()
             : Response::deny(__('You cannot select a role.'));
     }

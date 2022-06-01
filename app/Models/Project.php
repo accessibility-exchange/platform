@@ -208,7 +208,7 @@ class Project extends Model
      */
     public function accessibilityConsultant(): BelongsTo
     {
-        return $this->belongsTo(CommunityMember::class, 'consultant_id');
+        return $this->belongsTo(Individual::class, 'consultant_id');
     }
 
     /**

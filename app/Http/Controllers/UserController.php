@@ -34,7 +34,7 @@ class UserController extends Controller
     public function showIntroduction(): View
     {
         $skipTo = match (Auth::user()->context) {
-            'community-member' => localized_route('community-members.show-role-selection'),
+            'individual' => localized_route('individuals.show-role-selection'),
             'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
@@ -59,7 +59,7 @@ class UserController extends Controller
         Auth::user()->save();
 
         $redirectTo = match (Auth::user()->context) {
-            'community-member' => localized_route('community-members.show-role-selection'),
+            'individual' => localized_route('individuals.show-role-selection'),
             'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };

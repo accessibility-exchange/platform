@@ -158,7 +158,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for community members.');
+    $response->assertSee('Video for individuals.');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -166,7 +166,7 @@ test('users can view the introduction', function () {
             'finished_introduction' => 1,
         ]);
 
-    $response->assertRedirect(localized_route('community-members.show-role-selection'));
+    $response->assertRedirect(localized_route('individuals.show-role-selection'));
 
     $user = $user->fresh();
 

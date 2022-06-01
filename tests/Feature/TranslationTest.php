@@ -1,37 +1,37 @@
 <?php
 
-use App\Models\CommunityMember;
+use App\Models\Individual;
 
 test('adding a translation succeeds for a valid translatable model', function () {
-    $communityMember = CommunityMember::factory()->create();
+    $individual = Individual::factory()->create();
 
-    $response = $this->actingAs($communityMember->user)
-        ->from(localized_route('community-members.edit', $communityMember))
+    $response = $this->actingAs($individual->user)
+        ->from(localized_route('individuals.edit', $individual))
         ->put(localized_route('translations.add'), [
-            'translatable_type' => get_class($communityMember),
-            'translatable_id' => $communityMember->id,
+            'translatable_type' => get_class($individual),
+            'translatable_id' => $individual->id,
             'new_language' => 'ase',
         ]);
 
     $response->assertSessionHasNoErrors();
-    $communityMember = $communityMember->fresh();
+    $individual = $individual->fresh();
 
-    expect(in_array('ase', $communityMember->languages))->toBeTrue();
+    expect(in_array('ase', $individual->languages))->toBeTrue();
 });
 
 test('removing a translation succeeds for a valid translatable model', function () {
-    $communityMember = CommunityMember::factory()->create();
+    $individual = Individual::factory()->create();
 
-    $response = $this->actingAs($communityMember->user)
-        ->from(localized_route('community-members.edit', $communityMember))
+    $response = $this->actingAs($individual->user)
+        ->from(localized_route('individuals.edit', $individual))
         ->put(localized_route('translations.destroy'), [
-            'translatable_type' => get_class($communityMember),
-            'translatable_id' => $communityMember->id,
+            'translatable_type' => get_class($individual),
+            'translatable_id' => $individual->id,
             'language' => 'fr',
         ]);
 
     $response->assertSessionHasNoErrors();
-    $communityMember = $communityMember->fresh();
+    $individual = $individual->fresh();
 
-    expect(in_array('fr', $communityMember->languages))->toBeFalse();
+    expect(in_array('fr', $individual->languages))->toBeFalse();
 });
