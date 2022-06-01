@@ -42,6 +42,7 @@ class RegulatedOrganization extends Model
         'languages',
         'locality',
         'region',
+        'service_areas',
         'about',
         'accessibility_and_inclusion_links',
         'social_links',
@@ -56,6 +57,7 @@ class RegulatedOrganization extends Model
      */
     protected $casts = [
         'languages' => 'array',
+        'service_areas' => 'array',
         'accessibility_and_inclusion_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
     ];
