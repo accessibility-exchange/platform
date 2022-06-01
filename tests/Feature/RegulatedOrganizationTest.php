@@ -98,6 +98,7 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('atlantic-provinces');
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(0);
     expect($regulatedOrganization->social_links)->toHaveCount(1)->toHaveKey('facebook');
 
@@ -105,7 +106,7 @@ test('users with admin role can edit regulated organizations', function () {
         'name' => ['en' => $regulatedOrganization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'service_areas' => ['NL'],
+        'service_areas' => ['NU'],
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
@@ -116,6 +117,7 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('northern-territories');
     expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(1);
     expect($regulatedOrganization->social_links)->toHaveCount(0);
@@ -124,7 +126,7 @@ test('users with admin role can edit regulated organizations', function () {
         'name' => ['en' => $regulatedOrganization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'service_areas' => ['NL'],
+        'service_areas' => ['ON'],
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
@@ -135,12 +137,13 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
+    expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('central-canada');
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'service_areas' => ['NL'],
+        'service_areas' => ['AB', 'BC'],
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
@@ -149,6 +152,7 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $regulatedOrganization = $regulatedOrganization->fresh();
+    expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('prairie-provinces')->toHaveKey('west-coast');
 });
 
 test('users without admin role can not edit regulated organizations', function () {

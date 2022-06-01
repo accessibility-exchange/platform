@@ -5,28 +5,32 @@
             <h1 id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
             </h1>
-            <div class="meta repel">
-                    <span><strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong> &middot; {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}</span>
-                    @can('block', $regulatedOrganization)
-                        <x-block-modal :blockable="$regulatedOrganization" />
-                    @endcan
-            </div>
-            @if($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0 || $regulatedOrganization->website_link)
-                <ul role="list" class="cluster">
-                    @if($regulatedOrganization->website_link)
-                        <li>
-                            <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
-                        </li>
-                    @endif
-                    @if($regulatedOrganization->social_links)
-                        @foreach($regulatedOrganization->social_links as $key => $value)
+            <p class="meta">
+                <strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong>
+                &middot @foreach($regulatedOrganization->sectors as $sector) {{ $sector->name }}@if(!$loop->last), @endif @endforeach
+                <br />{{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}
+            </p>
+            <div class="repel">
+                @if($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0 || $regulatedOrganization->website_link)
+                    <ul role="list" class="cluster">
+                        @if($regulatedOrganization->website_link)
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
+                                <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
                             </li>
-                        @endforeach
-                    @endif
-                </ul>
-            @endif
+                        @endif
+                        @if($regulatedOrganization->social_links)
+                            @foreach($regulatedOrganization->social_links as $key => $value)
+                                <li>
+                                    <a class="weight:semibold with-icon" href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                @endif
+                @can('block', $regulatedOrganization)
+                    <x-block-modal :blockable="$regulatedOrganization" />
+                @endcan
+            </div>
         </div>
     </x-slot>
 
