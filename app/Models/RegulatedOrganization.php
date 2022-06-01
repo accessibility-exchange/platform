@@ -111,7 +111,7 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the community member's social links.
+     * Get the individual's social links.
      *
      * @return array
      */
@@ -125,7 +125,7 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Get the community member's accessibility and inclusion links.
+     * Get the individual's accessibility and inclusion links.
      *
      * @return array
      */
@@ -272,7 +272,7 @@ class RegulatedOrganization extends Model
     }
 
     /**
-     * Handle a request to update the community member, redirecting to the appropriate page and displaying the appropriate flash message.
+     * Handle a request to update the individual, redirecting to the appropriate page and displaying the appropriate flash message.
      *
      * @param mixed $request
      * @return RedirectResponse

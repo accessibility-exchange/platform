@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'locale' => config('app.locale'),
             'theme' => 'system',
-            'context' => 'community-member',
+            'context' => 'individual',
         ];
     }
 }

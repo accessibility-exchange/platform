@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\CommunityMember;
 use App\Models\Impact;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -200,9 +200,9 @@ test('users can view projects', function () {
     $response->assertOk();
 });
 
-test('community members can express interest in projects', function () {
+test('individuals can express interest in projects', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create([
+    $individual = Individual::factory()->create([
         'user_id' => $user->id,
     ]);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
@@ -210,11 +210,11 @@ test('community members can express interest in projects', function () {
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('community-members.express-interest', $communityMember), ['project_id' => $project->id]);
+    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.express-interest', $individual), ['project_id' => $project->id]);
     $response->assertSee('You have expressed your interest in this project.');
     $response->assertOk();
 
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('community-members.remove-interest', $communityMember), ['project_id' => $project->id]);
+    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.remove-interest', $individual), ['project_id' => $project->id]);
     $response->assertSee('You have removed your expression of interest in this project.');
     $response->assertOk();
 });
@@ -443,7 +443,7 @@ test('projects have timeframes', function () {
 });
 
 test('projects reflect consultant origin', function () {
-    $community_member = CommunityMember::factory()->create();
+    $individual = Individual::factory()->create();
 
     $project_with_external_consultant = Project::factory()->create([
         'has_consultant' => true,
@@ -452,12 +452,12 @@ test('projects reflect consultant origin', function () {
 
     $project_with_platform_consultant = Project::factory()->create([
         'has_consultant' => true,
-        'consultant_id' => $community_member->id,
+        'consultant_id' => $individual->id,
     ]);
 
     $this->assertEquals('external', $project_with_external_consultant->consultant_origin());
     $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin());
-    $this->assertEquals($community_member->id, $project_with_platform_consultant->accessibilityConsultant->id);
+    $this->assertEquals($individual->id, $project_with_platform_consultant->accessibilityConsultant->id);
 });
 
 test('projects reflect team experience', function () {

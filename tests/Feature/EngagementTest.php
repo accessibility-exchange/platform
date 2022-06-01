@@ -160,7 +160,7 @@ test('users without regulated organization admin role cannot manage engagements'
 
 test('engagement participants can participate in engagements', function () {
     $user = User::factory()->create();
-    $participant = $user->communityMember;
+    $participant = $user->individual;
     $engagement = Engagement::factory()->create();
     $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
 

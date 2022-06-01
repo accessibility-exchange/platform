@@ -8,13 +8,13 @@ uses(RefreshDatabase::class);
 
 test('user can access dashboard', function () {
     $user = User::factory()->create([
-        'context' => 'community-member',
+        'context' => 'individual',
     ]);
 
     $response = $this->actingAs($user)->get(localized_route('dashboard'));
 
     $response->assertStatus(200);
-    $response->assertSee('Create your community member page');
+    $response->assertSee('Create your individual page');
 
     $user = User::factory()->create([
         'context' => 'regulated-organization',

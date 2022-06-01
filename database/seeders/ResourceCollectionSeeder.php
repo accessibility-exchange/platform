@@ -18,7 +18,7 @@ class ResourceCollectionSeeder extends Seeder
 
         $resourceCollections = [
             [
-                'title' => 'Community members',
+                'title' => 'Individuals',
                 'description' => 'Build up your skills and refine your practice to participate in more challenging projects.',
             ],
             [
@@ -27,7 +27,7 @@ class ResourceCollectionSeeder extends Seeder
             ],
             [
                 'title' => 'Deaf and Disability organizations',
-                'description' => 'Support your members on their path of becoming accessibility community-members.',
+                'description' => 'Support your members on their path of becoming accessibility individuals.',
             ],
             [
                 'title' => 'Disability knowledge and awareness',

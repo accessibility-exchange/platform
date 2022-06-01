@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CommunityMember;
+use App\Models\Individual;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -38,7 +38,7 @@ class UpdateProjectTeamRequest extends FormRequest
                 'exclude_unless:has_consultant,true',
                 'exclude_unless:consultant_origin,platform',
                 'required',
-                Rule::in(CommunityMember::pluck('id')->toArray()),
+                Rule::in(Individual::pluck('id')->toArray()),
             ],
             'consultant_name' => 'exclude_unless:has_consultant,true|exclude_unless:consultant_origin,external|required|string',
             'consultant_responsibilities.*' => 'exclude_unless:has_consultant,true|nullable|string',

@@ -9,8 +9,8 @@ use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
-use App\Models\CommunityMember;
 use App\Models\Impact;
+use App\Models\Individual;
 use App\Models\Project;
 use App\Statuses\ProjectStatus;
 use Illuminate\Contracts\View\View;
@@ -159,7 +159,7 @@ class ProjectController extends Controller
             'impacts' => Impact::pluck('name', 'id')->toArray(),
             'consultants' => [
                 '' => __('Choose an accessibility consultant…'),
-            ] + CommunityMember::pluck('name', 'id')->toArray(), // TODO: Only select accessibility consultants
+            ] + Individual::pluck('name', 'id')->toArray(), // TODO: Only select accessibility consultants
         ]);
     }
 

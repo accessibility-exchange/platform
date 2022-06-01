@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use App\Models\CommunityMember;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
-use App\Policies\CommunityMemberPolicy;
 use App\Policies\EngagementPolicy;
+use App\Policies\IndividualPolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\RegulatedOrganizationPolicy;
@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Engagement::class => EngagementPolicy::class,
         RegulatedOrganization::class => RegulatedOrganizationPolicy::class,
         ResourceCollection::class => ResourceCollectionPolicy::class,
-        CommunityMember::class => CommunityMemberPolicy::class,
+        Individual::class => IndividualPolicy::class,
         Project::class => ProjectPolicy::class,
         Organization::class => OrganizationPolicy::class,
         Resource::class => ResourcePolicy::class,
@@ -49,13 +49,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('block', function (User $user) {
-            return $user->context === 'community-member'
+            return $user->context === 'individual'
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });
 
         Gate::define('receiveNotifications', function (User $user) {
-            return $user->context === 'community-member'
+            return $user->context === 'individual'
                 ? Response::allow()
                 : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
         });

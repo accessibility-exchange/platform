@@ -3,8 +3,8 @@
         <legend>{{ __('How will you be using this website?') }}</legend>
         <x-hearth-hint for="context">{{ __('If you fit more than one of the following groups, you’ll have to register separately.') }}</x-hearth-hint>
         <x-hearth-radio-buttons name="context" :options="[
-            'community-member' => [
-                'label' => __('As a community member'),
+            'individual' => [
+                'label' => __('As a individual'),
                 'hint' => __('I have lived experience of being disabled or Deaf, and I want to work on accessibility projects'),
             ],
             'organization' => [

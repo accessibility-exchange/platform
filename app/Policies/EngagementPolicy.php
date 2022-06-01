@@ -54,6 +54,6 @@ class EngagementPolicy
      */
     public function participate(User $user, Engagement $engagement)
     {
-        return $engagement->confirmedParticipants->contains($user->communityMember);
+        return $engagement->confirmedParticipants->contains($user->individual);
     }
 }

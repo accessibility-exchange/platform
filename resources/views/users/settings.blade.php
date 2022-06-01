@@ -15,7 +15,7 @@
         <li><a href="{{ localized_route('users.edit_display_preferences') }}">{{ __('Display preferences') }}</a></li>
         <li><a href="{{ localized_route('users.edit_notification_preferences') }}">{{ __('Notification preferences') }}</a></li>
         @can('block')
-        <li><a href="{{ localized_route('blocklist.show') }}">{{ __('Blocked individuals and organizations') }}</a></li>
+        <li><a href="{{ localized_route('block-list.show') }}">{{ __('Blocked individuals and organizations') }}</a></li>
         @endcan
         <li><a href="{{ localized_route('users.admin') }}">{{ __('Password and security') }}</a></li>
         <li><a href="{{ localized_route('users.delete') }}">{{ __('Delete account') }}</a></li>

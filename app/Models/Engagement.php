@@ -57,23 +57,23 @@ class Engagement extends Model
     }
 
     /**
-     * The community members that are part of the engagement.
+     * The individuals that are part of the engagement.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(CommunityMember::class)->withPivot('status');
+        return $this->belongsToMany(Individual::class)->withPivot('status');
     }
 
     /**
-     * The community members that are confirmed to be part of the engagement.
+     * The individuals that are confirmed to be part of the engagement.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function confirmedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(CommunityMember::class)->wherePivot('status', 'confirmed');
+        return $this->belongsToMany(Individual::class)->wherePivot('status', 'confirmed');
     }
 
     /**

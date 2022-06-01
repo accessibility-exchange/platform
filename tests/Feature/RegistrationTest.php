@@ -22,16 +22,16 @@ test('new users can register', function () {
             'signed_language' => 'ase',
         ])
         ->post(localized_route('register-context'), [
-            'context' => 'community-member',
+            'context' => 'individual',
         ]);
     $response->assertRedirect(localized_route('register', ['step' => 3]));
-    $response->assertSessionHas('context', 'community-member');
+    $response->assertSessionHas('context', 'individual');
 
     $response = $this->from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
             'signed_language' => 'ase',
-            'context' => 'community-member',
+            'context' => 'individual',
         ])
         ->post(localized_route('register-details'), [
             'name' => 'Test User',
@@ -46,7 +46,7 @@ test('new users can register', function () {
         'signed_language' => 'ase',
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'context' => 'community-member',
+        'context' => 'individual',
     ])->post(localized_route('register-store'), [
         'password' => 'password',
         'password_confirmation' => 'password',

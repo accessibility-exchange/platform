@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\CommunityMember;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -8,13 +8,13 @@ use App\Models\User;
 test('only individual users can have a block list', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('blocklist.show'));
+    $response = $this->actingAs($user)->get(localized_route('block-list.show'));
 
     $response->assertOk();
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('blocklist.show'));
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('block-list.show'));
 
     $response->assertForbidden();
 });
@@ -28,7 +28,7 @@ test('individual users can block and unblock regulated organizations', function 
     $response->assertSee('Block');
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
-        ->post(localized_route('blocklist.block'), [
+        ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
         ]);
@@ -38,17 +38,17 @@ test('individual users can block and unblock regulated organizations', function 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->get(localized_route('blocklist.show'));
+    $response = $this->actingAs($user)->get(localized_route('block-list.show'));
     $response->assertSee('Umbrella Corporation');
 
-    $response = $this->actingAs($user)->from(localized_route('blocklist.show'))
-        ->post(localized_route('blocklist.unblock'), [
+    $response = $this->actingAs($user)->from(localized_route('block-list.show'))
+        ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
         ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('blocklist.show'));
+    $response->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
@@ -63,7 +63,7 @@ test('individual users can block and unblock organizations', function () {
     $response->assertSee('Block');
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))
-        ->post(localized_route('blocklist.block'), [
+        ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
         ]);
@@ -73,52 +73,52 @@ test('individual users can block and unblock organizations', function () {
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->get(localized_route('blocklist.show'));
+    $response = $this->actingAs($user)->get(localized_route('block-list.show'));
     $response->assertSee('Umbrella Corporation');
 
-    $response = $this->actingAs($user)->from(localized_route('blocklist.show'))
-        ->post(localized_route('blocklist.unblock'), [
+    $response = $this->actingAs($user)->from(localized_route('block-list.show'))
+        ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
         ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('blocklist.show'));
+    $response->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
     expect($user->blockedOrganizations)->toHaveCount(0);
 });
 
-test('individual users can block and unblock community members', function () {
+test('individual users can block and unblock individuals', function () {
     $user = User::factory()->create();
-    $communityMember = CommunityMember::factory()->create();
+    $individual = Individual::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.show', $communityMember));
+    $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
     $response->assertSee('Block');
 
-    $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))
-        ->post(localized_route('blocklist.block'), [
-            'blockable_type' => get_class($communityMember),
-            'blockable_id' => $communityMember->id,
+    $response = $this->actingAs($user)->from(localized_route('individuals.show', $individual))
+        ->post(localized_route('block-list.block'), [
+            'blockable_type' => get_class($individual),
+            'blockable_id' => $individual->id,
         ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
 
-    $response = $this->actingAs($user)->get(localized_route('community-members.show', $communityMember));
+    $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->get(localized_route('blocklist.show'));
-    $response->assertSee($communityMember->name);
+    $response = $this->actingAs($user)->get(localized_route('block-list.show'));
+    $response->assertSee($individual->name);
 
-    $response = $this->actingAs($user)->from(localized_route('blocklist.show'))
-        ->post(localized_route('blocklist.unblock'), [
-            'blockable_type' => get_class($communityMember),
-            'blockable_id' => $communityMember->id,
+    $response = $this->actingAs($user)->from(localized_route('block-list.show'))
+        ->post(localized_route('block-list.unblock'), [
+            'blockable_type' => get_class($individual),
+            'blockable_id' => $individual->id,
         ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('blocklist.show'));
+    $response->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
@@ -132,7 +132,7 @@ test('regulated organization member cannot block their regulated organization', 
         ->create();
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
-        ->post(localized_route('blocklist.block'), [
+        ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
         ]);
@@ -146,7 +146,7 @@ test('organization member cannot block their organization', function () {
         ->create();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))
-        ->post(localized_route('blocklist.block'), [
+        ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
         ]);
@@ -155,11 +155,11 @@ test('organization member cannot block their organization', function () {
 
 test('individual cannot block their individual profile', function () {
     $user = User::factory()->create();
-    $communityMember = $user->communityMember;
-    $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))
-        ->post(localized_route('blocklist.block'), [
-            'blockable_type' => get_class($communityMember),
-            'blockable_id' => $communityMember->id,
+    $individual = $user->individual;
+    $response = $this->actingAs($user)->from(localized_route('individuals.show', $individual))
+        ->post(localized_route('block-list.block'), [
+            'blockable_type' => get_class($individual),
+            'blockable_id' => $individual->id,
         ]);
 
     $response->assertForbidden();

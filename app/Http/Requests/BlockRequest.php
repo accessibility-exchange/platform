@@ -16,7 +16,7 @@ class BlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'blockable_type' => 'required|string|in:App\Models\CommunityMember,App\Models\Organization,App\Models\RegulatedOrganization',
+            'blockable_type' => 'required|string|in:App\Models\Individual,App\Models\Organization,App\Models\RegulatedOrganization',
             'blockable_id' => 'required|integer|exists:' . $this->input('blockable_type') . ',id',
         ];
     }

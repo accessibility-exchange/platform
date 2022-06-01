@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::table('users', function (Blueprint $table) {
             $table->string('locale')->default('en');
             $table->string('theme')->default('light');
-            $table->string('context')->default('community-member');
+            $table->string('context')->default('individual');
         });
     }
 
