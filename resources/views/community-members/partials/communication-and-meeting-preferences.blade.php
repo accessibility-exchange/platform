@@ -1,8 +1,8 @@
 <h3>{{ __('Preferred contact method') }}</h3>
 
-<x-markdown>
-  {{ $communityMember->primary_contact_method }}
-</x-markdown>
+@markdown
+{{ $communityMember->primary_contact_method }}
+@endmarkdown
 
 @if($communityMember->alternate_contact_point)
 <h3>{{ __('Alternate contact method') }}</h3>
@@ -17,9 +17,9 @@
     @default
         <h4>{{ __('Phone') }}</h4>
 @endswitch
-<x-markdown>
+    @markdown
     {{ $communityMember->alternate_contact_method }}
-</x-markdown>
+    @endmarkdown
 @endif
 
 <h3>{{ __('Types of meetings offered') }}</h3>

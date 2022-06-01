@@ -1,6 +1,8 @@
 <h3>{{ __('About the organization') }}</h3>
 
-<x-markdown>{{ $regulatedOrganization->getWrittenTranslation('about', $language) }}</x-markdown>
+@markdown
+{{ $regulatedOrganization->getWrittenTranslation('about', $language) }}
+@endmarkdown
 
 @if($regulatedOrganization->accessibility_and_inclusion_links)
 <h3>{{ __('Accessibility and inclusion') }}</h3>

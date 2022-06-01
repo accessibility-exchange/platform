@@ -1,3 +1,0 @@
-@markdown
-{{ $slot }}
-@endmarkdown

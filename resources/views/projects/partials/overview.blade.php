@@ -1,12 +1,16 @@
 <h3>{{ __('Project goals') }}</h3>
 
-<x-markdown>{{ $project->goals }}</x-markdown>
+@markdown
+{{ $project->goals }}
+@endmarkdown
 
 <h3>{{ __('Project impact') }}</h3>
 
 <h4>{{ __('Who will this project impact?') }}</h4>
 
-<x-markdown>{{ $project->scope }}</x-markdown>
+@markdown
+{{ $project->scope }}
+@endmarkdown
 
 @if(!$project->impacts->isEmpty())
 <h4>{{ __('What areas of your organization will this project impact?') }}</h4>
@@ -21,7 +25,9 @@
 @if($project->out_of_scope)
 <h4>{{ __('What is out of scope?') }}</h4>
 
-<x-markdown>{{ $project->out_of_scope }}</x-markdown>
+@markdown
+{{ $project->out_of_scope }}
+@endmarkdown
 @endif
 
 <h3>{{ __('Project timeframe') }}</h3>
@@ -33,7 +39,9 @@
 
 <h4>{{ __('What are the tangible outcomes of this project?') }}</h4>
 
-<x-markdown>{{ $project->outcomes }}</x-markdown>
+@markdown
+{{ $project->outcomes }}
+@endmarkdown
 @endif
 
 <h3>{{ __('Engagements') }}</h3>
