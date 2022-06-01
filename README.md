@@ -26,7 +26,7 @@ For general deployment information, please see the Laravel 8.x [deployment docum
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.0 with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
 
