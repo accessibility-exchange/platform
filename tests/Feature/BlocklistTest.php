@@ -124,3 +124,43 @@ test('individual users can block and unblock community members', function () {
 
     expect($user->blockedIndividuals)->toHaveCount(0);
 });
+
+test('regulated organization member cannot block their regulated organization', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+        ->post(localized_route('blocklist.block'), [
+            'blockable_type' => get_class($regulatedOrganization),
+            'blockable_id' => $regulatedOrganization->id,
+        ]);
+    $response->assertForbidden();
+});
+
+test('organization member cannot block their organization', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))
+        ->post(localized_route('blocklist.block'), [
+            'blockable_type' => get_class($organization),
+            'blockable_id' => $organization->id,
+        ]);
+    $response->assertForbidden();
+});
+
+test('individual cannot block their individual profile', function () {
+    $user = User::factory()->create();
+    $communityMember = $user->communityMember;
+    $response = $this->actingAs($user)->from(localized_route('community-members.show', $communityMember))
+        ->post(localized_route('blocklist.block'), [
+            'blockable_type' => get_class($communityMember),
+            'blockable_id' => $communityMember->id,
+        ]);
+
+    $response->assertForbidden();
+});
