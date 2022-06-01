@@ -15,6 +15,8 @@ test('users with organization or regulated organization admin role can create pr
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
+    expect($user->projects())->toHaveCount(0);
+
     $response = $this->actingAs($user)->get(localized_route('projects.create'));
     $response->assertOk();
 
