@@ -19,23 +19,9 @@ class RegulatedOrganizationPolicy
      */
     public function create(User $user): Response
     {
-        return $user->context === 'regulated-organization' && ! $user->joinable && $user->regulatedOrganizations->isEmpty()
+        return $user->context === 'regulated-organization' && $user->regulatedOrganizations->isEmpty()
             ? Response::allow()
             : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
-    }
-
-    /**
-     * Determine whether the user can join the model.
-     *
-     * @param User $user
-     * @param RegulatedOrganization $regulatedOrganization
-     * @return Response
-     */
-    public function join(User $user, RegulatedOrganization $regulatedOrganization): Response
-    {
-        return $user->context === 'regulated-organization' && ! $user->joinable && $user->regulatedOrganizations->isEmpty()
-            ? Response::allow()
-            : Response::deny(__('You cannot join this organization.'));
     }
 
     public function view(User $user, RegulatedOrganization $regulatedOrganization): Response

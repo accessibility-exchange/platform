@@ -17,16 +17,8 @@
         <div class="stack">
             @if($membershipable === 'App\Models\Organization')
                 <x-organization-card level="3" :organization="$result" />
-                <form action="{{ localized_route('organizations.join', $result) }}" method="POST">
-                    @csrf
-                    <button>{{ __('Request to join') }}</button>
-                </form>
             @elseif($membershipable === 'App\Models\RegulatedOrganization')
-            <x-regulated-organization-card level="3" :regulated-organization="$result" />
-            <form action="{{ localized_route('regulated-organizations.join', $result) }}" method="POST">
-                @csrf
-                <button>{{ __('Request to join') }}</button>
-            </form>
+                <x-regulated-organization-card level="3" :regulated-organization="$result" />
             @endif
         </div>
     @empty

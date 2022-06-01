@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $skipTo = match (Auth::user()->context) {
             'community-member' => localized_route('community-members.show-role-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.find-or-create'),
+            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
@@ -60,7 +60,7 @@ class UserController extends Controller
 
         $redirectTo = match (Auth::user()->context) {
             'community-member' => localized_route('community-members.show-role-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.find-or-create'),
+            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 

@@ -12,13 +12,10 @@ uses(RefreshDatabase::class);
 
 test('users can create regulated organizations', function () {
     $individualUser = User::factory()->create();
-    $response = $this->actingAs($individualUser)->get(localized_route('regulated-organizations.find-or-create'));
+    $response = $this->actingAs($individualUser)->get(localized_route('regulated-organizations.show-type-selection'));
     $response->assertForbidden();
 
     $user = User::factory()->create(['context' => 'regulated-organization']);
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
-    $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'));
     $response->assertOk();
@@ -607,120 +604,6 @@ test('guests can not view regulated organizations', function () {
 
     $response = $this->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));
     $response->assertRedirect(localized_route('login'));
-});
-
-test('user can request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create', $regulatedOrganization));
-    $response->assertSee('Search for your regulated organization');
-
-    $response = $this->actingAs($user)
-        ->from(localized_route('regulated-organizations.find-or-create'))
-        ->post(localized_route('regulated-organizations.join', $regulatedOrganization));
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-
-    $regulatedOrganization = $regulatedOrganization->fresh();
-
-    $this->assertEquals(1, $regulatedOrganization->requestsToJoin->count());
-    $this->assertEquals($user->id, $regulatedOrganization->requestsToJoin->first()->id);
-});
-
-test('user with outstanding join request cannot request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $regulatedOrganization->requestsToJoin()->save($user);
-    $otherRegulatedOrganization = RegulatedOrganization::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)
-        ->from(localized_route('regulated-organizations.show', $otherRegulatedOrganization))
-        ->post(localized_route('regulated-organizations.join', $otherRegulatedOrganization));
-
-    $response->assertForbidden();
-});
-
-test('user with existing membership cannot request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $regulatedOrganization->users()->attach($user, ['role' => 'admin']);
-    $otherRegulatedOrganization = RegulatedOrganization::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.find-or-create'));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)
-        ->from(localized_route('regulated-organizations.show', $otherRegulatedOrganization))
-        ->post(localized_route('regulated-organizations.join', $otherRegulatedOrganization));
-
-    $response->assertForbidden();
-});
-
-test('user can cancel request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $regulatedOrganization->requestsToJoin()->save($user);
-
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertSee('Cancel request');
-
-    $response = $this->actingAs($user)->post(localized_route('requests.cancel'));
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
-
-    $user = $user->fresh();
-    $regulatedOrganization = $regulatedOrganization->fresh();
-
-    $this->assertNull($user->joinable);
-    $this->assertEquals(0, $regulatedOrganization->requestsToJoin->count());
-});
-
-test('admin can approve request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $admin = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create();
-    $regulatedOrganization->requestsToJoin()->save($user);
-
-    $response = $this->actingAs($admin)->get(localized_route('users.edit-roles-and-permissions'));
-    $response->assertSee('Approve ' . $user->name . '’s request');
-
-    $response = $this->actingAs($admin)->post(localized_route('requests.approve', $user), [
-        'role' => 'admin',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response = $this->actingAs($admin)->get(localized_route('users.edit-roles-and-permissions'));
-
-    $user = $user->fresh();
-    $regulatedOrganization = $regulatedOrganization->fresh();
-
-    $this->assertNull($user->joinable);
-    $this->assertTrue($regulatedOrganization->hasAdministratorWithEmail($user->email));
-});
-
-test('admin can deny request to join regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $admin = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create();
-    $regulatedOrganization->requestsToJoin()->save($user);
-
-    $response = $this->actingAs($admin)->get(localized_route('users.edit-roles-and-permissions'));
-    $response->assertSee('Deny ' . $user->name . '’s request');
-
-    $response = $this->actingAs($admin)->post(localized_route('requests.deny', $user));
-
-    $response->assertSessionHasNoErrors();
-    $response = $this->actingAs($admin)->get(localized_route('users.edit-roles-and-permissions'));
-
-    $user = $user->fresh();
-    $regulatedOrganization = $regulatedOrganization->fresh();
-
-    $this->assertNull($user->joinable);
-    $this->assertFalse($regulatedOrganization->hasUserWithEmail($user->email));
 });
 
 test('user can view regulated organization in different languages', function () {

@@ -21,8 +21,8 @@ class RedirectForOnboarding
     {
         $user = Auth::user();
 
-        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization && ! $user->joinable) {
-            return redirect(localized_route('regulated-organizations.find-or-create'));
+        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization) {
+            return redirect(localized_route('regulated-organizations.show-type-selection'));
         }
 
         return $next($request);

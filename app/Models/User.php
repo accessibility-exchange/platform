@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -184,7 +183,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
-     * Get the parent joinable model.
+     * Get the parent projectable model.
      *
      * @return Organization|RegulatedOrganization|null
      */
@@ -213,27 +212,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         }
 
         return new Collection([]);
-    }
-
-    /**
-     * Get the parent joinable model.
-     *
-     * @return MorphTo
-     */
-    public function joinable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /**
-     * Has the user requested to join a model?
-     *
-     * @param mixed $model
-     * @return bool
-     */
-    public function hasRequestedToJoin(mixed $model): bool
-    {
-        return $this->joinable && $this->joinable->id === $model->id;
     }
 
     /**
