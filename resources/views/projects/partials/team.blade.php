@@ -32,7 +32,7 @@
 @endif
 
 @if($project->consultant_responsibilities)
-<x-markdown class="stack">{{ $project->consultant_responsibilities }}</x-markdown>
+<x-markdown>{{ $project->consultant_responsibilities }}</x-markdown>
 @endif
 @endif
 

@@ -1,12 +1,12 @@
 
 @if($communityMember->lived_experience)
 <h3>{{ __('Lived experience') }}</h3>
-<x-markdown class="stack">{{ $communityMember->lived_experience }}</x-markdown>
+<x-markdown>{{ $communityMember->lived_experience }}</x-markdown>
 @endif
 
 @if($communityMember->skills_and_strengths)
     <h3>{{ __('Skills and strengths') }}</h3>
-    <x-markdown class="stack">{{ $communityMember->skills_and_strengths }}</x-markdown>
+    <x-markdown>{{ $communityMember->skills_and_strengths }}</x-markdown>
 @endif
 
 @if(count($communityMember->relevant_experiences) > 0)

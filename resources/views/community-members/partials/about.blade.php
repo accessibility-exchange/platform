@@ -1,6 +1,6 @@
 
 
-<x-markdown class="stack">{{ $communityMember->bio }}</x-markdown>
+<x-markdown>{{ $communityMember->bio }}</x-markdown>
 
 <h3>{{ __('Languages :name uses', ['name' => $communityMember->first_name]) }}</h3>
 

@@ -1,6 +1,6 @@
 <h3>{{ __('Preferred contact method') }}</h3>
 
-<x-markdown class="stack">
+<x-markdown>
   {{ $communityMember->primary_contact_method }}
 </x-markdown>
 
@@ -17,7 +17,7 @@
     @default
         <h4>{{ __('Phone') }}</h4>
 @endswitch
-<x-markdown class="stack">
+<x-markdown>
     {{ $communityMember->alternate_contact_method }}
 </x-markdown>
 @endif
