@@ -6,13 +6,13 @@
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
             </h1>
             <p class="meta">
-                <strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong>
-                &middot @foreach($regulatedOrganization->sectors as $sector) {{ $sector->name }}@if(!$loop->last), @endif @endforeach
-                <br />{{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}
+                <strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong><br />
+                @foreach($regulatedOrganization->sectors as $sector) {{ $sector->name }}@if(!$loop->last), @endif @endforeach<br />
+                {{ $regulatedOrganization->locality }}, {{ $regulatedOrganization->region }}
             </p>
             <div class="repel">
+                <ul role="list" class="cluster">
                 @if($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0 || $regulatedOrganization->website_link)
-                    <ul role="list" class="cluster">
                         @if($regulatedOrganization->website_link)
                             <li>
                                 <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
@@ -25,11 +25,34 @@
                                 </li>
                             @endforeach
                         @endif
-                    </ul>
                 @endif
+                </ul>
+
+                <div class="repel">
+                @can('receiveNotifications')
+                    @if(Auth::user()->isReceivingNotificationsFor($regulatedOrganization))
+                    <form action="{{ localized_route('notification-list.remove') }}" method="post">
+                        @csrf
+                        <x-hearth-input type="hidden" name="notificationable_type" :value="get_class($regulatedOrganization)" />
+                        <x-hearth-input type="hidden" name="notificationable_id" :value="$regulatedOrganization->id" />
+
+                        <button class="secondary">{{ __('Remove from my notification list') }}</button>
+                    </form>
+                    @else
+                    <form action="{{ localized_route('notification-list.add') }}" method="post">
+                        @csrf
+                        <x-hearth-input type="hidden" name="notificationable_type" :value="get_class($regulatedOrganization)" />
+                        <x-hearth-input type="hidden" name="notificationable_id" :value="$regulatedOrganization->id" />
+
+                        <button class="secondary">{{ __('Add to my notification list') }}</button>
+                    </form>
+                    @endif
+                @endcan
+
                 @can('block', $regulatedOrganization)
                     <x-block-modal :blockable="$regulatedOrganization" />
                 @endcan
+                </div>
             </div>
         </div>
     </x-slot>
