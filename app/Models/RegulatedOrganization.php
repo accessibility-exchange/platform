@@ -6,6 +6,7 @@ use App\Traits\HasMultimodalTranslations;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,6 +43,7 @@ class RegulatedOrganization extends Model
         'languages',
         'locality',
         'region',
+        'service_areas',
         'about',
         'accessibility_and_inclusion_links',
         'social_links',
@@ -55,6 +57,7 @@ class RegulatedOrganization extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'service_areas' => 'array',
         'languages' => 'array',
         'accessibility_and_inclusion_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
@@ -98,6 +101,13 @@ class RegulatedOrganization extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    protected function serviceRegions(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => get_regions_from_provinces_and_territories(json_decode($attributes['service_areas']) ?? []),
+        );
     }
 
     /**

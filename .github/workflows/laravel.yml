@@ -45,7 +45,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          composer test-coverage
+          php artisan test --coverage-clover coverage.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:

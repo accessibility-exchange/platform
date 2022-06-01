@@ -65,6 +65,15 @@
                     </div>
                 </fieldset>
 
+                <fieldset x-data="enhancedCheckboxes()">
+                    <legend>{{ __('Where are your organization’s service areas? (required)') }}</legend>
+                    <p class="stack" x-cloak>
+                        <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
+                        <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
+                    </p>
+                    <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
+                </fieldset>
+
                 <fieldset class="field @error('sectors') field--error @enderror">
                     <legend>{{ __('What type of regulated organization are you? (required)') }}</legend>
 

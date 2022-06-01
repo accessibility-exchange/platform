@@ -4,6 +4,14 @@
 {{ $regulatedOrganization->getWrittenTranslation('about', $language) }}
 @endmarkdown
 
+<h3>{{ __('Service areas') }}</h3>
+
+<ul role="list" class="tags">
+    @foreach($regulatedOrganization->service_regions as $region)
+        <li class="tag">{{ $region }}</li>
+    @endforeach
+</ul>
+
 @if($regulatedOrganization->accessibility_and_inclusion_links)
 <h3>{{ __('Accessibility and inclusion') }}</h3>
     <div class="grid">

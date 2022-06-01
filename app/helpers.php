@@ -119,3 +119,32 @@ if (! function_exists('get_language_exonym')) {
         }
     }
 }
+
+if (! function_exists('get_regions_from_provinces_and_territories')) {
+    function get_regions_from_provinces_and_territories(array $provinces_and_territories): array
+    {
+        $regions = [];
+
+        if (! empty(array_intersect(['BC'], $provinces_and_territories))) {
+            $regions['west-coast'] = __('West Coast');
+        }
+
+        if (! empty(array_intersect(['AB', 'SK', 'MB'], $provinces_and_territories))) {
+            $regions['prairie-provinces'] = __('Prairie Provinces');
+        }
+
+        if (! empty(array_intersect(['ON', 'QC'], $provinces_and_territories))) {
+            $regions['central-canada'] = __('Central Canada');
+        }
+
+        if (! empty(array_intersect(['NU', 'NT', 'YT'], $provinces_and_territories))) {
+            $regions['northern-territories'] = __('Northern Territories');
+        }
+
+        if (! empty(array_intersect(['NB', 'NS', 'PE', 'NL'], $provinces_and_territories))) {
+            $regions['atlantic-provinces'] = __('Atlantic Provinces');
+        }
+
+        return $regions;
+    }
+}
