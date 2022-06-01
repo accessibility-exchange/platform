@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.0, 8.1]
+        php: [8.1]
 
     name: tests - PHP ${{ matrix.php }}
 
@@ -46,19 +46,8 @@ jobs:
           php artisan migrate
           php artisan storage:link
           composer test-coverage
-        if: ${{ matrix.php == 8.0 }}
-      - name: Execute tests (Unit and Feature tests) via PHPUnit
-        env:
-          DB_PASSWORD: root
-          DB_HOST: localhost
-        run: |
-          php artisan migrate
-          php artisan storage:link
-          composer test
-        if: ${{ matrix.php != 8.0 }}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
-        if: ${{ matrix.php == 8.0 }}
