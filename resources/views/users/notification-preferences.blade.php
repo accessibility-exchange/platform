@@ -14,5 +14,6 @@
     @include('partials.validation-errors')
 
     {{-- TODO --}}
+    <p><a href="{{ localized_route('notification-list.show') }}">{{ __('Notification list') }}</a></p>
     <p>Coming soon!</p>
 </x-app-layout>

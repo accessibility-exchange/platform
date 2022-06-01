@@ -238,17 +238,32 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
 
     public function blockedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(Organization::class, 'blockable');
+        return $this->morphedByMany(Organization::class, 'blockable')->orderBy('name');
     }
 
     public function blockedRegulatedOrganizations(): MorphToMany
     {
-        return $this->morphedByMany(RegulatedOrganization::class, 'blockable');
+        return $this->morphedByMany(RegulatedOrganization::class, 'blockable')->orderBy('name');
     }
 
     public function blockedIndividuals(): MorphToMany
     {
-        return $this->morphedByMany(CommunityMember::class, 'blockable');
+        return $this->morphedByMany(CommunityMember::class, 'blockable')->orderBy('name');
+    }
+
+    public function organizationsForNotification(): MorphToMany
+    {
+        return $this->morphedByMany(Organization::class, 'notificationable')->orderBy('name');
+    }
+
+    public function regulatedOrganizationsForNotification(): MorphToMany
+    {
+        return $this->morphedByMany(RegulatedOrganization::class, 'notificationable')->orderBy('name');
+    }
+
+    public function isReceivingNotificationsFor(RegulatedOrganization|Organization $notificationable): bool
+    {
+        return $notificationable->isNotifying($this);
     }
 
     /**

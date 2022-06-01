@@ -54,6 +54,12 @@ class AuthServiceProvider extends ServiceProvider
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });
 
+        Gate::define('receiveNotifications', function (User $user) {
+            return $user->context === 'community-member'
+                ? Response::allow()
+                : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
+        });
+
         Password::defaults(function () {
             $rule = Password::min(8);
 

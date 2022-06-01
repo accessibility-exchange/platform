@@ -149,4 +149,18 @@ class Organization extends Model
 
         return $this->blocks()->where('user_id', $user->id)->exists();
     }
+
+    public function notificationRecipients(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'notificationable');
+    }
+
+    public function isNotifying(?User $user): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $this->notificationRecipients()->where('user_id', $user->id)->exists();
+    }
 }
