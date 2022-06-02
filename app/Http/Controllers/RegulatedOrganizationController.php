@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,12 +31,9 @@ class RegulatedOrganizationController extends Controller
      * Show a type selection page for the regulated organization.
      *
      * @return View
-     * @throws AuthorizationException
      */
     public function showTypeSelection(): View
     {
-        $this->authorize('create', RegulatedOrganization::class);
-
         return view('regulated-organizations.show-type-selection', [
             'types' => [
                 'government' => __('Government'),
@@ -69,12 +65,9 @@ class RegulatedOrganizationController extends Controller
      * Show the form for creating a new resource.
      *
      * @return View
-     * @throws AuthorizationException
      */
     public function create(): View
     {
-        $this->authorize('create', RegulatedOrganization::class);
-
         return view('regulated-organizations.create-initial', [
             'type' => session()->get('type'),
         ]);

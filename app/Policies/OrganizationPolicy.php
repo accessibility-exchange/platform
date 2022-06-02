@@ -51,7 +51,7 @@ class OrganizationPolicy
     public function block(User $user, Organization $organization): Response
     {
         return $user->isMemberOf($organization)
-            ? Response::deny(__('You cannot block the :type that you belong to.', ['type' => __('organization')]))
+            ? Response::deny(__('You cannot block the organization that you belong to.'))
             : Response::allow();
     }
 

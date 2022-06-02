@@ -14,6 +14,8 @@
     @include('partials.validation-errors')
 
     @if($user->context == 'regulated-organization')
-        @include('regulated-organizations.settings.roles-and-permissions')
+        @include('users.roles-and-permissions.manage', ['membershipable' => $regulatedOrganization])
+    @elseif($user->context == 'organization')
+        @include('users.roles-and-permissions.manage', ['membershipable' => $user->organization])
     @endif
 </x-app-wide-layout>

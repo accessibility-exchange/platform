@@ -78,6 +78,7 @@ class UserController extends Controller
 
         $memberable = match ($currentUser->context) {
             'regulated-organization' => $currentUser->regulatedOrganization ?? null,
+            'organization' => $currentUser->organization ?? null,
             default => null,
         };
 

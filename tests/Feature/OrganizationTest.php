@@ -17,18 +17,15 @@ test('users can create organizations', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('organizations.create'), [
-        'name' => $user->name . ' Consulting',
-        'locality' => 'Truro',
-        'region' => 'NS',
+        'name' => ['en' => $user->name . ' Foundation'],
+        'type' => 'representative',
     ]);
-
-    $organization = Organization::where('name->en', $user->name . ' Consulting')->first();
-
-    $url = localized_route('organizations.show', $organization);
 
     $response->assertSessionHasNoErrors();
 
-    $response->assertRedirect($url);
+    $organization = Organization::where('name->en', $user->name . ' Foundation')->first();
+
+    $response->assertRedirect(localized_route('dashboard'));
 
     $this->assertTrue($user->isMemberOf($organization));
     $this->assertEquals(1, count($user->memberships));
@@ -507,22 +504,17 @@ test('non members can not delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create();
+    $organization = Organization::factory()->create(['locality' => 'Halifax', 'region' => 'NS']);
 
-    $response = $this->post(localized_route('login'), [
-        'email' => $user->email,
-        'password' => 'password',
-    ]);
-
-    $response = $this->get(localized_route('organizations.index'));
+    $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
 
-    $response = $this->get(localized_route('organizations.show', $organization));
+    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertOk();
 });
 
 test('guests can not view organizations', function () {
-    $organization = Organization::factory()->create();
+    $organization = Organization::factory()->create(['locality' => 'Halifax', 'region' => 'NS']);
 
     $response = $this->get(localized_route('organizations.index'));
     $response->assertRedirect(localized_route('login'));

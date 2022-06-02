@@ -1,60 +1,59 @@
 
 <?php
 
-use App\Http\Controllers\InvitationController;
-use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OrganizationController;
 use Illuminate\Support\Facades\Route;
 
-Route::multilingual('/organizations', [OrganizationController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('organizations.index');
+Route::controller(OrganizationController::class)
+    ->prefix('organizations')
+    ->name('organizations.')
+    ->group(function () {
+        Route::multilingual('', 'index')
+            ->middleware(['auth'])
+            ->name('index');
 
-Route::multilingual('/organizations/create', [OrganizationController::class, 'create'])
-    ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
-    ->name('organizations.create');
+        Route::multilingual('/type/select', 'showTypeSelection')
+            ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
+            ->name('show-type-selection');
 
-Route::multilingual('/organizations/create', [OrganizationController::class, 'store'])
-    ->method('post')
-    ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
-    ->name('organizations.store');
+        Route::multilingual('/type/store', 'storeType')
+            ->method('post')
+            ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
+            ->name('store-type');
 
-Route::multilingual('/organizations/{organization}', [OrganizationController::class, 'show'])
-    ->middleware(['auth', 'can:view,organization'])
-    ->name('organizations.show');
+        Route::multilingual('/create', 'create')
+            ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
+            ->name('create');
 
-Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])
-    ->middleware(['auth', 'can:update,organization'])
-    ->name('organizations.edit');
+        Route::multilingual('/create', 'store')
+            ->method('post')
+            ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
+            ->name('store');
 
-Route::multilingual('/organizations/{organization}/edit', [OrganizationController::class, 'update'])
-    ->middleware(['auth', 'can:update,organization'])
-    ->method('put')
-    ->name('organizations.update');
+        Route::multilingual('/{organization}/languages/select', 'showLanguageSelection')
+            ->middleware(['auth', 'can:update,organization'])
+            ->name('show-language-selection');
 
-Route::multilingual('/organizations/{organization}/delete', [OrganizationController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,organization'])
-    ->method('delete')
-    ->name('organizations.destroy');
+        Route::multilingual('/{organization}/languages/store', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth', 'can:update,organization'])
+            ->name('store-languages');
 
-    Route::multilingual('/memberships/{membership}/edit', [MembershipController::class, 'edit'])
-    ->name('memberships.edit');
+        Route::multilingual('/{organization}', 'show')
+            ->middleware(['auth', 'can:view,organization'])
+            ->name('show');
 
-Route::multilingual('/memberships/{membership}/update', [MembershipController::class, 'update'])
-    ->method('put')
-    ->name('memberships.update');
+        Route::multilingual('/{organization}/edit', 'edit')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->name('edit');
 
-Route::delete('/memberships/{membership}/delete', [MembershipController::class, 'destroy'])
-    ->name('memberships.destroy');
+        Route::multilingual('/{organization}/edit', 'update')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->method('put')
+            ->name('update');
 
-Route::multilingual('/invitations/create', [InvitationController::class, 'create'])
-    ->method('post')
-    ->name('invitations.create');
-
-Route::get('/invitations/{invitation}', [InvitationController::class, 'accept'])
-    ->middleware(['auth', 'signed'])
-    ->name('invitations.accept');
-
-Route::delete('/invitations/{invitation}/cancel', [InvitationController::class, 'destroy'])
-    ->middleware(['auth'])
-    ->name('invitations.destroy');
+        Route::multilingual('/{organization}/delete', 'destroy')
+            ->middleware(['auth', 'verified', 'can:delete,organization'])
+            ->method('delete')
+            ->name('destroy');
+    });

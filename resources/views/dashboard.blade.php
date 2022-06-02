@@ -12,6 +12,8 @@
 
     @if($currentUser->context === 'individual')
         @include('dashboard.individual')
+    @elseif($currentUser->context === 'organization')
+        @include('dashboard.organization')
     @elseif ($currentUser->context === 'regulated-organization')
         @include('dashboard.regulated-organization')
     @endif

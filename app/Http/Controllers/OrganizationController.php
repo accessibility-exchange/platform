@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyOrganizationRequest;
+use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
+use App\Http\Requests\StoreOrganizationTypeRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
 use Illuminate\Contracts\View\View;
@@ -11,14 +13,46 @@ use Illuminate\Http\RedirectResponse;
 
 class OrganizationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View
-     */
     public function index(): View
     {
         return view('organizations.index', ['organizations' => Organization::orderBy('name')->get()]);
+    }
+
+    /**
+     * Store the organization's name in the session.
+     */
+    public function showTypeSelection(): View
+    {
+        $this->authorize('create', Organization::class);
+
+        return view('organizations.show-type-selection', [
+            'types' => [
+                'representative' => [
+                    'label' => __('Representative organization'),
+                    'hint' => __('Organizations “of” disability, Deaf, and family-based organizations. Constituted primarily by people with disabilities.'),
+                ],
+                'support' => [
+                    'label' => __('Support organization'),
+                    'hint' => __('Organizations that provide support “for” disability, Deaf, and family-based members. Not constituted primarily by people with disabilities.'),
+                ],
+                'civil-society' => [
+                    'label' => __('Broader civil society organization'),
+                    'hint' => __('Organizations which have some constituency of persons with disabilities, Deaf persons, or family members, but these groups are not their primary mandate. Groups served, for example, can include: Indigenous organizations, 2SLGBTQ+ organizations, immigrant and refugee groups, and women’s groups.'),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Store the organization's name in the session.
+     */
+    public function storeType(StoreOrganizationTypeRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('type', $data['type']);
+
+        return redirect(localized_route('organizations.create'));
     }
 
     /**
@@ -28,8 +62,8 @@ class OrganizationController extends Controller
      */
     public function create(): View
     {
-        return view('organizations.create', [
-            'regions' => get_regions(['CA'], locale()),
+        return view('organizations.create-initial', [
+            'type' => session()->get('type'),
         ]);
     }
 
@@ -43,14 +77,36 @@ class OrganizationController extends Controller
     {
         $organization = Organization::create($request->validated());
 
+        session()->forget('type');
+
         $organization->users()->attach(
             $request->user(),
             ['role' => 'admin']
         );
 
-        flash(__('organization.create_succeeded'), 'success');
+        return redirect(localized_route('dashboard'));
+    }
 
-        return redirect(localized_route('organizations.show', $organization));
+    public function showLanguageSelection(Organization $organization): View
+    {
+        return view('organizations.show-language-selection', [
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * Update the languages of a resource.
+     *
+     * @param StoreOrganizationLanguagesRequest $request
+     * @param Organization $organization
+     * @return RedirectResponse
+     */
+    public function storeLanguages(StoreOrganizationLanguagesRequest $request, Organization $organization): RedirectResponse
+    {
+        $organization->fill($request->validated());
+        $organization->save();
+
+        return redirect(localized_route('organizations.edit', $organization));
     }
 
     /**

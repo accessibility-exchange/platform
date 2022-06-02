@@ -29,4 +29,9 @@ return [
     'action_remove_member' => 'Remove',
     'action_remove_member_with_name' => 'Remove :user from :organization',
     'error_new_administrator_required_before_user_deletion' => 'You must assign a new administrator to your organization, :organization, before deleting your account.',
+    'types' => [
+        'representative' => 'representative organization',
+        'support' => 'support organization',
+        'civil-society' => 'civil society organization',
+    ],
 ];

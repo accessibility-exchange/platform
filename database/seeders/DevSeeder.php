@@ -114,5 +114,13 @@ class DevSeeder extends Seeder
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);
+
+        $organizationRepresentative = User::factory()
+            ->create([
+                'name' => 'Camina Drummer',
+                'email' => 'camina@example.org',
+                'email_verified_at' => now(),
+                'context' => 'organization',
+            ]);
     }
 }

@@ -13,7 +13,7 @@
             <th></th>
         </tr>
         </thead>
-        @forelse ($regulatedOrganization->invitations as $invitation)
+        @forelse ($membershipable->invitations as $invitation)
             <tr>
                 <td id="invitation-{{ $invitation->id }}">{{ $invitation->email }}</td>
                 <td>{{ __('roles.' . $invitation->role) }}</td>
@@ -51,7 +51,7 @@
             <th></th>
         </tr>
         </thead>
-        @foreach ($regulatedOrganization->users as $member)
+        @foreach ($membershipable->users as $member)
             <tr>
                 <td>{{ $member->name }}</td>
                 <td>{{ $member->email }}</td>
@@ -64,7 +64,7 @@
                     <form action="{{ route('memberships.destroy', $member->membership->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button class="secondary" :aria-label="__('Remove :user from :regulatedOrganization', ['user' => $joiner->name, 'regulatedOrganization' => $regulatedOrganization->name])">
+                        <button class="secondary" :aria-label="__('Remove :user from :membershipable', ['user' => $joiner->name, 'membershipable' => $membershipable->name])">
                             {{ __('Remove') }}
                         </button>
                     </form>

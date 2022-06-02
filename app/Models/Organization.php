@@ -32,8 +32,21 @@ class Organization extends Model
      */
     protected $fillable = [
         'name',
+        'type',
+        'languages',
         'locality',
         'region',
+    ];
+
+    /**
+     * The attributes that which should be cast to other types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'service_areas' => 'array',
+        'languages' => 'array',
+        'published_at' => 'datetime:Y-m-d',
     ];
 
     /**
@@ -134,6 +147,11 @@ class Organization extends Model
         return $this->morphMany(Project::class, 'projectable')
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
+    }
+
+    public function hasAddedDetails(): bool
+    {
+        return ! is_null($this->region);
     }
 
     public function blocks(): MorphToMany
