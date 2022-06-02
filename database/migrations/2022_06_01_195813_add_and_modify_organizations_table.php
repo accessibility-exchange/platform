@@ -28,7 +28,6 @@ return new class extends Migration {
     public function down()
     {
         Schema::table('organizations', function (Blueprint $table) {
-
             $table->string('locality')->nullable(false)->change();
             $table->string('region')->nullable(false)->change();
             $table->dropColumn(['type', 'languages']);
