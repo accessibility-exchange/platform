@@ -57,7 +57,7 @@ class UpdateOrganizationRequest extends FormRequest
                 'array',
             ],
             'area_types.*' => [
-                'in|urban,rural,remote',
+                'in:urban,rural,remote',
             ],
             'working_languages' => 'required|array',
             'social_links.*' => 'nullable|url',
