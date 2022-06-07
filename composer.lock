@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f449e7923d5946305fefa9bb3b4016de",
+    "content-hash": "f0460c367f4f170742f367bb1c205a77",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -8555,16 +8555,16 @@
     "packages-dev": [
         {
             "name": "amirami/localizator",
-            "version": "v0.9.0-alpha",
+            "version": "v0.9.1-alpha",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amiranagram/localizator.git",
-                "reference": "57f310a1ca3a7da24aea99174a5b9ceea5cd7c38"
+                "reference": "a3cc83efb25f84969fe157d5ca56ded0f5c29460"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amiranagram/localizator/zipball/57f310a1ca3a7da24aea99174a5b9ceea5cd7c38",
-                "reference": "57f310a1ca3a7da24aea99174a5b9ceea5cd7c38",
+                "url": "https://api.github.com/repos/amiranagram/localizator/zipball/a3cc83efb25f84969fe157d5ca56ded0f5c29460",
+                "reference": "a3cc83efb25f84969fe157d5ca56ded0f5c29460",
                 "shasum": ""
             },
             "require": {
@@ -8614,7 +8614,7 @@
             "homepage": "https://github.com/amiranagram/localizator",
             "support": {
                 "issues": "https://github.com/amiranagram/localizator/issues",
-                "source": "https://github.com/amiranagram/localizator/tree/v0.9.0-alpha"
+                "source": "https://github.com/amiranagram/localizator/tree/v0.9.1-alpha"
             },
             "funding": [
                 {
@@ -8630,7 +8630,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-12T15:18:10+00:00"
+            "time": "2022-04-11T10:17:04+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -12981,62 +12981,6 @@
                 }
             ],
             "time": "2022-03-03T15:02:29+00:00"
-        },
-        {
-            "name": "squizlabs/php_codesniffer",
-            "version": "3.6.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
-                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-simplexml": "*",
-                "ext-tokenizer": "*",
-                "ext-xmlwriter": "*",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
-            },
-            "bin": [
-                "bin/phpcs",
-                "bin/phpcbf"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.x-dev"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Greg Sherwood",
-                    "role": "lead"
-                }
-            ],
-            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
-            "keywords": [
-                "phpcs",
-                "standards"
-            ],
-            "support": {
-                "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
-                "source": "https://github.com/squizlabs/PHP_CodeSniffer",
-                "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
-            },
-            "time": "2021-12-12T21:44:58+00:00"
         },
         {
             "name": "symfony/debug",
