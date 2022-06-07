@@ -29,9 +29,7 @@
                     <h3>{{ __('Call, Text, or VRS') }}</h3>
                     <p>{{ settings()->get('phone', '1-800-123-4567') }}</p>
                     <h3>{{ __('Mailing Address') }}</h3>
-                    @markdown
-                    {{ settings()->get('address', "PO Box 1000, Station A  \nToronto, ON M5W 1E6") }}
-                    @endmarkdown
+                    @markdown{{ settings()->get('address', "PO Box 1000, Station A  \nToronto, ON M5W 1E6") }}@endmarkdown
                     </address>
                 </section>
                 <nav class="stack" aria-labelledby="social">
