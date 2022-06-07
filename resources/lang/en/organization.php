@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'singular_name' => 'organization',
     'index_title' => 'Organizations',
     'create_title' => 'Create an organization',
     'label_name' => 'Organization name',

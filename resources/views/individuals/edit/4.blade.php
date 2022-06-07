@@ -11,8 +11,8 @@
             </h2>
 
             <p class="repel">
-                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
-                <button name="save">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
             </p>
 
             <div class="stack" x-data="{contactPerson: '{{ old('preferred_contact_person', $individual->preferred_contact_person ?? 'me') }}'}">
@@ -84,8 +84,8 @@
             </fieldset>
 
             <p class="repel">
-                <button class="secondary" name="save_and_previous">{{ __('Save and previous') }}</button>
-                <button name="save">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
             </p>
         </div>
     </div>

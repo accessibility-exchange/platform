@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AgeGroupSeeder::class,
             CommunicationToolSeeder::class,
             IndividualRoleSeeder::class,
+            OrganizationRoleSeeder::class,
             CommunitySeeder::class,
             ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,

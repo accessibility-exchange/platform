@@ -13,8 +13,8 @@
             </h2>
 
             <p class="repel">
-                <button name="save">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
 
             </p>
 
@@ -124,8 +124,8 @@
             </fieldset>
 
             <p class="repel">
-                <button name="save">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

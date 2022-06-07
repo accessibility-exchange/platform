@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +24,7 @@ class Organization extends Model
     use HasFactory;
     use HasInvitations;
     use HasMembers;
+    use HasMultipageEditingAndPublishing;
     use HasStatus;
     use HasTranslations;
     use HasTranslatableSlug;
@@ -35,8 +38,10 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'type',
+        'roles',
         'languages',
         'working_languages',
+        'consulting_services',
         'locality',
         'region',
         'about',
@@ -52,10 +57,12 @@ class Organization extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'roles' => 'array',
         'service_areas' => 'array',
         'area_types' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
+        'consulting_services' => 'array',
         'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
     ];
@@ -108,6 +115,11 @@ class Organization extends Model
     public function getRoutePrefix(): string
     {
         return 'organizations';
+    }
+
+    public function getRoutePlaceholder(): string
+    {
+        return 'organization';
     }
 
     /**
@@ -192,5 +204,46 @@ class Organization extends Model
         }
 
         return $this->notificationRecipients()->where('user_id', $user->id)->exists();
+    }
+
+    public function organizationRoles(): BelongsToMany
+    {
+        return $this->belongsToMany(OrganizationRole::class);
+    }
+
+    /**
+     * Is the individual a participant?
+     *
+     * @return bool
+     */
+    public function isParticipant(): bool
+    {
+        $participantRole = OrganizationRole::where('name->en', 'Consultation participant')->first();
+
+        return $this->organizationRoles->contains($participantRole);
+    }
+
+    /**
+     * Is the individual an accessibility consultant?
+     *
+     * @return bool
+     */
+    public function isConsultant(): bool
+    {
+        $consultantRole = OrganizationRole::where('name->en', 'Accessibility consultant')->first();
+
+        return $this->organizationRoles->contains($consultantRole);
+    }
+
+    /**
+     * Is the individual a community connector?
+     *
+     * @return bool
+     */
+    public function isConnector(): bool
+    {
+        $connectorRole = OrganizationRole::where('name->en', 'Community connector')->first();
+
+        return $this->organizationRoles->contains($connectorRole);
     }
 }

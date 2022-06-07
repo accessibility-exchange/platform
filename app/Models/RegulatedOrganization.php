@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasMultimodalTranslations;
+use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
@@ -12,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
@@ -24,6 +24,7 @@ class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasMultipageEditingAndPublishing;
     use HasStatus;
     use HasTranslations;
     use HasTranslatableSlug;
@@ -93,14 +94,19 @@ class RegulatedOrganization extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getRoutePrefix(): string
+    {
+        return 'regulated-organizations';
+    }
+
+    public function getRoutePlaceholder(): string
+    {
+        return 'regulatedOrganization';
     }
 
     protected function serviceRegions(): Attribute
@@ -136,40 +142,6 @@ class RegulatedOrganization extends Model
         }
 
         return [];
-    }
-
-    /**
-     * Get the route prefix for the model.
-     *
-     * @return string
-     */
-    public function getRoutePrefix(): string
-    {
-        return 'regulated-organizations';
-    }
-
-    /**
-     * Publish the regulated organization.
-     *
-     * @return void
-     */
-    public function publish(): void
-    {
-        $this->published_at = date('Y-m-d h:i:s', time());
-        $this->save();
-        flash(__('Your regulated organization page has been published.'), 'success');
-    }
-
-    /**
-     * Unpublish the regulated organization.
-     *
-     * @return void
-     */
-    public function unpublish(): void
-    {
-        $this->published_at = null;
-        $this->save();
-        flash(__('Your regulated organization page has been unpublished.'), 'success');
     }
 
     /**
@@ -269,36 +241,5 @@ class RegulatedOrganization extends Model
         }
 
         return $this->notificationRecipients()->where('user_id', $user->id)->exists();
-    }
-
-    /**
-     * Handle a request to update the individual, redirecting to the appropriate page and displaying the appropriate flash message.
-     *
-     * @param mixed $request
-     * @return RedirectResponse
-     */
-    public function handleUpdateRequest(mixed $request): RedirectResponse
-    {
-        if (! $request->input('publish') || ! $request->input('unpublish')) {
-            if ($this->checkStatus('draft')) {
-                flash(__('Your draft regulated organization page has been updated.'), 'success');
-            } else {
-                flash(__('Your regulated organization page has been updated.'), 'success');
-            }
-        }
-
-        if ($request->input('preview')) {
-            return redirect(localized_route('regulated-organizations.show', $this));
-        } elseif ($request->input('publish')) {
-            $this->publish();
-
-            return redirect(localized_route('regulated-organizations.edit', $this));
-        } elseif ($request->input('unpublish')) {
-            $this->unpublish();
-
-            return redirect(localized_route('regulated-organizations.edit', $this));
-        }
-
-        return redirect(localized_route('regulated-organizations.edit', $this));
     }
 }

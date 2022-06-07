@@ -8,6 +8,7 @@ use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\StoreOrganizationTypeRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
+use App\Models\OrganizationRole;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -43,9 +44,6 @@ class OrganizationController extends Controller
         ]);
     }
 
-    /**
-     * Store the organization's name in the session.
-     */
     public function storeType(StoreOrganizationTypeRequest $request): RedirectResponse
     {
         $data = $request->validated();
@@ -53,6 +51,33 @@ class OrganizationController extends Controller
         session()->put('type', $data['type']);
 
         return redirect(localized_route('organizations.create'));
+    }
+
+    public function showRoleSelection(): View
+    {
+        $organizationRoles = OrganizationRole::all();
+
+        $roles = [];
+
+        foreach ($organizationRoles as $role) {
+            $roles[$role->id] = [
+                'label' => $role->name,
+                'hint' => $role->description,
+            ];
+        }
+
+        return view('organizations.show-role-selection', [
+            'roles' => $roles,
+        ]);
+    }
+
+    public function saveRole(\App\Http\Requests\StoreOrganizationRoleRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('roles', $data['roles']);
+
+        return redirect(localized_route('dashboard'));
     }
 
     /**
@@ -64,6 +89,7 @@ class OrganizationController extends Controller
     {
         return view('organizations.create-initial', [
             'type' => session()->get('type'),
+            'roles' => session()->get('roles'),
         ]);
     }
 
@@ -75,14 +101,19 @@ class OrganizationController extends Controller
      */
     public function store(StoreOrganizationRequest $request): RedirectResponse
     {
-        $organization = Organization::create($request->validated());
+        $data = $request->validated();
+
+        $organization = Organization::create($data);
 
         session()->forget('type');
+        session()->forget('roles');
 
         $organization->users()->attach(
             $request->user(),
             ['role' => 'admin']
         );
+
+        $organization->organizationRoles()->sync($data['roles'] ?? []);
 
         return redirect(localized_route('dashboard'));
     }
@@ -143,6 +174,13 @@ class OrganizationController extends Controller
                 'rural' => __('organization.area_types.rural'),
                 'remote' => __('organization.area_types.remote'),
             ],
+            'consultingServices' => [
+                'booking-providers' => __('consulting-services.booking-providers'),
+                'planning-consultation' => __('consulting-services.planning-consultation'),
+                'running-consultation' => __('consulting-services.running-consultation'),
+                'analysis' => __('consulting-services.analysis'),
+                'writing-reports' => __('consulting-services.writing-reports'),
+            ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
         ]);
     }
@@ -159,9 +197,7 @@ class OrganizationController extends Controller
         $organization->fill($request->validated());
         $organization->save();
 
-        flash(__('organization.update_succeeded'), 'success');
-
-        return redirect(localized_route('organizations.show', $organization));
+        return $organization->handleUpdateRequest($request, 1);
     }
 
     /**
