@@ -17,10 +17,12 @@
                 <strong class="weight:semibold">{{__('Roles') }}:</strong> @foreach($organization->roles as $role){{ $role->name }}@if(!$loop->last), @endif @endforeach @endif
             </p>
 
+            @if($organization->hasAddedDetails())
             <p>
                 <strong class="weight:semibold">{{__('Location') }}:</strong> {{ $organization->locality }}, {{ get_region_name($organization->region, ["CA"], locale()) }}@if($organization->representables)<br />
                 <strong class="weight:semibold">{{__('Communities served') }}:</strong> @foreach($organization->representables as $community){{ $community->name }}@if(!$loop->last), @endif @endforeach @endif
             </p>
+            @endif
         </x-card>
         @empty
         <p>{{ __('organization.none_found') }}</p>

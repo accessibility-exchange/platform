@@ -4,9 +4,11 @@
         <h1>
             {{ $organization->name }}
         </h1>
+        @if($organization->hasAddedDetails())
         <p class="meta">
             {{ $organization->locality }}, {{ get_region_name($organization->region, ["CA"], locale()) }}
         </p>
+        @endif
     </x-slot>
 
     <div class="repel">

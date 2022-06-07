@@ -138,6 +138,12 @@ class OrganizationController extends Controller
             'organization' => $organization,
             'regions' => get_regions(['CA'], locale()),
             'roles' => $roles,
+            'areaTypes' => [
+                'urban' => __('organization.area_types.urban'),
+                'rural' => __('organization.area_types.rural'),
+                'remote' => __('organization.area_types.remote'),
+            ],
+            'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
         ]);
     }
 

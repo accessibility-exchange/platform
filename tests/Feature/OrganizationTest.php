@@ -45,7 +45,7 @@ test('users with admin role can edit organizations', function () {
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    $response->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('users without admin role can not edit organizations', function () {
@@ -504,7 +504,9 @@ test('non members can not delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['locality' => 'Halifax', 'region' => 'NS']);
+    $organization = Organization::factory()->create();
+
+    ray($organization);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
@@ -514,7 +516,7 @@ test('users can view organizations', function () {
 });
 
 test('guests can not view organizations', function () {
-    $organization = Organization::factory()->create(['locality' => 'Halifax', 'region' => 'NS']);
+    $organization = Organization::factory()->create();
 
     $response = $this->get(localized_route('organizations.index'));
     $response->assertRedirect(localized_route('login'));

@@ -34,4 +34,9 @@ return [
         'support' => 'support organization',
         'civil-society' => 'civil society organization',
     ],
+    'area_types' => [
+        'urban' => 'Urban areas',
+        'rural' => 'Rural areas',
+        'remote' => 'Remote areas',
+    ],
 ];

@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Individual;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Settings;
 use App\Statuses\IndividualStatus;
+use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
@@ -55,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         StatusManager::bind(Individual::class, IndividualStatus::class);
+        StatusManager::bind(Organization::class, OrganizationStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         Translatable::fallback(fallbackLocale: 'en');

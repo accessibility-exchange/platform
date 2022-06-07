@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Makeable\EloquentStatus\HasStatus;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -21,6 +22,7 @@ class Organization extends Model
     use HasFactory;
     use HasInvitations;
     use HasMembers;
+    use HasStatus;
     use HasTranslations;
     use HasTranslatableSlug;
     use Notifiable;
@@ -34,8 +36,14 @@ class Organization extends Model
         'name',
         'type',
         'languages',
+        'working_languages',
         'locality',
         'region',
+        'about',
+        'service_areas',
+        'area_types',
+        'social_links',
+        'website_link',
     ];
 
     /**
@@ -45,7 +53,10 @@ class Organization extends Model
      */
     protected $casts = [
         'service_areas' => 'array',
+        'area_types' => 'array',
         'languages' => 'array',
+        'working_languages' => 'array',
+        'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
     ];
 
@@ -66,6 +77,7 @@ class Organization extends Model
     public array $translatable = [
         'name',
         'slug',
+        'about',
     ];
 
     /**

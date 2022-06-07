@@ -17,6 +17,12 @@ return new class extends Migration {
             $table->string('locality')->nullable()->change();
             $table->string('region')->nullable()->change();
             $table->json('languages')->nullable();
+            $table->json('working_languages')->nullable();
+            $table->json('about')->nullable();
+            $table->json('service_areas')->nullable();
+            $table->json('area_types')->nullable();
+            $table->json('social_links')->nullable();
+            $table->string('website_link')->nullable();
         });
     }
 
@@ -30,7 +36,7 @@ return new class extends Migration {
         Schema::table('organizations', function (Blueprint $table) {
             $table->string('locality')->nullable(false)->change();
             $table->string('region')->nullable(false)->change();
-            $table->dropColumn(['type', 'languages']);
+            $table->dropColumn(['type', 'languages', 'working_languages', 'about', 'service_areas', 'area_types', 'social_links', 'website_link']);
         });
     }
 };

@@ -1,7 +1,7 @@
 <article class="box card card--individual stack">
     <header>
         <x-heading :level="$level"><a href="{{ localized_route('individuals.show', $individual) }}">{{ $individual->name }}</a></x-heading>
-        <p><strong>{{ __('Individual individual') }}</strong></p>
+        <p><strong>{{ __('Individual') }}</strong></p>
     </header>
     {{ $slot ?? '' }}
     {{ $actions ?? '' }}
