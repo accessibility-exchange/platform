@@ -179,6 +179,18 @@ test('users can view the introduction', function () {
     $response->assertOk();
     $response->assertSee('Video for community organizations.');
 
+    $response = $this->actingAs($user)
+        ->from(localized_route('users.show-introduction'))
+        ->put(localized_route('users.update-introduction-status'), [
+            'finished_introduction' => 1,
+        ]);
+
+    $response->assertRedirect(localized_route('organizations.show-type-selection'));
+
+    $response = $this->actingAs($user)->get(localized_route('dashboard'));
+
+    $response->assertRedirect(localized_route('organizations.show-type-selection'));
+
     $user->update(['context' => 'regulated-organization']);
 
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
@@ -191,6 +203,10 @@ test('users can view the introduction', function () {
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
         ]);
+
+    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
+
+    $response = $this->actingAs($user)->get(localized_route('dashboard'));
 
     $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
@@ -208,10 +224,4 @@ test('users can view the introduction', function () {
         ]);
 
     $response->assertRedirect(localized_route('dashboard'));
-
-    $newUser = User::factory()->create(['context' => 'regulated-organization']);
-
-    $response = $this->actingAs($newUser)->get(localized_route('dashboard'));
-
-    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 });

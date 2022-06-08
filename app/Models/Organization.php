@@ -178,8 +178,7 @@ class Organization extends Model
 
     public function isPublishable(): bool
     {
-        return ! is_null($this->name)
-            && ! is_null($this->languages)
+        return ! is_null($this->languages)
             && ! is_null($this->working_languages)
             && ! is_null($this->locality)
             && ! is_null($this->region)
