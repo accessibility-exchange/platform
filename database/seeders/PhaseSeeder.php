@@ -15,14 +15,15 @@ class PhaseSeeder extends Seeder
     public function run()
     {
         $phases = [
-            'Preparing for consultation',
-            'Going through consultation',
-            'After consultation and preparing reports',
+            __('Learn'),
+            __('Engage'),
+            __('Deepen understanding'),
         ];
 
         foreach ($phases as $phase) {
             Phase::firstOrCreate([
                 'name->en' => $phase,
+                'name->fr' => trans($phase, [], 'fr'),
             ]);
         }
     }

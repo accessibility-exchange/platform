@@ -7,7 +7,11 @@ use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\StoreOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationTypeRequest;
+use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
+use App\Http\Requests\UpdateOrganizationContactInformationRequest;
+use App\Http\Requests\UpdateOrganizationInterestsRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
+use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
 use Illuminate\Contracts\View\View;
@@ -58,12 +62,6 @@ class OrganizationController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreOrganizationRequest $request
-     * @return RedirectResponse
-     */
     public function store(StoreOrganizationRequest $request): RedirectResponse
     {
         $data = $request->validated();
@@ -105,13 +103,6 @@ class OrganizationController extends Controller
         ]);
     }
 
-    /**
-     * Update the languages of a resource.
-     *
-     * @param StoreOrganizationLanguagesRequest $request
-     * @param Organization $organization
-     * @return RedirectResponse
-     */
     public function storeLanguages(StoreOrganizationLanguagesRequest $request, Organization $organization): RedirectResponse
     {
         $organization->fill($request->validated());
@@ -120,23 +111,11 @@ class OrganizationController extends Controller
         return redirect(localized_route('organizations.edit', $organization));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Organization $organization
-     * @return View
-     */
     public function show(Organization $organization): View
     {
         return view('organizations.show', ['organization' => $organization]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Organization $organization
-     * @return View
-     */
     public function edit(Organization $organization): View
     {
         $roles = [];
@@ -162,16 +141,10 @@ class OrganizationController extends Controller
                 'writing-reports' => __('consulting-services.writing-reports'),
             ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
+            'livedExperiences' => LivedExperience::all()->prepareForForm(),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateOrganizationRequest $request
-     * @param Organization $organization
-     * @return RedirectResponse
-     */
     public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
     {
         $organization->fill($request->validated());
@@ -180,13 +153,30 @@ class OrganizationController extends Controller
         return $organization->handleUpdateRequest($request, 1);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param DestroyOrganizationRequest $request
-     * @param Organization $organization
-     * @return RedirectResponse
-     */
+    public function updateConstituencies(UpdateOrganizationConstituenciesRequest $request, Organization $organization): RedirectResponse
+    {
+        $organization->fill($request->validated());
+        $organization->save();
+
+        return $organization->handleUpdateRequest($request, 2);
+    }
+
+    public function updateInterests(UpdateOrganizationInterestsRequest $request, Organization $organization): RedirectResponse
+    {
+        $organization->fill($request->validated());
+        $organization->save();
+
+        return $organization->handleUpdateRequest($request, 3);
+    }
+
+    public function updateContactInformation(UpdateOrganizationContactInformationRequest $request, Organization $organization): RedirectResponse
+    {
+        $organization->fill($request->validated());
+        $organization->save();
+
+        return $organization->handleUpdateRequest($request, 3);
+    }
+
     public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse
     {
         $organization->delete();

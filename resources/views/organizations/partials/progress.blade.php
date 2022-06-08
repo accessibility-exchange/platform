@@ -6,23 +6,34 @@
             <a href="{{ localized_route('organizations.edit', ['organization' => $organization]) }}">{{ __('About your organization') }}</a>
         </li>
         <li>
-            <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">{{ __('Interests') }}</a>
+            <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">
+            @if($organization->type === 'representative')
+                {{ __('Groups your organization represents') }}
+            @else
+                {{ __('Groups your organization serves or supports') }}
+            @endif
+            </a>
         </li>
         <li>
-            <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{{ __('Contact Information') }}</a>
+            <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{{ __('Interests') }}</a>
+        </li>
+        <li>
+            <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">{{ __('Contact Information') }}</a>
         </li>
     </ol>
 
     @can('update', $organization)
         @if($organization->checkStatus('draft'))
             <p class="stack">
-                <x-hearth-input class="secondary" type="submit" name="preview" :value="__('Preview page')" />
-                <x-hearth-input class="secondary" type="submit" name="publish" :value="__('Publish page')" />
+                <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                <button class="secondary" name="publish" value="1" @cannot('publish', $organization) disabled @endcannot>{{ __('Publish page') }}</button>
             </p>
         @else
+            @can('unpublish', $organization)
             <p class="stack">
-                <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish page')" />
+                <button name="unpublish" value="1">{{ __('Unpublish page') }}</button>
             </p>
+            @endcan
         @endif
     @endcan
 </div>

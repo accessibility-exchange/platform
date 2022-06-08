@@ -15,15 +15,16 @@ class PaymentMethodSeeder extends Seeder
     public function run()
     {
         $methods = [
-            'Cash',
-            'Cheque',
-            'Credit card',
-            'Gift card',
+            __('Cash'),
+            __('Cheque'),
+            __('Credit card'),
+            __('Gift card'),
         ];
 
         foreach ($methods as $method) {
             PaymentMethod::firstOrCreate([
                 'name->en' => $method,
+                'name->fr' => trans($method, [], 'fr'),
             ]);
         }
     }

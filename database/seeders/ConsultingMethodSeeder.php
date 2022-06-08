@@ -15,16 +15,17 @@ class ConsultingMethodSeeder extends Seeder
     public function run()
     {
         $methods = [
-            'Interviews',
-            'Surveys',
-            'Focus groups',
-            'Workshops',
-            'Other',
+            __('Interviews'),
+            __('Surveys'),
+            __('Focus groups'),
+            __('Workshops'),
+            __('Other'),
         ];
 
         foreach ($methods as $method) {
             ConsultingMethod::firstOrCreate([
                 'name->en' => $method,
+                'name->fr' => trans($method, [], 'fr'),
             ]);
         }
     }

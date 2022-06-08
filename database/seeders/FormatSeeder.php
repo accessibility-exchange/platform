@@ -15,16 +15,17 @@ class FormatSeeder extends Seeder
     public function run()
     {
         $formats = [
-            'Text',
-            'Video',
-            'Audio',
-            'PDF',
-            'Word document',
+            __('Text'),
+            __('Video'),
+            __('Audio'),
+            __('PDF'),
+            __('Word document'),
         ];
 
         foreach ($formats as $format) {
             Format::firstOrCreate([
                 'name->en' => $format,
+                'name->fr' => trans($format, [], 'fr'),
             ]);
         }
     }

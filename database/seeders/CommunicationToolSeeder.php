@@ -15,18 +15,19 @@ class CommunicationToolSeeder extends Seeder
     public function run()
     {
         $tools = [
-            'Email',
-            'Phone calls',
-            'Google Meet',
-            'Microsoft Teams',
-            'Skype',
-            'WebEx',
-            'Zoom',
+            __('Email'),
+            __('Phone calls'),
+            __('Google Meet'),
+            __('Microsoft Teams'),
+            __('Skype'),
+            __('WebEx'),
+            __('Zoom'),
         ];
 
         foreach ($tools as $tool) {
             CommunicationTool::firstOrCreate([
                 'name->en' => $tool,
+                'name->fr' => trans($tool, [], 'fr'),
             ]);
         }
     }

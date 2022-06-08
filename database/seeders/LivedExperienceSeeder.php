@@ -15,24 +15,15 @@ class LivedExperienceSeeder extends Seeder
     public function run()
     {
         $experiences = [
-            'Blind or partially sighted',
-            'Mobility-related disability',
-            'Limb differences',
-            'Cognitive or intellectual disability',
-            'Mental health challenges (psychosocial disability)',
-            'Neurological disability',
-            'Family member of someone with a disability',
-            'Support person of someone with a disability',
-            'Deaf',
-            'Hard of hearing',
-            'Chronic conditions',
-            'Communication barriers',
-            'Invisible disability',
+            __('People who experience disabilities'),
+            __('Deaf people'),
+            __('Supporters of people who experience disabilities and/or Deaf people'),
         ];
 
         foreach ($experiences as $experience) {
             LivedExperience::firstOrCreate([
                 'name->en' => $experience,
+                'name->fr' => trans($experience, [], 'fr'),
             ]);
         }
     }

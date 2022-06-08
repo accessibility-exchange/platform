@@ -16,19 +16,23 @@ class AgeGroupSeeder extends Seeder
     {
         $ageGroups = [
             [
-                'name' => 'Youth (18–24)',
+                'name' => __('Children (under 15)'),
             ],
             [
-                'name' => 'Adults (25–64)',
+                'name' => __('Youth (15–30)'),
             ],
             [
-                'name' => 'Seniors (65+)',
+                'name' => __('Working age adults (15–64)'),
+            ],
+            [
+                'name' => __('Older people (65+)'),
             ],
         ];
 
         foreach ($ageGroups as $ageGroup) {
             AgeGroup::firstOrCreate([
                 'name->en' => $ageGroup['name'],
+                'name->fr' => trans($ageGroup['name'], [], 'fr'),
             ]);
         }
     }
