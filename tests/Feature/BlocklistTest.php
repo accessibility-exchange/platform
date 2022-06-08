@@ -138,7 +138,6 @@ test('individual users can block and unblock individuals', function () {
 
     $nullUser = null;
     expect($individual->blockedBy($nullUser))->toBeFalse();
-
 });
 
 test('regulated organization member cannot block their regulated organization', function () {
