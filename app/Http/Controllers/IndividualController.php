@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyIndividualRequest;
-use App\Http\Requests\SaveIndividualRoleRequest;
+use App\Http\Requests\SaveIndividualRolesRequest;
 use App\Http\Requests\UpdateIndividualCommunicationAndMeetingPreferencesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
@@ -96,11 +96,11 @@ class IndividualController extends Controller
     /**
      * Save roles for the logged-in user.
      *
-     * @param SaveIndividualRoleRequest $request
+     * @param SaveIndividualRolesRequest $request
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function saveRole(SaveIndividualRoleRequest $request): RedirectResponse
+    public function saveRoles(SaveIndividualRolesRequest $request): RedirectResponse
     {
         $this->authorize('selectRole', Auth::user());
 

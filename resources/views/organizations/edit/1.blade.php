@@ -64,12 +64,12 @@
                 <livewire:language-picker name="working_languages" :languages="$organization->working_languages ?? []" :availableLanguages="$languages" />
             </fieldset>
 
-{{--            @if($organization->role === 'consultant')--}}
+            @if($organization->isConsultant())
             <fieldset class="field @error('consulting_services') field--error @enderror">
                 <legend>{{ __('Which of these areas can you help a regulated organization with? (required)') }}</legend>
                 <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $organization->consulting_services ?? [])" hinted="consulting_services-hint" required />
             </fieldset>
-{{--            @endif--}}
+            @endif
 
             <h3>{{ __('Social media and website links (optional)') }}</h3>
 

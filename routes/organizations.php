@@ -30,6 +30,15 @@ Route::controller(OrganizationController::class)
             ->middleware(['auth', 'verified', 'can:create,App\Models\Organization'])
             ->name('store');
 
+        Route::multilingual('/{organization}/roles/select', 'showRoleSelection')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->name('show-role-selection');
+
+        Route::multilingual('/{organization}/roles/store', 'storeRoles')
+            ->method('post')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->name('store-roles');
+
         Route::multilingual('/{organization}/languages/select', 'showLanguageSelection')
             ->middleware(['auth', 'can:update,organization'])
             ->name('show-language-selection');

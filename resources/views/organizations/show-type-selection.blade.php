@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout>
     <x-slot name="title">{{ __('Welcome to the Accessibility Exchange') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -20,4 +20,4 @@
 
         @csrf
     </form>
-</x-app-wide-layout>
+</x-app-layout>

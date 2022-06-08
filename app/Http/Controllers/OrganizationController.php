@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
+use App\Http\Requests\StoreOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationTypeRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Organization;
@@ -19,9 +20,6 @@ class OrganizationController extends Controller
         return view('organizations.index', ['organizations' => Organization::orderBy('name')->get()]);
     }
 
-    /**
-     * Store the organization's name in the session.
-     */
     public function showTypeSelection(): View
     {
         $this->authorize('create', Organization::class);
@@ -53,43 +51,10 @@ class OrganizationController extends Controller
         return redirect(localized_route('organizations.create'));
     }
 
-    public function showRoleSelection(): View
-    {
-        $organizationRoles = OrganizationRole::all();
-
-        $roles = [];
-
-        foreach ($organizationRoles as $role) {
-            $roles[$role->id] = [
-                'label' => $role->name,
-                'hint' => $role->description,
-            ];
-        }
-
-        return view('organizations.show-role-selection', [
-            'roles' => $roles,
-        ]);
-    }
-
-    public function saveRole(\App\Http\Requests\StoreOrganizationRoleRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        session()->put('roles', $data['roles']);
-
-        return redirect(localized_route('dashboard'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     */
     public function create(): View
     {
-        return view('organizations.create-initial', [
+        return view('organizations.create', [
             'type' => session()->get('type'),
-            'roles' => session()->get('roles'),
         ]);
     }
 
@@ -112,6 +77,21 @@ class OrganizationController extends Controller
             $request->user(),
             ['role' => 'admin']
         );
+
+        return redirect(localized_route('organizations.show-role-selection', $organization));
+    }
+
+    public function showRoleSelection(Organization $organization): View
+    {
+        return view('organizations.show-role-selection', [
+            'organization' => $organization,
+            'roles' => OrganizationRole::all()->prepareForForm(),
+        ]);
+    }
+
+    public function storeRoles(StoreOrganizationRolesRequest $request, Organization $organization): RedirectResponse
+    {
+        $data = $request->validated();
 
         $organization->organizationRoles()->sync($data['roles'] ?? []);
 

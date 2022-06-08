@@ -9,18 +9,18 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->middleware(['auth'])
             ->name('index');
 
-        Route::multilingual('/role/select', 'showRoleSelection')
+        Route::multilingual('/roles/select', 'showRoleSelection')
             ->middleware(['auth'])
             ->name('show-role-selection');
 
-        Route::multilingual('/role/edit', 'showRoleEdit')
+        Route::multilingual('/roles/edit', 'showRoleEdit')
             ->middleware(['auth'])
             ->name('show-role-edit');
 
-        Route::multilingual('/role/save', 'saveRole')
+        Route::multilingual('/roles/save', 'saveRoles')
             ->method('put')
             ->middleware(['auth'])
-            ->name('save-role');
+            ->name('save-roles');
 
         Route::multilingual('/{individual}', 'show')
             ->middleware(['auth', 'can:view,individual'])

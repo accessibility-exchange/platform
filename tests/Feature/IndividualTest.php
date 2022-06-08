@@ -25,7 +25,7 @@ test('individual users can select a individual role', function () {
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-selection'))
-        ->put(localized_route('individuals.save-role'), [
+        ->put(localized_route('individuals.save-roles'), [
             'roles' => [$firstRole->id],
         ]);
 
@@ -65,7 +65,7 @@ test('individuals can edit their roles', function () {
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
-        ->put(localized_route('individuals.save-role'), [
+        ->put(localized_route('individuals.save-roles'), [
             'roles' => [$participantRole->id],
         ]);
 

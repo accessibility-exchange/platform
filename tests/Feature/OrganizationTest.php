@@ -3,15 +3,30 @@
 namespace Tests\Feature;
 
 use App\Models\Organization;
+use App\Models\OrganizationRole;
 use App\Models\User;
+use Database\Seeders\OrganizationRoleSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
+use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
 test('users can create organizations', function () {
+    $this->seed(OrganizationRoleSeeder::class);
+
     $user = User::factory()->create(['context' => 'organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->post(localized_route('organizations.store-type'), [
+        'type' => 'representative',
+    ]);
+    $response->assertRedirect(localized_route('organizations.create'));
+    $response->assertSessionHasNoErrors();
+    $response->assertSessionHas('type', 'representative');
 
     $response = $this->actingAs($user)->get(localized_route('organizations.create'));
     $response->assertOk();
@@ -20,15 +35,50 @@ test('users can create organizations', function () {
         'name' => ['en' => $user->name . ' Foundation'],
         'type' => 'representative',
     ]);
-
     $response->assertSessionHasNoErrors();
-
     $organization = Organization::where('name->en', $user->name . ' Foundation')->first();
+    $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
+    $role = OrganizationRole::pluck('id')->first();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
+        'roles' => [$role],
+    ]);
+    $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
 
-    $this->assertTrue($user->isMemberOf($organization));
-    $this->assertEquals(1, count($user->memberships));
+    expect($user->isMemberOf($organization))->toBeTrue();
+    expect($user->memberships)->toHaveCount(1);
+    expect($organization->isConsultant())->toBeTrue();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show-language-selection', $organization));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show-language-selection', $organization))->post(localized_route('organizations.store-languages', $organization), [
+        'languages' => ['en', 'fr', 'iu'],
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', $organization));
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
+    $response->assertOk();
+
+    UpdateOrganizationRequestFactory::new()->fake();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'name' => ['en' => $organization->name],
+        'save_and_next' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', [
+        'organization' => $organization,
+        'step' => 2,
+    ]));
 });
 
 test('users with admin role can edit organizations', function () {
@@ -505,8 +555,6 @@ test('non members can not delete organizations', function () {
 test('users can view organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()->create();
-
-    ray($organization);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
