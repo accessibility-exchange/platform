@@ -1,17 +1,19 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\Organization;
 use App\Models\OrganizationRole;
 use App\Models\User;
 use Database\Seeders\OrganizationRoleSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
+
+
+uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
     $this->seed(OrganizationRoleSeeder::class);
@@ -39,20 +41,33 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name . ' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $role = OrganizationRole::pluck('id')->first();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [$role],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility consultant')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
+    expect($organization->fresh()->isConsultant())->toBeTrue();
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Community connector')->id],
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+    expect($organization->fresh()->isConnector())->toBeTrue();
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation participant')->id],
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+    expect($organization->fresh()->isParticipant())->toBeTrue();
 
     expect($user->isMemberOf($organization))->toBeTrue();
     expect($user->memberships)->toHaveCount(1);
-    expect($organization->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-language-selection', $organization));
     $response->assertOk();
@@ -63,6 +78,13 @@ test('users can create organizations', function () {
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', $organization));
+});
+
+test('users with admin role can edit and publish organizations', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertOk();
@@ -79,26 +101,33 @@ test('users can create organizations', function () {
         'organization' => $organization,
         'step' => 2,
     ]));
-});
-
-test('users with admin role can edit organizations', function () {
-    $user = User::factory()->create(['context' => 'organization']);
-    $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-    $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
-        'name' => $organization->name,
-        'locality' => 'St John\'s',
-        'region' => 'NL',
+        'publish' => 1,
     ]);
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    $response->assertSessionHasNoErrors();
+
+    expect($organization->fresh()->checkStatus('published'))->toBeTrue();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+        'unpublish' => 1,
+    ]);
+    $response->assertSessionHasNoErrors();
+    expect($organization->fresh()->checkStatus('published'))->toBeFalse();
+
+    $organization->update([
+        'languages' => null,
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+        'publish' => 1,
+    ]);
+    $response->assertForbidden();
+
+    expect($organization->fresh()->checkStatus('published'))->toBeFalse();
 });
 
-test('users without admin role can not edit organizations', function () {
+test('users without admin role cannot edit or publish organizations', function () {
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -107,35 +136,68 @@ test('users without admin role can not edit organizations', function () {
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertForbidden();
 
+    UpdateOrganizationRequestFactory::new()->fake();
+
     $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
-        'name' => $organization->name,
+        'name' => ['en' => $organization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
     $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'publish' => 1,
+    ]);
+    $response->assertForbidden();
+
+    expect($organization->checkStatus('published'))->toBeFalse();
+
+    $organization->publish();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'unpublish' => 1,
+    ]);
+    $response->assertForbidden();
+
+    expect($organization->checkStatus('published'))->toBeTrue();
 });
 
-test('non members can not edit organizations', function () {
+test('non members cannot edit or publish organizations', function () {
     $user = User::factory()->create(['context' => 'organization']);
-    $other_user = User::factory()->create(['context' => 'organization']);
+    $adminUser = User::factory()->create(['context' => 'organization']);
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($adminUser, ['role' => 'admin'])
         ->create();
 
-    $other_organization = Organization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $other_organization));
+    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $other_organization), [
-        'name' => $other_organization->name,
+    UpdateOrganizationRequestFactory::new()->fake();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'name' => ['en' => $organization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
     $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'publish' => 1,
+    ]);
+    $response->assertForbidden();
+
+    expect($organization->checkStatus('published'))->toBeFalse();
+
+    $organization->publish();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+        'unpublish' => 1,
+    ]);
+    $response->assertForbidden();
+
+    expect($organization->checkStatus('published'))->toBeTrue();
+
 });
 
 test('organizations can be translated', function () {
@@ -182,7 +244,7 @@ test('users with admin role can update other member roles', function () {
     $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
-test('users without admin role can not update member roles', function () {
+test('users without admin role cannot update member roles', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
@@ -204,7 +266,7 @@ test('users without admin role can not update member roles', function () {
     $response->assertForbidden();
 });
 
-test('only administrator can not downgrade their role', function () {
+test('only administrator cannot downgrade their role', function () {
     $user = User::factory()->create(['context' => 'organization']);
     $other_user = User::factory()->create(['context' => 'organization']);
     $yet_another_user = User::factory()->create(['context' => 'organization']);
@@ -266,7 +328,7 @@ test('users with admin role can invite members', function () {
     $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
-test('users without admin role can not invite members', function () {
+test('users without admin role cannot invite members', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
@@ -306,7 +368,7 @@ test('users with admin role can cancel invitations', function () {
     $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
-test('users without admin role can not cancel invitations', function () {
+test('users without admin role cannot cancel invitations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -430,7 +492,7 @@ test('users with admin role can remove members', function () {
     $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
 });
 
-test('users without admin role can not remove members', function () {
+test('users without admin role cannot remove members', function () {
     $user = User::factory()->create();
     $other_user = User::factory()->create();
 
@@ -452,7 +514,7 @@ test('users without admin role can not remove members', function () {
     $response->assertForbidden();
 });
 
-test('only administrator can not remove themself', function () {
+test('only administrator cannot remove themself', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
@@ -491,7 +553,7 @@ test('users with admin role can delete organizations', function () {
     $response->assertRedirect(localized_route('dashboard'));
 });
 
-test('users with admin role can not delete organizations with wrong password', function () {
+test('users with admin role cannot delete organizations with wrong password', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -510,7 +572,7 @@ test('users with admin role can not delete organizations with wrong password', f
     $response->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
-test('users without admin role can not delete organizations', function () {
+test('users without admin role cannot delete organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -528,7 +590,7 @@ test('users without admin role can not delete organizations', function () {
     $response->assertForbidden();
 });
 
-test('non members can not delete organizations', function () {
+test('non members cannot delete organizations', function () {
     $user = User::factory()->create();
     $other_user = User::factory()->create();
 
@@ -563,7 +625,7 @@ test('users can view organizations', function () {
     $response->assertOk();
 });
 
-test('guests can not view organizations', function () {
+test('guests cannot view organizations', function () {
     $organization = Organization::factory()->create();
 
     $response = $this->get(localized_route('organizations.index'));

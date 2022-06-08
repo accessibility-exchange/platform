@@ -56,6 +56,8 @@ test('individual users can add and remove regulated organizations from their not
             'notificationable_id' => $regulatedOrganization->id,
         ]);
 
+    expect($regulatedOrganization->isNotifying($user))->toBeTrue();
+
     $response = $this->actingAs($user)->get(localized_route('notification-list.show'));
     $response->assertSee('Umbrella Corporation');
 
@@ -71,6 +73,9 @@ test('individual users can add and remove regulated organizations from their not
     $user = $user->fresh();
 
     expect($user->regulatedOrganizationsForNotification)->toHaveCount(0);
+
+    $nullUser = null;
+    expect($regulatedOrganization->isNotifying($nullUser))->toBeFalse();
 });
 
 test('individual users can add and remove organizations from their notification list', function () {
@@ -87,6 +92,8 @@ test('individual users can add and remove organizations from their notification 
         ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    expect($organization->isNotifying($user))->toBeTrue();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertSee('Remove from my notification list');
@@ -125,4 +132,7 @@ test('individual users can add and remove organizations from their notification 
     $user = $user->fresh();
 
     expect($user->organizationsForNotification)->toHaveCount(0);
+
+    $nullUser = null;
+    expect($organization->isNotifying($nullUser))->toBeFalse();
 });

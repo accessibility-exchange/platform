@@ -38,7 +38,6 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'type',
-        'roles',
         'languages',
         'working_languages',
         'consulting_services',
@@ -57,7 +56,6 @@ class Organization extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'roles' => 'array',
         'service_areas' => 'array',
         'area_types' => 'array',
         'languages' => 'array',
@@ -176,6 +174,18 @@ class Organization extends Model
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->region);
+    }
+
+    public function isPublishable(): bool
+    {
+        return ! is_null($this->name)
+            && ! is_null($this->languages)
+            && ! is_null($this->working_languages)
+            && ! is_null($this->locality)
+            && ! is_null($this->region)
+            && ! is_null($this->about)
+            && ! is_null($this->service_areas)
+            && ! is_null($this->area_types);
     }
 
     public function blocks(): MorphToMany

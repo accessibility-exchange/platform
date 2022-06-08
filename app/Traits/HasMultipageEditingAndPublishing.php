@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 trait HasMultipageEditingAndPublishing
@@ -32,6 +33,8 @@ trait HasMultipageEditingAndPublishing
             ? localized_route($this->getRoutePrefix() . '.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step])
             : localized_route($this->getRoutePrefix() . '.edit', [$this->getRoutePlaceholder() => $this]);
 
+        ray($request->input('publish'));
+
         if (! $request->input('publish') || ! $request->input('unpublish')) {
             if ($this->checkStatus('draft')) {
                 flash(__('Your draft :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
@@ -49,10 +52,14 @@ trait HasMultipageEditingAndPublishing
         } elseif ($request->input('preview')) {
             return redirect(localized_route($this->getRoutePrefix() . '.show', $this));
         } elseif ($request->input('publish')) {
+            Gate::authorize('publish', $this);
+
             $this->publish();
 
             return redirect($back);
         } elseif ($request->input('unpublish')) {
+            Gate::authorize('unpublish', $this);
+
             $this->unpublish();
 
             return redirect($back);

@@ -11,12 +11,6 @@ class RegulatedOrganizationPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     * @return Response
-     */
     public function create(User $user): Response
     {
         return $user->context === 'regulated-organization' && $user->regulatedOrganizations->isEmpty()
@@ -34,13 +28,6 @@ class RegulatedOrganizationPolicy
             : Response::allow();
     }
 
-    /**
-     * Determine whether the user can update a federally regulated organization.
-     *
-     * @param User $user
-     * @param RegulatedOrganization $regulatedOrganization
-     * @return Response
-     */
     public function update(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $user->isAdministratorOf($regulatedOrganization)
@@ -48,20 +35,6 @@ class RegulatedOrganizationPolicy
             : Response::deny(__('You cannot edit this federally regulated organization.'));
     }
 
-    public function block(User $user, RegulatedOrganization $regulatedOrganization): Response
-    {
-        return $user->isMemberOf($regulatedOrganization)
-            ? Response::deny(__('You cannot block the :type that you belong to.', ['type' => __('regulated-organization.types.' . $regulatedOrganization->type)]))
-            : Response::allow();
-    }
-
-    /**
-     * Determine whether the user can publish the model.
-     *
-     * @param User $user
-     * @param RegulatedOrganization $regulatedOrganization
-     * @return Response
-     */
     public function publish(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         // TODO: Ensure model is ready for publishing first.
@@ -70,13 +43,13 @@ class RegulatedOrganizationPolicy
             : Response::deny(__('You cannot publish this regulated organization.'));
     }
 
-    /**
-     * Determine whether the user can delete a federally regulated organization.
-     *
-     * @param User $user
-     * @param RegulatedOrganization $regulatedOrganization
-     * @return Response
-     */
+    public function unpublish(User $user, RegulatedOrganization $regulatedOrganization): Response
+    {
+        return $user->isAdministratorOf($regulatedOrganization)
+            ? Response::allow()
+            : Response::deny(__('You cannot unpublish this regulated organization.'));
+    }
+
     public function delete(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $user->isAdministratorOf($regulatedOrganization)
