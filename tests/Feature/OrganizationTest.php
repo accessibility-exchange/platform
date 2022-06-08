@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
-
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
@@ -40,7 +39,6 @@ test('users can create organizations', function () {
     $response->assertSessionHasNoErrors();
     $organization = Organization::where('name->en', $user->name . ' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
-
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
@@ -197,7 +195,6 @@ test('non members cannot edit or publish organizations', function () {
     $response->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeTrue();
-
 });
 
 test('organizations can be translated', function () {

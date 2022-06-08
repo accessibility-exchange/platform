@@ -42,7 +42,6 @@ class IndividualPolicy
             : Response::deny(__('You cannot edit this individual page.'));
     }
 
-
     public function publish(User $user, Individual $individual): Response
     {
         return $user->id === $individual->user_id && $individual->isPublishable()
