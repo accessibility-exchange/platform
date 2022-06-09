@@ -40,11 +40,11 @@
 </ul>
 @endif
 
-@if($individual->ageGroupConnections->isNotEmpty())
+@if($individual->ageBracketConnections->isNotEmpty())
 <h4>{{ __('Age groups') }}</h4>
 
 <ul role="list" class="tags">
-    @foreach($individual->ageGroupConnections as $connection)
+    @foreach($individual->ageBracketConnections as $connection)
         <li class="tag">{{ $connection->name }}</li>
     @endforeach
 </ul>

@@ -515,9 +515,9 @@ class Individual extends Model implements HasMedia
      *
      * @return MorphToMany
      */
-    public function ageGroupConnections(): MorphToMany
+    public function ageBracketConnections(): MorphToMany
     {
-        return $this->morphedByMany(AgeGroup::class, 'connectable');
+        return $this->morphedByMany(AgeBracket::class, 'connectable');
     }
 
     public function blocks(): MorphToMany

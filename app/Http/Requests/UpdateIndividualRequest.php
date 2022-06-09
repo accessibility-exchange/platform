@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\AgeBracket;
 use App\Models\AgeGroup;
 use App\Models\Community;
 use App\Models\LivedExperience;
@@ -52,10 +53,10 @@ class UpdateIndividualRequest extends FormRequest
                 Rule::in(array_merge(Community::pluck('id')->toArray(), ['other'])),
             ],
             'other_community_connections' => 'nullable|array:' . implode(',', $this->individual->languages),
-            'age_group_connections' => [
+            'age_bracket_connections' => [
                 'nullable',
                 'array',
-                Rule::in(AgeGroup::pluck('id')->toArray()),
+                Rule::in(AgeBracket::pluck('id')->toArray()),
             ],
             'social_links.*' => 'nullable|url',
             'web_links.*.title' => 'nullable|string|required_with:web_links.*.url',

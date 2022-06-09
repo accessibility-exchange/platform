@@ -270,8 +270,8 @@ namespace App\Models{
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AccessSupport[] $accessSupports
  * @property-read int|null $access_supports_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgeGroup[] $ageGroupConnections
- * @property-read int|null $age_group_connections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgeGroup[] $ageBracketConnections
+ * @property-read int|null $age_bracket_connections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $blocks
  * @property-read int|null $blocks_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities

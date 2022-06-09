@@ -89,15 +89,15 @@
                 <x-hearth-error for="community_connections" />
                 <x-translatable-input name="other_community_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
             </fieldset>
-            <fieldset class="field @error('age_group_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+            <fieldset class="field @error('age_bracket_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Age groups you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="age_group_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
+                <x-hearth-hint for="age_bracket_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
                 <p x-cloak>
                     <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </p>
-                <x-hearth-checkboxes name="age_group_connections" :options="$ageGroups" :checked="old('age_group_connections', $individual->ageGroupConnections->pluck('id')->toArray())" hinted="age_group_connections-hint" />
-                <x-hearth-error for="age_group_connections" />
+                <x-hearth-checkboxes name="age_bracket_connections" :options="$ageBrackets" :checked="old('age_bracket_connections', $individual->ageBracketConnections->pluck('id')->toArray())" hinted="age_bracket_connections-hint" />
+                <x-hearth-error for="age_bracket_connections" />
             </fieldset>
             @endif
 

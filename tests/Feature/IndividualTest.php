@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\AgeGroup;
+use App\Models\AgeBracket;
 use App\Models\Community;
 use App\Models\Engagement;
 use App\Models\Impact;
@@ -9,7 +9,7 @@ use App\Models\IndividualRole;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\AgeGroupSeeder;
+use Database\Seeders\AgeBracketSeeder;
 use Database\Seeders\CommunitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
@@ -279,7 +279,7 @@ test('individuals with connector role must select connected identities', functio
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
     $this->seed(CommunitySeeder::class);
-    $this->seed(AgeGroupSeeder::class);
+    $this->seed(AgeBracketSeeder::class);
 
     $user = User::factory()->create();
     $individual = $user->individual;
@@ -287,7 +287,7 @@ test('individuals with connector role must select connected identities', functio
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
     $community = Community::first();
-    $ageGroup = AgeGroup::first();
+    $AgeBracket = AgeBracket::first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
@@ -307,7 +307,7 @@ test('individuals with connector role must select connected identities', functio
         'first_language' => $user->locale,
         'lived_experience_connections' => [$livedExperience->id],
         'community_connections' => [$community->id],
-        'age_group_connections' => [$ageGroup->id],
+        'age_bracket_connections' => [$AgeBracket->id],
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -316,10 +316,10 @@ test('individuals with connector role must select connected identities', functio
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
     expect($individual->communityConnections)->toHaveCount(1);
-    expect($individual->ageGroupConnections)->toHaveCount(1);
+    expect($individual->ageBracketConnections)->toHaveCount(1);
     expect($livedExperience->communityConnectors)->toHaveCount(1);
     expect($community->communityConnectors)->toHaveCount(1);
-    expect($ageGroup->communityConnectors)->toHaveCount(1);
+    expect($AgeBracket->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {

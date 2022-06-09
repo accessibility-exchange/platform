@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
+use App\Models\AgeBracket;
 use App\Models\AgeGroup;
 use App\Models\Community;
 use App\Models\Impact;
@@ -147,7 +148,7 @@ class IndividualController extends Controller
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
             'livedExperiences' => LivedExperience::pluck('name', 'id')->toArray(),
-            'ageGroups' => AgeGroup::pluck('name', 'id')->toArray(),
+            'ageBrackets' => AgeBracket::pluck('name', 'id')->toArray(),
             'livingSituations' => [
                 'urban' => __('Urban'),
                 'suburban' => __('Suburban'),
@@ -194,8 +195,8 @@ class IndividualController extends Controller
             if (isset($data['community_connections'])) {
                 $individual->communityConnections()->sync($data['community_connections'] ?? []);
             }
-            if (isset($data['age_group_connections'])) {
-                $individual->ageGroupConnections()->sync($data['age_group_connections'] ?? []);
+            if (isset($data['age_bracket_connections'])) {
+                $individual->ageBracketConnections()->sync($data['age_bracket_connections'] ?? []);
             }
         }
 
