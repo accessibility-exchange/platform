@@ -40,7 +40,7 @@ class AgeBracketController extends Controller
 
     public function update(UpdateAgeBracketRequest $request, AgeBracket $ageBracket): RedirectResponse
     {
-        AgeBracket::update($request->validated());
+        $ageBracket->update($request->validated());
 
         flash(__('The age bracket has been updated.'), 'success');
 
@@ -51,7 +51,7 @@ class AgeBracketController extends Controller
     {
         $ageBracket->delete();
 
-        flash(__('The age bracket has been updated.'), 'success');
+        flash(__('The age bracket has been deleted.'), 'success');
 
         return redirect(localized_route('age-brackets.index'));
     }

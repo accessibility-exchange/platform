@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\AreaType;
+use App\Models\DisabilityType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AreaTypePolicy
+class DisabilityTypePolicy
 {
     use HandlesAuthorization;
 
@@ -20,12 +20,12 @@ class AreaTypePolicy
         return false;
     }
 
-    public function update(User $user, AreaType $areaType): bool
+    public function update(User $user, DisabilityType $disabilityType): bool
     {
         return false;
     }
 
-    public function delete(User $user, AreaType $areaType): bool
+    public function delete(User $user, DisabilityType $disabilityType): bool
     {
         return false;
     }

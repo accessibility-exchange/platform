@@ -26,32 +26,32 @@ class AreaTypeController extends Controller
     {
         AreaType::create($request->validated());
 
-        flash(__('The age bracket has been created.'), 'success');
+        flash(__('The area type has been created.'), 'success');
 
         return redirect(localized_route('area-types.index'));
     }
 
-    public function edit(AreaType $AreaType): View
+    public function edit(AreaType $areaType): View
     {
         return view('area-types.edit', [
-            'AreaType' => $AreaType,
+            'AreaType' => $areaType,
         ]);
     }
 
-    public function update(UpdateAreaTypeRequest $request, AreaType $AreaType): RedirectResponse
+    public function update(UpdateAreaTypeRequest $request, AreaType $areaType): RedirectResponse
     {
-        AreaType::update($request->validated());
+        $areaType->update($request->validated());
 
-        flash(__('The age bracket has been updated.'), 'success');
+        flash(__('The area type has been updated.'), 'success');
 
         return redirect(localized_route('area-types.index'));
     }
 
-    public function destroy(AreaType $AreaType): RedirectResponse
+    public function destroy(AreaType $areaType): RedirectResponse
     {
-        $AreaType->delete();
+        $areaType->delete();
 
-        flash(__('The age bracket has been updated.'), 'success');
+        flash(__('The area type has been deleted.'), 'success');
 
         return redirect(localized_route('area-types.index'));
     }
