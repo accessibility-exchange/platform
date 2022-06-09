@@ -5,82 +5,54 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAgeBracketRequest;
 use App\Http\Requests\UpdateAgeBracketRequest;
 use App\Models\AgeBracket;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AgeBracketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('age-brackets.index', [
+            'ageBrackets' => AgeBracket::all(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('age-brackets.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAgeBracketRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAgeBracketRequest $request)
+    public function store(StoreAgeBracketRequest $request): RedirectResponse
     {
-        //
+        AgeBracket::create($request->validated());
+
+        flash(__('The age bracket has been created.'), 'success');
+
+        return redirect(localized_route('age-brackets.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AgeBracket  $ageBracket
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AgeBracket $ageBracket)
+    public function edit(AgeBracket $ageBracket): View
     {
-        //
+        return view('age-brackets.edit', [
+            'ageBracket' => $ageBracket,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AgeBracket  $ageBracket
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AgeBracket $ageBracket)
+    public function update(UpdateAgeBracketRequest $request, AgeBracket $ageBracket): RedirectResponse
     {
-        //
+        AgeBracket::update($request->validated());
+
+        flash(__('The age bracket has been updated.'), 'success');
+
+        return redirect(localized_route('age-brackets.index'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAgeBracketRequest  $request
-     * @param  \App\Models\AgeBracket  $ageBracket
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAgeBracketRequest $request, AgeBracket $ageBracket)
+    public function destroy(AgeBracket $ageBracket): RedirectResponse
     {
-        //
-    }
+        $ageBracket->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AgeBracket  $ageBracket
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AgeBracket $ageBracket)
-    {
-        //
+        flash(__('The age bracket has been updated.'), 'success');
+
+        return redirect(localized_route('age-brackets.index'));
     }
 }

@@ -3,16 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\AgeBracket;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AgeBracketSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $ageBrackets = [

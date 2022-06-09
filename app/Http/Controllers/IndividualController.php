@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
 use App\Models\AgeBracket;
-use App\Models\AgeGroup;
 use App\Models\Community;
 use App\Models\Impact;
 use App\Models\Individual;

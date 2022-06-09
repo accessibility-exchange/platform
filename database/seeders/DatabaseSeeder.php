@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AccessSupportSeeder::class,
             AgeBracketSeeder::class,
+            AreaTypeSeeder::class,
             CommunicationToolSeeder::class,
             IndividualRoleSeeder::class,
             OrganizationRoleSeeder::class,

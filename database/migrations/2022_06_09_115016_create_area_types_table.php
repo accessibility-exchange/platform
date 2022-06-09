@@ -12,11 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('age_brackets', function (Blueprint $table) {
+        Schema::create('area_types', function (Blueprint $table) {
             $table->id();
             $table->json('name');
-            $table->integer('min')->nullable();
-            $table->integer('max')->nullable();
+            $table->json('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('age_brackets');
+        Schema::dropIfExists('area_types');
     }
 };
