@@ -34,7 +34,7 @@ class DisabilityTypeController extends Controller
     public function edit(DisabilityType $disabilityType): View
     {
         return view('disability-types.edit', [
-            'disabilityIdentity' => $disabilityType,
+            'disabilityType' => $disabilityType,
         ]);
     }
 

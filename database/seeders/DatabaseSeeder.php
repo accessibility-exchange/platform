@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             AreaTypeSeeder::class,
             CommunicationToolSeeder::class,
             DisabilityTypeSeeder::class,
+            EmploymentStatusSeeder::class,
+            EthnoracialIdentitySeeder::class,
             IndividualRoleSeeder::class,
             OrganizationRoleSeeder::class,
             CommunitySeeder::class,

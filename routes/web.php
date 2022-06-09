@@ -99,6 +99,7 @@ require __DIR__ . '/area-types.php';
 require __DIR__ . '/block-list.php';
 require __DIR__ . '/disability-types.php';
 require __DIR__ . '/employment-statuses.php';
+require __DIR__ . '/ethnoracial-identities.php';
 require __DIR__ . '/individuals.php';
 require __DIR__ . '/defined-terms.php';
 require __DIR__ . '/organizations.php';

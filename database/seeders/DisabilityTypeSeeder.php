@@ -71,12 +71,12 @@ class DisabilityTypeSeeder extends Seeder
             ],
         ];
 
-        foreach ($disabilityTypes as $identity) {
+        foreach ($disabilityTypes as $type) {
             DisabilityType::firstOrCreate([
-                'name->en' => $identity['name'],
-                'name->fr' => trans($identity['name'], [], 'fr'),
-                'description->en' => $identity['description'] ?? null,
-                'description->fr' => isset($identity['description']) ? trans($identity['description'], [], 'fr') : null,
+                'name->en' => $type['name'],
+                'name->fr' => trans($type['name'], [], 'fr'),
+                'description->en' => $type['description'] ?? null,
+                'description->fr' => isset($type['description']) ? trans($type['description'], [], 'fr') : null,
             ]);
         }
     }
