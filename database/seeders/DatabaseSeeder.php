@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             EmploymentStatusSeeder::class,
             EthnoracialIdentitySeeder::class,
             GenderIdentitySeeder::class,
+            IndigenousIdentitySeeder::class,
             IndividualRoleSeeder::class,
             OrganizationRoleSeeder::class,
             CommunitySeeder::class,
