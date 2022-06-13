@@ -18,6 +18,8 @@ class AgeBracket extends Model
 
     protected $casts = [
         'name' => 'array',
+        'min' => 'integer',
+        'max' => 'integer',
     ];
 
     public array $translatable = [
