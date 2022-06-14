@@ -166,7 +166,6 @@ class OrganizationController extends Controller
     {
         $data = $request->validated();
 
-
         if ($data['base_disability_type'] === 'cross_disability') {
             $data['cross_disability'] = true;
         } else {

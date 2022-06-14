@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\DisabilityType;
-use App\Models\LivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,7 +15,6 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
 
     public function rules(): array
     {
-
         return [
             'lived_experiences' => 'required|array',
             'lived_experiences.*' => 'exists:lived_experiences,id',
@@ -25,7 +23,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                 'in:cross_disability,specific_disabilities',
                 Rule::requiredIf(function () {
                     return in_array(1, request('lived_experiences') ?? []);
-                })
+                }),
             ],
             'disability_types' => [
                 'nullable',

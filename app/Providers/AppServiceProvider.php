@@ -55,8 +55,9 @@ class AppServiceProvider extends ServiceProvider
                         ],
                     ];
                 }
+
                 return [
-                  $item->id => $item->name,
+                    $item->id => $item->name,
                 ];
             })->toArray();
         });
