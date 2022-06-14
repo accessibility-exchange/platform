@@ -24,6 +24,11 @@ return new class extends Migration {
             $table->json('social_links')->nullable();
             $table->string('website_link')->nullable();
             $table->dateTime('published_at')->nullable();
+            $table->boolean('cross_disability')->nullable();
+            $table->json('other_disability_type')->nullable();
+            $table->boolean('refugees_and_immigrants')->nullable();
+            $table->boolean('trans_people')->nullable();
+            $table->boolean('twoslgbtqia')->nullable();
         });
     }
 
@@ -37,7 +42,7 @@ return new class extends Migration {
         Schema::table('organizations', function (Blueprint $table) {
             $table->string('locality')->nullable(false)->change();
             $table->string('region')->nullable(false)->change();
-            $table->dropColumn(['type', 'languages', 'working_languages', 'about', 'service_areas', 'area_types', 'social_links', 'website_link', 'published_at']);
+            $table->dropColumn(['type', 'languages', 'working_languages', 'about', 'service_areas', 'area_types', 'social_links', 'website_link', 'published_at', 'cross_disability', 'other_disability_type', 'refugees_and_immigrants', 'trans_people']);
         });
     }
 };

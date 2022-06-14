@@ -11,6 +11,9 @@ use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
 use App\Http\Requests\UpdateOrganizationInterestsRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
+use App\Models\DisabilityType;
+use App\Models\GenderIdentity;
+use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
@@ -142,6 +145,12 @@ class OrganizationController extends Controller
             ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
             'livedExperiences' => LivedExperience::all()->prepareForForm(),
+            'disabilityTypes' => DisabilityType::all()->prepareForForm(),
+            'indigenousIdentities' => IndigenousIdentity::all()->prepareForForm(),
+            'women' => GenderIdentity::where('name->en', 'Female')->first(),
+            'nonBinary' => GenderIdentity::where('name->en', 'Non-binary')->first(),
+            'genderNonConforming' => GenderIdentity::where('name->en', 'Gender non-conforming')->first(),
+            'genderFluid' => GenderIdentity::where('name->en', 'Gender fluid')->first(),
         ]);
     }
 
@@ -155,8 +164,44 @@ class OrganizationController extends Controller
 
     public function updateConstituencies(UpdateOrganizationConstituenciesRequest $request, Organization $organization): RedirectResponse
     {
-        $organization->fill($request->validated());
+        $data = $request->validated();
+
+
+        if ($data['base_disability_type'] === 'cross_disability') {
+            $data['cross_disability'] = true;
+        } else {
+            $data['cross_disability'] = null;
+        }
+
+        $data['trans_people'] = $request->has('trans_people');
+        $data['twoslgbtqia'] = $request->has('twoslgbtqia');
+
+        $organization->fill($data);
         $organization->save();
+
+        if (isset($data['lived_experiences'])) {
+            $organization->livedExperienceConstituencies()->sync($data['lived_experiences']);
+        } else {
+            $organization->livedExperienceConstituencies()->detach();
+        }
+
+        if (isset($data['disability_types'])) {
+            $organization->disabilityConstituencies()->sync($data['disability_types']);
+        } else {
+            $organization->disabilityConstituencies()->detach();
+        }
+
+        if (isset($data['indigenous_identities'])) {
+            $organization->indigenousConstituencies()->sync($data['indigenous_identities']);
+        } else {
+            $organization->indigenousConstituencies()->detach();
+        }
+
+        if (isset($data['gender_identities'])) {
+            $organization->genderIdentityConstituencies()->sync($data['gender_identities']);
+        } else {
+            $organization->genderIdentityConstituencies()->detach();
+        }
 
         return $organization->handleUpdateRequest($request, 2);
     }

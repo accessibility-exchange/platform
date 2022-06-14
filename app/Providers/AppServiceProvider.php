@@ -47,11 +47,16 @@ class AppServiceProvider extends ServiceProvider
         Collection::macro('prepareForForm', function () {
             /** @var Collection $this */
             return $this->mapWithKeys(function ($item) {
+                if ($item->description) {
+                    return [
+                        $item->id => [
+                            'label' => $item->name,
+                            'hint' => $item->description,
+                        ],
+                    ];
+                }
                 return [
-                    $item->id => [
-                        'label' => $item->name,
-                        'hint' => $item->description,
-                    ],
+                  $item->id => $item->name,
                 ];
             })->toArray();
         });

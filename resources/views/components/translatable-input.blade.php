@@ -1,3 +1,4 @@
+<div {{ $attributes->merge(['class' => 'stack']) }}>
 @foreach($languages as $language)
     @if($loop->first)
         <div class="field @error($name . '.' . $language) field--error @enderror stack">
@@ -30,3 +31,4 @@
         @endif
     @endif
 @endforeach
+</div>

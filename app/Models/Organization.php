@@ -48,6 +48,11 @@ class Organization extends Model
         'area_types',
         'social_links',
         'website_link',
+        'cross_disability',
+        'other_disability_type',
+        'refugees_and_immigrants',
+        'trans_people',
+        'twoslgbtqia',
     ];
 
     /**
@@ -63,6 +68,11 @@ class Organization extends Model
         'consulting_services' => 'array',
         'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
+        'cross_disability' => 'boolean',
+        'other_disability_type' => 'array',
+        'refugees_and_immigrants' => 'boolean',
+        'trans_people' => 'boolean',
+        'twoslgbtqia' => 'boolean',
     ];
 
     /**
@@ -83,6 +93,7 @@ class Organization extends Model
         'name',
         'slug',
         'about',
+        'other_disability_type',
     ];
 
     /**
@@ -254,5 +265,67 @@ class Organization extends Model
         $connectorRole = OrganizationRole::where('name->en', 'Community connector')->first();
 
         return $this->organizationRoles->contains($connectorRole);
+    }
+
+    public function livedExperienceConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(LivedExperience::class, 'constituentable')->orderBy('name');
+    }
+
+    public function disabilityConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(DisabilityType::class, 'constituentable')->orderBy('name');
+    }
+
+    public function indigenousConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(IndigenousIdentity::class, 'constituentable')->orderBy('name');
+    }
+
+    public function genderIdentityConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(GenderIdentity::class, 'constituentable')->orderBy('name');
+    }
+
+    public function ageBracketConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(AgeBracket::class, 'constituentable')->orderBy('name');
+    }
+
+    public function ethnoracialConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(EthnoracialIdentity::class, 'constituentable')->orderBy('name');
+    }
+
+    public function employmentStatusConstituencies(): MorphToMany
+    {
+        return $this->morphedByMany(EmploymentStatus::class, 'constituentable')->orderBy('name');
+    }
+
+    public function getBaseDisabilityTypeAttribute(): string|null
+    {
+        $disabilityLivedExperience = LivedExperience::find(1);
+
+        if ($this->livedExperienceConstituencies->contains($disabilityLivedExperience)) {
+            return $this->cross_disability
+                ? 'cross_disability'
+                : 'specific_disabilities';
+        }
+
+        return null;
+    }
+
+    public function getBaseIndigenousIdentityAttribute(): int
+    {
+        return $this->indigenousConstituencies->count() > 0
+            ? 1
+            : 0;
+    }
+
+    public function getBaseGenderAndSexualIdentityAttribute(): int
+    {
+        return $this->genderIdentityConstituencies->count() > 0 || $this->trans_people || $this->twoslgbtqia
+            ? 1
+            : 0;
     }
 }
