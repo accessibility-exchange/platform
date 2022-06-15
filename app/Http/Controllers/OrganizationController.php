@@ -249,10 +249,10 @@ class OrganizationController extends Controller
         }
 
         foreach ([
-             'indigenous_identities',
-             'age_brackets',
-             'ethnoracial_identities',
-         ] as $relationship) {
+            'indigenous_identities',
+            'age_brackets',
+            'ethnoracial_identities',
+        ] as $relationship) {
             if (isset($data[$relationship])) {
                 $organization->extra_attributes->set("has_{$relationship}", 1);
             } else {

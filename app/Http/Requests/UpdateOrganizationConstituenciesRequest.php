@@ -59,7 +59,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'age_brackets.*' => 'exists:age_brackets,id',
             'ethnoracial_identities' => 'nullable|array|required_if:has_ethnoracial_identities,1|exclude_if:has_ethnoracial_identities,0',
             'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
-            'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer'
+            'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer',
         ];
     }
 
