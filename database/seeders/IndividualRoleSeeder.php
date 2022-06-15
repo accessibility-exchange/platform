@@ -25,7 +25,7 @@ class IndividualRoleSeeder extends Seeder
             ],
             [
                 'name' => __('Community connector'),
-                'description' => __('Connect organizations with my participants from community'),
+                'description' => __('Connect organizations with participants from my community'),
             ],
         ];
 

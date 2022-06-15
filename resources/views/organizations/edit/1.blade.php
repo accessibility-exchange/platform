@@ -53,12 +53,6 @@
                 <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $organization->service_areas ?? [])" required />
             </fieldset>
 
-            <fieldset class="field @error('area_types') field--error @enderror">
-                <legend>{{ __('Does your organization operate in urban, rural, or remote areas? (required)') }}</legend>
-                <x-hearth-hint for="area_types">{{ __('Check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $organization->area_types ?? [])" hinted="area_types-hint" required />
-            </fieldset>
-
             <fieldset>
                 <legend><h3>{{ __('What language(s) does your organization work in? (required)') }}</h3></legend>
                 <livewire:language-picker name="working_languages" :languages="$organization->working_languages ?? []" :availableLanguages="$languages" />

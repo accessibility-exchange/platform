@@ -11,6 +11,9 @@ class DisabilityTypeSeeder extends Seeder
     {
         $disabilityTypes = [
             [
+                'name' => __('Cross-disability'),
+            ],
+            [
                 'name' => __('Visual disabilities'),
                 'description' => __('Includes individuals with sight loss, blind individuals, and partially sighted individuals'),
             ],
@@ -65,9 +68,6 @@ class DisabilityTypeSeeder extends Seeder
             [
                 'name' => __('Temporary disabilities'),
                 'description' => __('Such as broken limbs, gestational diabetes'),
-            ],
-            [
-                'name' => __('Other'),
             ],
         ];
 

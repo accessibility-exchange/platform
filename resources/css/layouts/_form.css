@@ -4,3 +4,12 @@
 fieldset > * + * {
     margin-block-start: var(--size-2);
 }
+
+.field > legend + *,
+fieldset > legend + * {
+    margin-block-start: var(--size-4);
+}
+
+form .repel:last-child {
+    margin-block-start: var(--size-8);
+}

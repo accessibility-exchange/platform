@@ -202,7 +202,7 @@ class Project extends Model
     }
 
     /**
-     * Get the Community Member assigned to the project as an accessibility consultant.
+     * Get the Constituency Member assigned to the project as an accessibility consultant.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -12,12 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('constituentables', function (Blueprint $table) {
+        Schema::create('constituency_organization', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('constituency_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->morphs('constituentable', 'constituentable_index');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('constituentables');
+        Schema::dropIfExists('constituency_organization');
     }
 };

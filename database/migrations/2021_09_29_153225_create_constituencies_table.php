@@ -4,29 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunitiesTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+return new class extends Migration {
     public function up()
     {
-        Schema::create('communities', function (Blueprint $table) {
+        Schema::create('constituencies', function (Blueprint $table) {
             $table->id();
             $table->json('name');
+            $table->json('name_plural');
+            $table->json('adjective');
+            $table->json('description');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('communities');
+        Schema::dropIfExists('constituencies');
     }
-}
+};

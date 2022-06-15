@@ -52,13 +52,6 @@ class UpdateOrganizationRequest extends FormRequest
             'service_areas.*' => [
                 Rule::in(get_region_codes()),
             ],
-            'area_types' => [
-                'required',
-                'array',
-            ],
-            'area_types.*' => [
-                'in:urban,rural,remote',
-            ],
             'working_languages' => 'required|array',
             'social_links.*' => 'nullable|url',
             'website_link' => 'nullable|url',

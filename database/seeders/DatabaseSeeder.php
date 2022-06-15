@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             IndigenousIdentitySeeder::class,
             IndividualRoleSeeder::class,
             OrganizationRoleSeeder::class,
-            CommunitySeeder::class,
+            ConstituencySeeder::class,
             ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,
             FormatSeeder::class,

@@ -11,7 +11,11 @@ use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
 use App\Http\Requests\UpdateOrganizationInterestsRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
+use App\Models\AgeBracket;
+use App\Models\AreaType;
+use App\Models\Constituency;
 use App\Models\DisabilityType;
+use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
@@ -19,6 +23,7 @@ use App\Models\Organization;
 use App\Models\OrganizationRole;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 
 class OrganizationController extends Controller
 {
@@ -131,11 +136,6 @@ class OrganizationController extends Controller
             'organization' => $organization,
             'regions' => get_regions(['CA'], locale()),
             'roles' => $roles,
-            'areaTypes' => [
-                'urban' => __('organization.area_types.urban'),
-                'rural' => __('organization.area_types.rural'),
-                'remote' => __('organization.area_types.remote'),
-            ],
             'consultingServices' => [
                 'booking-providers' => __('consulting-services.booking-providers'),
                 'planning-consultation' => __('consulting-services.planning-consultation'),
@@ -145,12 +145,16 @@ class OrganizationController extends Controller
             ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
             'livedExperiences' => LivedExperience::all()->prepareForForm(),
-            'disabilityTypes' => DisabilityType::all()->prepareForForm(),
+            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
+            'disabilityTypes' => DisabilityType::where('name->en', '!=', 'Cross-disability')->get()->prepareForForm(),
             'indigenousIdentities' => IndigenousIdentity::all()->prepareForForm(),
-            'women' => GenderIdentity::where('name->en', 'Female')->first(),
-            'nonBinary' => GenderIdentity::where('name->en', 'Non-binary')->first(),
-            'genderNonConforming' => GenderIdentity::where('name->en', 'Gender non-conforming')->first(),
-            'genderFluid' => GenderIdentity::where('name->en', 'Gender fluid')->first(),
+            'areaTypes' => AreaType::all()->prepareForForm(),
+            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
+            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+            'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
+            'ageBrackets' => AgeBracket::all()->prepareForForm(),
+            'ethnoracialIdentities' => EthnoracialIdentity::where('name->en', '!=', 'White')->get()->prepareForForm(),
         ]);
     }
 
@@ -166,41 +170,98 @@ class OrganizationController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['base_disability_type'] === 'cross_disability') {
-            $data['cross_disability'] = true;
-        } else {
-            $data['cross_disability'] = null;
+        ray($data);
+
+        $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
+        $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
+
+        if (isset($data['base_disability_type']) && $data['base_disability_type'] === 'cross_disability') {
+            $data['disability_types'] = [
+                $crossDisability->id,
+            ];
+            unset($data['other_disability_type']);
         }
 
-        $data['trans_people'] = $request->has('trans_people');
-        $data['twoslgbtqia'] = $request->has('twoslgbtqia');
+        if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
+            $organization->extra_attributes->has_refugee_and_immigrant_constituency = 1;
+
+            if (isset($data['constituencies'])) {
+                $data['constituencies'][] = $refugeesAndImmigrants->id;
+            } else {
+                $data['constituencies'] = [
+                    $refugeesAndImmigrants->id,
+                ];
+            }
+        } else {
+            $organization->extra_attributes->has_refugee_and_immigrant_constituency = 0;
+        }
+
+        $data['other_disability_type'] = $data['other_disability_type'] ?? [];
+
+        if (isset($data['gender_and_sexual_identities'])) {
+            if (in_array('women', $data['gender_and_sexual_identities'])) {
+                $women = GenderIdentity::where('name_plural->en', 'Women')->first();
+                $data['gender_identities'][] = $women->id;
+            }
+
+            if (in_array('nb-gnc-fluid-people', $data['gender_and_sexual_identities'])) {
+                $nb = GenderIdentity::where('name_plural->en', 'Non-binary people')->first();
+                $data['gender_identities'][] = $nb->id;
+
+                $gnc = GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first();
+                $data['gender_identities'][] = $gnc->id;
+
+                $fluid = GenderIdentity::where('name_plural->en', 'Gender fluid people')->first();
+                $data['gender_identities'][] = $fluid->id;
+            }
+
+            if (in_array('trans-people', $data['gender_and_sexual_identities'])) {
+                $transPeople = Constituency::where('name_plural->en', 'Trans people')->first();
+                $data['constituencies'][] = $transPeople->id;
+            }
+
+            if (in_array('2slgbtqiaplus-people', $data['gender_and_sexual_identities'])) {
+                $twoslgbtqiaplusPeople = Constituency::where('name_plural->en', '2SLGBTQIA+ people')->firstOrFail();
+                $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
+            }
+
+            $organization->extra_attributes->has_gender_and_sexual_identities = 1;
+        } else {
+            $organization->extra_attributes->has_gender_and_sexual_identities = 0;
+        }
+
+        foreach ([
+            'area_types',
+            'lived_experiences',
+            'disability_types',
+            'indigenous_identities',
+            'gender_identities',
+            'age_brackets',
+            'ethnoracial_identities',
+            'constituencies',
+        ] as $relationship) {
+            $method = Str::camel($relationship);
+            if (isset($data[$relationship])) {
+                $organization->$method()->sync($data[$relationship]);
+            } else {
+                $organization->$method()->detach();
+            }
+        }
+
+        foreach ([
+             'indigenous_identities',
+             'age_brackets',
+             'ethnoracial_identities',
+         ] as $relationship) {
+            if (isset($data[$relationship])) {
+                $organization->extra_attributes->set("has_{$relationship}", 1);
+            } else {
+                $organization->extra_attributes->set("has_{$relationship}", 0);
+            }
+        }
 
         $organization->fill($data);
         $organization->save();
-
-        if (isset($data['lived_experiences'])) {
-            $organization->livedExperienceConstituencies()->sync($data['lived_experiences']);
-        } else {
-            $organization->livedExperienceConstituencies()->detach();
-        }
-
-        if (isset($data['disability_types'])) {
-            $organization->disabilityConstituencies()->sync($data['disability_types']);
-        } else {
-            $organization->disabilityConstituencies()->detach();
-        }
-
-        if (isset($data['indigenous_identities'])) {
-            $organization->indigenousConstituencies()->sync($data['indigenous_identities']);
-        } else {
-            $organization->indigenousConstituencies()->detach();
-        }
-
-        if (isset($data['gender_identities'])) {
-            $organization->genderIdentityConstituencies()->sync($data['gender_identities']);
-        } else {
-            $organization->genderIdentityConstituencies()->detach();
-        }
 
         return $organization->handleUpdateRequest($request, 2);
     }

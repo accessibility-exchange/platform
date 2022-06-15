@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunityProjectTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -13,13 +12,15 @@ class CreateCommunityProjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('community_project', function (Blueprint $table) {
-            $table->foreignId('community_id')
+        Schema::create('area_type_organization', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('area_type_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('project_id')
+            $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +31,6 @@ class CreateCommunityProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_project');
+        Schema::dropIfExists('area_type_organization');
     }
-}
+};

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasMultipageEditingAndPublishing;
+use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use Makeable\QueryKit\QueryKit;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -22,6 +24,7 @@ class Organization extends Model
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasSchemalessAttributes;
     use HasInvitations;
     use HasMembers;
     use HasMultipageEditingAndPublishing;
@@ -29,6 +32,7 @@ class Organization extends Model
     use HasTranslations;
     use HasTranslatableSlug;
     use Notifiable;
+    use QueryKit;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +40,7 @@ class Organization extends Model
      * @var array<string>
      */
     protected $fillable = [
+        'extra_attributes',
         'name',
         'type',
         'languages',
@@ -45,14 +50,10 @@ class Organization extends Model
         'region',
         'about',
         'service_areas',
-        'area_types',
         'social_links',
         'website_link',
-        'cross_disability',
         'other_disability_type',
-        'refugees_and_immigrants',
-        'trans_people',
-        'twoslgbtqia',
+        'staff_lived_experience',
     ];
 
     /**
@@ -62,17 +63,12 @@ class Organization extends Model
      */
     protected $casts = [
         'service_areas' => 'array',
-        'area_types' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
         'consulting_services' => 'array',
         'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
-        'cross_disability' => 'boolean',
         'other_disability_type' => 'array',
-        'refugees_and_immigrants' => 'boolean',
-        'trans_people' => 'boolean',
-        'twoslgbtqia' => 'boolean',
     ];
 
     /**
@@ -194,8 +190,7 @@ class Organization extends Model
             && ! is_null($this->locality)
             && ! is_null($this->region)
             && ! is_null($this->about)
-            && ! is_null($this->service_areas)
-            && ! is_null($this->area_types);
+            && ! is_null($this->service_areas);
     }
 
     public function blocks(): MorphToMany
@@ -267,65 +262,63 @@ class Organization extends Model
         return $this->organizationRoles->contains($connectorRole);
     }
 
-    public function livedExperienceConstituencies(): MorphToMany
+    public function livedExperiences(): BelongsToMany
     {
-        return $this->morphedByMany(LivedExperience::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(LivedExperience::class)->withTimestamps();
     }
 
-    public function disabilityConstituencies(): MorphToMany
+    public function areaTypes(): BelongsToMany
     {
-        return $this->morphedByMany(DisabilityType::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(AreaType::class)->withTimestamps();
     }
 
-    public function indigenousConstituencies(): MorphToMany
+    public function disabilityTypes(): BelongsToMany
     {
-        return $this->morphedByMany(IndigenousIdentity::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(DisabilityType::class)->withTimestamps();
     }
 
-    public function genderIdentityConstituencies(): MorphToMany
+    public function indigenousIdentities(): BelongsToMany
     {
-        return $this->morphedByMany(GenderIdentity::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(IndigenousIdentity::class)->withTimestamps();
     }
 
-    public function ageBracketConstituencies(): MorphToMany
+    public function genderIdentities(): BelongsToMany
     {
-        return $this->morphedByMany(AgeBracket::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(GenderIdentity::class)->withTimestamps();
     }
 
-    public function ethnoracialConstituencies(): MorphToMany
+    public function ageBrackets(): BelongsToMany
     {
-        return $this->morphedByMany(EthnoracialIdentity::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(AgeBracket::class)->withTimestamps();
     }
 
-    public function employmentStatusConstituencies(): MorphToMany
+    public function ethnoracialIdentities(): BelongsToMany
     {
-        return $this->morphedByMany(EmploymentStatus::class, 'constituentable')->orderBy('name');
+        return $this->belongsToMany(EthnoracialIdentity::class)->withTimestamps();
     }
 
-    public function getBaseDisabilityTypeAttribute(): string|null
+    public function constituencies(): BelongsToMany
     {
-        $disabilityLivedExperience = LivedExperience::find(1);
+        return $this->belongsToMany(Constituency::class)->withTimestamps();
+    }
 
-        if ($this->livedExperienceConstituencies->contains($disabilityLivedExperience)) {
-            return $this->cross_disability
+    public function getBaseDisabilityTypeAttribute(): string|false
+    {
+        if ($this->disabilityTypes->count() > 0) {
+            return $this->disabilityTypes->contains(DisabilityType::where('name->en', 'Cross-disability')->first())
                 ? 'cross_disability'
                 : 'specific_disabilities';
+        } elseif ($this->other_disability_type) {
+            return 'specific_disabilities';
         }
 
-        return null;
+        return false;
     }
 
-    public function getBaseIndigenousIdentityAttribute(): int
+    public function getHasNbGncFluidConstituentsAttribute(): bool
     {
-        return $this->indigenousConstituencies->count() > 0
-            ? 1
-            : 0;
-    }
-
-    public function getBaseGenderAndSexualIdentityAttribute(): int
-    {
-        return $this->genderIdentityConstituencies->count() > 0 || $this->trans_people || $this->twoslgbtqia
-            ? 1
-            : 0;
+        return $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Non-binary people')->firstOrFail())
+            || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->firstOrFail())
+            || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender fluid people')->firstOrFail());
     }
 }

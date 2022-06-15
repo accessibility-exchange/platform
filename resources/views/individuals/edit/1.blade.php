@@ -78,16 +78,16 @@
                 <x-translatable-input name="other_lived_experience_connections" :model="$individual"  :label="__('Other disability or Deaf community your connected to (optional)')" />
                 <x-hearth-error for="lived_experience_connections" />
             </fieldset>
-            <fieldset class="field @error('community_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+            <fieldset class="field @error('constituency_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Other equity-seeking communities you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="community_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
+                <x-hearth-hint for="constituency_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
                 <p x-cloak>
                     <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </p>
-                <x-hearth-checkboxes name="community_connections" :options="$communities" :checked="old('community_connections', $individual->communityConnections->pluck('id')->toArray())" hinted="community_connections-hint" />
-                <x-hearth-error for="community_connections" />
-                <x-translatable-input name="other_community_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
+                <x-hearth-checkboxes name="constituency_connections" :options="$constituencies" :checked="old('constituency_connections', $individual->constituencyConnections->pluck('id')->toArray())" hinted="constituency_connections-hint" />
+                <x-hearth-error for="constituency_connections" />
+                <x-translatable-input name="other_constituency_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
             </fieldset>
             <fieldset class="field @error('age_bracket_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Age groups you’re connected to (optional)') }}</legend>

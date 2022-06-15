@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunityIndividualTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -13,13 +12,15 @@ class CreateCommunityIndividualTable extends Migration
      */
     public function up()
     {
-        Schema::create('community_individual', function (Blueprint $table) {
-            $table->foreignId('community_id')
+        Schema::create('gender_identity_organization', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('gender_identity_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('individual_id')
+            $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +31,6 @@ class CreateCommunityIndividualTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_individual');
+        Schema::dropIfExists('gender_identity_organization');
     }
-}
+};

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Translatable\HasTranslations;
 
-class Community extends Model
+class Constituency extends Model
 {
     use HasTranslations;
 
@@ -17,6 +17,9 @@ class Community extends Model
      */
     protected $fillable = [
         'name',
+        'name_plural',
+        'adjective',
+        'description',
     ];
 
     /**
@@ -26,6 +29,9 @@ class Community extends Model
      */
     protected $casts = [
         'name' => 'array',
+        'name_plural' => 'array',
+        'adjective' => 'array',
+        'description' => 'array',
     ];
 
     /**
@@ -35,6 +41,9 @@ class Community extends Model
      */
     public array $translatable = [
         'name',
+        'name_plural',
+        'adjective',
+        'description',
     ];
 
     /**

@@ -35,23 +35,48 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\AgeGroup
+ * App\Models\AgeBracket
  *
  * @property int $id
  * @property array $name
+ * @property int|null $min
+ * @property int|null $max
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Individual[] $communityConnectors
  * @property-read int|null $community_connectors_count
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup query()
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AgeGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereMax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereMin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AgeBracket whereUpdatedAt($value)
  */
-	class AgeGroup extends \Eloquent {}
+	class AgeBracket extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\AreaType
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AreaType whereUpdatedAt($value)
+ */
+	class AreaType extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -75,23 +100,29 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Community
+ * App\Models\Constituency
  *
  * @property int $id
  * @property array $name
+ * @property array $name_plural
+ * @property array $adjective
+ * @property array $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Individual[] $communityConnectors
  * @property-read int|null $community_connectors_count
- * @method static \Illuminate\Database\Eloquent\Builder|Community newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Community newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Community query()
- * @method static \Illuminate\Database\Eloquent\Builder|Community whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Community whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Community whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Community whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereAdjective($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereNamePlural($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Constituency whereUpdatedAt($value)
  */
-	class Community extends \Eloquent {}
+	class Constituency extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -186,6 +217,48 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\DisabilityType
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|DisabilityType whereUpdatedAt($value)
+ */
+	class DisabilityType extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\EmploymentStatus
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus query()
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EmploymentStatus whereUpdatedAt($value)
+ */
+	class EmploymentStatus extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Engagement
  *
  * @property array $name
@@ -228,6 +301,27 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\EthnoracialIdentity
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity query()
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|EthnoracialIdentity whereUpdatedAt($value)
+ */
+	class EthnoracialIdentity extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Format
  *
  * @property int $id
@@ -243,6 +337,27 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Format whereUpdatedAt($value)
  */
 	class Format extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\GenderIdentity
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity query()
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|GenderIdentity whereUpdatedAt($value)
+ */
+	class GenderIdentity extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -266,31 +381,82 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\IndigenousIdentity
+ *
+ * @property int $id
+ * @property array $name
+ * @property array|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity query()
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndigenousIdentity whereUpdatedAt($value)
+ */
+	class IndigenousIdentity extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Individual
  *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $locality
+ * @property string|null $region
+ * @property int $user_id
+ * @property string|null $published_at
+ * @property array|null $bio
+ * @property array $social_links
+ * @property array|null $pronouns
+ * @property array|null $picture_alt
+ * @property string|null $phone
+ * @property string|null $email
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property array $web_links
+ * @property string|null $age_group
+ * @property bool $rural_or_remote
+ * @property array|null $lived_experience
+ * @property array|null $skills_and_strengths
+ * @property array $relevant_experiences
+ * @property array|null $languages
+ * @property array|null $meeting_types
+ * @property array|null $working_languages
+ * @property array|null $other_lived_experience_connections
+ * @property array|null $other_constituency_connections
+ * @property string|null $preferred_contact_method
+ * @property string|null $preferred_contact_person
+ * @property bool|null $vrs
+ * @property string $first_language
+ * @property string|null $support_person_name
+ * @property string|null $support_person_email
+ * @property string|null $support_person_phone
+ * @property bool|null $support_person_vrs
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AccessSupport[] $accessSupports
  * @property-read int|null $access_supports_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgeGroup[] $ageBracketConnections
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgeBracket[] $ageBracketConnections
  * @property-read int|null $age_bracket_connections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $blocks
  * @property-read int|null $blocks_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communities
- * @property-read int|null $communities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Community[] $communityConnections
- * @property-read int|null $community_connections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Constituency[] $constituencies
+ * @property-read int|null $constituencies_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Constituency[] $constituencyConnections
+ * @property-read int|null $constituency_connections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Engagement[] $engagements
  * @property-read int|null $engagements_count
  * @property-read string|null $alternate_contact_method
  * @property-read string|null $alternate_contact_point
  * @property-read string $contact_person
  * @property-read string $first_name
- * @property-read string|null $phone
  * @property-read string|null $primary_contact_method
  * @property-read string|null $primary_contact_point
- * @property-read array $relevant_experiences
  * @property-read bool $requires_vrs
- * @property-read array $social_links
- * @property-read array $web_links
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Impact[] $impacts
  * @property-read int|null $impacts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\IndividualRole[] $individualRoles
@@ -309,12 +475,47 @@ namespace App\Models{
  * @property-read int|null $projects_of_interest_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sector[] $sectors
  * @property-read int|null $sectors_count
- * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\IndividualFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Individual newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Individual newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Individual query()
  * @method static \Illuminate\Database\Eloquent\Builder|Individual status($status)
  * @method static \Illuminate\Database\Eloquent\Builder|Individual statusIn($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereAgeGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereFirstLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereLanguages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereLivedExperience($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereLocality($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereMeetingTypes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereOtherConstituencyConnections($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereOtherLivedExperienceConnections($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePictureAlt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePreferredContactMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePreferredContactPerson($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePronouns($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereRelevantExperiences($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereRuralOrRemote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSkillsAndStrengths($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSocialLinks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSupportPersonEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSupportPersonName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSupportPersonPhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereSupportPersonVrs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereVrs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereWebLinks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Individual whereWorkingLanguages($value)
  */
 	class Individual extends \Eloquent implements \Spatie\MediaLibrary\HasMedia {}
 }
@@ -323,9 +524,19 @@ namespace App\Models{
 /**
  * App\Models\IndividualRole
  *
+ * @property int $id
+ * @property array $name
+ * @property array $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole query()
+ * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|IndividualRole whereUpdatedAt($value)
  */
 	class IndividualRole extends \Eloquent {}
 }
@@ -383,24 +594,59 @@ namespace App\Models{
  * @property int $id
  * @property array $name
  * @property array $slug
- * @property string $locality
- * @property string $region
+ * @property string|null $locality
+ * @property string|null $region
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $type
+ * @property array|null $languages
+ * @property array|null $working_languages
+ * @property array|null $about
+ * @property array|null $service_areas
+ * @property array|null $area_types
+ * @property array|null $social_links
+ * @property string|null $website_link
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property bool|null $cross_disability
+ * @property array|null $other_disability_type
+ * @property bool|null $refugees_and_immigrants
+ * @property bool|null $trans_people
+ * @property bool|null $twoslgbtqia
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $administrators
  * @property-read int|null $administrators_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AgeBracket[] $ageBrackets
+ * @property-read int|null $age_bracket_constituencies_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $blocks
  * @property-read int|null $blocks_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $completedProjects
  * @property-read int|null $completed_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DisabilityType[] $disabilityTypes
+ * @property-read int|null $disability_constituencies_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EmploymentStatus[] $employmentStatusConstituencies
+ * @property-read int|null $employment_status_constituencies_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EthnoracialIdentity[] $ethnoracialIdentities
+ * @property-read int|null $ethnoracial_constituencies_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\GenderIdentity[] $genderIdentities
+ * @property-read int|null $gender_identity_constituencies_count
+ * @property-read int $has_age_brackets
+ * @property-read string|null $base_disability_type
+ * @property-read int $has_ethnoracial_identities
+ * @property-read int $has_gender_and_sexual_identities
+ * @property-read int $has_indigenous_identities
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $inProgressProjects
  * @property-read int|null $in_progress_projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\IndigenousIdentity[] $indigenousIdentities
+ * @property-read int|null $indigenous_constituencies_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Hearth\Models\Invitation[] $invitations
  * @property-read int|null $invitations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\LivedExperience[] $livedExperiences
+ * @property-read int|null $lived_experience_constituencies_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $notificationRecipients
  * @property-read int|null $notification_recipients_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\OrganizationRole[] $organizationRoles
+ * @property-read int|null $organization_roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
  * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $upcomingProjects
@@ -411,15 +657,52 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Organization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Organization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Organization query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization status($status)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization statusIn($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereAreaTypes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereCrossDisability($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereLanguages($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereLocality($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereOtherDisabilityType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereRefugeesAndImmigrants($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereServiceAreas($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereSocialLinks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereTransPeople($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereTwoslgbtqia($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Organization whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereWebsiteLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Organization whereWorkingLanguages($value)
  */
 	class Organization extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\OrganizationRole
+ *
+ * @property int $id
+ * @property array $name
+ * @property array $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole query()
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrganizationRole whereUpdatedAt($value)
+ */
+	class OrganizationRole extends \Eloquent {}
 }
 
 namespace App\Models{

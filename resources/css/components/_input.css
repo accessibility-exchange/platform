@@ -161,6 +161,10 @@ fieldset {
     padding: 0;
 }
 
+.stack fieldset + fieldset {
+    margin-block-start: var(--size-8);
+}
+
 .password {
     align-items: flex-end;
     display: flex;
@@ -176,6 +180,11 @@ fieldset {
     background-color: var(--tae-grey-2);
     border-radius: var(--radius-2);
     padding: var(--size-2);
+}
+
+.field__subfield {
+    margin-block: var(--size-3);
+    padding-inline-start: var(--size-6);
 }
 
 legend {

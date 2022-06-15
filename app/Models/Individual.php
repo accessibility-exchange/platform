@@ -50,7 +50,7 @@ class Individual extends Model implements HasMedia
         'first_language',
         'working_languages',
         'other_lived_experience_connections',
-        'other_community_connections',
+        'other_constituency_connections',
         'vrs',
         'web_links',
         'status',
@@ -85,7 +85,7 @@ class Individual extends Model implements HasMedia
         'support_person_vrs' => 'boolean',
         'meeting_types' => 'array',
         'other_lived_experience_connections' => 'array',
-        'other_community_connections' => 'array',
+        'other_constituency_connections' => 'array',
         'bio' => 'array',
         'pronouns' => 'array',
     ];
@@ -102,7 +102,7 @@ class Individual extends Model implements HasMedia
         'lived_experience',
         'skills_and_strengths',
         'other_lived_experience_connections',
-        'other_community_connections',
+        'other_constituency_connections',
     ];
 
     /**
@@ -385,15 +385,15 @@ class Individual extends Model implements HasMedia
     }
 
     /**
-     * The communities that belong to the individual.
+     * The constituencies that belong to the individual.
      */
-    public function communities(): BelongsToMany
+    public function constituencies(): BelongsToMany
     {
-        return $this->belongsToMany(Community::class);
+        return $this->belongsToMany(Constituency::class);
     }
 
     /**
-     * The communities that belong to the individual.
+     * The lived experiences that belong to the individual.
      */
     public function livedExperiences(): BelongsToMany
     {
@@ -501,13 +501,13 @@ class Individual extends Model implements HasMedia
     }
 
     /**
-     * Get all the communities that the individual can connect with.
+     * Get all the constituencies that the individual can connect with.
      *
      * @return MorphToMany
      */
-    public function communityConnections(): MorphToMany
+    public function constituencyConnections(): MorphToMany
     {
-        return $this->morphedByMany(Community::class, 'connectable');
+        return $this->morphedByMany(Constituency::class, 'connectable');
     }
 
     /**

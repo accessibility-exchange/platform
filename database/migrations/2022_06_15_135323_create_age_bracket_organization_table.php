@@ -12,12 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('gender_identities', function (Blueprint $table) {
+        Schema::create('age_bracket_organization', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
-            $table->json('name_plural');
-            $table->json('adjective');
-            $table->json('description')->nullable();
+            $table->foreignId('age_bracket_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('organization_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('gender_identities');
+        Schema::dropIfExists('age_bracket_organization');
     }
 };

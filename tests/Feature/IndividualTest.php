@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\AgeBracket;
-use App\Models\Community;
+use App\Models\Constituency;
 use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -10,7 +10,7 @@ use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AgeBracketSeeder;
-use Database\Seeders\CommunitySeeder;
+use Database\Seeders\ConstituencySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
@@ -278,7 +278,7 @@ test('entity users can not create individual pages', function () {
 test('individuals with connector role must select connected identities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
-    $this->seed(CommunitySeeder::class);
+    $this->seed(ConstituencySeeder::class);
     $this->seed(AgeBracketSeeder::class);
 
     $user = User::factory()->create();
@@ -286,7 +286,7 @@ test('individuals with connector role must select connected identities', functio
 
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
-    $community = Community::first();
+    $community = Constituency::first();
     $AgeBracket = AgeBracket::first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
@@ -306,7 +306,7 @@ test('individuals with connector role must select connected identities', functio
         'bio' => ['en' => 'This is my bio.'],
         'first_language' => $user->locale,
         'lived_experience_connections' => [$livedExperience->id],
-        'community_connections' => [$community->id],
+        'constituency_connections' => [$community->id],
         'age_bracket_connections' => [$AgeBracket->id],
     ]);
 
@@ -315,7 +315,7 @@ test('individuals with connector role must select connected identities', functio
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->communityConnections)->toHaveCount(1);
+    expect($individual->constituencyConnections)->toHaveCount(1);
     expect($individual->ageBracketConnections)->toHaveCount(1);
     expect($livedExperience->communityConnectors)->toHaveCount(1);
     expect($community->communityConnectors)->toHaveCount(1);
