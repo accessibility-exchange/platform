@@ -18,6 +18,7 @@ use App\Models\DisabilityType;
 use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
 use App\Models\IndigenousIdentity;
+use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
@@ -246,6 +247,22 @@ class OrganizationController extends Controller
             } else {
                 $organization->$method()->detach();
             }
+        }
+
+
+        if (isset($data['constituent_languages'])) {
+            foreach ($data['constituent_languages'] as $code) {
+                $language = Language::firstOrCreate([
+                    'code' => $code,
+                    'name' => [
+                        'en' => get_language_exonym($code, 'en'),
+                        'fr' => get_language_exonym($code, 'fr')
+                    ]
+                ]);
+                $organization->constituentLanguages()->sync($language);
+            }
+        } else {
+            $organization->constituentLanguages()->detach();
         }
 
         foreach ([

@@ -302,6 +302,11 @@ class Organization extends Model
         return $this->belongsToMany(Constituency::class)->withTimestamps();
     }
 
+    public function constituentLanguages(): BelongsToMany
+    {
+        return $this->belongsToMany(Language::class)->withTimestamps();
+    }
+
     public function getBaseDisabilityTypeAttribute(): string|false
     {
         if ($this->disabilityTypes->count() > 0) {

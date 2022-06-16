@@ -118,6 +118,11 @@
                 </div>
             </fieldset>
 
+            <fieldset class="field @error('constituent_languages') field--error @enderror">
+                <legend>{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use? (required)', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}</legend>
+                <livewire:language-picker name="constituent_languages" :languages="$organization->constituentLanguages->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+            </fieldset>
+
             <fieldset class="field @error('staff_lived_experience') field--error @enderror">
                 <legend>{{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
                 <x-hearth-radio-buttons name="staff_lived_experience" :options="['yes' => __('Yes'), 'no' => __('No'), 'prefer-not-to-answer' => __('Prefer not to answer')]" :checked="old('staff_lived_experience', $organization->staff_lived_experience)" />

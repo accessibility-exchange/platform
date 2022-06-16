@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ContentTypeSeeder::class,
             FormatSeeder::class,
             ImpactSeeder::class,
+            LanguageSeeder::class,
             LivedExperienceSeeder::class,
             PaymentMethodSeeder::class,
             PhaseSeeder::class,
