@@ -249,15 +249,14 @@ class OrganizationController extends Controller
             }
         }
 
-
         if (isset($data['constituent_languages'])) {
             foreach ($data['constituent_languages'] as $code) {
                 $language = Language::firstOrCreate([
                     'code' => $code,
                     'name' => [
                         'en' => get_language_exonym($code, 'en'),
-                        'fr' => get_language_exonym($code, 'fr')
-                    ]
+                        'fr' => get_language_exonym($code, 'fr'),
+                    ],
                 ]);
                 $organization->constituentLanguages()->sync($language);
             }
