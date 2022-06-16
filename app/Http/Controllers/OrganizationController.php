@@ -170,8 +170,7 @@ class OrganizationController extends Controller
     public function updateConstituencies(UpdateOrganizationConstituenciesRequest $request, Organization $organization): RedirectResponse
     {
         $data = $request->validated();
-
-        ray($data);
+        $data['constituencies'] = [];
 
         $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
         $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
@@ -186,13 +185,7 @@ class OrganizationController extends Controller
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
             $organization->extra_attributes->has_refugee_and_immigrant_constituency = 1;
 
-            if (isset($data['constituencies'])) {
-                $data['constituencies'][] = $refugeesAndImmigrants->id;
-            } else {
-                $data['constituencies'] = [
-                    $refugeesAndImmigrants->id,
-                ];
-            }
+            $data['constituencies'][] = $refugeesAndImmigrants->id;
         } else {
             $organization->extra_attributes->has_refugee_and_immigrant_constituency = 0;
         }
@@ -250,6 +243,7 @@ class OrganizationController extends Controller
         }
 
         if (isset($data['constituent_languages'])) {
+            $languages = [];
             foreach ($data['constituent_languages'] as $code) {
                 $language = Language::firstOrCreate([
                     'code' => $code,
@@ -258,10 +252,9 @@ class OrganizationController extends Controller
                         'fr' => get_language_exonym($code, 'fr'),
                     ],
                 ]);
-                $organization->constituentLanguages()->sync($language);
+                $languages[] = $language->id;
             }
-        } else {
-            $organization->constituentLanguages()->detach();
+            $organization->constituentLanguages()->sync($languages);
         }
 
         foreach ([

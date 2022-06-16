@@ -1,8 +1,17 @@
 <?php
 
+use App\Models\AgeBracket;
+use App\Models\AreaType;
+use App\Models\DisabilityType;
+use App\Models\EthnoracialIdentity;
+use App\Models\IndigenousIdentity;
+use App\Models\Language;
+use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\OrganizationRoleSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
@@ -123,6 +132,110 @@ test('users with admin role can edit and publish organizations', function () {
     $response->assertForbidden();
 
     expect($organization->fresh()->checkStatus('published'))->toBeFalse();
+});
+
+test('users with admin role can edit organization constituencies', function () {
+    $this->seed(DatabaseSeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
+        'base_disability_type' => 'specific_disabilities',
+        'disability_types' => [],
+        'other_disability' => true,
+        'other_disability_type' => ['en' => 'Something else'],
+        'area_types' => [AreaType::first()->id],
+        'has_indigenous_identities' => true,
+        'indigenous_identities' => [IndigenousIdentity::first()->id],
+        'refugees_and_immigrants' => true,
+        'has_gender_and_sexual_identities' => true,
+        'gender_and_sexual_identities' => ['women', 'nb-gnc-fluid-people', 'trans-people', '2slgbtqiaplus-people'],
+        'has_age_brackets' => true,
+        'age_brackets' => [AgeBracket::first()->id],
+        'has_ethnoracial_identities' => true,
+        'ethnoracial_identities' => [EthnoracialIdentity::first()->id],
+        'constituent_languages' => ['en', 'fr'],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->livedExperiences)->toHaveCount(1);
+    expect($organization->disabilityTypes)->toHaveCount(0);
+    expect($organization->base_disability_type)->toEqual('specific_disabilities');
+    expect($organization->other_disability_type)->toEqual('Something else');
+    expect($organization->areaTypes)->toHaveCount(1);
+    expect($organization->indigenousIdentities)->toHaveCount(1);
+    expect($organization->genderIdentities)->toHaveCount(4);
+    expect($organization->constituencies)->toHaveCount(3);
+    expect($organization->ageBrackets)->toHaveCount(1);
+    expect($organization->ethnoracialIdentities)->toHaveCount(1);
+    expect($organization->constituentLanguages)->toHaveCount(2);
+    expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
+        'base_disability_type' => 'specific_disabilities',
+        'disability_types' => [DisabilityType::where('name->en', 'Multiple disabilities')->first()->id],
+        'area_types' => [AreaType::first()->id],
+        'has_indigenous_identities' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexual_identities' => false,
+        'has_age_brackets' => false,
+        'has_ethnoracial_identities' => false,
+        'constituent_languages' => ['en', 'fr'],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->livedExperiences)->toHaveCount(1);
+    expect($organization->disabilityTypes)->toHaveCount(1);
+    expect($organization->base_disability_type)->toEqual('specific_disabilities');
+    expect($organization->areaTypes)->toHaveCount(1);
+    expect($organization->indigenousIdentities)->toHaveCount(0);
+    expect($organization->genderIdentities)->toHaveCount(0);
+    expect($organization->constituencies)->toHaveCount(0);
+    expect($organization->ageBrackets)->toHaveCount(0);
+    expect($organization->ethnoracialIdentities)->toHaveCount(0);
+    expect($organization->constituentLanguages)->toHaveCount(2);
+    expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
+        'base_disability_type' => 'cross_disability',
+        'area_types' => [AreaType::first()->id],
+        'has_indigenous_identities' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexual_identities' => false,
+        'has_age_brackets' => false,
+        'has_ethnoracial_identities' => false,
+        'constituent_languages' => ['en', 'fr'],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->base_disability_type)->toEqual('cross_disability');
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
@@ -426,7 +539,7 @@ test('invitation can be accepted', function () {
 
 test('invitation cannot be accepted by user with existing membership', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()
+    Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
     $other_organization = Organization::factory()->create();
