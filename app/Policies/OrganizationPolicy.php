@@ -11,12 +11,6 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     * @return Response
-     */
     public function create(User $user): Response
     {
         return $user->context === 'organization' && $user->organizations->isEmpty()
@@ -34,13 +28,6 @@ class OrganizationPolicy
             : Response::allow();
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     * @param Organization $organization
-     * @return Response
-     */
     public function update(User $user, Organization $organization): Response
     {
         return $user->isAdministratorOf($organization)
@@ -48,20 +35,20 @@ class OrganizationPolicy
             : Response::deny(__('You cannot edit this organization.'));
     }
 
-    public function block(User $user, Organization $organization): Response
+    public function publish(User $user, Organization $organization): Response
     {
-        return $user->isMemberOf($organization)
-            ? Response::deny(__('You cannot block the :type that you belong to.', ['type' => __('organization')]))
-            : Response::allow();
+        return $user->isAdministratorOf($organization) && $organization->isPublishable()
+            ? Response::allow()
+            : Response::deny(__('You cannot publish this organization.'));
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param Organization $organization
-     * @return Response
-     */
+    public function unpublish(User $user, Organization $organization): Response
+    {
+        return $user->isAdministratorOf($organization)
+            ? Response::allow()
+            : Response::deny(__('You cannot unpublish this organization.'));
+    }
+
     public function delete(User $user, Organization $organization): Response
     {
         return $user->isAdministratorOf($organization)

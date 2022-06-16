@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyIndividualRequest;
-use App\Http\Requests\SaveIndividualRoleRequest;
+use App\Http\Requests\SaveIndividualRolesRequest;
 use App\Http\Requests\UpdateIndividualCommunicationAndMeetingPreferencesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
-use App\Models\AgeGroup;
-use App\Models\Community;
+use App\Models\AgeBracket;
+use App\Models\Constituency;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\IndividualRole;
@@ -96,11 +96,11 @@ class IndividualController extends Controller
     /**
      * Save roles for the logged-in user.
      *
-     * @param SaveIndividualRoleRequest $request
+     * @param SaveIndividualRolesRequest $request
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function saveRole(SaveIndividualRoleRequest $request): RedirectResponse
+    public function saveRoles(SaveIndividualRolesRequest $request): RedirectResponse
     {
         $this->authorize('selectRole', Auth::user());
 
@@ -141,13 +141,13 @@ class IndividualController extends Controller
             'regions' => get_regions(['CA'], locale()),
             'sectors' => Sector::all()->prepareForForm(),
             'impacts' => Impact::all()->prepareForForm(),
-            'communities' => Community::pluck('name', 'id')->toArray(),
+            'constituencies' => Constituency::pluck('name', 'id')->toArray(),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
             'livedExperiences' => LivedExperience::pluck('name', 'id')->toArray(),
-            'ageGroups' => AgeGroup::pluck('name', 'id')->toArray(),
+            'ageBrackets' => AgeBracket::pluck('name', 'id')->toArray(),
             'livingSituations' => [
                 'urban' => __('Urban'),
                 'suburban' => __('Suburban'),
@@ -191,11 +191,11 @@ class IndividualController extends Controller
 
         if ($individual->isConnector()) {
             $individual->livedExperienceConnections()->sync($data['lived_experience_connections'] ?? []);
-            if (isset($data['community_connections'])) {
-                $individual->communityConnections()->sync($data['community_connections'] ?? []);
+            if (isset($data['constituency_connections'])) {
+                $individual->constituencyConnections()->sync($data['constituency_connections'] ?? []);
             }
-            if (isset($data['age_group_connections'])) {
-                $individual->ageGroupConnections()->sync($data['age_group_connections'] ?? []);
+            if (isset($data['age_bracket_connections'])) {
+                $individual->ageBracketConnections()->sync($data['age_bracket_connections'] ?? []);
             }
         }
 

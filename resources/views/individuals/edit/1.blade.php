@@ -13,8 +13,8 @@
             </h2>
 
             <p class="repel">
-                <button name="save">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
 
             </p>
 
@@ -78,26 +78,26 @@
                 <x-translatable-input name="other_lived_experience_connections" :model="$individual"  :label="__('Other disability or Deaf community your connected to (optional)')" />
                 <x-hearth-error for="lived_experience_connections" />
             </fieldset>
-            <fieldset class="field @error('community_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+            <fieldset class="field @error('constituency_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Other equity-seeking communities you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="community_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
+                <x-hearth-hint for="constituency_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
                 <p x-cloak>
                     <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </p>
-                <x-hearth-checkboxes name="community_connections" :options="$communities" :checked="old('community_connections', $individual->communityConnections->pluck('id')->toArray())" hinted="community_connections-hint" />
-                <x-hearth-error for="community_connections" />
-                <x-translatable-input name="other_community_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
+                <x-hearth-checkboxes name="constituency_connections" :options="$constituencies" :checked="old('constituency_connections', $individual->constituencyConnections->pluck('id')->toArray())" hinted="constituency_connections-hint" />
+                <x-hearth-error for="constituency_connections" />
+                <x-translatable-input name="other_constituency_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
             </fieldset>
-            <fieldset class="field @error('age_group_connections') field--error @enderror" x-data="enhancedCheckboxes()">
+            <fieldset class="field @error('age_bracket_connections') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Age groups you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="age_group_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
+                <x-hearth-hint for="age_bracket_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
                 <p x-cloak>
                     <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </p>
-                <x-hearth-checkboxes name="age_group_connections" :options="$ageGroups" :checked="old('age_group_connections', $individual->ageGroupConnections->pluck('id')->toArray())" hinted="age_group_connections-hint" />
-                <x-hearth-error for="age_group_connections" />
+                <x-hearth-checkboxes name="age_bracket_connections" :options="$ageBrackets" :checked="old('age_bracket_connections', $individual->ageBracketConnections->pluck('id')->toArray())" hinted="age_bracket_connections-hint" />
+                <x-hearth-error for="age_bracket_connections" />
             </fieldset>
             @endif
 
@@ -111,7 +111,7 @@
                 ] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service (optional)', ['service' => Str::studly($key)] )" />
-                        <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]" :value="old('social_links[' . $key . ']', $individual->social_links[$key] ?? '')" />
+                        <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]" :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" />
                         <x-hearth-error for="social_links_{{ $key }}" />
                     </div>
                 @endforeach
@@ -124,8 +124,8 @@
             </fieldset>
 
             <p class="repel">
-                <button name="save">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next">{{ __('Save and next') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

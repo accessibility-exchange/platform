@@ -50,7 +50,9 @@
         </form>
 
         @env('local')
+            <x-login-link email="admin@accessibilityexchange.ca" label="Sign in as platform administrator" redirect-url="{{ localized_route('dashboard') }}" />
             <x-login-link email="jonny@example.net" label="Sign in as individual user" redirect-url="{{ localized_route('dashboard') }}" />
+            <x-login-link email="camina@example.org" label="Sign in as community organization user" redirect-url="{{ localized_route('dashboard') }}" />
             <x-login-link email="daniel@example.com" label="Sign in as regulated organization user" redirect-url="{{ localized_route('dashboard') }}" />
         @endenv
     </x-auth-card>

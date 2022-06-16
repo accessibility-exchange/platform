@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="title">
-        {{ __('regulated-organization.types.' . $type) }}
+        {{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}
     </x-slot>
     <x-slot name="header">
         <h1>{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}</h1>

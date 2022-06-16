@@ -25,6 +25,10 @@ class RedirectForOnboarding
             return redirect(localized_route('regulated-organizations.show-type-selection'));
         }
 
+        if ($user->context === 'organization' && ! $user->organization) {
+            return redirect(localized_route('organizations.show-type-selection'));
+        }
+
         return $next($request);
     }
 }

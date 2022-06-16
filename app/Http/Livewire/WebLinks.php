@@ -13,13 +13,13 @@ class WebLinks extends Component
 
     /**
      * @param array $links
-     * @param string|null $name
+     * @param string $name
      *
      * @return void
      */
-    public function mount(array $links, string $name = null): void
+    public function mount(array $links, string $name = 'web_links'): void
     {
-        $this->name = $name ?? 'web_links';
+        $this->name = $name;
         $this->links = old($this->name, $links);
     }
 

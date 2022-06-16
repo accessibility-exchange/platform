@@ -35,20 +35,6 @@ class IndividualPolicy
             : Response::allow();
     }
 
-    public function block(User $user, Individual $individual): Response
-    {
-        return $user->individual->id === $individual->id
-            ? Response::deny(__('You cannot block yourself.'))
-            : Response::allow();
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     * @param Individual $individual
-     * @return Response
-     */
     public function update(User $user, Individual $individual): Response
     {
         return $user->id === $individual->user_id
@@ -56,31 +42,31 @@ class IndividualPolicy
             : Response::deny(__('You cannot edit this individual page.'));
     }
 
-    /**
-     * Determine whether the user can publish the model.
-     *
-     * @param User $user
-     * @param Individual $individual
-     * @return Response
-     */
     public function publish(User $user, Individual $individual): Response
     {
         return $user->id === $individual->user_id && $individual->isPublishable()
             ? Response::allow()
-            : Response::deny(__('You cannot edit this individual page.'));
+            : Response::deny(__('You cannot publish this individual page.'));
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param Individual $individual
-     * @return Response
-     */
+    public function unpublish(User $user, Individual $individual): Response
+    {
+        return $user->id === $individual->user_id
+            ? Response::allow()
+            : Response::deny(__('You cannot unpublish this individual page.'));
+    }
+
     public function delete(User $user, Individual $individual): Response
     {
         return $user->id === $individual->user_id
             ? Response::allow()
             : Response::deny(__('You cannot delete this individual page.'));
+    }
+
+    public function block(User $user, Individual $individual): Response
+    {
+        return $user->individual->id === $individual->id
+            ? Response::deny(__('You cannot block yourself.'))
+            : Response::allow();
     }
 }

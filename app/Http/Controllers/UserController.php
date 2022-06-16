@@ -60,6 +60,7 @@ class UserController extends Controller
 
         $redirectTo = match (Auth::user()->context) {
             'individual' => localized_route('individuals.show-role-selection'),
+            'organization' => localized_route('organizations.show-type-selection'),
             'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
@@ -78,6 +79,7 @@ class UserController extends Controller
 
         $memberable = match ($currentUser->context) {
             'regulated-organization' => $currentUser->regulatedOrganization ?? null,
+            'organization' => $currentUser->organization ?? null,
             default => null,
         };
 

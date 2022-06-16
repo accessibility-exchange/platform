@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultipageEditingAndPublishing;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\MediaLibrary\HasMedia;
@@ -22,6 +22,7 @@ use TheIconic\NameParser\Parser as NameParser;
 class Individual extends Model implements HasMedia
 {
     use HasFactory;
+    use HasMultipageEditingAndPublishing;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
@@ -49,7 +50,7 @@ class Individual extends Model implements HasMedia
         'first_language',
         'working_languages',
         'other_lived_experience_connections',
-        'other_community_connections',
+        'other_constituency_connections',
         'vrs',
         'web_links',
         'status',
@@ -84,7 +85,7 @@ class Individual extends Model implements HasMedia
         'support_person_vrs' => 'boolean',
         'meeting_types' => 'array',
         'other_lived_experience_connections' => 'array',
-        'other_community_connections' => 'array',
+        'other_constituency_connections' => 'array',
         'bio' => 'array',
         'pronouns' => 'array',
     ];
@@ -101,7 +102,7 @@ class Individual extends Model implements HasMedia
         'lived_experience',
         'skills_and_strengths',
         'other_lived_experience_connections',
-        'other_community_connections',
+        'other_constituency_connections',
     ];
 
     /**
@@ -132,14 +133,19 @@ class Individual extends Model implements HasMedia
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function getRoutePlaceholder(): string
+    {
+        return 'individual';
+    }
+
+    public function getRoutePrefix(): string
+    {
+        return 'individuals';
     }
 
     /**
@@ -379,15 +385,15 @@ class Individual extends Model implements HasMedia
     }
 
     /**
-     * The communities that belong to the individual.
+     * The constituencies that belong to the individual.
      */
-    public function communities(): BelongsToMany
+    public function constituencies(): BelongsToMany
     {
-        return $this->belongsToMany(Community::class);
+        return $this->belongsToMany(Constituency::class);
     }
 
     /**
-     * The communities that belong to the individual.
+     * The lived experiences that belong to the individual.
      */
     public function livedExperiences(): BelongsToMany
     {
@@ -485,30 +491,6 @@ class Individual extends Model implements HasMedia
     }
 
     /**
-     * Publish the individual page.
-     *
-     * @return void
-     */
-    public function publish(): void
-    {
-        $this->published_at = date('Y-m-d h:i:s', time());
-        $this->save();
-        flash(__('Your individual page has been published.'), 'success');
-    }
-
-    /**
-     * Unpublish the individual page.
-     *
-     * @return void
-     */
-    public function unpublish(): void
-    {
-        $this->published_at = null;
-        $this->save();
-        flash(__('Your individual page has been unpublished.'), 'success');
-    }
-
-    /**
      * Get all the lived experiences that the individual can connect with.
      *
      * @return MorphToMany
@@ -519,13 +501,13 @@ class Individual extends Model implements HasMedia
     }
 
     /**
-     * Get all the communities that the individual can connect with.
+     * Get all the constituencies that the individual can connect with.
      *
      * @return MorphToMany
      */
-    public function communityConnections(): MorphToMany
+    public function constituencyConnections(): MorphToMany
     {
-        return $this->morphedByMany(Community::class, 'connectable');
+        return $this->morphedByMany(Constituency::class, 'connectable');
     }
 
     /**
@@ -533,47 +515,9 @@ class Individual extends Model implements HasMedia
      *
      * @return MorphToMany
      */
-    public function ageGroupConnections(): MorphToMany
+    public function ageBracketConnections(): MorphToMany
     {
-        return $this->morphedByMany(AgeGroup::class, 'connectable');
-    }
-
-    /**
-     * Handle a request to update the individual, redirecting to the appropriate page and displaying the appropriate flash message.
-     *
-     * @param mixed $request
-     * @param int $step
-     * @return RedirectResponse
-     */
-    public function handleUpdateRequest(mixed $request, int $step = 1): RedirectResponse
-    {
-        if (! $request->input('publish') || ! $request->input('unpublish')) {
-            if ($this->checkStatus('draft')) {
-                flash(__('Your draft individual page has been updated.'), 'success');
-            } else {
-                flash(__('Your individual page has been updated.'), 'success');
-            }
-        }
-
-        if ($request->input('save')) {
-            return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step]));
-        } elseif ($request->input('save_and_previous')) {
-            return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step - 1]));
-        } elseif ($request->input('save_and_next')) {
-            return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step + 1]));
-        } elseif ($request->input('preview')) {
-            return redirect(localized_route('individuals.show', $this));
-        } elseif ($request->input('publish')) {
-            $this->publish();
-
-            return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step]));
-        } elseif ($request->input('unpublish')) {
-            $this->unpublish();
-
-            return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step]));
-        }
-
-        return redirect(localized_route('individuals.edit', ['individual' => $this, 'step' => $step]));
+        return $this->morphedByMany(AgeBracket::class, 'connectable');
     }
 
     public function blocks(): MorphToMany

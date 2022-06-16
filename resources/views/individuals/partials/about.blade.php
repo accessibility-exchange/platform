@@ -27,24 +27,24 @@
     @endif
 </ul>
 
-@if($individual->communityConnections->isNotEmpty() || $individual->other_community_connections)
+@if($individual->constituencyConnections->isNotEmpty() || $individual->other_constituency_connections)
 <h4>{{ __('Other intersectional communities') }}</h4>
 
 <ul role="list" class="tags">
-    @foreach($individual->communityConnections as $connection)
+    @foreach($individual->constituencyConnections as $connection)
         <li class="tag">{{ $connection->name }}</li>
     @endforeach
-    @if($individual->other_community_connections)
-        <li class="tag">{{ $individual->other_community_connections }}</li>
+    @if($individual->other_constituency_connections)
+        <li class="tag">{{ $individual->other_constituency_connections }}</li>
     @endif
 </ul>
 @endif
 
-@if($individual->ageGroupConnections->isNotEmpty())
+@if($individual->ageBracketConnections->isNotEmpty())
 <h4>{{ __('Age groups') }}</h4>
 
 <ul role="list" class="tags">
-    @foreach($individual->ageGroupConnections as $connection)
+    @foreach($individual->ageBracketConnections as $connection)
         <li class="tag">{{ $connection->name }}</li>
     @endforeach
 </ul>

@@ -19,7 +19,7 @@ class CriterionFactory extends Factory
     {
         $criteriable = $this->faker->randomElement([
             'App\Models\LivedExperience',
-            'App\Models\Community',
+            'App\Models\Constituency',
             // TODO: Region, gender, age bracket, etc
         ]);
 

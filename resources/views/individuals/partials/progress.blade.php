@@ -19,8 +19,8 @@
     @can('update', $individual)
     @if($individual->checkStatus('draft'))
         <p class="stack">
-            <x-hearth-input class="secondary" type="submit" name="preview" :value="__('Preview page')" />
-            <x-hearth-input class="secondary" type="submit" name="publish" :value="__('Publish page')" />
+            <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+            <button class="secondary" name="publish" value="1">{{ __('Publish page') }}</button>
         </p>
     @else
         <p class="stack">

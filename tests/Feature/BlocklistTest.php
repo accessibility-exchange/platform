@@ -35,6 +35,8 @@ test('individual users can block and unblock regulated organizations', function 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
 
+    expect($regulatedOrganization->blockedBy($user))->toBeTrue();
+
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertForbidden();
 
@@ -53,6 +55,9 @@ test('individual users can block and unblock regulated organizations', function 
     $user = $user->fresh();
 
     expect($user->blockedRegulatedOrganizations)->toHaveCount(0);
+
+    $nullUser = null;
+    expect($regulatedOrganization->blockedBy($nullUser))->toBeFalse();
 });
 
 test('individual users can block and unblock organizations', function () {
@@ -69,6 +74,8 @@ test('individual users can block and unblock organizations', function () {
         ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
+
+    expect($organization->blockedBy($user))->toBeTrue();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertForbidden();
@@ -88,6 +95,9 @@ test('individual users can block and unblock organizations', function () {
     $user = $user->fresh();
 
     expect($user->blockedOrganizations)->toHaveCount(0);
+
+    $nullUser = null;
+    expect($organization->blockedBy($nullUser))->toBeFalse();
 });
 
 test('individual users can block and unblock individuals', function () {
@@ -104,6 +114,8 @@ test('individual users can block and unblock individuals', function () {
         ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
+
+    expect($individual->blockedBy($user))->toBeTrue();
 
     $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
     $response->assertForbidden();
@@ -123,6 +135,9 @@ test('individual users can block and unblock individuals', function () {
     $user = $user->fresh();
 
     expect($user->blockedIndividuals)->toHaveCount(0);
+
+    $nullUser = null;
+    expect($individual->blockedBy($nullUser))->toBeFalse();
 });
 
 test('regulated organization member cannot block their regulated organization', function () {

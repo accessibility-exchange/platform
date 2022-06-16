@@ -16,82 +16,82 @@ class AccessSupportSeeder extends Seeder
     {
         $supports = [
             [
-                'name' => 'Automatic captioning',
+                'name' => __('Automatic captioning'),
                 'virtual' => true,
             ],
             [
-                'name' => 'Plain language',
-                'virtual' => true,
-                'in_person' => true,
-            ],
-            [
-                'name' => 'Materials in advance',
+                'name' => __('Plain language'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Follow-up emails',
+                'name' => __('Materials in advance'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Calendar invites',
+                'name' => __('Follow-up emails'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Reminders for event',
+                'name' => __('Calendar invites'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Sign language interpretation (ASL)',
+                'name' => __('Reminders for event'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Sign language interpretation (LSQ)',
+                'name' => __('Sign language interpretation (ASL)'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'CART (Communication Access Realtime Translation)',
-                'virtual' => true,
-            ],
-            [
-                'name' => 'Language interpretation',
+                'name' => __('Sign language interpretation (LSQ)'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Note-taking services',
+                'name' => __('CART (Communication Access Realtime Translation)'),
+                'virtual' => true,
+            ],
+            [
+                'name' => __('Language interpretation'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Audio description',
+                'name' => __('Note-taking services'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Safe walk program',
-                'in_person' => true,
-            ],
-            [
-                'name' => 'Bringing your support person',
+                'name' => __('Audio description'),
                 'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Bringing your service or therapy animal',
+                'name' => __('Safe walk program'),
                 'in_person' => true,
             ],
             [
-                'name' => 'Gender-neutral washrooms',
+                'name' => __('Bringing your support person'),
+                'virtual' => true,
                 'in_person' => true,
             ],
             [
-                'name' => 'Barrier-free washrooms',
+                'name' => __('Bringing your service or therapy animal'),
+                'in_person' => true,
+            ],
+            [
+                'name' => __('Gender-neutral washrooms'),
+                'in_person' => true,
+            ],
+            [
+                'name' => __('Barrier-free washrooms'),
                 'virtual' => true,
                 'in_person' => true,
             ],
@@ -100,6 +100,7 @@ class AccessSupportSeeder extends Seeder
         foreach ($supports as $support) {
             AccessSupport::firstOrCreate([
                 'name->en' => $support['name'],
+                'name->fr' => trans($support['name'], [], 'fr'),
                 'in_person' => $support['in_person'] ?? false,
                 'virtual' => $support['virtual'] ?? false,
             ]);

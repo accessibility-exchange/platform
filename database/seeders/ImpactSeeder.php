@@ -15,18 +15,19 @@ class ImpactSeeder extends Seeder
     public function run()
     {
         $impacts = [
-            'Employment',
-            'Buildings and public spaces',
-            'Information and communication technologies',
-            'Communication',
-            'Buying goods, services, facilities',
-            'Programs and services',
-            'Transportation',
+            __('Employment'),
+            __('Buildings and public spaces'),
+            __('Information and communication technologies'),
+            __('Communication'),
+            __('Buying goods, services, facilities'),
+            __('Programs and services'),
+            __('Transportation'),
         ];
 
         foreach ($impacts as $impact) {
             Impact::firstOrCreate([
                 'name->en' => $impact,
+                'name->fr' => trans($impact, [], 'fr'),
             ]);
         }
     }

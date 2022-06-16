@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\AgeGroup;
-use App\Models\Community;
+use App\Models\AgeBracket;
+use App\Models\Constituency;
 use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -9,8 +9,8 @@ use App\Models\IndividualRole;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\AgeGroupSeeder;
-use Database\Seeders\CommunitySeeder;
+use Database\Seeders\AgeBracketSeeder;
+use Database\Seeders\ConstituencySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
@@ -25,7 +25,7 @@ test('individual users can select a individual role', function () {
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-selection'))
-        ->put(localized_route('individuals.save-role'), [
+        ->put(localized_route('individuals.save-roles'), [
             'roles' => [$firstRole->id],
         ]);
 
@@ -65,7 +65,7 @@ test('individuals can edit their roles', function () {
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
-        ->put(localized_route('individuals.save-role'), [
+        ->put(localized_route('individuals.save-roles'), [
             'roles' => [$participantRole->id],
         ]);
 
@@ -278,16 +278,16 @@ test('entity users can not create individual pages', function () {
 test('individuals with connector role must select connected identities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
-    $this->seed(CommunitySeeder::class);
-    $this->seed(AgeGroupSeeder::class);
+    $this->seed(ConstituencySeeder::class);
+    $this->seed(AgeBracketSeeder::class);
 
     $user = User::factory()->create();
     $individual = $user->individual;
 
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
-    $community = Community::first();
-    $ageGroup = AgeGroup::first();
+    $community = Constituency::first();
+    $AgeBracket = AgeBracket::first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
@@ -306,8 +306,8 @@ test('individuals with connector role must select connected identities', functio
         'bio' => ['en' => 'This is my bio.'],
         'first_language' => $user->locale,
         'lived_experience_connections' => [$livedExperience->id],
-        'community_connections' => [$community->id],
-        'age_group_connections' => [$ageGroup->id],
+        'constituency_connections' => [$community->id],
+        'age_bracket_connections' => [$AgeBracket->id],
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -315,11 +315,11 @@ test('individuals with connector role must select connected identities', functio
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->communityConnections)->toHaveCount(1);
-    expect($individual->ageGroupConnections)->toHaveCount(1);
+    expect($individual->constituencyConnections)->toHaveCount(1);
+    expect($individual->ageBracketConnections)->toHaveCount(1);
     expect($livedExperience->communityConnectors)->toHaveCount(1);
     expect($community->communityConnectors)->toHaveCount(1);
-    expect($ageGroup->communityConnectors)->toHaveCount(1);
+    expect($AgeBracket->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {

@@ -28,6 +28,14 @@ class DevSeeder extends Seeder
             // ResourceCollectionSeeder::class,
         ]);
 
+        User::factory()
+            ->create([
+                'name' => 'Administrator',
+                'email' => 'admin@accessibilityexchange.ca',
+                'email_verified_at' => now(),
+                'context' => 'administrator',
+            ]);
+
         // Retrieve impacts.
         $communicationImpact = Impact::where('name->en', 'Communication')->first();
         $programsAndServicesImpact = Impact::where('name->en', 'Programs and services')->first();
@@ -114,5 +122,13 @@ class DevSeeder extends Seeder
             ]);
 
         $consultingProject->impacts()->attach($transportationImpact->id);
+
+        $organizationRepresentative = User::factory()
+            ->create([
+                'name' => 'Camina Drummer',
+                'email' => 'camina@example.org',
+                'email_verified_at' => now(),
+                'context' => 'organization',
+            ]);
     }
 }

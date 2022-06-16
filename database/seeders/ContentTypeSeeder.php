@@ -15,15 +15,16 @@ class ContentTypeSeeder extends Seeder
     public function run()
     {
         $content_types = [
-            'Guidelines and best practices',
-            'Practical guides and how tos',
-            'Templates and forms',
-            'Case studies',
+            __('Guidelines and best practices'),
+            __('Practical guides and how tos'),
+            __('Templates and forms'),
+            __('Case studies'),
         ];
 
         foreach ($content_types as $content_type) {
             ContentType::firstOrCreate([
                 'name->en' => $content_type,
+                'name->fr' => trans($content_type, [], 'fr'),
             ]);
         }
     }
