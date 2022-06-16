@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'singular_name' => 'organization',
     'index_title' => 'Organisations',
     'create_title' => 'Créer une organisation',
     'label_name' => 'Nom de l\'organisation',
@@ -29,4 +30,14 @@ return [
     'action_remove_member' => 'Enlever',
     'action_remove_member_with_name' => 'Enlever :user de :organization',
     'error_new_administrator_required_before_user_deletion' => 'Vous devez assigner un nouvel administrateur à votre organisation, :organisation, avant de supprimer votre compte.',
+    'types' => [
+        'representative' => 'representative organization',
+        'support' => 'support organization',
+        'civil-society' => 'civil society organization',
+    ],
+    'area_types' => [
+        'urban' => 'Urban areas',
+        'rural' => 'Rural areas',
+        'remote' => 'Remote areas',
+    ],
 ];
