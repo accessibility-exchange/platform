@@ -7,11 +7,7 @@
         </li>
         <li>
             <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">
-            @if($organization->type === 'representative')
-                {{ __('Groups your organization represents') }}
-            @else
-                {{ __('Groups your organization serves or supports') }}
-            @endif
+                {{ __('Groups your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}
             </a>
         </li>
         <li>

@@ -9,7 +9,7 @@
         <div class="stack" x-data="{livedExperiences: [{{ implode(', ', $organization->livedExperiences->pluck('id')->toArray())}}]}">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
-                {{ __('Groups your organization specifically :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}
+                {{ __('Groups your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}
             </h2>
 
             <p class="repel">
@@ -22,32 +22,20 @@
                 {{ __('What groups does your organization specifically :represent_or_serve_and_support? Please tell us your primary constituencies.', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}
             </h3>
 
-            <fieldset class="field @error('lived_experiences') field--error @enderror">
-                <legend>{{ __('Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
-                <x-hearth-hint for="lived_experiences">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old('lived_experiences', $organization->livedExperiences->pluck('id')->toArray())" hinted="lived_experiences-hint" required x-model.number="livedExperiences" />
-            </fieldset>
+            <p><strong><em>{{ __('Primary constituency means a group that’s specifically in your mandate to :represent_or_serve_and_support.', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</em></strong></p>
 
-            <fieldset class="field @error('disability_types') field--error @enderror" x-show="livedExperiences.includes(1)" x-data="{baseDisabilityType: '{{ $organization->base_disability_type ?? '' }}', otherDisability: {{ old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '' ? 'true' : 'false') }}}">
-                <legend>{{ __('Please select people with disabilities that you specifically :represent_or_serve_and_support (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }} </legend>
-                <x-hearth-radio-buttons name="base_disability_type" :options="['cross_disability' => __('Cross-disability'), 'specific_disabilities' => __('Specific disability or disabilities')]" :checked="old('cross_disability', $organization->disabilityTypes->contains($crossDisability) ? '1' : null)" x-model="baseDisabilityType" />
-                <div class="field__subfield stack" x-show="baseDisabilityType == 'specific_disabilities'" >
-                    <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old('disability_types', $organization->disabilityTypes->pluck('id')->toArray())" required />
-                    <div class="field">
-                        <x-hearth-checkbox name="other_disability" :checked="old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '')" x-model="otherDisability" /> <x-hearth-label for='other_disability'>{{ __('Other') }}</x-hearth-label>
-                    </div>
+            @if($organization->isConnector())
+            <p><em>{{ __('As you’ve indicated that your organization is playing the role of community connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em></p>
+            @endif
 
-                    <div class="field__subfield stack">
-                        <x-translatable-input name="other_disability_type" :label="__('Other disability')" :model="$organization" x-show="otherDisability" />
-                    </div>
-                </div>
-            </fieldset>
+            @if($organization->isParticipant())
+                <p><em>{{ __('As you’ve indicated that your organization is playing the role of consultation participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}</em></p>
+            @endif
 
-            <fieldset class="field @error('area_types') field--error @enderror">
-                <legend>{{ __('Where do the people that you :represent_or_serve_and_support come from? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }} </legend>
-                <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $organization->areaTypes->pluck('id')->toArray())" hinted="area_types-hint" required />
-            </fieldset>
+            @if($organization->type !== 'civil-society')
+            @include('organizations.partials.lived-experiences')
+            @include('organizations.partials.disability-types')
+            @endif
 
             <fieldset class="field @error('indigenous_identities') field--error @enderror" x-data="{hasIndigenousIdentities: '{{ old('has_indigenous_identities', $organization->extra_attributes->get('has_indigenous_identities', '')) }}'}">
                 <legend>{{ __('Does your organization specifically :represent_or_serve_and_support people indigenous to what is now known as Canada? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
@@ -119,9 +107,20 @@
             </fieldset>
 
             <fieldset class="field @error('constituent_languages') field--error @enderror">
-                <legend>{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use? (required)', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}</legend>
+                <legend>{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use? (optional)', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}</legend>
                 <livewire:language-picker name="constituent_languages" :languages="$organization->constituentLanguages->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
             </fieldset>
+
+            <fieldset class="field @error('area_types') field--error @enderror">
+                <legend>{{ __('Where do the people that you :represent_or_serve_and_support come from? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }} </legend>
+                <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $organization->areaTypes->pluck('id')->toArray())" hinted="area_types-hint" required />
+            </fieldset>
+
+            @if($organization->type === 'civil-society')
+                @include('organizations.partials.lived-experiences')
+                @include('organizations.partials.disability-types')
+            @endif
 
             <fieldset class="field @error('staff_lived_experience') field--error @enderror">
                 <legend>{{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
