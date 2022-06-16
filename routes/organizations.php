@@ -66,6 +66,11 @@ Route::controller(OrganizationController::class)
             ->method('put')
             ->name('update-constituencies');
 
+        Route::multilingual('/{organization}/update-interests', 'updateInterests')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->method('put')
+            ->name('update-interests');
+
         Route::multilingual('/{organization}/delete', 'destroy')
             ->middleware(['auth', 'verified', 'can:delete,organization'])
             ->method('delete')

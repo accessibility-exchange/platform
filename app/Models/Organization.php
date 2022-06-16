@@ -262,6 +262,16 @@ class Organization extends Model
         return $this->organizationRoles->contains($connectorRole);
     }
 
+    public function impacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Impact::class);
+    }
+
+    public function sectors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sector::class);
+    }
+
     public function livedExperiences(): BelongsToMany
     {
         return $this->belongsToMany(LivedExperience::class)->withTimestamps();

@@ -13,6 +13,11 @@ class UpdateOrganizationInterestsRequest extends FormRequest
 
     public function rules(): array
     {
-        return [];
+        return [
+            'impacts' => 'nullable|array',
+            'impacts.*' => 'exists:impacts,id',
+            'sectors' => 'nullable|array',
+            'sectors.*' => 'exists:sectors,id',
+        ];
     }
 }

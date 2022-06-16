@@ -17,11 +17,13 @@ use App\Models\Constituency;
 use App\Models\DisabilityType;
 use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
+use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
+use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
@@ -145,6 +147,8 @@ class OrganizationController extends Controller
                 'writing-reports' => __('consulting-services.writing-reports'),
             ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
+            'sectors' => Sector::all()->prepareForForm(),
+            'impacts' => Impact::all()->prepareForForm(),
             'livedExperiences' => LivedExperience::all()->prepareForForm(),
             'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
             'disabilityTypes' => DisabilityType::where('name->en', '!=', 'Cross-disability')->get()->prepareForForm(),
@@ -277,8 +281,19 @@ class OrganizationController extends Controller
 
     public function updateInterests(UpdateOrganizationInterestsRequest $request, Organization $organization): RedirectResponse
     {
-        $organization->fill($request->validated());
-        $organization->save();
+        $data = $request->validated();
+
+        foreach ([
+            'sectors',
+            'impacts',
+        ] as $relationship) {
+            $method = Str::camel($relationship);
+            if (isset($data[$relationship])) {
+                $organization->$method()->sync($data[$relationship]);
+            } else {
+                $organization->$method()->detach();
+            }
+        }
 
         return $organization->handleUpdateRequest($request, 3);
     }

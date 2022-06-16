@@ -4,13 +4,17 @@ use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\DisabilityType;
 use App\Models\EthnoracialIdentity;
+use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
+use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\ImpactSeeder;
 use Database\Seeders\OrganizationRoleSeeder;
+use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -234,6 +238,57 @@ test('users with admin role can edit organization constituencies', function () {
     $organization = $organization->fresh();
 
     expect($organization->base_disability_type)->toEqual('cross_disability');
+});
+
+test('users with admin role can edit organization interests', function () {
+    $this->seed(ImpactSeeder::class);
+    $this->seed(SectorSeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->sectors)->toHaveCount(0);
+    expect($organization->impacts)->toHaveCount(0);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+        'impacts' => [Impact::inRandomOrder()->first()->id],
+        'sectors' => [Sector::inRandomOrder()->first()->id],
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->sectors)->toHaveCount(1);
+    expect($organization->impacts)->toHaveCount(1);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->sectors)->toHaveCount(0);
+    expect($organization->impacts)->toHaveCount(0);
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
