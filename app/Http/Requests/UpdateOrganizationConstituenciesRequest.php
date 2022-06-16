@@ -55,7 +55,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'has_ethnoracial_identities' => 'required|boolean',
             'ethnoracial_identities' => 'nullable|array|required_if:has_ethnoracial_identities,true|exclude_if:has_ethnoracial_identities,false',
             'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
-            'constituent_languages' => 'required|array',
+            'constituent_languages' => 'nullable|array',
             'constituent_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
             'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer',
         ];

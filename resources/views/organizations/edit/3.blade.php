@@ -18,7 +18,7 @@
                 <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
 
-            <p>{{ __('This information is used to tell regulated organizations  if you have any special interests. This entire page is optional.') }}</p>
+            <p>{{ __('This information is used to tell regulated organizations if you have any special interests. This entire page is optional.') }}</p>
 
             <fieldset class="field @error('sectors') field--error @enderror">
                 <legend>{{ __('What sectors of Federally Regulated Organizations are you interested in working with? (optional)') }}</legend>
@@ -32,6 +32,8 @@
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $organization->impacts->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />
             </fieldset>
+
+            {{-- TODO: Other interests --}}
 
             <p class="repel">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>

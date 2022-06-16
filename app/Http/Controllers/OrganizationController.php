@@ -300,10 +300,14 @@ class OrganizationController extends Controller
 
     public function updateContactInformation(UpdateOrganizationContactInformationRequest $request, Organization $organization): RedirectResponse
     {
-        $organization->fill($request->validated());
+        $data = $request->validated();
+
+        $data['contact_person_vrs'] = isset($data['contact_person_vrs']);
+
+        $organization->fill($data);
         $organization->save();
 
-        return $organization->handleUpdateRequest($request, 3);
+        return $organization->handleUpdateRequest($request, 4);
     }
 
     public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse

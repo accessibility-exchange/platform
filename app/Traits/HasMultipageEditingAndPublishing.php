@@ -33,7 +33,7 @@ trait HasMultipageEditingAndPublishing
             ? localized_route($this->getRoutePrefix() . '.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step])
             : localized_route($this->getRoutePrefix() . '.edit', [$this->getRoutePlaceholder() => $this]);
 
-        if (! is_null($request->input('publish')) || ! is_null($request->input('unpublish'))) {
+        if (is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
                 flash(__('Your draft :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
             } else {

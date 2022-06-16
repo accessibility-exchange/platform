@@ -54,6 +54,11 @@ class Organization extends Model
         'website_link',
         'other_disability_type',
         'staff_lived_experience',
+        'contact_person_name',
+        'contact_person_email',
+        'contact_person_phone',
+        'contact_person_vrs',
+        'preferred_contact_method',
     ];
 
     /**

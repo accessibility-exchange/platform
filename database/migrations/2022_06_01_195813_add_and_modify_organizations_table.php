@@ -27,6 +27,11 @@ return new class extends Migration {
             $table->dateTime('published_at')->nullable();
             $table->json('other_disability_type')->nullable();
             $table->enum('staff_lived_experience', ['yes', 'no', 'prefer-not-to-answer']);
+            $table->string('contact_person_name')->nullable();
+            $table->string('contact_person_email')->nullable();
+            $table->string('contact_person_phone')->nullable();
+            $table->boolean('contact_person_vrs')->nullable();
+            $table->enum('preferred_contact_method', ['phone', 'email'])->nullable();
             $table->dropColumn('area_types');
         });
     }

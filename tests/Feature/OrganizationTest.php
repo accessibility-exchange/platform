@@ -20,6 +20,7 @@ use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
+use function Pest\Faker\faker;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
@@ -289,6 +290,30 @@ test('users with admin role can edit organization interests', function () {
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
+});
+
+test('users with admin role can edit organization contact information', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+    $response->assertOk();
+
+    $name = faker()->name;
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name) . '@' . faker()->safeEmailDomain,
+        'contact_person_phone' => faker()->phoneNumber,
+        'contact_person_vrs' => false,
+        'preferred_contact_method' => 'email',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
