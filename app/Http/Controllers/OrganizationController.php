@@ -130,7 +130,6 @@ class OrganizationController extends Controller
             $language = false;
         }
 
-
         return view('organizations.show', array_merge(compact('organization'), ['language' => $language ?? locale()]));
     }
 
@@ -141,7 +140,6 @@ class OrganizationController extends Controller
         if (! in_array($language, $organization->languages)) {
             $language = false;
         }
-
 
         return view('organizations.show', array_merge(compact('organization'), [
             'language' => $language ?? locale(),
