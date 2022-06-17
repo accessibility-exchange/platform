@@ -143,6 +143,7 @@ class OrganizationController extends Controller
 
         return view('organizations.show', array_merge(compact('organization'), [
             'language' => $language ?? locale(),
+            // TODO: Is this the best way of handling these two constituencies?
             'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
             'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
         ]));
