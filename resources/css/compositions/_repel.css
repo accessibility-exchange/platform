@@ -5,6 +5,7 @@
     justify-content: space-between;
 }
 
+.repel .cta,
 .repel button,
 .repel input[type="reset"],
 .repel input[type="submit"] {

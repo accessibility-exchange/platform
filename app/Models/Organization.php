@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,6 +29,7 @@ class Organization extends Model
     use HasSchemalessAttributes;
     use HasInvitations;
     use HasMembers;
+    use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasStatus;
     use HasTranslations;
@@ -132,6 +135,13 @@ class Organization extends Model
         return 'organization';
     }
 
+    protected function serviceRegions(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => get_regions_from_provinces_and_territories(json_decode($attributes['service_areas']) ?? []),
+        );
+    }
+
     /**
      * Get the projects that belong to this organization.
      *
@@ -195,7 +205,8 @@ class Organization extends Model
             && ! is_null($this->locality)
             && ! is_null($this->region)
             && ! is_null($this->about)
-            && ! is_null($this->service_areas);
+            && ! is_null($this->service_areas)
+            && ! is_null($this->contact_person_name);
     }
 
     public function blocks(): MorphToMany

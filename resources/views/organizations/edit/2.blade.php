@@ -65,7 +65,6 @@
                         <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-women' value='women' :checked="old('gender_and_sexual_identities.women', $organization->genderIdentities->contains($women) ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}</x-hearth-label>
                     </div>
                     <div class="field">
-                        {{-- TODO: Check for non-binary, gender non-conforming, gender fluid constituents --}}
                         <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-nb-gnc-fluid-people' value='nb-gnc-fluid-people' :checked="old('gender_and_sexual_identities.nb-gnc-fluid-people', $organization->has_nb_gnc_fluid_constituents ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
                     </div>
                     <div class="field">

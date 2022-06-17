@@ -16,11 +16,15 @@ class GenderIdentity extends Model
 
     protected $casts = [
         'name' => 'array',
+        'name_plural' => 'array',
+        'adjective' => 'array',
         'description' => 'array',
     ];
 
     public array $translatable = [
         'name',
+        'name_plural',
+        'adjective',
         'description',
     ];
 }
