@@ -80,6 +80,8 @@
 </ul>
 @endif
 
-<hr class="divider" />
-
+@if($organization->staff_lived_experience === 'yes')
 <h3>{{ __('Staff lived experience') }}</h3>
+
+<p>{{ __('This organization has people on staff who have lived experience of the communities they :represent_or_serve_and_support.', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</p>
+@endif
