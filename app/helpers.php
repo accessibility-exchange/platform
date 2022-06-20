@@ -105,7 +105,7 @@ if (! function_exists('get_language_exonym')) {
         switch ($code) {
             case 'ase':
             case 'fcs':
-                return trans('languages.' . $code, [], $locale);
+                return trans('locales.' . $code, [], $locale);
             default:
                 $languages = new LanguageRepository();
 

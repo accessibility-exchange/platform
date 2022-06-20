@@ -5,9 +5,12 @@ namespace App\Http\Requests;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateOrganizationRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return $this->user()->can('update', $this->organization);

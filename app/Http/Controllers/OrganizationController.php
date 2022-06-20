@@ -80,7 +80,6 @@ class OrganizationController extends Controller
         $organization = Organization::create($data);
 
         session()->forget('type');
-        session()->forget('roles');
 
         $organization->users()->attach(
             $request->user(),
