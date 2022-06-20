@@ -8,13 +8,19 @@
         @endif
     </x-slot>
     <x-slot name="header">
-        <h1>
-            @if($organization->checkStatus('published'))
-                {{ __('Edit your organization page') }}
-            @else
-                {{ __('Create your organization page') }}
+        <div class="repel">
+            <h1>
+                {{ $organization->name }}
+            </h1>
+            @if($organization->checkStatus('draft'))
+                <span class="badge">{{ __('Draft mode') }}</span>
             @endif
-        </h1>
+        </div>
+        @if($organization->checkStatus('published'))
+            <p>
+                <a href="{{ localized_route('organizations.show', $organization) }}">{{ __('View page') }}</a>
+            </p>
+        @endif
     </x-slot>
 
     <!-- Form Validation Errors -->

@@ -42,16 +42,16 @@ class OrganizationController extends Controller
         return view('organizations.show-type-selection', [
             'types' => [
                 'representative' => [
-                    'label' => __('Representative organization'),
-                    'hint' => __('Organizations “of” disability, Deaf, and family-based organizations. Constituted primarily by people with disabilities.'),
+                    'label' => Str::ucfirst(__('organization.types.representative.name')),
+                    'hint' => __('organization.types.representative.description'),
                 ],
                 'support' => [
-                    'label' => __('Support organization'),
-                    'hint' => __('Organizations that provide support “for” disability, Deaf, and family-based members. Not constituted primarily by people with disabilities.'),
+                    'label' => Str::ucfirst(__('organization.types.support.name')),
+                    'hint' => __('organization.types.support.description'),
                 ],
                 'civil-society' => [
-                    'label' => __('Broader civil society organization'),
-                    'hint' => __('Organizations which have some constituency of persons with disabilities, Deaf persons, or family members, but these groups are not their primary mandate. Groups served, for example, can include: Indigenous organizations, 2SLGBTQ+ organizations, immigrant and refugee groups, and women’s groups.'),
+                    'label' => Str::ucfirst(__('organization.types.civil-society.name')),
+                    'hint' => __('organization.types.civil-society.description'),
                 ],
             ],
         ]);
@@ -80,7 +80,6 @@ class OrganizationController extends Controller
         $organization = Organization::create($data);
 
         session()->forget('type');
-        session()->forget('roles');
 
         $organization->users()->attach(
             $request->user(),
@@ -124,7 +123,18 @@ class OrganizationController extends Controller
 
     public function show(Organization $organization): View
     {
-        return view('organizations.show', ['organization' => $organization]);
+        $language = request()->query('language');
+
+        if (! in_array($language, $organization->languages)) {
+            $language = false;
+        }
+
+        return view('organizations.show', array_merge(compact('organization'), [
+            'language' => $language ?? locale(),
+            // TODO: Is this the best way of handling these two constituencies?
+            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+        ]));
     }
 
     public function edit(Organization $organization): View

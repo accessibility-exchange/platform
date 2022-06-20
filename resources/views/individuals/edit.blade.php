@@ -2,13 +2,19 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ __('Edit your individual page') }}</x-slot>
     <x-slot name="header">
-        <h1>
-            @if($individual->checkStatus('published'))
-            {{ __('Edit your individual page') }}
-            @else
-            {{ __('Create your individual page') }}
+        <div class="repel">
+            <h1>
+                {{ $individual->name }}
+            </h1>
+            @if($individual->checkStatus('draft'))
+                <span class="badge">{{ __('Draft mode') }}</span>
             @endif
-        </h1>
+        </div>
+        @if($individual->checkStatus('published'))
+            <p>
+                <a href="{{ localized_route('individuals.show', $individual) }}">{{ __('View page') }}</a>
+            </p>
+        @endif
     </x-slot>
 
     <!-- Form Validation Errors -->

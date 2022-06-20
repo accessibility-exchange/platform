@@ -94,12 +94,12 @@ test('users with admin role can edit and publish organizations', function () {
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create(['contact_person_name' => faker()->name]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertOk();
 
-    UpdateOrganizationRequestFactory::new()->fake();
+    UpdateOrganizationRequestFactory::new()->without(['name'])->fake();
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
@@ -112,14 +112,22 @@ test('users with admin role can edit and publish organizations', function () {
         'step' => 2,
     ]));
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
-        'publish' => 1,
-    ]);
+    $response = $this->actingAs($user)
+        ->from(localized_route('organizations.edit', ['organization' => $organization, 'step' => 1]))
+        ->put(localized_route('organizations.update', $organization), [
+            'name' => ['en' => $organization->name],
+            'publish' => 1,
+        ]);
     $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', [
+        'organization' => $organization,
+        'step' => 1,
+    ]));
 
     expect($organization->fresh()->checkStatus('published'))->toBeTrue();
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+        'name' => ['en' => $organization->name],
         'unpublish' => 1,
     ]);
     $response->assertSessionHasNoErrors();
@@ -130,6 +138,7 @@ test('users with admin role can edit and publish organizations', function () {
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+        'name' => ['en' => $organization->name],
         'publish' => 1,
     ]);
     $response->assertForbidden();
@@ -804,7 +813,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create();
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
