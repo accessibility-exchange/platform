@@ -94,7 +94,7 @@
                 <h2 class="repel">{{ __('Interests') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>@endcan</h2>
                 @include('organizations.partials.interests')
             @elseif(request()->routeIs(locale() . '.organizations.show-projects'))
-                <h2 class="repel">{{ __('Projects') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('dashboard') }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Projects') . '</span>']) !!}</a>@endcan</h2>
+                <h2 class="repel">{{ __('Projects') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('projects.create', $organization) }}">{{ __('Create a project') }}</a>@endcan</h2>
                 @include('organizations.partials.projects')
             @elseif(request()->routeIs(locale() . '.organizations.show-contact-information'))
                 <h2 class="repel">{{ __('Contact information') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>@endcan</h2>

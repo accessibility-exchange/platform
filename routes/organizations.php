@@ -52,19 +52,19 @@ Route::controller(OrganizationController::class)
             ->middleware(['auth', 'can:view,organization'])
             ->name('show');
 
-        Route::multilingual('/{organization}/constituencies', 'showConstituencies')
+        Route::multilingual('/{organization}/constituencies', 'show')
             ->middleware(['auth', 'can:view,organization'])
             ->name('show-constituencies');
 
-        Route::multilingual('/{organization}/interests', 'showConstituencies')
+        Route::multilingual('/{organization}/interests', 'show')
             ->middleware(['auth', 'can:view,organization'])
             ->name('show-interests');
 
-        Route::multilingual('/{organization}/projects', 'showConstituencies')
+        Route::multilingual('/{organization}/projects', 'show')
             ->middleware(['auth', 'can:view,organization'])
             ->name('show-projects');
 
-        Route::multilingual('/{organization}/contact-information', 'showConstituencies')
+        Route::multilingual('/{organization}/contact-information', 'show')
             ->middleware(['auth', 'can:view,organization'])
             ->name('show-contact-information');
 

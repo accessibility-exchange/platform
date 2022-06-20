@@ -130,17 +130,6 @@ class OrganizationController extends Controller
             $language = false;
         }
 
-        return view('organizations.show', array_merge(compact('organization'), ['language' => $language ?? locale()]));
-    }
-
-    public function showConstituencies(Organization $organization): View
-    {
-        $language = request()->query('language');
-
-        if (! in_array($language, $organization->languages)) {
-            $language = false;
-        }
-
         return view('organizations.show', array_merge(compact('organization'), [
             'language' => $language ?? locale(),
             // TODO: Is this the best way of handling these two constituencies?
