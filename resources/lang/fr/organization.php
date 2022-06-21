@@ -31,9 +31,18 @@ return [
     'action_remove_member_with_name' => 'Enlever :user de :organization',
     'error_new_administrator_required_before_user_deletion' => 'Vous devez assigner un nouvel administrateur à votre organisation, :organisation, avant de supprimer votre compte.',
     'types' => [
-        'representative' => 'representative organization',
-        'support' => 'support organization',
-        'civil-society' => 'civil society organization',
+        'representative' => [
+            'name' => 'representative organization',
+            'description' => 'Organizations “of” disability, Deaf, and family-based organizations. Constituted primarily by people with disabilities.',
+        ],
+        'support' => [
+            'name' => 'support organization',
+            'description' => 'Organizations that provide support “for” disability, Deaf, and family-based members. Not constituted primarily by people with disabilities.',
+        ],
+        'civil-society' => [
+            'name' => 'civil society organization',
+            'description' => 'Organizations which have some constituency of persons with disabilities, Deaf persons, or family members, but these groups are not their primary mandate. Groups served, for example, can include: Indigenous organizations, 2SLGBTQ+ organizations, immigrant and refugee groups, and women’s groups.',
+        ],
     ],
     'area_types' => [
         'urban' => 'Urban areas',
