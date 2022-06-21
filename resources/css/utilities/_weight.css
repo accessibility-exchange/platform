@@ -1,3 +1,7 @@
+.weight\:normal {
+    font-weight: var(--font-weight-4);
+}
+
 .weight\:semibold {
     font-weight: var(--font-weight-6);
 }
