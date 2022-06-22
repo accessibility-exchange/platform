@@ -18,6 +18,12 @@
         "order/properties-alphabetical-order": true,
         "selector-class-pattern": null,
         "no-descending-specificity": null,
-        "custom-property-pattern": null
+        "custom-property-pattern": null,
+        "at-rule-no-unknown": [
+            true,
+            {
+                "ignoreAtRules": ["tailwind"]
+            }
+        ]
     }
 }

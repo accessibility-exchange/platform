@@ -7,11 +7,11 @@
 .with-sidebar > :last-child {
     flex-basis: 0;
     flex-grow: 999;
-    min-inline-size: 50%;
+    min-inline-size: var(--min-inline-size, 50%);
 }
 
 .with-sidebar > :first-child {
-    flex-basis: calc(var(--measure) / 2);
+    flex-basis: calc(var(--max-w-prose) / 2);
     flex-grow: 1;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .with-sidebar\:last > :first-child {
-    flex-basis: calc(var(--measure) / 2);
+    flex-basis: calc(var(--max-w-prose) / 2);
     flex-grow: 1;
     min-inline-size: auto;
 }
@@ -28,5 +28,5 @@
 .with-sidebar\:last > :last-child {
     flex-basis: 0;
     flex-grow: 999;
-    min-inline-size: 50%;
+    min-inline-size: var(--min-inline-size, 50%);
 }

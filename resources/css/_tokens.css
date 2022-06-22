@@ -1,0 +1,52 @@
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-06-21.
+    Tokens location: ./tailwind.config.js */
+:root {
+    --color-black: #000;
+    --color-white: #fff;
+    --color-graphite-8: #2b2e38;
+    --color-graphite-7: #3f424c;
+    --color-graphite-6: #4b5560;
+    --color-graphite-5: #637180;
+    --color-grey-3: #d9dce3;
+    --color-grey-2: #eaedf3;
+    --color-grey-1: #f8fafd;
+    --color-blue-8: #0f1138;
+    --color-blue-7: #26296a;
+    --color-blue-6: #3842aa;
+    --color-blue-5: #7077cb;
+    --color-green-5: #00aea9;
+    --color-green-2: #92e5e3;
+    --color-green-1: #bfe2e1;
+    --color-turquoise-5: #00b9d6;
+    --color-turquoise-2: #7de2f4;
+    --color-turquoise-1: #c6f4fe;
+    --color-lavender-3: #cab6d9;
+    --color-lavender-2: #eecef0;
+    --color-magenta-3: #f16e9d;
+    --color-magenta-2: #ffa0ce;
+    --color-yellow-3: #f5dc62;
+    --color-yellow-2: #fce88b;
+    --color-yellow-1: #ebedbb;
+    --color-red-9: #691616;
+    --color-red-8: #922020;
+    --color-red-2: #f6a7a7;
+    --color-red-1: #f5cdcd;
+    --text-fluid-lg: clamp(1.125rem, 0.8929vw + 0.6964rem, 1.5rem);
+    --text-fluid-xl: clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem);
+    --text-fluid-2xl: clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem);
+    --text-fluid-3xl: clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem);
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+    --text-7xl: 4.5rem;
+    --font-base: "Open Sans";
+    --font-display: montserrat;
+    --max-w-prose: 70ch;
+}

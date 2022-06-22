@@ -160,7 +160,7 @@ button.nav-button .indicator {
 .primary ul {
     background: var(--nav-background);
     border-block-start: var(--border-size-1) solid var(--nav-border-mobile);
-    color: var(--tae-grey-2);
+    color: var(--color-grey-2);
     display: flex;
     flex-direction: column;
     left: 0;

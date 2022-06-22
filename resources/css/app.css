@@ -1,4 +1,5 @@
 @import "_reset.css";
+@import "_tokens.css";
 @import "_props.css";
 @import "base/*";
 @import "blocks/*";
@@ -8,3 +9,7 @@
 @import "utilities/*";
 @import "routes/*";
 @import "themes/*";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

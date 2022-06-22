@@ -58,7 +58,7 @@ a.cta {
     border-radius: var(--radius-2);
     color: var(--cta-color);
     display: flex;
-    font-family: var(--tae-font-family-base);
+    font-family: var(--font-base);
     font-size: var(--font-size-1);
     font-weight: var(--font-weight-6);
     gap: var(--size-2);

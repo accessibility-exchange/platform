@@ -1,5 +1,5 @@
 .switcher {
-    --threshold: var(--measure);
+    --threshold: var(--max-w-prose);
     --gap: var(--size-3);
 
     display: flex;

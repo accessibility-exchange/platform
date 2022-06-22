@@ -177,7 +177,7 @@ fieldset {
 }
 
 .password .field {
-    background-color: var(--tae-grey-2);
+    background-color: var(--color-grey-2);
     border-radius: var(--radius-2);
     padding: var(--size-2);
 }
@@ -189,23 +189,23 @@ fieldset {
 
 legend {
     color: var(--heading-color);
-    font-family: var(--tae-font-family-base);
+    font-family: var(--font-base);
     font-size: var(--font-size-2);
-    font-size: var(--tae-font-size-fluid-2);
+    font-size: var(--text-fluid-lg);
     font-weight: var(--font-weight-6);
 }
 
 @media (min-width: 768px) {
     legend {
         font-size: var(--font-size-3);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
     }
 }
 
 @media (min-width: 1200px) {
     legend {
         font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
         font-weight: var(--font-weight-4);
     }
 }

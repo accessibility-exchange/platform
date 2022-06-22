@@ -10,5 +10,5 @@
 
 .auth-card .logo {
     margin-inline: auto;
-    max-width: calc(var(--measure) / 2);
+    max-width: calc(var(--max-w-prose) / 2);
 }

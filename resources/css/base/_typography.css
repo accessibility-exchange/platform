@@ -4,7 +4,7 @@
 
 body {
     color: var(--body-color);
-    font-family: var(--tae-font-family-base);
+    font-family: var(--font-base);
     font-size: var(--font-size-1);
     line-height: var(--font-lineheight-3);
 }
@@ -26,7 +26,7 @@ h2,
 .h2,
 h3,
 .h3 {
-    font-family: var(--tae-font-family-display);
+    font-family: var(--font-display);
 }
 
 h1 a,
@@ -44,7 +44,7 @@ h1,
 .h1 {
     color: var(--h1-color);
     font-size: var(--font-size-6);
-    font-size: var(--tae-font-size-fluid-5);
+    font-size: var(--text-fluid-3xl);
     font-weight: var(--font-weight-7);
 }
 
@@ -52,7 +52,7 @@ h2,
 .h2 {
     color: var(--heading-color);
     font-size: var(--font-size-5);
-    font-size: var(--tae-font-size-fluid-4);
+    font-size: var(--text-fluid-2xl);
     font-weight: var(--font-weight-7);
 }
 
@@ -60,70 +60,70 @@ h3,
 .h3 {
     color: var(--heading-color);
     font-size: var(--font-size-3);
-    font-size: var(--tae-font-size-fluid-3);
+    font-size: var(--text-fluid-xl);
     font-weight: var(--font-weight-7);
 }
 
 h4,
 .h4 {
     color: var(--heading-color);
-    font-family: var(--tae-font-family-base);
+    font-family: var(--font-base);
     font-size: var(--font-size-2);
-    font-size: var(--tae-font-size-fluid-2);
+    font-size: var(--text-fluid-lg);
     font-weight: var(--font-weight-6);
 }
 
 @media (min-width: 48rem) {
     h1,
     .h1 {
-        font-size: var(--font-size-9);
-        font-size: var(--tae-font-size-fluid-5);
+        font-size: var(--text-6xl);
+        font-size: var(--text-fluid-3xl);
     }
 
     h2,
     .h2 {
         font-size: var(--font-size-6);
-        font-size: var(--tae-font-size-fluid-4);
+        font-size: var(--text-fluid-2xl);
         font-weight: var(--font-weight-5);
     }
 
     h3,
     .h3 {
         font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-3);
+        font-size: var(--text-fluid-xl);
         font-weight: var(--font-weight-5);
     }
 
     h4,
     .h4 {
         font-size: var(--font-size-3);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
     }
 }
 
 @media (min-width: 75rem) {
     h1,
     .h1 {
-        font-size: var(--font-size-10);
-        font-size: var(--tae-font-size-fluid-5);
+        font-size: var(--text-7xl);
+        font-size: var(--text-fluid-3xl);
     }
 
     h2,
     .h2 {
         font-size: var(--font-size-7);
-        font-size: var(--tae-font-size-fluid-4);
+        font-size: var(--text-fluid-2xl);
     }
 
     h3,
     .h3 {
         font-size: var(--font-size-5);
-        font-size: var(--tae-font-size-fluid-3);
+        font-size: var(--text-fluid-xl);
     }
 
     h4,
     .h4 {
         font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
         font-weight: var(--font-weight-4);
     }
 }

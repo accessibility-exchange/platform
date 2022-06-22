@@ -11,7 +11,7 @@ footer h3 {
 
 footer h2 {
     font-size: var(--font-size-2);
-    font-size: var(--tae-font-size-fluid-2);
+    font-size: var(--text-fluid-lg);
 }
 
 footer h3 {
@@ -46,13 +46,13 @@ footer .switcher {
 }
 
 footer > .switcher > .switcher {
-    --threshold: calc(var(--measure) / 2);
+    --threshold: calc(var(--max-w-prose) / 2);
 }
 
 @media (min-width: 48rem) {
     footer h2 {
         font-size: var(--font-size-3);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
     }
 
     footer h3 {
@@ -63,7 +63,7 @@ footer > .switcher > .switcher {
 @media (min-width: 75rem) {
     footer h2 {
         font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-fluid-lg);
         font-weight: var(--font-weight-4);
     }
 
