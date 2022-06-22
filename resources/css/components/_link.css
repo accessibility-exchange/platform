@@ -1,7 +1,7 @@
 a {
     border-radius: var(--radius-1);
     color: var(--link-color);
-    font-weight: var(--font-weight-7);
+    font-weight: var(--font-bold);
     position: relative;
 }
 
@@ -57,15 +57,16 @@ a.cta {
     border-color: var(--cta-border);
     border-radius: var(--radius-2);
     color: var(--cta-color);
-    display: flex;
+    display: inline-flex;
     font-family: var(--font-base);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-6);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
     gap: var(--size-2);
     height: calc(var(--size-8) - var(--size-1));
     justify-content: center;
+    min-width: var(--space-32);
     padding-inline: var(--size-3);
-    width: 100%;
+    width: auto;
 }
 
 a.cta svg {

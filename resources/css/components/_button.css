@@ -11,8 +11,8 @@ input[type="submit"] {
     color: var(--button-primary-color);
     display: flex;
     font-family: var(--font-base);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-6);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
     gap: var(--size-2);
     height: calc(var(--size-8) - var(--size-1));
     justify-content: center;
@@ -93,8 +93,8 @@ input[type="submit"].secondary {
     color: var(--button-secondary-color);
     display: flex;
     font-family: var(--font-base);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-6);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
     gap: var(--size-2);
     height: calc(var(--size-8) - var(--size-1));
     justify-content: center;

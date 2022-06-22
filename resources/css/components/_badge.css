@@ -4,7 +4,7 @@
     border-radius: var(--radius-1);
     color: var(--badge-color);
     font-family: var(--font-base);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-4);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
     padding: var(--size-2);
 }

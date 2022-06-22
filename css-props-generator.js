@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 const prettier = require("prettier");
 const config = require("./tailwind.config.js");
 
@@ -13,6 +13,7 @@ const generateCSSProps = () => {
         {key: "spacing", prefix: "space"},
         {key: "fontSize", prefix: "text"},
         {key: "fontFamily", prefix: "font"},
+        {key: "fontWeight", prefix: "font"},
         {key: "maxWidth", prefix: "max-w"}
     ];
 
@@ -33,7 +34,7 @@ const generateCSSProps = () => {
         }
 
         Object.keys(group).forEach(key => {
-            result += `--${prefix}-${key}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            result += `--${prefix}-${key.replace(".", "_")}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
         });
     });
 

@@ -3,8 +3,8 @@
 }
 
 .expander .title {
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-4);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
 }
 
 .expander .title button {
@@ -14,7 +14,7 @@
     color: var(--expander-color);
     display: flex;
     font-size: inherit;
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
     height: var(--size-9);
     justify-content: space-between;
     padding: 0 var(--size-2);

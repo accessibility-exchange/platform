@@ -3,18 +3,15 @@
 }
 
 .welcome main {
-    padding-block-start: 0;
+    padding-block: 0;
 }
 
 .welcome main header {
     background-color: var(--color-blue-6);
     color: var(--color-white);
     margin-block-start: 0;
-    margin-inline-start: calc(-1 * ((100vw - (2 * var(--max-w-prose))) / 2 + var(--size-3)));
     padding-block: var(--size-9);
-    padding-inline: calc(var(--max-w-prose) / 2);
     text-align: center;
-    width: 100vw;
 }
 
 .welcome main header h1,
@@ -22,8 +19,9 @@
     color: var(--color-white);
 }
 
-.welcome main header .cta {
+.welcome main .cta {
     display: inline-flex;
+    min-width: var(--size-12);
     width: auto;
 }
 
@@ -36,30 +34,17 @@
 }
 
 .welcome .grid .box {
-    border-block-start: solid var(--border-size-3);
+    border-block-start-style: solid;
+    border-block-start-width: var(--border-size-3);
     padding-inline: 0;
 }
 
-.welcome .with-sidebar {
-    --min-inline-size: calc(var(--max-w-prose) * 2 * 66%);
-}
-
-.welcome .with-sidebar .frame {
-    flex-basis: 66%;
-}
-
-.welcome .dark,
-.welcome .dark * {
-    color: var(--color-white);
+.welcome .dark {
+    --heading-color: var(--color-white);
 }
 
 .full {
-    margin-inline-start: calc(-1 * ((100vw - (2 * var(--max-w-prose))) / 2 + var(--size-3)));
-    padding-block: var(--size-9);
-    padding-inline: calc((100vw - (var(--max-w-prose) * 2 - var(--size-3) * 2)) / 2);
+    left: calc(50% - 50vw);
+    position: relative;
     width: 100vw;
-}
-
-.bg-blue-7 {
-    background-color: var(--color-blue-7);
 }

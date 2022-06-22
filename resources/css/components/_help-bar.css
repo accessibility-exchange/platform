@@ -16,7 +16,7 @@
 
 .help-bar a {
     color: var(--help-bar-color);
-    font-weight: var(--font-weight-4);
+    font-weight: var(--font-normal);
 }
 
 .help-bar [aria-expanded] {
