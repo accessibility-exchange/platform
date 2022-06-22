@@ -31,6 +31,18 @@ Route::multilingual('/about/for-regulated-organizations', function () {
     return view('about.for-regulated-organizations');
 })->name('about.for-regulated-organizations');
 
+Route::multilingual('/about/roles/consultation-participants', function () {
+    return view('about.roles.consultation-participants');
+})->name('about.consultation-participants');
+
+Route::multilingual('/about/roles/accessibility-consultants', function () {
+    return view('about.roles.accessibility-consultants');
+})->name('about.accessibility-consultants');
+
+Route::multilingual('/about/roles/community-connectors', function () {
+    return view('about.roles.community-connectors');
+})->name('about.community-connectors');
+
 Route::multilingual('/introduction', [UserController::class, 'showIntroduction'])
     ->middleware(['auth'])
     ->name('users.show-introduction');

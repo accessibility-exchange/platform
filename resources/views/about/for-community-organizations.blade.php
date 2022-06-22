@@ -25,7 +25,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-magenta-2 pt-8 stack">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}</p>
-                    <p><a href="#TODO">{{ __('Learn more about being an accessibility consultant') }}</a></p>
+                    <p><a href="{{ localized_route('about.accessibility-consultants') }}">{{ __('Learn more about being an accessibility consultant') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -36,7 +36,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-yellow-3 pt-8 stack">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for consultation participants. Help them learn how to best work with your community.') }}</p>
-                    <p><a href="#TODO">{{ __('Learn more about being a community connector') }}</a></p>
+                    <p><a href="{{ localized_route('about.community-connectors') }}">{{ __('Learn more about being a community connector') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -58,16 +58,9 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('Participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this.') }}</p>
-                    <p><a href="#TODO">{{ __('Learn more about being a consultation participant') }}</a></p>
+                    <p><a href="{{ localized_route('about.consultation-participants') }}">{{ __('Learn more about being a consultation participant') }}</a></p>
                 </div>
             </x-media-text>
-        </x-section>
-
-        <x-section aria-labelledby="faq">
-            <h2 class="text-center" id="faq">{{ __('Frequently asked questions') }}</h2>
-
-            <p>{{ __('Coming soon.') }}</p>
-            {{-- TODO: Add FAQs --}}
         </x-section>
 
         <x-section class="bg-turquoise-2 align:center mt-16">
