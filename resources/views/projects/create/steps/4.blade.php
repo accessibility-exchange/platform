@@ -14,7 +14,7 @@
 
         <h3>{{ __('Project name') }}</h3>
 
-        <x-translatable-input name="name" :locales="session()->get('languages')" :label="__('Project name (required)')" :value="old('name', '')" />
+        <x-translatable-input name="name" :label="__('Project name (required)')" :value="old('name', '')" />
 
         <h3>{{ __('Project goals') }}</h3>
 
