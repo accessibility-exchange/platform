@@ -1,6 +1,6 @@
 .defined-term {
     color: var(--defined-term-color);
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
     text-decoration: underline;
     text-decoration-style: dotted;
 }
@@ -30,7 +30,7 @@
     box-shadow: var(--definition-shadow);
     color: var(--definition-color);
     display: block;
-    font-weight: var(--font-weight-4);
+    font-weight: var(--font-normal);
     max-width: var(--size-14);
     padding: var(--size-4);
     width: 100%;

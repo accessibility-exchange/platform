@@ -15,8 +15,8 @@
                     <ul class="stack" role="list">
                         <li><a href="#TODO">{{ __('About') }}</a></li>
                         <li><a href="#TODO">{{ __('Glossary') }}</a></li>
-                        <li><a href="#TODO">{{ __('Terms of Service') }}</a></li>
-                        <li><a href="#TODO">{{ __('Privacy Policy') }}</a></li>
+                        <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a></li>
+                        <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li>
                     </ul>
                 </nav>
             </div>

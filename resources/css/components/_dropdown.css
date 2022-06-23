@@ -3,7 +3,7 @@
     align-items: center;
     border-radius: 0;
     display: flex;
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
     justify-content: flex-start;
 }
 

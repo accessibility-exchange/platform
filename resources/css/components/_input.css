@@ -12,8 +12,8 @@ select {
     color: var(--input-color);
     display: block;
     font-family: "Open Sans", sans-serif;
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-4);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
     padding-inline: var(--size-2);
     width: 100%;
 }
@@ -146,12 +146,12 @@ input[type="radio"]:checked[aria-invalid="true"] {
 
 /** Labels **/
 label {
-    font-weight: var(--font-weight-7);
+    font-weight: var(--font-bold);
 }
 
 input[type="checkbox"] + label,
 input[type="radio"] + label {
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
 }
 
 /** Fields and fieldsets **/
@@ -177,7 +177,7 @@ fieldset {
 }
 
 .password .field {
-    background-color: var(--tae-grey-2);
+    background-color: var(--color-grey-2);
     border-radius: var(--radius-2);
     padding: var(--size-2);
 }
@@ -189,24 +189,24 @@ fieldset {
 
 legend {
     color: var(--heading-color);
-    font-family: var(--tae-font-family-base);
-    font-size: var(--font-size-2);
-    font-size: var(--tae-font-size-fluid-2);
-    font-weight: var(--font-weight-6);
+    font-family: var(--font-base);
+    font-size: var(--text-lg);
+    font-size: var(--text-fluid-lg);
+    font-weight: var(--font-semibold);
 }
 
 @media (min-width: 768px) {
     legend {
-        font-size: var(--font-size-3);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-xl);
+        font-size: var(--text-fluid-lg);
     }
 }
 
 @media (min-width: 1200px) {
     legend {
-        font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-2);
-        font-weight: var(--font-weight-4);
+        font-size: var(--text-2xl);
+        font-size: var(--text-fluid-lg);
+        font-weight: var(--font-normal);
     }
 }
 
@@ -233,7 +233,7 @@ legend {
     display: flex;
     flex-direction: row;
     font-style: italic;
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
     gap: var(--size-2);
     justify-content: flex-start;
     margin-block-start: var(--size-1);

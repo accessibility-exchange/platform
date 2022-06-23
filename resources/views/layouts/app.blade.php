@@ -3,7 +3,7 @@
     <head>
         @include('partials.head', ['title' => $title ?? __('app.name')])
     </head>
-    <body>
+    <body class="{{ $class ?? 'page' }}">
         @include('layouts.banner')
 
         <!-- Main Content -->

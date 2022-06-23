@@ -16,15 +16,15 @@
 
 .help-bar a {
     color: var(--help-bar-color);
-    font-weight: var(--font-weight-4);
+    font-weight: var(--font-normal);
 }
 
 .help-bar [aria-expanded] {
-    --button-borderless-outline: var(--tae-grey-2);
-    --button-borderless-color-hover: var(--tae-grey-2);
+    --button-borderless-outline: var(--color-grey-2);
+    --button-borderless-color-hover: var(--color-grey-2);
     --button-borderless-background-hover: black;
-    --button-borderless-color-focus: var(--tae-grey-2);
-    --button-borderless-color-active: var(--tae-grey-1);
+    --button-borderless-color-focus: var(--color-grey-2);
+    --button-borderless-color-active: var(--color-grey-1);
 }
 
 .help-bar [aria-expanded] .indicator {

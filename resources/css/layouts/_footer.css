@@ -10,19 +10,19 @@ footer h3 {
 }
 
 footer h2 {
-    font-size: var(--font-size-2);
-    font-size: var(--tae-font-size-fluid-2);
+    font-size: var(--text-lg);
+    font-size: var(--text-fluid-lg);
 }
 
 footer h3 {
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-6);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
 }
 
 footer a,
 footer .brand {
     color: inherit;
-    font-weight: var(--font-weight-6);
+    font-weight: var(--font-semibold);
 }
 
 footer .brand {
@@ -46,28 +46,28 @@ footer .switcher {
 }
 
 footer > .switcher > .switcher {
-    --threshold: calc(var(--measure) / 2);
+    --threshold: calc(var(--max-w-prose) / 2);
 }
 
 @media (min-width: 48rem) {
     footer h2 {
-        font-size: var(--font-size-3);
-        font-size: var(--tae-font-size-fluid-2);
+        font-size: var(--text-xl);
+        font-size: var(--text-fluid-lg);
     }
 
     footer h3 {
-        font-size: var(--font-size-1);
+        font-size: var(--text-base);
     }
 }
 
 @media (min-width: 75rem) {
     footer h2 {
-        font-size: var(--font-size-4);
-        font-size: var(--tae-font-size-fluid-2);
-        font-weight: var(--font-weight-4);
+        font-size: var(--text-2xl);
+        font-size: var(--text-fluid-lg);
+        font-weight: var(--font-normal);
     }
 
     footer h3 {
-        font-size: var(--font-size-1);
+        font-size: var(--text-base);
     }
 }

@@ -30,5 +30,5 @@ th:last-of-type {
 }
 
 tbody tr {
-    border-block-start: var(--border-size-1) solid var(--tae-graphite-6);
+    border-block-start: var(--border-size-1) solid var(--color-graphite-6);
 }

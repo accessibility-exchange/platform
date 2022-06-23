@@ -7,5 +7,5 @@
         </h1>
     </x-slot>
 
-    <p>{{ __('TODO.') }}</p>
+    <p>TODO.</p>
 </x-app-layout>

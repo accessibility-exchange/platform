@@ -1,11 +1,15 @@
 .stack {
     --space: 1em;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
 }
 
 .stack > * + * {
     margin-block-start: var(--space);
+}
+
+.stack\:lg {
+    --space: 2em;
+}
+
+.stack\:xl {
+    --space: 3em;
 }

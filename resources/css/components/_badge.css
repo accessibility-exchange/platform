@@ -3,8 +3,8 @@
     border: var(--border-size-1) solid var(--badge-border);
     border-radius: var(--radius-1);
     color: var(--badge-color);
-    font-family: var(--tae-font-family-base);
-    font-size: var(--font-size-1);
-    font-weight: var(--font-weight-4);
+    font-family: var(--font-base);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
     padding: var(--size-2);
 }

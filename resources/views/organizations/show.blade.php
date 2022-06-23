@@ -67,36 +67,36 @@
         <nav class="secondary" aria-labelledby="regulated-organization">
             <ul role="list">
                 <li>
-                    <x-nav-link :href="localized_route('organizations.show', $organization)" :active="request()->routeIs(locale() . '.organizations.show')">{{ __('About') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('organizations.show', $organization)" :active="request()->localizedRouteIs('organizations.show')">{{ __('About') }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('organizations.show-constituencies', $organization)" :active="request()->routeIs(locale() . '.organizations.show-constituencies')">{{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</x-nav-link>
+                    <x-nav-link :href="localized_route('organizations.show-constituencies', $organization)" :active="request()->localizedRouteIs('organizations.show-constituencies')">{{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('organizations.show-interests', $organization)" :active="request()->routeIs(locale() . '.organizations.show-interests')">{{ __('Interests') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('organizations.show-interests', $organization)" :active="request()->localizedRouteIs('organizations.show-interests')">{{ __('Interests') }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('organizations.show-projects', $organization)" :active="request()->routeIs(locale() . '.organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('organizations.show-projects', $organization)" :active="request()->localizedRouteIs('organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('organizations.show-contact-information', $organization)" :active="request()->routeIs(locale() . '.organizations.show-contact-information')">{{ __('Contact information') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('organizations.show-contact-information', $organization)" :active="request()->localizedRouteIs('organizations.show-contact-information')">{{ __('Contact information') }}</x-nav-link>
                 </li>
             </ul>
         </nav>
         <div class="stack">
-            @if(request()->routeIs(locale() . '.organizations.show'))
+            @if(request()->localizedRouteIs('organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', $organization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
                 @include('organizations.partials.about')
-            @elseif(request()->routeIs(locale() . '.organizations.show-constituencies'))
+            @elseif(request()->localizedRouteIs('organizations.show-constituencies'))
                 <h2 class="repel">{{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) . '</span>']) !!}</a>@endcan</h2>
                 @include('organizations.partials.constituencies')
-            @elseif(request()->routeIs(locale() . '.organizations.show-interests'))
+            @elseif(request()->localizedRouteIs('organizations.show-interests'))
                 <h2 class="repel">{{ __('Interests') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>@endcan</h2>
                 @include('organizations.partials.interests')
-            @elseif(request()->routeIs(locale() . '.organizations.show-projects'))
+            @elseif(request()->localizedRouteIs('organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('projects.create', $organization) }}">{{ __('Create a project') }}</a>@endcan</h2>
                 @include('organizations.partials.projects')
-            @elseif(request()->routeIs(locale() . '.organizations.show-contact-information'))
+            @elseif(request()->localizedRouteIs('organizations.show-contact-information'))
                 <h2 class="repel">{{ __('Contact information') }} @can('update', $organization)<a class="cta secondary" href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>@endcan</h2>
                 @include('organizations.partials.contact-information')
             @endif

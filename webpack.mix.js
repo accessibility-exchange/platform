@@ -1,7 +1,4 @@
 const mix = require("laravel-mix");
-const openProps = require("open-props");
-const postcssEasyImport = require("postcss-easy-import");
-const postcssJitProps = require("postcss-jit-props");
 require("laravel-mix-sri");
 
 mix.js("resources/js/app.js", "public/js").extract();
@@ -23,8 +20,10 @@ mix.browserSync({
 mix.options({
     processCssUrls: false,
     postCss: [
-        postcssEasyImport(),
-        postcssJitProps(openProps)
+        require("postcss-easy-import"),
+        require("postcss-jit-props")(require("open-props")),
+        require("postcss-logical")({dir: "ltr"}),
+        require("tailwindcss")
     ]
 });
 

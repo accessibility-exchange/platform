@@ -1,1 +1,50 @@
-/* This file contains styles that are specific to the welcome route. */
+.welcome {
+    --body-background: var(--color-white);
+}
+
+.welcome main {
+    padding-block: 0;
+}
+
+.welcome main header {
+    background-color: var(--color-blue-6);
+    color: var(--color-white);
+    margin-block-start: 0;
+    padding-block: var(--size-9);
+    text-align: center;
+}
+
+.welcome main header h1,
+.welcome main header p {
+    color: var(--color-white);
+}
+
+.welcome main .cta {
+    display: inline-flex;
+    min-width: var(--size-12);
+    width: auto;
+}
+
+.welcome section {
+    padding-block: var(--size-9);
+}
+
+.welcome .grid {
+    margin-block-start: var(--size-9);
+}
+
+.welcome .grid .box {
+    border-block-start-style: solid;
+    border-block-start-width: var(--border-size-3);
+    padding-inline: 0;
+}
+
+.welcome .dark {
+    --heading-color: var(--color-white);
+}
+
+.full {
+    left: calc(50% - 50vw);
+    position: relative;
+    width: 100vw;
+}
