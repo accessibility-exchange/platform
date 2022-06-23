@@ -63,8 +63,7 @@
         <x-section aria-labelledby="faq">
             <h2 class="text-center" id="faq">{{ __('Frequently asked questions') }}</h2>
 
-            <p>{{ __('Coming soon.') }}</p>
-            {{-- TODO: Add FAQs --}}
+            <p>TODO.</p>
         </x-section>
 
         <x-section class="bg-turquoise-2 align:center mt-16">

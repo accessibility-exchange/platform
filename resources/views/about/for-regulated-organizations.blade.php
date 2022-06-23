@@ -54,8 +54,7 @@
         <x-section aria-labelledby="faq">
             <h2 class="text-center" id="faq">{{ __('Frequently asked questions') }}</h2>
 
-            <p>{{ __('Coming soon.') }}</p>
-            {{-- TODO: Add FAQs --}}
+            <p>TODO.</p>
         </x-section>
 
         <x-section class="bg-turquoise-2 align:center mt-16">
@@ -80,7 +79,7 @@
                         </div>
                         <div class="stack">
                             <h3 class="h4">{{ __('Learn about our pricing') }}</h3>
-                            <p><a class="cta" href="#TODO"> {{ __('Go to pricing') }}</a></p>
+                            <p><a class="cta" href="{{ localized_route('about.pricing') }}"> {{ __('Go to pricing') }}</a></p>
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@
             <div class="center">
                 <h2 id="projects" class="text-center">{!! __('What types of projects could you get input on?') !!}</h2>
             </div>
-            <p>{{ __('TODO.') }}</p>
+            <p>TODO.</p>
         </x-section>
 
         <x-section aria-labelledby="how" class="stack:lg">
@@ -88,7 +88,7 @@
                             </div>
                             <div class="stack">
                                 <h3 class="h4">{{ __('Learn about our pricing') }}</h3>
-                                <p><a class="cta" href="#TODO"> {{ __('Go to pricing') }}</a></p>
+                                <p><a class="cta" href="{{ localized_route('about.pricing') }}"> {{ __('Go to pricing') }}</a></p>
                             </div>
                         @elseif(request()->localizedRouteIs('about.organization-get-input'))
                         <div class="stack">

@@ -18,15 +18,15 @@
             <div class="grid">
                 <div class="stack">
                     <h3>{{ __('Disability and deaf representative organizations') }}</h3>
-                    <p>{{ __('TODO.') }}</p>
+                    <p>TODO.</p>
                 </div>
                 <div class="stack">
                     <h3>{{ __('Disability and deaf support organizations') }}</h3>
-                    <p>{{ __('TODO.') }}</p>
+                    <p>TODO.</p>
                 </div>
                 <div class="stack">
                     <h3>{{ __('Other civil societies organizations relevant to people with disabilities, Deaf people, and supporters') }}</h3>
-                    <p>{{ __('TODO.') }}</p>
+                    <p>TODO.</p>
                 </div>
             </div>
         </x-section>

@@ -63,6 +63,10 @@ Route::multilingual('/about/for-regulated-organizations/get-input', function () 
     return view('about.roles.get-input-for-projects');
 })->name('about.regulated-organization-get-input');
 
+Route::multilingual('/about/pricing', function () {
+    return view('about.pricing');
+})->name('about.pricing');
+
 Route::multilingual('/introduction', [UserController::class, 'showIntroduction'])
     ->middleware(['auth'])
     ->name('users.show-introduction');
