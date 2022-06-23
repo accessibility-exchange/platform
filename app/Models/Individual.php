@@ -258,9 +258,9 @@ class Individual extends Model implements HasMedia
     /**
      * Determine if the individual's contact person requires VRS for phone calls.
      *
-     * @return bool
+     * @return null|bool
      */
-    public function getRequiresVrsAttribute(): bool
+    public function getRequiresVrsAttribute(): null|bool
     {
         return $this->preferred_contact_person === 'me' ?
             $this->vrs :
