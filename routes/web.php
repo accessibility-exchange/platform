@@ -105,7 +105,7 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->name('dashboard');
 
 Route::multilingual('/people-and-organizations', function () {
-    return '';
+    return view('people-and-organizations');
 })->name('people-and-organizations');
 
 Route::multilingual('/settings', [UserController::class, 'settings'])
