@@ -13,6 +13,24 @@
     <div class="stack stack:xl -mb-8">
         <x-placeholder class="text-blue-6" />
 
+        <x-section aria-labelledby="definitions" class="stack:xl">
+            <h2 class="text-center" id="definitions">{{ __('What do we mean when we say “Community organizations”?') }}</h2>
+            <div class="grid">
+                <div class="stack">
+                    <h3>{{ __('Disability and deaf representative organizations') }}</h3>
+                    <p>{{ __('TODO.') }}</p>
+                </div>
+                <div class="stack">
+                    <h3>{{ __('Disability and deaf support organizations') }}</h3>
+                    <p>{{ __('TODO.') }}</p>
+                </div>
+                <div class="stack">
+                    <h3>{{ __('Other civil societies organizations relevant to people with disabilities, Deaf people, and supporters') }}</h3>
+                    <p>{{ __('TODO.') }}</p>
+                </div>
+            </div>
+        </x-section>
+
         <x-section aria-labelledby="what" class="stack:lg">
             <div class="align:center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
@@ -25,7 +43,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-magenta-2 pt-8 stack">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}</p>
-                    <p><a href="{{ localized_route('about.accessibility-consultants') }}">{{ __('Learn more about being an accessibility consultant') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-accessibility-consultants') }}">{{ __('Learn more about being an accessibility consultant') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -36,7 +54,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-yellow-3 pt-8 stack">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for consultation participants. Help them learn how to best work with your community.') }}</p>
-                    <p><a href="{{ localized_route('about.community-connectors') }}">{{ __('Learn more about being a community connector') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-community-connectors') }}">{{ __('Learn more about being a community connector') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -47,7 +65,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-turquoise-5 pt-8 stack">
                     <h3>{{ __('Get input for your projects') }}</h3>
                     <p>{{ __('Recruit individuals who are Deaf or have disabilities to give input on your own projects.') }}</p>
-                    <p><a href="#TODO">{{ __('Learn more about getting input for your projects') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-get-input') }}">{{ __('Learn more about getting input for your projects') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -58,7 +76,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('Participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this.') }}</p>
-                    <p><a href="{{ localized_route('about.consultation-participants') }}">{{ __('Learn more about being a consultation participant') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-consultation-participants') }}">{{ __('Learn more about being a consultation participant') }}</a></p>
                 </div>
             </x-media-text>
         </x-section>

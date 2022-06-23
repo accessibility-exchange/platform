@@ -67,18 +67,18 @@
         <nav class="secondary" aria-labelledby="regulated-organization">
             <ul role="list">
                 <li>
-                    <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show')">{{ __('About') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('regulated-organizations.show', $regulatedOrganization)" :active="request()->localizedRouteIs('regulated-organizations.show')">{{ __('About') }}</x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->routeIs(locale() . '.regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
+                    <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->localizedRouteIs('regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
                 </li>
             </ul>
         </nav>
         <div class="stack">
-            @if(request()->routeIs(locale() . '.regulated-organizations.show'))
+            @if(request()->localizedRouteIs('regulated-organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
                 @include('regulated-organizations.partials.about')
-            @elseif(request()->routeIs(locale() . '.regulated-organizations.show-projects'))
+            @elseif(request()->localizedRouteIs('regulated-organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ localized_route('projects.create', $regulatedOrganization) }}">{{ __('Create a project') }}</a>@endcan</h2>
                 @include('regulated-organizations.partials.projects')
             @endif

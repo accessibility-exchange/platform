@@ -42,22 +42,22 @@
             <nav aria-labelledby="project">
                 <ul class="stack" role="list">
                     <li>
-                        <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->routeIs(locale() . '.projects.show')">
+                        <x-nav-link :href="localized_route('projects.show', $project)" :active="request()->localizedRouteIs('projects.show')">
                             {{ __('Project overview') }}
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->routeIs(locale() . '.projects.show-team')">
+                        <x-nav-link :href="localized_route('projects.show-team', $project)" :active="request()->localizedRouteIs('projects.show-team')">
                             {{ __('Project team') }}
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->routeIs(locale() . '.projects.show-engagements')">
+                        <x-nav-link :href="localized_route('projects.show-engagements', $project)" :active="request()->localizedRouteIs('projects.show-engagements')">
                             {{ __('Engagements') }}
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->routeIs(locale() . '.projects.show-outcomes')">
+                        <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->localizedRouteIs('projects.show-outcomes')">
                             {{ __('Outcomes and reports') }}
                         </x-nav-link>
                     </li>
@@ -65,16 +65,16 @@
             </nav>
         </div>
         <div class="stack">
-            @if(request()->routeIs(locale() . '.projects.show'))
+            @if(request()->localizedRouteIs('projects.show'))
             <h2>{{ __('Project overview') }}</h2>
             @include('projects.partials.overview')
-        @elseif(request()->routeIs(locale() . '.projects.show-team'))
+        @elseif(request()->localizedRouteIs('projects.show-team'))
             <h2>{{ __('Project team') }}</h2>
             @include('projects.partials.team')
-        @elseif(request()->routeIs(locale() . '.projects.show-engagements'))
+        @elseif(request()->localizedRouteIs('projects.show-engagements'))
             <h2>{{ __('Engagements') }}</h2>
             @include('projects.partials.engagements')
-        @elseif(request()->routeIs(locale() . '.projects.show-outcomes'))
+        @elseif(request()->localizedRouteIs('projects.show-outcomes'))
             <h2>{{ __('Outcomes and reports') }}</h2>
             @include('projects.partials.outcomes')
         @endif

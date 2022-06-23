@@ -25,7 +25,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-turquoise-5 pt-8 stack">
                     <h3>{{ __('Get input on your accessibility projects') }}</h3>
                     <p>{{ __('You can work on any projects related to accessibility on this website. This can be your organization’s Accessibility Report (under the Accessible Canada Act), or just getting feedback on your services both in terms of customer service and creating an accessible workplace. ') }}</p>
-                    <p><a href="#TODO">{{ __('Learn more about getting input for your projects') }}</a></p>
+                    <p><a href="{{ localized_route('about.regulated-organization-get-input') }}">{{ __('Learn more about getting input for your projects') }}</a></p>
                 </div>
             </x-media-text>
 

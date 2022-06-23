@@ -6,13 +6,13 @@
     <ul role="list">
         @auth
         <li>
-            <x-nav-link :href="localized_route('dashboard')" :active="request()->routeIs(locale() . '.dashboard')">
+            <x-nav-link :href="localized_route('dashboard')" :active="request()->localizedRouteIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
         @if(Auth::user()->individual || Auth::user()->regulatedOrganization)
         <li>
-            <x-nav-link :href="localized_route('projects.index')" :active="request()->routeIs(locale() . '.projects.index')">
+            <x-nav-link :href="localized_route('projects.index')" :active="request()->localizedRouteIs('projects.index')">
                 {{ __('Projects') }}
             </x-nav-link>
         </li>
@@ -37,12 +37,12 @@
             </x-nav-link>
         </li>
         <li>
-            <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->routeIs(locale() . '.resource-collections.index')">
+            <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
                 {{ __('Resources and training') }}
             </x-nav-link>
         </li>
         <li class="account">
-            <x-nav-link href="{{ localized_route('users.settings') }}" :active="request()->routeIs(locale() . '.users.settings')">
+            <x-nav-link href="{{ localized_route('users.settings') }}" :active="request()->localizedRouteIs('users.settings')">
                 <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
             </x-nav-link>
         </li>

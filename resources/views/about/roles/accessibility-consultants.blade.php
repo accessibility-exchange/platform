@@ -4,7 +4,12 @@
         <div class="-mt-12 full bg-magenta-2 py-12">
             <div class="center center:wide">
                 <ol class="breadcrumbs" role="list">
-                    <li><button x-data @click="history.back()">{{ __('Back') }}</button></li>
+                    <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+                    @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                    <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
+                    @elseif(request()->localizedRouteIs('about.organization-accessibility-consultants'))
+                    <li><a href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a></li>
+                    @endif
                 </ol>
                 <h1 class="w-1/2">
                     {{ __('Accessibility Consultants') }}
@@ -83,7 +88,9 @@
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
                             <p>{{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}</p>
-                            <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
+                            @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                                <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
+                            @endif
                         </div>
                     </div>
                 </div>
