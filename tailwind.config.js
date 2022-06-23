@@ -1,4 +1,9 @@
-/** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-unused-vars
+import {Config} from "tailwindcss";
+
+/**
+ * @type {Config} config
+ **/
 module.exports = {
     content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
     theme: {
