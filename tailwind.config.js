@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import {Config} from "tailwindcss";
+const {Config} = require("tailwindcss");
 
 /**
  * @type {Config} config
