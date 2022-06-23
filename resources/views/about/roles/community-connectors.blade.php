@@ -21,8 +21,7 @@
     <div class="stack stack:xl -mb-8">
         <x-section aria-labelledby="experiences" class="stack:lg">
             <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => '<strong>' . __('Community Connector') . '</strong>']) !!}</h2>
-            <p>{{ __('Coming soon.') }}</p>
-            {{-- TODO: Add Experiences --}}
+            <p>TODO.</p>
         </x-section>
 
         <x-section aria-labelledby="how" class="stack:lg">
@@ -34,8 +33,10 @@
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Sign up for the website and build your Consultant profile') }}</h3>
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}</p>
-                    <p><a href="#TODO">{{ __('What information do we ask for?') }}</a></p>
-                    <p><a href="#TODO">{{ __('Read our privacy policy') }}</a></p>
+                    @if(request()->localizedRouteIs('about.individual-community-connectors'))
+                        <p><a href="{{ localized_route('about.individual-community-connectors-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a></p>
+                    @endif
+                    <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a></p>
                 </div>
             </x-media-text>
 

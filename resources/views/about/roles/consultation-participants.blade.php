@@ -21,8 +21,7 @@
     <div class="stack stack:xl -mb-8">
         <x-section aria-labelledby="experiences" class="stack:lg">
             <h2 id="experiences" class="text-center">{!! __('What experiences should I have to be a :role?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
-            <p>{{ __('Coming soon.') }}</p>
-            {{-- TODO: Add Experiences --}}
+            <p>TODO.</p>
         </x-section>
 
         <x-section aria-labelledby="how" class="stack:lg">
@@ -36,8 +35,10 @@
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Sign up for the website and share a bit about yourself') }}</h3>
                     <p>{{ __('If you are willing to share more about your lived experience, we can match you to governments and businesses who are eager to hear from someone like you.') }}</p>
-                    <p><a href="#TODO">{{ __('What information do we ask for?') }}</a></p>
-                    <p><a href="#TODO">{{ __('Read our privacy policy') }}</a></p>
+                    @if(request()->localizedRouteIs('about.individual-consultation-participants'))
+                    <p><a href="{{ localized_route('about.individual-consultation-participants-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a></p>
+                    @endif
+                    <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -64,7 +65,6 @@
 
         <x-section aria-labelledby="faq">
             <h2 class="text-center" id="faq">{{ __('Frequently asked questions') }}</h2>
-
             <p>TODO.</p>
         </x-section>
 
