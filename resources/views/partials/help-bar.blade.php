@@ -9,7 +9,7 @@
                     <x-heroicon-o-question-mark-circle aria-hidden="true" height="20" width="20" />&nbsp;<a href="#">{{ __('Help center') }}</a>
                 </div>
                 <div>
-                    <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span class="weight:semibold">{{ __('Call, text, VRS') }}:</span>&nbsp;{{ settings()->get('phone', '1-800-123-4567') }}
+                    <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span class="weight:semibold">{!! __('Call, Text, or :vrs', ['vrs' => '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' . __('VRS') . '</a>']) !!}:</span>&nbsp;{{ settings()->get('phone', '1-800-123-4567') }}
                 </div>
                 <div>
                     <x-heroicon-o-mail aria-hidden="true" height="20" width="20" />&nbsp;<span class="weight:semibold">{{ __('Email') }}:</span>&nbsp;<a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
