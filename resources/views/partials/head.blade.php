@@ -16,23 +16,11 @@
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <!-- Styles -->
-        @env('local')
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
-        @else
-        <link href="{{ mix('css/app.css') }}" rel="stylesheet" integrity="{{ Sri::hash('css/app.css') }}" crossorigin="anonymous" />
-        @endenv
+        @vite('resources/css/app.css')
         @googlefonts
         @livewireStyles()
 
         <!-- Scripts -->
         <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
-        @env('local')
-        <script src="{{ mix('js/manifest.js') }}" defer></script>
-        <script src="{{ mix('js/vendor.js') }}" defer></script>
-        <script src="{{ mix('js/app.js') }}" defer></script>
-        @else
-        <script src="{{ mix('js/manifest.js') }}" integrity="{{ Sri::hash('js/manifest.js') }}" crossorigin="anonymous" defer></script>
-        <script src="{{ mix('js/vendor.js') }}" integrity="{{ Sri::hash('js/vendor.js') }}" crossorigin="anonymous" defer></script>
-        <script src="{{ mix('js/app.js') }}" integrity="{{ Sri::hash('js/app.js') }}" crossorigin="anonymous" defer></script>
-        @endenv
+        @vite('resources/js/app.js')
 
