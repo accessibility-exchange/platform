@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use ParagonIE\CipherSweet\BlindIndex;
+use ParagonIE\CipherSweet\EncryptedRow;
+use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
+use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -19,8 +23,9 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 use TheIconic\NameParser\Parser as NameParser;
 
-class Individual extends Model implements HasMedia
+class Individual extends Model implements CipherSweetEncrypted, HasMedia
 {
+    use UsesCipherSweet;
     use HasFactory;
     use HasMultipageEditingAndPublishing;
     use HasSlug;
@@ -104,6 +109,15 @@ class Individual extends Model implements HasMedia
         'other_lived_experience_connections',
         'other_constituency_connections',
     ];
+
+    public static function configureCipherSweet(EncryptedRow $encryptedRow): void
+    {
+        $encryptedRow
+            ->addField('locality')
+            ->addBlindIndex('locality', new BlindIndex('locality_index'))
+            ->addField('region')
+            ->addBlindIndex('region', new BlindIndex('region_index'));
+    }
 
     /**
      * Register media collections for the model.

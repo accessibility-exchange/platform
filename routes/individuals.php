@@ -34,7 +34,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->middleware(['auth', 'can:view,individual'])
             ->name('show-experiences');
 
-        Route::multilingual('/{individual}/access-needs', 'show')
+        Route::multilingual('/{individual}/communication-and-meetings', 'show')
             ->middleware(['auth', 'can:view,individual'])
             ->name('show-communication-and-meeting-preferences');
 

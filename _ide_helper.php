@@ -10860,6 +10860,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Gets the Session.
              *
+             * @throws SessionNotFoundException When session is not set properly
              * @static
              */
             public static function getSession()
