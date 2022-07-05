@@ -30,8 +30,10 @@ jobs:
         run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
-      - name: Generate key
-        run: php artisan key:Generate
+      - name: Generate keys
+        run: |
+          php artisan key:generate
+          echo $(php artisan ciphersweet:generate-key | tail -n1) >> .env
       - name: Run database migration
         run: |
           php artisan migrate
