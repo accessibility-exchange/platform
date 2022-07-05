@@ -38,7 +38,7 @@ class UpdateIndividualRequest extends FormRequest
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
             'first_language' => 'required|string',
-            'working_languages' => 'nullable|array:'.implode(',', $this->individual->languages),
+            'working_languages' => 'nullable|array',
             'lived_experience_connections' => [
                 'nullable',
                 Rule::requiredIf($this->individual->isConnector()),
