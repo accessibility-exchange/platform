@@ -1,7 +1,6 @@
 <?php
 
 use App\Settings;
-use CommerceGuys\Intl\Language\LanguageRepository;
 
 if (! function_exists('settings')) {
     /**
@@ -31,21 +30,22 @@ if (! function_exists('get_available_languages')) {
     function get_available_languages(bool $all = false): array
     {
         $languages = [
-            'ase' => __('locales.ase'),
             'fcs' => __('locales.fcs'),
-        ];
+        ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
 
         if ($all) {
-            $languages = $languages + (new LanguageRepository)->getList(locale());
+            $result = $languages;
         } else {
-            foreach (config('locales.supported') as $locale) {
-                $languages[$locale] = get_language_exonym($locale, locale());
+            $result = [];
+            $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
+            foreach ($minimum as $locale) {
+                $result[$locale] = $languages[$locale];
             }
         }
 
-        asort($languages);
+        asort($result);
 
-        return $languages;
+        return $result;
     }
 }
 
@@ -99,18 +99,13 @@ if (! function_exists('get_language_exonym')) {
 
         switch ($code) {
             case 'ase':
-            case 'fcs':
                 return trans('locales.'.$code, [], $locale);
             default:
-                $languages = new LanguageRepository();
+                $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
-                try {
-                    $language = $languages->get($code, $locale);
+                $language = $languages[$code] ?? null;
 
-                    return $capitalize ? Str::ucfirst($language->getName()) : $language->getName();
-                } catch (CommerceGuys\Intl\Exception\UnknownLanguageException $e) {
-                    return null;
-                }
+                return $language && $capitalize ? Str::ucfirst($language) : $language;
         }
     }
 }
