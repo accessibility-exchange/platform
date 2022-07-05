@@ -1,9 +1,9 @@
-name: Check & fix styling
+name: Check & fix PHP formatting
 
 on: [push]
 
 jobs:
-  php-cs-fixer:
+  pint:
     runs-on: ubuntu-latest
 
     steps:
