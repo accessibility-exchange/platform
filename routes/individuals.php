@@ -39,26 +39,26 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->name('show-communication-and-meeting-preferences');
 
         Route::multilingual('/{individual}/edit', 'edit')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->name('edit');
 
         Route::multilingual('/{individual}/edit', 'update')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update');
 
         Route::multilingual('/{individual}/edit-interests', 'updateInterests')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-interests');
 
         Route::multilingual('/{individual}/edit-experiences', 'updateExperiences')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-experiences');
 
         Route::multilingual('/{individual}/edit-communication-and-meeting-preferences', 'updateCommunicationAndMeetingPreferences')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-communication-and-meeting-preferences');
 

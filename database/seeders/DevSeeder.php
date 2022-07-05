@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Individual;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -28,6 +29,13 @@ class DevSeeder extends Seeder
                 'email' => 'info+individual@accessibilityexchange.ca',
                 'email_verified_at' => now(),
             ]);
+
+        $individual = Individual::factory()->create([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'first_language' => $user->locale,
+            'languages' => [$user->locale],
+        ]);
 
         $regulatedOrganizationUser = User::factory()
             ->create([
