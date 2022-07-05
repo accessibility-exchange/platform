@@ -34,7 +34,8 @@
         "spatie/laravel-translatable": "^6.0",
         "spatie/valuestore": "^1.3",
         "symfony/http-foundation": "~6.0.9",
-        "theiconic/name-parser": "^1.2"
+        "theiconic/name-parser": "^1.2",
+        "umpirsky/language-list": "^1.1"
     },
     "require-dev": {
         "amirami/localizator": "^0.9.1@alpha",
