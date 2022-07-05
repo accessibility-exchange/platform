@@ -386,7 +386,12 @@ test('users can edit individual pages', function () {
         'locality' => 'St John\'s',
         'region' => 'NL',
         'first_language' => $individual->first_language,
+        'working_languages' => [''],
     ]);
+
+    $draftIndividual = $draftIndividual->fresh();
+
+    expect($draftIndividual->working_languages)->toBeEmpty();
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $draftIndividual, 'step' => 1]));

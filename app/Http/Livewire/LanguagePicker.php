@@ -30,8 +30,6 @@ class LanguagePicker extends Component
     public function removeLanguage(int $i): void
     {
         unset($this->languages[$i]);
-
-        $this->languages = array_values($this->languages);
     }
 
     public function canAddMoreLanguages()

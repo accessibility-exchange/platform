@@ -188,6 +188,10 @@ class IndividualController extends Controller
     {
         $data = $request->validated();
 
+        if (isset($data['working_languages'])) {
+            $data['working_languages'] = array_filter($data['working_languages']);
+        }
+
         $individual->fill($data);
 
         $individual->save();
