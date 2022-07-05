@@ -30,7 +30,7 @@ class ResourceCollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param ResourceCollection $resourceCollection
+     * @param  ResourceCollection  $resourceCollection
      * @return View
      */
     public function show(ResourceCollection $resourceCollection): View

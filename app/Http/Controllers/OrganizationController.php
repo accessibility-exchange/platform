@@ -142,7 +142,7 @@ class OrganizationController extends Controller
         $roles = [];
 
         foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.' . $role);
+            $roles[$role] = __('roles.'.$role);
         }
 
         return view('organizations.edit', [

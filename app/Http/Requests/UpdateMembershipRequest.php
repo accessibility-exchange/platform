@@ -38,7 +38,7 @@ class UpdateMembershipRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param Validator $validator
+     * @param  Validator  $validator
      * @return void
      */
     public function withValidator(Validator $validator)

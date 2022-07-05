@@ -56,7 +56,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->method('post')
         ->middleware(array_filter([
             'guest',
-            $limiter ? 'throttle:' . $limiter : null,
+            $limiter ? 'throttle:'.$limiter : null,
         ]))
         ->name('login-store');
 
@@ -131,14 +131,14 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
 
     if (Features::enabled(Features::twoFactorAuthentication())) {
         Route::multilingual('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
-            ->middleware(['guest:' . config('fortify.guard')])
+            ->middleware(['guest:'.config('fortify.guard')])
             ->name('two-factor.login');
 
         Route::multilingual('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store'])
             ->method('post')
             ->middleware(array_filter([
-                'guest:' . config('fortify.guard'),
-                $twoFactorLimiter ? 'throttle:' . $twoFactorLimiter : null,
+                'guest:'.config('fortify.guard'),
+                $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
             ]));
 
         $twoFactorMiddleware = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')

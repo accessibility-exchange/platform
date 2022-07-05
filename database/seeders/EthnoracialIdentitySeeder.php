@@ -11,31 +11,31 @@ class EthnoracialIdentitySeeder extends Seeder
     {
         $identities = [
             [
-                'name' =>  __('White'),
+                'name' => __('White'),
             ],
             [
-                'name' =>  __('Black'),
+                'name' => __('Black'),
             ],
             [
-                'name' =>  __('East Asian'),
+                'name' => __('East Asian'),
             ],
             [
-                'name' =>  __('Asian'),
+                'name' => __('Asian'),
             ],
             [
-                'name' =>  __('South Asian'),
+                'name' => __('South Asian'),
             ],
             [
-                'name' =>  __('Southeast Asian'),
+                'name' => __('Southeast Asian'),
             ],
             [
-                'name' =>  __('Middle Eastern'),
+                'name' => __('Middle Eastern'),
             ],
             [
-                'name' =>  __('Latin American'),
+                'name' => __('Latin American'),
             ],
             [
-                'name' =>  __('African'),
+                'name' => __('African'),
             ],
             [
                 'name' => __('Other'),

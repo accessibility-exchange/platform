@@ -17,7 +17,7 @@ class AddNotificationableRequest extends FormRequest
     {
         return [
             'notificationable_type' => 'required|string|in:App\Models\Individual,App\Models\Organization,App\Models\RegulatedOrganization',
-            'notificationable_id' => 'required|integer|exists:' . $this->input('notificationable_type') . ',id',
+            'notificationable_id' => 'required|integer|exists:'.$this->input('notificationable_type').',id',
         ];
     }
 }

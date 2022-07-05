@@ -23,8 +23,8 @@ class StoreRegulatedOrganizationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $this->type)]),
-            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $this->type)]),
+            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
+            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
         ];
     }
 }

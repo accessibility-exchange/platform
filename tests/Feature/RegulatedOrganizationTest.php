@@ -91,7 +91,7 @@ test('users with admin role can edit regulated organizations', function () {
         'service_areas' => ['NL'],
         'about' => ['en' => 'TODO.'],
         'sectors' => [Sector::pluck('id')->first()],
-        'social_links' => ['facebook' => 'https://facebook.com/' . Str::slug($regulatedOrganization->name)],
+        'social_links' => ['facebook' => 'https://facebook.com/'.Str::slug($regulatedOrganization->name)],
         'preview' => 'Preview',
     ]);
     $response->assertSessionHasNoErrors();
@@ -184,7 +184,7 @@ test('non members can not edit regulated organizations', function () {
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
-        'name' =>  $otherRegulatedOrganization->name,
+        'name' => $otherRegulatedOrganization->name,
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);

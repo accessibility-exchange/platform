@@ -28,7 +28,7 @@ class AddTranslationRequest extends FormRequest
     {
         return [
             'translatable_type' => 'required|string',
-            'translatable_id' => 'exists:' . $this->get('translatable_type') . ',id',
+            'translatable_id' => 'exists:'.$this->get('translatable_type').',id',
             'new_language' => [
                 'required',
                 'string',

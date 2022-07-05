@@ -23,6 +23,6 @@ class FailedTwoFactorLoginResponse implements FailedTwoFactorLoginResponseContra
             ]);
         }
 
-        return redirect()->route(locale() . '.login')->withErrors(['email' => $message]);
+        return redirect()->route(locale().'.login')->withErrors(['email' => $message]);
     }
 }

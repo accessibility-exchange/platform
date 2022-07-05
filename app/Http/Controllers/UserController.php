@@ -48,7 +48,7 @@ class UserController extends Controller
     /**
      * Update the logged-in user's introduction status.
      *
-     * @param UpdateUserIntroductionStatusRequest $request
+     * @param  UpdateUserIntroductionStatusRequest  $request
      * @return RedirectResponse
      */
     public function updateIntroductionStatus(UpdateUserIntroductionStatusRequest $request): RedirectResponse
@@ -114,7 +114,7 @@ class UserController extends Controller
     /**
      * Store a new user's context in the session.
      *
-     * @param SaveUserContextRequest $request
+     * @param  SaveUserContextRequest  $request
      * @return RedirectResponse
      */
     public function saveContext(SaveUserContextRequest $request): RedirectResponse
@@ -128,7 +128,7 @@ class UserController extends Controller
     /**
      * Store a new user's details in the session.
      *
-     * @param SaveUserDetailsRequest $request
+     * @param  SaveUserDetailsRequest  $request
      * @return RedirectResponse
      */
     public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
@@ -143,7 +143,7 @@ class UserController extends Controller
     /**
      * Store a new user's language preferences in the session.
      *
-     * @param SaveUserLanguagesRequest $request
+     * @param  SaveUserLanguagesRequest  $request
      * @return RedirectResponse
      */
     public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
@@ -168,7 +168,7 @@ class UserController extends Controller
         $roles = [];
 
         foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.' . $role);
+            $roles[$role] = __('roles.'.$role);
         }
 
         return view('users.roles-and-permissions', [
@@ -196,7 +196,7 @@ class UserController extends Controller
             $roles = [];
 
             foreach (config('hearth.organizations.roles') as $role) {
-                $roles[$role] = __('roles.' . $role);
+                $roles[$role] = __('roles.'.$role);
             }
 
             return view('users.roles-and-permissions.invite', [
@@ -219,7 +219,7 @@ class UserController extends Controller
         $themes = [];
 
         foreach (config('themes') as $theme) {
-            $themes[$theme] = __('themes.' . $theme);
+            $themes[$theme] = __('themes.'.$theme);
         }
 
         return view('users.display-preferences', [
@@ -231,7 +231,7 @@ class UserController extends Controller
     /**
      * Show the display preferences edit view for the logged-in user.
      *
-     * @param UpdateUserDisplayPreferencesRequest $request
+     * @param  UpdateUserDisplayPreferencesRequest  $request
      * @return RedirectResponse
      */
     public function updateDisplayPreferences(UpdateUserDisplayPreferencesRequest $request): RedirectResponse
@@ -302,7 +302,7 @@ class UserController extends Controller
     /**
      * Destroy a given user.
      *
-     * @param DestroyUserRequest $request
+     * @param  DestroyUserRequest  $request
      * @return RedirectResponse
      */
     public function destroy(DestroyUserRequest $request)

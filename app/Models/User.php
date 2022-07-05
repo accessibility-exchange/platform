@@ -217,7 +217,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Determine if the user is a member of a given membershipable model.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      * @return bool
      */
     public function isMemberOf(mixed $model): bool
@@ -228,7 +228,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     /**
      * Determine if the user is an administrator of a given model.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      * @return bool
      */
     public function isAdministratorOf(mixed $model): bool

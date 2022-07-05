@@ -27,7 +27,7 @@ class RequirePassword extends RequirePasswordMiddleware
             }
 
             return $this->responseFactory->redirectGuest(
-                $this->urlGenerator->route($redirectToRoute ?? Auth::user()->locale . '.password.confirm')
+                $this->urlGenerator->route($redirectToRoute ?? Auth::user()->locale.'.password.confirm')
             );
         }
 

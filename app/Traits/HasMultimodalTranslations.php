@@ -5,8 +5,8 @@ namespace App\Traits;
 trait HasMultimodalTranslations
 {
     /**
-     * @param string $attribute
-     * @param string $code
+     * @param  string  $attribute
+     * @param  string  $code
      * @return string
      */
     public function getWrittenTranslation(string $attribute, string $code = ''): string
@@ -26,8 +26,8 @@ trait HasMultimodalTranslations
     }
 
     /**
-     * @param string $attribute
-     * @param string $code
+     * @param  string  $attribute
+     * @param  string  $code
      * @return void
      */
     // TODO: Implement this

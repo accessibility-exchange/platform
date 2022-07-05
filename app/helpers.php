@@ -7,9 +7,8 @@ if (! function_exists('settings')) {
     /**
      * Retrieve a setting from the settings Valuestore.
      *
-     * @param string|null $key The setting key.
-     * @param mixed|null $default A default value for the setting.
-     *
+     * @param  string|null  $key The setting key.
+     * @param  mixed|null  $default A default value for the setting.
      * @return mixed
      */
     function settings(string $key = null, mixed $default = null): mixed
@@ -26,8 +25,7 @@ if (! function_exists('get_available_languages')) {
     /**
      * Get available languages.
      *
-     * @param bool $all Should all languages be shown? Otherwise, only supported locales will be included.
-     *
+     * @param  bool  $all Should all languages be shown? Otherwise, only supported locales will be included.
      * @return array
      */
     function get_available_languages(bool $all = false): array
@@ -57,8 +55,7 @@ if (! function_exists('is_signed_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param string $code An ISO 639 code.
-     *
+     * @param  string  $code An ISO 639 code.
      * @return bool
      */
     function is_signed_language(string $code): bool
@@ -73,8 +70,7 @@ if (! function_exists('get_written_language_for_signed_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param string $code An ISO 639 code.
-     *
+     * @param  string  $code An ISO 639 code.
      * @return string
      */
     function get_written_language_for_signed_language(string $code): string
@@ -90,10 +86,9 @@ if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
      *
-     * @param string $code An ISO 639 language code.
-     * @param string $locale An ISO 639-1 language code (in which the locale name should be returned).
-     * @param bool $capitalize Whether the returned language exonym should be capitalized.
-     *
+     * @param  string  $code An ISO 639 language code.
+     * @param  string  $locale An ISO 639-1 language code (in which the locale name should be returned).
+     * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
     function get_language_exonym(string $code, string $locale = '', bool $capitalize = true): null|string
@@ -105,7 +100,7 @@ if (! function_exists('get_language_exonym')) {
         switch ($code) {
             case 'ase':
             case 'fcs':
-                return trans('locales.' . $code, [], $locale);
+                return trans('locales.'.$code, [], $locale);
             default:
                 $languages = new LanguageRepository();
 

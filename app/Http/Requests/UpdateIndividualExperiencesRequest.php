@@ -24,12 +24,12 @@ class UpdateIndividualExperiencesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lived_experience' => 'nullable|array:' . implode(',', $this->individual->languages),
-            'skills_and_strengths' => 'nullable|array:' . implode(',', $this->individual->languages),
+            'lived_experience' => 'nullable|array:'.implode(',', $this->individual->languages),
+            'skills_and_strengths' => 'nullable|array:'.implode(',', $this->individual->languages),
             'relevant_experiences.*.title' => 'nullable|string',
             'relevant_experiences.*.organization' => 'nullable|required_with:work_and_volunteer_experiences.*.title|string',
-            'relevant_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:' . (date('Y')),
-            'relevant_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:' . (date('Y')),
+            'relevant_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:'.(date('Y')),
+            'relevant_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:'.(date('Y')),
             'relevant_experiences.*.current' => 'nullable|boolean',
         ];
     }

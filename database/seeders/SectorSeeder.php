@@ -19,7 +19,7 @@ class SectorSeeder extends Seeder
                 'name' => __('Transportation'),
                 'description' => __('Trains, airplanes, and buses'),
             ],
-            'financial-services' =>  [
+            'financial-services' => [
                 'name' => __('Financial services'),
                 'description' => __('Banks and credit unions'),
             ],
@@ -31,11 +31,11 @@ class SectorSeeder extends Seeder
                 'name' => __('Broadcasting'),
                 'description' => __('Radio and television'),
             ],
-            'government-programs-and-services' =>  [
+            'government-programs-and-services' => [
                 'name' => __('Federal government programs and services'),
                 'description' => __('For example: the Canada Revenue Agency, the Immigration and Refugee Board of Canada, and Service Canada'),
             ],
-            'crown-corporations' =>  [
+            'crown-corporations' => [
                 'name' => __('Crown corporations'),
                 'description' => __('For example: Canada Post, the Canada Council for the Arts'),
             ],

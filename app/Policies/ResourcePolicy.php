@@ -14,7 +14,7 @@ class ResourcePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
+     * @param  User  $user
      * @return bool
      */
     public function create(User $user): bool
@@ -25,8 +25,8 @@ class ResourcePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
-     * @param resource $resource
+     * @param  User  $user
+     * @param  resource  $resource
      * @return Response
      */
     public function update(User $user, Resource $resource): Response
@@ -39,8 +39,8 @@ class ResourcePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
-     * @param resource $resource
+     * @param  User  $user
+     * @param  resource  $resource
      * @return Response
      */
     public function delete(User $user, Resource $resource): Response

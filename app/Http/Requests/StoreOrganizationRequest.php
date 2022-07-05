@@ -23,8 +23,8 @@ class StoreOrganizationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.' . $this->type . '.name')]),
-            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.' . $this->type . '.name')]),
+            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
+            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
         ];
     }
 }

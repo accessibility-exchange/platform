@@ -18,7 +18,7 @@ class InvitationController extends Controller
     /**
      * Create an invitation.
      *
-     * @param StoreInvitationRequest $request
+     * @param  StoreInvitationRequest  $request
      * @return RedirectResponse
      */
     public function create(StoreInvitationRequest $request)
@@ -39,8 +39,8 @@ class InvitationController extends Controller
     /**
      * Accept the specified invitation.
      *
-     * @param AcceptInvitationRequest $request
-     * @param Invitation $invitation
+     * @param  AcceptInvitationRequest  $request
+     * @param  Invitation  $invitation
      * @return RedirectResponse
      */
     public function accept(AcceptInvitationRequest $request, Invitation $invitation)
@@ -54,14 +54,14 @@ class InvitationController extends Controller
             'success'
         );
 
-        return redirect(localized_route($invitation->invitationable->getRoutePrefix() . '.show', $invitation->invitationable));
+        return redirect(localized_route($invitation->invitationable->getRoutePrefix().'.show', $invitation->invitationable));
     }
 
     /**
      * Cancel the specified invitation.
      *
-     * @param Request $request
-     * @param Invitation $invitation
+     * @param  Request  $request
+     * @param  Invitation  $invitation
      * @return RedirectResponse
      */
     public function destroy(Request $request, Invitation $invitation)
