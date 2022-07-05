@@ -49,7 +49,7 @@ class RegulatedOrganizationController extends Controller
     /**
      * Store the regulated organization's name in the session.
      *
-     * @param StoreRegulatedOrganizationTypeRequest $request
+     * @param  StoreRegulatedOrganizationTypeRequest  $request
      * @return RedirectResponse
      */
     public function storeType(StoreRegulatedOrganizationTypeRequest $request): RedirectResponse
@@ -76,7 +76,7 @@ class RegulatedOrganizationController extends Controller
     /**
      * Store the model.
      *
-     * @param StoreRegulatedOrganizationRequest $request
+     * @param  StoreRegulatedOrganizationRequest  $request
      * @return RedirectResponse
      */
     public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
@@ -96,7 +96,7 @@ class RegulatedOrganizationController extends Controller
     /**
      * Show a language selection page for the logged-in user.
      *
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return View
      */
     public function showLanguageSelection(RegulatedOrganization $regulatedOrganization): View
@@ -109,8 +109,8 @@ class RegulatedOrganizationController extends Controller
     /**
      * Update the languages of a resource.
      *
-     * @param StoreRegulatedOrganizationLanguagesRequest $request
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  StoreRegulatedOrganizationLanguagesRequest  $request
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return RedirectResponse
      */
     public function storeLanguages(StoreRegulatedOrganizationLanguagesRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
@@ -124,12 +124,12 @@ class RegulatedOrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return View
      */
     public function show(RegulatedOrganization $regulatedOrganization): View
     {
-        if (Route::currentRouteName() === locale() . '.regulated-organizations.show-projects') {
+        if (Route::currentRouteName() === locale().'.regulated-organizations.show-projects') {
             $regulatedOrganization->load('completedProjects', 'inProgressProjects', 'upcomingProjects');
         }
 
@@ -145,7 +145,7 @@ class RegulatedOrganizationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return View
      */
     public function edit(RegulatedOrganization $regulatedOrganization): View
@@ -160,8 +160,8 @@ class RegulatedOrganizationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateRegulatedOrganizationRequest $request
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  UpdateRegulatedOrganizationRequest  $request
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return RedirectResponse
      */
     public function update(UpdateRegulatedOrganizationRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
@@ -183,7 +183,7 @@ class RegulatedOrganizationController extends Controller
      * Update the specified resource's status.
      *
      * @param  Request  $request
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return RedirectResponse
      */
     public function updatePublicationStatus(Request $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
@@ -200,7 +200,7 @@ class RegulatedOrganizationController extends Controller
     /**
      * Show the form for deleting the specified resource.
      *
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return View
      */
     public function delete(RegulatedOrganization $regulatedOrganization): View
@@ -213,8 +213,8 @@ class RegulatedOrganizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyRegulatedOrganizationRequest $request
-     * @param RegulatedOrganization $regulatedOrganization
+     * @param  DestroyRegulatedOrganizationRequest  $request
+     * @param  RegulatedOrganization  $regulatedOrganization
      * @return RedirectResponse
      */
     public function destroy(DestroyRegulatedOrganizationRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse

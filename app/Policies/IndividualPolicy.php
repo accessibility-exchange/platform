@@ -14,9 +14,8 @@ class IndividualPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param Individual $model
-     *
+     * @param  User  $user
+     * @param  Individual  $model
      * @return Response
      */
     public function view(User $user, Individual $model): Response
@@ -29,8 +28,8 @@ class IndividualPolicy
 
         return $model->blockedBy($user)
             ? Response::deny(__('You’ve blocked :individual. If you want to visit this page, you can :unblock and return to this page.', [
-                'individual' => '<strong>' . $model->name . '</strong>',
-                'unblock' => '<a href="' . localized_route('block-list.show') . '">' . __('unblock them') . '</a>',
+                'individual' => '<strong>'.$model->name.'</strong>',
+                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
             ]))
             : Response::allow();
     }

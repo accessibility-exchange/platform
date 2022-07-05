@@ -11,7 +11,7 @@ class TranslationController extends Controller
     /**
      * Add the specified translation to the resource.
      *
-     * @param AddTranslationRequest $request
+     * @param  AddTranslationRequest  $request
      * @return RedirectResponse
      */
     public function add(AddTranslationRequest $request)
@@ -32,7 +32,7 @@ class TranslationController extends Controller
     /**
      * Remove the specified translation from the resource.
      *
-     * @param DestroyTranslationRequest $request
+     * @param  DestroyTranslationRequest  $request
      * @return RedirectResponse
      */
     public function destroy(DestroyTranslationRequest $request)

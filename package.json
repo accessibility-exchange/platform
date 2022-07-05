@@ -24,7 +24,7 @@
             "eslint"
         ],
         "*.php": [
-            "vendor/bin/php-cs-fixer fix --config=.php_cs.dist.php --allow-risky=yes"
+            "vendor/bin/pint"
         ]
     },
     "devDependencies": {

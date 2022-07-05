@@ -12,7 +12,7 @@ class LanguageChanger extends Component
     /**
      * Create a new component instance.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      * @return void
      */
     public function __construct(mixed $model)

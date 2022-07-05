@@ -33,7 +33,7 @@ class DestroyUserRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param Validator $validator
+     * @param  Validator  $validator
      * @return void
      */
     public function withValidator(Validator $validator)
@@ -51,7 +51,7 @@ class DestroyUserRequest extends FormRequest
                         'organizations',
                         __(
                             'organization.error_new_administrator_required_before_user_deletion',
-                            ['organization' => '<a href="' . localized_route('organizations.edit', $this->user()->organization) . '">' . $this->user()->organization->getTranslation('name', locale()) . '</a>'],
+                            ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->organization).'">'.$this->user()->organization->getTranslation('name', locale()).'</a>'],
                         )
                     );
                 }
@@ -62,7 +62,7 @@ class DestroyUserRequest extends FormRequest
                         'organizations',
                         __(
                             'organization.error_new_administrator_required_before_user_deletion',
-                            ['organization' => '<a href="' . localized_route('organizations.edit', $this->user()->regulatedOrganization) . '">' . $this->user()->regulatedOrganization->getTranslation('name', locale()) . '</a>'],
+                            ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->regulatedOrganization).'">'.$this->user()->regulatedOrganization->getTranslation('name', locale()).'</a>'],
                         )
                     );
                 }

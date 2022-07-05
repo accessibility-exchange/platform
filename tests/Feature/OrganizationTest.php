@@ -45,11 +45,11 @@ test('users can create organizations', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('organizations.create'), [
-        'name' => ['en' => $user->name . ' Foundation'],
+        'name' => ['en' => $user->name.' Foundation'],
         'type' => 'representative',
     ]);
     $response->assertSessionHasNoErrors();
-    $organization = Organization::where('name->en', $user->name . ' Foundation')->first();
+    $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
@@ -314,7 +314,7 @@ test('users with admin role can edit organization contact information', function
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
-        'contact_person_email' => Str::slug($name) . '@' . faker()->safeEmailDomain,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => faker()->phoneNumber,
         'contact_person_vrs' => false,
         'preferred_contact_method' => 'email',

@@ -132,13 +132,13 @@ class Project extends Model
      *
      * @return string
      */
-    public function timeframe(): String
+    public function timeframe(): string
     {
         if ($this->end_date) {
             if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
-                return $this->start_date->translatedFormat('F') . '&ndash;' . $this->end_date->translatedFormat('F Y');
+                return $this->start_date->translatedFormat('F').'&ndash;'.$this->end_date->translatedFormat('F Y');
             } else {
-                return $this->start_date->translatedFormat('F Y') . '&ndash;' . $this->end_date->translatedFormat('F Y');
+                return $this->start_date->translatedFormat('F Y').'&ndash;'.$this->end_date->translatedFormat('F Y');
             }
         }
 
@@ -182,7 +182,7 @@ class Project extends Model
      *
      * @return string
      */
-    public function consultant_origin(): String
+    public function consultant_origin(): string
     {
         if ($this->consultant_name) {
             return 'external';
@@ -216,7 +216,7 @@ class Project extends Model
      *
      * @return string
      */
-    public function teamExperience(): String
+    public function teamExperience(): string
     {
         if ($this->team_has_disability_or_deaf_lived_experience && $this->team_has_other_lived_experience) {
             return __('Our team includes people with disabilities and/or Deaf people as well as people from other equity-seeking groups.');

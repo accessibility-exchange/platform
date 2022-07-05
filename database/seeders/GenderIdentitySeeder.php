@@ -13,27 +13,27 @@ class GenderIdentitySeeder extends Seeder
             [
                 'name' => __('Woman'),
                 'name_plural' => __('Women'),
-                'adjective' =>  __('Female'),
+                'adjective' => __('Female'),
             ],
             [
                 'name' => __('Man'),
                 'name_plural' => __('Men'),
-                'adjective' =>  __('Male'),
+                'adjective' => __('Male'),
             ],
             [
                 'name' => __('Non-binary person'),
                 'name_plural' => __('Non-binary people'),
-                'adjective' =>  __('Non-binary'),
+                'adjective' => __('Non-binary'),
             ],
             [
                 'name' => __('Gender non-conforming person'),
                 'name_plural' => __('Gender non-conforming people'),
-                'adjective' =>  __('Gender non-conforming'),
+                'adjective' => __('Gender non-conforming'),
             ],
             [
                 'name' => __('Gender fluid person'),
                 'name_plural' => __('Gender fluid people'),
-                'adjective' =>  __('Gender fluid'),
+                'adjective' => __('Gender fluid'),
             ],
         ];
 

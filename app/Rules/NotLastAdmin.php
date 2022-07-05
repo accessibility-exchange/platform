@@ -17,7 +17,7 @@ class NotLastAdmin implements Rule
     /**
      * Constructor.
      *
-     * @param Membership $membership
+     * @param  Membership  $membership
      */
     public function __construct(Membership $membership)
     {

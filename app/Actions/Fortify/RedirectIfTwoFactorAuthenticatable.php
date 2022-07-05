@@ -22,6 +22,6 @@ class RedirectIfTwoFactorAuthenticatable extends RedirectIfTwoFactorAuthenticata
 
         return $request->wantsJson()
                     ? response()->json(['two_factor' => true])
-                    : redirect()->route($user->locale . '.two-factor.login');
+                    : redirect()->route($user->locale.'.two-factor.login');
     }
 }

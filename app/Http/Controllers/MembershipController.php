@@ -24,7 +24,7 @@ class MembershipController extends Controller
         $roles = [];
 
         foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.' . $role);
+            $roles[$role] = __('roles.'.$role);
         }
 
         return view('memberships.edit', [
@@ -38,8 +38,8 @@ class MembershipController extends Controller
     /**
      * Update the given member's role.
      *
-     * @param UpdateMembershipRequest $request
-     * @param Membership $membership
+     * @param  UpdateMembershipRequest  $request
+     * @param  Membership  $membership
      * @return RedirectResponse
      */
     public function update(UpdateMembershipRequest $request, Membership $membership): RedirectResponse
@@ -52,7 +52,7 @@ class MembershipController extends Controller
 
         if ($request->user()->id === $membership->user->id && $request->input('role') !== 'admin') {
             return redirect(
-                localized_route($membership->membershipable()->getRoutePrefix() . '.show', $membership->membershipable())
+                localized_route($membership->membershipable()->getRoutePrefix().'.show', $membership->membershipable())
             );
         }
 
@@ -64,8 +64,8 @@ class MembershipController extends Controller
     /**
      * Remove the given member from the organization.
      *
-     * @param Request $request
-     * @param Membership $membership
+     * @param  Request  $request
+     * @param  Membership  $membership
      * @return RedirectResponse
      */
     public function destroy(Request $request, Membership $membership): RedirectResponse
@@ -93,7 +93,7 @@ class MembershipController extends Controller
 
         if ($request->user()->id === $membership->user->id) {
             return redirect(
-                localized_route($membership->membershipable()->getRoutePrefix() . '.show', $membership->membershipable())
+                localized_route($membership->membershipable()->getRoutePrefix().'.show', $membership->membershipable())
             );
         }
 

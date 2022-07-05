@@ -28,7 +28,7 @@ class ProjectFactory extends Factory
         return [
             'projectable_type' => 'App\Models\RegulatedOrganization',
             'projectable_id' => RegulatedOrganization::factory(),
-            'name' => ['en' => 'My accessibility project – ' . Carbon::parse($start)->format('F Y')],
+            'name' => ['en' => 'My accessibility project – '.Carbon::parse($start)->format('F Y')],
             'start_date' => $start,
             'published_at' => date('Y-m-d h:i:s', time()),
             'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],

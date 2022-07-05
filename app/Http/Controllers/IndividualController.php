@@ -41,6 +41,7 @@ class IndividualController extends Controller
      * Show a role selection page for the logged-in user.
      *
      * @return View
+     *
      * @throws AuthorizationException
      */
     public function showRoleSelection(): View
@@ -68,6 +69,7 @@ class IndividualController extends Controller
      * Show a role selection page for the logged-in user.
      *
      * @return View
+     *
      * @throws AuthorizationException
      */
     public function showRoleEdit(): View
@@ -96,8 +98,9 @@ class IndividualController extends Controller
     /**
      * Save roles for the logged-in user.
      *
-     * @param SaveIndividualRolesRequest $request
+     * @param  SaveIndividualRolesRequest  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function saveRoles(SaveIndividualRolesRequest $request): RedirectResponse
@@ -120,7 +123,7 @@ class IndividualController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return View
      */
     public function show(Individual $individual): View
@@ -131,7 +134,7 @@ class IndividualController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return View
      */
     public function edit(Individual $individual): View
@@ -178,7 +181,7 @@ class IndividualController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateIndividualRequest  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function update(UpdateIndividualRequest $request, Individual $individual): RedirectResponse
@@ -205,8 +208,8 @@ class IndividualController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateIndividualExperiencesRequest  $request
-     * @param Individual $individual
+     * @param  UpdateIndividualExperiencesRequest  $request
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function updateExperiences(UpdateIndividualExperiencesRequest $request, Individual $individual): RedirectResponse
@@ -235,7 +238,7 @@ class IndividualController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateIndividualInterestsRequest  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function updateInterests(UpdateIndividualInterestsRequest $request, Individual $individual): RedirectResponse
@@ -256,7 +259,7 @@ class IndividualController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateIndividualCommunicationAndMeetingPreferencesRequest  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function updateCommunicationAndMeetingPreferences(UpdateIndividualCommunicationAndMeetingPreferencesRequest $request, Individual $individual): RedirectResponse
@@ -283,7 +286,7 @@ class IndividualController extends Controller
      * Update the specified resource's status.
      *
      * @param  Request  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function updatePublicationStatus(Request $request, Individual $individual): RedirectResponse
@@ -301,7 +304,7 @@ class IndividualController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  DestroyIndividualRequest  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function destroy(DestroyIndividualRequest $request, Individual $individual): RedirectResponse
@@ -317,7 +320,7 @@ class IndividualController extends Controller
      * Express interest in a project.
      *
      * @param  Request  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function expressInterest(Request $request, Individual $individual): RedirectResponse
@@ -337,7 +340,7 @@ class IndividualController extends Controller
      * Remove interest in a project.
      *
      * @param  Request  $request
-     * @param Individual $individual
+     * @param  Individual  $individual
      * @return RedirectResponse
      */
     public function removeInterest(Request $request, Individual $individual): RedirectResponse

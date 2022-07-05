@@ -74,7 +74,7 @@ test('users can invite new members to their organization or regulated organizati
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('users.invite-to-invitationable'));
     $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="' . $regulatedOrganization->id . '"', false);
+    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false);
     $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
@@ -84,7 +84,7 @@ test('users can invite new members to their organization or regulated organizati
 
     $response = $this->actingAs($organizationUser)->get(localized_route('users.invite-to-invitationable'));
     $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="' . $organization->id . '"', false);
+    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false);
     $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
 
     $individualUser = User::factory()->create();

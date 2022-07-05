@@ -14,7 +14,7 @@ class EngagementController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\View\View
      */
     public function create(Project $project): View
@@ -26,7 +26,7 @@ class EngagementController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreEngagementRequest  $request
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreEngagementRequest $request, Project $project): RedirectResponse
@@ -43,7 +43,7 @@ class EngagementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\View\View
      */
@@ -55,7 +55,7 @@ class EngagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\View\View
      */
@@ -68,7 +68,7 @@ class EngagementController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateEngagementRequest  $request
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -85,7 +85,7 @@ class EngagementController extends Controller
     /**
      * Manage the specified resource.
      *
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\View\View
      */
@@ -97,7 +97,7 @@ class EngagementController extends Controller
     /**
      * Participate in the specified resource.
      *
-     * @param \App\Models\Project  $project
+     * @param  \App\Models\Project  $project
      * @param  \App\Models\Engagement  $engagement
      * @return \Illuminate\View\View
      */

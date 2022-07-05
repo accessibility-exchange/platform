@@ -154,18 +154,18 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('users.destroy');
 
-require __DIR__ . '/identifiers.php';
-require __DIR__ . '/block-list.php';
-require __DIR__ . '/individuals.php';
-require __DIR__ . '/defined-terms.php';
-require __DIR__ . '/organizations.php';
-require __DIR__ . '/regulated-organizations.php';
-require __DIR__ . '/projects.php';
-require __DIR__ . '/notification-list.php';
-require __DIR__ . '/engagements.php';
-require __DIR__ . '/resources.php';
-require __DIR__ . '/resource-collections.php';
-require __DIR__ . '/translations.php';
-require __DIR__ . '/memberships.php';
-require __DIR__ . '/invitations.php';
-require __DIR__ . '/fortify.php';
+require __DIR__.'/identifiers.php';
+require __DIR__.'/block-list.php';
+require __DIR__.'/individuals.php';
+require __DIR__.'/defined-terms.php';
+require __DIR__.'/organizations.php';
+require __DIR__.'/regulated-organizations.php';
+require __DIR__.'/projects.php';
+require __DIR__.'/notification-list.php';
+require __DIR__.'/engagements.php';
+require __DIR__.'/resources.php';
+require __DIR__.'/resource-collections.php';
+require __DIR__.'/translations.php';
+require __DIR__.'/memberships.php';
+require __DIR__.'/invitations.php';
+require __DIR__.'/fortify.php';

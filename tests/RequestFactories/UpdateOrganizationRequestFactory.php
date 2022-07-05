@@ -9,7 +9,7 @@ class UpdateOrganizationRequestFactory extends RequestFactory
     public function definition(): array
     {
         return [
-            'name' => ['en' => $this->faker->lastName . ' Foundation'],
+            'name' => ['en' => $this->faker->lastName.' Foundation'],
             'about' => ['en' => $this->faker->paragraph],
             'region' => $this->faker->randomElement(get_region_codes()),
             'locality' => $this->faker->city,

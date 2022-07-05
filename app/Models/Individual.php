@@ -249,7 +249,7 @@ class Individual extends Model implements HasMedia
         };
 
         if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
-            $contactPoint .= ".  \n" . __(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+            $contactPoint .= ".  \n".__(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
         }
 
         return $contactPoint;
@@ -277,12 +277,12 @@ class Individual extends Model implements HasMedia
         return match ($this->preferred_contact_method) {
             'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
-                'email' => '[' . $this->primary_contact_point . '](mailto:' . $this->primary_contact_point . ')',
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'email' => '['.$this->primary_contact_point.'](mailto:'.$this->primary_contact_point.')',
             ]),
             'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person . ',',
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
                 'phone_number' => $this->primary_contact_point,
             ]),
             default => null
@@ -307,7 +307,7 @@ class Individual extends Model implements HasMedia
         };
 
         if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
-            $contactPoint .= "  \n" . __(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
+            $contactPoint .= "  \n".__(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
         }
 
         return $contactPoint;
@@ -322,13 +322,13 @@ class Individual extends Model implements HasMedia
     {
         return match ($this->preferred_contact_method) {
             'email' => $this->alternate_contact_point,
-            'phone' => '[' . $this->alternate_contact_point . '](mailto:' . $this->alternate_contact_point . ')',
+            'phone' => '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')',
             default => null
         };
     }
 
     /**
-     * @param string $value
+     * @param  string  $value
      * @return string|null
      */
     public function getMeetingType(string $value): string|null
@@ -344,7 +344,7 @@ class Individual extends Model implements HasMedia
     /**
      * Get the individual's phone number.
      *
-     * @param string|null $value
+     * @param  string|null  $value
      * @return string|null
      */
     public function getPhoneAttribute(string|null $value): string|null

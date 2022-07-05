@@ -12,9 +12,8 @@ class WebLinks extends Component
     public string $name;
 
     /**
-     * @param array $links
-     * @param string $name
-     *
+     * @param  array  $links
+     * @param  string  $name
      * @return void
      */
     public function mount(array $links, string $name = 'web_links'): void
@@ -36,8 +35,7 @@ class WebLinks extends Component
     }
 
     /**
-     * @param int $i The index of the link to remove.
-     *
+     * @param  int  $i The index of the link to remove.
      * @return void
      */
     public function removeLink(int $i): void

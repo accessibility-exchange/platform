@@ -60,8 +60,8 @@ test('individuals can edit their roles', function () {
     $response = $this->actingAs($user)
         ->get(localized_route('individuals.show-role-edit'));
 
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-' . $participantRole->id . '" value="' . $participantRole->id . '" aria-describedby="roles-' . $participantRole->id . '-hint"   />', false);
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-' . $consultantRole->id . '" value="' . $consultantRole->id . '" aria-describedby="roles-' . $consultantRole->id . '-hint" checked  />', false);
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
+    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
@@ -628,7 +628,7 @@ test('individual\'s primary contact point can be retrieved', function () {
         'phone' => '9059999999',
         'vrs' => true,
         'preferred_contact_person' => 'me',
-        'preferred_contact_method' =>  'email',
+        'preferred_contact_method' => 'email',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
         'support_person_phone' => '9051111111',
@@ -661,7 +661,7 @@ test('individual\'s primary contact method can be retrieved', function () {
         'phone' => '9059999999',
         'vrs' => true,
         'preferred_contact_person' => 'me',
-        'preferred_contact_method' =>  'email',
+        'preferred_contact_method' => 'email',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
         'support_person_phone' => '9051111111',
@@ -694,7 +694,7 @@ test('individual\'s alternate contact point can be retrieved', function () {
         'phone' => '9059999999',
         'vrs' => true,
         'preferred_contact_person' => 'me',
-        'preferred_contact_method' =>  'phone',
+        'preferred_contact_method' => 'phone',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
         'support_person_phone' => '9051111111',
@@ -727,7 +727,7 @@ test('individual\'s alternate contact method can be retrieved', function () {
         'phone' => '9059999999',
         'vrs' => true,
         'preferred_contact_person' => 'me',
-        'preferred_contact_method' =>  'phone',
+        'preferred_contact_method' => 'phone',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
         'support_person_phone' => '9051111111',
