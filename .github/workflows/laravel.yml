@@ -37,7 +37,7 @@ jobs:
       - name: Generate keys
         run: |
           php artisan key:generate
-          echo .env >> php artisan ciphersweet:generate-key | tail -n1
+          echo $(php artisan ciphersweet:generate-key | tail -n1) >> .env
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Run tests with Pest
