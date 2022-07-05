@@ -49,7 +49,7 @@ class Engagement extends Model
     /**
      * The project that the engagement is part of.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function project(): BelongsTo
     {
@@ -59,7 +59,7 @@ class Engagement extends Model
     /**
      * The individuals that are part of the engagement.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function participants(): BelongsToMany
     {
@@ -69,7 +69,7 @@ class Engagement extends Model
     /**
      * The individuals that are confirmed to be part of the engagement.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function confirmedParticipants(): BelongsToMany
     {
@@ -79,7 +79,7 @@ class Engagement extends Model
     /**
      * The matching strategy attached to this engagement.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     * @return MorphOne
      */
     public function matchingStrategy(): MorphOne
     {

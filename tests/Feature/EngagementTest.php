@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Engagement;
+use App\Models\MatchingStrategy;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -76,6 +77,14 @@ test('users with regulated organization admin role can edit engagements', functi
     $engagement = Engagement::factory()->create([
         'project_id' => $project->id,
     ]);
+
+    $strategy = MatchingStrategy::factory()->create();
+
+    $engagement->matchingStrategy()->save($strategy);
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->matchingStrategy->id)->toEqual($strategy->id);
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
     $response->assertOk();
