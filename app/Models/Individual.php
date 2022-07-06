@@ -84,7 +84,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'social_links' => 'array',
         'web_links' => 'array',
         'relevant_experiences' => 'array',
-        'support_people' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
         'rural_or_remote' => 'boolean',
@@ -119,7 +118,12 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ->addField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addField('region')
-            ->addBlindIndex('region', new BlindIndex('region_index'));
+            ->addBlindIndex('region', new BlindIndex('region_index'))
+            ->addField('phone')
+            ->addField('email')
+            ->addField('support_person_name')
+            ->addField('support_person_phone')
+            ->addField('support_person_email');
     }
 
     /**
