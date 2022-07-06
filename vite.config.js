@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import reload from "vite-plugin-full-reload";
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
-import { homedir } from 'os';
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import { homedir } from "os";
 import sri from "vite-plugin-manifest-sri";
 
-let host = 'platform.test';
+let host = "platform.test";
 let homeDir = homedir();
 
 let serverConfig = {};
