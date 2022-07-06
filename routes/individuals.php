@@ -63,7 +63,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->name('update-communication-and-meeting-preferences');
 
         Route::multilingual('/{individual}/change-status', 'updatePublicationStatus')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-publication-status');
 

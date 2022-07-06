@@ -113,6 +113,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
         $encryptedRow
+            ->addField('name')
             ->addField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addField('region')
@@ -137,13 +138,16 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
                 ->height(200);
     }
 
-    /**
-     * Get the options for generating the slug.
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
+            ->generateSlugsFrom(function (Individual $individual): string {
+                $individual->decryptRow();
+                $source = $individual->name;
+                $individual->encryptRow();
+
+                return $source;
+            })
             ->saveSlugsTo('slug');
     }
 
