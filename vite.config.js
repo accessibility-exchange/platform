@@ -23,14 +23,22 @@ if (homeDir) {
         host
     };
 }
-export default defineConfig({
-    plugins: [
-        laravel([
-            "resources/css/app.css",
-            "resources/js/app.js"
-        ]),
-        reload(["resources/views/**/*.blade.php"]),
-        sri()
-    ],
-    server: serverConfig
+
+export default defineConfig(({command}) => {
+    let config = {
+        plugins: [
+            laravel([
+                "resources/css/app.css",
+                "resources/js/app.js"
+            ]),
+            reload(["resources/views/**/*.blade.php"]),
+            sri()
+        ]
+    };
+
+    if (command === "serve") {
+        config.server = serverConfig;
+    }
+
+    return config;
 });
