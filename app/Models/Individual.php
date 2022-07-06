@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
+use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
+use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
@@ -142,11 +144,11 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         return SlugOptions::create()
             ->generateSlugsFrom(function (Individual $individual): string {
-                $individual->decryptRow();
-                $source = $individual->name;
-                $individual->encryptRow();
-
-                return $source;
+                return (new EncryptedField(
+                    app(CipherSweetEngine::class),
+                    'individuals',
+                    'name'
+                ))->decryptValue($individual->name);
             })
             ->saveSlugsTo('slug');
     }
