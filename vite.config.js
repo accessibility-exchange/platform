@@ -9,21 +9,6 @@ import sri from "vite-plugin-manifest-sri";
 let host = "platform.test";
 let homeDir = homedir();
 
-let serverConfig = {};
-
-if (homeDir) {
-    serverConfig = {
-        https: {
-            key: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.key`)),
-            cert: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.crt`))
-        },
-        hmr: {
-            host
-        },
-        host
-    };
-}
-
 export default defineConfig(({command}) => {
     let config = {
         plugins: [
@@ -36,8 +21,17 @@ export default defineConfig(({command}) => {
         ]
     };
 
-    if (command === "serve") {
-        config.server = serverConfig;
+    if (homeDir && command === "serve") {
+        config.server = {
+            https: {
+                key: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.key`)),
+                cert: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.crt`))
+            },
+            hmr: {
+                host
+            },
+            host
+        };
     }
 
     return config;
