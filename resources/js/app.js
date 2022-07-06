@@ -1,5 +1,5 @@
-require("./bootstrap");
-require("./DefinedTerm.js");
+import "./bootstrap";
+import "./DefinedTerm.js";
 
 import Alpine from "alpinejs";
 import "wicg-inert";
