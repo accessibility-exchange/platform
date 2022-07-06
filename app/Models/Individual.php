@@ -455,7 +455,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     public function hasAddedDetails(): bool
     {
-        return ! is_null($this->region);
+        return ! empty($this->region);
     }
 
     /**
