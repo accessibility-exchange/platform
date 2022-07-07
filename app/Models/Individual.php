@@ -451,7 +451,11 @@ class Individual extends Model implements HasMedia
      */
     public function isPublishable(): bool
     {
-        return $this->isConnector() || $this->isConsultant();
+        if ($this->isConnector() || $this->isConsultant()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
