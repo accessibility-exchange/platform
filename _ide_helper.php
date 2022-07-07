@@ -19649,45 +19649,6 @@ namespace Illuminate\Http {
 
 }
 
-namespace Illuminate\Routing {
-        /**
-         * @mixin \Illuminate\Routing\RouteRegistrar
-         */
-        class Router
-        {
-            /**
-             * @see \ChinLeung\MultilingualRoutes\Macros\RouterMacros::multilingual()
-             *
-             * @param  mixed  $key
-             * @param  mixed  $handle
-             * @param  mixed  $locales
-             * @static
-             */
-            public static function multilingual($key, $handle = null, $locales = [])
-            {
-                return \Illuminate\Routing\Router::multilingual($key, $handle, $locales);
-            }
-        }
-
-        class Redirector
-        {
-            /**
-             * @see \ChinLeung\MultilingualRoutes\Macros\RedirectorMacros::localizedRoute()
-             *
-             * @param  string  $route
-             * @param  mixed  $parameters
-             * @param  int  $status
-             * @param  array  $headers
-             * @static
-             */
-            public static function localizedRoute($route, $parameters = [], $status = 302, $headers = [])
-            {
-                return \Illuminate\Routing\Redirector::localizedRoute($route, $parameters, $status, $headers);
-            }
-        }
-
-}
-
 namespace Illuminate\Testing {
         /**
          * @mixin \Illuminate\Http\Response
@@ -19934,6 +19895,45 @@ namespace Illuminate\Database\Schema {
             public static function schemalessAttributes($columnName = 'schemaless_attributes')
             {
                 return \Illuminate\Database\Schema\Blueprint::schemalessAttributes($columnName);
+            }
+        }
+
+}
+
+namespace Illuminate\Routing {
+        /**
+         * @mixin \Illuminate\Routing\RouteRegistrar
+         */
+        class Router
+        {
+            /**
+             * @see \ChinLeung\MultilingualRoutes\Macros\RouterMacros::multilingual()
+             *
+             * @param  mixed  $key
+             * @param  mixed  $handle
+             * @param  mixed  $locales
+             * @static
+             */
+            public static function multilingual($key, $handle = null, $locales = [])
+            {
+                return \Illuminate\Routing\Router::multilingual($key, $handle, $locales);
+            }
+        }
+
+        class Redirector
+        {
+            /**
+             * @see \ChinLeung\MultilingualRoutes\Macros\RedirectorMacros::localizedRoute()
+             *
+             * @param  string  $route
+             * @param  mixed  $parameters
+             * @param  int  $status
+             * @param  array  $headers
+             * @static
+             */
+            public static function localizedRoute($route, $parameters = [], $status = 302, $headers = [])
+            {
+                return \Illuminate\Routing\Redirector::localizedRoute($route, $parameters, $status, $headers);
             }
         }
 

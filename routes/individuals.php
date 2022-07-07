@@ -34,7 +34,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->middleware(['auth', 'can:view,individual'])
             ->name('show-experiences');
 
-        Route::multilingual('/{individual}/access-needs', 'show')
+        Route::multilingual('/{individual}/communication-and-meetings', 'show')
             ->middleware(['auth', 'can:view,individual'])
             ->name('show-communication-and-meeting-preferences');
 
@@ -63,7 +63,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->name('update-communication-and-meeting-preferences');
 
         Route::multilingual('/{individual}/change-status', 'updatePublicationStatus')
-            ->middleware(['auth', 'can:publish,individual'])
+            ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-publication-status');
 

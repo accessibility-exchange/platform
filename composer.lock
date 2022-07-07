@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e88c443a9e718d6d7b8408e1ab00f493",
+    "content-hash": "bd034407ef5452c2dda0b7b618df2667",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -58,16 +58,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.229.1",
+            "version": "3.231.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "5cffc0b16d1f33029628586313e9cf140f18b06d"
+                "reference": "6222f9e77df8142ec1cbf60337871ef73859bea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/5cffc0b16d1f33029628586313e9cf140f18b06d",
-                "reference": "5cffc0b16d1f33029628586313e9cf140f18b06d",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6222f9e77df8142ec1cbf60337871ef73859bea9",
+                "reference": "6222f9e77df8142ec1cbf60337871ef73859bea9",
                 "shasum": ""
             },
             "require": {
@@ -85,6 +85,7 @@
                 "andrewsville/php-token-reflection": "^1.4",
                 "aws/aws-php-sns-message-validator": "~1.0",
                 "behat/behat": "~3.0",
+                "composer/composer": "^1.10.22",
                 "doctrine/cache": "~1.4",
                 "ext-dom": "*",
                 "ext-openssl": "*",
@@ -143,9 +144,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.229.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.0"
             },
-            "time": "2022-06-30T18:16:30+00:00"
+            "time": "2022-07-06T18:15:37+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1686,17 +1687,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "49b7b1c94fc16d98e6850b173b9f8fc3c93ac4c7"
+                "reference": "5552d7ab9610f7cc7710487f987ea8beeeca380a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/49b7b1c94fc16d98e6850b173b9f8fc3c93ac4c7",
-                "reference": "49b7b1c94fc16d98e6850b173b9f8fc3c93ac4c7",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/5552d7ab9610f7cc7710487f987ea8beeeca380a",
+                "reference": "5552d7ab9610f7cc7710487f987ea8beeeca380a",
                 "shasum": ""
             },
             "require": {
                 "chinleung/laravel-locales": "^2.0",
                 "chinleung/laravel-multilingual-routes": "^3.0",
+                "codezero/laravel-unique-translation": "^3.5",
                 "commerceguys/addressing": "^1.2",
                 "commerceguys/intl": "^1.1",
                 "illuminate/contracts": "^9.0",
@@ -1711,7 +1713,7 @@
             },
             "require-dev": {
                 "brianium/paratest": "^6.2",
-                "friendsofphp/php-cs-fixer": "^3.0",
+                "laravel/pint": "^0.2.3",
                 "nunomaduro/collision": "^6.0",
                 "nunomaduro/larastan": "^2.0",
                 "orchestra/testbench": "^7.0",
@@ -1763,7 +1765,7 @@
                 "issues": "https://github.com/fluid-project/hearth/issues",
                 "source": "https://github.com/fluid-project/hearth/tree/main"
             },
-            "time": "2022-06-13T20:02:06+00:00"
+            "time": "2022-07-07T15:07:30+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -4049,17 +4051,75 @@
             "time": "2022-05-31T20:59:12+00:00"
         },
         {
-            "name": "paragonie/constant_time_encoding",
-            "version": "v2.5.0",
+            "name": "paragonie/ciphersweet",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8"
+                "url": "https://github.com/paragonie/ciphersweet.git",
+                "reference": "eec596e7e4ebdfc039b34cf36581c65cb5bc0c6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/9229e15f2e6ba772f0c55dd6986c563b937170a8",
-                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8",
+                "url": "https://api.github.com/repos/paragonie/ciphersweet/zipball/eec596e7e4ebdfc039b34cf36581c65cb5bc0c6e",
+                "reference": "eec596e7e4ebdfc039b34cf36581c65cb5bc0c6e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "paragonie/constant_time_encoding": "^2",
+                "paragonie/sodium_compat": ">= 1.17 <2",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9",
+                "vimeo/psalm": "^4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ParagonIE\\CipherSweet\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com"
+                }
+            ],
+            "description": "Searchable field-level encryption library for CRM software",
+            "keywords": [
+                "FIPS 140-2",
+                "crm",
+                "cryptography",
+                "encrypt",
+                "encryption",
+                "field-level encryption",
+                "libsodium",
+                "searchable encryption"
+            ],
+            "support": {
+                "issues": "https://github.com/paragonie/ciphersweet/issues",
+                "source": "https://github.com/paragonie/ciphersweet/tree/v4.0.1"
+            },
+            "time": "2022-06-02T15:23:04+00:00"
+        },
+        {
+            "name": "paragonie/constant_time_encoding",
+            "version": "v2.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/constant_time_encoding.git",
+                "reference": "58c3f47f650c94ec05a151692652a868995d2938"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/58c3f47f650c94ec05a151692652a868995d2938",
+                "reference": "58c3f47f650c94ec05a151692652a868995d2938",
                 "shasum": ""
             },
             "require": {
@@ -4113,7 +4173,143 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2022-01-17T05:32:27+00:00"
+            "time": "2022-06-14T06:56:20+00:00"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "v9.99.100",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "reference": "996434e5492cb4c3edcb9168db6fbb1359ef965a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "polyfill",
+                "pseudorandom",
+                "random"
+            ],
+            "support": {
+                "email": "info@paragonie.com",
+                "issues": "https://github.com/paragonie/random_compat/issues",
+                "source": "https://github.com/paragonie/random_compat"
+            },
+            "time": "2020-10-15T08:29:30+00:00"
+        },
+        {
+            "name": "paragonie/sodium_compat",
+            "version": "v1.17.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/sodium_compat.git",
+                "reference": "ac994053faac18d386328c91c7900f930acadf1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/ac994053faac18d386328c91c7900f930acadf1e",
+                "reference": "ac994053faac18d386328c91c7900f930acadf1e",
+                "shasum": ""
+            },
+            "require": {
+                "paragonie/random_compat": ">=1",
+                "php": "^5.2.4|^5.3|^5.4|^5.5|^5.6|^7|^8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^3|^4|^5|^6|^7|^8|^9"
+            },
+            "suggest": {
+                "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
+                "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com"
+                },
+                {
+                    "name": "Frank Denis",
+                    "email": "jedisct1@pureftpd.org"
+                }
+            ],
+            "description": "Pure PHP implementation of libsodium; uses the PHP extension if it exists",
+            "keywords": [
+                "Authentication",
+                "BLAKE2b",
+                "ChaCha20",
+                "ChaCha20-Poly1305",
+                "Chapoly",
+                "Curve25519",
+                "Ed25519",
+                "EdDSA",
+                "Edwards-curve Digital Signature Algorithm",
+                "Elliptic Curve Diffie-Hellman",
+                "Poly1305",
+                "Pure-PHP cryptography",
+                "RFC 7748",
+                "RFC 8032",
+                "Salpoly",
+                "Salsa20",
+                "X25519",
+                "XChaCha20-Poly1305",
+                "XSalsa20-Poly1305",
+                "Xchacha20",
+                "Xsalsa20",
+                "aead",
+                "cryptography",
+                "ecdh",
+                "elliptic curve",
+                "elliptic curve cryptography",
+                "encryption",
+                "libsodium",
+                "php",
+                "public-key cryptography",
+                "secret-key cryptography",
+                "side-channel resistant"
+            ],
+            "support": {
+                "issues": "https://github.com/paragonie/sodium_compat/issues",
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.17.1"
+            },
+            "time": "2022-03-23T19:32:04+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -4188,16 +4384,16 @@
         },
         {
             "name": "pragmarx/google2fa",
-            "version": "8.0.0",
+            "version": "v8.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa.git",
-                "reference": "26c4c5cf30a2844ba121760fd7301f8ad240100b"
+                "reference": "80c3d801b31fe165f8fe99ea085e0a37834e1be3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/26c4c5cf30a2844ba121760fd7301f8ad240100b",
-                "reference": "26c4c5cf30a2844ba121760fd7301f8ad240100b",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/80c3d801b31fe165f8fe99ea085e0a37834e1be3",
+                "reference": "80c3d801b31fe165f8fe99ea085e0a37834e1be3",
                 "shasum": ""
             },
             "require": {
@@ -4234,9 +4430,9 @@
             ],
             "support": {
                 "issues": "https://github.com/antonioribeiro/google2fa/issues",
-                "source": "https://github.com/antonioribeiro/google2fa/tree/8.0.0"
+                "source": "https://github.com/antonioribeiro/google2fa/tree/v8.0.1"
             },
-            "time": "2020-04-05T10:47:18+00:00"
+            "time": "2022-06-13T21:57:56+00:00"
         },
         {
             "name": "psr/cache",
@@ -4653,16 +4849,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.11.5",
+            "version": "v0.11.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "c23686f9c48ca202710dbb967df8385a952a2daf"
+                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/c23686f9c48ca202710dbb967df8385a952a2daf",
-                "reference": "c23686f9c48ca202710dbb967df8385a952a2daf",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/77fc7270031fbc28f9a7bea31385da5c4855cb7a",
+                "reference": "77fc7270031fbc28f9a7bea31385da5c4855cb7a",
                 "shasum": ""
             },
             "require": {
@@ -4723,9 +4919,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.11.5"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.7"
             },
-            "time": "2022-05-27T18:03:49+00:00"
+            "time": "2022-07-07T13:49:11+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -5065,16 +5261,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "17152c3fd799fb55b34f35885f8f129678faed73"
+                "reference": "e90bdffb902b43c7d76dd45dd350a54f4330fee5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/17152c3fd799fb55b34f35885f8f129678faed73",
-                "reference": "17152c3fd799fb55b34f35885f8f129678faed73",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/e90bdffb902b43c7d76dd45dd350a54f4330fee5",
+                "reference": "e90bdffb902b43c7d76dd45dd350a54f4330fee5",
                 "shasum": ""
             },
             "require": {
@@ -5112,8 +5308,7 @@
                 "spatie"
             ],
             "support": {
-                "issues": "https://github.com/spatie/db-dumper/issues",
-                "source": "https://github.com/spatie/db-dumper/tree/3.2.0"
+                "source": "https://github.com/spatie/db-dumper/tree/3.2.1"
             },
             "funding": [
                 {
@@ -5125,7 +5320,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-10T16:01:42+00:00"
+            "time": "2022-06-15T13:27:17+00:00"
         },
         {
             "name": "spatie/image",
@@ -5410,6 +5605,78 @@
                 }
             ],
             "time": "2022-04-08T06:40:46+00:00"
+        },
+        {
+            "name": "spatie/laravel-ciphersweet",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-ciphersweet.git",
+                "reference": "59fc8e7431c9ea9ecc192742cc9c27a3ce560064"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/59fc8e7431c9ea9ecc192742cc9c27a3ce560064",
+                "reference": "59fc8e7431c9ea9ecc192742cc9c27a3ce560064",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.19",
+                "paragonie/ciphersweet": "^4.0.1",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.12.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.8",
+                "nunomaduro/collision": "^6.0",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\LaravelCipherSweet\\LaravelCipherSweetServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelCipherSweet": "Spatie\\LaravelCipherSweet\\Facades\\LaravelCipherSweet"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelCipherSweet\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rias Van der Veken",
+                    "email": "rias@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Use ciphersweet in your Laravel project",
+            "homepage": "https://github.com/spatie/laravel-ciphersweet",
+            "keywords": [
+                "laravel",
+                "laravel-ciphersweet",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.0.0"
+            },
+            "time": "2022-06-30T08:08:10+00:00"
         },
         {
             "name": "spatie/laravel-collection-macros",
@@ -8975,16 +9242,16 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.6.7",
+            "version": "v3.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "b96f9820aaf1ff9afe945207883149e1c7afb298"
+                "reference": "814b36a08a60f4159cdcbb1c466a6a0027440b6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/b96f9820aaf1ff9afe945207883149e1c7afb298",
-                "reference": "b96f9820aaf1ff9afe945207883149e1c7afb298",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/814b36a08a60f4159cdcbb1c466a6a0027440b6c",
+                "reference": "814b36a08a60f4159cdcbb1c466a6a0027440b6c",
                 "shasum": ""
             },
             "require": {
@@ -9044,7 +9311,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.6.7"
+                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.6.8"
             },
             "funding": [
                 {
@@ -9056,7 +9323,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-09T07:52:32+00:00"
+            "time": "2022-06-08T15:03:05+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -9728,16 +9995,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.14.9",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "8435763e7735f6eff15b03df014cea1217fc826e"
+                "reference": "676e1ff33c1b8af657779f62f57360c376cba666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/8435763e7735f6eff15b03df014cea1217fc826e",
-                "reference": "8435763e7735f6eff15b03df014cea1217fc826e",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/676e1ff33c1b8af657779f62f57360c376cba666",
+                "reference": "676e1ff33c1b8af657779f62f57360c376cba666",
                 "shasum": ""
             },
             "require": {
@@ -9784,7 +10051,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-06-06T14:28:04+00:00"
+            "time": "2022-06-24T13:56:11+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -9985,16 +10252,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v6.2.0",
+            "version": "v6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "c379636dc50e829edb3a8bcb944a01aa1aed8f25"
+                "reference": "5f058f7e39278b701e455b3c82ec5298cf001d89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/c379636dc50e829edb3a8bcb944a01aa1aed8f25",
-                "reference": "c379636dc50e829edb3a8bcb944a01aa1aed8f25",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/5f058f7e39278b701e455b3c82ec5298cf001d89",
+                "reference": "5f058f7e39278b701e455b3c82ec5298cf001d89",
                 "shasum": ""
             },
             "require": {
@@ -10006,6 +10273,7 @@
             "require-dev": {
                 "brianium/paratest": "^6.4.1",
                 "laravel/framework": "^9.7",
+                "laravel/pint": "^0.2.1",
                 "nunomaduro/larastan": "^1.0.2",
                 "nunomaduro/mock-final-classes": "^1.1.0",
                 "orchestra/testbench": "^7.3.0",
@@ -10068,20 +10336,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-04-05T15:31:38+00:00"
+            "time": "2022-06-27T16:11:16+00:00"
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v2.1.8",
+            "version": "v2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "2a0b2dade387bc19bdf070650c1ba1e035c709da"
+                "reference": "8514c5ec475b440702f08cf804e73cd55a05f622"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/2a0b2dade387bc19bdf070650c1ba1e035c709da",
-                "reference": "2a0b2dade387bc19bdf070650c1ba1e035c709da",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/8514c5ec475b440702f08cf804e73cd55a05f622",
+                "reference": "8514c5ec475b440702f08cf804e73cd55a05f622",
                 "shasum": ""
             },
             "require": {
@@ -10097,7 +10365,7 @@
                 "mockery/mockery": "^1.4.4",
                 "php": "^8.0.2",
                 "phpmyadmin/sql-parser": "^5.5",
-                "phpstan/phpstan": "^1.7.10"
+                "phpstan/phpstan": "^1.7.12"
             },
             "require-dev": {
                 "nikic/php-parser": "^4.13.2",
@@ -10146,7 +10414,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/v2.1.8"
+                "source": "https://github.com/nunomaduro/larastan/tree/v2.1.11"
             },
             "funding": [
                 {
@@ -10166,7 +10434,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-06-04T14:21:33+00:00"
+            "time": "2022-06-13T21:45:42+00:00"
         },
         {
             "name": "pestphp/pest",
@@ -11042,16 +11310,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.7.11",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "62fcadcde81b4037e42ad2489119d31c46f00191"
+                "reference": "b7648d4ee9321665acaf112e49da9fd93df8fbd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/62fcadcde81b4037e42ad2489119d31c46f00191",
-                "reference": "62fcadcde81b4037e42ad2489119d31c46f00191",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b7648d4ee9321665acaf112e49da9fd93df8fbd5",
+                "reference": "b7648d4ee9321665acaf112e49da9fd93df8fbd5",
                 "shasum": ""
             },
             "require": {
@@ -11077,7 +11345,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.7.11"
+                "source": "https://github.com/phpstan/phpstan/tree/1.8.0"
             },
             "funding": [
                 {
@@ -11097,7 +11365,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T08:47:03+00:00"
+            "time": "2022-06-29T08:53:31+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -11419,16 +11687,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.20",
+            "version": "9.5.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba"
+                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/12bc8879fb65aef2138b26fc633cb1e3620cffba",
-                "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0e32b76be457de00e83213528f6bb37e2a38fcb1",
+                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1",
                 "shasum": ""
             },
             "require": {
@@ -11462,7 +11730,6 @@
                 "sebastian/version": "^3.0.2"
             },
             "require-dev": {
-                "ext-pdo": "*",
                 "phpspec/prophecy-phpunit": "^2.0.1"
             },
             "suggest": {
@@ -11506,7 +11773,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.20"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.21"
             },
             "funding": [
                 {
@@ -11518,7 +11785,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-04-01T12:37:26+00:00"
+            "time": "2022-06-19T12:14:25+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -12683,16 +12950,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.2.3",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "51e5daaa7e43c154fe57f1ddfbba862f9fe57646"
+                "reference": "fe37a0eafe6ea040804255c70e9808af13314f87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/51e5daaa7e43c154fe57f1ddfbba862f9fe57646",
-                "reference": "51e5daaa7e43c154fe57f1ddfbba862f9fe57646",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/fe37a0eafe6ea040804255c70e9808af13314f87",
+                "reference": "fe37a0eafe6ea040804255c70e9808af13314f87",
                 "shasum": ""
             },
             "require": {
@@ -12769,7 +13036,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-05T15:53:24+00:00"
+            "time": "2022-06-17T06:28:57+00:00"
         },
         {
             "name": "spatie/laravel-ray",
