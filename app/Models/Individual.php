@@ -11,6 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use ParagonIE\CipherSweet\BlindIndex;
+use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
+use ParagonIE\CipherSweet\EncryptedField;
+use ParagonIE\CipherSweet\EncryptedRow;
+use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
+use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -19,8 +25,9 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 use TheIconic\NameParser\Parser as NameParser;
 
-class Individual extends Model implements HasMedia
+class Individual extends Model implements CipherSweetEncrypted, HasMedia
 {
+    use UsesCipherSweet;
     use HasFactory;
     use HasMultipageEditingAndPublishing;
     use HasSlug;
@@ -77,7 +84,6 @@ class Individual extends Model implements HasMedia
         'social_links' => 'array',
         'web_links' => 'array',
         'relevant_experiences' => 'array',
-        'support_people' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
         'rural_or_remote' => 'boolean',
@@ -105,6 +111,21 @@ class Individual extends Model implements HasMedia
         'other_constituency_connections',
     ];
 
+    public static function configureCipherSweet(EncryptedRow $encryptedRow): void
+    {
+        $encryptedRow
+            ->addField('name')
+            ->addField('locality')
+            ->addBlindIndex('locality', new BlindIndex('locality_index'))
+            ->addField('region')
+            ->addBlindIndex('region', new BlindIndex('region_index'))
+            ->addField('phone')
+            ->addField('email')
+            ->addField('support_person_name')
+            ->addField('support_person_phone')
+            ->addField('support_person_email');
+    }
+
     /**
      * Register media collections for the model.
      */
@@ -123,13 +144,16 @@ class Individual extends Model implements HasMedia
                 ->height(200);
     }
 
-    /**
-     * Get the options for generating the slug.
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
+            ->generateSlugsFrom(function (Individual $individual): string {
+                return (new EncryptedField(
+                    app(CipherSweetEngine::class),
+                    'individuals',
+                    'name'
+                ))->decryptValue($individual->name);
+            })
             ->saveSlugsTo('slug');
     }
 
@@ -441,7 +465,7 @@ class Individual extends Model implements HasMedia
      */
     public function hasAddedDetails(): bool
     {
-        return ! is_null($this->region);
+        return ! empty($this->region);
     }
 
     /**
