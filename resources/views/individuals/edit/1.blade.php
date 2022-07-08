@@ -15,7 +15,6 @@
             <p class="repel">
                 <button name="save" value="1">{{ __('Save') }}</button>
                 <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-
             </p>
 
             <div class="field @error('name') field--error @enderror">
@@ -62,43 +61,15 @@
             </div>
 
             <fieldset>
-                <legend>{{ __('What other languages are you comfortable working in?') }}</legend>
+                <legend>{{ __('What language(s) are you comfortable working in?') }}</legend>
                 <livewire:language-picker name="working_languages" :languages="$individual->working_languages ?? []" :availableLanguages="$languages" />
             </fieldset>
 
-            @if($individual->isConnector())
-            <fieldset class="field @error('lived_experience_connections') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('Disability and Deaf communities you’re connected to (required)') }}</legend>
-                <x-hearth-hint for="lived_experience_connections">{{ __('Please select the disability and Deaf communities you can connect projects to.') }}</x-hearth-hint>
-                <p x-cloak>
-                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
-                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
-                </p>
-                <x-hearth-checkboxes name="lived_experience_connections" :options="$livedExperiences" :checked="old('lived_experience_connections', $individual->livedExperienceConnections->pluck('id')->toArray())" hinted="lived_experience_connections-hint" />
-                <x-translatable-input name="other_lived_experience_connections" :model="$individual"  :label="__('Other disability or Deaf community your connected to (optional)')" />
-                <x-hearth-error for="lived_experience_connections" />
-            </fieldset>
-            <fieldset class="field @error('constituency_connections') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('Other equity-seeking communities you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="constituency_connections">{{ __('Please select the other equity-seeking communities you can connect projects to.') }}</x-hearth-hint>
-                <p x-cloak>
-                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
-                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
-                </p>
-                <x-hearth-checkboxes name="constituency_connections" :options="$constituencies" :checked="old('constituency_connections', $individual->constituencyConnections->pluck('id')->toArray())" hinted="constituency_connections-hint" />
-                <x-hearth-error for="constituency_connections" />
-                <x-translatable-input name="other_constituency_connections" :model="$individual" :label="__('Other equity-seeking community your connected to (optional)')" />
-            </fieldset>
-            <fieldset class="field @error('age_bracket_connections') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('Age groups you’re connected to (optional)') }}</legend>
-                <x-hearth-hint for="age_bracket_connections">{{ __('Please select the age groups you can connect projects to.') }}</x-hearth-hint>
-                <p x-cloak>
-                    <button type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
-                    <button type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
-                </p>
-                <x-hearth-checkboxes name="age_bracket_connections" :options="$ageBrackets" :checked="old('age_bracket_connections', $individual->ageBracketConnections->pluck('id')->toArray())" hinted="age_bracket_connections-hint" />
-                <x-hearth-error for="age_bracket_connections" />
-            </fieldset>
+            @if($individual->isConsultant())
+                <fieldset class="field @error('consulting_services') field--error @enderror">
+                    <legend>{{ __('Which of these areas can you help a regulated organization with? (required)') }}</legend>
+                    <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $organization->consulting_services ?? [])" hinted="consulting_services-hint" required />
+                </fieldset>
             @endif
 
             <fieldset>
@@ -117,11 +88,12 @@
                 @endforeach
             </fieldset>
 
-            <fieldset class="stack">
-                <legend>{{ __('Other websites (optional)') }}</legend>
-                <p class="field__hint">{{ __('This could be your personal website, a blog or portfolio, or articles about your work.') }}</p>
-                <livewire:web-links :links="$individual->web_links ?? [['title' => '', 'url' => '']]" />
-            </fieldset>
+            <div class="field @error('website_link') field-error @enderror">
+                <x-hearth-label class="h4" for="website_link" :value="__('Website link (optional)')" />
+                <x-hearth-hint for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}</x-hearth-hint>
+                <x-hearth-input type="url" name="website_link" :value="old('website_link', $individual->website_link)" />
+                <x-hearth-error for="website_link" />
+            </div>
 
             <p class="repel">
                 <button name="save" value="1">{{ __('Save') }}</button>

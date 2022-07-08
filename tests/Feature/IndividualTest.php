@@ -60,8 +60,8 @@ test('individuals can edit their roles', function () {
     $response = $this->actingAs($user)
         ->get(localized_route('individuals.show-role-edit'));
 
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
+    $response->assertSee('<input x-model:number="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
+    $response->assertSee('<input x-model:number="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
@@ -105,19 +105,13 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
         'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
             'twitter' => '',
             'instagram' => '',
             'facebook' => '',
         ],
-        'web_links' => [
-            [
-                'title' => 'My website',
-                'url' => 'https://example.com',
-            ],
-        ],
+        'website_links' => 'https://example.com',
         'save' => __('Save'),
     ]);
 
@@ -125,7 +119,6 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
 
     expect($individual->social_links)->toHaveKey('linked_in')->toHaveCount(1);
-    expect($individual->web_links)->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
@@ -134,7 +127,6 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
         'publish' => __('Publish'),
     ]);
 
@@ -146,7 +138,6 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
         'unpublish' => __('Unpublish'),
     ]);
 
@@ -158,7 +149,6 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
         'preview' => __('Preview'),
     ]);
     $response->assertSessionHasNoErrors();
@@ -172,7 +162,6 @@ test('users can create individual pages', function () {
             'region' => 'NS',
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
-            'first_language' => $individual->first_language,
             'web_links' => [
                 [
                     'title' => '',
@@ -364,7 +353,6 @@ test('users can edit individual pages', function () {
         'bio' => ['en' => $individual->bio],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -385,7 +373,6 @@ test('users can edit individual pages', function () {
         'bio' => ['en' => $draftIndividual->bio],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
         'working_languages' => [''],
     ]);
 
@@ -417,7 +404,6 @@ test('users can not edit others individual pages', function () {
         'bio' => $individual->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
     ]);
     $response->assertForbidden();
 });

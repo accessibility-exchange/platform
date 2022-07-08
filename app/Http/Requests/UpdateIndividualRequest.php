@@ -37,8 +37,22 @@ class UpdateIndividualRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
-            'first_language' => 'required|string',
             'working_languages' => 'nullable|array',
+            'consulting_services' => [
+                'nullable',
+                'array',
+                Rule::requiredIf(fn () => $this->individual->isConsultant()),
+                Rule::excludeIf(fn () => ! $this->individual->isConsultant()),
+            ],
+            'consulting_services.*' => [
+                Rule::in([
+                    'booking-providers',
+                    'planning-consultation',
+                    'running-consultation',
+                    'analysis',
+                    'writing-reports',
+                ]),
+            ],
             'lived_experience_connections' => [
                 'nullable',
                 Rule::requiredIf($this->individual->isConnector()),
@@ -58,8 +72,7 @@ class UpdateIndividualRequest extends FormRequest
                 Rule::in(AgeBracket::pluck('id')->toArray()),
             ],
             'social_links.*' => 'nullable|url',
-            'web_links.*.title' => 'nullable|string|required_with:web_links.*.url',
-            'web_links.*.url' => 'nullable|url|required_with:web_links.*.title',
+            'website_link' => 'nullable|url',
         ];
     }
 

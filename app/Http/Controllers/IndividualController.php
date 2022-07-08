@@ -160,6 +160,13 @@ class IndividualController extends Controller
                 'self' => __('I’m creating it myself'),
                 'other' => __('Someone else is creating it for me'),
             ],
+            'consultingServices' => [
+                'booking-providers' => __('consulting-services.booking-providers'),
+                'planning-consultation' => __('consulting-services.planning-consultation'),
+                'running-consultation' => __('consulting-services.running-consultation'),
+                'analysis' => __('consulting-services.analysis'),
+                'writing-reports' => __('consulting-services.writing-reports'),
+            ],
             'contactMethods' => [
                 'email' => __('Email'),
                 'text' => __('Text message'),
