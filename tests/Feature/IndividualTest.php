@@ -60,8 +60,8 @@ test('individuals can edit their roles', function () {
     $response = $this->actingAs($user)
         ->get(localized_route('individuals.show-role-edit'));
 
-    $response->assertSee('<input x-model:number="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
-    $response->assertSee('<input x-model:number="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
+    $response->assertSee('<input x-model.number="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
+    $response->assertSee('<input x-model.number="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
@@ -105,6 +105,10 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
             'twitter' => '',
@@ -127,6 +131,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'publish' => __('Publish'),
     ]);
 
@@ -138,6 +146,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'unpublish' => __('Unpublish'),
     ]);
 
@@ -149,6 +161,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'preview' => __('Preview'),
     ]);
     $response->assertSessionHasNoErrors();
@@ -162,6 +178,10 @@ test('users can create individual pages', function () {
             'region' => 'NS',
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
+            'consulting_services' => [
+                'planning-consultation',
+                'running-consultation',
+            ],
             'web_links' => [
                 [
                     'title' => '',
@@ -351,6 +371,10 @@ test('users can edit individual pages', function () {
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
         'bio' => ['en' => $individual->bio],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'locality' => 'St John\'s',
         'region' => 'NL',
     ]);
@@ -371,6 +395,10 @@ test('users can edit individual pages', function () {
     $response = $this->actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
         'name' => $draftIndividual->name,
         'bio' => ['en' => $draftIndividual->bio],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'locality' => 'St John\'s',
         'region' => 'NL',
         'working_languages' => [''],
