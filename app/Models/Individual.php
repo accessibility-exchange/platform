@@ -182,7 +182,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return Attribute::make(
             get: fn ($value, $attributes) => array_merge(
                 [$attributes['first_language']],
-                $attributes['working_languages'] ?? [],
+                json_decode($attributes['working_languages'], true) ?? [],
             ),
         );
     }
