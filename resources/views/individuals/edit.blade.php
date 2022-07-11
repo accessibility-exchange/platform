@@ -23,8 +23,8 @@
     <x-translation-manager :model="$individual" />
 
     @if(request()->get('step'))
-        @include('individuals.edit.' . request()->get('step'))
+        @include('individuals.edit.' . $individual->editSteps()[request()->get('step')])
     @else
-        @include('individuals.edit.1')
+        @include('individuals.edit.about-you')
     @endif
 </x-app-wide-layout>

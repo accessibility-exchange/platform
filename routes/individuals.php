@@ -47,6 +47,11 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->method('put')
             ->name('update');
 
+        Route::multilingual('/{individual}/edit-constituencies', 'updateConstituencies')
+            ->middleware(['auth', 'can:update,individual'])
+            ->method('put')
+            ->name('update-constituencies');
+
         Route::multilingual('/{individual}/edit-interests', 'updateInterests')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')

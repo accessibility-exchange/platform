@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
 use App\Http\Requests\UpdateIndividualCommunicationAndMeetingPreferencesRequest;
+use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
@@ -204,17 +205,33 @@ class IndividualController extends Controller
 
         $individual->save();
 
-        if ($individual->isConnector()) {
-            $individual->livedExperienceConnections()->sync($data['lived_experience_connections'] ?? []);
-            if (isset($data['constituency_connections'])) {
-                $individual->constituencyConnections()->sync($data['constituency_connections'] ?? []);
-            }
-            if (isset($data['age_bracket_connections'])) {
-                $individual->ageBracketConnections()->sync($data['age_bracket_connections'] ?? []);
-            }
+        return $individual->handleUpdateRequest($request, $individual->getStepForKey('about-you'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateIndividualConstituenciesRequest  $request
+     * @param  Individual  $individual
+     * @return RedirectResponse
+     */
+    public function updateConstituencies(UpdateIndividualConstituenciesRequest $request, Individual $individual): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $individual->fill($data);
+
+        $individual->livedExperienceConnections()->sync($data['lived_experience_connections'] ?? []);
+        if (isset($data['constituency_connections'])) {
+            $individual->constituencyConnections()->sync($data['constituency_connections'] ?? []);
+        }
+        if (isset($data['age_bracket_connections'])) {
+            $individual->ageBracketConnections()->sync($data['age_bracket_connections'] ?? []);
         }
 
-        return $individual->handleUpdateRequest($request, 1);
+        $individual->save();
+
+        return $individual->handleUpdateRequest($request, $individual->getStepForKey('groups-you-can-connect-to'));
     }
 
     /**
@@ -243,7 +260,7 @@ class IndividualController extends Controller
 
         $individual->livedExperiences()->sync($data['lived_experiences'] ?? []);
 
-        return $individual->handleUpdateRequest($request, 2);
+        return $individual->handleUpdateRequest($request, $individual->getStepForKey('experiences'));
     }
 
     /**
@@ -264,7 +281,7 @@ class IndividualController extends Controller
         $individual->sectors()->sync($data['sectors'] ?? []);
         $individual->impacts()->sync($data['impacts'] ?? []);
 
-        return $individual->handleUpdateRequest($request, 3);
+        return $individual->handleUpdateRequest($request, $individual->getStepForKey('interests'));
     }
 
     /**
@@ -291,7 +308,7 @@ class IndividualController extends Controller
 
         $individual->save();
 
-        return $individual->handleUpdateRequest($request, 4);
+        return $individual->handleUpdateRequest($request, $individual->getStepForKey('communication-and-meeting-preferences'));
     }
 
     /**

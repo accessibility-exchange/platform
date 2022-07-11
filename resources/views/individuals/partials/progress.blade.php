@@ -2,18 +2,17 @@
     <h3>{{ __('Page sections') }}</h3>
 
     <ol class="progress stack">
+        @foreach($individual->editSteps() as $step => $key)
+        @if($step === 1)
+            <li>
+                <a href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('individual.edit-steps.'.$key) }}</a>
+            </li>
+        @else
         <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('About you') }}</a>
+            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.'.$key) }}</a>
         </li>
-        <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]) }}">{{ __('Experiences') }}</a>
-        </li>
-        <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]) }}">{{ __('Interests') }}</a>
-        </li>
-        <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]) }}">{{ __('Communication and meeting preferences') }}</a>
-        </li>
+        @endif
+        @endforeach
     </ol>
 
     @can('update', $individual)

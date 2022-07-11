@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\AgeBracket;
-use App\Models\Constituency;
-use App\Models\LivedExperience;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -53,24 +50,6 @@ class UpdateIndividualRequest extends FormRequest
                     'writing-reports',
                 ]),
             ],
-            'lived_experience_connections' => [
-                'nullable',
-                Rule::requiredIf($this->individual->isConnector()),
-                'array',
-                Rule::in(array_merge(LivedExperience::pluck('id')->toArray(), ['other'])),
-            ],
-            'other_lived_experience_connections' => 'nullable|array:'.implode(',', $this->individual->languages),
-            'constituency_connections' => [
-                'nullable',
-                'array',
-                Rule::in(array_merge(Constituency::pluck('id')->toArray(), ['other'])),
-            ],
-            'other_constituency_connections' => 'nullable|array:'.implode(',', $this->individual->languages),
-            'age_bracket_connections' => [
-                'nullable',
-                'array',
-                Rule::in(AgeBracket::pluck('id')->toArray()),
-            ],
             'social_links.*' => 'nullable|url',
             'website_link' => 'nullable|url',
         ];
@@ -85,9 +64,6 @@ class UpdateIndividualRequest extends FormRequest
     {
         return [
             'social_links.*.url' => __('The link must be a valid web address.'),
-            'web_links.*.url.url' => __('The link must be a valid web address.'),
-            'web_links.*.url.required_with' => __('Please provide a link for the website.'),
-            'web_links.*.title.required_with' => __('Please provide a title for the link.'),
         ];
     }
 }

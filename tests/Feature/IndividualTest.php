@@ -300,20 +300,11 @@ test('individuals with connector role must select connected identities', functio
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
-        'name' => $user->name,
-        'region' => 'NS',
-        'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
-    ]);
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), []);
 
     $response->assertSessionHasErrors();
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
-        'name' => $user->name,
-        'region' => 'NS',
-        'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), [
         'lived_experience_connections' => [$livedExperience->id],
         'constituency_connections' => [$community->id],
         'age_bracket_connections' => [$AgeBracket->id],

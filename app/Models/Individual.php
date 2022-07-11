@@ -235,6 +235,28 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return [];
     }
 
+    public function editSteps(): array
+    {
+        return [
+            1 => 'about-you',
+            2 => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
+            3 => $this->isConnector() ? 'experiences' : 'interests',
+            4 => $this->isConnector() ? 'interests' : 'communication-and-meeting-preferences',
+            5 => $this->isConnector() ? 'communication-and-meeting-preferences' : null,
+        ];
+    }
+
+    public function getStepForKey(string $key): int
+    {
+        return match ($key) {
+            'groups-you-can-connect-to' => 2,
+            'experiences' => $this->isConnector() ? 3 : 2,
+            'interests' => $this->isConnector() ? 4 : 3,
+            'communication-and-meeting-preferences' => $this->isConnector() ? 5 : 4,
+            default => 1
+        };
+    }
+
     /**
      * Get the individual's first name.
      *
