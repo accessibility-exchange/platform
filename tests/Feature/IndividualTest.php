@@ -361,6 +361,8 @@ test('users can edit individual pages', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
+    expect($individual->isPublishable())->toBeFalse();
+
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
