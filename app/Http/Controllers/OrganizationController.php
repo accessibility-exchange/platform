@@ -27,6 +27,7 @@ use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
+use Spatie\LaravelOptions\Options;
 
 class OrganizationController extends Controller
 {
@@ -93,7 +94,7 @@ class OrganizationController extends Controller
     {
         return view('organizations.show-role-selection', [
             'organization' => $organization,
-            'roles' => OrganizationRole::all()->prepareForForm(),
+            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
         ]);
     }
 
@@ -157,19 +158,19 @@ class OrganizationController extends Controller
                 'writing-reports' => __('consulting-services.writing-reports'),
             ],
             'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
-            'sectors' => Sector::all()->prepareForForm(),
-            'impacts' => Impact::all()->prepareForForm(),
-            'livedExperiences' => LivedExperience::all()->prepareForForm(),
-            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
-            'disabilityTypes' => DisabilityType::where('name->en', '!=', 'Cross-disability')->get()->prepareForForm(),
-            'indigenousIdentities' => IndigenousIdentity::all()->prepareForForm(),
-            'areaTypes' => AreaType::all()->prepareForForm(),
+            'sectors' => Options::forModels(Sector::class)->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
+            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
+            'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
+            'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
+            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
+            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
             'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
             'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
             'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
             'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
-            'ageBrackets' => AgeBracket::all()->prepareForForm(),
-            'ethnoracialIdentities' => EthnoracialIdentity::where('name->en', '!=', 'White')->get()->prepareForForm(),
+            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
+            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
         ]);
     }
 

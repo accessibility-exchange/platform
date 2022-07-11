@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Spatie\LaravelOptions\Options;
 
 class ProjectController extends Controller
 {
@@ -50,7 +51,7 @@ class ProjectController extends Controller
                 '' => __('Choose a language…'),
 
             ] + get_available_languages(true),
-            'impacts' => Impact::pluck('name', 'id')->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
             'projectable' => Auth::user()->projectable(),
             'ancestors' => [
                 '' => __('Choose a project…'),

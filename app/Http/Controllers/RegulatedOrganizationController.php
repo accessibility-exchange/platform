@@ -14,6 +14,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\LaravelOptions\Options;
 
 class RegulatedOrganizationController extends Controller
 {
@@ -153,7 +154,7 @@ class RegulatedOrganizationController extends Controller
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
             'regions' => get_regions(['CA'], locale()),
-            'sectors' => Sector::all()->prepareForForm(),
+            'sectors' => Options::forModels(Sector::class)->toArray(),
         ]);
     }
 
