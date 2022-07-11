@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class EthnoracialIdentity extends Model
+class EthnoracialIdentity extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -23,4 +25,13 @@ class EthnoracialIdentity extends Model
         'name',
         'description',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id,
+            ['hint' => $this->description]
+        );
+    }
 }

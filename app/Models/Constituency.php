@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class Constituency extends Model
+class Constituency extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -45,6 +47,15 @@ class Constituency extends Model
         'adjective',
         'description',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id,
+            ['hint' => $this->description]
+        );
+    }
 
     /**
      * Get all the community connectors for the model.

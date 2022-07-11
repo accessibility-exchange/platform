@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class IndividualRole extends Model
+class IndividualRole extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -38,4 +40,13 @@ class IndividualRole extends Model
         'name',
         'description',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id,
+            ['hint' => $this->description]
+        );
+    }
 }

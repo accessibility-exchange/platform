@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class GenderIdentity extends Model
+class GenderIdentity extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -27,4 +29,13 @@ class GenderIdentity extends Model
         'adjective',
         'description',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id,
+            ['hint' => $this->description]
+        );
+    }
 }

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class LivedExperience extends Model
+class LivedExperience extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -36,6 +38,14 @@ class LivedExperience extends Model
     public array $translatable = [
         'name',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id
+        );
+    }
 
     /**
      * Get all the community connectors for the model.

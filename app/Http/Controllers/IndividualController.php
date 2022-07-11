@@ -22,6 +22,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
 {
@@ -142,15 +143,15 @@ class IndividualController extends Controller
         return view('individuals.edit', [
             'individual' => $individual,
             'regions' => get_regions(['CA'], locale()),
-            'sectors' => Sector::all()->prepareForForm(),
-            'impacts' => Impact::all()->prepareForForm(),
-            'constituencies' => Constituency::pluck('name', 'id')->toArray(),
+            'sectors' => Options::forModels(Sector::class),
+            'impacts' => Options::forModels(Impact::class),
+            'constituencies' => Options::forModels(Constituency::class),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
-            'livedExperiences' => LivedExperience::pluck('name', 'id')->toArray(),
-            'ageBrackets' => AgeBracket::pluck('name', 'id')->toArray(),
+            'livedExperiences' => Options::forModels(LivedExperience::class),
+            'ageBrackets' => Options::forModels(AgeBracket::class),
             'livingSituations' => [
                 'urban' => __('Urban'),
                 'suburban' => __('Suburban'),
@@ -180,7 +181,7 @@ class IndividualController extends Controller
                 'web_conference' => __('Virtual – web conference'),
                 'phone' => __('Virtual – phone call'),
             ],
-            'accessNeeds' => AccessSupport::pluck('name', 'id')->toArray(),
+            'accessNeeds' => Options::forModels(AccessSupport::class),
         ]);
     }
 

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class Impact extends Model
+class Impact extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -35,4 +37,12 @@ class Impact extends Model
     public $translatable = [
         'name',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id
+        );
+    }
 }

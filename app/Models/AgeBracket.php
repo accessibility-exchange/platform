@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class AgeBracket extends Model
+class AgeBracket extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -25,6 +27,14 @@ class AgeBracket extends Model
     public array $translatable = [
         'name',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->name,
+            $this->id
+        );
+    }
 
     public function communityConnectors(): MorphToMany
     {
