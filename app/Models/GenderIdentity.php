@@ -33,9 +33,9 @@ class GenderIdentity extends Model implements Selectable
     public function toSelectOption(): SelectOption
     {
         return new SelectOption(
-            $this->name,
+            $this->getTranslation('name', locale()),
             $this->id,
-            ['hint' => $this->description]
+            ['hint' => $this->getTranslation('description', locale())]
         );
     }
 }

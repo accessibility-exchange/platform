@@ -143,15 +143,15 @@ class IndividualController extends Controller
         return view('individuals.edit', [
             'individual' => $individual,
             'regions' => get_regions(['CA'], locale()),
-            'sectors' => Options::forModels(Sector::class),
-            'impacts' => Options::forModels(Impact::class),
-            'constituencies' => Options::forModels(Constituency::class),
+            'sectors' => Options::forModels(Sector::class)->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
+            'constituencies' => Options::forModels(Constituency::class)->toArray(),
             'servicePreferences' => [
                 'digital' => __('Digital services (websites, apps, etc.)'),
                 'non-digital' => __('Non-digital services (phone lines, mail, in-person, etc.)'),
             ],
-            'livedExperiences' => Options::forModels(LivedExperience::class),
-            'ageBrackets' => Options::forModels(AgeBracket::class),
+            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
+            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
             'livingSituations' => [
                 'urban' => __('Urban'),
                 'suburban' => __('Suburban'),
@@ -181,7 +181,7 @@ class IndividualController extends Controller
                 'web_conference' => __('Virtual – web conference'),
                 'phone' => __('Virtual – phone call'),
             ],
-            'accessNeeds' => Options::forModels(AccessSupport::class),
+            'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
         ]);
     }
 
