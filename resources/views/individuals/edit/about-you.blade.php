@@ -54,15 +54,9 @@
                 {{-- TODO: Upload a file. --}}
             </fieldset>
 
-            <div class="field @error('first_language') field--error @enderror stack">
-                <x-hearth-label for="first_language" :value="__('What is your first language? (required)')" />
-                <x-hearth-locale-select name="first_language" :selected="old('first_language', $individual->first_language ?? $individual->user->locale)" required />
-                <x-hearth-error for="first_language" />
-            </div>
-
             <fieldset>
                 <legend>{{ __('What language(s) are you comfortable working in?') }}</legend>
-                <livewire:language-picker name="working_languages" :languages="$individual->working_languages ?? []" :availableLanguages="$languages" />
+                <livewire:language-picker name="working_languages" :languages="old('working_languages', !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages)" :availableLanguages="$languages" />
             </fieldset>
 
             @if($individual->isConsultant())

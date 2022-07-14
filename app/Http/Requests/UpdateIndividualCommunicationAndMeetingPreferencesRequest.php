@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\MeetingTypes;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 
 class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequest
@@ -34,7 +36,8 @@ class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequ
             'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string|exclude_if:preferred_contact_person,me',
             'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
-            'meeting_types' => 'required|array|min:1|in:in_person,web_conference,phone',
+            'meeting_types' => 'required|array|min:1',
+            'meeting_types.*' => [new Enum(MeetingTypes::class)],
         ];
     }
 

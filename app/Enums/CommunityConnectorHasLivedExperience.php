@@ -12,8 +12,8 @@ enum CommunityConnectorHasLivedExperience: string
     public static function labels(): array
     {
         return [
-            'yes-all' => __('Yes, all of the above'),
-            'yes-some' => __('Yes, some of the above'),
+            'yes-all' => __('Yes, all'),
+            'yes-some' => __('Yes, some'),
             'no' => __('No'),
             'prefer-not-to-answer' => __('Prefer not to answer'),
         ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingServices;
+use App\Enums\MeetingTypes;
 use App\Enums\ProvincesAndTerritories;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
@@ -85,11 +86,30 @@ class IndividualController extends Controller
 
     public function show(Individual $individual): View
     {
-        return view('individuals.show', ['individual' => $individual]);
+        $language = request()->query('language');
+
+        if (! in_array($language, $individual->languages)) {
+            $language = false;
+        }
+
+        return view('individuals.show', array_merge(compact('individual'), [
+            'language' => $language ?? locale(),
+            // TODO: Is this the best way of handling these two constituencies?
+            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+        ]));
     }
 
     public function edit(Individual $individual): View
     {
+        $workingLanguages = [
+            $individual->user->locale,
+        ];
+
+        if ($individual->user->signed_language) {
+            $workingLanguages[] = $individual->user->signed_language;
+        }
+
         return view('individuals.edit', [
             'individual' => $individual,
             'regions' => Options::forEnum(ProvincesAndTerritories::class)->toArray(),
@@ -115,12 +135,9 @@ class IndividualController extends Controller
                 '0' => __('No'),
             ])->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
-            'meetingTypes' => Options::forArray([
-                'in_person' => __('In person'),
-                'web_conference' => __('Virtual – web conference'),
-                'phone' => __('Virtual – phone call'),
-            ])->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingTypes::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
+            'workingLanguages' => $workingLanguages,
         ]);
     }
 

@@ -950,11 +950,3 @@ test('individual\'s alternate contact method can be retrieved', function () {
 
     expect($individual->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
 });
-
-test('individual meeting type can be retrieved', function () {
-    $individual = Individual::factory()->create();
-    expect($individual->getMeetingType('in_person'))->toEqual('In person');
-    expect($individual->getMeetingType('phone'))->toEqual('Virtual – phone');
-    expect($individual->getMeetingType('web_conference'))->toEqual('Virtual – web conference');
-    expect($individual->getMeetingType('bad meeting'))->toBeNull();
-});
