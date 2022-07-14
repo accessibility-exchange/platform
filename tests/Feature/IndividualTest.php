@@ -2,6 +2,7 @@
 
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\AreaType;
+use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -312,6 +313,39 @@ test('individuals with connector role must select connected identities', functio
     expect($individual->base_disability_type)->toEqual('specific_disabilities');
     expect($individual->has_nb_gnc_fluid_constituents)->toBeFalse();
     expect($livedExperience->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent cross-disability individuals', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
+    $areaType = AreaType::first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'base_disability_type' => 'cross_disability',
+        'area_types' => [$areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->base_disability_type)->toEqual('cross_disability');
+    expect($crossDisability->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {
