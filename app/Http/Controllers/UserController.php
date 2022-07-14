@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use function localized_route;
+use Spatie\LaravelOptions\Options;
 
 class UserController extends Controller
 {
@@ -173,7 +174,7 @@ class UserController extends Controller
 
         return view('users.roles-and-permissions', [
             'user' => $user,
-            'roles' => $roles,
+            'roles' => Options::forArray($roles)->toArray(),
             'regulatedOrganization' => $user->context === 'regulated-organization' ? $user->regulatedOrganization : null,
         ]);
     }
@@ -202,7 +203,7 @@ class UserController extends Controller
             return view('users.roles-and-permissions.invite', [
                 'user' => $currentUser,
                 'invitationable' => $invitationable,
-                'roles' => $roles,
+                'roles' => Options::forArray($roles)->toArray(),
             ]);
         }
 
@@ -224,7 +225,7 @@ class UserController extends Controller
 
         return view('users.display-preferences', [
             'user' => Auth::user(),
-            'themes' => $themes,
+            'themes' => Options::forArray($themes)->toArray(),
         ]);
     }
 

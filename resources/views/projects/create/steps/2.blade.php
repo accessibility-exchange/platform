@@ -5,9 +5,9 @@
     <fieldset class="field @error('focus') field--error @enderror stack">
         <legend class="h2">{{ __('Where do you want to start your project?') }}</legend>
         <x-hearth-radio-buttons name="focus" :options="[
-            'learn' => ['label' => __('Learn'), 'hint' => __('Access resources about disability and learn how to do inclusive and accessible consultation. Connect with disability and Deaf organizations to get support for planning your consultation process with the community.')],
-            'engage' => ['label' => __('Engage'), 'hint' => __('Publish accessibility projects and consultation engagements on the Accessibility Exchange website to access the site’s matching services. Connect with the disability and Deaf organizations to refine your consultation plan and recruit from specific communities.')],
-            'deepen-understanding' => ['label' => __('Deepen understanding'), 'hint' => __('Connect with the disability and Deaf organizations to develop a system analysis of what you have learned from the individuals.')]
+            ['value' => 'learn', 'label' => __('Learn'), 'hint' => __('Access resources about disability and learn how to do inclusive and accessible consultation. Connect with disability and Deaf organizations to get support for planning your consultation process with the community.')],
+            ['value' => 'engage', 'label' => __('Engage'), 'hint' => __('Publish accessibility projects and consultation engagements on the Accessibility Exchange website to access the site’s matching services. Connect with the disability and Deaf organizations to refine your consultation plan and recruit from specific communities.')],
+            ['value' => 'deepen-understanding', 'label' => __('Deepen understanding'), 'hint' => __('Connect with the disability and Deaf organizations to develop a system analysis of what you have learned from the individuals.')]
         ]" :checked="old('focus', session('focus')) ?? ''" />
 
         <x-hearth-error for="focus" />

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProvincesAndTerritories;
+use App\Enums\RegulatedOrganizationType;
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
@@ -14,6 +16,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Spatie\LaravelOptions\Options;
 
 class RegulatedOrganizationController extends Controller
 {
@@ -35,14 +38,7 @@ class RegulatedOrganizationController extends Controller
     public function showTypeSelection(): View
     {
         return view('regulated-organizations.show-type-selection', [
-            'types' => [
-                'government' => __('Government'),
-                'business' => __('Business'),
-                'public-sector' => [
-                    'label' => __('Other public sector organization'),
-                    'hint' => __('That is regulated by the Accessible Canada Act'),
-                ],
-            ],
+            'types' => Options::forEnum(RegulatedOrganizationType::class)->toArray(),
         ]);
     }
 
@@ -152,8 +148,8 @@ class RegulatedOrganizationController extends Controller
     {
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
-            'regions' => get_regions(['CA'], locale()),
-            'sectors' => Sector::all()->prepareForForm(),
+            'regions' => Options::forEnum(ProvincesAndTerritories::class)->toArray(),
+            'sectors' => Options::forModels(Sector::class)->toArray(),
         ]);
     }
 

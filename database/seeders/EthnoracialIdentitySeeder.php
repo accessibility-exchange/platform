@@ -37,9 +37,6 @@ class EthnoracialIdentitySeeder extends Seeder
             [
                 'name' => __('African'),
             ],
-            [
-                'name' => __('Other'),
-            ],
         ];
 
         foreach ($identities as $identity) {

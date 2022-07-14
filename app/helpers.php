@@ -98,7 +98,7 @@ if (! function_exists('get_language_exonym')) {
         }
 
         switch ($code) {
-            case 'ase':
+            case 'fcs':
                 return trans('locales.'.$code, [], $locale);
             default:
                 $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';

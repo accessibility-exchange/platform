@@ -41,7 +41,7 @@
 
     <fieldset class="field @error('public_outcomes') field--error @enderror stack">
         <legend>{{ __('Will the outcomes be made publicly available?') }}</legend>
-        <x-hearth-radio-buttons name="public_outcomes" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('public_outcomes', $project->public_outcomes)"  />
+        <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes)"  />
     </fieldset>
 
     <p class="repel">

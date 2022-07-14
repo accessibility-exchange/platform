@@ -14,7 +14,6 @@ use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\Translatable\Facades\Translatable;
@@ -43,24 +42,6 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
-
-        Collection::macro('prepareForForm', function () {
-            /** @var Collection $this */
-            return $this->mapWithKeys(function ($item) {
-                if ($item->description) {
-                    return [
-                        $item->id => [
-                            'label' => $item->name,
-                            'hint' => $item->description,
-                        ],
-                    ];
-                }
-
-                return [
-                    $item->id => $item->name,
-                ];
-            })->toArray();
-        });
 
         StatusManager::bind(Individual::class, IndividualStatus::class);
         StatusManager::bind(Organization::class, OrganizationStatus::class);

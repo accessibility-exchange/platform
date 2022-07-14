@@ -20,6 +20,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Spatie\LaravelOptions\Options;
 
 class ProjectController extends Controller
 {
@@ -46,15 +47,10 @@ class ProjectController extends Controller
     public function create(): View
     {
         return view('projects.create', [
-            'languages' => [
-                '' => __('Choose a language…'),
-
-            ] + get_available_languages(true),
-            'impacts' => Impact::pluck('name', 'id')->toArray(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
             'projectable' => Auth::user()->projectable(),
-            'ancestors' => [
-                '' => __('Choose a project…'),
-            ] + Arr::sort(Auth::user()->projectable()->projects->pluck('name', 'id')->toArray()),
+            'ancestors' => Arr::sort(Options::forArray(Auth::user()->projectable()->projects->pluck('name', 'id')->toArray())->nullable(__('Choose a project…'))->toArray()),
         ]);
     }
 
@@ -154,13 +150,9 @@ class ProjectController extends Controller
     {
         return view('projects.edit', [
             'project' => $project,
-            'languages' => [
-                '' => __('Choose a language…'),
-            ] + get_available_languages(true),
-            'impacts' => Impact::pluck('name', 'id')->toArray(),
-            'consultants' => [
-                '' => __('Choose an accessibility consultant…'),
-            ] + Individual::pluck('name', 'id')->toArray(), // TODO: Only select accessibility consultants
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
+            'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
         ]);
     }
 

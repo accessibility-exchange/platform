@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Spatie\LaravelOptions\Options;
 
 class TranslationManager extends Component
 {
@@ -29,7 +30,7 @@ class TranslationManager extends Component
     public function __construct($model = null)
     {
         $this->model = $model;
-        $this->availableLanguages = ['' => __('Choose a language…')] + get_available_languages(true);
+        $this->availableLanguages = Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray();
     }
 
     /**

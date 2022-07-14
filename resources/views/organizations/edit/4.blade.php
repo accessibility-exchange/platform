@@ -42,7 +42,7 @@
 
             <div class="field @error('preferred_contact_method') field-error @enderror">
                 <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
-                <x-hearth-select name="preferred_contact_method" :options="['email' => __('Email'), 'phone' => __('Phone')]" :selected="old('preferred_contact_method', $organization->preferred_contact_method ?? 'email')"/>
+                <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $organization->preferred_contact_method ?? 'email')"/>
                 <x-hearth-error for="preferred_contact_method" />
             </div>
 

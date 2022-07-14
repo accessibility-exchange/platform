@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BaseDisabilityType;
+use App\Enums\ConsultingServices;
+use App\Enums\ProvincesAndTerritories;
+use App\Enums\StaffHaveLivedExperience;
 use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
@@ -27,6 +31,7 @@ use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
+use Spatie\LaravelOptions\Options;
 
 class OrganizationController extends Controller
 {
@@ -41,15 +46,18 @@ class OrganizationController extends Controller
 
         return view('organizations.show-type-selection', [
             'types' => [
-                'representative' => [
+                [
+                    'value' => 'representative',
                     'label' => Str::ucfirst(__('organization.types.representative.name')),
                     'hint' => __('organization.types.representative.description'),
                 ],
-                'support' => [
+                [
+                    'value' => 'support',
                     'label' => Str::ucfirst(__('organization.types.support.name')),
                     'hint' => __('organization.types.support.description'),
                 ],
-                'civil-society' => [
+                [
+                    'value' => 'civil-society',
                     'label' => Str::ucfirst(__('organization.types.civil-society.name')),
                     'hint' => __('organization.types.civil-society.description'),
                 ],
@@ -93,7 +101,7 @@ class OrganizationController extends Controller
     {
         return view('organizations.show-role-selection', [
             'organization' => $organization,
-            'roles' => OrganizationRole::all()->prepareForForm(),
+            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
         ]);
     }
 
@@ -147,29 +155,25 @@ class OrganizationController extends Controller
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'regions' => get_regions(['CA'], locale()),
+            'regions' => Options::forEnum(ProvincesAndTerritories::class)->toArray(),
             'roles' => $roles,
-            'consultingServices' => [
-                'booking-providers' => __('consulting-services.booking-providers'),
-                'planning-consultation' => __('consulting-services.planning-consultation'),
-                'running-consultation' => __('consulting-services.running-consultation'),
-                'analysis' => __('consulting-services.analysis'),
-                'writing-reports' => __('consulting-services.writing-reports'),
-            ],
-            'languages' => ['' => __('Choose a language…')] + get_available_languages(true),
-            'sectors' => Sector::all()->prepareForForm(),
-            'impacts' => Impact::all()->prepareForForm(),
-            'livedExperiences' => LivedExperience::all()->prepareForForm(),
-            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
-            'disabilityTypes' => DisabilityType::where('name->en', '!=', 'Cross-disability')->get()->prepareForForm(),
-            'indigenousIdentities' => IndigenousIdentity::all()->prepareForForm(),
-            'areaTypes' => AreaType::all()->prepareForForm(),
+            'consultingServices' => Options::forEnum(ConsultingServices::class)->toArray(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'sectors' => Options::forModels(Sector::class)->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
+            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
+            'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
+            'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
+            'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
+            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
+            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
             'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
             'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
             'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
             'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
-            'ageBrackets' => AgeBracket::all()->prepareForForm(),
-            'ethnoracialIdentities' => EthnoracialIdentity::where('name->en', '!=', 'White')->get()->prepareForForm(),
+            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
+            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
+            'staffHaveLivedExperience' => Options::forEnum(StaffHaveLivedExperience::class)->toArray(),
         ]);
     }
 

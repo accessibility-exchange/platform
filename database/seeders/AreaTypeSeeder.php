@@ -11,13 +11,13 @@ class AreaTypeSeeder extends Seeder
     {
         $areaTypes = [
             [
-                'name' => __('Urban'),
+                'name' => __('Urban areas'),
             ],
             [
-                'name' => __('Rural'),
+                'name' => __('Rural areas'),
             ],
             [
-                'name' => __('Remote'),
+                'name' => __('Remote areas'),
             ],
         ];
 

@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\EthnoracialIdentity;
 use App\Models\User;
+use Database\Seeders\EthnoracialIdentitySeeder;
+use Spatie\LaravelOptions\Options;
 
 test('only administrators can view ethnoracial identities', function () {
     $administrator = User::factory()->create([
@@ -14,4 +17,9 @@ test('only administrators can view ethnoracial identities', function () {
 
     $response = $this->actingAs($user)->get(localized_route('ethnoracial-identities.index'));
     $response->assertForbidden();
+});
+
+test('ethnoracial identities can be turned into select options', function () {
+    $this->seed(EthnoracialIdentitySeeder::class);
+    expect(Options::forModels(EthnoracialIdentity::class)->toArray())->toBeArray()->toHaveCount(EthnoracialIdentity::all()->count());
 });

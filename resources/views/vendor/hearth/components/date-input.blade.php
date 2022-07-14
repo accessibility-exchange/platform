@@ -14,7 +14,7 @@
 
     <div class="field field--month stack">
         <x-hearth-label :for="$name . '_month'" :value="__('forms.label_month')" />
-        <x-hearth-select :name="$name . '_month'" :required="$required" :disabled="$disabled" :aria-describedby="$describedBy()" :aria-invalid="$invalid ? 'true' : 'false'" x-bind:aria-invalid="error.toString()" x-bind:aria-describedby="error ? '{{ $hinted ? $name . '-hint ' . $name . '-error' : $name . '-error' }}' : '{{ $hinted ? $name . '-hint' : '' }}'" :options="$months" x-model="month" x-on:change="componentsToDate()" />
+        <x-hearth-select :name="$name . '_month'" :required="$required" :disabled="$disabled" :aria-describedby="$describedBy()" :aria-invalid="$invalid ? 'true' : 'false'" x-bind:aria-invalid="error.toString()" x-bind:aria-describedby="error ? '{{ $hinted ? $name . '-hint ' . $name . '-error' : $name . '-error' }}' : '{{ $hinted ? $name . '-hint' : '' }}'" :options="Spatie\LaravelOptions\Options::forArray($months)->nullable()->toArray()" x-model="month" x-on:change="componentsToDate()" />
     </div>
 
     <div class="field field--day stack">

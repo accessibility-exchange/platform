@@ -1,5 +1,5 @@
 <div class="stack" x-data="translationPicker([ @foreach($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if(!$loop->last), @endif @endforeach ], {
-                @foreach($availableLanguages as $code => $exonym)@if($code !== '')'{{ $code }}': '{{ $exonym }}'@if(!$loop->last),
+                @foreach($availableLanguages as $language)@if($language['value'] !== '')'{{ $language['value'] }}': '{{ $language['label'] }}'@if(!$loop->last),
                 @endif @endif @endforeach
     })">
     <template x-for="(language, index) in languages">

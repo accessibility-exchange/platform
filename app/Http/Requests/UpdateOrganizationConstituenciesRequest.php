@@ -53,8 +53,18 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'age_brackets' => 'nullable|array|required_if:has_age_brackets,true|exclude_if:has_age_brackets,false',
             'age_brackets.*' => 'exists:age_brackets,id',
             'has_ethnoracial_identities' => 'required|boolean',
-            'ethnoracial_identities' => 'nullable|array|required_if:has_ethnoracial_identities,true|exclude_if:has_ethnoracial_identities,false',
+            'ethnoracial_identities' => [
+                'nullable',
+                'array',
+                Rule::requiredIf(function () {
+                    return request('has_ethnoracial_identities') == 1
+                        && ! request('other_ethnoracial');
+                }),
+            ],
             'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
+            'other_ethnoracial' => 'nullable|boolean',
+            'other_ethnoracial_identity' => 'nullable|array|exclude_if:has_ethnoracial_identities,false|exclude_unless:other_ethnoracial,true',
+            'other_ethnoracial_identity.*' => 'nullable|string|max:255',
             'constituent_languages' => 'nullable|array',
             'constituent_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
             'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer',

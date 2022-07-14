@@ -35,7 +35,7 @@
                     <p>@if($individual->locality){{ $individual->locality }}, @endif{{ get_region_name($individual->region, ["CA"], locale()) }}</p>
                     <p><strong>{{ implode(', ', $individual->individualRoles()->pluck('name')->toArray()) }}</strong>@can('update', $individual) <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>@endcan</p>
                 </div>
-                @if($individual->social_links && count($individual->social_links) > 0 || $individual->web_links && count($individual->web_links) > 0)
+                @if($individual->social_links && count($individual->social_links) > 0 || !empty($individual->website_link))
                 <ul role="list" class="cluster">
                     @if($individual->social_links)
                         @foreach($individual->social_links as $key => $value)
@@ -44,12 +44,10 @@
                         </li>
                         @endforeach
                     @endif
-                    @if($individual->web_links)
-                        @foreach($individual->web_links as $link)
-                            <li>
-                                <a class="weight:semibold with-icon" href="{{ $link['url'] }}"><x-heroicon-o-globe-alt class="icon" /> {{ $link['title'] }}</a>
-                            </li>
-                        @endforeach
+                    @if(!empty($individual->website_link))
+                        <li>
+                            <a class="weight:semibold with-icon" href="{{ $individual->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
+                        </li>
                     @endif
                 </ul>
                 @endif
@@ -80,13 +78,13 @@
             <h2 class="repel">{{ __('About') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', $individual) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
             @include('individuals.partials.about')
         @elseif(request()->localizedRouteIs('individuals.show-experiences'))
-            <h2 class="repel">{{ __('Experiences') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>@endcan</h2>
+            <h2 class="repel">{{ __('Experiences') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>@endcan</h2>
             @include('individuals.partials.experiences')
         @elseif(request()->localizedRouteIs('individuals.show-interests'))
-            <h2 class="repel">{{ __('Interests') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>@endcan</h2>
+            <h2 class="repel">{{ __('Interests') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 2 : 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>@endcan</h2>
             @include('individuals.partials.interests')
         @elseif(request()->localizedRouteIs('individuals.show-communication-and-meeting-preferences'))
-            <h2 class="repel">{{ __('Communication and meeting preferences') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Communication and meeting preferences') . '</span>']) !!}</a>@endcan</h2>
+            <h2 class="repel">{{ __('Communication and meeting preferences') }} @can('update', $individual)<a class="cta secondary" href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Communication and meeting preferences') . '</span>']) !!}</a>@endcan</h2>
             @include('individuals.partials.communication-and-meeting-preferences')
         @endif
         </div>

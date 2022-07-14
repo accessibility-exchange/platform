@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\LaravelOptions\Selectable;
+use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class AccessSupport extends Model
+class AccessSupport extends Model implements Selectable
 {
     use HasTranslations;
 
@@ -39,4 +41,12 @@ class AccessSupport extends Model
     public $translatable = [
         'name',
     ];
+
+    public function toSelectOption(): SelectOption
+    {
+        return new SelectOption(
+            $this->getTranslation('name', locale()),
+            $this->id
+        );
+    }
 }

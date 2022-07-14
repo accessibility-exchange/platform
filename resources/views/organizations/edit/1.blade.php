@@ -85,9 +85,10 @@
 
             <h4>{{ __('Organization website') }}</h4>
 
-            <div class="field">
+            <div class="field @error('website_link') field--error @enderror">
                 <x-hearth-label for="website_link" :value="__('Website link (optional)')" />
                 <x-hearth-input type="url" name="website_link" :value="old('website_link', $organization->website_link)" />
+                <x-hearth-error for="website_link" />
             </div>
 
             <p class="repel">

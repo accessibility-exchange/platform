@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\AgeBracket;
+use App\Models\AreaType;
 use App\Models\Constituency;
+use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\EthnoracialIdentity;
+use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\IndividualRole;
@@ -10,7 +15,11 @@ use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AgeBracketSeeder;
+use Database\Seeders\AreaTypeSeeder;
 use Database\Seeders\ConstituencySeeder;
+use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\EthnoracialIdentitySeeder;
+use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
@@ -60,8 +69,8 @@ test('individuals can edit their roles', function () {
     $response = $this->actingAs($user)
         ->get(localized_route('individuals.show-role-edit'));
 
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
+    $response->assertSee('<input x-model.number="roles" type="checkbox" name="roles[]" id="roles-'.$participantRole->id.'" value="'.$participantRole->id.'" aria-describedby="roles-'.$participantRole->id.'-hint"   />', false);
+    $response->assertSee('<input x-model.number="roles" type="checkbox" name="roles[]" id="roles-'.$consultantRole->id.'" value="'.$consultantRole->id.'" aria-describedby="roles-'.$consultantRole->id.'-hint" checked  />', false);
 
     $response = $this->actingAs($user)
         ->from(localized_route('individuals.show-role-edit'))
@@ -105,19 +114,17 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
             'twitter' => '',
             'instagram' => '',
             'facebook' => '',
         ],
-        'web_links' => [
-            [
-                'title' => 'My website',
-                'url' => 'https://example.com',
-            ],
-        ],
+        'website_links' => 'https://example.com',
         'save' => __('Save'),
     ]);
 
@@ -125,7 +132,6 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
 
     expect($individual->social_links)->toHaveKey('linked_in')->toHaveCount(1);
-    expect($individual->web_links)->toHaveCount(1);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
@@ -134,7 +140,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'publish' => __('Publish'),
     ]);
 
@@ -146,7 +155,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'unpublish' => __('Unpublish'),
     ]);
 
@@ -158,7 +170,10 @@ test('users can create individual pages', function () {
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $individual->first_language,
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'preview' => __('Preview'),
     ]);
     $response->assertSessionHasNoErrors();
@@ -172,12 +187,9 @@ test('users can create individual pages', function () {
             'region' => 'NS',
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
-            'first_language' => $individual->first_language,
-            'web_links' => [
-                [
-                    'title' => '',
-                    'url' => '',
-                ],
+            'consulting_services' => [
+                'planning-consultation',
+                'running-consultation',
             ],
             'save_and_next' => __('Save and next'),
         ]);
@@ -264,7 +276,8 @@ test('users can create individual pages', function () {
 
     $individual = $individual->fresh();
 
-    expect($individual->phone)->toEqual('9021234567');
+    expect($individual->phone)->toEqual('');
+    expect($individual->support_person_phone)->toEqual('438-123-4567');
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -275,10 +288,80 @@ test('entity users can not create individual pages', function () {
     expect($user->individual)->toBeNull();
 });
 
-test('individuals with connector role must select connected identities', function () {
+test('individuals with connector role can represent individuals with disabilities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
-    $this->seed(ConstituencySeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $areaType = AreaType::first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), []);
+
+    $response->assertSessionHasErrors();
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'area_types' => [$areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->livedExperienceConnections)->toHaveCount(1);
+    expect($individual->base_disability_type)->toEqual('specific_disabilities');
+    expect($individual->has_nb_gnc_fluid_constituents)->toBeFalse();
+    expect($livedExperience->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent cross-disability individuals', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
+    $areaType = AreaType::first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'base_disability_type' => 'cross_disability',
+        'area_types' => [$areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->base_disability_type)->toEqual('cross_disability');
+    expect($crossDisability->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent individuals in specific age brackets', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
     $this->seed(AgeBracketSeeder::class);
 
     $user = User::factory()->create();
@@ -286,40 +369,147 @@ test('individuals with connector role must select connected identities', functio
 
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
-    $community = Constituency::first();
-    $AgeBracket = AgeBracket::first();
+    $areaType = AreaType::first();
+    $ageBracket = AgeBracket::first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
-        'name' => $user->name,
-        'region' => 'NS',
-        'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'area_types' => [$areaType->id],
+        'has_age_brackets' => 1,
+        'age_brackets' => [$ageBracket->id],
     ]);
 
-    $response->assertSessionHasErrors();
-
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
-        'name' => $user->name,
-        'region' => 'NS',
-        'bio' => ['en' => 'This is my bio.'],
-        'first_language' => $user->locale,
-        'lived_experience_connections' => [$livedExperience->id],
-        'constituency_connections' => [$community->id],
-        'age_bracket_connections' => [$AgeBracket->id],
-    ]);
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
     $response->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
-    expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->constituencyConnections)->toHaveCount(1);
     expect($individual->ageBracketConnections)->toHaveCount(1);
-    expect($livedExperience->communityConnectors)->toHaveCount(1);
-    expect($community->communityConnectors)->toHaveCount(1);
-    expect($AgeBracket->communityConnectors)->toHaveCount(1);
+    expect($individual->extra_attributes->has_age_brackets)->toBeTruthy();
+    expect($ageBracket->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent refugees and immigrants', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+    $this->seed(ConstituencySeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $areaType = AreaType::first();
+    $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'area_types' => [$areaType->id],
+        'refugees_and_immigrants' => 1,
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->constituencyConnections)->toHaveCount(1);
+    expect($refugeesAndImmigrants->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent gender and sexual minorities', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+    $this->seed(ConstituencySeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $areaType = AreaType::first();
+    $women = GenderIdentity::where('name_plural->en', 'Women')->first();
+    $nb = GenderIdentity::where('name_plural->en', 'Non-binary people')->first();
+    $gnc = GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first();
+    $fluid = GenderIdentity::where('name_plural->en', 'Gender fluid people')->first();
+    $transPeople = Constituency::where('name_plural->en', 'Trans people')->first();
+    $twoslgbtqiaplusPeople = Constituency::where('name_plural->en', '2SLGBTQIA+ people')->firstOrFail();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'area_types' => [$areaType->id],
+        'has_gender_and_sexual_identities' => 1,
+        'gender_and_sexual_identities' => [
+            'women',
+            'nb-gnc-fluid-people',
+            'trans-people',
+            '2slgbtqiaplus-people',
+        ],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->constituencyConnections)->toHaveCount(2);
+    expect($individual->genderIdentityConnections)->toHaveCount(4);
+    expect($individual->has_nb_gnc_fluid_constituents)->toBeTrue();
+    expect($individual->extra_attributes->has_gender_and_sexual_identities)->toBeTruthy();
+    expect($nb->communityConnectors)->toHaveCount(1);
+    expect($gnc->communityConnectors)->toHaveCount(1);
+    expect($fluid->communityConnectors)->toHaveCount(1);
+    expect($transPeople->communityConnectors)->toHaveCount(1);
+    expect($twoslgbtqiaplusPeople->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent ethnoracial identities', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(EthnoracialIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $ethnoracialIdentity = EthnoracialIdentity::where('name->en', 'Black')->first();
+    $areaType = AreaType::first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'ethnoracial_identities' => [$ethnoracialIdentity->id],
+        'area_types' => [$areaType->id],
+    ]);
+
+    unset($data['other_ethnoracial']);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->ethnoracialIdentityConnections)->toHaveCount(1);
+    expect($individual->other_ethnoracial_identity_connections)->toBeNull();
+    expect($ethnoracialIdentity->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {
@@ -352,6 +542,8 @@ test('users can edit individual pages', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
+    expect($individual->isPublishable())->toBeFalse();
+
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
@@ -362,9 +554,12 @@ test('users can edit individual pages', function () {
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
         'bio' => ['en' => $individual->bio],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -383,9 +578,12 @@ test('users can edit individual pages', function () {
     $response = $this->actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
         'name' => $draftIndividual->name,
         'bio' => ['en' => $draftIndividual->bio],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
         'working_languages' => [''],
     ]);
 
@@ -417,7 +615,6 @@ test('users can not edit others individual pages', function () {
         'bio' => $individual->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-        'first_language' => $individual->first_language,
     ]);
     $response->assertForbidden();
 });
@@ -461,7 +658,7 @@ test('users can not delete others individual pages', function () {
 test('users can view their own draft individual pages', function () {
     $this->seed(IndividualRoleSeeder::class);
 
-    $individual = Individual::factory()->create(['published_at' => null]);
+    $individual = Individual::factory()->create(['published_at' => null, 'consulting_services' => ['analysis']]);
 
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 
@@ -482,7 +679,7 @@ test('users can not view others draft individual pages', function () {
 test('users can view individual pages', function () {
     $this->seed(IndividualRoleSeeder::class);
 
-    $individual = Individual::factory()->create();
+    $individual = Individual::factory()->create(['consulting_services' => ['analysis']]);
 
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 
@@ -752,12 +949,4 @@ test('individual\'s alternate contact method can be retrieved', function () {
     $individual->update(['preferred_contact_person' => 'me']);
 
     expect($individual->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
-});
-
-test('individual meeting type can be retrieved', function () {
-    $individual = Individual::factory()->create();
-    expect($individual->getMeetingType('in_person'))->toEqual('In person');
-    expect($individual->getMeetingType('phone'))->toEqual('Virtual – phone');
-    expect($individual->getMeetingType('web_conference'))->toEqual('Virtual – web conference');
-    expect($individual->getMeetingType('bad meeting'))->toBeNull();
 });
