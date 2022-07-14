@@ -10,6 +10,7 @@ use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AreaTypeSeeder;
+use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
@@ -280,6 +281,7 @@ test('entity users can not create individual pages', function () {
 test('individuals with connector role must select connected identities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
     $this->seed(AreaTypeSeeder::class);
 
     $user = User::factory()->create();
@@ -307,6 +309,9 @@ test('individuals with connector role must select connected identities', functio
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
+    expect($individual->base_disability_type)->toEqual('specific_disabilities');
+    expect($individual->has_nb_gnc_fluid_constituents)->toBeFalse();
+    expect($livedExperience->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {

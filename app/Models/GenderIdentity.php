@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\LaravelOptions\Selectable;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
@@ -37,5 +38,10 @@ class GenderIdentity extends Model implements Selectable
             $this->id,
             ['hint' => $this->getTranslation('description', locale())]
         );
+    }
+
+    public function communityConnectors(): MorphToMany
+    {
+        return $this->morphToMany(Individual::class, 'connectable');
     }
 }

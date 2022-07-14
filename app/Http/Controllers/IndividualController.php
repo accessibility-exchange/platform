@@ -210,7 +210,7 @@ class IndividualController extends Controller
             $data['other_disability_type_connection'] = null;
         }
 
-        if (! isset($data['other_disability']) || $data['base_disability_type'] == 'specific_disabilities') {
+        if (! isset($data['other_disability']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability') {
             $data['other_disability'] = 0;
             $data['other_disability_type_connection'] = null;
         }
