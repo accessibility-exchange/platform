@@ -22,6 +22,9 @@
     @foreach($organization->ethnoracialIdentities as $ethnoracialIdentity)
     <li class="tag">{{ $ethnoracialIdentity->name }}</li>
     @endforeach
+    @if($organization->other_ethnoracial)
+    <li class="tag">{{ $organization->other_ethnoracial_identity }}</li>
+    @endif
 </ul>
 @endif
 
