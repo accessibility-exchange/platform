@@ -6,6 +6,7 @@ use App\Models\AreaType;
 use App\Models\Constituency;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -17,6 +18,7 @@ use Database\Seeders\AgeBracketSeeder;
 use Database\Seeders\AreaTypeSeeder;
 use Database\Seeders\ConstituencySeeder;
 use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\EthnoracialIdentitySeeder;
 use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
@@ -285,12 +287,11 @@ test('entity users can not create individual pages', function () {
     expect($user->individual)->toBeNull();
 });
 
-test('individuals with connector role must select connected identities', function () {
+test('individuals with connector role can represent individuals with disabilities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
     $this->seed(GenderIdentitySeeder::class);
     $this->seed(AreaTypeSeeder::class);
-    $this->seed(ConstituencySeeder::class);
 
     $user = User::factory()->create();
     $individual = $user->individual;
@@ -298,7 +299,6 @@ test('individuals with connector role must select connected identities', functio
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
-    $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
@@ -309,7 +309,6 @@ test('individuals with connector role must select connected identities', functio
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experiences' => [$livedExperience->id],
         'area_types' => [$areaType->id],
-        'refugees_and_immigrants' => 1,
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -322,7 +321,6 @@ test('individuals with connector role must select connected identities', functio
     expect($individual->base_disability_type)->toEqual('specific_disabilities');
     expect($individual->has_nb_gnc_fluid_constituents)->toBeFalse();
     expect($livedExperience->communityConnectors)->toHaveCount(1);
-    expect($refugeesAndImmigrants->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
@@ -475,6 +473,41 @@ test('individuals with connector role can represent gender and sexual minorities
     expect($fluid->communityConnectors)->toHaveCount(1);
     expect($transPeople->communityConnectors)->toHaveCount(1);
     expect($twoslgbtqiaplusPeople->communityConnectors)->toHaveCount(1);
+});
+
+test('individuals with connector role can represent ethnoracial identities', function () {
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(EthnoracialIdentitySeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $livedExperience = LivedExperience::first();
+    $ethnoracialIdentity = EthnoracialIdentity::where('name->en', 'Black')->first();
+    $areaType = AreaType::first();
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'other_ethnoracial' => 0,
+        'ethnoracial_identities' => [$ethnoracialIdentity->id],
+        'area_types' => [$areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $response->assertSessionHasNoErrors();
+
+    $individual = $individual->fresh();
+
+    expect($individual->ethnoracialIdentityConnections)->toHaveCount(1);
+    expect($individual->other_ethnoracial_identity_connections)->toBeNull();
+    expect($ethnoracialIdentity->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {
