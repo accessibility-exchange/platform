@@ -100,10 +100,10 @@
                 <div class="field__subfield stack" x-show="hasEthnoracialIdentities == 1">
                     <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old('ethnoracial_identities', $organization->ethnoracialIdentities->pluck('id')->toArray())" required />
                     <div class="field">
-                        <x-hearth-checkbox name="other_ethnoracial" :checked="old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '')" x-model="otherEthnoracialIdentity" /> <x-hearth-label for='other_ethnoracial'>{{ __('Other') }}</x-hearth-label>
+                        <x-hearth-checkbox name="other_ethnoracial" :checked="old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '')" x-model="otherEthnoracialIdentity" /> <x-hearth-label for='other_ethnoracial'>{{ __('Something else') }}</x-hearth-label>
                     </div>
                     <div class="field__subfield stack">
-                        <x-translatable-input name="other_ethnoracial_identity" :label="__('Other ethnoracial identity')" :model="$organization" x-show="otherEthnoracialIdentity" />
+                        <x-translatable-input name="other_ethnoracial_identity" :label="__('Ethnoracial identity')" :model="$organization" x-show="otherEthnoracialIdentity" />
                     </div>
                 </div>
                 <div class="field">

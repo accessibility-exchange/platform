@@ -4,11 +4,11 @@
     <div class="field__subfield stack" x-show="baseDisabilityType == 'specific_disabilities'" >
         <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old('disability_types', $organization->disabilityTypes->pluck('id')->toArray())" required />
         <div class="field">
-            <x-hearth-checkbox name="other_disability" :checked="old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '')" x-model="otherDisability" /> <x-hearth-label for='other_disability'>{{ __('Other') }}</x-hearth-label>
+            <x-hearth-checkbox name="other_disability" :checked="old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '')" x-model="otherDisability" /> <x-hearth-label for='other_disability'>{{ __('Something else') }}</x-hearth-label>
         </div>
 
         <div class="field__subfield stack">
-            <x-translatable-input name="other_disability_type" :label="__('Other disability')" :model="$organization" x-show="otherDisability" />
+            <x-translatable-input name="other_disability_type" :label="__('Disability type')" :model="$organization" x-show="otherDisability" />
         </div>
     </div>
 </fieldset>

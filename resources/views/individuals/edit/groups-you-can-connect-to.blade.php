@@ -36,11 +36,11 @@
                 <div class="field__subfield stack" x-show="baseDisabilityType == 'specific_disabilities'">
                     <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old('disability_types', $individual->disabilityTypeConnections->pluck('id')->toArray())" required />
                     <div class="field">
-                        <x-hearth-checkbox name="other_disability" :checked="old('other_disability', !is_null($individual->other_disability_type_connection) && $individual->other_disability_type_connection !== '')" x-model="otherDisability" /> <x-hearth-label for='other_disability'>{{ __('Other') }}</x-hearth-label>
+                        <x-hearth-checkbox name="other_disability" :checked="old('other_disability', !is_null($individual->other_disability_type_connection) && $individual->other_disability_type_connection !== '')" x-model="otherDisability" /> <x-hearth-label for='other_disability'>{{ __('Something else') }}</x-hearth-label>
                     </div>
 
                     <div class="field__subfield stack">
-                        <x-translatable-input name="other_disability_type_connection" :label="__('Other disability')" :model="$individual" x-show="otherDisability" />
+                        <x-translatable-input name="other_disability_type_connection" :label="__('Disability type')" :model="$individual" x-show="otherDisability" />
                     </div>
                 </div>
             </fieldset>
@@ -114,10 +114,10 @@
                 <div class="field__subfield stack" x-show="hasEthnoracialIdentities == 1">
                     <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old('ethnoracial_identities', $individual->ethnoracialIdentityConnections->pluck('id')->toArray())" required />
                     <div class="field">
-                        <x-hearth-checkbox name="other_ethnoracial" :checked="old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '')" x-model="otherEthnoracialIdentity" /> <x-hearth-label for='other_ethnoracial'>{{ __('Other') }}</x-hearth-label>
+                        <x-hearth-checkbox name="other_ethnoracial" :checked="old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '')" x-model="otherEthnoracialIdentity" /> <x-hearth-label for='other_ethnoracial'>{{ __('Something else') }}</x-hearth-label>
                     </div>
                     <div class="field__subfield stack">
-                        <x-translatable-input name="other_ethnoracial_identity_connection" :label="__('Other ethnoracial identity')" :model="$individual" x-show="otherEthnoracialIdentity" />
+                        <x-translatable-input name="other_ethnoracial_identity_connection" :label="__('Ethnoracial identity')" :model="$individual" x-show="otherEthnoracialIdentity" />
                     </div>
                 </div>
                 <div class="field">
