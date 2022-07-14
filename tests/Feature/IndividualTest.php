@@ -11,6 +11,7 @@ use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AreaTypeSeeder;
+use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
