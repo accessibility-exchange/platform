@@ -494,10 +494,11 @@ test('individuals with connector role can represent ethnoracial identities', fun
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experiences' => [$livedExperience->id],
-        'other_ethnoracial' => 0,
         'ethnoracial_identities' => [$ethnoracialIdentity->id],
         'area_types' => [$areaType->id],
     ]);
+
+    unset($data['other_ethnoracial']);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
