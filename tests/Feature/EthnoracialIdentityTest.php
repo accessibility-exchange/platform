@@ -19,7 +19,7 @@ test('only administrators can view ethnoracial identities', function () {
     $response->assertForbidden();
 });
 
-test('area types can be turned into select options', function () {
+test('ethnoracial identities can be turned into select options', function () {
     $this->seed(EthnoracialIdentitySeeder::class);
     expect(Options::forModels(EthnoracialIdentity::class)->toArray())->toBeArray()->toHaveCount(EthnoracialIdentity::all()->count());
 });

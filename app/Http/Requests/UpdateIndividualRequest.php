@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProvincesAndTerritories;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateIndividualRequest extends FormRequest
 {
@@ -30,7 +32,7 @@ class UpdateIndividualRequest extends FormRequest
             'locality' => 'nullable|string|max:255',
             'region' => [
                 'required',
-                Rule::in(get_region_codes()),
+                new Enum(ProvincesAndTerritories::class),
             ],
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,

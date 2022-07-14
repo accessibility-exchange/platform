@@ -26,8 +26,8 @@
             <x-hearth-hint for="recruitment">{{ __('How do you want to recruit participants for this engagement?') }}</x-hearth-hint>
 
             <x-hearth-radio-buttons name="recruitment" :options="[
-                'automatic' => __('With the Accessibility Exchange’s automatic matching system'),
-                'open' => __('With an open call for participants'),
+                ['value' => 'automatic', 'label' => __('With the Accessibility Exchange’s automatic matching system')],
+                ['value' => 'open', 'label' => __('With an open call for participants')],
             ]" :checked="old('recruitment', session('recruitment')) ?? false" hinted />
         </fieldset>
 

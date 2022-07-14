@@ -19,7 +19,7 @@ test('only administrators can view gender identities', function () {
     $response->assertForbidden();
 });
 
-test('area types can be turned into select options', function () {
+test('gender identities can be turned into select options', function () {
     $this->seed(GenderIdentitySeeder::class);
     expect(Options::forModels(GenderIdentity::class)->toArray())->toBeArray()->toHaveCount(GenderIdentity::all()->count());
 });

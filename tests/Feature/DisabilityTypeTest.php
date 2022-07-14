@@ -19,7 +19,7 @@ test('only administrators can view disability types', function () {
     $response->assertForbidden();
 });
 
-test('area types can be turned into select options', function () {
+test('disability types can be turned into select options', function () {
     $this->seed(DisabilityTypeSeeder::class);
     expect(Options::forModels(DisabilityType::class)->toArray())->toBeArray()->toHaveCount(DisabilityType::all()->count());
 });

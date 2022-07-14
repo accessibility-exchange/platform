@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasMultipageEditingAndPublishing;
+use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     use UsesCipherSweet;
     use HasFactory;
     use HasMultipageEditingAndPublishing;
+    use HasSchemalessAttributes;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
@@ -56,10 +58,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'preferred_contact_person',
         'first_language',
         'working_languages',
-        'other_lived_experience_connections',
-        'other_constituency_connections',
         'vrs',
-        'web_links',
         'status',
         'user_id',
         'age_group',
@@ -73,6 +72,10 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'support_person_email',
         'support_person_vrs',
         'meeting_types',
+        'extra_attributes',
+        'other_disability_type_connection',
+        'other_ethnoracial_identity_connection',
+        'connection_lived_experience',
     ];
 
     /**
@@ -82,7 +85,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     protected $casts = [
         'social_links' => 'array',
-        'web_links' => 'array',
         'relevant_experiences' => 'array',
         'languages' => 'array',
         'working_languages' => 'array',
@@ -90,10 +92,10 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'vrs' => 'boolean',
         'support_person_vrs' => 'boolean',
         'meeting_types' => 'array',
-        'other_lived_experience_connections' => 'array',
-        'other_constituency_connections' => 'array',
         'bio' => 'array',
         'pronouns' => 'array',
+        'other_disability_type_connection' => 'array',
+        'other_ethnoracial_identity_connection' => 'array',
     ];
 
     /**
@@ -107,8 +109,8 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'pronouns',
         'lived_experience',
         'skills_and_strengths',
-        'other_lived_experience_connections',
-        'other_constituency_connections',
+        'other_disability_type_connection',
+        'other_ethnoracial_identity_connection',
     ];
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
@@ -196,20 +198,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         if (! is_null($this->attributes['social_links'])) {
             return array_filter(json_decode($this->attributes['social_links'], true));
-        }
-
-        return [];
-    }
-
-    /**
-     * Get the individual's links.
-     *
-     * @return array
-     */
-    public function getWebLinksAttribute(): array
-    {
-        if (! is_null($this->attributes['web_links'])) {
-            return array_filter(json_decode($this->attributes['web_links'], true));
         }
 
         return [];
@@ -540,34 +528,69 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return $this->individualRoles->contains($connectorRole);
     }
 
-    /**
-     * Get all the lived experiences that the individual can connect with.
-     *
-     * @return MorphToMany
-     */
     public function livedExperienceConnections(): MorphToMany
     {
         return $this->morphedByMany(LivedExperience::class, 'connectable');
     }
 
-    /**
-     * Get all the constituencies that the individual can connect with.
-     *
-     * @return MorphToMany
-     */
+    public function areaTypeConnections(): MorphToMany
+    {
+        return $this->morphedByMany(AreaType::class, 'connectable');
+    }
+
+    public function disabilityTypeConnections(): MorphToMany
+    {
+        return $this->morphedByMany(DisabilityType::class, 'connectable');
+    }
+
+    public function indigenousIdentityConnections(): MorphToMany
+    {
+        return $this->morphedByMany(IndigenousIdentity::class, 'connectable');
+    }
+
+    public function genderIdentityConnections(): MorphToMany
+    {
+        return $this->morphedByMany(GenderIdentity::class, 'connectable');
+    }
+
+    public function ageBracketConnections(): MorphToMany
+    {
+        return $this->morphedByMany(AgeBracket::class, 'connectable');
+    }
+
+    public function ethnoracialIdentityConnections(): MorphToMany
+    {
+        return $this->morphedByMany(EthnoracialIdentity::class, 'connectable');
+    }
+
     public function constituencyConnections(): MorphToMany
     {
         return $this->morphedByMany(Constituency::class, 'connectable');
     }
 
-    /**
-     * Get all the age groups that the individual can connect with.
-     *
-     * @return MorphToMany
-     */
-    public function ageBracketConnections(): MorphToMany
+    public function languageConnections(): MorphToMany
     {
-        return $this->morphedByMany(AgeBracket::class, 'connectable');
+        return $this->morphedByMany(Language::class, 'connectable');
+    }
+
+    public function getBaseDisabilityTypeAttribute(): string|false
+    {
+        if ($this->disabilityTypeConnections->count() > 0) {
+            return $this->disabilityTypeConnections->contains(DisabilityType::where('name->en', 'Cross-disability')->first())
+                ? 'cross_disability'
+                : 'specific_disabilities';
+        } elseif (! empty($this->other_disability_type_connection)) {
+            return 'specific_disabilities';
+        }
+
+        return false;
+    }
+
+    public function getHasNbGncFluidConstituentsAttribute(): bool
+    {
+        return $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Non-binary people')->firstOrFail())
+            || $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->firstOrFail())
+            || $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Gender fluid people')->firstOrFail());
     }
 
     public function blocks(): MorphToMany

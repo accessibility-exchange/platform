@@ -18216,15 +18216,6 @@ namespace Illuminate\Support {
             {
                 return \Illuminate\Support\Collection::ray($description);
             }
-
-            /**
-             * @see \App\Providers\AppServiceProvider::boot()
-             * @static
-             */
-            public static function prepareForForm()
-            {
-                return \Illuminate\Support\Collection::prepareForForm();
-            }
         }
 
         class Stringable

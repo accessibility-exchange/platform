@@ -62,6 +62,7 @@ class Organization extends Model
         'contact_person_phone',
         'contact_person_vrs',
         'preferred_contact_method',
+        'other_ethnoracial_identity',
     ];
 
     /**
@@ -77,6 +78,7 @@ class Organization extends Model
         'social_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
         'other_disability_type' => 'array',
+        'other_ethnoracial_identity' => 'array',
     ];
 
     /**
@@ -98,6 +100,7 @@ class Organization extends Model
         'slug',
         'about',
         'other_disability_type',
+        'other_ethnoracial_identity',
     ];
 
     /**

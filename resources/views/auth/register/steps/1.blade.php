@@ -16,7 +16,7 @@
         <div class="field @error('signed_language') field--error @enderror stack">
             <x-hearth-label for="signed_language" :value="__('Signed language')" />
             <x-hearth-hint for="signed_language">{{ __('When content is available in the sign language you select, it will appear as a video.') }}</x-hearth-hint>
-            <x-hearth-select name="signed_language" :options="['' => __('Choose a signed language…'), 'ase' => __('American Sign Language (ASL)'), 'fcs' => 'Langue des signes québécoise (LSQ)']" :selected="old('signed_language', '')" hinted />
+            <x-hearth-select name="signed_language" :options="Spatie\LaravelOptions\Options::forArray(['ase' => __('American Sign Language (ASL)'), 'fcs' => 'Langue des signes québécoise (LSQ)'])->nullable(__('Choose a signed language…'))->toArray()" :selected="old('signed_language', '')" hinted />
             <x-hearth-error for="signed_language" />
         </div>
     </fieldset>

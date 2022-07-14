@@ -52,7 +52,7 @@
 
             <fieldset class="field @error('refugees_and_immigrants') field--error @enderror">
                 <legend>{{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
-                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="['1' => __('Yes'), '0' => __('No')]" :checked="old('refugees_and_immigrants', $organization->extra_attributes->get('has_refugee_and_immigrant_constituency', ''))" />
+                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="Spatie\LaravelOptions\Options::forArray(['1' => __('Yes'), '0' => __('No')])->toArray()" :checked="old('refugees_and_immigrants', $organization->extra_attributes->get('has_refugee_and_immigrant_constituency', ''))" />
             </fieldset>
 
             <fieldset class="field @error('gender_identities') field--error @enderror @error('trans_people') field--error @enderror @error('twoslgbtqia') field--error @enderror" x-data="{hasGenderAndSexualIdentities: '{{ old('has_gender_and_sexual_identities', $organization->extra_attributes->get('has_gender_and_sexual_identities', '')) }}'}">
@@ -92,13 +92,19 @@
                 </div>
             </fieldset>
 
-            <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}'}">
+            <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '' ? 'true' : 'false') }}}">
                 <legend>{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
                 <div class="field">
                     <input type="radio" name="has_ethnoracial_identities" id="has_ethnoracial_identities-1" value="1" @checked(old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" /> <label for="has_ethnoracial_identities-1">{{ __('Yes') }}</label>
                 </div>
                 <div class="field__subfield stack" x-show="hasEthnoracialIdentities == 1">
                     <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old('ethnoracial_identities', $organization->ethnoracialIdentities->pluck('id')->toArray())" required />
+                    <div class="field">
+                        <x-hearth-checkbox name="other_ethnoracial" :checked="old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '')" x-model="otherEthnoracialIdentity" /> <x-hearth-label for='other_ethnoracial'>{{ __('Other') }}</x-hearth-label>
+                    </div>
+                    <div class="field__subfield stack">
+                        <x-translatable-input name="other_ethnoracial_identity" :label="__('Other ethnoracial identity')" :model="$organization" x-show="otherEthnoracialIdentity" />
+                    </div>
                 </div>
                 <div class="field">
                     <input type="radio" name="has_ethnoracial_identities" id="has_ethnoracial_identities-0" value="0" @checked(!old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" /> <label for="has_ethnoracial_identities-0">{{ __('No') }}</label>
@@ -123,7 +129,7 @@
 
             <fieldset class="field @error('staff_lived_experience') field--error @enderror">
                 <legend>{{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
-                <x-hearth-radio-buttons name="staff_lived_experience" :options="['yes' => __('Yes'), 'no' => __('No'), 'prefer-not-to-answer' => __('Prefer not to answer')]" :checked="old('staff_lived_experience', $organization->staff_lived_experience)" />
+                <x-hearth-radio-buttons name="staff_lived_experience" :options="$staffHaveLivedExperience" :checked="old('staff_lived_experience', $organization->staff_lived_experience)" />
             </fieldset>
 
             <p class="repel">

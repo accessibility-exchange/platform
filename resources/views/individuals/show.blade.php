@@ -35,7 +35,7 @@
                     <p>@if($individual->locality){{ $individual->locality }}, @endif{{ get_region_name($individual->region, ["CA"], locale()) }}</p>
                     <p><strong>{{ implode(', ', $individual->individualRoles()->pluck('name')->toArray()) }}</strong>@can('update', $individual) <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>@endcan</p>
                 </div>
-                @if($individual->social_links && count($individual->social_links) > 0 || $individual->web_links && count($individual->web_links) > 0)
+                @if($individual->social_links && count($individual->social_links) > 0 || !empty($individual->website_link))
                 <ul role="list" class="cluster">
                     @if($individual->social_links)
                         @foreach($individual->social_links as $key => $value)
@@ -44,12 +44,10 @@
                         </li>
                         @endforeach
                     @endif
-                    @if($individual->web_links)
-                        @foreach($individual->web_links as $link)
-                            <li>
-                                <a class="weight:semibold with-icon" href="{{ $link['url'] }}"><x-heroicon-o-globe-alt class="icon" /> {{ $link['title'] }}</a>
-                            </li>
-                        @endforeach
+                    @if(!empty($individual->website_link))
+                        <li>
+                            <a class="weight:semibold with-icon" href="{{ $individual->website_link }}"><x-heroicon-o-globe-alt class="icon" />{{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}</a>
+                        </li>
                     @endif
                 </ul>
                 @endif

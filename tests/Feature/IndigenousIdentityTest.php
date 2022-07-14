@@ -19,7 +19,7 @@ test('only administrators can view indigenous identities', function () {
     $response->assertForbidden();
 });
 
-test('area types can be turned into select options', function () {
+test('indigenous identities can be turned into select options', function () {
     $this->seed(IndigenousIdentitySeeder::class);
     expect(Options::forModels(IndigenousIdentity::class)->toArray())->toBeArray()->toHaveCount(IndigenousIdentity::all()->count());
 });

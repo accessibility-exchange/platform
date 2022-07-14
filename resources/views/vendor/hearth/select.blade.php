@@ -9,7 +9,7 @@
     {!! $describedBy() ? 'aria-describedby="' . $describedBy() . '"' : '' !!}
     {!! $invalid ? 'aria-invalid="true"' : '' !!}
 >
-    @foreach($options as $option)
-    <option value="{{ $option['value'] }}" @selected($selected == $option['value'])>{{ $option['label'] }}</option>
+    @foreach($options as $option => $label)
+    <option value="{{ $option }}" @selected($selected == $option)>{{ $label }}</option>
     @endforeach
 </select>

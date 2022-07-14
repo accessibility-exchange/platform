@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\AgeBracket;
-use App\Models\Constituency;
+use App\Http\Requests\UpdateIndividualConstituenciesRequest;
+use App\Models\AreaType;
 use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -9,8 +9,7 @@ use App\Models\IndividualRole;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\AgeBracketSeeder;
-use Database\Seeders\ConstituencySeeder;
+use Database\Seeders\AreaTypeSeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
@@ -182,12 +181,6 @@ test('users can create individual pages', function () {
                 'planning-consultation',
                 'running-consultation',
             ],
-            'web_links' => [
-                [
-                    'title' => '',
-                    'url' => '',
-                ],
-            ],
             'save_and_next' => __('Save and next'),
         ]);
 
@@ -287,16 +280,14 @@ test('entity users can not create individual pages', function () {
 test('individuals with connector role must select connected identities', function () {
     $this->seed(IndividualRoleSeeder::class);
     $this->seed(LivedExperienceSeeder::class);
-    $this->seed(ConstituencySeeder::class);
-    $this->seed(AgeBracketSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
 
     $user = User::factory()->create();
     $individual = $user->individual;
 
     $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
     $livedExperience = LivedExperience::first();
-    $community = Constituency::first();
-    $AgeBracket = AgeBracket::first();
+    $areaType = AreaType::first();
 
     $individual->individualRoles()->sync([$connectorRole->id]);
 
@@ -304,22 +295,18 @@ test('individuals with connector role must select connected identities', functio
 
     $response->assertSessionHasErrors();
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), [
-        'lived_experience_connections' => [$livedExperience->id],
-        'constituency_connections' => [$community->id],
-        'age_bracket_connections' => [$AgeBracket->id],
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experiences' => [$livedExperience->id],
+        'area_types' => [$areaType->id],
     ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
     $response->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->constituencyConnections)->toHaveCount(1);
-    expect($individual->ageBracketConnections)->toHaveCount(1);
-    expect($livedExperience->communityConnectors)->toHaveCount(1);
-    expect($community->communityConnectors)->toHaveCount(1);
-    expect($AgeBracket->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {

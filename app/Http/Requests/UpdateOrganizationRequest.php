@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProvincesAndTerritories;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateOrganizationRequest extends FormRequest
@@ -45,7 +47,7 @@ class UpdateOrganizationRequest extends FormRequest
             ] + $aboutRules,
             'region' => [
                 'required',
-                Rule::in(get_region_codes()),
+                new Enum(ProvincesAndTerritories::class),
             ],
             'locality' => 'required|string|max:255',
             'service_areas' => [
