@@ -276,7 +276,8 @@ test('users can create individual pages', function () {
 
     $individual = $individual->fresh();
 
-    expect($individual->phone)->toEqual('9021234567');
+    expect($individual->phone)->toEqual('');
+    expect($individual->support_person_phone)->toEqual('438-123-4567');
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));

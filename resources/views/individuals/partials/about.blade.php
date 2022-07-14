@@ -12,41 +12,15 @@
     @endforeach
 </ul>
 
+@if($individual->isConsultant())
+<h3>{{ __('As an Accessibility Consultant, :name can help with:', ['name' => $individual->firstName]) }}</h3>
+<ul>
+    @foreach($individual->consulting_services as $service)
+    <li>{{ __('consulting-services.'.$service) }}</li>
+    @endforeach
+</ul>
+@endif
+
 @if($individual->isConnector())
-
-<h3>{{ __('Communities :name is connected to', ['name' => $individual->firstName]) }}</h3>
-
-<h4>{{ __('Disability or Deaf communities') }}</h4>
-
-<ul role="list" class="tags">
-    @foreach($individual->livedExperienceConnections as $connection)
-        <li class="tag">{{ $connection->name }}</li>
-    @endforeach
-    @if($individual->other_lived_experience_connections)
-        <li class="tag">{{ $individual->other_lived_experience_connections }}</li>
-    @endif
-</ul>
-
-@if($individual->constituencyConnections->isNotEmpty() || $individual->other_constituency_connections)
-<h4>{{ __('Other intersectional communities') }}</h4>
-
-<ul role="list" class="tags">
-    @foreach($individual->constituencyConnections as $connection)
-        <li class="tag">{{ $connection->name }}</li>
-    @endforeach
-    @if($individual->other_constituency_connections)
-        <li class="tag">{{ $individual->other_constituency_connections }}</li>
-    @endif
-</ul>
-@endif
-
-@if($individual->ageBracketConnections->isNotEmpty())
-<h4>{{ __('Age groups') }}</h4>
-
-<ul role="list" class="tags">
-    @foreach($individual->ageBracketConnections as $connection)
-        <li class="tag">{{ $connection->name }}</li>
-    @endforeach
-</ul>
-@endif
+<h3>{{ __('As a Community Connector, :name can connect to:', ['name' => $individual->firstName]) }}</h3>
 @endif
