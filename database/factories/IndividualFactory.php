@@ -32,6 +32,9 @@ class IndividualFactory extends Factory
             'first_language' => function (array $attributes) {
                 return User::find($attributes['user_id'])->locale;
             },
+            'working_languages' => function (array $attributes) {
+                return [User::find($attributes['user_id'])->locale];
+            },
             'published_at' => date('Y-m-d h:i:s', time()),
         ];
     }

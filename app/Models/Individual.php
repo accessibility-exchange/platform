@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +30,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
 {
     use UsesCipherSweet;
     use HasFactory;
+    use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasSchemalessAttributes;
     use HasSlug;
@@ -177,21 +178,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     }
 
     /**
-     * Get the individual's languages.
-     *
-     * @return Attribute
-     */
-    public function allLanguages(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value, $attributes) => array_merge(
-                [$attributes['first_language']],
-                json_decode($attributes['working_languages'], true) ?? [],
-            ),
-        );
-    }
-
-    /**
      * Get the individual's social links.
      *
      * @return array
@@ -225,26 +211,37 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return [];
     }
 
-    public function editSteps(): array
+    public function steps(): array
     {
         return [
-            1 => 'about-you',
-            2 => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
-            3 => $this->isConnector() ? 'experiences' : 'interests',
-            4 => $this->isConnector() ? 'interests' : 'communication-and-meeting-preferences',
-            5 => $this->isConnector() ? 'communication-and-meeting-preferences' : null,
+            1 => [
+                'edit' => 'about-you',
+                'show' => 'individuals.show',
+            ],
+            2 => [
+                'edit' => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
+                'show' => $this->isConnector() ? 'individuals.show-constituencies' : 'individuals.show-experiences',
+            ],
+            3 => [
+                'edit' => $this->isConnector() ? 'experiences' : 'interests',
+                'show' => $this->isConnector() ? 'individuals.show-experiences' : 'individuals.show-interests',
+            ],
+            4 => [
+                'edit' => $this->isConnector() ? 'interests' : 'communication-and-meeting-preferences',
+                'show' => $this->isConnector() ? 'individuals.show-interests' : 'individuals.show-communication-and-meeting-preferences',
+            ],
+            5 => [
+                'edit' => $this->isConnector() ? 'communication-and-meeting-preferences' : null,
+                'show' => $this->isConnector() ? 'individuals.show-communication-and-meeting-preferences' : null,
+            ],
         ];
     }
 
     public function getStepForKey(string $key): int
     {
-        return match ($key) {
-            'groups-you-can-connect-to' => 2,
-            'experiences' => $this->isConnector() ? 3 : 2,
-            'interests' => $this->isConnector() ? 4 : 3,
-            'communication-and-meeting-preferences' => $this->isConnector() ? 5 : 4,
-            default => 1
-        };
+        $collection = collect($this->steps());
+
+        return array_key_first($collection->where('edit', $key)->toArray());
     }
 
     /**

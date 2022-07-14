@@ -2,14 +2,14 @@
     <h3>{{ __('Page sections') }}</h3>
 
     <ol class="progress stack">
-        @foreach($individual->editSteps() as $step => $key)
+        @foreach($individual->steps() as $step => $value)
         @if($step === 1)
             <li>
-                <a href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('individual.edit-steps.'.$key) }}</a>
+                <a href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('individual.edit-steps.'.$value['edit']) }}</a>
             </li>
         @else
         <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.'.$key) }}</a>
+            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.'.$value['edit']) }}</a>
         </li>
         @endif
         @endforeach

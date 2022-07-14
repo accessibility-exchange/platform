@@ -6,7 +6,7 @@
 
         <div class="stack">
             <h2>
-                {{ __('Step :current of :total', ['current' => request()->get('step'), 'total' => 5]) }}<br />
+                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Communication and meeting preferences') }}
             </h2>
 

@@ -148,7 +148,7 @@ class RegulatedOrganizationController extends Controller
     {
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->toArray(),
+            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
         ]);
     }

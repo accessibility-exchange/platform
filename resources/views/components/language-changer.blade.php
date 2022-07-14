@@ -8,7 +8,7 @@
     @foreach($model->languages as $code)
         @if(in_array($code, config('locales.supported')))
             {{-- Make sure at least the model name is translated to avoid 404 errors. --}}
-            @if(!empty($model->getTranslation($modelName, $code, false)))
+            @if(!$model->isTranslatableAttribute($modelName) || !empty($model->getTranslation($modelName, $code, false)))
                 <li><a href="{{ localized_route($model->getRoutePrefix() . '.show', $model, $code) }}">{{ get_language_exonym($code) }}</a></li>
             @endif
         @else
