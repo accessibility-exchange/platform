@@ -29,10 +29,10 @@ class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequ
             'email' => 'nullable|email',
             'phone' => 'required_if:vrs,true|nullable|string',
             'vrs' => 'nullable|boolean',
-            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string',
+            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string|exclude_if:preferred_contact_person,me',
             'support_person_email' => 'nullable|email',
-            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string',
-            'support_person_vrs' => 'nullable|boolean',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string|exclude_if:preferred_contact_person,me',
+            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
             'meeting_types' => 'required|array|min:1|in:in_person,web_conference,phone',
         ];

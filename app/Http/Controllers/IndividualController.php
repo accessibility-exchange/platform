@@ -28,7 +28,6 @@ use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\IndividualStatus;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,11 +36,6 @@ use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View
-     */
     public function index(): View
     {
         return view('individuals.index', [
@@ -49,13 +43,6 @@ class IndividualController extends Controller
         ]);
     }
 
-    /**
-     * Show a role selection page for the logged-in user.
-     *
-     * @return View
-     *
-     * @throws AuthorizationException
-     */
     public function showRoleSelection(): View
     {
         $this->authorize('selectRole', Auth::user());
@@ -66,13 +53,6 @@ class IndividualController extends Controller
         ]);
     }
 
-    /**
-     * Show a role selection page for the logged-in user.
-     *
-     * @return View
-     *
-     * @throws AuthorizationException
-     */
     public function showRoleEdit(): View
     {
         $this->authorize('selectRole', Auth::user());
@@ -86,14 +66,6 @@ class IndividualController extends Controller
         ]);
     }
 
-    /**
-     * Save roles for the logged-in user.
-     *
-     * @param  SaveIndividualRolesRequest  $request
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
     public function saveRoles(SaveIndividualRolesRequest $request): RedirectResponse
     {
         $this->authorize('selectRole', Auth::user());
@@ -111,23 +83,11 @@ class IndividualController extends Controller
         return redirect(localized_route('dashboard'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  Individual  $individual
-     * @return View
-     */
     public function show(Individual $individual): View
     {
         return view('individuals.show', ['individual' => $individual]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Individual  $individual
-     * @return View
-     */
     public function edit(Individual $individual): View
     {
         return view('individuals.edit', [
@@ -164,13 +124,6 @@ class IndividualController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateIndividualRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function update(UpdateIndividualRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
@@ -186,13 +139,6 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('about-you'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateIndividualConstituenciesRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function updateConstituencies(UpdateIndividualConstituenciesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
@@ -310,13 +256,6 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('groups-you-can-connect-to'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateIndividualExperiencesRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function updateExperiences(UpdateIndividualExperiencesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
@@ -339,13 +278,6 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('experiences'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateIndividualInterestsRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function updateInterests(UpdateIndividualInterestsRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
@@ -360,24 +292,21 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('interests'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  UpdateIndividualCommunicationAndMeetingPreferencesRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function updateCommunicationAndMeetingPreferences(UpdateIndividualCommunicationAndMeetingPreferencesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
 
-        if (isset($data['support_people'])) {
-            $support_people = array_filter(array_map('array_filter', $data['support_people']));
-            if (empty($support_people)) {
-                unset($data['support_people']);
-            } else {
-                $data['support_people'] = $support_people;
-            }
+        if ($data['preferred_contact_person'] === 'me') {
+            $data['support_person_name'] = '';
+            $data['support_person_email'] = '';
+            $data['support_person_phone'] = '';
+            $data['support_person_vrs'] = 0;
+        }
+
+        if ($data['preferred_contact_person'] === 'support-person') {
+            $data['email'] = '';
+            $data['phone'] = '';
+            $data['vrs'] = 0;
         }
 
         $individual->fill($data);
@@ -387,13 +316,6 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('communication-and-meeting-preferences'));
     }
 
-    /**
-     * Update the specified resource's status.
-     *
-     * @param  Request  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function updatePublicationStatus(Request $request, Individual $individual): RedirectResponse
     {
         if ($request->input('unpublish')) {
@@ -405,13 +327,6 @@ class IndividualController extends Controller
         return redirect(localized_route('individuals.show', $individual));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  DestroyIndividualRequest  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function destroy(DestroyIndividualRequest $request, Individual $individual): RedirectResponse
     {
         $request->validated();
@@ -423,13 +338,6 @@ class IndividualController extends Controller
         return redirect(localized_route('dashboard'));
     }
 
-    /**
-     * Express interest in a project.
-     *
-     * @param  Request  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function expressInterest(Request $request, Individual $individual): RedirectResponse
     {
         $request->validate([
@@ -443,13 +351,6 @@ class IndividualController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove interest in a project.
-     *
-     * @param  Request  $request
-     * @param  Individual  $individual
-     * @return RedirectResponse
-     */
     public function removeInterest(Request $request, Individual $individual): RedirectResponse
     {
         $request->validate([

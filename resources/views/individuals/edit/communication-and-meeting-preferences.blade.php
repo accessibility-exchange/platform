@@ -19,7 +19,7 @@
                 <fieldset>
                     <legend>{{ __('Contact person (required)') }}</legend>
 
-                    <x-hearth-radio-buttons name="preferred_contact_person" :options="['value' => 'me', 'label' => __('Me'), 'value' => 'support-person', 'label' => __('My support person')]" :checked="old('preferred_contact_person', $individual->preferred_contact_person ?? 'me')" x-model="contactPerson" />
+                    <x-hearth-radio-buttons name="preferred_contact_person" :options="[['value' => 'me', 'label' => __('Me')], ['value' => 'support-person', 'label' => __('My support person')]]" :checked="old('preferred_contact_person', $individual->preferred_contact_person ?? 'me')" x-model="contactPerson" />
                 </fieldset>
 
                 <fieldset x-show="contactPerson == 'me'">
@@ -27,8 +27,7 @@
 
                     <div class="field @error('email') field-error @enderror">
                         <x-hearth-label for="email" :value="__('Email')" />
-
-                        <x-hearth-input type="email" name="email" :value="old('email', $individual->email ?? $individual->user->email)" />
+                        <x-hearth-input type="email" name="email" :value="old('email', !empty($individual->email) ? $individual->email : $individual->user->email)" />
                         <x-hearth-error for="email" />
                     </div>
                     <div class="field @error('phone') field-error @enderror">
@@ -72,7 +71,7 @@
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
                     <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
-                    <x-hearth-select name="preferred_contact_method" :options="['email' => __('Email'), 'phone' => __('Phone')]" :selected="old('preferred_contact_method', $individual->preferred_contact_method ?? 'email')"/>
+                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $individual->preferred_contact_method ?? 'email')"/>
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
             </div>
