@@ -76,6 +76,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'other_disability_type_connection',
         'other_ethnoracial_identity_connection',
         'connection_lived_experience',
+        'consulting_services',
     ];
 
     /**
@@ -96,6 +97,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'pronouns' => 'array',
         'other_disability_type_connection' => 'array',
         'other_ethnoracial_identity_connection' => 'array',
+        'consulting_services' => 'array',
     ];
 
     /**

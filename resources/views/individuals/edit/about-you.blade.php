@@ -68,7 +68,7 @@
             @if($individual->isConsultant())
                 <fieldset class="field @error('consulting_services') field--error @enderror">
                     <legend>{{ __('Which of these areas can you help a regulated organization with? (required)') }}</legend>
-                    <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $organization->consulting_services ?? [])" hinted="consulting_services-hint" required />
+                    <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])" hinted="consulting_services-hint" required />
                 </fieldset>
             @endif
 

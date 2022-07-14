@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('individuals', function (Blueprint $table) {
             $table->schemalessAttributes('extra_attributes');
             $table->string('website_link')->nullable();
+            $table->json('consulting_services')->nullable();
             $table->json('other_disability_type_connection')->nullable();
             $table->json('other_ethnoracial_identity_connection')->nullable();
             $table->string('connection_lived_experience')->nullable();
@@ -34,7 +35,7 @@ return new class extends Migration
             $table->json('web_links')->nullable();
             $table->json('other_lived_experience_connections')->nullable();
             $table->json('other_constituency_connections')->nullable();
-            $table->dropColumn(['website_link', 'extra_attributes', 'other_disability_type_connection', 'other_ethnoracial_identity_connection', 'connection_lived_experience']);
+            $table->dropColumn(['website_link', 'consulting_services', 'extra_attributes', 'other_disability_type_connection', 'other_ethnoracial_identity_connection', 'connection_lived_experience']);
         });
     }
 };

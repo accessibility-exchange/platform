@@ -658,7 +658,7 @@ test('users can not delete others individual pages', function () {
 test('users can view their own draft individual pages', function () {
     $this->seed(IndividualRoleSeeder::class);
 
-    $individual = Individual::factory()->create(['published_at' => null]);
+    $individual = Individual::factory()->create(['published_at' => null, 'consulting_services' => ['analysis']]);
 
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 
@@ -679,7 +679,7 @@ test('users can not view others draft individual pages', function () {
 test('users can view individual pages', function () {
     $this->seed(IndividualRoleSeeder::class);
 
-    $individual = Individual::factory()->create();
+    $individual = Individual::factory()->create(['consulting_services' => ['analysis']]);
 
     $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ConsultingServices;
 use App\Enums\ProvincesAndTerritories;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -44,13 +45,8 @@ class UpdateIndividualRequest extends FormRequest
                 Rule::excludeIf(fn () => ! $this->individual->isConsultant()),
             ],
             'consulting_services.*' => [
-                Rule::in([
-                    'booking-providers',
-                    'planning-consultation',
-                    'running-consultation',
-                    'analysis',
-                    'writing-reports',
-                ]),
+                new Enum(ConsultingServices::class),
+
             ],
             'social_links.*' => 'nullable|url',
             'website_link' => 'nullable|url',
