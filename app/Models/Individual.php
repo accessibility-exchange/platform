@@ -361,20 +361,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     }
 
     /**
-     * @param  string  $value
-     * @return string|null
-     */
-    public function getMeetingType(string $value): string|null
-    {
-        return match ($value) {
-            'in_person' => __('In person'),
-            'phone' => __('Virtual – phone'),
-            'web_conference' => __('Virtual – web conference'),
-            default => null
-        };
-    }
-
-    /**
      * Get the individual's phone number.
      *
      * @param  string|null  $value

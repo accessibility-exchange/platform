@@ -26,6 +26,6 @@
 
 <ul>
 @foreach($individual->meeting_types as $meeting_type)
-    <li>{{ $individual->getMeetingType($meeting_type) }}</li>
+    <li>{{ App\Enums\MeetingTypes::from($meeting_type)->labels()[$meeting_type] }}</li>
 @endforeach
 </ul>
