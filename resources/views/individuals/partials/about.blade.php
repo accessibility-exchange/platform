@@ -1,13 +1,13 @@
 
 
 @markdown
-{{ $individual->bio }}
+{{ $individual->getWrittenTranslation('bio', $language) }}
 @endmarkdown
 
 <h3>{{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
 
 <ul>
-    @foreach($individual->all_languages as $language)
+    @foreach($individual->working_languages as $language)
         <li>{{ get_language_exonym($language) }}</li>
     @endforeach
 </ul>

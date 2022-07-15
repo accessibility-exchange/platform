@@ -950,3 +950,20 @@ test('individual\'s alternate contact method can be retrieved', function () {
 
     expect($individual->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
 });
+
+test('individual view routes can be retrieved based on role', function () {
+    $this->seed(IndividualRoleSeeder::class);
+
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+
+    expect($individual->steps()[2]['show'])->toEqual('individuals.show-experiences');
+
+    $individual->individualRoles()->sync([$connectorRole->id]);
+
+    $individual = $individual->fresh();
+
+    expect($individual->steps()[2]['show'])->toEqual('individuals.show-constituencies');
+});

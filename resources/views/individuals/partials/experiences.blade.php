@@ -2,14 +2,14 @@
 @if($individual->lived_experience)
 <h3>{{ __('Lived experience') }}</h3>
 @markdown
-{{ $individual->lived_experience }}
+{{ $individual->getWrittenTranslation('lived_experience', $language) }}
 @endmarkdown
 @endif
 
 @if($individual->skills_and_strengths)
     <h3>{{ __('Skills and strengths') }}</h3>
     @markdown
-    {{ $individual->skills_and_strengths }}
+    {{ $individual->getWrittenTranslation('skills_and_strengths', $language) }}
     @endmarkdown
 @endif
 

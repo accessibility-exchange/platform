@@ -12,7 +12,11 @@
         </div>
         @if($individual->checkStatus('published'))
             <p>
-                <a href="{{ localized_route('individuals.show', $individual) }}">{{ __('View page') }}</a>
+                @if(request()->get('step'))
+                    <a href="{{ localized_route($individual->steps()[request()->get('step')]['show'], $individual) }}">{{ __('View page') }}</a>
+                @else
+                    <a href="{{ localized_route('individuals.show', $individual) }}">{{ __('View page') }}</a>
+                @endif
             </p>
         @endif
     </x-slot>
@@ -23,7 +27,7 @@
     <x-translation-manager :model="$individual" />
 
     @if(request()->get('step'))
-        @include('individuals.edit.' . $individual->editSteps()[request()->get('step')])
+        @include('individuals.edit.' . $individual->steps()[request()->get('step')]['edit'])
     @else
         @include('individuals.edit.about-you')
     @endif

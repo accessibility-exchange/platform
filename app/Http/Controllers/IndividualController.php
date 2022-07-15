@@ -112,7 +112,7 @@ class IndividualController extends Controller
 
         return view('individuals.edit', [
             'individual' => $individual,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->toArray(),
+            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'constituencies' => Options::forModels(Constituency::class)->toArray(),

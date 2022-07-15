@@ -64,7 +64,7 @@ class IndividualPolicy
 
     public function block(User $user, Individual $individual): Response
     {
-        return $user->individual->id === $individual->id
+        return $user->individual && $user->individual->id === $individual->id
             ? Response::deny(__('You cannot block yourself.'))
             : Response::allow();
     }
