@@ -22,6 +22,7 @@ input {
     height: var(--size-8);
 }
 
+.field--error input,
 input[aria-invalid="true"] {
     border-color: var(--input-error-border);
     color: var(--input-error-color);
@@ -62,6 +63,7 @@ textarea {
     resize: vertical;
 }
 
+.field--error textarea,
 textarea[aria-invalid="true"] {
     border-color: var(--input-error-border);
     color: var(--input-error-color);
@@ -97,6 +99,7 @@ input[type="checkbox"] {
     width: var(--size-4);
 }
 
+.field--error input[type="checkbox"],
 input[type="checkbox"][aria-invalid="true"] {
     border-color: var(--input-error-border);
 }
@@ -127,6 +130,7 @@ input[type="radio"] {
     width: var(--size-4);
 }
 
+.field--error input[type="radio"],
 input[type="radio"][aria-invalid="true"] {
     border-color: var(--input-error-border);
 }

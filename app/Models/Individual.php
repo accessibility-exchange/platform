@@ -78,6 +78,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'other_ethnoracial_identity_connection',
         'connection_lived_experience',
         'consulting_services',
+        'other_payment_type',
     ];
 
     /**
@@ -398,9 +399,9 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     /**
      * The payment methods that belong to the individual.
      */
-    public function paymentMethods(): BelongsToMany
+    public function paymentTypes(): BelongsToMany
     {
-        return $this->belongsToMany(PaymentMethod::class);
+        return $this->belongsToMany(PaymentType::class);
     }
 
     /**

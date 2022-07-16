@@ -169,3 +169,4 @@ require __DIR__.'/translations.php';
 require __DIR__.'/memberships.php';
 require __DIR__.'/invitations.php';
 require __DIR__.'/fortify.php';
+require __DIR__.'/settings.php';

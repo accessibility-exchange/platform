@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentMethodProjectTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePaymentMethodProjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_method_project', function (Blueprint $table) {
-            $table->foreignId('payment_method_id')
+        Schema::create('individual_payment_type', function (Blueprint $table) {
+            $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('project_id')
+            $table->foreignId('payment_type_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -30,6 +30,6 @@ class CreatePaymentMethodProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_method_project');
+        Schema::dropIfExists('individual_payment_type');
     }
-}
+};

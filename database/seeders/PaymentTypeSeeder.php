@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\PaymentMethod;
+use App\Models\PaymentType;
 use Illuminate\Database\Seeder;
 
-class PaymentMethodSeeder extends Seeder
+class PaymentTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +15,14 @@ class PaymentMethodSeeder extends Seeder
     public function run()
     {
         $methods = [
-            __('Cash'),
             __('Cheque'),
-            __('Credit card'),
             __('Gift card'),
+            __('Cash'),
+            __('E-transfer'),
         ];
 
         foreach ($methods as $method) {
-            PaymentMethod::firstOrCreate([
+            PaymentType::firstOrCreate([
                 'name->en' => $method,
                 'name->fr' => trans($method, [], 'fr'),
             ]);
