@@ -5,11 +5,12 @@ use App\Models\User;
 use Database\Seeders\PaymentTypeSeeder;
 
 test('users can manage language preferences', function () {
-    $user = User::factory()->create(['context' => 'individual']);
+    $user = User::factory()->create(['context' => 'individual', 'locale' => 'en', 'signed_language' => 'ase']);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-language-preferences'));
 
     $response->assertOk();
+    $response->assertViewHas('workingLanguages', ['en', 'ase']);
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-language-preferences'), [
         'locale' => 'en',
