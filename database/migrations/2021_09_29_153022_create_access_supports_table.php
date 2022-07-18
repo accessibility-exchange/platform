@@ -16,8 +16,10 @@ class CreateAccessSupportsTable extends Migration
         Schema::create('access_supports', function (Blueprint $table) {
             $table->id();
             $table->json('name');
+            $table->json('description')->nullable();
             $table->boolean('in_person')->nullable();
             $table->boolean('virtual')->nullable();
+            $table->boolean('documents')->nullable();
             $table->timestamps();
         });
     }
