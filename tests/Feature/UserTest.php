@@ -5,18 +5,6 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
-test('users can access settings', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.settings'));
-    $response->assertOk();
-});
-
-test('guests can not access settings', function () {
-    $response = $this->get(localized_route('users.settings'));
-    $response->assertRedirect(localized_route('login'));
-});
-
 test('users can edit basic information', function () {
     $user = User::factory()->create();
 

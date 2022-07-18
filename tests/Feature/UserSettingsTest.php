@@ -2,7 +2,49 @@
 
 use App\Models\PaymentType;
 use App\Models\User;
+use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\PaymentTypeSeeder;
+
+test('users can access settings', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.show'));
+    $response->assertOk();
+});
+
+test('guests can not access settings', function () {
+    $response = $this->get(localized_route('settings.show'));
+    $response->assertRedirect(localized_route('login'));
+});
+
+test('users can manage access needs', function () {
+    $this->seed(AccessSupportSeeder::class);
+
+    $user = User::factory()->create(['context' => 'individual']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
+
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-access-needs'));
+});
+
+test('other users cannot manage access needs', function () {
+    $this->seed(AccessSupportSeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
+
+    $response->assertForbidden();
+});
 
 test('users can manage language preferences', function () {
     $user = User::factory()->create(['context' => 'individual', 'locale' => 'en', 'signed_language' => 'ase']);

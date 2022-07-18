@@ -3,7 +3,7 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
-            <li><a href="{{ localized_route('users.settings') }}">{{ __('Settings') }}</a></li>
+            <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
             {{ __('Password and security') }}

@@ -108,10 +108,6 @@ Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->name('people-and-organizations');
 
-Route::multilingual('/settings', [UserController::class, 'settings'])
-    ->middleware(['auth'])
-    ->name('users.settings');
-
 Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
     ->middleware(['auth'])
     ->name('users.edit');

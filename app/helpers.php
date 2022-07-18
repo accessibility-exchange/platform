@@ -27,7 +27,7 @@ if (! function_exists('get_available_languages')) {
      * @param  bool  $all Should all languages be shown? Otherwise, only supported locales will be included.
      * @return array
      */
-    function get_available_languages(bool $all = false): array
+    function get_available_languages(bool $all = false, bool $signed = true): array
     {
         $languages = [
             'fcs' => __('locales.fcs'),
@@ -41,6 +41,11 @@ if (! function_exists('get_available_languages')) {
             foreach ($minimum as $locale) {
                 $result[$locale] = $languages[$locale];
             }
+        }
+
+        if (! $signed) {
+            unset($result['ase']);
+            unset($result['fcs']);
         }
 
         asort($result);

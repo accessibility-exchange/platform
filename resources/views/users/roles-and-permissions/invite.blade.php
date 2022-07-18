@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Invite new member') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('users.settings') }}">{{ __('Settings') }}</a></li>
+            <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
             <li><a href="{{ localized_route('users.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         </ol>
         <h1>

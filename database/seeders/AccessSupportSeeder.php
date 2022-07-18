@@ -37,6 +37,7 @@ class AccessSupportSeeder extends Seeder
             [
                 'name' => __('CART (Communication Access Realtime Translation)'),
                 'virtual' => true,
+                'in_person' => true,
             ],
             [
                 'name' => __('Sign language interpretation'),
@@ -136,8 +137,8 @@ class AccessSupportSeeder extends Seeder
             AccessSupport::firstOrCreate([
                 'name->en' => $support['name'],
                 'name->fr' => trans($support['name'], [], 'fr'),
-                'description->en' => $identity['description'] ?? null,
-                'description->fr' => isset($identity['description']) ? trans($identity['description'], [], 'fr') : null,
+                'description->en' => $support['description'] ?? null,
+                'description->fr' => isset($support['description']) ? trans($support['description'], [], 'fr') : null,
                 'in_person' => $support['in_person'] ?? false,
                 'virtual' => $support['virtual'] ?? false,
                 'documents' => $support['documents'] ?? false,

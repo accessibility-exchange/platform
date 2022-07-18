@@ -91,16 +91,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the settings page for the logged-in user.
-     *
-     * @return View
-     */
-    public function settings(): View
-    {
-        return view('users.settings', ['user' => Auth::user()]);
-    }
-
-    /**
      * Show the profile edit view for the logged-in user.
      *
      * @return View

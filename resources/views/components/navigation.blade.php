@@ -42,7 +42,7 @@
             </x-nav-link>
         </li>
         <li class="account">
-            <x-nav-link href="{{ localized_route('users.settings') }}" :active="request()->localizedRouteIs('users.settings')">
+            <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
                 <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
             </x-nav-link>
         </li>

@@ -79,6 +79,14 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'connection_lived_experience',
         'consulting_services',
         'other_payment_type',
+        'other_access_need',
+        'signed_language_for_interpretation',
+        'spoken_language_for_interpretation',
+        'signed_language_for_translation',
+        'written_language_for_translation',
+        'street_address',
+        'unit_apartment_suite',
+        'postal_code',
     ];
 
     /**
