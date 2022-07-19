@@ -400,6 +400,11 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return $this->belongsToMany(PaymentType::class);
     }
 
+    public function consultingMethods(): BelongsToMany
+    {
+        return $this->belongsToMany(ConsultingMethod::class);
+    }
+
     /**
      * The constituencies that belong to the individual.
      */

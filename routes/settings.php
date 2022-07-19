@@ -19,6 +19,15 @@ Route::controller(SettingsController::class)
             ->middleware(['auth'])
             ->name('update-access-needs');
 
+        Route::multilingual('/communication-and-consultation-preferences', 'editCommunicationAndConsultationPreferences')
+            ->middleware(['auth'])
+            ->name('edit-communication-and-consultation-preferences');
+
+        Route::multilingual('/communication-and-consultation-preferences', 'updateCommunicationAndConsultationPreferences')
+            ->method('put')
+            ->middleware(['auth'])
+            ->name('update-communication-and-consultation-preferences');
+
         Route::multilingual('/language-preferences', 'editLanguagePreferences')
             ->middleware(['auth'])
             ->name('edit-language-preferences');

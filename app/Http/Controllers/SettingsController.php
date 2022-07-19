@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\MeetingTypes;
 use App\Enums\ProvincesAndTerritories;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
+use App\Http\Requests\UpdateCommunicationAndConsultationPreferences;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Models\AccessSupport;
+use App\Models\ConsultingMethod;
 use App\Models\Impact;
 use App\Models\PaymentType;
 use App\Models\Sector;
@@ -132,6 +135,40 @@ class SettingsController extends Controller
         flash(__('Your access needs have been updated.'), 'success');
 
         return redirect(localized_route('settings.edit-access-needs'));
+    }
+
+    public function editCommunicationAndConsultationPreferences(): View
+    {
+        Gate::allowIf(fn ($user) => $user->context === 'individual');
+
+        $individual = Auth::user()->individual;
+
+        return view('settings.communication-and-consultation-preferences', [
+            'individual' => $individual,
+            'consultingMethods' => Options::forModels(ConsultingMethod::class)->toArray(),
+            'selectedConsultingMethods' => $individual->consultingMethods->pluck('id')->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingTypes::class)->toArray(),
+            'interviews' => ConsultingMethod::where('name->en', 'Interviews')->first()->id,
+            'focusGroups' => ConsultingMethod::where('name->en', 'Focus groups')->first()->id,
+            'workshops' => ConsultingMethod::where('name->en', 'Workshops')->first()->id,
+        ]);
+    }
+
+    public function updateCommunicationAndConsultationPreferences(UpdateCommunicationAndConsultationPreferences $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $individual = Auth::user()->individual;
+
+        $individual->fill($data);
+
+        $individual->save();
+
+        $individual->consultingMethods()->sync($data['consulting_methods'] ?? []);
+
+        flash(__('Your communication and consultation preferences have been updated.'), 'success');
+
+        return redirect(localized_route('settings.edit-communication-and-consultation-preferences'));
     }
 
     public function editLanguagePreferences(): View

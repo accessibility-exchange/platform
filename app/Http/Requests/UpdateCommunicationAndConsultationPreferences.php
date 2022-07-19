@@ -3,15 +3,17 @@
 namespace App\Http\Requests;
 
 use App\Enums\MeetingTypes;
+use App\Models\ConsultingMethod;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 
-class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequest
+class UpdateCommunicationAndConsultationPreferences extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->individual);
+        return $this->user()->context == 'individual';
     }
 
     public function rules(): array
@@ -26,17 +28,18 @@ class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequ
             'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string|exclude_if:preferred_contact_person,me',
             'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
-            'meeting_types' => 'required|array|min:1',
+            'consulting_methods' => [
+                'nullable',
+                'array',
+                'min:1',
+                Rule::requiredIf(request()->user()->individual->isParticipant()),
+            ],
+            'consulting_methods.*' => 'exists:consulting_methods,id',
+            'meeting_types' => 'nullable|array',
             'meeting_types.*' => [new Enum(MeetingTypes::class)],
         ];
     }
 
-    /**
-     * Configure the validator instance.
-     *
-     * @param  Validator  $validator
-     * @return void
-     */
     public function withValidator(Validator $validator)
     {
         $validator->sometimes('preferred_contact_method', 'in:email', function ($input) {
@@ -48,13 +51,24 @@ class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequ
             return  $input->preferred_contact_person == 'me' && is_null($input->email) && ! is_null($input->phone) ||
                 $input->preferred_contact_person == 'support-person' && is_null($input->support_person_email) && ! is_null($input->support_person_phone);
         });
+
+        $validator->sometimes('meeting_types', 'required', function ($input) {
+            $interviews = ConsultingMethod::where('name->en', 'Interviews')->first()->id;
+            $focusGroups = ConsultingMethod::where('name->en', 'Focus groups')->first()->id;
+            $workshops = ConsultingMethod::where('name->en', 'Workshops')->first()->id;
+
+            return in_array($interviews, $input->consulting_methods ?? []) || in_array($focusGroups, $input->consulting_methods ?? []) || in_array($workshops, $input->consulting_methods ?? []);
+        });
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
+    public function prepareForValidation()
+    {
+        request()->mergeIfMissing([
+            'consulting_methods' => [],
+            'meeting_types' => [],
+        ]);
+    }
+
     public function messages(): array
     {
         return [

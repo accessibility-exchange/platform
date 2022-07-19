@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\ConsultingMethod;
+use App\Models\IndividualRole;
 use App\Models\PaymentType;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
+use Database\Seeders\ConsultingMethodSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
@@ -19,7 +23,7 @@ test('guests can not access settings', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
-test('users can manage access needs', function () {
+test('individual users can manage access needs', function () {
     $this->seed(AccessSupportSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
@@ -44,6 +48,51 @@ test('other users cannot manage access needs', function () {
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
+
+    $response->assertForbidden();
+});
+
+test('individual users can manage communication and consultation preferences', function () {
+    $this->seed(ConsultingMethodSeeder::class);
+    $this->seed(IndividualRoleSeeder::class);
+
+    $user = User::factory()->create(['context' => 'individual']);
+    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation participant')->first()->id);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
+
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'preferred_contact_person' => 'me',
+        'email' => $user->email,
+        'preferred_contact_method' => 'email',
+        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'preferred_contact_person' => 'support-person',
+        'support_person_phone' => '9021234567',
+        'preferred_contact_method' => 'email',
+        'consulting_methods' => [ConsultingMethod::where('name->en', 'Interviews')->first()->id],
+    ]);
+
+    $response->assertSessionHasErrors(['support_person_name', 'preferred_contact_method', 'meeting_types']);
+});
+
+test('other users cannot manage communication and consultation preferences', function () {
+    $this->seed(ConsultingMethodSeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), []);
 
     $response->assertForbidden();
 });
