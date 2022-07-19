@@ -3,7 +3,9 @@
 use App\Models\PaymentType;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
+use Database\Seeders\ImpactSeeder;
 use Database\Seeders\PaymentTypeSeeder;
+use Database\Seeders\SectorSeeder;
 
 test('users can access settings', function () {
     $user = User::factory()->create();
@@ -162,4 +164,35 @@ test('individual user must provide either a predefined payment type or a custom 
 
     $response->assertSessionHasErrors();
     $response->assertRedirect(localized_route('settings.edit-payment-information'));
+});
+
+test('users can manage areas of interest', function () {
+    $this->seed(SectorSeeder::class);
+    $this->seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => 'individual']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-areas-of-interest'));
+
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-areas-of-interest'), []);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-areas-of-interest'));
+});
+
+test('other users cannot manage areas of interest', function () {
+    $this->seed(SectorSeeder::class);
+    $this->seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-areas-of-interest'));
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-areas-of-interest'), []);
+
+    $response->assertForbidden();
 });

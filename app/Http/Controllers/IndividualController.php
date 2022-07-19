@@ -303,8 +303,8 @@ class IndividualController extends Controller
 
         $individual->save();
 
-        $individual->sectors()->sync($data['sectors'] ?? []);
-        $individual->impacts()->sync($data['impacts'] ?? []);
+        $individual->sectorsOfInterest()->sync($data['sectors'] ?? []);
+        $individual->impactsOfInterest()->sync($data['impacts'] ?? []);
 
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('interests'));
     }

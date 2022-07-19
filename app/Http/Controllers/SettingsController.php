@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\ProvincesAndTerritories;
 use App\Http\Requests\UpdateAccessNeedsRequest;
+use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Models\AccessSupport;
+use App\Models\Impact;
 use App\Models\PaymentType;
+use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -85,8 +88,6 @@ class SettingsController extends Controller
 
         $individual = Auth::user()->individual;
 
-        ray($data);
-
         if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($signLanguageInterpretation, $data['meeting_access_needs']))) {
             $data['signed_language_for_interpretation'] = null;
         }
@@ -110,8 +111,6 @@ class SettingsController extends Controller
             $data['region'] = null;
             $data['postal_code'] = null;
         }
-
-        ray($data);
 
         $individual->fill($data);
 
@@ -210,5 +209,31 @@ class SettingsController extends Controller
         flash(__('Your payment information has been updated.'), 'success');
 
         return redirect(localized_route('settings.edit-payment-information'));
+    }
+
+    public function editAreasOfInterest(): View
+    {
+        Gate::allowIf(fn ($user) => $user->context === 'individual');
+
+        return view('settings.areas-of-interest', [
+            'individual' => Auth::user()->individual,
+            'sectors' => Options::forModels(Sector::class)->toArray(),
+            'impacts' => Options::forModels(Impact::class)->toArray(),
+        ]);
+    }
+
+    public function updateAreasOfInterest(UpdateAreasOfInterestRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $individual = Auth::user()->individual;
+
+        $individual->sectorsOfInterest()->sync($data['sectors'] ?? []);
+
+        $individual->impactsOfInterest()->sync($data['impacts'] ?? []);
+
+        flash(__('Your areas of interest have been updated.'), 'success');
+
+        return redirect(localized_route('settings.edit-areas-of-interest'));
     }
 }

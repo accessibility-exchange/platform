@@ -30,7 +30,7 @@
         <li><a href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a></li>
         @if($user->context === 'individual')
         <li><a href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a></li>
-        {{-- Areas of interest --}}
+        <li><a href="{{ localized_route('settings.edit-areas-of-interest') }}">{{ __('Areas of interest') }}</a></li>
         @endif
     </ul>
     <h2>{{ __('For this website') }}</h2>

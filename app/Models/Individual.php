@@ -380,33 +380,21 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return ! is_null($value) ? str_replace(['-', '(', ')', '.', ' '], '', $value) : $value;
     }
 
-    /**
-     * Get the user that has this individual.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * The impacts that belong to the individual.
-     */
-    public function impacts(): BelongsToMany
+    public function impactsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Impact::class);
     }
 
-    /**
-     * The sectors that belong to the individual.
-     */
-    public function sectors(): BelongsToMany
+    public function sectorsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Sector::class);
     }
 
-    /**
-     * The payment methods that belong to the individual.
-     */
     public function paymentTypes(): BelongsToMany
     {
         return $this->belongsToMany(PaymentType::class);
