@@ -85,24 +85,6 @@ test('guests can not edit roles and permissions', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
-test('users can edit display preferences', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit_display_preferences'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('users.update_display_preferences'), [
-        'theme' => 'system',
-    ]);
-
-    $response->assertRedirect(localized_route('users.edit_display_preferences'));
-});
-
-test('guests can not edit display preferences', function () {
-    $response = $this->get(localized_route('users.edit_display_preferences'));
-    $response->assertRedirect(localized_route('login'));
-});
-
 test('users can edit notification preferences', function () {
     $user = User::factory()->create();
 

@@ -6,12 +6,10 @@ use App\Http\Requests\DestroyUserRequest;
 use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
-use App\Http\Requests\UpdateUserDisplayPreferencesRequest;
 use App\Http\Requests\UpdateUserIntroductionStatusRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use function localized_route;
 use Spatie\LaravelOptions\Options;
 
@@ -198,45 +196,6 @@ class UserController extends Controller
         }
 
         return redirect(localized_route('users.edit-roles-and-permissions'));
-    }
-
-    /**
-     * Show the display preferences edit view for the logged-in user.
-     *
-     * @return View
-     */
-    public function editDisplayPreferences(): View
-    {
-        $themes = [];
-
-        foreach (config('themes') as $theme) {
-            $themes[$theme] = __('themes.'.$theme);
-        }
-
-        return view('users.display-preferences', [
-            'user' => Auth::user(),
-            'themes' => Options::forArray($themes)->toArray(),
-        ]);
-    }
-
-    /**
-     * Show the display preferences edit view for the logged-in user.
-     *
-     * @param  UpdateUserDisplayPreferencesRequest  $request
-     * @return RedirectResponse
-     */
-    public function updateDisplayPreferences(UpdateUserDisplayPreferencesRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        Auth::user()->fill($data);
-        Auth::user()->save();
-
-        flash(__('Your display preferences have been updated.'), 'success');
-
-        Cookie::queue('theme', $data['theme']);
-
-        return redirect(localized_route('users.edit_display_preferences'));
     }
 
     /**

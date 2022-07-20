@@ -36,6 +36,8 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'theme',
         'context',
         'finished_introduction',
+        'text_to_speech',
+        'sign_language_translations',
     ];
 
     /**
@@ -58,6 +60,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     protected $casts = [
         'email_verified_at' => 'datetime',
         'finished_introduction' => 'boolean',
+        'text_to_speech' => 'boolean',
     ];
 
     /**

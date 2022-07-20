@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\MeetingTypes;
 use App\Enums\ProvincesAndTerritories;
+use App\Enums\Themes;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferences;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
+use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\ConsultingMethod;
 use App\Models\Impact;
@@ -17,6 +19,7 @@ use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
 use Spatie\LaravelOptions\Options;
 
@@ -272,5 +275,43 @@ class SettingsController extends Controller
         flash(__('Your areas of interest have been updated.'), 'success');
 
         return redirect(localized_route('settings.edit-areas-of-interest'));
+    }
+
+    /**
+     * Show the display preferences edit view for the logged-in user.
+     *
+     * @return View
+     */
+    public function editWebsiteAccessibilityPreferences(): View
+    {
+        return view('settings.website-accessibility-preferences', [
+            'user' => Auth::user(),
+            'themes' => Options::forEnum(Themes::class)->toArray(),
+            'signedLanguages' => Options::forArray([
+                'ase' => __('locales.ase'),
+                'fcs' => __('locales.fcs'),
+            ])->nullable(__('Off'))->toArray(),
+        ]);
+    }
+
+    /**
+     * Show the display preferences edit view for the logged-in user.
+     *
+     * @param  UpdateWebsiteAccessibilityPreferencesRequest  $request
+     * @return RedirectResponse
+     */
+    public function updateWebsiteAccessibilityPreferences(UpdateWebsiteAccessibilityPreferencesRequest $request): RedirectResponse
+    {
+        $user = Auth::user();
+        $data = $request->validated();
+
+        $user->fill($data);
+        $user->save();
+
+        flash(__('Your website accessibility preferences have been updated.'), 'success');
+
+        Cookie::queue('theme', $data['theme']);
+
+        return redirect(localized_route('settings.edit-website-accessibility-preferences'));
     }
 }

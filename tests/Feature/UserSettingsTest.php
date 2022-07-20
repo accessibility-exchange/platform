@@ -215,7 +215,7 @@ test('individual user must provide either a predefined payment type or a custom 
     $response->assertRedirect(localized_route('settings.edit-payment-information'));
 });
 
-test('users can manage areas of interest', function () {
+test('users can edit areas of interest', function () {
     $this->seed(SectorSeeder::class);
     $this->seed(ImpactSeeder::class);
 
@@ -231,7 +231,7 @@ test('users can manage areas of interest', function () {
     $response->assertRedirect(localized_route('settings.edit-areas-of-interest'));
 });
 
-test('other users cannot manage areas of interest', function () {
+test('other users cannot edit areas of interest', function () {
     $this->seed(SectorSeeder::class);
     $this->seed(ImpactSeeder::class);
 
@@ -244,4 +244,22 @@ test('other users cannot manage areas of interest', function () {
     $response = $this->actingAs($user)->put(localized_route('settings.update-areas-of-interest'), []);
 
     $response->assertForbidden();
+});
+
+test('users can edit website accessibility preferences', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-website-accessibility-preferences'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
+        'theme' => 'system',
+    ]);
+
+    $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
+});
+
+test('guests can not edit website accessibility preferences', function () {
+    $response = $this->get(localized_route('settings.edit-website-accessibility-preferences'));
+    $response->assertRedirect(localized_route('login'));
 });

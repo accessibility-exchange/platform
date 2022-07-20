@@ -36,7 +36,7 @@
     <h2>{{ __('For this website') }}</h2>
     <p>{{ __('Please provide settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
-        <li><a href="{{ localized_route('users.edit_display_preferences') }}">{{ __('Website accessibility preferences') }}</a></li>
+        <li><a href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a></li>
         @if($user->context === 'organization' || $user->context === 'regulated-organization')
         <li><a href="{{ localized_route('users.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         @endif

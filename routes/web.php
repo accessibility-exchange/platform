@@ -120,15 +120,6 @@ Route::multilingual('/settings/roles-and-permissions/invite', [UserController::c
     ->middleware(['auth'])
     ->name('users.invite-to-invitationable');
 
-Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
-    ->middleware(['auth'])
-    ->name('users.edit_display_preferences');
-
-Route::multilingual('/settings/display-preferences', [UserController::class, 'updateDisplayPreferences'])
-    ->method('put')
-    ->middleware(['auth'])
-    ->name('users.update_display_preferences');
-
 Route::multilingual('/settings/notifications', [UserController::class, 'editNotificationPreferences'])
     ->middleware(['auth'])
     ->name('users.edit_notification_preferences');

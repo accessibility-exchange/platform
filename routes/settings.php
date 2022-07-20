@@ -54,4 +54,13 @@ Route::controller(SettingsController::class)
             ->method('put')
             ->middleware(['auth'])
             ->name('update-areas-of-interest');
+
+        Route::multilingual('/website-accessibility-preferences', 'editWebsiteAccessibilityPreferences')
+            ->middleware(['auth'])
+            ->name('edit-website-accessibility-preferences');
+
+        Route::multilingual('/website-accessibility-preferences', 'updateWebsiteAccessibilityPreferences')
+            ->method('put')
+            ->middleware(['auth'])
+            ->name('update-website-accessibility-preferences');
     });
