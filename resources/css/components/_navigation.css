@@ -22,7 +22,8 @@
     }
 }
 
-.nav-link {
+.nav-link,
+.nav-link:visited {
     align-items: center;
     background: var(--nav-background-mobile);
     border-block-end: var(--border-size-1) solid var(--nav-border-mobile);
@@ -40,6 +41,7 @@
 .nav-link:hover {
     background: var(--nav-background-hover-mobile);
     box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
+    color: var(--nav-color-mobile);
 }
 
 .nav-link:focus {
@@ -158,7 +160,7 @@ button.nav-button .indicator {
 }
 
 .primary ul {
-    background: var(--nav-background);
+    background: var(--nav-background-mobile);
     border-block-start: var(--border-size-1) solid var(--nav-border-mobile);
     color: var(--color-grey-2);
     display: flex;
@@ -168,6 +170,7 @@ button.nav-button .indicator {
     position: absolute;
     top: calc(var(--size-8) + var(--size-10) + var(--size-5));
     width: 100vw;
+    z-index: 1;
 }
 
 @media (min-width: 48rem) {
@@ -240,6 +243,7 @@ button.nav-button .indicator {
     }
 
     .nav-link,
+    .nav-link:visited,
     button.nav-button {
         background: var(--nav-parent-background);
         border-block-end: 0;
