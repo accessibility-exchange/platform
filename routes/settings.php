@@ -63,4 +63,8 @@ Route::controller(SettingsController::class)
             ->method('put')
             ->middleware(['auth'])
             ->name('update-website-accessibility-preferences');
+
+        Route::multilingual('/notifications', 'editNotificationPreferences')
+            ->middleware(['auth'])
+            ->name('edit-notification-preferences');
     });

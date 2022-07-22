@@ -21,11 +21,11 @@ class UpdateCommunicationAndConsultationPreferences extends FormRequest
         return [
             'preferred_contact_person' => 'required|in:me,support-person',
             'email' => 'nullable|email',
-            'phone' => 'required_if:vrs,true|nullable|string',
+            'phone' => 'required_if:vrs,true|nullable|phone:CA',
             'vrs' => 'nullable|boolean',
             'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string|exclude_if:preferred_contact_person,me',
             'support_person_email' => 'nullable|email',
-            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|string|exclude_if:preferred_contact_person,me',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,me',
             'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
             'consulting_methods' => [

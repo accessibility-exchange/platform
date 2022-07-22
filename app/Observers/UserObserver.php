@@ -6,13 +6,7 @@ use App\Models\User;
 
 class UserObserver
 {
-    /**
-     * Handle the User "created" event.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    public function created(User $user)
+    public function created(User $user): void
     {
         if ($user->context === 'individual') {
             $user->individual()->create([
@@ -20,6 +14,30 @@ class UserObserver
                 'name' => $user->name,
                 'first_language' => $user->locale,
                 'languages' => [$user->locale],
+                'email' => $user->email,
+                'preferred_contact_person' => 'me',
+                'preferred_contact_method' => 'email',
+                'preferred_notification_method' => 'email',
+                'notifications' => [
+                    'reports' => [
+                        'channels' => [
+                            'website',
+                        ],
+                    ],
+                    'projects' => [
+                        'channels' => [
+                            'website',
+                        ],
+                        'creators' => [],
+                        'types' => [],
+                        'engagements' => [],
+                    ],
+                    'updates' => [
+                        'channels' => [
+                            'website',
+                        ],
+                    ],
+                ],
             ]);
         }
     }

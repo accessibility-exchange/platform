@@ -12,7 +12,7 @@ class NotificationListController extends Controller
 {
     public function show(): View
     {
-        return view('users.settings.notification-list');
+        return view('settings.notification-list');
     }
 
     public function add(AddNotificationableRequest $request): RedirectResponse

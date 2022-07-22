@@ -23,7 +23,7 @@ use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
-test('individual users can select a individual role', function () {
+test('individual users can select an individual role', function () {
     $this->seed(IndividualRoleSeeder::class);
     $user = User::factory()->create();
 
@@ -44,7 +44,7 @@ test('individual users can select a individual role', function () {
     expect($user->individual->individualRoles[0]->id)->toEqual($firstRole->id);
 });
 
-test('non-individuals cannot select a individual role', function () {
+test('non-individuals cannot select an individual role', function () {
     $nonCommunityUser = User::factory()->create([
         'context' => 'regulated-organization',
     ]);
@@ -252,7 +252,7 @@ test('users can create individual pages', function () {
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-meeting-preferences', $individual), [
         'email' => 'me@here.com',
-        'phone' => '902-123-4567',
+        'phone' => '902-444-4567',
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'me',
         'meeting_types' => ['in_person', 'web_conference'],
@@ -264,10 +264,10 @@ test('users can create individual pages', function () {
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-meeting-preferences', $individual), [
         'email' => 'me@here.com',
-        'phone' => '902-123-4567',
+        'phone' => '902-444-4567',
         'support_person_name' => 'Someone',
         'support_person_email' => 'me@here.com',
-        'support_person_phone' => '438-123-4567',
+        'support_person_phone' => '438-444-4567',
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'support-person',
         'meeting_types' => ['in_person', 'web_conference'],
@@ -277,7 +277,7 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
 
     expect($individual->phone)->toEqual('');
-    expect($individual->support_person_phone)->toEqual('438-123-4567');
+    expect($individual->support_person_phone)->toEqual('+14384444567');
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -827,13 +827,13 @@ test('individual\'s primary contact point can be retrieved', function () {
     $individual->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
-        'phone' => '9059999999',
+        'phone' => '9055555555',
         'vrs' => true,
         'preferred_contact_person' => 'me',
         'preferred_contact_method' => 'email',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
+        'support_person_phone' => '9054444444',
         'support_person_vrs' => false,
     ]);
 
@@ -845,11 +845,11 @@ test('individual\'s primary contact point can be retrieved', function () {
 
     $individual->update(['preferred_contact_method' => 'phone']);
 
-    expect($individual->primary_contact_point)->toEqual('9051111111');
+    expect($individual->primary_contact_point)->toEqual('1 (905) 444-4444');
 
     $individual->update(['preferred_contact_person' => 'me']);
 
-    expect($individual->primary_contact_point)->toEqual("9059999999.  \nJonny requires VRS for phone calls");
+    expect($individual->primary_contact_point)->toEqual("1 (905) 555-5555.  \nJonny requires VRS for phone calls");
 });
 
 test('individual\'s primary contact method can be retrieved', function () {
@@ -860,13 +860,13 @@ test('individual\'s primary contact method can be retrieved', function () {
     $individual->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
-        'phone' => '9059999999',
+        'phone' => '9055555555',
         'vrs' => true,
         'preferred_contact_person' => 'me',
         'preferred_contact_method' => 'email',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
+        'support_person_phone' => '9054444444',
         'support_person_vrs' => false,
     ]);
 
@@ -878,11 +878,11 @@ test('individual\'s primary contact method can be retrieved', function () {
 
     $individual->update(['preferred_contact_method' => 'phone']);
 
-    expect($individual->primary_contact_method)->toEqual('Call Jonny’s support person, Jenny Appleseed, at 9051111111.');
+    expect($individual->primary_contact_method)->toEqual('Call Jonny’s support person, Jenny Appleseed, at 1 (905) 444-4444.');
 
     $individual->update(['preferred_contact_person' => 'me']);
 
-    expect($individual->primary_contact_method)->toEqual("Call Jonny at 9059999999.  \nJonny requires VRS for phone calls.");
+    expect($individual->primary_contact_method)->toEqual("Call Jonny at 1 (905) 555-5555.  \nJonny requires VRS for phone calls.");
 });
 
 test('individual\'s alternate contact point can be retrieved', function () {
@@ -893,13 +893,13 @@ test('individual\'s alternate contact point can be retrieved', function () {
     $individual->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
-        'phone' => '9059999999',
+        'phone' => '9055555555',
         'vrs' => true,
         'preferred_contact_person' => 'me',
         'preferred_contact_method' => 'phone',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
+        'support_person_phone' => '9054444444',
         'support_person_vrs' => false,
     ]);
 
@@ -911,11 +911,11 @@ test('individual\'s alternate contact point can be retrieved', function () {
 
     $individual->update(['preferred_contact_method' => 'email']);
 
-    expect($individual->alternate_contact_point)->toEqual('9051111111');
+    expect($individual->alternate_contact_point)->toEqual('1 (905) 444-4444');
 
     $individual->update(['preferred_contact_person' => 'me']);
 
-    expect($individual->alternate_contact_point)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
+    expect($individual->alternate_contact_point)->toEqual("1 (905) 555-5555  \nJonny requires VRS for phone calls.");
 });
 
 test('individual\'s alternate contact method can be retrieved', function () {
@@ -926,13 +926,13 @@ test('individual\'s alternate contact method can be retrieved', function () {
     $individual->update([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
-        'phone' => '9059999999',
+        'phone' => '9055555555',
         'vrs' => true,
         'preferred_contact_person' => 'me',
         'preferred_contact_method' => 'phone',
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
+        'support_person_phone' => '9054444444',
         'support_person_vrs' => false,
     ]);
 
@@ -944,11 +944,11 @@ test('individual\'s alternate contact method can be retrieved', function () {
 
     $individual->update(['preferred_contact_method' => 'email']);
 
-    expect($individual->alternate_contact_method)->toEqual('9051111111');
+    expect($individual->alternate_contact_method)->toEqual('1 (905) 444-4444');
 
     $individual->update(['preferred_contact_person' => 'me']);
 
-    expect($individual->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
+    expect($individual->alternate_contact_method)->toEqual("1 (905) 555-5555  \nJonny requires VRS for phone calls.");
 });
 
 test('individual view routes can be retrieved based on role', function () {

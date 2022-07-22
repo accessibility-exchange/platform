@@ -16,7 +16,7 @@
         @if($user->context === 'individual')
         {{-- Matching --}}
         @endif
-        @if($user->context === 'individual')
+        @if($user->context === 'individual' && ($user->individual->isConnector() || $user->individual->isConsultant()))
         <li><a href="{{ $user->individual->checkStatus('published') ? localized_route('individuals.show', $user->individual) : localized_route('individuals.edit', $user->individual) }}">{{ __('Public profile') }}</a></li>
         @elseif($user->context === 'organization')
         <li><a href="{{ $user->organization->checkStatus('published') ? localized_route('organizations.show', $user->organization) : localized_route('organizations.edit', $user->organization) }}">{{ __('Public profile') }}</a></li>
@@ -40,7 +40,7 @@
         @if($user->context === 'organization' || $user->context === 'regulated-organization')
         <li><a href="{{ localized_route('users.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         @endif
-        <li><a href="{{ localized_route('users.edit_notification_preferences') }}">{{ __('Notification preferences') }}</a></li>
+        <li><a href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notification preferences') }}</a></li>
         <li><a href="{{ localized_route('users.admin') }}">{{ __('Change password') }}</a></li>
         <li><a href="{{ localized_route('users.delete') }}">{{ __('Delete account') }}</a></li>
         @if($user->context === 'organization' || $user->context === 'regulated-organization')

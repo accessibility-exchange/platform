@@ -16,6 +16,7 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
 use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\MediaLibrary\HasMedia;
@@ -87,6 +88,8 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'street_address',
         'unit_apartment_suite',
         'postal_code',
+        'preferred_notification_method',
+        'notifications',
     ];
 
     /**
@@ -108,6 +111,9 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'other_disability_type_connection' => 'array',
         'other_ethnoracial_identity_connection' => 'array',
         'consulting_services' => 'array',
+        'phone' => E164PhoneNumberCast::class.':CA',
+        'support_person_phone' => E164PhoneNumberCast::class.':CA',
+        'notifications' => 'array',
     ];
 
     /**
@@ -285,8 +291,8 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
                 $this->email :
                 $this->support_person_email,
             'phone' => $this->preferred_contact_person === 'me' ?
-                $this->phone :
-                $this->support_person_phone,
+                $this->phone->formatForCountry('CA') :
+                $this->support_person_phone->formatForCountry('CA'),
             default => null,
         };
 
@@ -340,11 +346,11 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         $contactPoint = match ($this->preferred_contact_method) {
             'email' => $this->preferred_contact_person === 'me' ?
-                $this->phone :
-                $this->support_person_phone,
+                $this->phone?->formatForCountry('CA') :
+                $this->support_person_phone?->formatForCountry('CA'),
             'phone' => $this->preferred_contact_person === 'me' ?
-                $this->email :
-                $this->support_person_email,
+                $this->email ?? null :
+                $this->support_person_email ?? null,
             default => null,
         };
 
@@ -363,21 +369,10 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     public function getAlternateContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => $this->alternate_contact_point,
-            'phone' => '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')',
+            'email' => $this->alternate_contact_point ?? null,
+            'phone' => $this->alternate_contact_point ? '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')' : null,
             default => null
         };
-    }
-
-    /**
-     * Get the individual's phone number.
-     *
-     * @param  string|null  $value
-     * @return string|null
-     */
-    public function getPhoneAttribute(string|null $value): string|null
-    {
-        return ! is_null($value) ? str_replace(['-', '(', ')', '.', ' '], '', $value) : $value;
     }
 
     public function user(): BelongsTo

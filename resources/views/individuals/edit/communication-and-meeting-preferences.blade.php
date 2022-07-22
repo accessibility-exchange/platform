@@ -32,7 +32,7 @@
                     </div>
                     <div class="field @error('phone') field-error @enderror">
                         <x-hearth-label for="phone" :value="__('Phone number')" />
-                        <x-hearth-input type="tel" name="phone" :value="old('phone', $individual->phone)" wire:model.lazy="phone" />
+                        <x-hearth-input type="tel" name="phone" :value="old('phone', $individual->phone ?  $individual->phone->formatForCountry('CA') : '')" wire:model.lazy="phone" />
                         <x-hearth-error for="phone" />
                     </div>
 
@@ -58,7 +58,7 @@
                     </div>
                     <div class="field @error('support_person_phone') field-error @enderror">
                         <x-hearth-label for="support_person_phone" :value="__('Phone number')" />
-                        <x-hearth-input type="tel" name="support_person_phone" :value="old('support_person_phone', $individual->support_person_phone)" />
+                        <x-hearth-input type="tel" name="support_person_phone" :value="old('support_person_phone', $individual->support_person_phone ?  $individual->support_person_phone->formatForCountry('CA') : '')" />
                         <x-hearth-error for="support_person_phone" />
                     </div>
 

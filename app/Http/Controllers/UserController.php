@@ -199,18 +199,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the notification preferences edit view for the logged-in user.
-     *
-     * @return View
-     */
-    public function editNotificationPreferences(): View
-    {
-        return view('users.notification-preferences', [
-            'user' => Auth::user(),
-        ]);
-    }
-
-    /**
      * Show the password and security admin view for the logged-in user.
      *
      * @return View

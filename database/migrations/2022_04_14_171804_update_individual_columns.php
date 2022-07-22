@@ -24,7 +24,7 @@ return new class extends Migration
                 'phone',
                 'vrs',
             ])->nullable();
-            $table->string('preferred_contact_person')->nullable();
+            $table->string('preferred_contact_person')->default('me');
             $table->boolean('vrs')->nullable();
         });
     }

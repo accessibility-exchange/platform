@@ -263,3 +263,15 @@ test('guests can not edit website accessibility preferences', function () {
     $response = $this->get(localized_route('settings.edit-website-accessibility-preferences'));
     $response->assertRedirect(localized_route('login'));
 });
+
+test('users can edit notification preferences', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
+    $response->assertOk();
+});
+
+test('guests can not edit notification preferences', function () {
+    $response = $this->get(localized_route('settings.edit-notification-preferences'));
+    $response->assertRedirect(localized_route('login'));
+});

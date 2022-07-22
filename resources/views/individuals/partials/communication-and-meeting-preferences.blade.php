@@ -1,8 +1,6 @@
 <h3>{{ __('Preferred contact method') }}</h3>
 
-@markdown
-{{ $individual->primary_contact_method }}
-@endmarkdown
+{!! Str::markdown($individual->primary_contact_method) !!}
 
 @if($individual->alternate_contact_point)
 <h3>{{ __('Alternate contact method') }}</h3>
@@ -17,9 +15,7 @@
     @default
         <h4>{{ __('Phone') }}</h4>
 @endswitch
-    @markdown
-    {{ $individual->alternate_contact_method }}
-    @endmarkdown
+    {!! Str::markdown($individual->alternate_contact_method) !!}
 @endif
 
 <h3>{{ __('Types of meetings offered') }}</h3>

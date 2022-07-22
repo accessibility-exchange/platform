@@ -40,7 +40,7 @@ class CreateIndividualsTable extends Migration
                 'support_person_phone',
                 'email',
                 'support_person_email',
-            ])->nullable();
+            ])->default('email');
             $table->timestamps();
         });
     }

@@ -315,7 +315,7 @@ test('users with admin role can edit organization contact information', function
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
-        'contact_person_phone' => faker()->phoneNumber,
+        'contact_person_phone' => '19024444444',
         'contact_person_vrs' => false,
         'preferred_contact_method' => 'email',
         'save' => 1,

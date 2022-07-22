@@ -120,10 +120,6 @@ Route::multilingual('/settings/roles-and-permissions/invite', [UserController::c
     ->middleware(['auth'])
     ->name('users.invite-to-invitationable');
 
-Route::multilingual('/settings/notifications', [UserController::class, 'editNotificationPreferences'])
-    ->middleware(['auth'])
-    ->name('users.edit_notification_preferences');
-
 Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
     ->middleware(['auth'])
     ->name('users.admin');

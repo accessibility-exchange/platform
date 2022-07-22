@@ -85,18 +85,6 @@ test('guests can not edit roles and permissions', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
-test('users can edit notification preferences', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit_notification_preferences'));
-    $response->assertOk();
-});
-
-test('guests can not edit notification preferences', function () {
-    $response = $this->get(localized_route('users.edit_notification_preferences'));
-    $response->assertRedirect(localized_route('login'));
-});
-
 test('users can access my projects page', function () {
     $user = User::factory()->create();
 

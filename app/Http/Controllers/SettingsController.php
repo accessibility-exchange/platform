@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MeetingTypes;
+use App\Enums\NotificationChannels;
 use App\Enums\ProvincesAndTerritories;
 use App\Enums\Themes;
 use App\Http\Requests\UpdateAccessNeedsRequest;
@@ -277,11 +278,6 @@ class SettingsController extends Controller
         return redirect(localized_route('settings.edit-areas-of-interest'));
     }
 
-    /**
-     * Show the display preferences edit view for the logged-in user.
-     *
-     * @return View
-     */
     public function editWebsiteAccessibilityPreferences(): View
     {
         return view('settings.website-accessibility-preferences', [
@@ -294,12 +290,6 @@ class SettingsController extends Controller
         ]);
     }
 
-    /**
-     * Show the display preferences edit view for the logged-in user.
-     *
-     * @param  UpdateWebsiteAccessibilityPreferencesRequest  $request
-     * @return RedirectResponse
-     */
     public function updateWebsiteAccessibilityPreferences(UpdateWebsiteAccessibilityPreferencesRequest $request): RedirectResponse
     {
         $user = Auth::user();
@@ -313,5 +303,19 @@ class SettingsController extends Controller
         Cookie::queue('theme', $data['theme']);
 
         return redirect(localized_route('settings.edit-website-accessibility-preferences'));
+    }
+
+    public function editNotificationPreferences(): View
+    {
+        return view('settings.notifications', [
+            'user' => Auth::user(),
+            'individual' => Auth::user()->individual,
+            'notificationMethods' => Options::forArray([
+                'email' => __('Email'),
+                'phone' => __('Phone call'),
+                'sms' => __('Text message'),
+            ])->nullable(__('Choose a notification method…'))->toArray(),
+            'notificationChannels' => Options::forEnum(NotificationChannels::class)->toArray(),
+        ]);
     }
 }

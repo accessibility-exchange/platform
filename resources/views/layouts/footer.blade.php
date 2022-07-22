@@ -27,7 +27,7 @@
                     <h3>{{ __('Email') }}</h3>
                     <p><a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">{{ settings()->get('email', 'support@accessibilityexchange.ca') }}</a></p>
                     <h3>{!! __('Call, Text, or :vrs', ['vrs' => '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' . __('VRS') . '</a>']) !!}</h3>
-                    <p>{{ settings()->get('phone', '1-800-123-4567') }}</p>
+                    <p>{{ phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}</p>
                     <h3>{{ __('Mailing Address') }}</h3>
                     @markdown{{ settings()->get('address', "PO Box 1000, Station A  \nToronto, ON M5W 1E6") }}@endmarkdown
                     </address>
