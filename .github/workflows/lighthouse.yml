@@ -32,8 +32,8 @@ jobs:
           mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Generate keys
         run: |
+          echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
-          echo $(php artisan ciphersweet:generate-key | tail -n1) >> .env
       - name: Run database migration
         run: |
           php artisan migrate
