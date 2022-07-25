@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 
-class UpdateIndividualCommunicationAndMeetingPreferencesRequest extends FormRequest
+class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
     public function authorize(): bool
     {

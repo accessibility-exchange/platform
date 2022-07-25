@@ -9,7 +9,7 @@ use App\Enums\MeetingTypes;
 use App\Enums\ProvincesAndTerritories;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
-use App\Http\Requests\UpdateIndividualCommunicationAndMeetingPreferencesRequest;
+use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
@@ -309,7 +309,7 @@ class IndividualController extends Controller
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('interests'));
     }
 
-    public function updateCommunicationAndMeetingPreferences(UpdateIndividualCommunicationAndMeetingPreferencesRequest $request, Individual $individual): RedirectResponse
+    public function updateCommunicationAndConsultationPreferences(UpdateIndividualCommunicationAndConsultationPreferencesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
 
@@ -326,11 +326,13 @@ class IndividualController extends Controller
             $data['vrs'] = 0;
         }
 
-        $individual->fill($data);
+        $user = Auth::user();
 
-        $individual->save();
+        $user->fill($data);
 
-        return $individual->handleUpdateRequest($request, $individual->getStepForKey('communication-and-meeting-preferences'));
+        $user->save();
+
+        return $user->individual->handleUpdateRequest($request, $user->individual->getStepForKey('communication-and-consultation-preferences'));
     }
 
     public function updatePublicationStatus(Request $request, Individual $individual): RedirectResponse

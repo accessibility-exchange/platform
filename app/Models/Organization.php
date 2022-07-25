@@ -6,7 +6,6 @@ use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
-use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +26,6 @@ class Organization extends Model
     use CascadesDeletes;
     use HasFactory;
     use HasSchemalessAttributes;
-    use HasInvitations;
     use HasMembers;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
@@ -136,6 +134,11 @@ class Organization extends Model
     public function getRoutePlaceholder(): string
     {
         return 'organization';
+    }
+
+    public function invitations(): MorphMany
+    {
+        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     protected function serviceRegions(): Attribute

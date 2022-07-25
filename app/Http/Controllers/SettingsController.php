@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\MeetingTypes;
 use App\Enums\NotificationChannels;
+use App\Enums\NotificationMethods;
 use App\Enums\ProvincesAndTerritories;
 use App\Enums\Themes;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferences;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
+use App\Http\Requests\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
 use App\Models\AccessSupport;
@@ -162,7 +164,26 @@ class SettingsController extends Controller
     {
         $data = $request->validated();
 
-        $individual = Auth::user()->individual;
+        if ($data['preferred_contact_person'] === 'me') {
+            $data['support_person_name'] = '';
+            $data['support_person_email'] = '';
+            $data['support_person_phone'] = '';
+            $data['support_person_vrs'] = 0;
+        }
+
+        if ($data['preferred_contact_person'] === 'support-person') {
+            $data['email'] = '';
+            $data['phone'] = '';
+            $data['vrs'] = 0;
+        }
+
+        $user = Auth::user();
+
+        $individual = $user->individual;
+
+        $user->fill($data);
+
+        $user->save();
 
         $individual->fill($data);
 
@@ -310,12 +331,19 @@ class SettingsController extends Controller
         return view('settings.notifications', [
             'user' => Auth::user(),
             'individual' => Auth::user()->individual,
-            'notificationMethods' => Options::forArray([
-                'email' => __('Email'),
-                'phone' => __('Phone call'),
-                'sms' => __('Text message'),
-            ])->nullable(__('Choose a notification method…'))->toArray(),
+            'notificationMethods' => Options::forEnum(NotificationMethods::class)->nullable(__('Choose a notification method…'))->toArray(),
             'notificationChannels' => Options::forEnum(NotificationChannels::class)->toArray(),
         ]);
+    }
+
+    public function updateNotificationPreferences(UpdateNotificationPreferencesRequest $request): RedirectResponse
+    {
+        $user = Auth::user();
+        $data = $request->validated();
+
+        $user->fill($data);
+        $user->save();
+
+        return redirect(localized_route('settings.edit-notification-preferences'));
     }
 }

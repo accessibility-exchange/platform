@@ -148,6 +148,11 @@ input[type="radio"]:checked[aria-invalid="true"] {
     border-color: var(--input-error-border);
 }
 
+[disabled] {
+    --input-color: var(--color-graphite-4);
+    --input-border: var(--color-graphite-4);
+}
+
 /** Labels **/
 label {
     font-weight: var(--font-bold);

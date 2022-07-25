@@ -13,14 +13,28 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use ParagonIE\CipherSweet\BlindIndex;
+use ParagonIE\CipherSweet\EncryptedRow;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
+use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use TheIconic\NameParser\Parser as NameParser;
 
-class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
+class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
     use HasFactory;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use UsesCipherSweet;
+
+    protected $attributes = [
+        'preferred_contact_method' => 'email',
+        'preferred_contact_person' => 'me',
+        'preferred_notification_method' => 'email',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +52,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'finished_introduction',
         'text_to_speech',
         'sign_language_translations',
+        'phone',
+        'vrs',
+        'support_person_name',
+        'support_person_phone',
+        'support_person_email',
+        'support_person_vrs',
+        'preferred_contact_method',
+        'preferred_contact_person',
+        'preferred_notification_method',
+        'notification_settings',
     ];
 
     /**
@@ -61,6 +85,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'email_verified_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
+        'phone' => E164PhoneNumberCast::class.':CA',
+        'vrs' => 'boolean',
+        'support_person_phone' => E164PhoneNumberCast::class.':CA',
+        'support_person_vrs' => 'boolean',
+        'notification_settings' => SchemalessAttributes::class,
     ];
 
     /**
@@ -72,6 +101,18 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public static function configureCipherSweet(EncryptedRow $encryptedRow): void
+    {
+        $encryptedRow
+            ->addField('name')
+            ->addField('phone')
+            ->addField('email')
+            ->addBlindIndex('email', new BlindIndex('email_index'))
+            ->addField('support_person_name')
+            ->addField('support_person_phone')
+            ->addField('support_person_email');
+    }
 
     /**
      * Get the user's preferred locale.
@@ -99,49 +140,107 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         };
     }
 
-    /**
-     * Get the individual page associated with the user.
-     */
+    public function getFirstNameAttribute(): string
+    {
+        return (new NameParser())->parse($this->attributes['name'])->getFirstname();
+    }
+
+    public function getContactPersonAttribute(): string
+    {
+        return $this->preferred_contact_person === 'me' ? $this->first_name : $this->support_person_name;
+    }
+
+    public function getPrimaryContactPointAttribute(): string|null
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->phone->formatForCountry('CA') :
+                $this->support_person_phone->formatForCountry('CA'),
+            default => null,
+        };
+
+        if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
+            $contactPoint .= ".  \n".__(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    public function getRequiresVrsAttribute(): null|bool
+    {
+        return $this->preferred_contact_person === 'me' ?
+            $this->vrs :
+            $this->support_person_vrs;
+    }
+
+    public function getPrimaryContactMethodAttribute(): string|null
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'email' => '['.$this->primary_contact_point.'](mailto:'.$this->primary_contact_point.')',
+            ]),
+            'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'phone_number' => $this->primary_contact_point,
+            ]),
+            default => null
+        };
+    }
+
+    public function getAlternateContactPointAttribute(): string|null
+    {
+        $contactPoint = match ($this->preferred_contact_method) {
+            'email' => $this->preferred_contact_person === 'me' ?
+                $this->phone?->formatForCountry('CA') :
+                $this->support_person_phone?->formatForCountry('CA'),
+            'phone' => $this->preferred_contact_person === 'me' ?
+                $this->email ?? null :
+                $this->support_person_email ?? null,
+            default => null,
+        };
+
+        if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
+            $contactPoint .= "  \n".__(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
+        }
+
+        return $contactPoint;
+    }
+
+    public function getAlternateContactMethodAttribute(): string|null
+    {
+        return match ($this->preferred_contact_method) {
+            'email' => $this->alternate_contact_point ?? null,
+            'phone' => $this->alternate_contact_point ? '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')' : null,
+            default => null
+        };
+    }
+
     public function individual(): HasOne
     {
         return $this->hasOne(Individual::class);
     }
 
-    /**
-     * Get the user's resources.
-     *
-     * @return HasMany
-     */
     public function resources(): HasMany
     {
         return $this->hasMany(Resource::class);
     }
 
-    /**
-     * Get the user's resource collections.
-     *
-     * @return HasMany
-     */
     public function resourceCollections(): HasMany
     {
         return $this->hasMany(ResourceCollection::class);
     }
 
-    /**
-     * Get the user's memberships.
-     *
-     * @return HasMany
-     */
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
     }
 
-    /**
-     * Get the organizations that belong to this user.
-     *
-     * @return MorphToMany
-     */
     public function organizations(): MorphToMany
     {
         return $this->morphedByMany(Organization::class, 'membershipable', 'memberships')
@@ -151,11 +250,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->withTimestamps();
     }
 
-    /**
-     * Get the regulated organizations that belong to this user.
-     *
-     * @return MorphToMany
-     */
     public function regulatedOrganizations(): MorphToMany
     {
         return $this->morphedByMany(RegulatedOrganization::class, 'membershipable', 'memberships')
@@ -165,31 +259,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             ->withTimestamps();
     }
 
-    /**
-     * Get the organization that belongs to the user.
-     *
-     * @return mixed
-     */
     public function getOrganizationAttribute(): mixed
     {
         return $this->organizations->first();
     }
 
-    /**
-     * Get the regulated organization that belongs to the user.
-     *
-     * @return mixed
-     */
     public function getRegulatedOrganizationAttribute(): mixed
     {
         return $this->regulatedOrganizations->first();
     }
 
-    /**
-     * Get the parent projectable model.
-     *
-     * @return Organization|RegulatedOrganization|null
-     */
     public function projectable(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
@@ -203,11 +282,6 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return null;
     }
 
-    /**
-     * Get the projects associated with all organizations or regulated organizations that belong to this user.
-     *
-     * @return Collection
-     */
     public function projects(): Collection
     {
         if ($this->projectable()->projects->isNotEmpty()) {
@@ -217,23 +291,11 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return new Collection([]);
     }
 
-    /**
-     * Determine if the user is a member of a given membershipable model.
-     *
-     * @param  mixed  $model
-     * @return bool
-     */
     public function isMemberOf(mixed $model): bool
     {
         return $model->hasUserWithEmail($this->email);
     }
 
-    /**
-     * Determine if the user is an administrator of a given model.
-     *
-     * @param  mixed  $model
-     * @return bool
-     */
     public function isAdministratorOf(mixed $model): bool
     {
         return $model->hasAdministratorWithEmail($this->email);

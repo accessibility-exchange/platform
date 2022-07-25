@@ -12,8 +12,10 @@ use App\Http\Responses\LoginResponse;
 use App\Http\Responses\PasswordResetResponse;
 use App\Http\Responses\RegisterResponse;
 use App\Http\Responses\TwoFactorLoginResponse;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
@@ -48,6 +50,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::whereBlind('email', 'email_index', $request->email)->first();
+
+            if ($user &&
+                Hash::check($request->password, $user->password)) {
+                return $user;
+            }
+        });
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

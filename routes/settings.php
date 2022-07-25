@@ -67,4 +67,9 @@ Route::controller(SettingsController::class)
         Route::multilingual('/notifications', 'editNotificationPreferences')
             ->middleware(['auth'])
             ->name('edit-notification-preferences');
+
+        Route::multilingual('/notifications', 'updateNotificationPreferences')
+            ->method('put')
+            ->middleware(['auth'])
+            ->name('update-notification-preferences');
     });

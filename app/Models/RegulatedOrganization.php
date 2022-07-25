@@ -109,6 +109,11 @@ class RegulatedOrganization extends Model
         return 'regulatedOrganization';
     }
 
+    public function invitations(): MorphMany
+    {
+        return $this->morphMany(Invitation::class, 'invitationable');
+    }
+
     protected function serviceRegions(): Attribute
     {
         return Attribute::make(
