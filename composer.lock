@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f940243df919bbd1f566794dadb77e4",
+    "content-hash": "801da27505c0543a4a86fe7613cc4260",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5945,16 +5945,16 @@
         },
         {
             "name": "spatie/laravel-ciphersweet",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ciphersweet.git",
-                "reference": "59fc8e7431c9ea9ecc192742cc9c27a3ce560064"
+                "reference": "490d31d447cb4b5d5249a793868e42c1cf317520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/59fc8e7431c9ea9ecc192742cc9c27a3ce560064",
-                "reference": "59fc8e7431c9ea9ecc192742cc9c27a3ce560064",
+                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/490d31d447cb4b5d5249a793868e42c1cf317520",
+                "reference": "490d31d447cb4b5d5249a793868e42c1cf317520",
                 "shasum": ""
             },
             "require": {
@@ -6011,9 +6011,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.0.0"
+                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.0.2"
             },
-            "time": "2022-06-30T08:08:10+00:00"
+            "time": "2022-07-15T14:49:08+00:00"
         },
         {
             "name": "spatie/laravel-collection-macros",
