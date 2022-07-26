@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\AccessSupport;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -54,7 +54,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             'locality' => 'nullable|string',
             'region' => [
                 'nullable',
-                new Enum(ProvincesAndTerritories::class),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'postal_code' => 'nullable|string|max:7',
             'additional_needs_or_concerns' => 'nullable|integer|exists:access_supports,id',

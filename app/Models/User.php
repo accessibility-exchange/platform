@@ -150,6 +150,29 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->preferred_contact_person === 'me' ? $this->first_name : $this->support_person_name;
     }
 
+    public function getContactMethodsAttribute(): array
+    {
+        $methods = [];
+
+        if ($this->preferred_contact_person == 'me') {
+            if (! empty($this->email)) {
+                $methods[] = 'email';
+            }
+            if (! empty($this->phone)) {
+                $methods[] = 'phone';
+            }
+        } elseif ($this->preferred_contact_person == 'support-person') {
+            if (! empty($this->support_person_email)) {
+                $methods[] = 'email';
+            }
+            if (! empty($this->support_person_phone)) {
+                $methods[] = 'phone';
+            }
+        }
+
+        return $methods;
+    }
+
     public function getPrimaryContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {

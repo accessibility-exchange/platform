@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\MeetingTypes;
-use App\Enums\NotificationChannels;
-use App\Enums\NotificationMethods;
-use App\Enums\ProvincesAndTerritories;
-use App\Enums\Themes;
+use App\Enums\MeetingType;
+use App\Enums\NotificationChannel;
+use App\Enums\NotificationMethod;
+use App\Enums\ProvinceOrTerritory;
+use App\Enums\Theme;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferences;
@@ -79,7 +79,7 @@ class SettingsController extends Controller
                 'fcs' => __('locales.fcs'),
             ])->nullable(__('Choose a signed language…'))->toArray(),
             'spokenOrWrittenLanguages' => Options::forArray(get_available_languages(true, false))->nullable(__('Choose a language…'))->toArray(),
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'guessedSpokenOrWrittenLanguage' => $individual->first_language && ! is_signed_language($individual->first_language) ? $individual->first_language : false,
             'guessedSignedLanguage' => $individual->first_language && is_signed_language($individual->first_language) ? $individual->first_language : false,
         ]);
@@ -153,7 +153,7 @@ class SettingsController extends Controller
             'individual' => $individual,
             'consultingMethods' => Options::forModels(ConsultingMethod::class)->toArray(),
             'selectedConsultingMethods' => $individual->consultingMethods->pluck('id')->toArray(),
-            'meetingTypes' => Options::forEnum(MeetingTypes::class)->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'interviews' => ConsultingMethod::where('name->en', 'Interviews')->first()->id,
             'focusGroups' => ConsultingMethod::where('name->en', 'Focus groups')->first()->id,
             'workshops' => ConsultingMethod::where('name->en', 'Workshops')->first()->id,
@@ -303,7 +303,7 @@ class SettingsController extends Controller
     {
         return view('settings.website-accessibility-preferences', [
             'user' => Auth::user(),
-            'themes' => Options::forEnum(Themes::class)->toArray(),
+            'themes' => Options::forEnum(Theme::class)->toArray(),
             'signedLanguages' => Options::forArray([
                 'ase' => __('locales.ase'),
                 'fcs' => __('locales.fcs'),
@@ -331,8 +331,10 @@ class SettingsController extends Controller
         return view('settings.notifications', [
             'user' => Auth::user(),
             'individual' => Auth::user()->individual,
-            'notificationMethods' => Options::forEnum(NotificationMethods::class)->nullable(__('Choose a notification method…'))->toArray(),
-            'notificationChannels' => Options::forEnum(NotificationChannels::class)->toArray(),
+            'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
+            'emailNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Phone || $method === NotificationMethod::Text)->nullable(__('Choose a notification method…'))->toArray(),
+            'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),
+            'notificationChannels' => Options::forEnum(NotificationChannel::class)->toArray(),
         ]);
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ProvincesAndTerritories: string
+enum ProvinceOrTerritory: string
 {
     case Alberta = 'AB';
     case BritishColumbia = 'BC';

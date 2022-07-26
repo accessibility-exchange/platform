@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\MeetingTypes;
+use App\Enums\MeetingType;
 use App\Models\ConsultingMethod;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -36,7 +36,7 @@ class UpdateCommunicationAndConsultationPreferences extends FormRequest
             ],
             'consulting_methods.*' => 'exists:consulting_methods,id',
             'meeting_types' => 'nullable|array',
-            'meeting_types.*' => [new Enum(MeetingTypes::class)],
+            'meeting_types.*' => [new Enum(MeetingType::class)],
         ];
     }
 

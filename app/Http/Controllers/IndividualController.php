@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
-use App\Enums\ConsultingServices;
-use App\Enums\MeetingTypes;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
 use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
@@ -112,13 +112,13 @@ class IndividualController extends Controller
 
         return view('individuals.edit', [
             'individual' => $individual,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'constituencies' => Options::forModels(Constituency::class)->toArray(),
             'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
             'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
-            'consultingServices' => Options::forEnum(ConsultingServices::class)->toArray(),
+            'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
             'areaTypes' => Options::forModels(AreaType::class)->toArray(),
             'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
             'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
@@ -135,7 +135,7 @@ class IndividualController extends Controller
                 '0' => __('No'),
             ])->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
-            'meetingTypes' => Options::forEnum(MeetingTypes::class)->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,
         ]);

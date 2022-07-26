@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum NotificationChannels: string
+enum NotificationChannel: string
 {
     case Website = 'website';
     case Contact = 'contact';

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ConsultingServices: string
+enum ConsultingService: string
 {
     case BookingServiceProviders = 'booking-providers';
     case PlanningConsultation = 'planning-consultation';

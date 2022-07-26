@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum NotificationMethods: string
+enum NotificationMethod: string
 {
     case Email = 'email';
     case Phone = 'phone';
@@ -12,7 +12,7 @@ enum NotificationMethods: string
     {
         return [
             'email' => __('Email'),
-            'phone' => __('Phone'),
+            'phone' => __('Phone call'),
             'sms' => __('Text message'),
         ];
     }

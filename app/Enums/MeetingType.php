@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum MeetingTypes: string
+enum MeetingType: string
 {
     case InPerson = 'in_person';
     case WebConference = 'web_conference';

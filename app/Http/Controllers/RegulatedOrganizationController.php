@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
@@ -148,7 +148,7 @@ class RegulatedOrganizationController extends Controller
     {
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
         ]);
     }
