@@ -205,7 +205,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
             'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
                 'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'email' => '['.$this->primary_contact_point.'](mailto:'.$this->primary_contact_point.')',
+                'email' => '<'.$this->primary_contact_point.'>',
             ]),
             'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
@@ -239,7 +239,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     {
         return match ($this->preferred_contact_method) {
             'email' => $this->alternate_contact_point ?? null,
-            'phone' => $this->alternate_contact_point ? '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')' : null,
+            'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
             default => null
         };
     }

@@ -68,28 +68,6 @@ class CreateNewUser implements CreatesNewUsers
             'context' => $input['context'],
             'locale' => $input['locale'],
             'signed_language' => $input['signed_language'],
-            'notification_settings' => $input['context'] === 'individual' ?
-                [
-                    'reports' => [
-                        'channels' => [
-                            'website',
-                        ],
-                    ],
-                    'projects' => [
-                        'channels' => [
-                            'website',
-                        ],
-                        'creators' => [],
-                        'types' => [],
-                        'engagements' => [],
-                    ],
-                    'updates' => [
-                        'channels' => [
-                            'website',
-                        ],
-                    ],
-                ] :
-                [],
         ]);
     }
 }

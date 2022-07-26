@@ -256,11 +256,11 @@ test('user’s primary contact method can be retrieved', function () {
         'support_person_vrs' => false,
     ]);
 
-    expect($user->primary_contact_method)->toEqual('Send an email to Jonny at [jonny@example.com](mailto:jonny@example.com).');
+    expect($user->primary_contact_method)->toEqual('Send an email to Jonny at <jonny@example.com>.');
 
     $user->update(['preferred_contact_person' => 'support-person']);
 
-    expect($user->primary_contact_method)->toEqual('Send an email to Jonny’s support person, Jenny Appleseed, at [jenny@example.com](mailto:jenny@example.com).');
+    expect($user->primary_contact_method)->toEqual('Send an email to Jonny’s support person, Jenny Appleseed, at <jenny@example.com>.');
 
     $user->update(['preferred_contact_method' => 'phone']);
 
@@ -324,11 +324,11 @@ test('user’s alternate contact method can be retrieved', function () {
         'support_person_vrs' => false,
     ]);
 
-    expect($user->alternate_contact_method)->toEqual('[jonny@example.com](mailto:jonny@example.com)');
+    expect($user->alternate_contact_method)->toEqual('<jonny@example.com>');
 
     $user->update(['preferred_contact_person' => 'support-person']);
 
-    expect($user->alternate_contact_method)->toEqual('[jenny@example.com](mailto:jenny@example.com)');
+    expect($user->alternate_contact_method)->toEqual('<jenny@example.com>');
 
     $user->update(['preferred_contact_method' => 'email']);
 

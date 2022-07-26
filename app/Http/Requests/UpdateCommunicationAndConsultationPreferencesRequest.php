@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 
-class UpdateCommunicationAndConsultationPreferences extends FormRequest
+class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
     public function authorize(): bool
     {

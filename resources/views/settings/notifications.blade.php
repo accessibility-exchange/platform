@@ -33,7 +33,7 @@
     <h2>{{ __('Manage my notifications') }}</h2>
     <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}</p>
 
-    @if($user->context === 'individual')
-    @include('settings.notifications.individual')
+    @if($user->context !== 'regulated-organization-employee')
+    @include('settings.notifications.'.$user->context)
     @endif
 </x-app-wide-layout>

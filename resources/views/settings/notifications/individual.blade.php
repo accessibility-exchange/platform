@@ -18,17 +18,17 @@
         @method('put')
 
         <p>
-            {{ __('Notifications will be sent through the website or by contacting :contact_person.', ['contact_person' => $individual->user->support_person_name ? __('your support person, :name', ['name' => $individual->user->support_person_name]) : __('you')]) }}
-            @if($individual->user->support_person_name)
+            {{ __('Notifications will be sent through the website or by contacting :contact_person.', ['contact_person' => $user->support_person_name ? __('your support person, :name', ['name' => $user->support_person_name]) : __('you')]) }}
+            @if($user->support_person_name)
                 {{ __('You’ve provided the following contact information for them:') }}
             @else
                 {{ __('You’ve provided the following contact information:') }}
             @endif
         </p>
         <ul>
-            <li>{!! Str::inlineMarkdown($individual->user->primary_contact_point) !!}</li>
-            @if($individual->user->alternate_contact_point)
-                <li>{!! Str::inlineMarkdown($individual->user->alternate_contact_point) !!}</li>
+            <li>{!! Str::inlineMarkdown($user->primary_contact_point) !!}</li>
+            @if($user->alternate_contact_point)
+                <li>{!! Str::inlineMarkdown($user->alternate_contact_point) !!}</li>
             @endif
         </ul>
         <p>{!! __('If you need to change your contact person or contact information, you can do so on your :communication_and_consultation_preferences_page.', [
@@ -37,9 +37,9 @@
 
         <div class="field @error('preferred_notification_method') field--error @enderror">
             <x-hearth-label for="preferred_notification_method">{{ __('Preferred notification method (required)') }}</x-hearth-label>
-            @if(!in_array('phone', $individual->user->contact_methods))
+            @if(!in_array('phone', $user->contact_methods))
                 <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-            @elseif(!in_array('email', $individual->user->contact_methods))
+            @elseif(!in_array('email', $user->contact_methods))
                 <x-hearth-select name="preferred_notification_method" :options="$phoneNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
             @else
                 <x-hearth-select name="preferred_notification_method" :options="$notificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
@@ -48,7 +48,7 @@
 
         <h3 id="{{ Str::slug(__('Participating in engagements')) }}">{{ __('Participating in engagements') }}</h3>
 
-        @if($individual->isParticipant())
+        @if($user->individual->isParticipant())
             <h4>{{ __('As a consultation participant') }}</h4>
 
             <p>
@@ -57,7 +57,7 @@
             </p>
         @endif
 
-        @if($individual->isConsultant())
+        @if($user->individual->isConsultant())
             <fieldset>
                 <legend><h4>{{ __('As an accessibility consultant') }}</h4></legend>
                 <p>{{ __('How would you like to be notified when you are added as an accessibility consultant to a project?') }}</p>
@@ -65,7 +65,7 @@
             </fieldset>
         @endif
 
-        @if($individual->isConnector())
+        @if($user->individual->isConnector())
             <fieldset>
                 <legend><h4>{{ __('As a community connector') }}</h4></legend>
                 <p>{{ __('How would you like to be notified when you are added as a community connector to an engagement?') }}</p>
@@ -137,7 +137,7 @@
 
         <fieldset>
             <legend><h4>{{ __('Out of date information') }}</h4></legend>
-            @if($individual->isParticipant())
+            @if($user->individual->isParticipant())
                 <p>{{ __('Information such as your matching information, your communication preferences, and your consultation preferences might be out of date if it has not been updated for over a year.') }}</p>
             @else
                 <p>{{ __('Information such as your communication and consultation preferences might be out of date if it has not been updated for over a year.') }}</p>

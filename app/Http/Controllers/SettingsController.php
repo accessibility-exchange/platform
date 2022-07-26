@@ -9,7 +9,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Enums\Theme;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
-use App\Http\Requests\UpdateCommunicationAndConsultationPreferences;
+use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
@@ -160,7 +160,7 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function updateCommunicationAndConsultationPreferences(UpdateCommunicationAndConsultationPreferences $request): RedirectResponse
+    public function updateCommunicationAndConsultationPreferences(UpdateCommunicationAndConsultationPreferencesRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
@@ -172,7 +172,6 @@ class SettingsController extends Controller
         }
 
         if ($data['preferred_contact_person'] === 'support-person') {
-            $data['email'] = '';
             $data['phone'] = '';
             $data['vrs'] = 0;
         }
@@ -330,7 +329,6 @@ class SettingsController extends Controller
     {
         return view('settings.notifications', [
             'user' => Auth::user(),
-            'individual' => Auth::user()->individual,
             'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
             'emailNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Phone || $method === NotificationMethod::Text)->nullable(__('Choose a notification method…'))->toArray(),
             'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),

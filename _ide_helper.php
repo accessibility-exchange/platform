@@ -5,7 +5,7 @@
 
     /**
      * A helper file for Laravel, to provide autocomplete information to your IDE
-     * Generated for Laravel 9.21.0.
+     * Generated for Laravel 9.22.1.
      *
      * This file should not be included in your code, only analyzed by your IDE!
      *
@@ -6664,16 +6664,17 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
-             * Get the MD5 hash of the file at the given path.
+             * Get the hash of the file at the given path.
              *
              * @param  string  $path
+             * @param  string  $algorithm
              * @return string
              * @static
              */
-            public static function hash($path)
+            public static function hash($path, $algorithm = 'md5')
             {
                 /** @var \Illuminate\Filesystem\Filesystem $instance */
-                return $instance->hash($path);
+                return $instance->hash($path, $algorithm);
             }
 
             /**
@@ -7794,7 +7795,7 @@ namespace Illuminate\Support\Facades {
          * @method static \Illuminate\Http\Client\PendingRequest asJson()
          * @method static \Illuminate\Http\Client\PendingRequest asMultipart()
          * @method static \Illuminate\Http\Client\PendingRequest async()
-         * @method static \Illuminate\Http\Client\PendingRequest attach(string|array $name, string $contents = '', string|null $filename = null, array $headers = [])
+         * @method static \Illuminate\Http\Client\PendingRequest attach(string|array $name, string|resource $contents = '', string|null $filename = null, array $headers = [])
          * @method static \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
          * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
          * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
@@ -10923,6 +10924,32 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\Http\Request $instance */
                 $instance->setLaravelSession($session);
+            }
+
+            /**
+             * Set the locale for the request instance.
+             *
+             * @param  string  $locale
+             * @return void
+             * @static
+             */
+            public static function setRequestLocale($locale)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                $instance->setRequestLocale($locale);
+            }
+
+            /**
+             * Set the default locale for the request instance.
+             *
+             * @param  string  $locale
+             * @return void
+             * @static
+             */
+            public static function setDefaultRequestLocale($locale)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                $instance->setDefaultRequestLocale($locale);
             }
 
             /**
@@ -15687,6 +15714,18 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                 return $instance->url($path);
+            }
+
+            /**
+             * Determine if temporary URLs can be generated.
+             *
+             * @return bool
+             * @static
+             */
+            public static function providesTemporaryUrls()
+            {
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                return $instance->providesTemporaryUrls();
             }
 
             /**
