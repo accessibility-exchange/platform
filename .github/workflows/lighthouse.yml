@@ -14,11 +14,11 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }} # https://github.com/GoogleChrome/lighthouse-ci/issues/172
       - name: Cache Composer packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
@@ -42,13 +42,13 @@ jobs:
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
-      - name: Use Node 15.x
-        uses: actions/setup-node@v2
+      - name: Use Node 16.x
+        uses: actions/setup-node@v3
         with:
-          node-version: 15
+          node-version: 16
       - name: Run Lighthouse CI
         run: |
-          npm install -g @lhci/cli@0.7.x
+          npm install -g @lhci/cli@0.9.x
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

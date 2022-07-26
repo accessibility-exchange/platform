@@ -1,4 +1,4 @@
-name: Lint and analyze PHP code
+name: Analyze PHP code
 
 on:
   push:
@@ -7,16 +7,16 @@ on:
     branches: [dev, main]
 
 jobs:
-  php-lint-analyze:
+  php-analyze:
     runs-on: ubuntu-latest
 
     steps:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Cache Composer packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
