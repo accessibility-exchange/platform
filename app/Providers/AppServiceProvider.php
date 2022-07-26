@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             $url->forceScheme('https');
         }
 
-        if (config('app.env') !== 'local') {
+        if (config('app.env') === 'local') {
             DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         }
 
