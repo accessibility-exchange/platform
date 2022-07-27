@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\MeetingType;
 use App\Enums\NotificationChannel;
 use App\Enums\NotificationMethod;
+use App\Enums\OrganizationNotificationChannel;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\Theme;
 use App\Http\Requests\UpdateAccessNeedsRequest;
@@ -327,22 +328,44 @@ class SettingsController extends Controller
 
     public function editNotificationPreferences(): View
     {
+        $user = Auth::user();
+
+        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+
         return view('settings.notifications', [
-            'user' => Auth::user(),
+            'user' => $user,
             'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
             'emailNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Phone || $method === NotificationMethod::Text)->nullable(__('Choose a notification method…'))->toArray(),
             'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),
             'notificationChannels' => Options::forEnum(NotificationChannel::class)->toArray(),
+            'organizationNotificationChannels' => Options::forEnum(OrganizationNotificationChannel::class)->toArray(),
         ]);
     }
 
     public function updateNotificationPreferences(UpdateNotificationPreferencesRequest $request): RedirectResponse
     {
         $user = Auth::user();
+
+        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+
         $data = $request->validated();
 
-        $user->fill($data);
-        $user->save();
+        if ($user->context === 'individual') {
+            $user->notification_settings = $data['notification_settings'] ?? [];
+            unset($data['notification_settings']);
+            $user->fill($data);
+            $user->save();
+        }
+
+        if ($user->context === 'organization' && $user->organization) {
+            $organization = $user->organization;
+            $organization->notification_settings = $data['notification_settings'] ?? [];
+            unset($data['notification_settings']);
+            $organization->fill($data);
+            $organization->save();
+        }
+
+        flash(__('Your notification preferences have been updated.'), 'success');
 
         return redirect(localized_route('settings.edit-notification-preferences'));
     }

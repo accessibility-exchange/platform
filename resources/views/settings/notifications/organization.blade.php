@@ -3,13 +3,7 @@
         <h3 id="skip-to">{{ __('Skip to:') }}</h3>
         <ul role="list" class="stack">
             <li>
-                <x-nav-link :href="'#'.Str::slug(__('Participating in engagements'))">{{ __('Participating in engagements') }}</x-nav-link>
-            </li>
-            <li>
-                <x-nav-link :href="'#'.Str::slug(__('Finding out about new projects'))">{{ __('Finding out about new projects') }}</x-nav-link>
-            </li>
-            <li>
-                <x-nav-link :href="'#'.Str::slug(__('Keeping my information up to date'))">{{ __('Keeping my information up to date') }}</x-nav-link>
+                <x-nav-link :href="'#'.Str::slug(__('Projects and engagements by other organizations'))">{{ __('Projects and engagements by other organizations') }}</x-nav-link>
             </li>
         </ul>
     </nav>
@@ -17,80 +11,47 @@
         @csrf
         @method('put')
 
-        <p>
-            {{ __('Notifications will be sent through the website or by contacting :contact_person.', ['contact_person' => $user->support_person_name ? __('your support person, :name', ['name' => $user->support_person_name]) : __('you')]) }}
-            @if($user->support_person_name)
-                {{ __('You’ve provided the following contact information for them:') }}
-            @else
-                {{ __('You’ve provided the following contact information:') }}
-            @endif
-        </p>
-        <ul>
-            <li>{!! Str::inlineMarkdown($user->primary_contact_point) !!}</li>
-            @if($user->alternate_contact_point)
-                <li>{!! Str::inlineMarkdown($user->alternate_contact_point) !!}</li>
-            @endif
-        </ul>
-        <p>{!! __('If you need to change your contact person or contact information, you can do so on your :communication_and_consultation_preferences_page.', [
-                'communication_and_consultation_preferences_page' => '<a href="'.localized_route('settings.edit-communication-and-consultation-preferences').'">'.__('communication and consultation preferences page').'</a>'
-            ]) !!}</p>
-
-        <div class="field @error('preferred_notification_method') field--error @enderror">
-            <x-hearth-label for="preferred_notification_method">{{ __('Preferred notification method (required)') }}</x-hearth-label>
-            @if(!in_array('phone', $user->contact_methods))
-                <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-            @elseif(!in_array('email', $user->contact_methods))
-                <x-hearth-select name="preferred_notification_method" :options="$phoneNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-            @else
-                <x-hearth-select name="preferred_notification_method" :options="$notificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-            @endif
-        </div>
-
-        <h3 id="{{ Str::slug(__('Participating in engagements')) }}">{{ __('Participating in engagements') }}</h3>
-
-        @if($user->organization->isParticipant())
-            <h4>{{ __('As a consultation participant') }}</h4>
+        <div class="box stack">
+            <h3>{{ __('Contacting you with notifications') }}</h3>
 
             <p>
-                {{ __('We will always notify you when you are invited to engagements by contacting you or your support person.') }}
-                {{ __('You will also be notified through the website.') }}
+                {{ __('Throughout this page, you can chose whether you would like notifications to be sent through the website or by contacting your organization’s contact person directly. You’ve provided the following contact information:') }}
             </p>
-        @endif
 
-        @if($user->organization->isConsultant())
-            <fieldset>
-                <legend><h4>{{ __('As an accessibility consultant') }}</h4></legend>
-                <p>{{ __('How would you like to be notified when you are added as an accessibility consultant to a project?') }}</p>
-                <x-hearth-checkboxes name="accessibility_consultant_notifications" :options="$notificationChannels" :checked="old('accessibility_consultant_notifications', $user->notification_settings->get('accessibility-consultants.channels', []))" />
+            <ul>
+                <li><strong>{{ __('Name') }}:</strong> {{ $user->organization->contact_person_name }}</li>
+                <li><strong>{{ $user->organization->preferred_contact_method === 'email' ? __('Email') : __('Phone') }}:</strong> {{ $user->organization->preferred_contact_method === 'email' ? $user->organization->contact_person_email : $user->organization->contact_person_phone->formatForCountry('CA') }}</li>
+                @if(($user->organization->preferred_contact_method === 'email' && $user->organization->contact_person_phone) || ($user->organization->preferred_contact_method === 'phone' && $user->organization->contact_person_email))
+                    <li><strong>{{ $user->organization->preferred_contact_method === 'email' ? __('Phone') : __('Email') }}:</strong> {{ $user->organization->preferred_contact_method === 'email' ? $user->organization->contact_person_phone->formatForCountry('CA') : $user->organization->contact_person_email }}</li>
+                @endif
+            </ul>
+
+            <p><a href="{{ localized_route('organizations.edit', ['organization' => $user->organization, 'step' => 4]) }}">{{ __('Edit your organization’s contact information') }}</a></p>
+
+            <div class="field @error('preferred_notification_method') field--error @enderror">
+                <x-hearth-label for="preferred_notification_method">{{ __('Preferred notification method (required)') }}</x-hearth-label>
+                @if(!in_array('phone', $user->organization->contact_methods))
+                    <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
+                @elseif(!in_array('email', $user->organization->contact_methods))
+                    <x-hearth-select name="preferred_notification_method" :options="$phoneNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
+                @else
+                    <x-hearth-select name="preferred_notification_method" :options="$notificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
+                @endif
+            </div>
+        </div>
+
+        <h3 id="{{ Str::slug(__('Projects and engagements by other organizations')) }}">{{ __('Projects and engagements by other organizations') }}</h3>
+
+        <div x-data="{notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->organization->notification_settings->get('projects.channels', []))) }}}">
+            <fieldset class="field @error('notification_settings.projects.channels') field--error @enderror">
+                <legend class="h4">{{ __('Please indicate how you would like to be notified of new projects. ') }}</legend>
+                <x-hearth-checkboxes name="notification_settings[projects][channels]" :options="$organizationNotificationChannels" :checked="old('notification_settings.projects.channels', $user->organization->notification_settings->get('projects.channels', []))" x-model="notifyOfProjects" />
             </fieldset>
-        @endif
 
-        @if($user->organization->isConnector())
-            <fieldset>
-                <legend><h4>{{ __('As a community connector') }}</h4></legend>
-                <p>{{ __('How would you like to be notified when you are added as a community connector to an engagement?') }}</p>
-                <x-hearth-checkboxes name="community_connector_notifications" :options="$notificationChannels" :checked="old('community_connector_notifications', $user->notification_settings->get('community-connectors.channels', []))" />
-            </fieldset>
-        @endif
-
-        <fieldset>
-            <legend><h4>{{ __('New reports uploaded') }}</h4></legend>
-            <p>{{ __('How would you like to be notified when a project you have worked on uploads a new report?') }}</p>
-            <x-hearth-checkboxes name="report_notifications" :options="$notificationChannels" :checked="old('report_notifications', $user->notification_settings->get('reports.channels', []))" />
-        </fieldset>
-
-        <h3 id="{{ Str::slug(__('Finding out about new projects')) }}">{{ __('Finding out about new projects') }}</h3>
-
-        <div x-data="{notifyOfProjects: {{ json_encode(old('project_notifications', $user->notification_settings->get('projects.channels', []))) }}}">
-            <fieldset>
-                <legend><h4>{{ __('Please indicate how you would like to be notified of new projects. ') }}</h4></legend>
-                <x-hearth-checkboxes name="project_notifications" :options="$notificationChannels" :checked="old('project_notifications', $user->notification_settings->get('projects.channels', []))" x-model="notifyOfProjects" />
-            </fieldset>
-
-            <fieldset x-show="notifyOfProjects.length > 0">
-                <legend><h4>{{ __('Please indicate for which projects you would like to receive notifications.') }}</h4></legend>
+            <fieldset class="field @error('notification_settings.projects.creators') field--error @enderror" x-show="notifyOfProjects.length > 0" x-cloak>
+                <legend class="h4">{{ __('Please indicate which type of organizations’ projects you would like to notified about.') }}</legend>
                 <x-hearth-hint for="project_creators">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="project_creators" :options="[
+                <x-hearth-checkboxes name="notification_settings[projects][creators]" :options="[
                         [
                             'value' => 'regulated-organizations',
                             'label' => __('Governments, businesses, and other public sector organizations'),
@@ -99,51 +60,23 @@
                             'value' => 'organizations',
                             'label' => __('Community organizations'),
                         ],
-                    ]" :checked="old('project_creators', $user->notification_settings->get('projects.creators', []))" />
+                    ]" :checked="old('notification_settings.projects.creators', $user->organization->notification_settings->get('projects.creators', []))" hinted="project_creators-hint" />
+                <x-hearth-error for="notification_settings.projects.creators" />
             </fieldset>
 
-            <fieldset x-show="notifyOfProjects.length > 0">
-                <legend><h4>{{ __('Please indicate which type of projects you would like to notified about.') }}</h4></legend>
-                <x-hearth-hint for="project_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="project_types" :options="[
-                        [
-                            'value' => 'lived-experience',
-                            'label' => __('Projects that are looking for someone with my lived experience'),
-                        ],
-                        [
-                            'value' => 'of-interest',
-                            'label' => __('Projects by organizations that I have saved on my notification list'),
-                        ],
-                    ]" :checked="old('project_types', $user->notification_settings->get('projects.types', []))" />
-            </fieldset>
-
-            <fieldset x-show="notifyOfProjects.length > 0">
-                <legend><h4>{{ __('Please indicate which type of engagements you would like to be notified about.') }}</h4></legend>
-                <x-hearth-hint for="engagements">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="project_engagements" :options="[
-                        [
-                            'value' => 'lived-experience',
-                            'label' => __('Engagements that are looking for someone with my lived experience'),
-                        ],
-                        [
-                            'value' => 'of-interest',
-                            'label' => __('Engagements by organizations that I have saved on my notification list'),
-                        ],
-                    ]" :checked="old('project_engagements', $user->notification_settings->get('projects.engagements', []))" />
+            <fieldset class="field @error('notification_settings.projects.types') field--error @enderror @error('notification_settings.projects.engagements') field--error @enderror" x-show="notifyOfProjects.length > 0" x-cloak>
+                <legend>{{ __('Please indicate which type of projects or engagements you would like to be notified about.') }}</legend>
+                <x-hearth-hint for="project_engagement_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                <div class="field">
+                    <x-hearth-checkbox name="notification_settings[projects][types][]" id="constituent_projects" value="constituents" :checked="old('constituent_projects', in_array('constituents', $user->organization->notification_settings->get('projects.types', [])))" hinted="project_engagement_types-hint" />
+                    <x-hearth-label for="constituent_projects" :value="__('Projects that are looking for people that my organization represents or supports')" />
+                </div>
+                <div class="field">
+                    <x-hearth-checkbox name="notification_settings[projects][engagements][]" id="constituent_engagements" value="constituents" :checked="old('constituent_engagements', in_array('constituents', $user->organization->notification_settings->get('projects.engagements', [])))" hinted="project_engagement_types-hint" />
+                    <x-hearth-label for="constituent_engagements" id="constituent_engagements" :value="__('Engagements that are looking for people that my organization represents or supports')" />
+                </div>
             </fieldset>
         </div>
-
-        <h3 id="{{ Str::slug(__('Keeping my information up to date')) }}">{{ __('Keeping my information up to date') }}</h3>
-
-        <fieldset>
-            <legend><h4>{{ __('Out of date information') }}</h4></legend>
-            @if($user->organization->isParticipant())
-                <p>{{ __('Information such as your matching information, your communication preferences, and your consultation preferences might be out of date if it has not been updated for over a year.') }}</p>
-            @else
-                <p>{{ __('Information such as your communication and consultation preferences might be out of date if it has not been updated for over a year.') }}</p>
-            @endif
-            <x-hearth-checkboxes name="update_notifications" :options="$notificationChannels" :checked="old('updates_notifications', $user->notification_settings->get('updates.channels', []))" />
-        </fieldset>
 
         <p>
             <button>{{ __('Save') }}</button>

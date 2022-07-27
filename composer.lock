@@ -1687,12 +1687,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fluid-project/hearth.git",
-                "reference": "1cc2c45fa16664dd9368f04d9f619a30ea61c93b"
+                "reference": "092a6636d39f48527a1f4374570e16d723b6fa7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/1cc2c45fa16664dd9368f04d9f619a30ea61c93b",
-                "reference": "1cc2c45fa16664dd9368f04d9f619a30ea61c93b",
+                "url": "https://api.github.com/repos/fluid-project/hearth/zipball/092a6636d39f48527a1f4374570e16d723b6fa7e",
+                "reference": "092a6636d39f48527a1f4374570e16d723b6fa7e",
                 "shasum": ""
             },
             "require": {
@@ -1701,8 +1701,9 @@
                 "codezero/laravel-unique-translation": "^3.5",
                 "commerceguys/addressing": "^1.2",
                 "commerceguys/intl": "^1.1",
-                "illuminate/contracts": "^9.0",
+                "illuminate/contracts": "^9.20",
                 "laravel/fortify": "^1.10",
+                "laravel/framework": "^9.21",
                 "php": "^8.0|^8.1",
                 "shiftonelabs/laravel-cascade-deletes": "^1.0",
                 "spatie/laravel-flash": "^1.9",
@@ -1765,7 +1766,7 @@
                 "issues": "https://github.com/fluid-project/hearth/issues",
                 "source": "https://github.com/fluid-project/hearth/tree/main"
             },
-            "time": "2022-07-20T12:40:42+00:00"
+            "time": "2022-07-25T13:52:04+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",

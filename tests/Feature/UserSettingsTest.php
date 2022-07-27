@@ -2,6 +2,7 @@
 
 use App\Models\ConsultingMethod;
 use App\Models\IndividualRole;
+use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
@@ -264,11 +265,43 @@ test('guests can not edit website accessibility preferences', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
-test('users can edit notification preferences', function () {
-    $user = User::factory()->create();
+test('individual and organization users can edit notification preferences', function () {
+    $user = User::factory()->create(['context' => 'individual']);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
     $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
+        'preferred_notification_method' => 'email',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-notification-preferences'));
+
+    $user = User::factory()->create(['context' => 'organization']);
+    Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
+        'preferred_notification_method' => 'email',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-notification-preferences'));
+});
+
+test('other users cannot edit notification preferences', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), []);
+    $response->assertForbidden();
 });
 
 test('guests can not edit notification preferences', function () {

@@ -14,9 +14,7 @@
         </div>
     </x-slot>
 
-    <!-- Form Validation Errors -->
-    @include('partials.validation-errors')
-
+    @if($user->context === 'individual')
     <nav aria-labelledby="notifications" class="full bg-white">
         <div class="center center:wide">
             <ul role="list" class="flex gap-6 -mt-4">
@@ -29,11 +27,13 @@
             </ul>
         </div>
     </nav>
+    @endif
+
+    <!-- Form Validation Errors -->
+    @include('partials.validation-errors')
 
     <h2>{{ __('Manage my notifications') }}</h2>
     <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}</p>
 
-    @if($user->context !== 'regulated-organization-employee')
     @include('settings.notifications.'.$user->context)
-    @endif
 </x-app-wide-layout>
