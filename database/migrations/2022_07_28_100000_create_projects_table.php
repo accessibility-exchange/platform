@@ -51,7 +51,7 @@ return new class extends Migration
             $table->string('contact_person_phone')->nullable();
             $table->boolean('contact_person_vrs')->nullable();
             $table->string('preferred_contact_method')->default('email');
-            $table->boolean('contact_person_response_time')->nullable();
+            $table->string('contact_person_response_time')->nullable();
         });
     }
 
