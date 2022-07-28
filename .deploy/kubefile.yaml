@@ -6,8 +6,6 @@ deployments:
     secrets:
       - vault: accessibility-app
         path: secrets
-      - vault: accessibility-ci
-        path: ci
   - name: accessibility-db
     chart: bitnami/mysql
     class: small
