@@ -48,17 +48,17 @@ class RegulatedOrganization extends Model
      * @var array<string>
      */
     protected $fillable = [
+        'published_at',
         'name',
         'type',
         'languages',
-        'locality',
         'region',
-        'service_areas',
+        'locality',
         'about',
+        'service_areas',
         'accessibility_and_inclusion_links',
         'social_links',
         'website_link',
-        'published_at',
         'contact_person_name',
         'contact_person_email',
         'contact_person_phone',
@@ -74,10 +74,13 @@ class RegulatedOrganization extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'service_areas' => 'array',
-        'languages' => 'array',
-        'accessibility_and_inclusion_links' => 'array',
         'published_at' => 'datetime:Y-m-d',
+        'name' => 'array',
+        'languages' => 'array',
+        'about' => 'array',
+        'service_areas' => 'array',
+        'accessibility_and_inclusion_links' => 'array',
+        'social_links' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
         'notification_settings' => SchemalessAttributes::class,

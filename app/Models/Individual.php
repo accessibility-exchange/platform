@@ -40,6 +40,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     use Notifiable;
 
     protected $fillable = [
+        'published_at',
         'user_id',
         'name',
         'slug',
@@ -75,6 +76,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     ];
 
     protected $casts = [
+        'published_at' => 'datetime:Y-m-d',
         'picture_alt' => 'array',
         'languages' => 'array',
         'pronouns' => 'array',

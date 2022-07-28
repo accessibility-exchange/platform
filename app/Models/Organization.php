@@ -45,6 +45,7 @@ class Organization extends Model
     ];
 
     protected $fillable = [
+        'published_at',
         'name',
         'type',
         'languages',
