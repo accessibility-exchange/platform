@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,51 +15,43 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
-            $table->string('slug');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->foreignId('regulated_organization_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->json('regions')->nullable();
-            $table->json('goals')->nullable();
-            $table->json('impact')->nullable();
-            $table->json('out_of_scope')->nullable();
-            $table->boolean('virtual_consultation')->nullable();
-            $table->json('timeline')->nullable();
-            $table->json('payment_terms')->nullable();
-            $table->boolean('payment_negotiable')->nullable();
-            $table->boolean('existing_clients')->nullable();
-            $table->boolean('prospective_clients')->nullable();
-            $table->boolean('employees')->nullable();
-            $table->json('priority_outreach')->nullable();
-            $table->json('locality')->nullable();
-            $table->json('location_description')->nullable();
-            $table->integer('min')->nullable();
-            $table->integer('max')->nullable();
-            $table->json('anything_else')->nullable();
-            $table->boolean('flexible_deadlines')->nullable();
-            $table->boolean('flexible_breaks')->nullable();
-            $table->dateTime('published_at')->nullable();
-            $table->boolean('found_participants')->nullable();
-            $table->boolean('confirmed_participants')->nullable();
-            $table->boolean('scheduled_planning_meeting')->nullable();
-            $table->boolean('notified_of_planning_meeting')->nullable();
-            $table->boolean('prepared_project_orientation')->nullable();
-            $table->boolean('prepared_contractual_documents')->nullable();
-            $table->boolean('booked_access_services_for_planning')->nullable();
-            $table->boolean('finished_planning_meeting')->nullable();
-            $table->boolean('scheduled_consultation_meetings')->nullable();
-            $table->boolean('notified_of_consultation_meetings')->nullable();
-            $table->boolean('prepared_consultation_materials')->nullable();
-            $table->boolean('booked_access_services_for_consultations')->nullable();
-            $table->boolean('finished_consultation_meetings')->nullable();
-            $table->boolean('prepared_accessibility_plan')->nullable();
-            $table->boolean('prepared_follow_up_plan')->nullable();
-            $table->boolean('shared_plans_with_participants')->nullable();
-            $table->boolean('published_accessibility_plan')->nullable();
             $table->timestamps();
+            $table->timestamp('published_at')->nullable();
+            $table->morphs('projectable');
+            $table->bigInteger('ancestor_id')
+                ->references('id')
+                ->on('projects')
+                ->nullable();
+            $table->json('languages')->nullable();
+            $table->json('name');
+            $table->json('goals')->nullable();
+            $table->json('scope')->nullable();
+            $table->json('regions')->nullable();
+            $table->json('out_of_scope')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->json('outcome_analysis')->nullable();
+            $table->json('outcome_analysis_other')->nullable();
+            $table->json('outcomes')->nullable();
+            $table->boolean('public_outcomes')->nullable();
+            $table->string('team_size')->nullable();
+            $table->boolean('team_has_disability_or_deaf_lived_experience')->nullable();
+            $table->boolean('team_has_other_lived_experience')->nullable();
+            $table->json('team_languages')->nullable();
+            $table->json('team_trainings')->nullable();
+            $table->boolean('seeking_consultant')->nullable();
+            $table->string('consultant_name')->nullable();
+            $table->bigInteger('consultant_id')
+                ->references('id')
+                ->on('individuals')
+                ->nullable();
+            $table->json('consultant_responsibilities')->nullable();
+            $table->string('contact_person_name')->nullable();
+            $table->string('contact_person_email')->nullable();
+            $table->string('contact_person_phone')->nullable();
+            $table->boolean('contact_person_vrs')->nullable();
+            $table->string('preferred_contact_method')->default('email');
+            $table->boolean('contact_person_response_time')->nullable();
         });
     }
 
@@ -72,4 +64,4 @@ class CreateProjectsTable extends Migration
     {
         Schema::dropIfExists('projects');
     }
-}
+};

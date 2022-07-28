@@ -53,7 +53,6 @@ class Project extends Model
         'team_has_other_lived_experience',
         'team_languages',
         'contacts',
-        'has_consultant',
         'consultant_name',
         'consultant_id',
         'consultant_responsibilities',
@@ -196,13 +195,18 @@ class Project extends Model
      *
      * @return string
      */
-    public function consultant_origin(): string
+    public function getConsultantOriginAttribute(): string
     {
         if ($this->consultant_name) {
             return 'external';
         }
 
         return 'platform';
+    }
+
+    public function getHasConsultantAttribute(): bool
+    {
+        return $this->consultant_name || $this->consultant_id;
     }
 
     /**
