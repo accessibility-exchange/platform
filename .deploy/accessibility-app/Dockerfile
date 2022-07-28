@@ -49,7 +49,6 @@ RUN . /root/.nvm/nvm.sh && \
     . /root/.nvm/bash_completion && \
     cd /app && \
     nvm install 16 && \
-    npm install -g yarn && \
     npm install
 
 RUN chown www-data:root /app/public/ -R
