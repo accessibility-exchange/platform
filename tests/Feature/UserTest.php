@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -44,44 +43,6 @@ test('users can edit basic information', function () {
 
 test('guests can not edit basic information', function () {
     $response = $this->get(localized_route('users.edit'));
-    $response->assertRedirect(localized_route('login'));
-});
-
-test('users can edit roles and permissions', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit-roles-and-permissions'));
-    $response->assertOk();
-});
-
-test('users can invite new members to their organization or regulated organization', function () {
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
-
-    $organizationUser = User::factory()->create(['context' => 'organization']);
-    $organization = Organization::factory()
-        ->hasAttached($organizationUser, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($organizationUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
-
-    $individualUser = User::factory()->create();
-    $response = $this->actingAs($individualUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
-});
-
-test('guests can not edit roles and permissions', function () {
-    $response = $this->get(localized_route('users.edit-roles-and-permissions'));
     $response->assertRedirect(localized_route('login'));
 });
 

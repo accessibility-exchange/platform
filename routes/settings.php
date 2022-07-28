@@ -72,4 +72,20 @@ Route::controller(SettingsController::class)
             ->method('put')
             ->middleware(['auth'])
             ->name('update-notification-preferences');
+
+        Route::multilingual('/roles-and-permissions', 'editRolesAndPermissions')
+            ->middleware(['auth'])
+            ->name('edit-roles-and-permissions');
+
+        Route::multilingual('/roles-and-permissions/invite', 'inviteToInvitationable')
+            ->middleware(['auth'])
+            ->name('invite-to-invitationable');
+
+        Route::multilingual('/change-password', 'changePassword')
+            ->middleware(['auth'])
+            ->name('change-password');
+
+        Route::multilingual('/delete-account', 'deleteAccount')
+            ->middleware(['auth'])
+            ->name('delete-account');
     });

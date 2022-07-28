@@ -108,29 +108,13 @@ Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->name('people-and-organizations');
 
-Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
-    ->middleware(['auth'])
-    ->name('users.edit');
-
-Route::multilingual('/settings/roles-and-permissions', [UserController::class, 'editRolesAndPermissions'])
-    ->middleware(['auth'])
-    ->name('users.edit-roles-and-permissions');
-
-Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInvitationable'])
-    ->middleware(['auth'])
-    ->name('users.invite-to-invitationable');
-
-Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
-    ->middleware(['auth'])
-    ->name('users.admin');
-
 Route::multilingual('/my-projects', [UserController::class, 'showMyProjects'])
     ->middleware(['auth'])
     ->name('users.show_my_projects');
 
-Route::multilingual('/settings/delete-account', [UserController::class, 'delete'])
+Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
     ->middleware(['auth'])
-    ->name('users.delete');
+    ->name('users.edit');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')

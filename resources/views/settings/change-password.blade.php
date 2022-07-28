@@ -1,38 +1,45 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('Password and security') }}</x-slot>
+    <x-slot name="title">{{ __('Change password') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
-            {{ __('Password and security') }}
+            {{ __('Change password') }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <h2>{{ __('hearth::auth.change_password') }}</h2>
-
     <form action="{{ localized_route('user-password.update') }}" method="POST" novalidate>
         @csrf
         @method('PUT')
 
         <div class="field @error('current_password', 'updatePassword') field--error @enderror">
-            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
+            <x-hearth-label for="current_password" :value="__('Current password')" />
             <x-password-input name="current_password" />
             <x-hearth-error for="current_password" bag="updatePassword" />
         </div>
 
         <div class="field @error('password', 'updatePassword') field--error @enderror">
-            <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-            <x-password-input name="password" />
+            <x-hearth-label for="password" :value="__('New password')" />
+            <div class="field__hint" id="password-hint">
+                <p>{{ __('For your security, please make sure your password has:') }}</p>
+                <ul>
+                    <li>{{ __('8 characters or more') }}</li>
+                    <li>{{ __('At least 1 upper case letter') }}</li>
+                    <li>{{ __('At least 1 number') }}</li>
+                    <li>{{ __('At least 1 special character (!@#$%^&*)') }}</li>
+                </ul>
+            </div>
+            <x-password-input name="password" hinted />
             <x-hearth-error for="password" bag="updatePassword" />
         </div>
 
         <div class="field @error('password_confirmation', 'updatePassword') field--error @enderror">
-            <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
+            <x-hearth-label for="password_confirmation" :value="__('Please confirm new password')" />
             <x-password-input name="password_confirmation" />
             <x-hearth-error for="password_confirmation" bag="updatePassword" />
         </div>

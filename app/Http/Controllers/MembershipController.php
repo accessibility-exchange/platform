@@ -24,7 +24,10 @@ class MembershipController extends Controller
         $roles = [];
 
         foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.'.$role);
+            $roles[] = [
+                'value' => $role,
+                'label' => __('roles.'.$role),
+            ];
         }
 
         return view('memberships.edit', [
@@ -57,7 +60,7 @@ class MembershipController extends Controller
         }
 
         return redirect(
-            localized_route('users.edit-roles-and-permissions')
+            localized_route('settings.edit-roles-and-permissions')
         );
     }
 
@@ -98,7 +101,7 @@ class MembershipController extends Controller
         }
 
         return redirect(
-            localized_route('users.edit-roles-and-permissions')
+            localized_route('settings.edit-roles-and-permissions')
         );
     }
 }

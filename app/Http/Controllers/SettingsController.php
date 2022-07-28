@@ -369,4 +369,64 @@ class SettingsController extends Controller
 
         return redirect(localized_route('settings.edit-notification-preferences'));
     }
+
+    public function editRolesAndPermissions(): View
+    {
+        $user = Auth::user();
+        $roles = [];
+
+        foreach (config('hearth.organizations.roles') as $role) {
+            $roles[$role] = __('roles.'.$role);
+        }
+
+        if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
+            $membershipable = $user->regulatedOrganization;
+        } elseif ($user->context === 'organization' && $user->organization) {
+            $membershipable = $user->organization;
+        } else {
+            $membershipable = null;
+        }
+
+        return view('settings.roles-and-permissions', [
+            'user' => $user,
+            'roles' => Options::forArray($roles)->toArray(),
+            'membershipable' => $membershipable,
+        ]);
+    }
+
+    public function inviteToInvitationable(): View|RedirectResponse
+    {
+        $currentUser = Auth::user();
+        $invitationable = match ($currentUser->context) {
+            'organization' => $currentUser->organization ?? null,
+            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
+            default => null,
+        };
+
+        if ($invitationable) {
+            $roles = [];
+
+            foreach (config('hearth.organizations.roles') as $role) {
+                $roles[$role] = __('roles.'.$role);
+            }
+
+            return view('settings.roles-and-permissions.invite', [
+                'user' => $currentUser,
+                'invitationable' => $invitationable,
+                'roles' => Options::forArray($roles)->toArray(),
+            ]);
+        }
+
+        return redirect(localized_route('settings.edit-roles-and-permissions'));
+    }
+
+    public function changePassword(): View
+    {
+        return view('settings.change-password', ['user' => Auth::user()]);
+    }
+
+    public function deleteAccount(): View
+    {
+        return view('settings.delete-account', ['user' => Auth::user()]);
+    }
 }

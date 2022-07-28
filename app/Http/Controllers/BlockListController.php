@@ -11,7 +11,7 @@ class BlockListController extends Controller
 {
     public function show(): View
     {
-        return view('users.settings.block-list');
+        return view('settings.block-list');
     }
 
     public function block(BlockRequest $request): RedirectResponse

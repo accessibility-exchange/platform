@@ -4,6 +4,7 @@ use App\Models\ConsultingMethod;
 use App\Models\IndividualRole;
 use App\Models\Organization;
 use App\Models\PaymentType;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\ConsultingMethodSeeder;
@@ -306,5 +307,169 @@ test('other users cannot edit notification preferences', function () {
 
 test('guests can not edit notification preferences', function () {
     $response = $this->get(localized_route('settings.edit-notification-preferences'));
+    $response->assertRedirect(localized_route('login'));
+});
+
+test('users can edit roles and permissions', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertOk();
+});
+
+test('users can invite new members to their organization or regulated organization', function () {
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('settings.invite-to-invitationable'));
+    $response->assertOk();
+    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false);
+    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('settings.invite-to-invitationable'));
+    $response->assertOk();
+    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false);
+    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
+
+    $individualUser = User::factory()->create();
+    $response = $this->actingAs($individualUser)->get(localized_route('settings.invite-to-invitationable'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+});
+
+test('guests can not edit roles and permissions', function () {
+    $response = $this->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('login'));
+});
+
+test('password can be updated', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.change-password'));
+
+    $response->assertOk();
+
+    $response = $this->from(localized_route('settings.change-password'))
+        ->actingAs($user)
+        ->put(localized_route('user-password.update'), [
+            'current_password' => 'password',
+            'password' => 'new_password',
+            'password_confirmation' => 'new_password',
+        ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.change-password'));
+});
+
+test('password cannot be updated with incorrect current password', function () {
+    $user = User::factory()->create();
+
+    $response = $this->from(localized_route('settings.change-password'))
+        ->actingAs($user)
+        ->put(localized_route('user-password.update'), [
+            'current_password' => 'wrong_password',
+            'password' => 'new_password',
+            'password_confirmation' => 'new_password',
+        ]);
+
+    $response->assertSessionHasErrors();
+    $response->assertRedirect(localized_route('settings.change-password'));
+});
+
+test('password cannot be updated with password that do not match', function () {
+    $user = User::factory()->create();
+
+    $response = $this->from(localized_route('settings.change-password'))
+        ->actingAs($user)
+        ->put(localized_route('user-password.update'), [
+            'current_password' => 'password',
+            'password' => 'new_password',
+            'password_confirmation' => 'different_new_password',
+        ]);
+
+    $response->assertSessionHasErrors();
+    $response->assertRedirect(localized_route('settings.change-password'));
+});
+
+test('password cannot be updated with password that does not meet requirements', function () {
+    $user = User::factory()->create();
+
+    $response = $this->from(localized_route('settings.change-password'))
+        ->actingAs($user)
+        ->put(localized_route('user-password.update'), [
+            'current_password' => 'password',
+            'password' => 'pass',
+            'password_confirmation' => 'pass',
+        ]);
+
+    $response->assertSessionHasErrors();
+    $response->assertRedirect(localized_route('settings.change-password'));
+});
+
+test('users can delete their own accounts', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.delete-account'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+        'current_password' => 'password',
+    ]);
+
+    $this->assertGuest();
+
+    $response->assertRedirect(localized_route('welcome'));
+});
+
+test('users cannot delete their own accounts with incorrect password', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+        'current_password' => 'wrong_password',
+    ]);
+
+    $response->assertRedirect(localized_route('settings.delete-account'));
+});
+
+test('users cannot delete their own accounts without assigning other admin to organization', function () {
+    $user = User::factory()->create();
+    Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+        'current_password' => 'password',
+    ]);
+
+    $response->assertRedirect(localized_route('settings.delete-account'));
+});
+
+test('users cannot delete their own accounts without assigning other admin to regulatedOrganization', function () {
+    $user = User::factory()->create();
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+        'current_password' => 'password',
+    ]);
+
+    $response->assertRedirect(localized_route('settings.delete-account'));
+});
+
+test('guests cannot delete accounts', function () {
+    $user = User::factory()->create();
+
+    $response = $this->delete(localized_route('users.destroy'));
+
     $response->assertRedirect(localized_route('login'));
 });

@@ -38,7 +38,7 @@
     <ul class="link-list" role="list">
         <li><a href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a></li>
         @if($user->context === 'organization' || $user->context === 'regulated-organization')
-        <li><a href="{{ localized_route('users.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
+        <li><a href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         @endif
         @if($user->context === 'individual' || $user->context === 'organization')
         <li><a href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notification preferences') }}</a></li>
@@ -46,10 +46,10 @@
         @if($user->can('block'))
         <li><a href="{{ localized_route('block-list.show') }}">{{ __('Blocked individuals and organizations') }}</a></li>
         @endif
-        <li><a href="{{ localized_route('users.admin') }}">{{ __('Change password') }}</a></li>
-        <li><a href="{{ localized_route('users.delete') }}">{{ __('Delete account') }}</a></li>
+        <li><a href="{{ localized_route('settings.change-password') }}">{{ __('Change password') }}</a></li>
+        <li><a href="{{ localized_route('settings.delete-account') }}">{{ __('Delete account') }}</a></li>
         @if($user->context === 'organization' || $user->context === 'regulated-organization')
-        {{-- Delete your organization --}}
+        {{-- TODO: Delete your organization --}}
         @endif
     </ul>
 </x-app-layout>

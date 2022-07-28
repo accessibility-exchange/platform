@@ -455,7 +455,7 @@ test('users with admin role can update other member roles', function () {
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
         ]);
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot update member roles', function () {
@@ -539,7 +539,7 @@ test('users with admin role can invite members', function () {
             'role' => 'member',
         ]);
 
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot invite members', function () {
@@ -579,7 +579,7 @@ test('users with admin role can cancel invitations', function () {
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot cancel invitations', function () {
@@ -703,7 +703,7 @@ test('users with admin role can remove members', function () {
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot remove members', function () {

@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout>
     <x-slot name="title">{{ __('Blocked individuals and organizations') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -120,4 +120,4 @@
         </table>
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>
