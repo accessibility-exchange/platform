@@ -48,8 +48,7 @@ RUN composer install
 RUN . /root/.nvm/nvm.sh && \
     . /root/.nvm/bash_completion && \
     cd /app && \
-    nvm install 16 && \
-    npm install
+    nvm install 16
 
 RUN chown www-data:root /app/public/ -R
 
