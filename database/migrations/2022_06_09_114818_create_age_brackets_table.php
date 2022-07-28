@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('age_brackets', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->json('name');
             $table->integer('min')->nullable();
             $table->integer('max')->nullable();
-            $table->timestamps();
         });
     }
 

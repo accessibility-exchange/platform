@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
@@ -25,7 +26,6 @@ return new class extends Migration
             $table->json('title');
             $table->json('slug');
             $table->json('summary');
-            $table->timestamps();
         });
     }
 

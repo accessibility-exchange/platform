@@ -15,8 +15,8 @@ class CreateImpactsTable extends Migration
     {
         Schema::create('impacts', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
             $table->timestamps();
+            $table->json('name');
         });
     }
 

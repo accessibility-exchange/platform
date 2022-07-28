@@ -14,6 +14,8 @@ class CreateEngagementIndividualTable extends Migration
     public function up()
     {
         Schema::create('engagement_individual', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->enum('status', ['invited', 'confirmed', 'declined', 'removed', 'exited'])->default('invited');
             $table->foreignId('individual_id')
                 ->constrained()

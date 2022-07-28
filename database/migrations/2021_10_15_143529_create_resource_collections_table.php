@@ -15,13 +15,13 @@ class CreateResourceCollectionsTable extends Migration
     {
         Schema::create('resource_collections', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->json('title');
             $table->json('slug');
             $table->json('description');
-            $table->timestamps();
         });
     }
 

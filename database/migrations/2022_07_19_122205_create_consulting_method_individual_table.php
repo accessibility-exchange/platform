@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('consulting_method_individual', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('consulting_method_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

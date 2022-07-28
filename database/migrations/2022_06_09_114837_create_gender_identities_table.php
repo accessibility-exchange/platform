@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('gender_identities', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->json('name');
             $table->json('name_plural');
             $table->json('adjective');
             $table->json('description')->nullable();
-            $table->timestamps();
         });
     }
 

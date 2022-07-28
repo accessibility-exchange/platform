@@ -15,11 +15,11 @@ class CreatePhaseablesTable extends Migration
     {
         Schema::create('phaseables', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('phase_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('phaseable');
-            $table->timestamps();
         });
     }
 

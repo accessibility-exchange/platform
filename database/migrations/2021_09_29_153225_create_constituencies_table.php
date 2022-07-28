@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('constituencies', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->json('name');
             $table->json('name_plural');
             $table->json('adjective');
             $table->json('description');
-            $table->timestamps();
         });
     }
 

@@ -15,8 +15,8 @@ class CreateLivedExperiencesTable extends Migration
     {
         Schema::create('lived_experiences', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
             $table->timestamps();
+            $table->json('name');
         });
     }
 

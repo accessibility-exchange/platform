@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('age_bracket_organization', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('age_bracket_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

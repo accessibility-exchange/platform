@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('gender_identity_organization', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('gender_identity_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

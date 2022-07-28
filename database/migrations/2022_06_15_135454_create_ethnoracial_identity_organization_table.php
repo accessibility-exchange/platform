@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('ethnoracial_identity_organization', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->unsignedBigInteger('ethnoracial_identity_id');
             $table->foreign('ethnoracial_identity_id', 'ethnoracial_identity_foreign')
                 ->references('id')
@@ -23,7 +24,6 @@ return new class extends Migration
             $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

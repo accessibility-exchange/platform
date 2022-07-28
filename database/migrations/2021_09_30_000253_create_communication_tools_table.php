@@ -15,8 +15,8 @@ class CreateCommunicationToolsTable extends Migration
     {
         Schema::create('communication_tools', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
             $table->timestamps();
+            $table->json('name');
         });
     }
 

@@ -15,11 +15,11 @@ class CreateTopicablesTable extends Migration
     {
         Schema::create('topicables', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('topic_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('topicable');
-            $table->timestamps();
         });
     }
 

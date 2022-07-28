@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('connectables', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('connectable');
-            $table->timestamps();
         });
     }
 

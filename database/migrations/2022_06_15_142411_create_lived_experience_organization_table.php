@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('lived_experience_organization', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->unsignedBigInteger('lived_experience_id');
             $table->foreign('lived_experience_id', 'lived_experience_foreign')
                 ->references('id')
@@ -23,7 +24,6 @@ return new class extends Migration
             $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

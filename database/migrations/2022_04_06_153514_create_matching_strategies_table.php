@@ -15,8 +15,8 @@ class CreateMatchingStrategiesTable extends Migration
     {
         Schema::create('matching_strategies', function (Blueprint $table) {
             $table->id();
-            $table->nullableMorphs('matchable');
             $table->timestamps();
+            $table->nullableMorphs('matchable');
         });
     }
 

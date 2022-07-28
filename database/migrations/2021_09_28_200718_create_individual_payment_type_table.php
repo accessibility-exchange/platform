@@ -14,6 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('individual_payment_type', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');

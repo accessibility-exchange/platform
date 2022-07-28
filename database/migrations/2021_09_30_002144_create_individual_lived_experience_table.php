@@ -14,6 +14,8 @@ class CreateIndividualLivedExperienceTable extends Migration
     public function up()
     {
         Schema::create('individual_lived_experience', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');

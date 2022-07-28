@@ -15,12 +15,12 @@ class CreateCriteriaTable extends Migration
     {
         Schema::create('criteria', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('matching_strategy_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('criteriable');
             $table->float('weight');
-            $table->timestamps();
         });
     }
 

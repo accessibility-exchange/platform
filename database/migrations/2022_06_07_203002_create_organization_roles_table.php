@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('organization_roles', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->json('name');
             $table->json('description');
-            $table->timestamps();
         });
     }
 

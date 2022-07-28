@@ -15,8 +15,8 @@ class CreateConsultingMethodsTable extends Migration
     {
         Schema::create('consulting_methods', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
             $table->timestamps();
+            $table->json('name');
         });
     }
 

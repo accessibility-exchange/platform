@@ -15,9 +15,10 @@ class CreateDefinedTermsTable extends Migration
     {
         Schema::create('defined_terms', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->json('term');
             $table->json('definition');
-            $table->timestamps();
+            $table->nullableMorphs('defineable');
         });
     }
 

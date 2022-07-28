@@ -14,6 +14,8 @@ class CreateImpactProjectTable extends Migration
     public function up()
     {
         Schema::create('impact_project', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('impact_id')
                 ->constrained()
                 ->onDelete('cascade');

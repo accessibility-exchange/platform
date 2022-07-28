@@ -15,13 +15,13 @@ class CreateFormattablesTable extends Migration
     {
         Schema::create('formattables', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->foreignId('format_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('formattable');
             $table->string('language');
             $table->boolean('original')->nullable();
-            $table->timestamps();
         });
     }
 

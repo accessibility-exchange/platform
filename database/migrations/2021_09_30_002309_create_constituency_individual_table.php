@@ -9,6 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('constituency_individual', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('constituency_id')
                 ->constrained()
                 ->onDelete('cascade');

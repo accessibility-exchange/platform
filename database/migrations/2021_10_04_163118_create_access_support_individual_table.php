@@ -14,6 +14,8 @@ class CreateAccessSupportIndividualTable extends Migration
     public function up()
     {
         Schema::create('access_support_individual', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('access_support_id')
                 ->constrained()
                 ->onDelete('cascade');

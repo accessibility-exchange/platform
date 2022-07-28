@@ -14,6 +14,8 @@ class CreateProjectsOfInterestTable extends Migration
     public function up()
     {
         Schema::create('projects_of_interest', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');

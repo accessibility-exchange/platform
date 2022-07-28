@@ -14,6 +14,8 @@ class CreateEngagementsTable extends Migration
     public function up()
     {
         Schema::create('engagements', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
             $table->json('name');
             $table->foreignId('project_id')
                 ->constrained()
@@ -25,8 +27,6 @@ class CreateEngagementsTable extends Migration
             $table->json('reporting')->nullable();
             $table->json('other_reporting')->nullable();
             $table->json('contacts')->nullable();
-            $table->id();
-            $table->timestamps();
         });
     }
 
