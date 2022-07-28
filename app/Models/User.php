@@ -36,20 +36,15 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'preferred_notification_method' => 'email',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'locale',
         'signed_language',
-        'theme',
         'context',
         'finished_introduction',
+        'theme',
         'text_to_speech',
         'sign_language_translations',
         'phone',
@@ -64,11 +59,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'notification_settings',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -76,11 +66,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'two_factor_secret',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'finished_introduction' => 'boolean',
@@ -92,11 +77,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'notification_settings' => SchemalessAttributes::class,
     ];
 
-    /**
-     * The relationships that should be deleted when a user is deleted.
-     *
-     * @var array
-     */
     protected mixed $cascadeDeletes = [
         'organizations',
         'regulatedOrganizations',
@@ -114,21 +94,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
             ->addField('support_person_email');
     }
 
-    /**
-     * Get the user's preferred locale.
-     *
-     * @return string
-     */
-    public function preferredLocale(): string
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Get the introduction for the user.
-     *
-     * @return string
-     */
     public function introduction(): string
     {
         return match ($this->context) {
