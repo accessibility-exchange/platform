@@ -94,6 +94,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
             ->addField('support_person_email');
     }
 
+    public function preferredLocale()
+    {
+        return $this->locale;
+    }
+
     public function introduction(): string
     {
         return match ($this->context) {
