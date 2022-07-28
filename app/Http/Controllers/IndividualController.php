@@ -179,11 +179,11 @@ class IndividualController extends Controller
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
-            $individual->extra_attributes->has_refugee_and_immigrant_constituency = 1;
+            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 1);
 
             $data['constituencies'][] = $refugeesAndImmigrants->id;
         } else {
-            $individual->extra_attributes->has_refugee_and_immigrant_constituency = 0;
+            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 0);
         }
 
         if (isset($data['gender_and_sexual_identities'])) {
@@ -213,9 +213,9 @@ class IndividualController extends Controller
                 $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
             }
 
-            $individual->extra_attributes->has_gender_and_sexual_identities = 1;
+            $individual->extra_attributes->set('has_gender_and_sexual_identities', 1);
         } else {
-            $individual->extra_attributes->has_gender_and_sexual_identities = 0;
+            $individual->extra_attributes->set('has_gender_and_sexual_identities', 0);
         }
 
         foreach ([

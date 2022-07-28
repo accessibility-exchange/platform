@@ -21,7 +21,6 @@ use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -83,7 +82,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'working_languages' => 'array',
         'consulting_services' => 'array',
         'social_links' => 'array',
-        'extra_attributes' => SchemalessAttributes::class,
         'other_disability_type_connection' => 'array',
         'other_ethnoracial_identity_connection' => 'array',
         'lived_experience' => 'array',
