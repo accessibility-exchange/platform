@@ -58,7 +58,7 @@ test('individual users can manage communication and consultation preferences', f
     $this->seed(IndividualRoleSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
-    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation participant')->first()->id);
+    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
 

@@ -56,21 +56,21 @@ test('users can create organizations', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility consultant')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Community connector')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Community Connector')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation participant')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));

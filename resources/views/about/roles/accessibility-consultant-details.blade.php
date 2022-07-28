@@ -4,13 +4,13 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
-            <li><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Accessibility consultants') }}</a></li>
+            <li><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Accessibility Consultants') }}</a></li>
         </ol>
         <div class="w-full lg:w-2/3">
             <h1 id="what-we-ask-for">
                 {{ __('What information do we ask for?') }}
             </h1>
-            <p class="h4">{{ __('Information that we ask consultation participants, accessibility consultants, and community connectors to share.') }}</p>
+            <p class="h4">{{ __('Information that we ask Consultation Participants, accessibility consultants, and Community Connectors to share.') }}</p>
         </div>
     </x-slot>
 

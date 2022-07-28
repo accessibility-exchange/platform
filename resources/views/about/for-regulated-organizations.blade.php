@@ -34,7 +34,7 @@
                     <x-placeholder width="915" height="515" class="text-lavender-3" />
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
-                    <h3>{{ __('Find consultation participants') }}</h3>
+                    <h3>{{ __('Find Consultation Participants') }}</h3>
                     <p>{{ __('Find people with disabilities, Deaf people and community organizations (i.e., disability or other relevant civil society organizations, e.g., Indigenous services), to consult with on your accessibility project.') }}</p>
                 </div>
             </x-media-text>

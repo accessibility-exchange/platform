@@ -30,7 +30,7 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
             ]);
 
-        $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation participant')->first()->id);
+        $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
 
         $regulatedOrganizationUser = User::factory()
             ->create([

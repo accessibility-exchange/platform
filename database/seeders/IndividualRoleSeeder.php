@@ -16,15 +16,15 @@ class IndividualRoleSeeder extends Seeder
     {
         $roles = [
             [
-                'name' => __('Consultation participant'),
+                'name' => __('Consultation Participant'),
                 'description' => __('Participate in consultations'),
             ],
             [
-                'name' => __('Accessibility consultant'),
+                'name' => __('Accessibility Consultant'),
                 'description' => __('Help regulated organizations design and implement their consultations'),
             ],
             [
-                'name' => __('Community connector'),
+                'name' => __('Community Connector'),
                 'description' => __('Connect organizations with participants from my community'),
             ],
         ];

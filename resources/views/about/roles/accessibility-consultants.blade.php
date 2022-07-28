@@ -47,8 +47,8 @@
                     <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Find projects that are looking for a community connector') }}</h3>
-                    <p>{{ __('Access governments and businesses who are looking for a community connector to help with a project.') }}</p>
+                    <h3>{{ __('Find projects that are looking for a Community Connector') }}</h3>
+                    <p>{{ __('Access governments and businesses who are looking for a Community Connector to help with a project.') }}</p>
                 </div>
             </x-media-text>
 

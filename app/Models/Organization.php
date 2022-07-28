@@ -269,7 +269,7 @@ class Organization extends Model
      */
     public function isParticipant(): bool
     {
-        $participantRole = OrganizationRole::where('name->en', 'Consultation participant')->first();
+        $participantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
 
         return $this->organizationRoles->contains($participantRole);
     }
@@ -281,19 +281,19 @@ class Organization extends Model
      */
     public function isConsultant(): bool
     {
-        $consultantRole = OrganizationRole::where('name->en', 'Accessibility consultant')->first();
+        $consultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
 
         return $this->organizationRoles->contains($consultantRole);
     }
 
     /**
-     * Is the individual a community connector?
+     * Is the individual a Community Connector?
      *
      * @return bool
      */
     public function isConnector(): bool
     {
-        $connectorRole = OrganizationRole::where('name->en', 'Community connector')->first();
+        $connectorRole = OrganizationRole::where('name->en', 'Community Connector')->first();
 
         return $this->organizationRoles->contains($connectorRole);
     }

@@ -53,8 +53,8 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-yellow-3 pt-8 stack">
                     <h3>{{ __('Be a Community Connector') }}</h3>
-                    <p>{{ __('Connect members of your community with governments and businesses who are looking for consultation participants. Help them learn how to best work with your community.') }}</p>
-                    <p><a href="{{ localized_route('about.organization-community-connectors') }}">{{ __('Learn more about being a community connector') }}</a></p>
+                    <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}</p>
+                    <p><a href="{{ localized_route('about.organization-community-connectors') }}">{{ __('Learn more about being a Community Connector') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -76,7 +76,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('Participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this.') }}</p>
-                    <p><a href="{{ localized_route('about.organization-consultation-participants') }}">{{ __('Learn more about being a consultation participant') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a></p>
                 </div>
             </x-media-text>
         </x-section>

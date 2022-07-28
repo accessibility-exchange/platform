@@ -25,11 +25,11 @@
             <p><strong><em>{{ __('Primary constituency means a group that’s specifically in your mandate to :represent_or_serve_and_support.', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</em></strong></p>
 
             @if($organization->isConnector())
-            <p><em>{{ __('As you’ve indicated that your organization is playing the role of community connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em></p>
+            <p><em>{{ __('As you’ve indicated that your organization is playing the role of Community Connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em></p>
             @endif
 
             @if($organization->isParticipant())
-                <p><em>{{ __('As you’ve indicated that your organization is playing the role of consultation participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}</em></p>
+                <p><em>{{ __('As you’ve indicated that your organization is playing the role of Consultation Participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}</em></p>
             @endif
 
             @if($organization->type !== 'civil-society')

@@ -53,7 +53,7 @@
         <h3 id="{{ Str::slug(__('Participating in engagements')) }}">{{ __('Participating in engagements') }}</h3>
 
         @if($user->individual->isParticipant())
-            <h4>{{ __('As a consultation participant') }}</h4>
+            <h4>{{ __('As a Consultation Participant') }}</h4>
 
             <p>
                 {{ __('We will always notify you when you are invited to engagements by contacting you or your support person.') }}
@@ -78,9 +78,9 @@
 
         @if($user->individual->isConnector())
             <fieldset>
-                <legend>{{ __('As a community connector') }}</legend>
+                <legend>{{ __('As a Community Connector') }}</legend>
                 <x-hearth-hint for="connectors-contact">
-                    {{ __('Would you like to be notified directly when you are added to an engagement as a community connector?') }}<br />
+                    {{ __('Would you like to be notified directly when you are added to an engagement as a Community Connector?') }}<br />
                     {{ __('You will always get a notification on the website.') }}
                 </x-hearth-hint>
                 <x-hearth-input type="hidden" name="notification_settings[connectors][channels][]" value="website" />

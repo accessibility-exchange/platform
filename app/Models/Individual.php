@@ -355,7 +355,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     public function isParticipant(): bool
     {
-        $participantRole = IndividualRole::where('name->en', 'Consultation participant')->first();
+        $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
 
         return $this->individualRoles->contains($participantRole);
     }
@@ -367,19 +367,19 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     public function isConsultant(): bool
     {
-        $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+        $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
         return $this->individualRoles->contains($consultantRole);
     }
 
     /**
-     * Is the individual a community connector?
+     * Is the individual a Community Connector?
      *
      * @return bool
      */
     public function isConnector(): bool
     {
-        $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+        $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
 
         return $this->individualRoles->contains($connectorRole);
     }

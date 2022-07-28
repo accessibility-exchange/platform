@@ -59,8 +59,8 @@ test('individuals can edit their roles', function () {
 
     $individual = $user->individual;
 
-    $participantRole = IndividualRole::where('name->en', 'Consultation participant')->first();
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
     $individual->individualRoles()->sync([$consultantRole->id]);
     $individual->publish();
 
@@ -102,7 +102,7 @@ test('users can create individual pages', function () {
     $user = Auth::user();
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -297,7 +297,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
 
@@ -334,7 +334,7 @@ test('individuals with connector role can represent cross-disability individuals
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
     $areaType = AreaType::first();
@@ -367,7 +367,7 @@ test('individuals with connector role can represent individuals in specific age 
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $ageBracket = AgeBracket::first();
@@ -402,7 +402,7 @@ test('individuals with connector role can represent refugees and immigrants', fu
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
@@ -435,7 +435,7 @@ test('individuals with connector role can represent gender and sexual minorities
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $women = GenderIdentity::where('name_plural->en', 'Women')->first();
@@ -486,7 +486,7 @@ test('individuals with connector role can represent ethnoracial identities', fun
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $ethnoracialIdentity = EthnoracialIdentity::where('name->en', 'Black')->first();
     $areaType = AreaType::first();
@@ -518,7 +518,7 @@ test('individuals can have participant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $participantRole = IndividualRole::where('name->en', 'Consultation participant')->first();
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
     $individual->individualRoles()->sync([$participantRole->id]);
 
     expect($individual->isParticipant())->toBeTrue();
@@ -530,7 +530,7 @@ test('individuals can have consultant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
     $individual->individualRoles()->sync([$consultantRole->id]);
 
     expect($individual->isConsultant())->toBeTrue();
@@ -544,7 +544,7 @@ test('users can edit individual pages', function () {
 
     expect($individual->isPublishable())->toBeFalse();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -568,7 +568,7 @@ test('users can edit individual pages', function () {
     $draftUser = User::factory()->create();
     $draftIndividual = $draftUser->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $draftIndividual->individualRoles()->sync([$consultantRole->id]);
 
@@ -603,7 +603,7 @@ test('users can not edit others individual pages', function () {
 
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -660,7 +660,7 @@ test('users can view their own draft individual pages', function () {
 
     $individual = Individual::factory()->create(['published_at' => null, 'consulting_services' => ['analysis']]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -681,7 +681,7 @@ test('users can view individual pages', function () {
 
     $individual = Individual::factory()->create(['consulting_services' => ['analysis']]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -699,7 +699,7 @@ test('guests can not view individual pages', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -715,7 +715,7 @@ test('individual pages can be published', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -736,7 +736,7 @@ test('individual pages can be unpublished', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -760,7 +760,7 @@ test('draft individuals do not appear on individual index', function () {
         'published_at' => null,
     ]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -774,7 +774,7 @@ test('published individuals appear on individual index', function () {
     $user = User::factory()->create();
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -796,7 +796,7 @@ test('individual view routes can be retrieved based on role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-experiences');
 
