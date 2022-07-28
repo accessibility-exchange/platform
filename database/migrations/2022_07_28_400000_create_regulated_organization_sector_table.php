@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTopicablesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,15 @@ class CreateTopicablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('topicables', function (Blueprint $table) {
+        Schema::create('regulated_organization_sector', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('topic_id')
+            $table->foreignId('regulated_organization_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->morphs('topicable');
+            $table->foreignId('sector_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 
@@ -30,6 +32,6 @@ class CreateTopicablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('topicables');
+        Schema::dropIfExists('regulated_organization_sector');
     }
-}
+};

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhasesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreatePhasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('phases', function (Blueprint $table) {
+        Schema::create('access_support_individual', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('name');
+            $table->foreignId('access_support_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('individual_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 
@@ -27,6 +32,6 @@ class CreatePhasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phases');
+        Schema::dropIfExists('access_support_individual');
     }
-}
+};

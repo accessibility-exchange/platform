@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLivedExperiencesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateLivedExperiencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lived_experiences', function (Blueprint $table) {
+        Schema::create('topicables', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('name');
+            $table->foreignId('topic_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->morphs('topicable');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateLivedExperiencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lived_experiences');
+        Schema::dropIfExists('topicables');
     }
-}
+};

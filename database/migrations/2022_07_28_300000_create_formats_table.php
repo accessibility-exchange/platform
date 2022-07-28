@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDefinedTermsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateDefinedTermsTable extends Migration
      */
     public function up()
     {
-        Schema::create('defined_terms', function (Blueprint $table) {
+        Schema::create('formats', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('term');
-            $table->json('definition');
-            $table->nullableMorphs('defineable');
+            $table->json('name');
         });
     }
 
@@ -29,6 +27,6 @@ class CreateDefinedTermsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('defined_terms');
+        Schema::dropIfExists('formats');
     }
-}
+};

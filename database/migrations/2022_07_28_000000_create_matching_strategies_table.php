@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectsOfInterestTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateProjectsOfInterestTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects_of_interest', function (Blueprint $table) {
+        Schema::create('matching_strategies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('individual_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('project_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->nullableMorphs('matchable');
         });
     }
 
@@ -32,6 +27,6 @@ class CreateProjectsOfInterestTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects_of_interest');
+        Schema::dropIfExists('matching_strategies');
     }
-}
+};

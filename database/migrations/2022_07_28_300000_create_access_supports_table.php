@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImpactProjectTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateImpactProjectTable extends Migration
      */
     public function up()
     {
-        Schema::create('impact_project', function (Blueprint $table) {
+        Schema::create('access_supports', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('impact_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('project_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->json('name');
+            $table->json('description')->nullable();
+            $table->boolean('in_person')->nullable();
+            $table->boolean('virtual')->nullable();
+            $table->boolean('documents')->nullable();
         });
     }
 
@@ -32,6 +31,6 @@ class CreateImpactProjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('impact_project');
+        Schema::dropIfExists('access_supports');
     }
-}
+};

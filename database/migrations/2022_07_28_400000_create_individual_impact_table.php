@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIndividualSectorTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateIndividualSectorTable extends Migration
      */
     public function up()
     {
-        Schema::create('individual_sector', function (Blueprint $table) {
+        Schema::create('impact_individual', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('sector_id')
+            $table->foreignId('impact_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -32,6 +32,6 @@ class CreateIndividualSectorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('individual_sector');
+        Schema::dropIfExists('impact_individual');
     }
-}
+};

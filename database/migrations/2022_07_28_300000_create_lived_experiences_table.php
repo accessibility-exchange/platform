@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccessSupportsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateAccessSupportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('access_supports', function (Blueprint $table) {
+        Schema::create('lived_experiences', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->json('name');
-            $table->json('description')->nullable();
-            $table->boolean('in_person')->nullable();
-            $table->boolean('virtual')->nullable();
-            $table->boolean('documents')->nullable();
         });
     }
 
@@ -31,6 +27,6 @@ class CreateAccessSupportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('access_supports');
+        Schema::dropIfExists('lived_experiences');
     }
-}
+};

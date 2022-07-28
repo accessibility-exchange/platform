@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIndividualImpactTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateIndividualImpactTable extends Migration
      */
     public function up()
     {
-        Schema::create('impact_individual', function (Blueprint $table) {
+        Schema::create('individual_lived_experience', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('impact_id')
+            $table->foreignId('lived_experience_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -32,6 +32,6 @@ class CreateIndividualImpactTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('impact_individual');
+        Schema::dropIfExists('individual_lived_experience');
     }
-}
+};

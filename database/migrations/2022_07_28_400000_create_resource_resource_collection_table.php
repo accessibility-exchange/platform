@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTopicsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('topics', function (Blueprint $table) {
+        Schema::create('resource_resource_collection', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('name');
+            $table->foreignId('resource_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('resource_collection_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 
@@ -27,6 +32,6 @@ class CreateTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('topics');
+        Schema::dropIfExists('collectionables');
     }
-}
+};

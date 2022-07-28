@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccessSupportIndividualTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateAccessSupportIndividualTable extends Migration
      */
     public function up()
     {
-        Schema::create('access_support_individual', function (Blueprint $table) {
+        Schema::create('resource_collections', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('access_support_id')
+            $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('individual_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->json('title');
+            $table->json('slug');
+            $table->json('description');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateAccessSupportIndividualTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('access_support_individual');
+        Schema::dropIfExists('resource_collections');
     }
-}
+};

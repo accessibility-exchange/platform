@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResourceResourceCollectionTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateResourceResourceCollectionTable extends Migration
      */
     public function up()
     {
-        Schema::create('resource_resource_collection', function (Blueprint $table) {
+        Schema::create('engagement_individual', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('resource_id')
+            $table->enum('status', ['invited', 'confirmed', 'declined', 'removed', 'exited'])->default('invited');
+            $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('resource_collection_id')
+            $table->foreignId('engagement_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -32,6 +33,6 @@ class CreateResourceResourceCollectionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('collectionables');
+        Schema::dropIfExists('engagement_individual');
     }
-}
+};

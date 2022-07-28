@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContentTypesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateContentTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('content_types', function (Blueprint $table) {
+        Schema::create('projects_of_interest', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
             $table->timestamps();
+            $table->foreignId('individual_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('project_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 
@@ -27,6 +32,6 @@ class CreateContentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('content_types');
+        Schema::dropIfExists('projects_of_interest');
     }
-}
+};

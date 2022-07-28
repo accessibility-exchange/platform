@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunicationToolsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateCommunicationToolsTable extends Migration
      */
     public function up()
     {
-        Schema::create('communication_tools', function (Blueprint $table) {
+        Schema::create('individual_sector', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('name');
+            $table->foreignId('individual_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('sector_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 
@@ -27,6 +32,6 @@ class CreateCommunicationToolsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('communication_tools');
+        Schema::dropIfExists('individual_sector');
     }
-}
+};
