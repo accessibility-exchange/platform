@@ -8,6 +8,7 @@ RUN apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libxml2-dev \
+    libxml2 \
     libonig-dev \
     libpng-dev
 
