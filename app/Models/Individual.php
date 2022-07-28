@@ -39,36 +39,31 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     use InteractsWithMedia;
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
+        'published_at',
+        'user_id',
         'name',
         'slug',
-        'locality',
-        'region',
-        'bio',
-        'social_links',
-        'pronouns',
         'picture_alt',
-        'first_language',
-        'working_languages',
-        'status',
-        'user_id',
-        'age_group',
-        'rural_or_remote',
-        'lived_experience',
-        'skills_and_strengths',
-        'relevant_experiences',
         'languages',
-        'meeting_types',
+        'pronouns',
+        'bio',
+        'region',
+        'locality',
+        'working_languages',
+        'consulting_services',
+        'social_links',
+        'website_link',
         'extra_attributes',
         'other_disability_type_connection',
         'other_ethnoracial_identity_connection',
         'connection_lived_experience',
-        'consulting_services',
+        'lived_experience',
+        'skills_and_strengths',
+        'relevant_experiences',
+        'meeting_types',
+        'birth_date',
+        'first_language',
         'other_payment_type',
         'other_access_need',
         'signed_language_for_interpretation',
@@ -78,42 +73,36 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'street_address',
         'unit_apartment_suite',
         'postal_code',
-        'preferred_notification_method',
-        'notifications',
     ];
 
-    /**
-     * The attributes that which should be cast to other types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'social_links' => 'array',
-        'relevant_experiences' => 'array',
+        'published_at' => 'datetime:Y-m-d',
+        'picture_alt' => 'array',
         'languages' => 'array',
-        'working_languages' => 'array',
-        'rural_or_remote' => 'boolean',
-        'meeting_types' => 'array',
-        'bio' => 'array',
         'pronouns' => 'array',
+        'bio' => 'array',
+        'working_languages' => 'array',
+        'consulting_services' => 'array',
+        'social_links' => 'array',
         'other_disability_type_connection' => 'array',
         'other_ethnoracial_identity_connection' => 'array',
-        'consulting_services' => 'array',
+        'lived_experience' => 'array',
+        'skills_and_strengths' => 'array',
+        'relevant_experiences' => 'array',
+        'meeting_types' => 'array',
+        'birth_date' => 'datetime:Y-m-d',
+        'other_access_need' => 'array',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
     public array $translatable = [
         'picture_alt',
-        'bio',
         'pronouns',
-        'lived_experience',
-        'skills_and_strengths',
+        'bio',
         'other_disability_type_connection',
         'other_ethnoracial_identity_connection',
+        'lived_experience',
+        'skills_and_strengths',
+        'other_access_need',
     ];
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void

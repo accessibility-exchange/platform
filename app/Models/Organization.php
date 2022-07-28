@@ -44,25 +44,22 @@ class Organization extends Model
         'preferred_notification_method' => 'email',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
-        'extra_attributes',
+        'published_at',
         'name',
         'type',
         'languages',
-        'working_languages',
-        'consulting_services',
-        'locality',
         'region',
+        'locality',
         'about',
         'service_areas',
+        'working_languages',
+        'consulting_services',
         'social_links',
         'website_link',
+        'extra_attributes',
         'other_disability_type',
+        'other_ethnoracial_identity',
         'staff_lived_experience',
         'contact_person_name',
         'contact_person_email',
@@ -70,22 +67,18 @@ class Organization extends Model
         'contact_person_vrs',
         'preferred_contact_method',
         'preferred_notification_method',
-        'other_ethnoracial_identity',
         'notification_settings',
     ];
 
-    /**
-     * The attributes that which should be cast to other types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'service_areas' => 'array',
+        'published_at' => 'datetime:Y-m-d',
+        'name' => 'array',
         'languages' => 'array',
+        'about' => 'array',
+        'service_areas' => 'array',
         'working_languages' => 'array',
         'consulting_services' => 'array',
         'social_links' => 'array',
-        'published_at' => 'datetime:Y-m-d',
         'other_disability_type' => 'array',
         'other_ethnoracial_identity' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
@@ -93,20 +86,10 @@ class Organization extends Model
         'notification_settings' => SchemalessAttributes::class,
     ];
 
-    /**
-     * The relationships that should be deleted when an organization is deleted.
-     *
-     * @var array
-     */
     protected mixed $cascadeDeletes = [
         'users',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array<string>
-     */
     public array $translatable = [
         'name',
         'slug',
@@ -115,9 +98,6 @@ class Organization extends Model
         'other_ethnoracial_identity',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -125,21 +105,11 @@ class Organization extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    /**
-     * Get the route prefix for the model.
-     *
-     * @return string
-     */
     public function getRoutePrefix(): string
     {
         return 'organizations';
