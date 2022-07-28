@@ -10,8 +10,10 @@ RUN apt-get install -y \
     libxml2-dev \
     libxml2 \
     libbz2-dev \
+    libbz2 \
     libonig-dev \
-    libpng-dev
+    libpng-dev \
+    libzip-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
