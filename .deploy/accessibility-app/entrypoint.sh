@@ -4,10 +4,10 @@ set -e
 
 mkdir -p $FILES_PATH
 
-rsync -a /app/public/storage/ $FILES_PATH/
-rm -rf /app/public/storage
+rsync -a /app/storage/ $FILES_PATH/
+rm -rf /app/storage
 
-ln -s $FILES_PATH /app/public/storage
+ln -s $FILES_PATH /app/storage
 
 if [ ! -f $FILES_PATH/../deploy.lock ]
 then
