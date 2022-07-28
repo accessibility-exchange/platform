@@ -316,13 +316,30 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
-        'contact_person_vrs' => false,
         'preferred_contact_method' => 'email',
         'save' => 1,
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->contact_methods)->toContain('email')->toContain('phone');
+
+    expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
+    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
+    expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");
+    expect($organization->alternate_contact_method)->toEqual($organization->alternate_contact_point);
+
+    $organization->preferred_contact_method = 'phone';
+    $organization->save();
+    $organization = $organization->fresh();
+
+    expect($organization->primary_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
+    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_email);
+    expect($organization->primary_contact_method)->toEqual("Call {$organization->contact_person_name} at {$organization->contact_person_phone->formatForCountry('CA')}.");
+    expect($organization->alternate_contact_method)->toEqual("<{$organization->contact_person_email}>");
 });
 
 test('users without admin role cannot edit or publish organizations', function () {

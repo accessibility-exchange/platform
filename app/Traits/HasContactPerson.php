@@ -63,7 +63,7 @@ trait HasContactPerson
     public function getAlternateContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'phone' => $this->alternate_contact_point ? '['.$this->alternate_contact_point.'](mailto:'.$this->alternate_contact_point.')' : null,
+            'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
             default => $this->alternate_contact_point ?? null
         };
     }
