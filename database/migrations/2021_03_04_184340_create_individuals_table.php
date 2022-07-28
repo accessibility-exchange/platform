@@ -16,7 +16,7 @@ class CreateIndividualsTable extends Migration
         Schema::create('individuals', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->dateTime('published_at')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
