@@ -10,7 +10,6 @@ RUN apt-get install -y \
     libxml2-dev \
     libxml2 \
     libbz2-dev \
-    libbz2 \
     libonig-dev \
     libpng-dev \
     libzip-dev
