@@ -35,9 +35,6 @@ RUN pecl install -o -f redis && \
     rm -rf /tmp/pear && \
     docker-php-ext-enable redis
 
-RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
-RUN useradd -ms /bin/bash sail
-
 COPY .deploy/accessibility-app/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 COPY .deploy/accessibility-app/nginx.conf /etc/nginx/nginx.conf
 COPY .deploy/accessibility-app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
