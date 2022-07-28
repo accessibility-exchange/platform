@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ImpactSeeder::class,
             LanguageSeeder::class,
             LivedExperienceSeeder::class,
-            PaymentMethodSeeder::class,
+            PaymentTypeSeeder::class,
             PhaseSeeder::class,
             SectorSeeder::class,
             TopicSeeder::class,

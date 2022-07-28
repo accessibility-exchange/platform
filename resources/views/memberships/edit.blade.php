@@ -10,7 +10,7 @@
 
     <p>{{ __('membership.edit_user_role_intro', ['user' => $user->name, 'membershipable' => $membershipable->name]) }}</p>
 
-    <form action="{{ localized_route('memberships.update', $membership) }}" method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('memberships.update', $membership) }}" method="POST" novalidate>
         @csrf
         @method('PUT')
         <fieldset @error('membership') class="field--error" @enderror>
@@ -18,7 +18,9 @@
             <x-hearth-radio-buttons name="role" :options="$roles" :checked="old('role', $membership->role)" />
             <x-hearth-error for="role" field="membership" />
         </fieldset>
-        <a class="button" href="{{ localized_route($membershipable->getRoutePrefix() . '.edit', $membershipable) }}">{{ __('organization.action_cancel_user_role_update') }}</a>
-        <button>{{ __('organization.action_update_user_role') }}</button>
+        <p class="repel">
+            <a class="cta secondary" href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('organization.action_cancel_user_role_update') }}</a>
+            <button>{{ __('organization.action_update_user_role') }}</button>
+        </p>
     </form>
 </x-app-layout>

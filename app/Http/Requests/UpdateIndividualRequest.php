@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ConsultingServices;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -33,7 +33,7 @@ class UpdateIndividualRequest extends FormRequest
             'locality' => 'nullable|string|max:255',
             'region' => [
                 'required',
-                new Enum(ProvincesAndTerritories::class),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
@@ -45,7 +45,7 @@ class UpdateIndividualRequest extends FormRequest
                 Rule::excludeIf(fn () => ! $this->individual->isConsultant()),
             ],
             'consulting_services.*' => [
-                new Enum(ConsultingServices::class),
+                new Enum(ConsultingService::class),
 
             ],
             'social_links.*' => 'nullable|url',

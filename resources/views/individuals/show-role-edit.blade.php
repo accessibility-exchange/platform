@@ -18,7 +18,7 @@
 
         <div role="alert">
             <x-hearth-alert type="warning" x-cloak x-show="(initialRoles.includes(2) || initialRoles.includes(3)) && !roles.includes(2) && !roles.includes(3)">
-                {{ __('Your role no longer includes the accessibility consultant or community connector roles. Your public profile will be unpublished. However, if you edit your role to add the accessibility consultant or community connector roles again, you will be able to publish your profile again.') }}
+                {{ __('Your role no longer includes the accessibility consultant or Community Connector roles. Your public profile will be unpublished. However, if you edit your role to add the accessibility consultant or Community Connector roles again, you will be able to publish your profile again.') }}
             </x-hearth-alert>
         </div>
 

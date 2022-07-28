@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\HasContactPerson;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
-use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +17,9 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
 use Makeable\QueryKit\QueryKit;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -25,9 +27,9 @@ use Spatie\Translatable\HasTranslations;
 class Organization extends Model
 {
     use CascadesDeletes;
+    use HasContactPerson;
     use HasFactory;
     use HasSchemalessAttributes;
-    use HasInvitations;
     use HasMembers;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
@@ -36,6 +38,11 @@ class Organization extends Model
     use HasTranslatableSlug;
     use Notifiable;
     use QueryKit;
+
+    protected $attributes = [
+        'preferred_contact_method' => 'email',
+        'preferred_notification_method' => 'email',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -62,7 +69,9 @@ class Organization extends Model
         'contact_person_phone',
         'contact_person_vrs',
         'preferred_contact_method',
+        'preferred_notification_method',
         'other_ethnoracial_identity',
+        'notification_settings',
     ];
 
     /**
@@ -79,6 +88,9 @@ class Organization extends Model
         'published_at' => 'datetime:Y-m-d',
         'other_disability_type' => 'array',
         'other_ethnoracial_identity' => 'array',
+        'contact_person_phone' => E164PhoneNumberCast::class.':CA',
+        'contact_person_vrs' => 'boolean',
+        'notification_settings' => SchemalessAttributes::class,
     ];
 
     /**
@@ -136,6 +148,11 @@ class Organization extends Model
     public function getRoutePlaceholder(): string
     {
         return 'organization';
+    }
+
+    public function invitations(): MorphMany
+    {
+        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     protected function serviceRegions(): Attribute
@@ -252,7 +269,7 @@ class Organization extends Model
      */
     public function isParticipant(): bool
     {
-        $participantRole = OrganizationRole::where('name->en', 'Consultation participant')->first();
+        $participantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
 
         return $this->organizationRoles->contains($participantRole);
     }
@@ -264,19 +281,19 @@ class Organization extends Model
      */
     public function isConsultant(): bool
     {
-        $consultantRole = OrganizationRole::where('name->en', 'Accessibility consultant')->first();
+        $consultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
 
         return $this->organizationRoles->contains($consultantRole);
     }
 
     /**
-     * Is the individual a community connector?
+     * Is the individual a Community Connector?
      *
      * @return bool
      */
     public function isConnector(): bool
     {
-        $connectorRole = OrganizationRole::where('name->en', 'Community connector')->first();
+        $connectorRole = OrganizationRole::where('name->en', 'Community Connector')->first();
 
         return $this->organizationRoles->contains($connectorRole);
     }

@@ -64,6 +64,7 @@
 @import "routes/users/_show.css";
 @import "routes/_home.css";
 @import "routes/_welcome.css";
+@import "themes/_black-white.css";
 @import "themes/_black-brown.css";
 @import "themes/_black-yellow.css";
 @import "themes/_dark.css";
@@ -72,6 +73,7 @@
 @import "themes/_light-dark.css";
 @import "themes/_light.css";
 @import "themes/_yellow-black.css";
+@import "themes/_white-black.css";
 
 @tailwind base;
 @tailwind components;

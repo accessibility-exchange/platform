@@ -4,13 +4,13 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
-            <li><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Accessibility consultants') }}</a></li>
+            <li><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Accessibility Consultants') }}</a></li>
         </ol>
         <div class="w-full lg:w-2/3">
             <h1 id="what-we-ask-for">
                 {{ __('What information do we ask for?') }}
             </h1>
-            <p class="h4">{{ __('Information that we ask consultation participants, accessibility consultants, and community connectors to share.') }}</p>
+            <p class="h4">{{ __('Information that we ask Consultation Participants, accessibility consultants, and Community Connectors to share.') }}</p>
         </div>
     </x-slot>
 
@@ -74,7 +74,7 @@
         <x-section class="bg-turquoise-2 align:center mt-16">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
-                {{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}
+                {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
             </p>
         </x-section>
 
@@ -89,7 +89,7 @@
                         </div>
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}</p>
+                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
                             <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
                         </div>
                     </div>

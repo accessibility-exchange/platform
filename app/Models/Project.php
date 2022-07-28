@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasContactPerson;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,14 +15,20 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
 
 class Project extends Model
 {
+    use HasContactPerson;
     use HasFactory;
     use HasStatus;
     use HasTranslations;
     use Notifiable;
+
+    protected $attributes = [
+        'preferred_contact_method' => 'email',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +58,11 @@ class Project extends Model
         'consultant_id',
         'consultant_responsibilities',
         'team_trainings',
+        'contact_person_name',
+        'contact_person_email',
+        'contact_person_phone',
+        'contact_person_vrs',
+        'preferred_contact_method',
     ];
 
     /**
@@ -71,6 +83,8 @@ class Project extends Model
         'contacts' => 'array',
         'has_consultant' => 'boolean',
         'team_trainings' => 'array',
+        'contact_person_phone' => E164PhoneNumberCast::class.':CA',
+        'contact_person_vrs' => 'boolean',
     ];
 
     /**

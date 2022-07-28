@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
-use App\Enums\ConsultingServices;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
@@ -83,7 +83,18 @@ class OrganizationController extends Controller
 
     public function store(StoreOrganizationRequest $request): RedirectResponse
     {
+        $user = $request->user();
         $data = $request->validated();
+
+        $data['contact_person_name'] = $user->name;
+        $data['contact_person_email'] = $user->email;
+        $data['preferred_contact_method'] = 'email';
+
+        $data['working_languages'] = [$user->locale];
+
+        if ($user->signed_language) {
+            $data['working_languages'][] = $user->signed_language;
+        }
 
         $organization = Organization::create($data);
 
@@ -155,9 +166,9 @@ class OrganizationController extends Controller
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'roles' => $roles,
-            'consultingServices' => Options::forEnum(ConsultingServices::class)->toArray(),
+            'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),

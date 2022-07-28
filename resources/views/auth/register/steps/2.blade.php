@@ -5,7 +5,7 @@
         <x-hearth-radio-buttons name="context" :options="[
             [
                 'value' => 'individual',
-                'label' => __('As a individual'),
+                'label' => __('As an individual'),
                 'hint' => __('I have lived experience of being disabled or Deaf, and I want to work on accessibility projects'),
             ],
             [

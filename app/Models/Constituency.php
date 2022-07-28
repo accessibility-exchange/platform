@@ -58,7 +58,7 @@ class Constituency extends Model implements Selectable
     }
 
     /**
-     * Get all the community connectors for the model.
+     * Get all the Community Connectors for the model.
      *
      * @returns MorphToMany
      */

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\Sector;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -51,7 +51,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
-                new Enum(ProvincesAndTerritories::class),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'service_areas' => [
                 'required',
