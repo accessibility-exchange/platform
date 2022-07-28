@@ -15,33 +15,42 @@ class CreateIndividualsTable extends Migration
     {
         Schema::create('individuals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('locality');
-            $table->string('region');
+            $table->timestamps();
+            $table->dateTime('published_at')->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->dateTime('published_at')->nullable();
-            $table->json('bio');
-            $table->json('links')->nullable();
-            $table->date('birth_date')->nullable();
-            $table->json('pronouns')->nullable();
+            $table->string('name');
+            $table->string('slug');
             $table->json('picture_alt')->nullable();
-            $table->enum('creator', ['self', 'other'])->default('self');
-            $table->string('creator_name')->nullable();
-            $table->json('creator_relationship')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('support_person_phone')->nullable();
-            $table->string('email')->nullable();
-            $table->string('support_person_email')->nullable();
-            $table->enum('preferred_contact_method', [
-                'phone',
-                'support_person_phone',
-                'email',
-                'support_person_email',
-            ])->default('email');
-            $table->timestamps();
+            $table->json('languages')->nullable();
+            $table->json('pronouns')->nullable();
+            $table->json('bio')->nullable();
+            $table->string('region')->nullable();
+            $table->string('locality')->nullable();
+            $table->json('working_languages')->nullable();
+            $table->json('consulting_services')->nullable();
+            $table->json('social_links')->nullable();
+            $table->string('website_link')->nullable();
+            $table->schemalessAttributes('extra_attributes');
+            $table->json('other_disability_type_connection')->nullable();
+            $table->json('other_ethnoracial_identity_connection')->nullable();
+            $table->string('connection_lived_experience')->nullable();
+            $table->json('lived_experience')->nullable();
+            $table->json('skills_and_strengths')->nullable();
+            $table->json('relevant_experiences')->nullable();
+            $table->json('meeting_types')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->string('first_language');
+            $table->string('other_payment_type')->nullable();
+            $table->json('other_access_need')->nullable();
+            $table->string('signed_language_for_interpretation')->nullable();
+            $table->string('spoken_language_for_interpretation')->nullable();
+            $table->string('signed_language_for_translation')->nullable();
+            $table->string('written_language_for_translation')->nullable();
+            $table->string('street_address')->nullable();
+            $table->string('unit_apartment_suite')->nullable();
+            $table->string('postal_code')->nullable();
         });
     }
 
