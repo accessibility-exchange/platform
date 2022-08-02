@@ -211,6 +211,7 @@ button.nav-button .indicator {
     }
 
     .primary ul {
+        background: transparent;
         border-block-start: 0;
         display: flex;
         flex-direction: row;
