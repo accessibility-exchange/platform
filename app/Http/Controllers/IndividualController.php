@@ -149,6 +149,10 @@ class IndividualController extends Controller
             $data['working_languages'] = array_filter($data['working_languages']);
         }
 
+        if (isset($data['social_links'])) {
+            $data['social_links'] = array_filter($data['social_links']);
+        }
+
         $individual->fill($data);
 
         $individual->save();
@@ -278,12 +282,7 @@ class IndividualController extends Controller
         $data = $request->validated();
 
         if (isset($data['relevant_experiences'])) {
-            $relevant_experiences = array_filter(array_map('array_filter', $data['relevant_experiences']));
-            if (empty($relevant_experiences)) {
-                unset($data['relevant_experiences']);
-            } else {
-                $data['relevant_experiences'] = $relevant_experiences;
-            }
+            $data['relevant_experiences'] = array_filter(array_map('array_filter', $data['relevant_experiences']));
         }
 
         $individual->fill($data);
