@@ -1,6 +1,6 @@
 .switcher {
     --threshold: var(--max-w-prose);
-    --gap: var(--size-3);
+    --gap: var(--space-4);
 
     display: flex;
     flex-wrap: wrap;

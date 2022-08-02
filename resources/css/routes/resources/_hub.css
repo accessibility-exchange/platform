@@ -1,6 +1,6 @@
 form.search {
     display: grid;
-    gap: var(--step-0);
+    gap: var(--space-5);
 }
 
 form.search > * + * {
@@ -9,16 +9,15 @@ form.search > * + * {
 
 .cards--collections {
     display: grid;
-    gap: var(--step-0);
+    gap: var(--space-5);
 }
 
 .card--collection {
-    border: var(--ll-border-medium);
-    border-radius: var(--ll-border-radius);
+    border: var(--border-3) solid;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: var(--step-0);
+    padding: var(--space-5);
 }
 
 .card--collection .actions {
@@ -26,7 +25,7 @@ form.search > * + * {
 }
 
 .card--collection .actions a {
-    margin-block-start: var(--step-0);
+    margin-block-start: var(--space-5);
 }
 
 @media (min-width: 1024px) {

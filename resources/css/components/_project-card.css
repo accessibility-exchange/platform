@@ -5,9 +5,8 @@
 }
 
 .card--project {
-    border: var(--ll-border-medium);
-    border-radius: var(--ll-border-radius);
-    padding: var(--step-0);
+    border: var(--border-3) solid;
+    padding: var(--space-5);
 }
 
 .filter-impact--hide,

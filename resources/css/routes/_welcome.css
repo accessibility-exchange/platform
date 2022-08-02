@@ -10,7 +10,7 @@
     background-color: var(--color-blue-6);
     color: var(--color-white);
     margin-block-start: 0;
-    padding-block: var(--size-9);
+    padding-block: var(--space-16);
     text-align: center;
 }
 
@@ -21,21 +21,21 @@
 
 .welcome main .cta {
     display: inline-flex;
-    min-width: var(--size-12);
+    min-width: var(--space-12);
     width: auto;
 }
 
 .welcome section {
-    padding-block: var(--size-9);
+    padding-block: var(--space-16);
 }
 
 .welcome .grid {
-    margin-block-start: var(--size-9);
+    margin-block-start: var(--space-16);
 }
 
 .welcome .grid .box {
     border-block-start-style: solid;
-    border-block-start-width: var(--border-size-3);
+    border-block-start-width: var(--border-3);
     padding-inline: 0;
 }
 

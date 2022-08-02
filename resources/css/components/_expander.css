@@ -15,22 +15,22 @@
     display: flex;
     font-size: inherit;
     font-weight: var(--font-semibold);
-    height: var(--size-9);
+    height: var(--space-16);
     justify-content: space-between;
-    padding: 0 var(--size-2);
+    padding: 0 var(--space-2);
     position: relative;
     text-align: start;
-    width: calc(100% + 2 * var(--size-2));
+    width: calc(100% + 2 * var(--space-2));
 }
 
 .expander .title button::before {
-    border-block-start: var(--border-size-1) solid var(--expander-border);
+    border-block-start: var(--border) solid var(--expander-border);
     content: "";
     display: block;
-    left: var(--size-2);
+    left: var(--space-2);
     position: absolute;
     top: 0;
-    width: calc(100% - 2 * var(--size-2));
+    width: calc(100% - 2 * var(--space-2));
 }
 
 .expander .title button:hover::before {
@@ -40,7 +40,7 @@
 .expander .title button:focus {
     border-block-start-color: transparent;
     color: var(--expander-color-focus);
-    outline: var(--border-size-2) solid var(--expander-color-focus);
+    outline: var(--border-2) solid var(--expander-color-focus);
     outline-offset: 0;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .expander .title button:active::before {
-    border-block-start: var(--border-size-2) solid var(--expander-border-active);
+    border-block-start: var(--border-2) solid var(--expander-border-active);
 }
 
 .expander .title button svg {

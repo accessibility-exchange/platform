@@ -2,8 +2,8 @@
 .brand {
     color: var(--brand-color);
     display: inline-block;
-    height: var(--size-8);
-    margin-block: var(--size-4);
+    height: var(--space-12);
+    margin-block: var(--space-5);
     width: auto;
 }
 
@@ -50,6 +50,6 @@
 
 @media (min-width: 768px) {
     .brand {
-        height: var(--size-9);
+        height: var(--space-16);
     }
 }

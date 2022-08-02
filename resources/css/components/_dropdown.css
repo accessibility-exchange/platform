@@ -16,7 +16,7 @@
 .dropdown__content a {
     align-items: center;
     display: flex;
-    height: var(--size-8);
+    height: var(--space-12);
 }
 
 .dropdown__parent[aria-expanded] .indicator {
@@ -35,7 +35,7 @@
     .dropdown__content {
         display: block;
         height: auto;
-        min-width: var(--size-12);
+        min-width: var(--space-12);
         position: absolute;
         right: 0;
         text-align: end;

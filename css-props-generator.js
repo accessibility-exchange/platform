@@ -11,6 +11,8 @@ const generateCSSProps = () => {
     const groups = [
         {key: "colors", prefix: "color"},
         {key: "spacing", prefix: "space"},
+        {key: "borderWidth", prefix: "border"},
+        {key: "borderRadius", prefix: "radius"},
         {key: "fontSize", prefix: "text"},
         {key: "fontFamily", prefix: "font"},
         {key: "fontWeight", prefix: "font"},
@@ -34,7 +36,11 @@ const generateCSSProps = () => {
         }
 
         Object.keys(group).forEach(key => {
-            result += `--${prefix}-${key.replace(".", "_")}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            if (key === "DEFAULT") {
+                result += `--${prefix}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            } else {
+                result += `--${prefix}-${key.replace(".", "_")}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            }
         });
     });
 

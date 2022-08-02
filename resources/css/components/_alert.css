@@ -1,10 +1,10 @@
 /* This file contains all styles related to the alert component. */
 .alert {
     background: var(--alert-background);
-    border: var(--border-size-1) solid var(--alert-border);
-    border-radius: var(--radius-2);
+    border: var(--border) solid var(--alert-border);
+    border-radius: var(--radius-sm);
     color: var(--alert-color);
-    padding: var(--size-3);
+    padding: var(--space-4);
 }
 
 .alert .title {
@@ -35,13 +35,13 @@
 }
 
 .alert .title + * {
-    margin-block-start: var(--size-1);
+    margin-block-start: var(--space-1);
 }
 
 .alert svg {
-    height: var(--size-5);
-    margin-inline-end: var(--size-1);
-    width: var(--size-5);
+    height: var(--space-6);
+    margin-inline-end: var(--space-1);
+    width: var(--space-6);
 }
 
 .alert--error {

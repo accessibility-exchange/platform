@@ -2,12 +2,13 @@
     "name": "@accessibility-exchange/platform",
     "private": true,
     "scripts": {
-        "build": "vite build",
+        "build": "npm run props && vite build",
         "dev": "vite",
         "format": "prettier --write resources/**/*.css",
         "lint:scripts": "eslint *.js resources/js/**/*.js",
         "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
+        "props": "node css-props-generator.js",
         "postinstall": "husky install && npm run build"
     },
     "lint-staged": {
@@ -37,7 +38,6 @@
         "postcss-custom-media": "^8.0.0",
         "postcss-import": "^14.1.0",
         "postcss-import-ext-glob": "^2.0.1",
-        "postcss-jit-props": "^1.0.4",
         "postcss-logical": "^5.0.4",
         "prettier": "^2.5.1",
         "stylelint": "^14.1.0",
@@ -56,7 +56,6 @@
         "alpinejs": "^3.10.3",
         "axios": "^0.27.2",
         "luxon": "^3.0.1",
-        "open-props": "^1.4.5",
         "wicg-inert": "^3.1.2"
     }
 }

@@ -1,44 +1,44 @@
 .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--size-3);
+    gap: var(--space-4);
 }
 
 .tag {
     align-items: center;
     background: var(--tag-background);
-    border: var(--border-size-2) solid var(--tag-border);
-    border-radius: var(--radius-3);
+    border: var(--border-2) solid var(--tag-border);
+    border-radius: var(--radius-md);
     color: var(--tag-color);
     display: flex;
     flex-direction: row;
     font-weight: var(--font-semibold);
-    height: var(--size-7);
-    padding: var(--size-1) var(--size-3);
+    height: var(--space-8);
+    padding: var(--space-1) var(--space-4);
 }
 
 .tag--link {
     align-items: center;
     background: var(--tag-link-background);
-    border: var(--border-size-2) solid var(--tag-link-border);
-    border-radius: var(--radius-3);
+    border: var(--border-2) solid var(--tag-link-border);
+    border-radius: var(--radius-md);
     color: var(--tag-link-color);
     display: flex;
     flex-direction: row;
     font-weight: var(--font-semibold);
-    height: var(--size-7);
-    padding: var(--size-1) var(--size-3);
+    height: var(--space-8);
+    padding: var(--space-1) var(--space-4);
 }
 
 .tag--button {
     align-items: center;
     background: var(--tag-button-background);
-    border: var(--border-size-2) solid var(--tag-button-border);
-    border-radius: var(--radius-3);
+    border: var(--border-2) solid var(--tag-button-border);
+    border-radius: var(--radius-md);
     color: var(--tag-button-color);
     display: flex;
     flex-direction: row;
     font-weight: var(--font-semibold);
-    height: var(--size-7);
-    padding: var(--size-1) var(--size-3);
+    height: var(--space-8);
+    padding: var(--space-1) var(--space-4);
 }

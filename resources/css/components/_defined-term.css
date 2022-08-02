@@ -12,7 +12,7 @@
     border-radius: 0;
     color: inherit;
     display: inline-flex;
-    height: var(--size-5);
+    height: var(--space-6);
     margin-block-start: -0.125em;
     padding: 0;
     vertical-align: middle;
@@ -20,18 +20,18 @@
 }
 
 .defined-term button svg {
-    height: var(--size-5);
-    width: var(--size-5);
+    height: var(--space-6);
+    width: var(--space-6);
 }
 
 .defined-term .definition {
     background: var(--definition-background);
-    border-radius: var(--radius-1);
+    border-radius: var(--radius-xs);
     box-shadow: var(--definition-shadow);
     color: var(--definition-color);
     display: block;
     font-weight: var(--font-normal);
-    max-width: var(--size-14);
-    padding: var(--size-4);
+    max-width: var(--space-14);
+    padding: var(--space-5);
     width: 100%;
 }
