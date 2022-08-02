@@ -1,0 +1,12 @@
+primary:
+  persistence:
+    size: 10Gi
+secondary:
+  persistence:
+    size: 10Gi
+### Place those values in Vault
+# auth:
+#   rootPassword: ""
+#   database: ""
+#   username: ""
+#   password: ""
