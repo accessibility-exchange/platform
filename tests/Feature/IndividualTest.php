@@ -296,6 +296,7 @@ test('individuals with connector role can represent individuals with disabilitie
 
     $user = User::factory()->create();
     $individual = $user->individual;
+    expect($individual->base_disability_type)->toBeFalse();
 
     $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
