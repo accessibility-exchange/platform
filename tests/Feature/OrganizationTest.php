@@ -106,6 +106,8 @@ test('users with admin role can edit and publish organizations', function () {
         'save_and_next' => 1,
     ]);
 
+    expect($organization->fresh()->social_links)->toBeArray()->toBeEmpty();
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', [
         'organization' => $organization,
