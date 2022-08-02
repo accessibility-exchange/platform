@@ -23,7 +23,6 @@
 @import "components/_date-input.css";
 @import "components/_defined-term.css";
 @import "components/_divider.css";
-@import "components/_drawer.css";
 @import "components/_dropdown.css";
 @import "components/_expander.css";
 @import "components/_help-bar.css";
@@ -37,7 +36,6 @@
 @import "components/_skip-link.css";
 @import "components/_table.css";
 @import "components/_tags.css";
-@import "components/_update.css";
 @import "compositions/_box.css";
 @import "compositions/_center.css";
 @import "compositions/_cluster.css";
@@ -56,8 +54,6 @@
 @import "utilities/_weight.css";
 @import "utilities/_width.css";
 @import "routes/entities/_show.css";
-@import "routes/profiles/_show.css";
-@import "routes/projects/_manage.css";
 @import "routes/projects/_show.css";
 @import "routes/resources/_hub.css";
 @import "routes/resources/_index.css";

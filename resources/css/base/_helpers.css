@@ -20,12 +20,12 @@
 
 .float\:left {
     float: left;
-    margin-inline-end: var(--size-3);
+    margin-inline-end: var(--space-4);
 }
 
 .float\:right {
     float: right;
-    margin-inline-start: var(--size-3);
+    margin-inline-start: var(--space-4);
 }
 
 .visually-hidden {

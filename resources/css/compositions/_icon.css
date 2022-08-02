@@ -9,5 +9,5 @@
 }
 
 .with-icon .icon {
-    margin-inline-end: var(--size-1);
+    margin-inline-end: var(--space-1);
 }

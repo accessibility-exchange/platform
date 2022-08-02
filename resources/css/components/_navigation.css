@@ -2,7 +2,7 @@
 .nav {
     align-items: center;
     display: flex;
-    gap: var(--size-3);
+    gap: var(--space-4);
     justify-content: flex-start;
 }
 
@@ -26,15 +26,15 @@
 .nav-link:visited {
     align-items: center;
     background: var(--nav-background-mobile);
-    border-block-end: var(--border-size-1) solid var(--nav-border-mobile);
+    border-block-end: var(--border) solid var(--nav-border-mobile);
     border-block-start: 0;
     border-inline: 0;
     color: var(--nav-color-mobile);
     display: flex;
     font-weight: var(--font-semibold);
-    gap: var(--size-1);
-    min-height: var(--size-8);
-    padding-inline: var(--size-3);
+    gap: var(--space-1);
+    min-height: var(--space-12);
+    padding-inline: var(--space-4);
     text-decoration: none;
 }
 
@@ -70,7 +70,7 @@
 .with-sidebar .nav-link {
     background: transparent;
     border: 0;
-    border-radius: var(--radius-1);
+    border-radius: var(--radius-xs);
     color: var(--link-color);
     display: inline;
     font-weight: var(--font-semibold);
@@ -86,14 +86,14 @@
 
 .with-sidebar .nav-link:focus {
     background: transparent;
-    box-shadow: 0 0 0 var(--border-size-2) var(--link-outline-focus);
+    box-shadow: 0 0 0 var(--border-2) var(--link-outline-focus);
     outline: 1px solid transparent;
     text-decoration: none;
 }
 
 .with-sidebar .nav-link:active {
     background: var(--link-background-active);
-    box-shadow: 0 0 0 var(--border-size-2) var(--link-background-active);
+    box-shadow: 0 0 0 var(--border-2) var(--link-background-active);
     color: var(--link-color-active);
     text-decoration: none;
 }
@@ -102,7 +102,7 @@
     box-shadow: none;
     font-weight: var(--font-bold);
     text-decoration-color: var(--nav-current-color);
-    text-decoration-thickness: var(--border-size-2);
+    text-decoration-thickness: var(--border-2);
 }
 
 .with-sidebar .nav-link[aria-current]:hover {
@@ -110,18 +110,18 @@
 }
 
 .with-sidebar .nav-link[aria-current]:focus {
-    box-shadow: 0 0 0 var(--border-size-2) var(--nav-current-color);
+    box-shadow: 0 0 0 var(--border-2) var(--nav-current-color);
 }
 
 button.nav-button {
     background: inherit;
     border: 0;
-    border-radius: var(--radius-2);
+    border-radius: var(--radius-sm);
     color: currentcolor;
-    gap: var(--size-2);
-    height: calc(var(--size-8) - var(--size-1));
+    gap: var(--space-2);
+    height: calc(var(--space-12) - var(--space-1));
     justify-content: center;
-    padding-inline: var(--size-3);
+    padding-inline: var(--space-4);
 }
 
 button.nav-button:hover {
@@ -131,8 +131,8 @@ button.nav-button:hover {
 
 button.nav-button:focus {
     color: var(--button-borderless-color-focus);
-    outline: var(--button-borderless-outline) solid calc(var(--size-1) / 2);
-    outline-offset: calc(var(--size-1) / 2);
+    outline: var(--button-borderless-outline) solid calc(var(--space-1) / 2);
+    outline-offset: calc(var(--space-1) / 2);
 }
 
 button.nav-button:active {
@@ -152,23 +152,23 @@ button.nav-button .indicator {
 }
 
 .languages ul ul {
-    border-block-start: var(--border-size-1) solid var(--nav-border-mobile);
+    border-block-start: var(--border) solid var(--nav-border-mobile);
     left: 0;
     position: absolute;
-    top: calc(var(--size-8) + var(--size-10) + var(--size-5));
+    top: calc(var(--space-12) + var(--space-20) + var(--space-6));
     width: 100vw;
 }
 
 .primary ul {
     background: var(--nav-background-mobile);
-    border-block-start: var(--border-size-1) solid var(--nav-border-mobile);
+    border-block-start: var(--border) solid var(--nav-border-mobile);
     color: var(--color-grey-2);
     display: flex;
     flex-direction: column;
     left: 0;
     margin-block: 0;
     position: absolute;
-    top: calc(var(--size-8) + var(--size-10) + var(--size-5));
+    top: calc(var(--space-12) + var(--space-20) + var(--space-6));
     width: 100vw;
     z-index: 1;
 }
@@ -176,28 +176,28 @@ button.nav-button .indicator {
 @media (min-width: 48rem) {
     .primary ul,
     .languages ul ul {
-        top: calc(var(--size-9) + var(--size-10) + var(--size-5));
+        top: calc(var(--space-16) + var(--space-20) + var(--space-6));
     }
 }
 
 @media (min-width: 60rem) {
     .nav {
         flex-wrap: wrap;
-        height: calc(var(--size-10) + var(--size-9) + var(--size-5));
+        height: calc(var(--space-20) + var(--space-16) + var(--space-6));
     }
 
     .primary {
-        height: var(--size-8);
+        height: var(--space-12);
         width: 100%;
     }
 
     .primary::before {
-        border-block-start: var(--border-size-1) solid var(--nav-border);
+        border-block-start: var(--border) solid var(--nav-border);
         content: "";
         display: block;
         left: 0;
         position: absolute;
-        top: calc(var(--size-9) + var(--size-10) + var(--size-5) + var(--size-3));
+        top: calc(var(--space-16) + var(--space-20) + var(--space-6) + var(--space-4));
         width: 100vw;
         z-index: 1;
     }
@@ -224,7 +224,7 @@ button.nav-button .indicator {
     }
 
     .languages ul {
-        height: calc(var(--size-4) * 2 + var(--size-9));
+        height: calc(var(--space-5) * 2 + var(--space-16));
         margin-block: 0;
         position: relative;
     }
@@ -234,13 +234,13 @@ button.nav-button .indicator {
         box-shadow: var(--banner-shadow);
         left: auto;
         right: 0;
-        top: calc(var(--size-4) * 2 + var(--size-9));
+        top: calc(var(--space-5) * 2 + var(--space-16));
         width: auto;
         z-index: 2;
     }
 
     .languages button.nav-button {
-        height: calc(var(--size-4) * 2 + var(--size-9));
+        height: calc(var(--space-5) * 2 + var(--space-16));
     }
 
     .nav-link,
@@ -248,6 +248,7 @@ button.nav-button .indicator {
     button.nav-button {
         background: var(--nav-parent-background);
         border-block-end: 0;
+        border-block-start: var(--border) solid var(--nav-border);
         border-radius: 0;
         color: var(--nav-color);
         height: 100%;

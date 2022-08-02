@@ -1,7 +1,7 @@
 .with-sidebar {
     display: flex;
     flex-flow: row wrap;
-    gap: var(--size-5);
+    gap: var(--space-6);
 }
 
 .with-sidebar > :first-child {

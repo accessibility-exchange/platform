@@ -1,11 +1,10 @@
 /* This file contains all styles related to the navigation component. */
 [role="region"][aria-labelledby][tabindex] {
-    border-radius: var(--ll-border-radius);
     overflow: auto;
 }
 
 [role="region"][aria-labelledby][tabindex]:focus {
-    outline: 1px solid transparent;
+    outline: var(--border) solid transparent;
 }
 
 table {
@@ -15,7 +14,7 @@ table {
 
 th,
 td {
-    padding: var(--size-2) var(--size-3);
+    padding: var(--space-2) var(--space-4);
     text-align: start;
 }
 
@@ -30,5 +29,5 @@ th:last-of-type {
 }
 
 tbody tr {
-    border-block-start: var(--border-size-1) solid var(--color-graphite-6);
+    border-block-start: var(--border) solid var(--color-graphite-6);
 }
