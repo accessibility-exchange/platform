@@ -6394,16 +6394,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "10.4.1",
+            "version": "10.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "cfab5c62ec09c2a59df745e451d6559e3b55966b"
+                "reference": "8f3bf5fa504a3368a1bb50d56e54bbcce311b9a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/cfab5c62ec09c2a59df745e451d6559e3b55966b",
-                "reference": "cfab5c62ec09c2a59df745e451d6559e3b55966b",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/8f3bf5fa504a3368a1bb50d56e54bbcce311b9a9",
+                "reference": "8f3bf5fa504a3368a1bb50d56e54bbcce311b9a9",
                 "shasum": ""
             },
             "require": {
@@ -6486,7 +6486,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.4.1"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.4.3"
             },
             "funding": [
                 {
@@ -6498,7 +6498,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-24T14:49:01+00:00"
+            "time": "2022-08-02T07:35:43+00:00"
         },
         {
             "name": "spatie/laravel-options",
