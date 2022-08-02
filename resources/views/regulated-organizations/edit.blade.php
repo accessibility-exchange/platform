@@ -61,7 +61,7 @@
                     </div>
                     <div class="field">
                         <x-hearth-label for="region" :value="__('forms.label_region')" />
-                        <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$regions"/>
+                        <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$nullableRegions"/>
                     </div>
                 </fieldset>
 
