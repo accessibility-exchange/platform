@@ -15,6 +15,7 @@ class UpdateOrganizationRequestFactory extends RequestFactory
             'locality' => $this->faker->city,
             'service_areas' => $this->faker->randomElements(get_region_codes(), 2),
             'working_languages' => $this->faker->randomElements(get_available_languages(true), 2),
+            'social_links' => ['linked_in' => '', 'facebook' => '', 'twitter' => '', 'instagram' => ''],
         ];
     }
 }

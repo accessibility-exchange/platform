@@ -161,40 +161,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return 'individuals';
     }
 
-    /**
-     * Get the individual's social links.
-     *
-     * @return array
-     */
-    public function getSocialLinksAttribute(): array
-    {
-        if (! is_null($this->attributes['social_links'])) {
-            return array_filter(json_decode($this->attributes['social_links'], true));
-        }
-
-        return [];
-    }
-
-    /**
-     * Get the individual's relevant experiences.
-     *
-     * @return array
-     */
-    public function getRelevantExperiencesAttribute(): array
-    {
-        if (! is_null($this->attributes['relevant_experiences'])) {
-            $experiences = json_decode($this->attributes['relevant_experiences'], true);
-
-            $experiences = array_map(function ($experience) {
-                return array_filter($experience);
-            }, $experiences);
-
-            return array_filter($experiences);
-        }
-
-        return [];
-    }
-
     public function steps(): array
     {
         return [

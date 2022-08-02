@@ -191,7 +191,17 @@ class OrganizationController extends Controller
 
     public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
     {
-        $organization->fill($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['working_languages'])) {
+            $data['working_languages'] = array_filter($data['working_languages']);
+        }
+
+        if (isset($data['social_links'])) {
+            $data['social_links'] = array_filter($data['social_links']);
+        }
+
+        $organization->fill($data);
         $organization->save();
 
         return $organization->handleUpdateRequest($request, 1);
