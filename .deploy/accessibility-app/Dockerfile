@@ -57,7 +57,6 @@ COPY . $APP_HOME
 
 RUN composer install
 
-
 RUN . $NVM_DIR/nvm.sh && \
     npm install
 
