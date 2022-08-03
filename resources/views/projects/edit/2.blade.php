@@ -20,13 +20,13 @@
 
     <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
         <legend class="h4">{{ __('Does any member of your team have lived/living experiences of disability or being Deaf?') }}</legend>
-        <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="[1 => __('Yes'), 0 => __('No'), '' => __('Prefer not to say')]" :checked="old('team_has_disability_or_deaf_lived_experience', $project->team_has_disability_or_deaf_lived_experience ?? '')"  />
+        <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(\App\Enums\StaffHaveLivedExperience::class)->toArray()" :checked="old('team_has_disability_or_deaf_lived_experience', $project->team_has_disability_or_deaf_lived_experience ?? '')"  />
     </fieldset>
 
     <fieldset class="field @error('team_has_other_lived_experience') field--error @enderror stack">
         <legend class="h4">{{ __('Does anyone in your team identify as a member of another equity-seeking group?') }}</legend>
         <x-hearth-hint for="team_has_other_lived_experience">{{ __('For example, Black, Indigenous, person of colour, 2SLGBTQIA+, newcomer or immigrant.') }}</x-hearth-hint>
-        <x-hearth-radio-buttons name="team_has_other_lived_experience" :options="[1 => __('Yes'), 0 => __('No'), '' => __('Prefer not to say')]" :checked="old('team_has_other_lived_experience', $project->team_has_other_lived_experience ?? '')" hinted />
+        <x-hearth-radio-buttons name="team_has_other_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(\App\Enums\StaffHaveLivedExperience::class)->toArray()" :checked="old('team_has_other_lived_experience', $project->team_has_other_lived_experience ?? '')" hinted />
     </fieldset>
 
     <fieldset class="field stack">
@@ -42,11 +42,11 @@
     <div class="stack" x-data="{ hasConsultant: '{{ old('has_consultant', $project->has_consultant) }}' }">
         <fieldset class="field @error('has_consultant') field--error @enderror stack">
             <legend class="h4">{{ __('Are you working with an accessibility consultant on this project? (required)') }}</legend>
-            <x-hearth-radio-buttons name="has_consultant" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('has_consultant', $project->has_consultant)" x-model="hasConsultant" />
+            <x-hearth-radio-buttons name="has_consultant" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('has_consultant', $project->has_consultant)" x-model="hasConsultant" />
         </fieldset>
         <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin) }}'}">
             <legend class="h4">{{ __('Where did you find the accessibility consultant? (required)') }}</legend>
-            <x-hearth-radio-buttons name="consultant_origin" :options="['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')]" :checked="old('consultant_origin', $project->consultant_origin)" x-model="consultantOrigin" />
+            <x-hearth-radio-buttons name="consultant_origin" :options="Spatie\LaravelOptions\Options::forArray(['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')])->toArray()" :checked="old('consultant_origin', $project->consultant_origin)" x-model="consultantOrigin" />
             <div class="field @error('consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
                 <x-hearth-label for="consultant_id" :value="__('Consultant (required)')" />
                 <x-hearth-select x-data="autocomplete()" name="consultant_id" :options="$consultants" :selected="old('consultant_id', $project->consultant_id)" />

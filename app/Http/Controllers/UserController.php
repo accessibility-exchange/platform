@@ -152,12 +152,14 @@ class UserController extends Controller
      */
     public function showMyProjects(): RedirectResponse|View
     {
-        if (Auth::user()->regulatedOrganization) {
-            $regulatedOrganization = Auth::user()->regulatedOrganization;
-            $regulatedOrganization->load('completedProjects', 'inProgressProjects');
+        $user = Auth::user();
 
-            return view('regulated-organizations.my-projects', [
-                'regulatedOrganization' => Auth::user()->regulatedOrganization,
+        if ($user->regulatedOrganization || $user->organization) {
+            $projectable = $user->projectable();
+            $projectable->load('projects');
+
+            return view('my-projects', [
+                'projectable' => $projectable,
             ]);
         }
 

@@ -2,6 +2,7 @@
 <x-app-layout>
     <x-slot name="title">{{ __('Create new project') }}</x-slot>
     <x-slot name="header">
+        {{-- TODO: Add breadcrumbs --}}
         <h1>
             @switch(request()->get('step'))
             @case(1)

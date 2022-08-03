@@ -108,7 +108,7 @@ Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->name('people-and-organizations');
 
-Route::multilingual('/my-projects', [UserController::class, 'showMyProjects'])
+Route::multilingual('/projects', [UserController::class, 'showMyProjects'])
     ->middleware(['auth'])
     ->name('users.show_my_projects');
 

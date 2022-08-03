@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProjectController;
 
-Route::multilingual('/projects', [ProjectController::class, 'index'])
+Route::multilingual('/projects/all', [ProjectController::class, 'index'])
     ->middleware(['auth'])
     ->name('projects.index');
 
