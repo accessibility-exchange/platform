@@ -2,7 +2,7 @@ FROM php:8.1-fpm
 
 RUN apt-get update
 
-RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl
+RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl htop
 
 RUN apt-get install -y \
     libfreetype6-dev \
