@@ -21,4 +21,10 @@ fi
 
 rm -rf $FILES_PATH/../deploy.lock
 
+php artisan storage:link
+php artisan cache:clear
+php artisan view:clear
+php artisan route:cache
+php artisan config:cache
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
