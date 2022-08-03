@@ -96,6 +96,8 @@ class OrganizationController extends Controller
             $data['working_languages'][] = $user->signed_language;
         }
 
+        $data['languages'] = ['en', 'fr', 'ase', 'fcs'];
+
         $organization = Organization::create($data);
 
         session()->forget('type');
