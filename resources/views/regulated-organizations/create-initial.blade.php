@@ -8,6 +8,7 @@
 
     @foreach(['en', 'fr'] as $locale)
         @error('name.' . $locale)
+            @if($message === __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
             <div class="stack">
                 @php
                 $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
@@ -18,6 +19,7 @@
                 <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
             </div>
             @break
+            @endif
         @enderror
     @endforeach
 
