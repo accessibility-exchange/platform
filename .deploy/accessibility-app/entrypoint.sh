@@ -15,7 +15,9 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan migrate --step --force
+  php artisan migrate:fresh
+  php artisan db:seed DevSeeder
+  # php artisan migrate --step # TODO: swap after staging is more mature
   php artisan google-fonts:fetch
   
 fi
