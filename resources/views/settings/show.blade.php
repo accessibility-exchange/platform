@@ -18,9 +18,9 @@
         @endif
         @if($user->context === 'individual' && ($user->individual->isConnector() || $user->individual->isConsultant()))
         <li><a href="{{ $user->individual->checkStatus('published') ? localized_route('individuals.show', $user->individual) : localized_route('individuals.edit', $user->individual) }}">{{ __('Public profile') }}</a></li>
-        @elseif($user->context === 'organization')
+        @elseif($user->context === 'organization' && $user->organization)
         <li><a href="{{ $user->organization->checkStatus('published') ? localized_route('organizations.show', $user->organization) : localized_route('organizations.edit', $user->organization) }}">{{ __('Public profile') }}</a></li>
-        @elseif($user->context === 'regulated-organization')
+        @elseif($user->context === 'regulated-organization' && $user->regulatedOrganization)
         <li><a href="{{ $user->regulatedOrganization->checkStatus('published') ? localized_route('regulated-organizations.show', $user->regulatedOrganization) : localized_route('regulated-organizations.edit', $user->regulatedOrganization) }}">{{ __('Public profile') }}</a></li>
         @endif
         @if($user->context === 'individual')
@@ -37,7 +37,7 @@
     <p>{{ __('Please provide settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
         <li><a href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a></li>
-        @if($user->context === 'organization' || $user->context === 'regulated-organization')
+        @if($user->context === 'organization' && $user->organization || $user->context === 'regulated-organization' && $user->regulatedOrganization)
         <li><a href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
         @endif
         @if($user->context === 'individual' || $user->context === 'organization')
