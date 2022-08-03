@@ -15,10 +15,15 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan migrate:fresh
+if [[ "$APP_ENV" == "production" ]]
+then
+  php artisan migrate --step
+else
+  php artisan migrate:fresh --step 
   php artisan db:seed DevSeeder
-  # php artisan migrate --step # TODO: swap after staging is more mature
-  php artisan google-fonts:fetch
+fi
+
+php artisan google-fonts:fetch
   
 fi
 
