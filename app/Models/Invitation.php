@@ -12,8 +12,6 @@ class Invitation extends HearthInvitation
     {
         $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
 
-        ray($invitee);
-
         $this->invitationable->users()->attach(
             $invitee,
             ['role' => $this->role]
