@@ -15,6 +15,7 @@ then
   touch $FILES_PATH/../deploy.lock
 
   php artisan migrate --step
+  php artisan google-fonts:fetch
   
 fi
 
