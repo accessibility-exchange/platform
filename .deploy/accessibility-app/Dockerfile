@@ -56,7 +56,10 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 RUN composer install
-RUN npm install
+
+
+RUN . $NVM_DIR/nvm.sh && \
+    npm install
 
 RUN chown www-data:root $APP_HOME/public/ -R
 
