@@ -29,5 +29,7 @@ class DatabaseRefresh extends Command
     {
         $this->call('migrate:fresh', ['--force']);
         $this->call('db:seed', ['DevSeeder', '--force']);
+
+        return 0;
     }
 }

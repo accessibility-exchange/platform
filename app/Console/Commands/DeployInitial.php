@@ -40,5 +40,7 @@ class DeployInitial extends Command
         $this->call('view:clear');
         $this->call('optimize');
         $this->call('event:cache');
+
+        return 0;
     }
 }
