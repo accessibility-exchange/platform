@@ -1,0 +1,10 @@
+    server {
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+        include /etc/nginx/snippets/laravel.conf;
+    }

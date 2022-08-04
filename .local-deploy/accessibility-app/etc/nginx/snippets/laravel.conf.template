@@ -1,0 +1,33 @@
+        server_name _;
+
+        sendfile off;
+        absolute_redirect off;
+
+        root ${APP_HOME}/public;
+        index index.php index.html index.htm;
+
+        location / {
+            try_files ${DOLLAR}uri ${DOLLAR}uri/ /index.php?${DOLLAR}query_string;
+        }
+    
+        location = /favicon.ico {
+            access_log off;
+            log_not_found off;
+        }
+
+        location = /robots.txt {
+            access_log off;
+            log_not_found off;
+        }
+    
+        error_page 404 /index.php;
+    
+        location ~ \.php$ {
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_param SCRIPT_FILENAME ${DOLLAR}realpath_root${DOLLAR}fastcgi_script_name;
+            include fastcgi_params;
+        }
+    
+        location ~ /\.(?!well-known).* {
+            deny all;
+        }

@@ -3,23 +3,43 @@ version: '3'
 services:
     platform.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
-            dockerfile: Dockerfile
+            context: ./
+            dockerfile: ./.local-deploy/accessibility-app/Dockerfile
             args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
+                APP_HOME: ${APP_HOME}
+                NODE_VERSION: ${NODE_VERSION}
+                PERMANENT_FILE_STORAGE: $PERMANENT_FILE_STORAGE
+                TIMEZONE: ${TIMEZONE}
+                WWWGROUP: ${WWWGROUP}
+                WWWUSER: ${WWWUSER}
+        container_name: platform.test
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-80}:80'
-            - 3000:3000
+            - '80:8080'
+            - '443:443'
         environment:
-            WWWUSER: '${WWWUSER}'
+            DB_HOST: $DB_HOST
+            DB_PORT: $DB_PORT
+            DB_DATABASE: $DB_DATABASE
+            DB_USERNAME: $DB_USERNAME
+            DB_PASSWORD: $DB_PASSWORD
             LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            PERMANENT_FILE_STORAGE: $PERMANENT_FILE_STORAGE
+            ENABLE_SSL: 'true'
+            WWWUSER: ${WWWUSER}
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
         volumes:
-            - '.:/var/www/html'
+            - './app:${APP_HOME}/app'
+            # - './bootstrap:${APP_HOME}/bootstrap'
+            # - './config:${APP_HOME}/config'
+            # - './database:${APP_HOME}/database'
+            # - './public:${APP_HOME}/public'
+            # - './resources:${APP_HOME}/resources'
+            # - './routes:${APP_HOME}/routes'
+            - 'sail-storage:${PERMANENT_FILE_STORAGE}'
+            # - './tests:${APP_HOME}/tests'
         networks:
             - sail
         depends_on:
@@ -43,7 +63,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
             retries: 3
             timeout: 5s
     redis:
@@ -55,7 +75,7 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
+            test: [ "CMD", "redis-cli", "ping" ]
             retries: 3
             timeout: 5s
     meilisearch:
@@ -67,7 +87,14 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
+            test:
+                [
+                    "CMD",
+                    "wget",
+                    "--no-verbose",
+                    "--spider",
+                    "http://localhost:7700/health"
+                ]
             retries: 3
             timeout: 5s
     mailhog:
@@ -93,3 +120,4 @@ volumes:
         driver: local
     sail-meilisearch:
         driver: local
+    sail-storage:
