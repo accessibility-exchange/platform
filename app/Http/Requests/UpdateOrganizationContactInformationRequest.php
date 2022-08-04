@@ -32,4 +32,12 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
             return ! $input->contact_person_email;
         });
     }
+
+    public function attributes(): array
+    {
+        return [
+            'contact_person_email' => 'email address',
+            'contact_person_phone' => 'phone number',
+        ];
+    }
 }

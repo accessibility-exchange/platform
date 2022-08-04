@@ -29,7 +29,7 @@ uses(RefreshDatabase::class);
 test('users can create organizations', function () {
     $this->seed(OrganizationRoleSeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
     $response->assertOk();
@@ -51,6 +51,8 @@ test('users can create organizations', function () {
     $response->assertSessionHasNoErrors();
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
+
+    expect($organization->working_languages)->toContain('ase');
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();

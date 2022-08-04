@@ -69,6 +69,16 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         ]);
     }
 
+    public function attributes(): array
+    {
+        return [
+            'email' => __('email address'),
+            'phone' => __('phone number'),
+            'contact_person_email' => __('email address'),
+            'contact_person_phone' => __('phone number'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

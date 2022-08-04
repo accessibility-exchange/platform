@@ -122,7 +122,7 @@ input[type="checkbox"]:checked[aria-invalid="true"] {
 
 input[type="radio"] {
     border: var(--border-2) solid var(--input-border);
-    border-radius: var(--radius-round);
+    border-radius: var(--radius-full);
     display: inline-block;
     height: var(--space-5);
     margin-block-end: calc(-1 * var(--space-1));

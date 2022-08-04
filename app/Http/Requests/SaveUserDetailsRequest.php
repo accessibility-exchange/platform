@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\UniqueUserEmail;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class SaveUserDetailsRequest extends FormRequest
 {
@@ -32,7 +32,7 @@ class SaveUserDetailsRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique(User::class),
+                new UniqueUserEmail(),
             ],
         ];
     }

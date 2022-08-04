@@ -78,6 +78,23 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'accessibility_and_inclusion_links.*.url' => 'nullable|url|required_with:accessibility_and_inclusion_links.*.title',
             'social_links.*' => 'nullable|url',
             'website_link' => 'nullable|url',
+            'contact_person_name' => 'required|string',
+            'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
+            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_vrs' => 'nullable|boolean',
+            'preferred_contact_method' => 'required|in:email,phone',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'locality' => __('city or town'),
+            'region' => __('province or territory'),
+            'contact_person_email' => __('email address'),
+            'contact_person_phone' => __('phone number'),
+            'about.fr' => __('"About your organization" (French)'),
+            'about.en' => __('"About your organization" (English)'),
         ];
     }
 }
