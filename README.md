@@ -88,6 +88,12 @@ echo -e "WWWUSER=$UID" >> .env
 echo -e "WWWGROUP=$GID" >> .env
 ```
 
+Create and set database password. You can run the following command to generate it for you. The sed command can vary slightly across UNIX platforms though.    
+
+```bash
+sed -i "s/^DB_PASSWORD=.*$/DB_PASSWORD=$(openssl rand -hex 24)/" .env
+```  
+
 Build the application container so you can run some artisan commands.  
 
 ```bash
