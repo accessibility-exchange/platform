@@ -50,6 +50,16 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
         });
     }
 
+    public function attributes(): array
+    {
+        return [
+            'email' => __('email address'),
+            'phone' => __('phone number'),
+            'support_person_email' => __('email address'),
+            'support_person_phone' => __('phone number'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      *
