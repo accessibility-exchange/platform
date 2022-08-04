@@ -31,8 +31,7 @@ class DeployInitial extends Command
         if (config('app.env') === 'production') {
             $this->call('migrate', ['--step']);
         } else {
-            $this->call('migrate:fresh', ['--step', '--force']);
-            $this->call('db:seed', ['DevSeeder', '--force']);
+            $this->call('db:refresh');
         }
 
         $this->call('google-fonts:fetch');
