@@ -1,12 +1,12 @@
 <?php
 
 use App\Models\RegulatedOrganization;
-use App\Models\Sector;
 use App\Models\User;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
+use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
 uses(RefreshDatabase::class);
 
@@ -84,13 +84,11 @@ test('users with admin role can edit regulated organizations', function () {
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $response->assertOk();
 
+    UpdateRegulatedOrganizationRequestFactory::new()->fake();
+
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'locality' => 'St John\'s',
-        'region' => 'NL',
         'service_areas' => ['NL'],
-        'about' => ['en' => 'TODO.'],
-        'sectors' => [Sector::pluck('id')->first()],
         'social_links' => ['facebook' => 'https://facebook.com/'.Str::slug($regulatedOrganization->name)],
         'preview' => 'Preview',
     ]);
@@ -104,11 +102,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'locality' => 'St John\'s',
-        'region' => 'NL',
         'service_areas' => ['NU'],
-        'about' => ['en' => 'TODO.'],
-        'sectors' => [Sector::pluck('id')->first()],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
         'social_links' => ['facebook' => ''],
         'publish' => 'Publish',
@@ -124,13 +118,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'locality' => 'St John\'s',
-        'region' => 'NL',
         'service_areas' => ['ON'],
-        'about' => ['en' => 'TODO.'],
-        'sectors' => [Sector::pluck('id')->first()],
-        'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
-        'social_links' => ['facebook' => ''],
         'unpublish' => 'Unpublish',
     ]);
     $response->assertSessionHasNoErrors();
@@ -141,13 +129,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'locality' => 'St John\'s',
-        'region' => 'NL',
         'service_areas' => ['AB', 'BC'],
-        'about' => ['en' => 'TODO.'],
-        'sectors' => [Sector::pluck('id')->first()],
-        'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
-        'social_links' => ['facebook' => ''],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));

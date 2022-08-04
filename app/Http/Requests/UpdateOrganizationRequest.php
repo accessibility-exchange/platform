@@ -72,4 +72,12 @@ class UpdateOrganizationRequest extends FormRequest
             'website_link' => 'nullable|url',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'about.fr' => __('"About your organization" (French)'),
+            'about.en' => __('"About your organization" (English)'),
+        ];
+    }
 }
