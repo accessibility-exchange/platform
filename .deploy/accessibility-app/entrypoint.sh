@@ -15,9 +15,9 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  if [[ "$APP_ENV" == "production" ]]
+  if [ "$APP_ENV" == "production" ]
   then
-    php artisan migrate --step
+    php artisan migrate --step --force
   else
     php artisan migrate:fresh --step 
     php artisan db:seed DevSeeder
