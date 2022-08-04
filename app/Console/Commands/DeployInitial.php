@@ -29,17 +29,17 @@ class DeployInitial extends Command
     {
         // split migrate commands between production and development versions
         if (config('app.env') === 'production') {
-            $this->call('migrate', ['--step']); 
+            $this->call('migrate', ['--step']);
         } else {
-            $this->call('migrate:fresh', ['--step', '--force']); 
-            $this->call('db:seed', ['DevSeeder', '--force']); 
+            $this->call('migrate:fresh', ['--step', '--force']);
+            $this->call('db:seed', ['DevSeeder', '--force']);
         }
-      
-        $this->call('google-fonts:fetch'); 
-        $this->call('storage:link'); 
-        $this->call('cache:clear'); 
-        $this->call('view:clear'); 
-        $this->call('optimize'); 
-        $this->call('event:cache'); 
+
+        $this->call('google-fonts:fetch');
+        $this->call('storage:link');
+        $this->call('cache:clear');
+        $this->call('view:clear');
+        $this->call('optimize');
+        $this->call('event:cache');
     }
 }
