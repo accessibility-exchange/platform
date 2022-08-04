@@ -21,6 +21,7 @@ env:
   SESSION_LIFETIME: "120"
   SAIL_XDEBUG_MODE: "develop,debug,coverage"
   FILES_PATH: "/opt/data/storage"
+  CI_CIPHERSWEET_KEY: "f8e129ac54828f603e150542ecef1765f516497279942f51374c5580dc30712c"
 ### Place those values in Vault
 # secrets:
 #   APP_KEY: ""
