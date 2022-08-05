@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('db:refresh') // use custom command to make sure that the commands are chained
             ->daily() // Run daily at midnight
-            ->environments(['staging', 'local']) // only run for APP_ENV tagged staging or local
+            ->environments(['staging', 'dev', 'local']) // only run for APP_ENV tagged staging, dev, or local
             ->onOneServer(); // run only on a single server at once
     }
 
