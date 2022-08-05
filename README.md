@@ -100,7 +100,7 @@ Build the application container so you can run some artisan commands.
 docker compose build platform.test
 ```  
 
-Expected output should end in something like the following. You will want to copy this portiong for use in future commands `platform-platform.test`.  
+Expected output should end in something like the following. You will want to copy this portion `platform-platform.test` for use in future commands.  
 
 ```bash
 naming to docker.io/library/platform-platform.test
