@@ -33,14 +33,14 @@ services:
             CIPHERSWEET_KEY: $CIPHERSWEET_KEY
         volumes:
             - './app:${APP_HOME}/app'
-            # - './bootstrap:${APP_HOME}/bootstrap'
-            # - './config:${APP_HOME}/config'
-            # - './database:${APP_HOME}/database'
-            # - './public:${APP_HOME}/public'
-            # - './resources:${APP_HOME}/resources'
-            # - './routes:${APP_HOME}/routes'
+            - './bootstrap:${APP_HOME}/bootstrap'
+            - './config:${APP_HOME}/config'
+            - './database:${APP_HOME}/database'
+            - './public:${APP_HOME}/public'
+            - './resources:${APP_HOME}/resources'
+            - './routes:${APP_HOME}/routes'
             - 'sail-storage:${PERMANENT_FILE_STORAGE}'
-            # - './tests:${APP_HOME}/tests'
+            - './tests:${APP_HOME}/tests'
         networks:
             - sail
         depends_on:
@@ -48,7 +48,7 @@ services:
             - redis
             - meilisearch
             - selenium
-            
+
     mysql:
         image: 'mysql/mysql-server:8.0'
         environment:
