@@ -46,7 +46,8 @@ jobs:
           DB_HOST: localhost
           APP_ENV: production
         run: |
-          php artisan deploy:initial
+          php artisan migrate
+          php artisan storage:link
           php artisan test --coverage-clover coverage.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
