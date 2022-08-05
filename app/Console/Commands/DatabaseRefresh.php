@@ -27,8 +27,8 @@ class DatabaseRefresh extends Command
      */
     public function handle()
     {
-        $this->call('migrate:fresh', ['--force']);
-        $this->call('db:seed', ['DevSeeder', '--force']);
+        $this->call('migrate:fresh', ['--force' => true, '--step' => true]);
+        $this->call('db:seed', ['DevSeeder', '--force' => true]);
 
         return 0;
     }
