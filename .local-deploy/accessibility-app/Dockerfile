@@ -25,6 +25,7 @@ RUN apt-get install -y \
     unzip \
     wget 
 
+# libssl-dev required for swoole development only 
 RUN apt-get install -y \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
@@ -33,19 +34,34 @@ RUN apt-get install -y \
     libbz2-dev \
     libonig-dev \
     libpng-dev \
+    libssl-dev \ 
     libzip-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath bz2 zip soap
-RUN docker-php-ext-install opcache
+RUN docker-php-ext-install \
+    bcmath \
+    bz2 \
+    exif \
+    mbstring \
+    pcntl \
+    pdo_mysql \
+    opcache \
+    soap \
+    sockets \
+    zip 
 
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN pecl install imagick
-RUN docker-php-ext-enable imagick
+# pcov,xdebug,igbinary,msgpack development only
+RUN pecl install imagick pcov xdebug igbinary msgpack
+RUN docker-php-ext-enable imagick pcov xdebug igbinary msgpack
+
+# Development only
+RUN yes | pecl install swoole 
+RUN docker-php-ext-enable swoole
 
 RUN printf "\n" | pecl install apcu
 RUN docker-php-ext-enable apcu
@@ -80,6 +96,10 @@ RUN envsubst < /etc/nginx/snippets/laravel.conf.template > /etc/nginx/snippets/l
 RUN envsubst < ${APP_HOME}/.local-deploy/accessibility-app/entrypoint.sh > ${APP_HOME}/entrypoint.sh
 RUN chmod +x ${APP_HOME}/entrypoint.sh
 COPY .local-deploy/accessibility-app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+RUN apt -y autoremove \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN chown -R www-data:www-data ${APP_HOME}
 
