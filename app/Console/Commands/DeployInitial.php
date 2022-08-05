@@ -29,7 +29,7 @@ class DeployInitial extends Command
     {
         // split migrate commands between production and development versions
         if (config('app.env') === 'production') {
-            $this->call('migrate', ['--step']);
+            $this->call('migrate', ['--step' => true, '--force' => true]);
         } else {
             $this->call('db:refresh');
         }
