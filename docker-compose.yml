@@ -1,14 +1,27 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
+
+    tls_proxy:
+        build:
+            context: .local-deploy/accessibility-app/
+            dockerfile: Dockerfile.proxy
+            args:
+                SSL_SUBJECT: $SSL_SUBJECT
+        ports:
+            - 443:443
+        networks:
+            - sail
+
     platform.test:
         build:
             context: ./
-            dockerfile: ./.local-deploy/accessibility-app/Dockerfile
+            dockerfile: .local-deploy/accessibility-app/Dockerfile
             args:
+                APP_ENV: ${APP_ENV}
                 APP_HOME: ${APP_HOME}
                 NODE_VERSION: ${NODE_VERSION}
-                PERMANENT_FILE_STORAGE: $PERMANENT_FILE_STORAGE
+                PERMANENT_FILE_STORAGE: ${PERMANENT_FILE_STORAGE}
                 TIMEZONE: ${TIMEZONE}
                 WWWGROUP: ${WWWGROUP}
                 WWWUSER: ${WWWUSER}
@@ -16,21 +29,20 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '80:8080'
-            - '443:443'
+            - '80:80'
         environment:
-            DB_HOST: $DB_HOST
-            DB_PORT: $DB_PORT
-            DB_DATABASE: $DB_DATABASE
-            DB_USERNAME: $DB_USERNAME
-            DB_PASSWORD: $DB_PASSWORD
+            DB_HOST: ${DB_HOST}
+            DB_PORT: ${DB_PORT}
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
             LARAVEL_SAIL: 1
-            PERMANENT_FILE_STORAGE: $PERMANENT_FILE_STORAGE
+            PERMANENT_FILE_STORAGE: ${PERMANENT_FILE_STORAGE}
             ENABLE_SSL: 'true'
             WWWUSER: ${WWWUSER}
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            CIPHERSWEET_KEY: $CIPHERSWEET_KEY
+            CIPHERSWEET_KEY: ${CIPHERSWEET_KEY}
         volumes:
             - './app:${APP_HOME}/app'
             - './bootstrap:${APP_HOME}/bootstrap'
