@@ -9,7 +9,7 @@ import sri from "vite-plugin-manifest-sri";
 let host = "platform.test";
 let homeDir = homedir();
 
-export default defineConfig(({command}) => {
+export default defineConfig(({ command }) => {
     let config = {
         plugins: [
             laravel([
@@ -23,10 +23,6 @@ export default defineConfig(({command}) => {
 
     if (homeDir && command === "serve") {
         config.server = {
-            https: {
-                key: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.key`)),
-                cert: readFileSync(resolve(homeDir, `.config/valet/Certificates/${host}.crt`))
-            },
             hmr: {
                 host
             },
