@@ -326,10 +326,13 @@ class IndividualController extends Controller
         }
 
         $user = Auth::user();
+        $individual = $user->individual;
 
         $user->fill($data);
-
         $user->save();
+
+        $individual->fill($data);
+        $individual->save();
 
         return $user->individual->handleUpdateRequest($request, $user->individual->getStepForKey('communication-and-consultation-preferences'));
     }

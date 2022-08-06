@@ -26,17 +26,18 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
             'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,me',
             'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
-            'meeting_types' => 'required|array|min:1',
+            'meeting_types' => 'required|array',
             'meeting_types.*' => [new Enum(MeetingType::class)],
         ];
     }
 
-    /**
-     * Configure the validator instance.
-     *
-     * @param  Validator  $validator
-     * @return void
-     */
+    public function prepareForValidation()
+    {
+        request()->mergeIfMissing([
+            'meeting_types' => [],
+        ]);
+    }
+
     public function withValidator(Validator $validator)
     {
         $validator->sometimes('preferred_contact_method', 'in:email', function ($input) {
