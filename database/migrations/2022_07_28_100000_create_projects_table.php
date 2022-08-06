@@ -41,9 +41,13 @@ return new class extends Migration
             $table->json('team_trainings')->nullable();
             $table->boolean('seeking_consultant')->nullable();
             $table->string('consultant_name')->nullable();
-            $table->bigInteger('consultant_id')
+            $table->bigInteger('individual_consultant_id')
                 ->references('id')
                 ->on('individuals')
+                ->nullable();
+            $table->bigInteger('organizational_consultant_id')
+                ->references('id')
+                ->on('organizations')
                 ->nullable();
             $table->json('consultant_responsibilities')->nullable();
             $table->string('contact_person_name')->nullable();

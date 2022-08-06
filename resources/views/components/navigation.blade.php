@@ -10,13 +10,11 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
-        @if(Auth::user()->individual || Auth::user()->regulatedOrganization)
         <li>
-            <x-nav-link :href="localized_route('projects.index')" :active="request()->localizedRouteIs('projects.index')">
+            <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                 {{ __('Projects') }}
             </x-nav-link>
         </li>
-        @endif
         @else
         <li class="account">
             <x-nav-link :href="localized_route('register')">

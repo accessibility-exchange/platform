@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('engagement_individual', function (Blueprint $table) {
+        Schema::create('engagement_organization', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('status')->default('invited');
-            $table->foreignId('individual_id')
+            $table->foreignId('organization_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('engagement_id')
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('engagement_individual');
+        Schema::dropIfExists('engagement_organization');
     }
 };

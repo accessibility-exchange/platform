@@ -81,6 +81,8 @@ class IndividualController extends Controller
             $individual->unpublish(true);
         }
 
+        flash(__('Your roles have been saved.'), 'success');
+
         return redirect(localized_route('dashboard'));
     }
 

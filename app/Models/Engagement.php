@@ -14,11 +14,6 @@ class Engagement extends Model
     use HasFactory;
     use HasTranslations;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'name',
         'project_id',
@@ -26,61 +21,61 @@ class Engagement extends Model
         'recruitment',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'name' => 'array',
         'goals' => 'array',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
     public array $translatable = [
         'name',
         'goals',
     ];
 
-    /**
-     * The project that the engagement is part of.
-     *
-     * @return BelongsTo
-     */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * The individuals that are part of the engagement.
-     *
-     * @return BelongsToMany
-     */
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Individual::class)->withPivot('status');
     }
 
-    /**
-     * The individuals that are confirmed to be part of the engagement.
-     *
-     * @return BelongsToMany
-     */
     public function confirmedParticipants(): BelongsToMany
     {
         return $this->belongsToMany(Individual::class)->wherePivot('status', 'confirmed');
     }
 
-    /**
-     * The matching strategy attached to this engagement.
-     *
-     * @return MorphOne
-     */
+    public function organizationalParticipants(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class)->withPivot('status');
+    }
+
+    public function confirmedOrganizationalParticipants(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class)->wherePivot('status', 'confirmed');
+    }
+
+    public function consultant(): BelongsTo
+    {
+        return $this->belongsTo(Individual::class, 'individual_consultant_id');
+    }
+
+    public function organizationalConsultant(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organizational_consultant_id');
+    }
+
+    public function connector(): BelongsTo
+    {
+        return $this->belongsTo(Individual::class, 'individual_connector_id');
+    }
+
+    public function organizationalConnector(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organizational_connector_id');
+    }
+
     public function matchingStrategy(): MorphOne
     {
         return $this->morphOne(MatchingStrategy::class, 'matchable');

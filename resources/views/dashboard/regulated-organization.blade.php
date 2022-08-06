@@ -56,7 +56,7 @@
                 @foreach($memberable->projects as $project)
                 <x-project-card :project="$project" />
                 @endforeach
-            <p><a href="{{ localized_route('users.show_my_projects') }}">{{ __('Show all my projects') }}</a></p>
+            <p><a href="{{ localized_route('projects.my-projects') }}">{{ __('Show all my projects') }}</a></p>
             @else
             <p>{!! __('You have no active projects right now. :action', ['action' => '<strong><a href="' . localized_route('projects.create', $memberable) . '">' . __('Create your first project.') . '</a></strong>']) !!}</p>
             @endif

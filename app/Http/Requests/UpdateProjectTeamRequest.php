@@ -34,7 +34,7 @@ class UpdateProjectTeamRequest extends FormRequest
             'contacts.*.email' => 'nullable|email|required_with:contacts.*.name',
             'contacts.*.phone' => 'nullable|string|required_with:contacts.*.name',
             'has_consultant' => 'required|boolean',
-            'consultant_id' => [
+            'individual_consultant_id' => [
                 'exclude_unless:has_consultant,true',
                 'exclude_unless:consultant_origin,platform',
                 'required',

@@ -1,115 +1,137 @@
 <?php
 
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserProjectsController;
 
-Route::multilingual('/projects', [ProjectController::class, 'index'])
+Route::multilingual('/projects', [UserProjectsController::class, 'show'])
     ->middleware(['auth'])
-    ->name('projects.index');
+    ->name('projects.my-projects');
 
-Route::multilingual('/projects/create', [ProjectController::class, 'create'])
-    ->middleware(['auth', 'can:create,App\Models\Project'])
-    ->name('projects.create');
-
-Route::multilingual('/projects/create/store-context', [ProjectController::class, 'storeContext'])
-    ->method('post')
+Route::multilingual('/projects/contracted', [UserProjectsController::class, 'showContracted'])
     ->middleware(['auth'])
-    ->name('projects.store-context');
+    ->name('projects.my-contracted-projects');
 
-Route::multilingual('/projects/create/store-focus', [ProjectController::class, 'storeFocus'])
-    ->method('post')
+Route::multilingual('/projects/participating', [UserProjectsController::class, 'showParticipating'])
     ->middleware(['auth'])
-    ->name('projects.store-focus');
+    ->name('projects.my-participating-projects');
 
-Route::multilingual('/projects/create/store-languages', [ProjectController::class, 'storeLanguages'])
-    ->method('post')
+Route::multilingual('/projects/running', [UserProjectsController::class, 'showRunning'])
     ->middleware(['auth'])
-    ->name('projects.store-languages');
+    ->name('projects.my-running-projects');
 
-Route::multilingual('/projects/create', [ProjectController::class, 'store'])
-    ->method('post')
-    ->name('projects.store');
+Route::controller(ProjectController::class)
+    ->prefix('projects')
+    ->name('projects')
+    ->group(function () {
+        Route::multilingual('/all', 'index')
+            ->middleware(['auth'])
+            ->name('.index');
 
-Route::multilingual('/projects/{project}', [ProjectController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('projects.show');
+        Route::multilingual('/create', 'create')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
+            ->name('.create');
 
-Route::multilingual('/projects/{project}/team', [ProjectController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('projects.show-team');
+        Route::multilingual('/create/store-context', 'storeContext')
+            ->method('post')
+            ->middleware(['auth'])
+            ->name('.store-context');
 
-Route::multilingual('/projects/{project}/engagements', [ProjectController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('projects.show-engagements');
+        Route::multilingual('/create/store-focus', 'storeFocus')
+            ->method('post')
+            ->middleware(['auth'])
+            ->name('.store-focus');
 
-Route::multilingual('/projects/{project}/outcomes', [ProjectController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('projects.show-outcomes');
+        Route::multilingual('/create/store-languages', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth'])
+            ->name('.store-languages');
 
-Route::multilingual('/projects/{project}/edit', [ProjectController::class, 'edit'])
-    ->middleware(['auth', 'can:update,project'])
-    ->name('projects.edit');
+        Route::multilingual('/create', 'store')
+            ->method('post')
+            ->name('.store');
 
-Route::multilingual('/projects/{project}/update', [ProjectController::class, 'update'])
-    ->middleware(['auth', 'can:update,project'])
-    ->method('put')
-    ->name('projects.update');
+        Route::multilingual('/{project}', 'show')
+            ->middleware(['auth'])
+            ->name('.show');
 
-Route::multilingual('/projects/{project}/update-team', [ProjectController::class, 'updateTeam'])
-    ->middleware(['auth', 'can:update,project'])
-    ->method('put')
-    ->name('projects.update-team');
+        Route::multilingual('/{project}/team', 'show')
+            ->middleware(['auth'])
+            ->name('.show-team');
 
-Route::multilingual('/projects/{project}/update-publication-status', [ProjectController::class, 'updatePublicationStatus'])
-    ->middleware(['auth', 'can:update,project'])
-    ->method('put')
-    ->name('projects.update-publication-status');
+        Route::multilingual('/{project}/engagements', 'show')
+            ->middleware(['auth'])
+            ->name('.show-engagements');
 
-Route::multilingual('/projects/{project}/delete', [ProjectController::class, 'destroy'])
-    ->middleware(['auth', 'can:delete,project'])
-    ->method('delete')
-    ->name('projects.destroy');
+        Route::multilingual('/{project}/outcomes', 'show')
+            ->middleware(['auth'])
+            ->name('.show-outcomes');
 
-Route::multilingual('/projects/{project}/manage', [ProjectController::class, 'manage'])
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.manage');
+        Route::multilingual('/{project}/edit', 'edit')
+            ->middleware(['auth', 'can:update,project'])
+            ->name('.edit');
 
-Route::multilingual('/projects/{project}/participate', [ProjectController::class, 'participate'])
-    ->middleware(['auth', 'can:participate,project'])
-    ->name('projects.participate');
+        Route::multilingual('/{project}/update', 'update')
+            ->middleware(['auth', 'can:update,project'])
+            ->method('put')
+            ->name('.update');
 
-Route::multilingual('/projects/{project}/update-progress', [ProjectController::class, 'updateProgress'])
-    ->middleware(['auth', 'can:manage,project'])
-    ->method('put')
-    ->name('projects.update-progress');
+        Route::multilingual('/{project}/update-team', 'updateTeam')
+            ->middleware(['auth', 'can:update,project'])
+            ->method('put')
+            ->name('.update-team');
 
-Route::multilingual('/projects/{project}/find-participants/interested', [ProjectController::class, 'findInterestedIndividuals'])
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-interested-participants');
+        Route::multilingual('/{project}/update-publication-status', 'updatePublicationStatus')
+            ->middleware(['auth', 'can:update,project'])
+            ->method('put')
+            ->name('.update-publication-status');
 
-Route::multilingual('/projects/{project}/find-participants/related', [ProjectController::class, 'findRelatedIndividuals'])
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-related-participants');
+        Route::multilingual('/{project}/delete', 'destroy')
+            ->middleware(['auth', 'can:delete,project'])
+            ->method('delete')
+            ->name('.destroy');
 
-Route::multilingual('/projects/{project}/find-participants/all', [ProjectController::class, 'findAllIndividuals'])
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.find-all-participants');
+        Route::multilingual('/{project}/manage', 'manage')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.manage');
 
-Route::multilingual('/projects/{project}/add-participant', [ProjectController::class, 'addParticipant'])
-    ->method('put')
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.add-participant');
+        Route::multilingual('/{project}/participate', 'participate')
+            ->middleware(['auth', 'can:participate,project'])
+            ->name('.participate');
 
-Route::multilingual('/projects/{project}/update-participants', [ProjectController::class, 'updateParticipants'])
-    ->method('put')
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.update-participants');
+        Route::multilingual('/{project}/update-progress', 'updateProgress')
+            ->middleware(['auth', 'can:manage,project'])
+            ->method('put')
+            ->name('.update-progress');
 
-Route::multilingual('/projects/{project}/update-participant', [ProjectController::class, 'updateParticipant'])
-    ->method('put')
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.update-participant');
+        Route::multilingual('/{project}/find-participants/interested', 'findInterestedIndividuals')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.find-interested-participants');
 
-Route::multilingual('/projects/{project}/remove-participant', [ProjectController::class, 'removeParticipant'])
-    ->method('put')
-    ->middleware(['auth', 'can:manage,project'])
-    ->name('projects.remove-participant');
+        Route::multilingual('/{project}/find-participants/related', 'findRelatedIndividuals')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.find-related-participants');
+
+        Route::multilingual('/{project}/find-participants/all', 'findAllIndividuals')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.find-all-participants');
+
+        Route::multilingual('/{project}/add-participant', 'addParticipant')
+            ->method('put')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.add-participant');
+
+        Route::multilingual('/{project}/update-participants', 'updateParticipants')
+            ->method('put')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.update-participants');
+
+        Route::multilingual('/{project}/update-participant', 'updateParticipant')
+            ->method('put')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.update-participant');
+
+        Route::multilingual('/{project}/remove-participant', 'removeParticipant')
+            ->method('put')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.remove-participant');
+    });
