@@ -4,6 +4,7 @@
     border-block-end: var(--border) solid var(--banner-border);
     box-shadow: var(--banner-shadow);
     position: relative;
+    z-index: 1;
 }
 
 [role="banner"] > .center {
