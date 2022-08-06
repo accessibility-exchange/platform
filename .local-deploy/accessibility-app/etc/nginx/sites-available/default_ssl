@@ -6,5 +6,11 @@
         ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
         ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
-        include /etc/nginx/snippets/laravel.conf;
+        location / {
+            proxy_pass http://platform.test:80;
+            proxy_set_header    Host            $host;
+            proxy_set_header    X-Real-IP       $remote_addr;
+            proxy_set_header    X-Forwarded-for $remote_addr;
+            proxy_connect_timeout 300;
+        }
     }
