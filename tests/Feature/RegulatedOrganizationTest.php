@@ -519,7 +519,7 @@ test('users with admin role can delete regulated organizations', function () {
     $response->assertRedirect(localized_route('dashboard'));
 });
 
-test('users with admin role can not delete entities with wrong password', function () {
+test('users with admin role can not delete regulated organizations with wrong password', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
     $regulatedOrganization = RegulatedOrganization::factory()

@@ -23,7 +23,7 @@ class IndividualPolicy
         if ($model->checkStatus('draft')) {
             return $user->id === $model->user_id
                 ? Response::allow()
-                : Response::deny(__('You cannot view this individual page.'));
+                : Response::denyAsNotFound();
         }
 
         return $model->blockedBy($user)
@@ -34,11 +34,22 @@ class IndividualPolicy
             : Response::allow();
     }
 
-    public function update(User $user, Individual $individual): Response
+    public function manage(User $user, Individual $individual): Response
     {
         return $user->id === $individual->user_id
             ? Response::allow()
             : Response::deny(__('You cannot edit this individual page.'));
+    }
+
+    public function update(User $user, Individual $individual): Response
+    {
+        if ($user->id !== $individual->user_id) {
+            return Response::deny(__('You cannot edit this individual page.'));
+        }
+
+        return ($individual->isConsultant() || $individual->isConnector())
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     public function publish(User $user, Individual $individual): Response

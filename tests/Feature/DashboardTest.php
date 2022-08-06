@@ -15,7 +15,7 @@ test('user can access dashboard', function () {
     $response = $this->actingAs($user)->get(localized_route('dashboard'));
 
     $response->assertStatus(200);
-    $response->assertSee('Create your individual page');
+    $response->assertSee('My dashboard');
 
     $regulatedOrganizationUser = User::factory()->create([
         'context' => 'regulated-organization',
