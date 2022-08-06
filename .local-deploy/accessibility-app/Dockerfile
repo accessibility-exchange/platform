@@ -75,18 +75,16 @@ WORKDIR $APP_HOME
 
 RUN composer install
 
-SHELL ["/bin/bash", "--login", "-c"]
-
 ARG NODE_VERSION
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-RUN nvm install $NODE_VERSION && \
-    nvm use $NODE_VERSION
-RUN npm install
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+    && apt install -y nodejs \
+    && npm install -g npm 
+RUN npm install 
+RUN npm run build
 
-SHELL ["/bin/sh", "-c"]
-
-
+ARG APP_ENV
 ARG PERMANENT_FILE_STORAGE
+ENV APP_ENV $APP_ENV
 ENV PERMANENT_FILE_STORAGE $PERMANENT_FILE_STORAGE
 ENV DOLLAR '$'
 COPY .local-deploy/accessibility-app/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
@@ -96,11 +94,12 @@ RUN envsubst < /etc/nginx/snippets/laravel.conf.template > /etc/nginx/snippets/l
 RUN envsubst < ${APP_HOME}/.local-deploy/accessibility-app/entrypoint.sh > ${APP_HOME}/entrypoint.sh
 RUN chmod +x ${APP_HOME}/entrypoint.sh
 COPY .local-deploy/accessibility-app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN envsubst < .local-deploy/accessibility-app/supervisord-local.conf > /etc/supervisor/conf.d/supervisord-local.conf
 
 RUN apt -y autoremove \
     && apt clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN chown -R www-data:www-data ${APP_HOME}
+RUN chown -R www-data:www-data ${APP_HOME}/public ${APP_HOME}/storage
 
 ENTRYPOINT ${APP_HOME}/entrypoint.sh
