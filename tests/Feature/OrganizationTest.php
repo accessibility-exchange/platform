@@ -3,12 +3,14 @@
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\DisabilityType;
+use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\OrganizationRole;
+use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
@@ -863,4 +865,53 @@ test('guests cannot view organizations', function () {
 
     $response = $this->get(localized_route('organizations.show', $organization));
     $response->assertRedirect(localized_route('login'));
+});
+
+test('organizational relationships to projects can be derived from both projects and engagements', function () {
+    $this->seed(OrganizationRoleSeeder::class);
+
+    $organization = Organization::factory()->create();
+    $organization->organizationRoles()->sync(OrganizationRole::pluck('id'));
+
+    $organization = $organization->fresh();
+
+    $consultingProject = Project::factory()->create([
+        'organizational_consultant_id' => $organization->id,
+    ]);
+
+    $consultingEngagement = Engagement::factory()->create([
+        'organizational_consultant_id' => $organization->id,
+    ]);
+
+    expect($consultingEngagement->organizationalConsultant->id)->toEqual($organization->id);
+
+    $consultingEngagementProject = $consultingEngagement->project;
+
+    $connectingEngagement = Engagement::factory()->create([
+        'organizational_connector_id' => $organization->id,
+    ]);
+
+    expect($connectingEngagement->organizationalConnector->id)->toEqual($organization->id);
+
+    $connectingEngagementProject = $connectingEngagement->project;
+
+    $participatingEngagement = Engagement::factory()->create();
+
+    $participatingEngagement->organizationalParticipants()->attach($organization->id, ['status' => 'confirmed']);
+
+    $participatingEngagement = $participatingEngagement->fresh();
+
+    expect($participatingEngagement->confirmedOrganizationalParticipants->pluck('id'))->toContain($organization->id);
+
+    $participatingEngagementProject = $participatingEngagement->project;
+
+    expect($organization->contractedProjects->pluck('id')->toArray())
+        ->toHaveCount(3)
+        ->toContain($connectingEngagementProject->id)
+        ->toContain($consultingEngagementProject->id)
+        ->toContain($consultingProject->id);
+
+    expect($organization->participatingProjects->pluck('id')->toArray())
+        ->toHaveCount(1)
+        ->toContain($participatingEngagementProject->id);
 });

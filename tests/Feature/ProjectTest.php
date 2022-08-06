@@ -526,6 +526,7 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertDontSee('Projects I am contracted for');
+    $response->assertSee('Projects I am participating in');
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-running-projects'));
     $response->assertNotFound();
@@ -550,8 +551,8 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
-    $response->assertSee('Projects I am participating in');
-    $response->assertDontSee('Projects I am contracted for');
+    $response->assertDontSee('Projects I am participating in');
+    $response->assertSee('Projects I am contracted for');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -630,6 +631,15 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
+
+    $organization->organizationRoles()->sync([$organizationParticipantRole->id]);
+    $organizationUser = $organizationUser->fresh();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+    $response->assertSee('Projects I am running');
+    $response->assertDontSee('Projects I am contracted for');
+    $response->assertSee('<h2>Projects I am participating in</h2>', false);
 
     $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));

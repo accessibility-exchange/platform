@@ -12,6 +12,7 @@ use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\IndividualRole;
 use App\Models\LivedExperience;
+use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AgeBracketSeeder;
@@ -822,4 +823,51 @@ test('individual view routes can be retrieved based on role', function () {
     $individual = $individual->fresh();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-constituencies');
+});
+
+test('individual relationships to projects can be derived from both projects and engagements', function () {
+    $this->seed(IndividualRoleSeeder::class);
+
+    $individual = Individual::factory()->create();
+    $individual->individualRoles()->sync(IndividualRole::pluck('id'));
+
+    $individual = $individual->fresh();
+
+    $consultingProject = Project::factory()->create([
+        'individual_consultant_id' => $individual->id,
+    ]);
+
+    $consultingEngagement = Engagement::factory()->create([
+        'individual_consultant_id' => $individual->id,
+    ]);
+
+    expect($consultingEngagement->consultant->id)->toEqual($individual->id);
+
+    $consultingEngagementProject = $consultingEngagement->project;
+
+    $connectingEngagement = Engagement::factory()->create([
+        'individual_connector_id' => $individual->id,
+    ]);
+
+    expect($connectingEngagement->connector->id)->toEqual($individual->id);
+
+    $connectingEngagementProject = $connectingEngagement->project;
+
+    $participatingEngagement = Engagement::factory()->create();
+
+    $participatingEngagement->participants()->attach($individual->id);
+
+    $participatingEngagement = $participatingEngagement->fresh();
+
+    $participatingEngagementProject = $participatingEngagement->project;
+
+    expect($individual->contractedProjects->pluck('id')->toArray())
+        ->toHaveCount(3)
+        ->toContain($connectingEngagementProject->id)
+        ->toContain($consultingEngagementProject->id)
+        ->toContain($consultingProject->id);
+
+    expect($individual->participatingProjects->pluck('id')->toArray())
+        ->toHaveCount(1)
+        ->toContain($participatingEngagementProject->id);
 });

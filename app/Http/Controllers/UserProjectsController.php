@@ -43,8 +43,13 @@ class UserProjectsController extends Controller
         }
 
         if ($user->context === 'individual') {
+            if (! $user->individual->isParticipant()) {
+                $section = 'contracted';
+            }
+
             return view('projects.my-projects', [
                 'user' => $user,
+                'section' => $section,
             ]);
         }
 
@@ -56,7 +61,7 @@ class UserProjectsController extends Controller
         $user = Auth::user();
 
         if (in_array($user->context, ['individual', 'organization'])) {
-            if ($user->individual && ($user->individual->isConsultant() || $user->individual->isConnector())) {
+            if ($user->individual && $user->individual->isParticipant() && ($user->individual->isConsultant() || $user->individual->isConnector())) {
                 return view('projects.my-projects', [
                     'user' => $user,
                     'section' => 'contracted',
@@ -71,7 +76,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->context === 'organization' && $user->organization && $user->organization->isParticipant()) {
+        if ($user->context === 'organization' && $user->organization && $user->organization->isParticipant() && ($user->organization->isConsultant() || $user->organization->isConnector())) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->organization,
@@ -86,19 +91,11 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, ['regulated-organization', 'organization'])) {
+        if ($user->context === 'organization') {
             if ($user->organization && ($user->organization->isParticipant() || $user->organization->isConsultant() || $user->organization->isConnector())) {
                 return view('projects.my-projects', [
                     'user' => $user,
                     'projectable' => $user->organization,
-                    'section' => 'running',
-                ]);
-            }
-
-            if ($user->regulatedOrganization) {
-                return view('projects.my-projects', [
-                    'user' => $user,
-                    'projectable' => $user->regulatedOrganization,
                     'section' => 'running',
                 ]);
             }
