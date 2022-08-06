@@ -1,21 +1,8 @@
 <?php
 
-use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-
-test('users can access settings', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.settings'));
-    $response->assertOk();
-});
-
-test('guests can not access settings', function () {
-    $response = $this->get(localized_route('users.settings'));
-    $response->assertRedirect(localized_route('login'));
-});
 
 test('users can edit basic information', function () {
     $user = User::factory()->create();
@@ -56,74 +43,6 @@ test('users can edit basic information', function () {
 
 test('guests can not edit basic information', function () {
     $response = $this->get(localized_route('users.edit'));
-    $response->assertRedirect(localized_route('login'));
-});
-
-test('users can edit roles and permissions', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit-roles-and-permissions'));
-    $response->assertOk();
-});
-
-test('users can invite new members to their organization or regulated organization', function () {
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
-
-    $organizationUser = User::factory()->create(['context' => 'organization']);
-    $organization = Organization::factory()
-        ->hasAttached($organizationUser, ['role' => 'admin'])
-        ->create();
-
-    $response = $this->actingAs($organizationUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
-
-    $individualUser = User::factory()->create();
-    $response = $this->actingAs($individualUser)->get(localized_route('users.invite-to-invitationable'));
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
-});
-
-test('guests can not edit roles and permissions', function () {
-    $response = $this->get(localized_route('users.edit-roles-and-permissions'));
-    $response->assertRedirect(localized_route('login'));
-});
-
-test('users can edit display preferences', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit_display_preferences'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('users.update_display_preferences'), [
-        'theme' => 'system',
-    ]);
-
-    $response->assertRedirect(localized_route('users.edit_display_preferences'));
-});
-
-test('guests can not edit display preferences', function () {
-    $response = $this->get(localized_route('users.edit_display_preferences'));
-    $response->assertRedirect(localized_route('login'));
-});
-
-test('users can edit notification preferences', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('users.edit_notification_preferences'));
-    $response->assertOk();
-});
-
-test('guests can not edit notification preferences', function () {
-    $response = $this->get(localized_route('users.edit_notification_preferences'));
     $response->assertRedirect(localized_route('login'));
 });
 
@@ -224,4 +143,159 @@ test('users can view the introduction', function () {
         ]);
 
     $response->assertRedirect(localized_route('dashboard'));
+});
+
+test('user’s first name can be retrieved', function () {
+    $user = User::factory()->create(['name' => 'Jonny Appleseed']);
+    expect($user->first_name)->toEqual('Jonny');
+});
+
+test('user’s contact person can be retrieved', function () {
+    $user = User::factory()->create(['name' => 'Jonny Appleseed', 'preferred_contact_person' => 'me', 'support_person_name' => 'Jenny Appleseed']);
+
+    expect($user->contact_person)->toEqual('Jonny');
+
+    $user->update(['preferred_contact_person' => 'support_person']);
+
+    expect($user->contact_person)->toEqual('Jenny Appleseed');
+});
+
+test('user’s vrs requirement can be retrieved', function () {
+    $user = User::factory()->create([
+        'preferred_contact_person' => 'me',
+        'vrs' => true,
+        'support_person_vrs' => false,
+    ]);
+
+    expect($user->requires_vrs)->toBeTrue();
+
+    $user->update(['preferred_contact_person' => 'support_person']);
+
+    expect($user->requires_vrs)->toBeFalse();
+});
+
+test('user’s primary contact point can be retrieved', function () {
+    $user = User::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+    ]);
+
+    expect($user->primary_contact_point)->toEqual('jonny@example.com');
+
+    $user->update([
+        'phone' => '9055555555',
+        'vrs' => true,
+        'preferred_contact_person' => 'support-person',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9054444444',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($user->primary_contact_point)->toEqual('jenny@example.com');
+
+    $user->update(['preferred_contact_method' => 'phone']);
+
+    expect($user->primary_contact_point)->toEqual('1 (905) 444-4444');
+
+    $user->update(['preferred_contact_person' => 'me']);
+
+    expect($user->primary_contact_point)->toEqual("1 (905) 555-5555.  \nJonny requires VRS for phone calls");
+});
+
+test('user’s primary contact method can be retrieved', function () {
+    $user = User::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+        'phone' => '9055555555',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => 'email',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9054444444',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($user->primary_contact_method)->toEqual('Send an email to Jonny at <jonny@example.com>.');
+
+    $user->update(['preferred_contact_person' => 'support-person']);
+
+    expect($user->primary_contact_method)->toEqual('Send an email to Jonny’s support person, Jenny Appleseed, at <jenny@example.com>.');
+
+    $user->update(['preferred_contact_method' => 'phone']);
+
+    expect($user->primary_contact_method)->toEqual('Call Jonny’s support person, Jenny Appleseed, at 1 (905) 444-4444.');
+
+    $user->update(['preferred_contact_person' => 'me']);
+
+    expect($user->primary_contact_method)->toEqual("Call Jonny at 1 (905) 555-5555.  \nJonny requires VRS for phone calls.");
+});
+
+test('user’s alternate contact point can be retrieved', function () {
+    $user = User::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+    ]);
+
+    expect($user->alternate_contact_point)->toBeNull();
+
+    $user->update([
+        'phone' => '9055555555',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => 'phone',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9054444444',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($user->alternate_contact_point)->toEqual('jonny@example.com');
+
+    $user->update(['preferred_contact_person' => 'support-person']);
+
+    expect($user->alternate_contact_point)->toEqual('jenny@example.com');
+
+    $user->update(['preferred_contact_method' => 'email']);
+
+    expect($user->alternate_contact_point)->toEqual('1 (905) 444-4444');
+
+    $user->update(['preferred_contact_person' => 'me']);
+
+    expect($user->alternate_contact_point)->toEqual("1 (905) 555-5555  \nJonny requires VRS for phone calls.");
+});
+
+test('user’s alternate contact method can be retrieved', function () {
+    $user = User::factory()->create([
+        'name' => 'Jonny Appleseed',
+        'email' => 'jonny@example.com',
+    ]);
+
+    expect($user->alternate_contact_method)->toBeNull();
+
+    $user->update([
+        'phone' => '9055555555',
+        'vrs' => true,
+        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => 'phone',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+        'support_person_phone' => '9054444444',
+        'support_person_vrs' => false,
+    ]);
+
+    expect($user->alternate_contact_method)->toEqual('<jonny@example.com>');
+
+    $user->update(['preferred_contact_person' => 'support-person']);
+
+    expect($user->alternate_contact_method)->toEqual('<jenny@example.com>');
+
+    $user->update(['preferred_contact_method' => 'email']);
+
+    expect($user->alternate_contact_method)->toEqual('1 (905) 444-4444');
+
+    $user->update(['preferred_contact_person' => 'me']);
+
+    expect($user->alternate_contact_method)->toEqual("1 (905) 555-5555  \nJonny requires VRS for phone calls.");
 });

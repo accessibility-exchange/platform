@@ -7,6 +7,6 @@ return [
         'groups-you-can-connect-to' => 'Groups you can connect to',
         'experiences' => 'Experiences',
         'interests' => 'Interests',
-        'communication-and-meeting-preferences' => 'Communication and meeting preferences',
+        'communication-and-consultation-preferences' => 'Communication and meeting preferences',
     ],
 ];

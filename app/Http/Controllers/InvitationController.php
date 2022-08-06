@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AcceptInvitationRequest;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
-use Hearth\Models\Invitation;
+use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ class InvitationController extends Controller
 
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
-        return redirect(localized_route('users.edit-roles-and-permissions'));
+        return redirect(localized_route('settings.edit-roles-and-permissions'));
     }
 
     /**
@@ -74,6 +74,6 @@ class InvitationController extends Controller
 
         flash(__('invitation.cancel_invitation_succeeded'), 'success');
 
-        return redirect(localized_route('users.edit-roles-and-permissions'));
+        return redirect(localized_route('settings.edit-roles-and-permissions'));
     }
 }

@@ -446,17 +446,15 @@ test('projects reflect consultant origin', function () {
     $individual = Individual::factory()->create();
 
     $project_with_external_consultant = Project::factory()->create([
-        'has_consultant' => true,
         'consultant_name' => 'Joe Consultant',
     ]);
 
     $project_with_platform_consultant = Project::factory()->create([
-        'has_consultant' => true,
         'consultant_id' => $individual->id,
     ]);
 
-    $this->assertEquals('external', $project_with_external_consultant->consultant_origin());
-    $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin());
+    $this->assertEquals('external', $project_with_external_consultant->consultant_origin);
+    $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin);
     $this->assertEquals($individual->id, $project_with_platform_consultant->accessibilityConsultant->id);
 });
 

@@ -20,11 +20,13 @@ trait HasMultipageEditingAndPublishing
         flash(__('Your :model page has been published.', ['model' => $this->getSingularName()]), 'success');
     }
 
-    public function unpublish(): void
+    public function unpublish($silent = false): void
     {
         $this->published_at = null;
         $this->save();
-        flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success');
+        if (! $silent) {
+            flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success');
+        }
     }
 
     public function handleUpdateRequest(mixed $request, int $step = 0): RedirectResponse
@@ -35,9 +37,9 @@ trait HasMultipageEditingAndPublishing
 
         if (is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
-                flash(__('Your draft :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success');
             } else {
-                flash(__('Your :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your :model page.', ['model' => $this->getSingularName()]), 'success');
             }
         }
 
@@ -54,7 +56,7 @@ trait HasMultipageEditingAndPublishing
 
             $this->publish();
 
-            return redirect($back);
+            return redirect(localized_route($this->getRoutePrefix().'.show', $this));
         } elseif ($request->input('unpublish')) {
             Gate::authorize('unpublish', $this);
 

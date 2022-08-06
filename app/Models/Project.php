@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasContactPerson;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,75 +15,84 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
 
 class Project extends Model
 {
+    use HasContactPerson;
     use HasFactory;
     use HasStatus;
     use HasTranslations;
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
+    protected $attributes = [
+        'preferred_contact_method' => 'email',
+    ];
+
     protected $fillable = [
-        'name',
+        'published_at',
         'projectable_id',
         'projectable_type',
         'languages',
-        'start_date',
-        'end_date',
-        'published_at',
+        'name',
         'goals',
         'scope',
+        'regions',
         'out_of_scope',
+        'start_date',
+        'end_date',
+        'outcome_analysis',
+        'outcome_analysis_other',
         'outcomes',
         'public_outcomes',
         'team_size',
         'team_has_disability_or_deaf_lived_experience',
         'team_has_other_lived_experience',
         'team_languages',
-        'contacts',
-        'has_consultant',
+        'team_trainings',
+        'seeking_consultant',
         'consultant_name',
         'consultant_id',
         'consultant_responsibilities',
-        'team_trainings',
+        'contact_person_name',
+        'contact_person_email',
+        'contact_person_phone',
+        'contact_person_vrs',
+        'preferred_contact_method',
+        'contact_person_response_time',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'name' => 'array',
+        'published_at' => 'datetime:Y-m-d',
         'languages' => 'array',
+        'name' => 'array',
+        'goals' => 'array',
+        'scope' => 'array',
+        'regions' => 'array',
+        'out_of_scope' => 'array',
         'start_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',
-        'published_at' => 'datetime:Y-m-d',
+        'outcome_analysis' => 'array',
+        'outcome_analysis_other' => 'array',
+        'outcomes' => 'array',
         'public_outcomes' => 'boolean',
         'team_has_disability_or_deaf_lived_experience' => 'boolean',
         'team_has_other_lived_experience' => 'boolean',
         'team_languages' => 'array',
-        'contacts' => 'array',
-        'has_consultant' => 'boolean',
         'team_trainings' => 'array',
+        'seeking_consultant' => 'boolean',
+        'consultant_responsibilities' => 'array',
+        'contact_person_phone' => E164PhoneNumberCast::class.':CA',
+        'contact_person_vrs' => 'boolean',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
     public array $translatable = [
         'name',
         'goals',
         'scope',
         'out_of_scope',
+        'outcome_analysis_other',
         'outcomes',
         'consultant_responsibilities',
     ];
@@ -182,13 +192,18 @@ class Project extends Model
      *
      * @return string
      */
-    public function consultant_origin(): string
+    public function getConsultantOriginAttribute(): string
     {
         if ($this->consultant_name) {
             return 'external';
         }
 
         return 'platform';
+    }
+
+    public function getHasConsultantAttribute(): bool
+    {
+        return $this->consultant_name || $this->consultant_id;
     }
 
     /**

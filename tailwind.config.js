@@ -14,6 +14,7 @@ module.exports = {
             "graphite-7": "#3f424c",
             "graphite-6": "#4b5560",
             "graphite-5": "#637180",
+            "graphite-4": "#667584",
             "grey-3": "#d9dce3",
             "grey-2": "#eaedf3",
             "grey-1": "#f8fafd",
@@ -70,6 +71,26 @@ module.exports = {
             bold: "700",
             extrabold: "800",
             black: "900"
+        },
+        borderWidth: {
+            DEFAULT: "1px",
+            0: "0",
+            2: "2px",
+            3: "3px",
+            4: "4px",
+            8: "8px"
+        },
+        borderRadius: {
+            none: "0",
+            xs: "0.0625rem",
+            sm: "0.125rem",
+            DEFAULT: "0.25rem",
+            md: "0.375rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            full: "9999px"
         },
         maxWidth: {
             prose: "70ch"

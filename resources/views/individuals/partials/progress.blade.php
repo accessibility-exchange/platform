@@ -8,9 +8,11 @@
                 <a href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('individual.edit-steps.'.$value['edit']) }}</a>
             </li>
         @else
-        <li>
-            <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.'.$value['edit']) }}</a>
-        </li>
+            @if($value['edit'])
+            <li>
+                <a href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.'.$value['edit']) }}</a>
+            </li>
+            @endif
         @endif
         @endforeach
     </ol>

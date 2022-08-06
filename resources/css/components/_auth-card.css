@@ -1,9 +1,9 @@
 /* This file contains all styles related to the auth card component. */
 .auth-card {
-    --gutter: var(--size-7);
+    --gutter: var(--space-8);
 
     background: var(--body-background);
-    border-radius: var(--radius-3);
+    border-radius: var(--radius-md);
     box-shadow: var(--banner-shadow);
     padding: var(--gutter);
 }

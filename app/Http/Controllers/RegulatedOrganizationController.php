@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
@@ -77,7 +77,15 @@ class RegulatedOrganizationController extends Controller
      */
     public function store(StoreRegulatedOrganizationRequest $request): RedirectResponse
     {
-        $regulatedOrganization = RegulatedOrganization::create($request->validated());
+        $user = $request->user();
+        $data = $request->validated();
+
+        $data['contact_person_name'] = $user->name;
+        $data['contact_person_email'] = $user->email;
+        $data['preferred_contact_method'] = 'email';
+        $data['languages'] = ['en', 'fr', 'ase', 'fcs'];
+
+        $regulatedOrganization = RegulatedOrganization::create($data);
 
         session()->forget('type');
 
@@ -148,7 +156,8 @@ class RegulatedOrganizationController extends Controller
     {
         return view('regulated-organizations.edit', [
             'regulatedOrganization' => $regulatedOrganization,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'nullableRegions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
         ]);
     }
@@ -163,6 +172,16 @@ class RegulatedOrganizationController extends Controller
     public function update(UpdateRegulatedOrganizationRequest $request, RegulatedOrganization $regulatedOrganization): RedirectResponse
     {
         $data = $request->validated();
+
+        $data = $request->validated();
+
+        if (isset($data['accessibility_and_inclusion_links'])) {
+            $data['accessibility_and_inclusion_links'] = array_filter(array_map('array_filter', $data['accessibility_and_inclusion_links']));
+        }
+
+        if (isset($data['social_links'])) {
+            $data['social_links'] = array_filter($data['social_links']);
+        }
 
         $regulatedOrganization->fill($data);
 

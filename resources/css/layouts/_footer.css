@@ -30,11 +30,11 @@ footer .brand {
 }
 
 footer .center {
-    padding: var(--size-9) var(--size-3);
+    padding: var(--space-16) var(--space-4);
 }
 
 footer nav .stack {
-    --space: var(--size-1);
+    --space: var(--space-1);
 }
 
 footer .grow\:2 {
@@ -42,7 +42,7 @@ footer .grow\:2 {
 }
 
 footer .switcher {
-    --gap: var(--size-5);
+    --gap: var(--space-6);
 }
 
 footer > .switcher > .switcher {

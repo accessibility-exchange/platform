@@ -108,46 +108,13 @@ Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->name('people-and-organizations');
 
-Route::multilingual('/settings', [UserController::class, 'settings'])
-    ->middleware(['auth'])
-    ->name('users.settings');
-
-Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
-    ->middleware(['auth'])
-    ->name('users.edit');
-
-Route::multilingual('/settings/roles-and-permissions', [UserController::class, 'editRolesAndPermissions'])
-    ->middleware(['auth'])
-    ->name('users.edit-roles-and-permissions');
-
-Route::multilingual('/settings/roles-and-permissions/invite', [UserController::class, 'inviteToInvitationable'])
-    ->middleware(['auth'])
-    ->name('users.invite-to-invitationable');
-
-Route::multilingual('/settings/display-preferences', [UserController::class, 'editDisplayPreferences'])
-    ->middleware(['auth'])
-    ->name('users.edit_display_preferences');
-
-Route::multilingual('/settings/display-preferences', [UserController::class, 'updateDisplayPreferences'])
-    ->method('put')
-    ->middleware(['auth'])
-    ->name('users.update_display_preferences');
-
-Route::multilingual('/settings/notifications', [UserController::class, 'editNotificationPreferences'])
-    ->middleware(['auth'])
-    ->name('users.edit_notification_preferences');
-
-Route::multilingual('/settings/change-password', [UserController::class, 'admin'])
-    ->middleware(['auth'])
-    ->name('users.admin');
-
 Route::multilingual('/my-projects', [UserController::class, 'showMyProjects'])
     ->middleware(['auth'])
     ->name('users.show_my_projects');
 
-Route::multilingual('/settings/delete-account', [UserController::class, 'delete'])
+Route::multilingual('/settings/basic-information', [UserController::class, 'edit'])
     ->middleware(['auth'])
-    ->name('users.delete');
+    ->name('users.edit');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
@@ -169,3 +136,4 @@ require __DIR__.'/translations.php';
 require __DIR__.'/memberships.php';
 require __DIR__.'/invitations.php';
 require __DIR__.'/fortify.php';
+require __DIR__.'/settings.php';

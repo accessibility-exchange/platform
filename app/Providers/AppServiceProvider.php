@@ -14,6 +14,7 @@ use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\Translatable\Facades\Translatable;
@@ -41,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
     {
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
+        }
+
+        if (config('app.env') === 'local') {
+            DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         }
 
         StatusManager::bind(Individual::class, IndividualStatus::class);

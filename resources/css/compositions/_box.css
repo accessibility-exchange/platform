@@ -4,7 +4,7 @@
     color: var(--box-color);
     outline: var(--border-thin) solid transparent;
     outline-offset: calc(var(--border-thin) * -1);
-    padding: var(--size-5) var(--size-7) var(--size-7);
+    padding: var(--space-6) var(--space-8) var(--space-8);
 }
 
 .box * {

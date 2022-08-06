@@ -5,7 +5,7 @@
 
 .card + *,
 .stack > .card + * {
-    margin-block-start: var(--size-8);
+    margin-block-start: var(--space-12);
 }
 
 .card a {

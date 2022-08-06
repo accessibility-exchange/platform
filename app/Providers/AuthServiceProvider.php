@@ -19,6 +19,7 @@ use App\Policies\ResourceCollectionPolicy;
 use App\Policies\ResourcePolicy;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 
@@ -47,6 +48,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Auth::provider('encryptedUserProvider', function ($app, array $config) {
+            return new EncryptedUserProvider($app['hash'], $config['model']);
+        });
 
         Gate::define('block', function (User $user) {
             return $user->context === 'individual'

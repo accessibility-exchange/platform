@@ -67,7 +67,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'encryptedUserProvider',
             'model' => App\Models\User::class,
         ],
 

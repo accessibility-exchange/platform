@@ -11,10 +11,10 @@
 #skip-to-content:focus {
     clip: auto;
     clip-path: none;
-    height: calc(var(--size-8) - var(--size-1));
-    left: var(--size-2);
+    height: calc(var(--space-12) - var(--space-1));
+    left: var(--space-2);
     overflow: auto;
-    top: var(--size-2);
+    top: var(--space-2);
     width: auto;
     z-index: 1;
 }

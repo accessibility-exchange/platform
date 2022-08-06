@@ -4,13 +4,13 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
-            <li><a href="{{ localized_route('about.individual-community-connectors') }}">{{ __('Community connectors') }}</a></li>
+            <li><a href="{{ localized_route('about.individual-community-connectors') }}">{{ __('Community Connectors') }}</a></li>
         </ol>
         <div class="w-full lg:w-2/3">
             <h1 id="what-we-ask-for">
                 {{ __('What information do we ask for?') }}
             </h1>
-            <p class="h4">{{ __('Information that we ask consultation participants, accessibility consultants, and community connectors to share.') }}</p>
+            <p class="h4">{{ __('Information that we ask Consultation Participants, accessibility consultants, and Community Connectors to share.') }}</p>
         </div>
     </x-slot>
 
@@ -19,7 +19,7 @@
             @include('about.partials.what-we-ask-for-navigation')
             <div class="stack">
                 <h2>{{ __('Community Connectors — Individual') }}</h2>
-                <p>{{ __('We ask community connectors for the following information:') }}</p>
+                <p>{{ __('We ask Community Connectors for the following information:') }}</p>
                 <x-expander :summary="__('Basic information about you')" level="3">
                     <ul>
                         <li>{{ __('Province or territory') }}</li>
@@ -38,7 +38,7 @@
                         <li>{{ __('Age groups you can connect to') }}</li>
                     </ul>
                     <h4>{{ __('Why do we ask this?') }}</h4>
-                    <p>{{ __('As a community connector, governments and businesses would hire you to connect to certain communities. This would list out what communities you can connect them to.') }}</p>
+                    <p>{{ __('As a Community Connector, governments and businesses would hire you to connect to certain communities. This would list out what communities you can connect them to.') }}</p>
                 </x-expander>
                 <x-expander :summary="__('Experiences (optional)')" level="3">
                     <ul>
@@ -83,7 +83,7 @@
         <x-section class="bg-turquoise-2 align:center mt-16">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
-                {{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}
+                {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
             </p>
         </x-section>
 
@@ -98,7 +98,7 @@
                         </div>
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}</p>
+                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
                             <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
                         </div>
                     </div>

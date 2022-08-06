@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ConsultingServices;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\ProvinceOrTerritory;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -48,7 +48,7 @@ class UpdateOrganizationRequest extends FormRequest
             ] + $aboutRules,
             'region' => [
                 'required',
-                new Enum(ProvincesAndTerritories::class),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'locality' => 'required|string|max:255',
             'service_areas' => [
@@ -66,10 +66,18 @@ class UpdateOrganizationRequest extends FormRequest
                 Rule::excludeIf(fn () => ! $this->organization->isConsultant()),
             ],
             'consulting_services.*' => [
-                new Enum(ConsultingServices::class),
+                new Enum(ConsultingService::class),
             ],
             'social_links.*' => 'nullable|url',
             'website_link' => 'nullable|url',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'about.fr' => __('"About your organization" (French)'),
+            'about.en' => __('"About your organization" (English)'),
         ];
     }
 }

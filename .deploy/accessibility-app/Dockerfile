@@ -1,8 +1,10 @@
 FROM php:8.1-fpm
 
+ARG CIPHERSWEET_KEY
+
 RUN apt-get update
 
-RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl
+RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl htop
 
 RUN apt-get install -y \
     libfreetype6-dev \
@@ -21,10 +23,6 @@ RUN docker-php-ext-install opcache
 
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-
 RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
@@ -35,6 +33,21 @@ RUN pecl install -o -f redis && \
     rm -rf /tmp/pear && \
     docker-php-ext-enable redis
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+ENV NVM_DIR /root/.nvm
+ENV NODE_VERSION 16
+
+RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+
+RUN . $NVM_DIR/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm alias default $NODE_VERSION && \
+    nvm use default
+
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH      $NVM_DIR/v$NODE_VERSION/bin:$PATH
+
 COPY .deploy/accessibility-app/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 COPY .deploy/accessibility-app/nginx.conf /etc/nginx/nginx.conf
 COPY .deploy/accessibility-app/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -42,10 +55,13 @@ COPY .deploy/accessibility-app/supervisord.conf /etc/supervisor/conf.d/superviso
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
-COPY . /app
+COPY . $APP_HOME
 
 RUN composer install
 
-RUN chown www-data:root /app/public/ -R
+RUN . $NVM_DIR/nvm.sh && \
+    npm install
 
-ENTRYPOINT /app/.deploy/accessibility-app/entrypoint.sh
+RUN chown www-data:root $APP_HOME/public/ -R
+
+ENTRYPOINT $APP_HOME/.deploy/accessibility-app/entrypoint.sh

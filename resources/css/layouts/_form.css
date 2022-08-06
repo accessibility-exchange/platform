@@ -2,14 +2,14 @@
 
 .field > * + *,
 fieldset > * + * {
-    margin-block-start: var(--size-2);
+    margin-block-start: var(--space-2);
 }
 
 .field > legend + *,
 fieldset > legend + * {
-    margin-block-start: var(--size-4);
+    margin-block-start: var(--space-5);
 }
 
 form .repel:last-child {
-    margin-block-start: var(--size-8);
+    margin-block-start: var(--space-12);
 }

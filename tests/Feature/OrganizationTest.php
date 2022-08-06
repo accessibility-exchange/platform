@@ -29,7 +29,7 @@ uses(RefreshDatabase::class);
 test('users can create organizations', function () {
     $this->seed(OrganizationRoleSeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
     $response->assertOk();
@@ -52,25 +52,27 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
+    expect($organization->working_languages)->toContain('ase');
+
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility consultant')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Community connector')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Community Connector')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->post(localized_route('organizations.store-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation participant')->id],
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -106,6 +108,8 @@ test('users with admin role can edit and publish organizations', function () {
         'save_and_next' => 1,
     ]);
 
+    expect($organization->fresh()->social_links)->toBeArray()->toBeEmpty();
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', [
         'organization' => $organization,
@@ -119,10 +123,7 @@ test('users with admin role can edit and publish organizations', function () {
             'publish' => 1,
         ]);
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', [
-        'organization' => $organization,
-        'step' => 1,
-    ]));
+    $response->assertRedirect(localized_route('organizations.show', $organization));
 
     expect($organization->fresh()->checkStatus('published'))->toBeTrue();
 
@@ -315,14 +316,31 @@ test('users with admin role can edit organization contact information', function
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
-        'contact_person_phone' => faker()->phoneNumber,
-        'contact_person_vrs' => false,
+        'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
         'save' => 1,
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->contact_methods)->toContain('email')->toContain('phone');
+
+    expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
+    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
+    expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");
+    expect($organization->alternate_contact_method)->toEqual($organization->alternate_contact_point);
+
+    $organization->preferred_contact_method = 'phone';
+    $organization->save();
+    $organization = $organization->fresh();
+
+    expect($organization->primary_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
+    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_email);
+    expect($organization->primary_contact_method)->toEqual("Call {$organization->contact_person_name} at {$organization->contact_person_phone->formatForCountry('CA')}.");
+    expect($organization->alternate_contact_method)->toEqual("<{$organization->contact_person_email}>");
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
@@ -438,7 +456,7 @@ test('users with admin role can update other member roles', function () {
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
         ]);
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot update member roles', function () {
@@ -522,7 +540,7 @@ test('users with admin role can invite members', function () {
             'role' => 'member',
         ]);
 
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot invite members', function () {
@@ -562,7 +580,7 @@ test('users with admin role can cancel invitations', function () {
         ->delete(route('invitations.destroy', ['invitation' => $invitation]));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot cancel invitations', function () {
@@ -686,7 +704,7 @@ test('users with admin role can remove members', function () {
         ->delete(route('memberships.destroy', $membership));
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('users.edit-roles-and-permissions'));
+    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot remove members', function () {

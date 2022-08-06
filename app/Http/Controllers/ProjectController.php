@@ -118,7 +118,12 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): RedirectResponse
     {
+        $user = $request->user();
         $data = $request->validated();
+
+        $data['contact_person_name'] = $user->name;
+        $data['contact_person_email'] = $user->email;
+        $data['preferred_contact_method'] = 'email';
 
         $data['languages'] = session()->get('languages');
 

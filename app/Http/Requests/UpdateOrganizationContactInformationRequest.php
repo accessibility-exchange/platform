@@ -16,7 +16,7 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
         return [
             'contact_person_name' => 'required|string',
             'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
-            'contact_person_phone' => 'nullable|string|required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
         ];
@@ -31,5 +31,13 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
         $validator->sometimes('preferred_contact_method', 'in:phone', function ($input) {
             return ! $input->contact_person_email;
         });
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'contact_person_email' => 'email address',
+            'contact_person_phone' => 'phone number',
+        ];
     }
 }

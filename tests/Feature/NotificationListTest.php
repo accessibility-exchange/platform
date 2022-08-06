@@ -4,7 +4,7 @@ use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
-test('only individual users can have a block list', function () {
+test('only individual users can have a notification list', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(localized_route('notification-list.show'));

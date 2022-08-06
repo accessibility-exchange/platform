@@ -1,5 +1,5 @@
 <h2>
-    {{ __('Step 2 of 3') }}<br />
+    {{ __('Step 2 of 2') }}<br />
     {{ __('Project team') }}
 </h2>
 
@@ -44,9 +44,9 @@
             <legend class="h4">{{ __('Are you working with an accessibility consultant on this project? (required)') }}</legend>
             <x-hearth-radio-buttons name="has_consultant" :options="[1 => __('Yes'), 0 => __('No')]" :checked="old('has_consultant', $project->has_consultant)" x-model="hasConsultant" />
         </fieldset>
-        <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin()) }}'}">
+        <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin) }}'}">
             <legend class="h4">{{ __('Where did you find the accessibility consultant? (required)') }}</legend>
-            <x-hearth-radio-buttons name="consultant_origin" :options="['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')]" :checked="old('consultant_origin', $project->consultant_origin())" x-model="consultantOrigin" />
+            <x-hearth-radio-buttons name="consultant_origin" :options="['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')]" :checked="old('consultant_origin', $project->consultant_origin)" x-model="consultantOrigin" />
             <div class="field @error('consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
                 <x-hearth-label for="consultant_id" :value="__('Consultant (required)')" />
                 <x-hearth-select x-data="autocomplete()" name="consultant_id" :options="$consultants" :selected="old('consultant_id', $project->consultant_id)" />
