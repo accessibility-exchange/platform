@@ -10,7 +10,7 @@
             </div>
         </div>
     </x-slot>
-
+    @if($user->context !== 'regulated-organization')
     <nav aria-labelledby="projects" class="full bg-white mb-12 shadow-md">
         <div class="center center:wide">
             <ul role="list" class="flex gap-6 -mt-4">
@@ -32,13 +32,6 @@
                             </x-nav-link>
                         </li>
                         @break
-                    @case('regulated-organization')
-                        <li class="w-full">
-                            <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                                {{ __('Projects I am running') }}
-                            </x-nav-link>
-                        </li>
-                        @break
                     @default
                         <li class="w-full">
                             <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
@@ -54,6 +47,7 @@
             </ul>
         </div>
     </nav>
+    @endif
 
     @switch($user->context)
         @case('organization')
