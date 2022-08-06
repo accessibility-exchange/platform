@@ -8,6 +8,10 @@
         @if($currentUser->context == 'individual')
         <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->individual->individualRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
+
+        @if($currentUser->context == 'organization')
+            <p><strong>{{ __('Roles:') }}</strong> {{ $currentUser->organization->organizationRoles->isEmpty() ? __('None selected') : implode(', ', $currentUser->organization->organizationRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('organizations.show-role-edit', $currentUser->organization) }}">{{ __('Edit roles') }}</a></p>
+        @endif
     </x-slot>
 
     @if($currentUser->context === 'individual')
