@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "build": "vite build",
-        "dev": "vite",
+        "dev": "vite --host 0.0.0.0 --port 80",
         "format": "prettier --write resources/**/*.css",
         "lint:scripts": "eslint *.js resources/js/**/*.js",
         "lint:styles": "stylelint resources/css/**/*.css",
