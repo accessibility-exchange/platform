@@ -237,41 +237,26 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return $this->belongsToMany(ConsultingMethod::class);
     }
 
-    /**
-     * The constituencies that belong to the individual.
-     */
     public function constituencies(): BelongsToMany
     {
         return $this->belongsToMany(Constituency::class);
     }
 
-    /**
-     * The lived experiences that belong to the individual.
-     */
     public function livedExperiences(): BelongsToMany
     {
         return $this->belongsToMany(LivedExperience::class);
     }
 
-    /**
-     * The access supports that belong to the individual.
-     */
     public function accessSupports(): BelongsToMany
     {
         return $this->belongsToMany(AccessSupport::class);
     }
 
-    /**
-     * The projects that the individual is interested in.
-     */
     public function projectsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'projects_of_interest');
     }
 
-    /**
-     * The engagements that the individual belongs to.
-     */
     public function engagements(): BelongsToMany
     {
         return $this->belongsToMany(Engagement::class);
@@ -341,7 +326,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
 
     public function contractedProjects(): MergedRelation
     {
-        return $this->mergedRelationWithModel(Project::class, 'all_contracted_projects');
+        return $this->mergedRelationWithModel(Project::class, 'all_individual_contracted_projects');
     }
 
     public function inProgressContractedProjects(): MergedRelation

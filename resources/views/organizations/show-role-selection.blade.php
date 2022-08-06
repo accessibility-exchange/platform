@@ -18,5 +18,6 @@
         <button>{{ __('Next') }}</button>
 
         @csrf
+        @method('put')
     </form>
 </x-app-layout>

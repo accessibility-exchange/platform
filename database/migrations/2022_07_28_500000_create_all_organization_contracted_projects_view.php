@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Individual;
+use App\Models\Organization;
 use Illuminate\Database\Migrations\Migration;
 use Staudenmeir\LaravelMergedRelations\Facades\Schema;
 
@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::createOrReplaceMergeViewWithoutDuplicates(
-            'all_contracted_projects',
+            'all_organization_contracted_projects',
             [
-                (new Individual)->consultingProjects(),
-                (new Individual)->consultingEngagementProjects(),
-                (new Individual)->connectingEngagementProjects(),
+                (new Organization)->consultingProjects(),
+                (new Organization)->consultingEngagementProjects(),
+                (new Organization)->connectingEngagementProjects(),
             ]
         );
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropView('all_contracted_projects');
+        Schema::dropView('all_organization_contracted_projects');
     }
 };

@@ -178,9 +178,19 @@ class Project extends Model
         return $this->hasManyDeep(Individual::class, [Engagement::class, 'engagement_individual']);
     }
 
+    public function organizationalParticipants(): HasManyDeep
+    {
+        return $this->hasManyDeep(Organization::class, [Engagement::class, 'engagement_organization']);
+    }
+
     public function consultant(): BelongsTo
     {
         return $this->belongsTo(Individual::class, 'individual_consultant_id');
+    }
+
+    public function organizationalConsultant(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organizational_consultant_id');
     }
 
     public function getConsultantOriginAttribute(): string
