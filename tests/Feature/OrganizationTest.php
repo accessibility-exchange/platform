@@ -57,26 +57,41 @@ test('users can create organizations', function () {
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
 
+    $consultantRole = OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id;
+    $connectorRole = OrganizationRole::firstWhere('name->en', 'Community Connector')->id;
+    $participantRole = OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id;
+
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
+        'roles' => [$consultantRole],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Community Connector')->id],
+        'roles' => [$connectorRole],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id],
+        'roles' => [$participantRole],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isParticipant())->toBeTrue();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show-role-edit', $organization));
+    $response->assertOk();
+    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-'.$participantRole.'" value="'.$participantRole.'" aria-describedby="roles-'.$participantRole.'-hint" checked  />', false);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
+        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+    expect($organization->fresh()->isConsultant())->toBeTrue();
 
     expect($user->isMemberOf($organization))->toBeTrue();
     expect($user->memberships)->toHaveCount(1);

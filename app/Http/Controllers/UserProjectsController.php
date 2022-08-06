@@ -12,13 +12,33 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->regulatedOrganization || $user->organization) {
+        if ($user->regulatedOrganization) {
             $projectable = $user->projectable();
             $projectable->load('projects');
 
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $projectable,
+            ]);
+        }
+
+        $projectable = null;
+        $section = null;
+
+        if ($user->organization) {
+            if ($user->organization->isConsultant() || $user->organization->isConnector()) {
+                $section = 'contracted';
+            } elseif ($user->organization->isParticipant()) {
+                $section = 'participating';
+            } else {
+                $projectable = $user->projectable();
+                $projectable->load('projects');
+            }
+
+            return view('projects.my-projects', [
+                'user' => $user,
+                'projectable' => $projectable,
+                'section' => $section,
             ]);
         }
 
@@ -35,19 +55,13 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->organization && $user->organization->isConsultant() || $user->organization->isConnector()) {
-            return view('projects.my-projects', [
-                'user' => $user,
-                'projectable' => $user->organization,
-                'section' => 'contracted',
-            ]);
-        }
-
-        if ($user->context === 'individual') {
-            return view('projects.my-projects', [
-                'user' => $user,
-                'section' => 'contracted',
-            ]);
+        if (in_array($user->context, ['individual', 'organization'])) {
+            if ($user->individual && ($user->individual->isConsultant() || $user->individual->isConnector())) {
+                return view('projects.my-projects', [
+                    'user' => $user,
+                    'section' => 'contracted',
+                ]);
+            }
         }
 
         abort(404);
@@ -57,7 +71,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->organization && $user->organization->isParticipant()) {
+        if ($user->context === 'organization' && $user->organization && $user->organization->isParticipant()) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->organization,
@@ -72,20 +86,22 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->organization) {
-            return view('projects.my-projects', [
-                'user' => $user,
-                'projectable' => $user->organization,
-                'section' => 'running',
-            ]);
-        }
+        if (in_array($user->context, ['regulated-organization', 'organization'])) {
+            if ($user->organization && ($user->organization->isParticipant() || $user->organization->isConsultant() || $user->organization->isConnector())) {
+                return view('projects.my-projects', [
+                    'user' => $user,
+                    'projectable' => $user->organization,
+                    'section' => 'running',
+                ]);
+            }
 
-        if ($user->regulatedOrganization) {
-            return view('projects.my-projects', [
-                'user' => $user,
-                'projectable' => $user->regulatedOrganization,
-                'section' => 'running',
-            ]);
+            if ($user->regulatedOrganization) {
+                return view('projects.my-projects', [
+                    'user' => $user,
+                    'projectable' => $user->regulatedOrganization,
+                    'section' => 'running',
+                ]);
+            }
         }
 
         abort(404);

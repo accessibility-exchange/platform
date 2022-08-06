@@ -2,12 +2,16 @@
 
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\IndividualRole;
 use App\Models\Organization;
+use App\Models\OrganizationRole;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\IndividualRoleSeeder;
+use Database\Seeders\OrganizationRoleSeeder;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -509,37 +513,127 @@ test('project retrieves team trainings properly', function () {
 });
 
 test('registered users can access my projects page', function () {
-    $user = User::factory()->create();
+    $this->seed(IndividualRoleSeeder::class);
+    $this->seed(OrganizationRoleSeeder::class);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.my-projects'));
+    $individualConsultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
+    $individualParticipantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
+
+    $individualUser = User::factory()->create();
+    $individual = $individualUser->individual;
+    $individual->individualRoles()->sync([$individualParticipantRole->id]);
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
+    $response->assertDontSee('Projects I am contracted for');
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-running-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $individual->individualRoles()->sync([$individualParticipantRole->id, $individualConsultantRole->id]);
+
+    $individualUser = $individualUser->fresh();
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+    $response->assertSee('Projects I am contracted for');
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertOk();
+
+    $individual->individualRoles()->sync([$individualConsultantRole->id]);
+
+    $individualUser = $individualUser->fresh();
+
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+    $response->assertSee('Projects I am participating in');
+    $response->assertDontSee('Projects I am contracted for');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
-    $project = Project::factory()->create([
-        'projectable_id' => $regulatedOrganization->id,
-    ]);
-
-    $this->assertEquals(1, count($regulatedOrganizationUser->projects()));
+    $regulatedOrganizationUser = $regulatedOrganizationUser->fresh();
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
+    $response->assertSee('Projects I am running');
+    $response->assertDontSee('Projects I am contracted for');
+    $response->assertDontSee('Projects I am participating in');
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'));
+    $response->assertNotFound();
+
+    $organizationConsultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
+    $organizationParticipantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($organizationUser, ['role' => 'admin'])
         ->create();
-    $project = Project::factory()->create([
-        'projectable_type' => 'App\Models\Organization',
-        'projectable_id' => $organization->id,
-    ]);
-
-    $this->assertEquals(1, count($organizationUser->projects()));
+    $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
+    $response->assertSee('Projects I am running');
+    $response->assertDontSee('Projects I am contracted for');
+    $response->assertDontSee('Projects I am participating in');
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
+    $response->assertNotFound();
+
+    $organization->organizationRoles()->sync([$organizationConsultantRole->id]);
+    $organizationUser = $organizationUser->fresh();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+    $response->assertSee('Projects I am running');
+    $response->assertSee('Projects I am contracted for');
+    $response->assertDontSee('Projects I am participating in');
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
+    $response->assertOk();
+
+    $organization->organizationRoles()->sync([$organizationConsultantRole->id, $organizationParticipantRole->id]);
+    $organizationUser = $organizationUser->fresh();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+    $response->assertSee('Projects I am running');
+    $response->assertSee('Projects I am contracted for');
+    $response->assertSee('Projects I am participating in');
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
+    $response->assertOk();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
+    $response->assertOk();
+
+    $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
+    $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
+    $response->assertNotFound();
 });
 
 test('guests can not access my projects page', function () {
