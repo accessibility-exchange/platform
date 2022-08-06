@@ -2,11 +2,11 @@
     <div class="column stack">
         <div class="stack">
             <h2>{{ __('Getting started') }}</h2>
-            @if(!$currentUser->individual->hasAddedDetails())
+            @if(($currentUser->individual->isConsultant() || $currentUser->individual->isConnector()) && !$currentUser->individual->hasAddedDetails())
             <x-expander level="3">
                 <x-slot name="summary">{{ __('Create your individual page') }}</x-slot>
                 <div class="stack">
-                    <p>{{ __('Once you create your page, entities can find you and ask you to consult on their projects.') }}</p>
+                    <p>{{ __('Once you create your page, organizations can find you and ask you to consult on their projects.') }}</p>
                     <p>
                         <a href="{{ localized_route('individuals.edit', $currentUser->individual) }}" class="cta secondary">{{ __('Create your page') }}</a>
                     </p>
@@ -14,9 +14,9 @@
             </x-expander>
             @else
             <x-expander level="3">
-                <x-slot name="summary">{{ __('Find entities to follow') }}</x-slot>
+                <x-slot name="summary">{{ __('Find organizations to follow') }}</x-slot>
                 <div class="stack">
-                    <p>{{ __('Once you follow some entities that you’re interested in, you will be notified whenever they begin a community consultation process.') }}</p>
+                    <p>{{ __('Once you follow some organizations that you’re interested in, you will be notified whenever they begin a consultation process.') }}</p>
                     <p><a class="button" href="{{ localized_route('regulated-organizations.index') }}">{{ __('Find entities') }}</a></p>
                 </div>
             </x-expander>
@@ -30,7 +30,7 @@
             </x-expander>
         </div>
 
-        @if($currentUser->individual->hasAddedDetails())
+        @if(($currentUser->individual->isConsultant() || $currentUser->individual->isConnector()) && $currentUser->individual->hasAddedDetails())
         <div class="stack">
             <h2>{{ __('My page') }}</h2>
             <p>

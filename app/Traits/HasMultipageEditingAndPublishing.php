@@ -20,11 +20,13 @@ trait HasMultipageEditingAndPublishing
         flash(__('Your :model page has been published.', ['model' => $this->getSingularName()]), 'success');
     }
 
-    public function unpublish(): void
+    public function unpublish($silent = false): void
     {
         $this->published_at = null;
         $this->save();
-        flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success');
+        if (! $silent) {
+            flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success');
+        }
     }
 
     public function handleUpdateRequest(mixed $request, int $step = 0): RedirectResponse
