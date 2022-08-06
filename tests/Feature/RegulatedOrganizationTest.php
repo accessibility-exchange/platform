@@ -108,7 +108,7 @@ test('users with admin role can edit regulated organizations', function () {
         'publish' => 'Publish',
     ]);
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('northern-territories');
