@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserProjectsController extends Controller
 {
-    public function show(): RedirectResponse|View
+    public function show(): Response|View
     {
         $user = Auth::user();
 
@@ -28,14 +28,14 @@ class UserProjectsController extends Controller
             ]);
         }
 
-        return redirect(localized_route('dashboard'));
+        abort(404);
     }
 
-    public function showContracted(): RedirectResponse|View
+    public function showContracted(): Response|View
     {
         $user = Auth::user();
 
-        if ($user->organization) {
+        if ($user->organization && $user->organization->isConsultant() || $user->organization->isConnector()) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->organization,
@@ -50,14 +50,14 @@ class UserProjectsController extends Controller
             ]);
         }
 
-        return redirect(localized_route('dashboard'));
+        abort(404);
     }
 
-    public function showParticipating(): RedirectResponse|View
+    public function showParticipating(): Response|View
     {
         $user = Auth::user();
 
-        if ($user->organization) {
+        if ($user->organization && $user->organization->isParticipant()) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->organization,
@@ -65,10 +65,10 @@ class UserProjectsController extends Controller
             ]);
         }
 
-        return redirect(localized_route('dashboard'));
+        abort(404);
     }
 
-    public function showRunning(): RedirectResponse|View
+    public function showRunning(): Response|View
     {
         $user = Auth::user();
 
@@ -88,6 +88,6 @@ class UserProjectsController extends Controller
             ]);
         }
 
-        return redirect(localized_route('dashboard'));
+        abort(404);
     }
 }

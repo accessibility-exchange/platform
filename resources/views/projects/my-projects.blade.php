@@ -1,31 +1,31 @@
-<x-app-wide-layout>
+<x-app-wide-tabbed-layout>
     <x-slot name="title">{{ __('Projects') }}</x-slot>
     <x-slot name="header">
-        <div class="full bg-white -mt-12 py-12 border-b-grey-3 border-solid border-b border-x-0 border-t-0">
-            <div class="center center:wide">
-                <h1 itemprop="name" id="projects">
-                    {{ __('Projects') }}
-                </h1>
-                <a href="{{ localized_route('projects.index') }}" class="cta secondary">{{ __('Browse all projects') }}</a>
-            </div>
-        </div>
+        <h1 itemprop="name" id="projects">
+            {{ __('Projects') }}
+        </h1>
+        <a href="{{ localized_route('projects.index') }}" class="cta secondary">{{ __('Browse all projects') }}</a>
     </x-slot>
-    @if($user->context !== 'regulated-organization')
+    @if(($user->context === 'organization' && ($user->organization->isConsultant() || $user->organization->isConnector() || $user->organization->isParticipant())) || $user->context !== 'regulated-organization')
     <nav aria-labelledby="projects" class="full bg-white mb-12 shadow-md">
         <div class="center center:wide">
             <ul role="list" class="flex gap-6 -mt-4">
                 @switch($user->context)
                     @case('organization')
+                        @if($user->organization->isConsultant() || $user->organization->isConnector())
                         <li class="w-full">
                             <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                                 {{ __('Projects I am contracted for') }}
                             </x-nav-link>
                         </li>
+                        @endif
+                        @if($user->organization->isParticipant())
                         <li class="w-full">
-                            <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
+                            <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="($user->organization->isConsultant() || $user->organization->isConnector()) ? localized_route('projects.my-participating-projects') : localized_route('projects.my-projects')" :active="($user->organization->isConsultant() || $user->organization->isConnector()) ? request()->localizedRouteIs('projects.my-participating-projects') : request()->localizedRouteIs('projects.my-projects')">
                                 {{ __('Projects I am participating in') }}
                             </x-nav-link>
                         </li>
+                        @endif
                         <li class="w-full">
                             <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('projects.my-running-projects')" :active="request()->localizedRouteIs('projects.my-running-projects')">
                                 {{ __('Projects I am running') }}
@@ -60,4 +60,4 @@
             @include(isset($section) ? 'projects.my-projects.'.$section : 'projects.my-projects.participating')
     @endswitch
 
-</x-app-wide-layout>
+</x-app-wide-tabbed-layout>
