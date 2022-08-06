@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Makeable\EloquentStatus\HasStatus;
@@ -24,6 +26,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
+use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use TheIconic\NameParser\Parser as NameParser;
 
 class Individual extends Model implements CipherSweetEncrypted, HasMedia
@@ -33,11 +39,13 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasSchemalessAttributes;
+    use HasMergedRelationships;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
     use InteractsWithMedia;
     use Notifiable;
+    use HasRelationships;
 
     protected $fillable = [
         'published_at',
@@ -267,6 +275,97 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     public function engagements(): BelongsToMany
     {
         return $this->belongsToMany(Engagement::class);
+    }
+
+    public function participatingProjects(): HasManyDeep
+    {
+        return $this->hasManyDeepFromReverse(
+            (new Project())->participants()
+        );
+    }
+
+    public function inProgressParticipatingProjects(): HasManyDeep
+    {
+        return $this->participatingProjects()
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->where(function ($query) {
+                $query->whereDate('end_date', '>=', Carbon::now())
+                    ->orWhereNull('end_date');
+            });
+    }
+
+    public function completedParticipatingProjects(): HasManyDeep
+    {
+        return $this->participatingProjects()
+            ->whereDate('end_date', '<', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    public function upcomingParticipatingProjects(): HasManyDeep
+    {
+        return $this->participatingProjects()
+            ->whereDate('start_date', '>', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    public function consultingProjects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'individual_consultant_id');
+    }
+
+    public function consultingEngagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class, 'individual_consultant_id');
+    }
+
+    public function consultingEngagementProjects(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations(
+            $this->consultingEngagements(),
+            (new Engagement())->project()
+        );
+    }
+
+    public function connectingEngagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class, 'individual_connector_id');
+    }
+
+    public function connectingEngagementProjects(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations(
+            $this->connectingEngagements(),
+            (new Engagement())->project()
+        );
+    }
+
+    public function contractedProjects(): MergedRelation
+    {
+        return $this->mergedRelationWithModel(Project::class, 'all_contracted_projects');
+    }
+
+    public function inProgressContractedProjects(): MergedRelation
+    {
+        return $this->contractedProjects()
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->where(function ($query) {
+                $query->whereDate('end_date', '>=', Carbon::now())
+                    ->orWhereNull('end_date');
+            });
+    }
+
+    public function completedContractedProjects(): MergedRelation
+    {
+        return $this->contractedProjects()
+            ->whereDate('end_date', '<', Carbon::now())
+            ->orderBy('start_date');
+    }
+
+    public function upcomingContractedProjects(): MergedRelation
+    {
+        return $this->contractedProjects()
+            ->whereDate('start_date', '>', Carbon::now())
+            ->orderBy('start_date');
     }
 
     /**

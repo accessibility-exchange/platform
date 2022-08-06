@@ -16,5 +16,7 @@ parameters:
     # The level 9 is the highest level
     level: 5
 
-    ignoreErrors: []
+    ignoreErrors:
+        - '#Call to an undefined static method Illuminate\\Support\\Facades\\Route::multilingual\(\)#'
+        - '#Call to private method whereDate\(\) of parent class Illuminate\\Database\\Eloquent\\Relations\\HasMany<Illuminate\\Database\\Eloquent\\Model>#'
     checkMissingIterableValueType: false

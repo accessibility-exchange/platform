@@ -25,8 +25,8 @@
 @if($project->has_consultant)
 <h4>{{ __('Accessibility Consultant') }}</h4>
 
-@if($project->accessibilityConsultant)
-<p><a href="{{ localized_route('individuals.show', $project->accessibilityConsultant) }}">{{ $project->accessibilityConsultant->name }}</a></p>
+@if($project->consultant)
+<p><a href="{{ localized_route('individuals.show', $project->consultant) }}">{{ $project->consultant->name }}</a></p>
 @else
 <p>{{ $project->consultant_name }}</p>
 @endif

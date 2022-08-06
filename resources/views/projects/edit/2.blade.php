@@ -47,9 +47,9 @@
         <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin) }}'}">
             <legend class="h4">{{ __('Where did you find the accessibility consultant? (required)') }}</legend>
             <x-hearth-radio-buttons name="consultant_origin" :options="Spatie\LaravelOptions\Options::forArray(['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')])->toArray()" :checked="old('consultant_origin', $project->consultant_origin)" x-model="consultantOrigin" />
-            <div class="field @error('consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
-                <x-hearth-label for="consultant_id" :value="__('Consultant (required)')" />
-                <x-hearth-select x-data="autocomplete()" name="consultant_id" :options="$consultants" :selected="old('consultant_id', $project->consultant_id)" />
+            <div class="field @error('individual_consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
+                <x-hearth-label for="individual_consultant_id" :value="__('Consultant (required)')" />
+                <x-hearth-select x-data="autocomplete()" name="individual_consultant_id" :options="$consultants" :selected="old('individual_consultant_id', $project->individual_consultant_id)" />
             </div>
             <div class="field @error('consultant_name') field--error @enderror stack" x-show="consultantOrigin == 'external'">
                 <x-hearth-label for="consultant_name" :value="__('Consultant name (required)')" />

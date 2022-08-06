@@ -450,12 +450,12 @@ test('projects reflect consultant origin', function () {
     ]);
 
     $project_with_platform_consultant = Project::factory()->create([
-        'consultant_id' => $individual->id,
+        'individual_consultant_id' => $individual->id,
     ]);
 
     $this->assertEquals('external', $project_with_external_consultant->consultant_origin);
     $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin);
-    $this->assertEquals($individual->id, $project_with_platform_consultant->accessibilityConsultant->id);
+    $this->assertEquals($individual->id, $project_with_platform_consultant->consultant->id);
 });
 
 test('projects reflect team experience', function () {
@@ -506,4 +506,43 @@ test('project retrieves team trainings properly', function () {
     ]);
 
     expect($projectWithNullTrainings->team_trainings)->toBeEmpty();
+});
+
+test('registered users can access my projects page', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    $this->assertEquals(1, count($regulatedOrganizationUser->projects()));
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+    ]);
+
+    $this->assertEquals(1, count($organizationUser->projects()));
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+});
+
+test('guests can not access my projects page', function () {
+    $response = $this->get(localized_route('projects.my-projects'));
+    $response->assertRedirect(localized_route('login'));
 });

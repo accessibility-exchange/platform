@@ -27,6 +27,22 @@ return new class extends Migration
             $table->json('reporting')->nullable();
             $table->json('other_reporting')->nullable();
             $table->json('contacts')->nullable();
+            $table->bigInteger('individual_connector_id')
+                ->references('id')
+                ->on('individuals')
+                ->nullable();
+            $table->bigInteger('organizational_connector_id')
+                ->references('id')
+                ->on('organizations')
+                ->nullable();
+            $table->bigInteger('individual_consultant_id')
+                ->references('id')
+                ->on('individuals')
+                ->nullable();
+            $table->bigInteger('organizational_consultant_id')
+                ->references('id')
+                ->on('organizations')
+                ->nullable();
         });
     }
 

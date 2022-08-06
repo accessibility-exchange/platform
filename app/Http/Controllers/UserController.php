@@ -146,27 +146,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the "my projects" view for the logged-in user.
-     *
-     * @return RedirectResponse|View
-     */
-    public function showMyProjects(): RedirectResponse|View
-    {
-        $user = Auth::user();
-
-        if ($user->regulatedOrganization || $user->organization) {
-            $projectable = $user->projectable();
-            $projectable->load('projects');
-
-            return view('my-projects', [
-                'projectable' => $projectable,
-            ]);
-        }
-
-        return redirect(localized_route('dashboard'));
-    }
-
-    /**
      * Destroy a given user.
      *
      * @param  DestroyUserRequest  $request

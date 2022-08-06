@@ -15,14 +15,14 @@
         </div>
     </x-slot>
 
-    <nav aria-labelledby="notifications" class="full bg-white mb-12">
+    <nav aria-labelledby="notifications" class="full bg-white mb-12 shadow-md">
         <div class="center center:wide">
             <ul role="list" class="flex gap-6 -mt-4">
                 <li class="w-1/2">
-                    <x-nav-link class="inline-flex items-center justify-center w-full" :href="localized_route('settings.edit-notification-preferences')" :active="request()->localizedRouteIs('settings.edit-notification-preferences')">{{ __('Manage notifications') }}</x-nav-link>
+                    <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('settings.edit-notification-preferences')" :active="request()->localizedRouteIs('settings.edit-notification-preferences')">{{ __('Manage notifications') }}</x-nav-link>
                 </li>
                 <li class="w-1/2">
-                    <x-nav-link class="inline-flex items-center justify-center w-full" :href="localized_route('notification-list.show')" :active="request()->localizedRouteIs('notification-list.show')">{{ __('Notification list') }}</x-nav-link>
+                    <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('notification-list.show')" :active="request()->localizedRouteIs('notification-list.show')">{{ __('Notification list') }}</x-nav-link>
                 </li>
             </ul>
         </div>

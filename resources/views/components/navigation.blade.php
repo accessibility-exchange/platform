@@ -11,7 +11,7 @@
             </x-nav-link>
         </li>
         <li>
-            <x-nav-link :href="localized_route('users.show_my_projects')" :active="request()->localizedRouteIs('users.show_my_projects')">
+            <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                 {{ __('Projects') }}
             </x-nav-link>
         </li>
