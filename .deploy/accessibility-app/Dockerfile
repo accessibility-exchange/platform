@@ -1,5 +1,7 @@
 FROM php:8.1-fpm
 
+ARG CIPHERSWEET_KEY
+
 RUN apt-get update
 
 RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl htop
