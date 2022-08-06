@@ -545,7 +545,12 @@ test('users can edit individual pages', function () {
 
     expect($individual->isPublishable())->toBeFalse();
 
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
     $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
+
+    $individual->individualRoles()->sync([$participantRole->id]);
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
+    $response->assertNotFound();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -674,7 +679,7 @@ test('users can not view others draft individual pages', function () {
     $individual = Individual::factory()->create(['published_at' => null]);
 
     $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
-    $response->assertForbidden();
+    $response->assertNotFound();
 });
 
 test('users can view individual pages', function () {

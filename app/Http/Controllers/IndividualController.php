@@ -78,7 +78,7 @@ class IndividualController extends Controller
         $individual->individualRoles()->sync($data['roles'] ?? []);
 
         if (! $individual->fresh()->isConsultant() && ! $individual->fresh()->isConnector()) {
-            $individual->unpublish();
+            $individual->unpublish(true);
         }
 
         return redirect(localized_route('dashboard'));
