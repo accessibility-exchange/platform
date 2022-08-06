@@ -21,9 +21,9 @@ class IndividualPolicy
     public function view(User $user, Individual $model): Response
     {
         if ($model->checkStatus('draft')) {
-            return $user->id === $model->user_id
-                ? Response::allow()
-                : Response::denyAsNotFound();
+            return $user->id !== $model->user_id || (! $model->isConsultant() && ! $model->isConnector())
+                ? Response::denyAsNotFound()
+                : Response::allow();
         }
 
         return $model->blockedBy($user)
