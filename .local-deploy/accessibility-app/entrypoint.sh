@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 set -x 
 
 mkdir -p ${PERMANENT_FILE_STORAGE}
@@ -23,20 +24,13 @@ then
   php artisan config:cache
 fi
 
+chown -R www-data ${PERMANENT_FILE_STORAGE} ${APP_HOME}/storage
+
 rm -rf ${PERMANENT_FILE_STORAGE}/../deploy.lock
 
-if [[ "${DOLLAR}ENABLE_SSL" == "true" ]]
+if [[ "$APP_ENV" == "local" ]]
 then 
-  openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-  openssl req \
-    -x509 \
-    -nodes \
-    -days 365 \
-    -newkey rsa:2048 \
-    -subj "/C=CA/ST=Nova Scotia/L=Halifax/O=IRIS/OU=IT Department/CN=platform.test" \
-    -keyout /etc/ssl/private/nginx-selfsigned.key \
-    -out /etc/ssl/certs/nginx-selfsigned.crt 
-  ln -s /etc/nginx/sites-available/default_ssl /etc/nginx/sites-enabled/default_ssl
-fi 
-
-/usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+  /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord-local.conf
+else 
+  /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+fi
