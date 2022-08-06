@@ -55,11 +55,7 @@
         </div>
     </x-slot>
 
-    @can('update', $individual)
-        <x-translation-manager :model="$individual" />
-    @else
-        <x-language-changer :model="$individual" />
-    @endcan
+    <x-language-changer :model="$individual" />
 
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="individual">
