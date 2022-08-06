@@ -1,17 +1,13 @@
-<x-app-wide-layout>
+<x-app-wide-tabbed-layout>
     <x-slot name="title">{{ __('Notifications') }}</x-slot>
     <x-slot name="header">
-        <div class="full bg-white -mt-12 py-12 border-b-grey-3 border-solid border-b border-x-0 border-t-0">
-            <div class="center center:wide">
-                <ol class="breadcrumbs" role="list">
-                    <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
-                    <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
-                </ol>
-                <h1 id="notifications">
-                    {{ __('Notifications') }}
-                </h1>
-            </div>
-        </div>
+        <ol class="breadcrumbs" role="list">
+            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
+        </ol>
+        <h1 id="notifications">
+            {{ __('Notifications') }}
+        </h1>
     </x-slot>
 
     @if($user->context === 'individual')
@@ -36,4 +32,4 @@
     <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}</p>
 
     @include('settings.notifications.'.$user->context)
-</x-app-wide-layout>
+</x-app-wide-tabbed-layout>

@@ -37,9 +37,9 @@ trait HasMultipageEditingAndPublishing
 
         if (is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
-                flash(__('Your draft :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success');
             } else {
-                flash(__('Your :model page has been updated.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your :model page.', ['model' => $this->getSingularName()]), 'success');
             }
         }
 
@@ -56,7 +56,7 @@ trait HasMultipageEditingAndPublishing
 
             $this->publish();
 
-            return redirect($back);
+            return redirect(localized_route($this->getRoutePrefix().'.show', $this));
         } elseif ($request->input('unpublish')) {
             Gate::authorize('unpublish', $this);
 

@@ -151,6 +151,18 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
     $this->assertTrue($individual->checkStatus('published'));
 
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
+        'name' => $user->name,
+        'region' => 'NS',
+        'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
+        'save' => __('Save'),
+    ]);
+    $response->assertSee('You have successfully saved your individual page.');
+
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
@@ -161,7 +173,6 @@ test('users can create individual pages', function () {
         ],
         'unpublish' => __('Unpublish'),
     ]);
-
     $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
     $this->assertFalse($individual->checkStatus('published'));

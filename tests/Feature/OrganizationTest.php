@@ -123,10 +123,7 @@ test('users with admin role can edit and publish organizations', function () {
             'publish' => 1,
         ]);
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', [
-        'organization' => $organization,
-        'step' => 1,
-    ]));
+    $response->assertRedirect(localized_route('organizations.show', $organization));
 
     expect($organization->fresh()->checkStatus('published'))->toBeTrue();
 
