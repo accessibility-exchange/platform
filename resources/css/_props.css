@@ -19,6 +19,7 @@
     --link-dark-background-active: var(--theme-link-dark-background-active, var(--color-graphite-6));
     --cta-background: var(--theme-cta-background, var(--color-blue-7));
     --cta-color: var(--theme-cta-color, white);
+    --cta-border: var(--theme-cta-border, transparent);
     --cta-outline: var(--theme-cta-outline, var(--color-blue-7));
     --cta-background-hover: var(--theme-cta-background-hover, var(--color-blue-8));
     --cta-border-hover: var(--theme-cta-border-hover, var(--color-blue-8));

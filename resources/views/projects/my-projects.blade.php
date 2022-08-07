@@ -1,10 +1,12 @@
 <x-app-wide-tabbed-layout>
     <x-slot name="title">{{ __('Projects') }}</x-slot>
     <x-slot name="header">
-        <h1 itemprop="name" id="projects">
-            {{ __('Projects') }}
-        </h1>
-        <a href="{{ localized_route('projects.index') }}" class="cta secondary">{{ __('Browse all projects') }}</a>
+        <div class="flex justify-between items-center">
+            <h1 itemprop="name" id="projects">
+                {{ __('Projects') }}
+            </h1>
+            <a href="{{ localized_route('projects.index') }}" class="cta secondary">{{ __('Browse all projects') }}</a>
+        </div>
     </x-slot>
     @if(
         ($user->context === 'organization' && ($user->organization->isConsultant() || $user->organization->isConnector() || $user->organization->isParticipant()))
@@ -62,4 +64,11 @@
             @include(isset($section) ? 'projects.my-projects.'.$section : 'projects.my-projects.participating')
     @endswitch
 
+    <div class="full bg-turquoise-2 -mb-8 py-12 mt-12">
+        <div class="center center:wide text-center stack">
+            <h2>{{ __('Browse all projects') }}</h2>
+            <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
+            <p class="mt-8"><a href="{{ localized_route('projects.index') }}" class="cta">{{ __('Browse all projects') }}</a></p>
+        </div>
+    </div>
 </x-app-wide-tabbed-layout>

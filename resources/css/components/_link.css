@@ -80,9 +80,9 @@ a.cta:hover {
 }
 
 a.cta:focus {
-    box-shadow: none;
-    outline: var(--cta-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+    --tw-ring-color: var(--cta-outline);
+
+    @apply ring-2 ring-offset-2;
 }
 
 a.cta:active {
@@ -104,7 +104,7 @@ a.cta.secondary:hover {
 }
 
 a.cta.secondary:focus {
-    outline: var(--cta-secondary-outline) solid calc(var(--space-1) / 2);
+    --tw-ring-color: var(--cta-secondary-outline);
 }
 
 a.cta.secondary:active {
