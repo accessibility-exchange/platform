@@ -7,3 +7,5 @@
 @else
 <p>{{ __('No engagements found.') }}</p>
 @endif
+
+@include('projects.partials.questions')
