@@ -13,6 +13,8 @@ use App\Models\IndigenousIdentity;
 use App\Models\IndividualRole;
 use App\Models\Language;
 use App\Models\LivedExperience;
+use App\Models\Organization;
+use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
@@ -490,6 +492,101 @@ class TestDataSeeder extends Seeder
             $org = Organization::factory()
                 ->hasAttached($user, ['role' => 'admin'])
                 ->create($orgData);
+        }
+
+        $regions = [
+            'AB',
+            'BC',
+            'MB',
+            'NB',
+            'NL',
+            'NT',
+            'NS',
+            'NU',
+            'ON',
+            'PE',
+            'QC',
+            'SK',
+            'YT',
+        ];
+
+        $projectsForTesting = [
+            [
+                'name' => ['en' => 'BlueSky Airlines Accessibility project'],
+                'languages' => ['en', 'fr'],
+                'goals' => ['en' => 'In this project we focus on online ticketing and check in services on the BlueSky website. We want to make sure these online services are fully accessible for customers with diverse needs.'],
+                'scope' => ['en' => 'In this project aims to engage a diverse group of our potential customers who may have different lived experiences of disability and being Deaf. Particularly, we would like to work with individuals who use assistive technologies, such as screen readers to access our website and use our online services. '],
+                'regions' => $regions,
+                'out_of_scope' => ['en' => 'Accessibility of the physical services at check-in, and experiences inside the airplanes is out of scope for this project.'],
+                'start_date' => '2023-06-01',
+                'end_date' => '2023-09-30',
+                'outcome_analysis' => 'internal',
+                'outcomes' => ['en' => 'An accessibility report with a set of recommendations for change on the BlueSky website. '],
+                'public_outcomes' => true,
+                'team_size' => ['en' => '5'],
+                'team_has_disability_or_deaf_lived_experience' => false,
+                'team_languages' => ['en', 'fr', 'zh', 'it', 'tl'],
+                'contact_person_name' => 'Mario Miller',
+                'contact_person_email' => 'mm@accessibilityexchange.ca',
+                'preferred_contact_method' => 'email',
+                'contact_person_response_time' => ['en' => '48 hours'],
+                'organization' => RegulatedOrganization::where('name->en', 'BlueSky Airlines')->first(),
+                'impact' => Impact::where('name->en', 'Information and communication technologies')->first(),
+
+            ],
+            [
+                'name' => ['en' => 'Agriculture and Agri-Food Canada (AAFC) Accessibility project'],
+                'languages' => ['en', 'fr'],
+                'goals' => ['en' => 'In this project we will work on the accessibility of delivering information about our new programs and services to our members.'],
+                'scope' => ['en' => 'We aim to engage people with disabilities who are involved in the agriculture and agri-food related industries and businesses. '],
+                'regions' => $regions,
+                'out_of_scope' => ['en' => 'Design and delivery of programs and services	Accessibility and inclusion of work spaces, employment strategies, and agricultural tools and equipment is out of scope for this project. '],
+                'start_date' => '2023-06-01',
+                'end_date' => '2024-09-30',
+                'outcome_analysis' => 'internal',
+                'outcomes' => ['en' => 'A final online report will be available on our website. '],
+                'public_outcomes' => true,
+                'team_size' => ['en' => '3'],
+                'team_has_disability_or_deaf_lived_experience' => false,
+                'team_languages' => ['en', 'fr', 'es'],
+                'contact_person_name' => 'Cecilia Leyva',
+                'contact_person_email' => 'cl@accessibilityexchange.ca',
+                'preferred_contact_method' => 'email',
+                'contact_person_response_time' => ['en' => '5 business days'],
+                'organization' => RegulatedOrganization::where('name->en', 'Agriculture and Agri-Food Canada')->first(),
+                'impact' => Impact::where('name->en', 'Programs and services')->first(),
+
+            ],
+            [
+                'name' => ['en' => 'Accessibility at Canada Post'],
+                'languages' => ['en', 'fr'],
+                'goals' => ['en' => 'In this project we are focusing on the customer experience at Canada Post retail offices across the country.'],
+                'scope' => ['en' => 'We look forward to working with people with disabilities who have used Canada Post offices in their towns or cities to send mail or a parcel. '],
+                'regions' => $regions,
+                'out_of_scope' => ['en' => 'Accessibility of Canada post online services and mail boxes are out of scope for this project. '],
+                'start_date' => '2023-06-01',
+                'end_date' => '2025-09-30',
+                'outcome_analysis' => 'internal',
+                'outcomes' => ['en' => 'A final online report will be available on our website. '],
+                'public_outcomes' => true,
+                'team_size' => ['en' => '10'],
+                'team_has_disability_or_deaf_lived_experience' => true,
+                'team_languages' => ['en', 'fr', 'ase'],
+                'contact_person_name' => 'Ian Thompson',
+                'contact_person_email' => 'it@accessibilityexchange.ca',
+                'preferred_contact_method' => 'email',
+                'contact_person_response_time' => ['en' => '24 hours'],
+                'organization' => RegulatedOrganization::where('name->en', 'Canada Post')->first(),
+                'impact' => Impact::where('name->en', 'Buildings and public spaces')->first(),
+
+            ],
+        ];
+
+        foreach ($projectsForTesting as $project) {
+            $impact = array_pop($project);
+            $fro = array_pop($project);
+            $project = Project::factory()->create(array_merge(['projectable_id' => $fro->id], $project));
+            $project->impacts()->attach($impact->id);
         }
     }
 }
