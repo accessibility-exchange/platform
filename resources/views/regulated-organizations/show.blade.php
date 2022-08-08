@@ -79,7 +79,7 @@
                 <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>@endcan</h2>
                 @include('regulated-organizations.partials.about')
             @elseif(request()->localizedRouteIs('regulated-organizations.show-projects'))
-                <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create a project') }}</a>@endcan</h2>
+                <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)<a class="cta secondary" href="{{ $regulatedOrganization->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create a project') }}</a>@endcan</h2>
                 @include('regulated-organizations.partials.projects')
             @endif
         </div>
