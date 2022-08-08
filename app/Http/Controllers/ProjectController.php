@@ -142,7 +142,16 @@ class ProjectController extends Controller
      */
     public function show(Project $project): View
     {
-        return view('projects.show', ['project' => $project]);
+        $language = request()->query('language');
+
+        if (! in_array($language, $project->languages)) {
+            $language = false;
+        }
+
+        return view('projects.show', [
+            'language' => $language ?? locale(),
+            'project' => $project,
+        ]);
     }
 
     /**

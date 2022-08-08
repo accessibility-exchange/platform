@@ -37,6 +37,12 @@
         @endcan
     </x-slot>
 
+    @can('update', $project)
+        <x-translation-manager :model="$project" />
+    @else
+        <x-language-changer :model="$project" />
+    @endcan
+
     <div class="with-sidebar">
         <div class="stack">
             <nav aria-labelledby="project">

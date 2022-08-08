@@ -1,7 +1,7 @@
 <h3>{{ __('Project goals') }}</h3>
 
 @markdown
-{{ $project->goals }}
+{{ $project->getWrittenTranslation('goals', $language) }}
 @endmarkdown
 
 <h3>{{ __('Project impact') }}</h3>
@@ -9,7 +9,7 @@
 <h4>{{ __('Who will this project impact?') }}</h4>
 
 @markdown
-{{ $project->scope }}
+{{ $project->getWrittenTranslation('scope', $language) }}
 @endmarkdown
 
 @if(!$project->impacts->isEmpty())
@@ -26,7 +26,7 @@
 <h4>{{ __('What is out of scope?') }}</h4>
 
 @markdown
-{{ $project->out_of_scope }}
+{{ $project->getWrittenTranslation('out_of_scope', $language) }}
 @endmarkdown
 @endif
 
@@ -40,7 +40,7 @@
 <h4>{{ __('What are the tangible outcomes of this project?') }}</h4>
 
 @markdown
-{{ $project->outcomes }}
+{{ $project->getWrittenTranslation('outcomes', $language) }}
 @endmarkdown
 @endif
 
