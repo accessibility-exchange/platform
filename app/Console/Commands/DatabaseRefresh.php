@@ -29,7 +29,7 @@ class DatabaseRefresh extends Command
     {
         // don't run command in production or testing environment
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
-            $this->call('migrate:fresh', ['--force' => true, '--step' => true]);
+            $this->call('migrate:fresh', ['--force' => true]);
             $this->call('db:seed', ['DevSeeder', '--force' => true]);
         }
 
