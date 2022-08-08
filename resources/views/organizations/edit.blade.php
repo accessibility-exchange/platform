@@ -1,4 +1,3 @@
-
 <x-app-wide-layout>
     <x-slot name="title">
         @if($organization->checkStatus('published'))

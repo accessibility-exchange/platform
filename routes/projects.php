@@ -27,27 +27,31 @@ Route::controller(ProjectController::class)
             ->middleware(['auth'])
             ->name('.index');
 
+        Route::multilingual('/context/select', 'showContextSelection')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
+            ->name('.show-context-selection');
+
+        Route::multilingual('/create/store-context', 'storeContext')
+            ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
+            ->name('.store-context');
+
+        Route::multilingual('/languages/select', 'showLanguageSelection')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
+            ->name('.show-language-selection');
+
+        Route::multilingual('/create/store-languages', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
+            ->name('.store-languages');
+
         Route::multilingual('/create', 'create')
             ->middleware(['auth', 'can:create,App\Models\Project'])
             ->name('.create');
 
-        Route::multilingual('/create/store-context', 'storeContext')
-            ->method('post')
-            ->middleware(['auth'])
-            ->name('.store-context');
-
-        Route::multilingual('/create/store-focus', 'storeFocus')
-            ->method('post')
-            ->middleware(['auth'])
-            ->name('.store-focus');
-
-        Route::multilingual('/create/store-languages', 'storeLanguages')
-            ->method('post')
-            ->middleware(['auth'])
-            ->name('.store-languages');
-
         Route::multilingual('/create', 'store')
             ->method('post')
+            ->middleware(['auth', 'can:create,App\Models\Project'])
             ->name('.store');
 
         Route::multilingual('/{project}', 'show')
@@ -81,7 +85,7 @@ Route::controller(ProjectController::class)
             ->name('.update-team');
 
         Route::multilingual('/{project}/update-publication-status', 'updatePublicationStatus')
-            ->middleware(['auth', 'can:update,project'])
+            ->middleware(['auth', 'can:publish,project', 'can:unpublish,project'])
             ->method('put')
             ->name('.update-publication-status');
 

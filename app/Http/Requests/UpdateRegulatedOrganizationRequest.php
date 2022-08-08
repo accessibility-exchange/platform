@@ -58,7 +58,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
                 'array',
             ],
             'service_areas.*' => [
-                Rule::in(get_region_codes()),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'sectors' => [
                 'required',

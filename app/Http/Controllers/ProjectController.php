@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\StoreProjectContextRequest;
-use App\Http\Requests\StoreProjectFocusRequest;
 use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -18,8 +18,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Spatie\LaravelOptions\Options;
 
 class ProjectController extends Controller
@@ -39,32 +37,19 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     */
-    public function create(): View
+    public function showContextSelection(): View
     {
-        return view('projects.create', [
-            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
-            'impacts' => Options::forModels(Impact::class)->toArray(),
-            'projectable' => Auth::user()->projectable(),
-            'ancestors' => Arr::sort(Options::forArray(Auth::user()->projectable()->projects->pluck('name', 'id')->toArray())->nullable(__('Choose a project…'))->toArray()),
+        $projectable = Auth::user()->projectable();
+
+        return view('projects.show-context-selection', [
+            'projectable' => $projectable,
+            'ancestors' => Arr::sort(Options::forArray($projectable->projects->pluck('name', 'id')->toArray())->nullable(__('Choose a project…'))->toArray()),
         ]);
     }
 
-    /**
-     * Store a new project's context in the session.
-     *
-     * @param  StoreProjectContextRequest  $request
-     * @return RedirectResponse
-     */
     public function storeContext(StoreProjectContextRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
-        session()->put('context', $data['context']);
 
         if ($data['context'] === 'new') {
             session()->forget('ancestor');
@@ -74,48 +59,32 @@ class ProjectController extends Controller
             session()->put('ancestor', $data['ancestor']);
         }
 
-        return redirect(localized_route('projects.create', ['step' => 2]));
+        return redirect(localized_route('projects.show-language-selection'));
     }
 
-    /**
-     * Store a new project's initial focus in the session.
-     *
-     * @param  StoreProjectFocusRequest  $request
-     * @return RedirectResponse
-     */
-    public function storeFocus(StoreProjectFocusRequest $request): RedirectResponse
+    public function showLanguageSelection(): View
     {
-        $data = $request->validated();
-
-        session()->put('focus', $data['focus']);
-
-        return redirect(localized_route('projects.create', ['step' => 3]));
+        return view('projects.show-language-selection', [
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+        ]);
     }
 
-    /**
-     * Store a new project's languages in the session.
-     *
-     * @param  StoreProjectLanguagesRequest  $request
-     * @return RedirectResponse
-     */
     public function storeLanguages(StoreProjectLanguagesRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
         session()->put('languages', $data['languages']);
 
-        return redirect(localized_route('projects.create', ['step' => 4]));
+        return redirect(localized_route('projects.create'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  StoreProjectRequest  $request
-     * @return RedirectResponse
-     *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
+    public function create(): View
+    {
+        return view('projects.create', [
+            'projectable' => Auth::user()->projectable(),
+        ]);
+    }
+
     public function store(StoreProjectRequest $request): RedirectResponse
     {
         $user = $request->user();
@@ -129,9 +98,11 @@ class ProjectController extends Controller
 
         $project = Project::create($data);
 
+        session()->forget(['ancestor', 'languages']);
+
         flash(__('Your project has been created.'), 'success');
 
-        return redirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
+        return redirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
     }
 
     /**
@@ -154,12 +125,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  Project  $project
-     * @return View
-     */
     public function edit(Project $project): View
     {
         return view('projects.edit', [
@@ -167,6 +132,7 @@ class ProjectController extends Controller
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
         ]);
     }
 

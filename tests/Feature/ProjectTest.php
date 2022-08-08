@@ -21,20 +21,17 @@ test('users with organization or regulated organization admin role can create pr
 
     expect($user->projects())->toHaveCount(0);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.create'));
+    $response = $this->actingAs($user)->get(localized_route('projects.show-context-selection'));
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
         'context' => 'new',
     ]);
 
-    $response->assertSessionHas('context', 'new');
+    $response->assertSessionMissing('ancestor');
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-focus'), [
-        'focus' => 'engage',
-    ]);
-
-    $response->assertSessionHas('focus', 'engage');
+    $response = $this->actingAs($user)->get(localized_route('projects.create'));
+    $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => ['en', 'fr', 'ase', 'fcs'],
@@ -46,13 +43,10 @@ test('users with organization or regulated organization admin role can create pr
         'projectable_id' => $regulatedOrganization->id,
         'projectable_type' => 'App\Models\RegulatedOrganization',
         'name' => ['en' => 'Test Project'],
-        'start_date' => '2022-04-01',
-        'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
-        'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
     ]);
 
     $project = Project::where('name->en', 'Test Project')->first();
-    $url = localized_route('projects.edit', ['project' => $project, 'step' => 2]);
+    $url = localized_route('projects.edit', ['project' => $project, 'step' => 1]);
 
     $response->assertSessionHasNoErrors();
 
@@ -72,7 +66,6 @@ test('users with organization or regulated organization admin role can create pr
         'context' => 'follow-up',
         'ancestor' => $previous_project->id,
     ]);
-    $response->assertSessionHas('context', 'follow-up');
     $response->assertSessionHas('ancestor', $previous_project->id);
 
     $user = User::factory()->create(['context' => 'organization']);
@@ -87,13 +80,10 @@ test('users with organization or regulated organization admin role can create pr
         'context' => 'new',
     ]);
 
-    $response->assertSessionHas('context', 'new');
+    $response->assertSessionMissing('ancestor');
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-focus'), [
-        'focus' => 'engage',
-    ]);
-
-    $response->assertSessionHas('focus', 'engage');
+    $response = $this->actingAs($user)->get(localized_route('projects.show-language-selection'));
+    $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => ['en', 'fr', 'ase', 'fcs'],
@@ -111,7 +101,7 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     $project = Project::where('name->en', 'Test Project 2')->first();
-    $url = localized_route('projects.edit', ['project' => $project, 'step' => 2]);
+    $url = localized_route('projects.edit', ['project' => $project, 'step' => 1]);
 
     $response->assertSessionHasNoErrors();
 
@@ -131,7 +121,6 @@ test('users with organization or regulated organization admin role can create pr
         'context' => 'follow-up',
         'ancestor' => $previous_project->id,
     ]);
-    $response->assertSessionHas('context', 'follow-up');
     $response->assertSessionHas('ancestor', $previous_project->id);
 });
 
@@ -150,15 +139,25 @@ test('users without regulated organization admin role cannot create projects', f
 });
 
 test('projects can be published and unpublished', function () {
+    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($adminUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => 'member'])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
+    expect($project->isPublishable())->toBeTrue();
+
     $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'publish' => true,
     ]);
 
@@ -170,6 +169,12 @@ test('projects can be published and unpublished', function () {
         'unpublish' => true,
     ]);
 
+    $response->assertForbidden();
+
+    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+        'unpublish' => true,
+    ]);
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('projects.show', $project));
 
@@ -177,7 +182,7 @@ test('projects can be published and unpublished', function () {
 
     $this->assertTrue($project->checkStatus('draft'));
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertSee('draft');
 });
 
@@ -254,8 +259,10 @@ test('users with regulated organization admin role can edit projects', function 
         'name' => ['en' => $project->name],
         'goals' => ['en' => 'Some new goals'],
         'scope' => ['en' => $project->scope],
+        'regions' => ['AB', 'BC'],
         'impacts' => [Impact::first()->id],
         'start_date' => $project->start_date,
+        'end_date' => $project->end_date,
         'save' => __('Save'),
     ]);
 
@@ -269,7 +276,10 @@ test('users with regulated organization admin role can edit projects', function 
         'name' => ['en' => $project->name],
         'goals' => ['en' => 'Some newer goals'],
         'scope' => ['en' => $project->scope],
+        'regions' => ['AB', 'BC'],
+        'impacts' => [Impact::first()->id],
         'start_date' => $project->start_date,
+        'end_date' => $project->end_date,
         'save_and_next' => __('Save and next'),
     ]);
 
@@ -279,7 +289,10 @@ test('users with regulated organization admin role can edit projects', function 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'team_languages' => ['en'],
-        'has_consultant' => false,
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ]);
 
@@ -398,19 +411,32 @@ test('projects have timeframes', function () {
         'projectable_type' => 'App\Models\Organization',
         'projectable_id' => $organization->id,
         'start_date' => Carbon::now()->subMonths(3)->format('Y-m-d'),
+        'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
     ]);
     $org_future_project = Project::factory()->create([
         'projectable_type' => 'App\Models\Organization',
         'projectable_id' => $organization->id,
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
+        'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
     ]);
+    $indeterminate_project = Project::factory()->create([
+        'projectable_type' => 'App\Models\Organization',
+        'projectable_id' => $organization->id,
+        'start_date' => null,
+        'end_date' => null,
+    ]);
+
+    expect($org_past_project)->finished()->toBeTrue();
+    expect($org_current_project->finished())->toBeFalse();
+    expect($indeterminate_project->finished())->toBeFalse();
+    expect($org_current_project->started())->toBeTrue();
+    expect($org_future_project->started())->toBeFalse();
+    expect($indeterminate_project)->started()->toBeFalse();
 
     $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
-    $this->assertStringContainsString('Started', $org_current_project->timeframe());
-    $this->assertStringContainsString('Starting', $org_future_project->timeframe());
 
-    $this->assertEquals(4, count($organization->projects));
+    $this->assertEquals(5, count($organization->projects));
     $this->assertEquals(2, count($organization->completedProjects));
     $this->assertEquals(1, count($organization->inProgressProjects));
     $this->assertEquals(1, count($organization->upcomingProjects));
@@ -437,8 +463,6 @@ test('projects have timeframes', function () {
 
     $this->assertStringContainsString('January&ndash;December 2020', $regulated_org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $regulated_org_past_project_multi_year->timeframe());
-    $this->assertStringContainsString('Started', $regulated_org_current_project->timeframe());
-    $this->assertStringContainsString('Starting', $regulated_org_future_project->timeframe());
 
     $this->assertEquals(4, count($regulatedOrganization->projects));
     $this->assertEquals(2, count($regulatedOrganization->completedProjects));

@@ -24,6 +24,7 @@ class ProjectFactory extends Factory
     public function definition()
     {
         $start = $this->faker->dateTimeBetween('-6 months', '-1 months');
+        $end = $this->faker->dateTimeBetween('+1 months', '+6 months');
 
         return [
             'projectable_type' => 'App\Models\RegulatedOrganization',
@@ -31,6 +32,7 @@ class ProjectFactory extends Factory
             'name' => ['en' => 'My accessibility project – '.Carbon::parse($start)->format('F Y')],
             'languages' => ['en', 'fr', 'ase', 'fcs'],
             'start_date' => $start,
+            'end_date' => $end,
             'published_at' => date('Y-m-d h:i:s', time()),
             'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
             'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
