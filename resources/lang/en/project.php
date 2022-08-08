@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'singular_name' => 'project',
     'statuses' => [
         'upcoming' => 'Upcoming',
         'current' => 'In progress',

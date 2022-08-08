@@ -1,23 +1,32 @@
 <div class="flex items-center justify-between">
     <h2>{{ __('Projects I am running') }}</h2>
     @if(
-    !$projectable->inProgressProjects->isEmpty()
+    !$projectable->draftProjects->isEmpty()
+    || !$projectable->inProgressProjects->isEmpty()
     || !$projectable->upcomingProjects->isEmpty()
     || !$projectable->completedProjects->isEmpty()
 )
-    <a href="{{ localized_route('projects.create') }}" class="cta">{{ __('Create new project') }}</a>
+    <a href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}" class="cta">{{ __('Create new project') }}</a>
         @endif
 </div>
 
 @if(
-    $projectable->inProgressProjects->isEmpty()
+    $projectable->draftProjects->isEmpty()
+    && $projectable->inProgressProjects->isEmpty()
     && $projectable->upcomingProjects->isEmpty()
     && $projectable->completedProjects->isEmpty()
 )
     <div class="box stack bg-grey-2">
         <p>{{ __('It seems as though you have not created any projects yet.') }}</p>
-        <p><a href="{{ localized_route('projects.create') }}" class="cta">{{ __('Create new project') }}</a></p>
+        <p><a href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}" class="cta">{{ __('Create new project') }}</a></p>
     </div>
+@endif
+
+@if(!$projectable->draftProjects->isEmpty())
+    <h3>{{  __('Draft') }}</h3>
+    @foreach ($projectable->draftProjects as $project)
+        <x-project-card :project="$project" :level="4" />
+    @endforeach
 @endif
 
 @if(!$projectable->inProgressProjects->isEmpty())

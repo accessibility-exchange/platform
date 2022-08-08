@@ -192,6 +192,13 @@ class RegulatedOrganization extends Model
             ->orderBy('start_date');
     }
 
+    public function draftProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereNull('published_at')
+            ->orderBy('start_date');
+    }
+
     /**
      * Get the projects that belong to this regulated organization that are in progress.
      *

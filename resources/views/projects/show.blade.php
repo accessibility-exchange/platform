@@ -33,7 +33,7 @@
                 <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish')" />
             </form>
         @endif
-        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a>
+{{--        <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a>--}}
         @endcan
     </x-slot>
 

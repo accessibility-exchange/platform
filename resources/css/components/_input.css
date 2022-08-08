@@ -58,7 +58,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 textarea {
-    height: var(--space-12);
+    height: var(--space-32);
     padding-block: var(--space-2);
     resize: vertical;
 }

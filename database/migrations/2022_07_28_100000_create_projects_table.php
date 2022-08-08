@@ -34,7 +34,7 @@ return new class extends Migration
             $table->json('outcome_analysis_other')->nullable();
             $table->json('outcomes')->nullable();
             $table->boolean('public_outcomes')->nullable();
-            $table->string('team_size')->nullable();
+            $table->json('team_size')->nullable();
             $table->boolean('team_has_disability_or_deaf_lived_experience')->nullable();
             $table->boolean('team_has_other_lived_experience')->nullable();
             $table->json('team_languages')->nullable();
@@ -55,7 +55,7 @@ return new class extends Migration
             $table->string('contact_person_phone')->nullable();
             $table->boolean('contact_person_vrs')->nullable();
             $table->string('preferred_contact_method')->default('email');
-            $table->string('contact_person_response_time')->nullable();
+            $table->json('contact_person_response_time')->nullable();
         });
     }
 

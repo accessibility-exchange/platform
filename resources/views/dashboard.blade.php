@@ -2,23 +2,23 @@
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">
-            <small>{{ $currentUser->name }}@if($memberable), {{ $memberable->name }}@endif</small><br />
+            <small>{{ $user->name }}@if($memberable), {{ $memberable->name }}@endif</small><br />
             {{ __('My dashboard') }}
         </h1>
-        @if($currentUser->context == 'individual')
-        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $currentUser->individual->individualRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
+        @if($user->context == 'individual')
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->individualRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
 
-        @if($currentUser->context == 'organization')
-            <p><strong>{{ __('Roles:') }}</strong> {{ $currentUser->organization->organizationRoles->isEmpty() ? __('None selected') : implode(', ', $currentUser->organization->organizationRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('organizations.show-role-edit', $currentUser->organization) }}">{{ __('Edit roles') }}</a></p>
+        @if($user->context == 'organization')
+            <p><strong>{{ __('Roles:') }}</strong> {{ $user->organization->organizationRoles->isEmpty() ? __('None selected') : implode(', ', $user->organization->organizationRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a></p>
         @endif
     </x-slot>
 
-    @if($currentUser->context === 'individual')
+    @if($user->context === 'individual')
         @include('dashboard.individual')
-    @elseif($currentUser->context === 'organization')
+    @elseif($user->context === 'organization')
         @include('dashboard.organization')
-    @elseif ($currentUser->context === 'regulated-organization')
+    @elseif ($user->context === 'regulated-organization')
         @include('dashboard.regulated-organization')
     @endif
 
