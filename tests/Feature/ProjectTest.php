@@ -423,6 +423,7 @@ test('projects have timeframes', function () {
         'projectable_type' => 'App\Models\Organization',
         'projectable_id' => $organization->id,
         'start_date' => null,
+        'end_date' => null,
     ]);
 
     expect($org_past_project)->finished()->toBeTrue();
