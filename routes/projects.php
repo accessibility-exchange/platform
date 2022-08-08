@@ -85,7 +85,7 @@ Route::controller(ProjectController::class)
             ->name('.update-team');
 
         Route::multilingual('/{project}/update-publication-status', 'updatePublicationStatus')
-            ->middleware(['auth', 'can:update,project'])
+            ->middleware(['auth', 'can:publish,project', 'can:unpublish,project'])
             ->method('put')
             ->name('.update-publication-status');
 
