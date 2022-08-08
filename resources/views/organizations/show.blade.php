@@ -57,11 +57,7 @@
         </div>
     </x-slot>
 
-    @can('update', $organization)
-        <x-translation-manager :model="$organization" />
-    @else
-        <x-language-changer :model="$organization" />
-    @endcan
+    <x-language-changer :model="$organization" />
 
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="regulated-organization">
