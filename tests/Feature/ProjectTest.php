@@ -183,14 +183,22 @@ test('projects can be published and unpublished', function () {
     $this->assertTrue($project->checkStatus('draft'));
 
     $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
-    $response->assertSee('draft');
+    $response->assertSee('Draft');
 });
 
 test('users can view projects', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'contact_person_name' => $adminUser->contact_person_name,
+        'contact_person_email' => $adminUser->contact_person_email,
+        'preferred_contact_method' => $adminUser->preferred_contact_method,
+    ]);
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
+        'contact_person_name' => $regulatedOrganization->contact_person_name,
+        'contact_person_email' => $regulatedOrganization->contact_person_email,
+        'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
     $response = $this->actingAs($user)->get(localized_route('projects.index'));
@@ -491,15 +499,7 @@ test('projects reflect team experience', function () {
         'team_has_disability_or_deaf_lived_experience' => true,
     ]);
 
-    $this->assertEquals('Our team includes people with disabilities and/or Deaf people.', $project->teamExperience());
-
-    $project->update([
-        'team_has_other_lived_experience' => true,
-    ]);
-
-    $project = $project->fresh();
-
-    $this->assertEquals('Our team includes people with disabilities and/or Deaf people as well as people from other equity-seeking groups.', $project->teamExperience());
+    $this->assertEquals('Our team has people with lived and living experiences of disability or being Deaf.', $project->teamExperience());
 
     $project->update([
         'team_has_disability_or_deaf_lived_experience' => false,
@@ -507,15 +507,7 @@ test('projects reflect team experience', function () {
 
     $project = $project->fresh();
 
-    $this->assertEquals('Our team includes people from equity-seeking groups.', $project->teamExperience());
-
-    $project->update([
-        'team_has_other_lived_experience' => false,
-    ]);
-
-    $project = $project->fresh();
-
-    $this->assertEquals('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.', $project->teamExperience());
+    $this->assertEquals('Our team does not have people with lived and living experiences of disability or being Deaf.', $project->teamExperience());
 });
 
 test('project retrieves team trainings properly', function () {

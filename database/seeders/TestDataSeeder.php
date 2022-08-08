@@ -474,5 +474,22 @@ class TestDataSeeder extends Seeder
             $item = Sector::where('name->en', $sectorName)->first();
             $fro->sectors()->attach($item->id);
         }
+
+        $orgsForTesting = [
+            [
+                'name' => '',
+                'organization' => [
+
+                ],
+            ],
+        ];
+
+        foreach ($orgsForTesting as $orgUser) {
+            $orgData = array_pop($orgData);
+            $user = User::factory()->create($orgUser);
+            $org = Organization::factory()
+                ->hasAttached($user, ['role' => 'admin'])
+                ->create($orgData);
+        }
     }
 }

@@ -54,7 +54,6 @@ class Project extends Model
         'public_outcomes',
         'team_size',
         'team_has_disability_or_deaf_lived_experience',
-        'team_has_other_lived_experience',
         'team_languages',
         'team_trainings',
         'seeking_consultant',
@@ -85,7 +84,6 @@ class Project extends Model
         'public_outcomes' => 'boolean',
         'team_size' => 'array',
         'team_has_disability_or_deaf_lived_experience' => 'boolean',
-        'team_has_other_lived_experience' => 'boolean',
         'team_languages' => 'array',
         'team_trainings' => 'array',
         'seeking_consultant' => 'boolean',
@@ -230,19 +228,11 @@ class Project extends Model
 
     public function teamExperience(): string
     {
-        if ($this->team_has_disability_or_deaf_lived_experience && $this->team_has_other_lived_experience) {
-            return __('Our team includes people with disabilities and/or Deaf people as well as people from other equity-seeking groups.');
-        }
-
         if ($this->team_has_disability_or_deaf_lived_experience) {
-            return __('Our team includes people with disabilities and/or Deaf people.');
+            return __('Our team has people with lived and living experiences of disability or being Deaf.');
         }
 
-        if ($this->team_has_other_lived_experience) {
-            return __('Our team includes people from equity-seeking groups.');
-        }
-
-        return __('Our team does not include people with disabilities and/or Deaf people or people from other equity-seeking groups.');
+        return __('Our team does not have people with lived and living experiences of disability or being Deaf.');
     }
 
     public function matchingStrategy(): MorphOne

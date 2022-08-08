@@ -36,7 +36,6 @@ return new class extends Migration
             $table->boolean('public_outcomes')->nullable();
             $table->json('team_size')->nullable();
             $table->boolean('team_has_disability_or_deaf_lived_experience')->nullable();
-            $table->boolean('team_has_other_lived_experience')->nullable();
             $table->json('team_languages')->nullable();
             $table->json('team_trainings')->nullable();
             $table->boolean('seeking_consultant')->nullable();
