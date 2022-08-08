@@ -476,12 +476,12 @@ class TestDataSeeder extends Seeder
         }
 
         $orgsForTesting = [
-            [
-                'name' => '',
-                'organization' => [
-
-                ],
-            ],
+            //            [
+            //                'name' => '',
+            //                'organization' => [
+            //
+            //                ],
+            //            ],
         ];
 
         foreach ($orgsForTesting as $orgUser) {
