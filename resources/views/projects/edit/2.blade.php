@@ -1,74 +1,87 @@
-<h2>
-    {{ __('Step 2 of 2') }}<br />
-    {{ __('Project team') }}
-</h2>
-
-@include('projects.partials.progress')
-
-<form class="stack" id="edit-project" action="{{ localized_route('projects.update-team', $project) }}" method="POST" novalidate>
-    @method('put')
+<form class="stack" action="{{ localized_route('projects.update-team', $project) }}" method="POST" enctype="multipart/form-data" novalidate>
     @csrf
+    @method('put')
 
-    <h3>{{ __('About your team') }}</h3>
+    <div class="with-sidebar with-sidebar:last">
 
+        @include('projects.partials.progress')
 
-    <div class="field @error('team_size') field--error @enderror stack">
-        <x-hearth-label for="team_size" :value="__('How many people are on your team?')" />
-        <x-hearth-hint for="team_size">{{ __('You can give an exact number or range.') }}</x-hearth-hint>
-        <x-hearth-input name="team_size" :value="old('team_size', $project->team_size)" hinted />
+        <div class="stack">
+            <h2>
+                {{ __('Project team') }}
+            </h2>
+
+            <p class="repel">
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+            </p>
+
+            <h3>{{ __('About your team') }}</h3>
+
+            <div class="field @error('team_size') field--error @enderror stack">
+                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.')" :hint="__('You can give an exact number or range.')" :model="$project" />
+            </div>
+
+            <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
+                <legend class="h4">{{ __('Please indicate whether any member of your team has lived/living experiences of disability or being Deaf. (optional)') }}</legend>
+                <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('team_has_disability_or_deaf_lived_experience', $project->team_has_disability_or_deaf_lived_experience ?? '')"  />
+            </fieldset>
+
+            <fieldset class="field stack">
+                <legend class="h4">{{ __('Please indicate the language or languages people on your team use fluently.') }}</legend>
+                <livewire:language-picker name="team_languages" :languages="['en']" :availableLanguages="$languages" />
+            </fieldset>
+
+            <fieldset class="field stack">
+                <legend class="h4">{{ __('Training your team has received (optional)') }}</legend>
+                <p class="field__hint">{{ __('Please list any relevant training your team members have received.') }}</p>
+                <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => '']])" />
+            </fieldset>
+
+            <fieldset class="field stack">
+                <legend class="h4">{{ __('Team contact') }}</legend>
+                <p class="field__hint">{{ __('Please provide the details for a member of your team whom potential participants may contact to ask questions.') }}</p>
+
+                <div class="field @error("contact_person_name") field-error @enderror">
+                    <x-hearth-label for="contact_person_name" :value="__('Name (required)')" />
+                    <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $project->contact_person_name)" required hinted />
+                    <x-hearth-error for="contact_person_name" field="contact_person_name" />
+                </div>
+
+                <div class="field @error('contact_person_email') field-error @enderror">
+                    <x-hearth-label for="contact_person_email" :value="__('Email')" />
+                    <x-hearth-input type="email" name="contact_person_email" :value="old('contact_person_email', $project->contact_person_email)" />
+                    <x-hearth-error for="contact_person_email" />
+                </div>
+
+                <div class="field @error('contact_person_phone') field-error @enderror">
+                    <x-hearth-label for="contact_person_phone" :value="__('Phone number')" />
+                    <x-hearth-input type="tel" name="contact_person_phone" :value="old('contact_person_phone', $project->contact_person_phone?->formatForCountry('CA'))" />
+                    <x-hearth-error for="contact_person_phone" />
+                </div>
+
+                <div class="field @error('contact_person_vrs') field-error @enderror">
+                    <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $project->contact_person_vrs ?? false)" />
+                    <x-hearth-label for="contact_person_vrs" :value="__('They require Video Relay Service (VRS) for phone calls')" />
+                    <x-hearth-error for="contact_person_vrs" />
+                </div>
+
+                <div class="field @error('preferred_contact_method') field-error @enderror">
+                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
+                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $project->preferred_contact_method ?? 'email')"/>
+                    <x-hearth-error for="preferred_contact_method" />
+                </div>
+
+                <div class="field @error('contact_person_response_time') field-error @enderror">
+                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time (required)')" :hint="__('For example, three to five business days, within one hour')" :model="$project" required />
+                    <x-hearth-error for="contact_person_response_time" />
+                </div>
+            </fieldset>
+
+            <p class="repel">
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
+                <button name="save" value="1">{{ __('Save') }}</button>
+            </p>
+        </div>
     </div>
-
-    <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
-        <legend class="h4">{{ __('Does any member of your team have lived/living experiences of disability or being Deaf?') }}</legend>
-        <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(\App\Enums\StaffHaveLivedExperience::class)->toArray()" :checked="old('team_has_disability_or_deaf_lived_experience', $project->team_has_disability_or_deaf_lived_experience ?? '')"  />
-    </fieldset>
-
-    <fieldset class="field @error('team_has_other_lived_experience') field--error @enderror stack">
-        <legend class="h4">{{ __('Does anyone in your team identify as a member of another equity-seeking group?') }}</legend>
-        <x-hearth-hint for="team_has_other_lived_experience">{{ __('For example, Black, Indigenous, person of colour, 2SLGBTQIA+, newcomer or immigrant.') }}</x-hearth-hint>
-        <x-hearth-radio-buttons name="team_has_other_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(\App\Enums\StaffHaveLivedExperience::class)->toArray()" :checked="old('team_has_other_lived_experience', $project->team_has_other_lived_experience ?? '')" hinted />
-    </fieldset>
-
-    <fieldset class="field stack">
-        <legend class="h4">{{ __('What languages do people on the project team speak fluently?') }}</legend>
-        <livewire:language-picker name="team_languages" :languages="['en']" :availableLanguages="$languages" />
-    </fieldset>
-
-    <fieldset class="field stack">
-        <legend class="h4">{{ __('Team contacts') }}</legend>
-        <livewire:contacts :contacts="old('contacts', $project->contacts ?? [['name' => '', 'email' => '', 'phone' => '']])" />
-    </fieldset>
-
-    <div class="stack" x-data="{ hasConsultant: '{{ old('has_consultant', $project->has_consultant) }}' }">
-        <fieldset class="field @error('has_consultant') field--error @enderror stack">
-            <legend class="h4">{{ __('Are you working with an accessibility consultant on this project? (required)') }}</legend>
-            <x-hearth-radio-buttons name="has_consultant" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('has_consultant', $project->has_consultant)" x-model="hasConsultant" />
-        </fieldset>
-        <fieldset x-show="hasConsultant == '1'" class="stack" x-data="{consultantOrigin: '{{ old('consultant_origin', $project->consultant_origin) }}'}">
-            <legend class="h4">{{ __('Where did you find the accessibility consultant? (required)') }}</legend>
-            <x-hearth-radio-buttons name="consultant_origin" :options="Spatie\LaravelOptions\Options::forArray(['platform' => __('On the Accessibility Exchange'), 'external' => __('Somewhere else')])->toArray()" :checked="old('consultant_origin', $project->consultant_origin)" x-model="consultantOrigin" />
-            <div class="field @error('individual_consultant_id') field--error @enderror stack" x-show="consultantOrigin == 'platform'">
-                <x-hearth-label for="individual_consultant_id" :value="__('Consultant (required)')" />
-                <x-hearth-select x-data="autocomplete()" name="individual_consultant_id" :options="$consultants" :selected="old('individual_consultant_id', $project->individual_consultant_id)" />
-            </div>
-            <div class="field @error('consultant_name') field--error @enderror stack" x-show="consultantOrigin == 'external'">
-                <x-hearth-label for="consultant_name" :value="__('Consultant name (required)')" />
-                <x-hearth-input name="consultant_name" :value="old('consultant_name', $project->consultant_name)" />
-            </div>
-            <div class="field @error('consultant_responsibilities') field--error @enderror stack">
-                <x-translatable-textarea name="consultant_responsibilities" :label="__('Description of responsibilities')" :model="$project" />
-            </div>
-        </fieldset>
-    </div>
-
-    <fieldset class="field stack">
-        <legend class="h4">{{ __('Team trainings') }}</legend>
-        <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => '']])">
-    </fieldset>
-
-    <p class="repel">
-        <x-hearth-input type="submit" name="save_and_previous" :value="__('Save and previous')" />
-        <button name="save" value="1">{{ __('Save') }}</button>
-        <x-hearth-input type="submit" name="save_and_next" :value="__('Save and next')" />
-    </p>
 </form>

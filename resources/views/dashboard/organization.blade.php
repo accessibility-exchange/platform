@@ -15,7 +15,7 @@
                 <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
                 <div class="stack">
                     <p>{{ __('Create a new project page so that individuals can begin to express their interest in working with you.') }}</p>
-                    <p><a class="button" href="{{ localized_route('projects.create') }}">{{ __('Create project page') }}</a></p>
+                    <p><a class="button" href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create project page') }}</a></p>
                 </div>
             </x-expander>
             @endif

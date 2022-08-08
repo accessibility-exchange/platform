@@ -396,10 +396,10 @@ class SettingsController extends Controller
 
     public function inviteToInvitationable(): View|RedirectResponse
     {
-        $currentUser = Auth::user();
-        $invitationable = match ($currentUser->context) {
-            'organization' => $currentUser->organization ?? null,
-            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
+        $user = Auth::user();
+        $invitationable = match ($user->context) {
+            'organization' => $user->organization ?? null,
+            'regulated-organization' => $user->regulatedOrganization ?? null,
             default => null,
         };
 
@@ -411,7 +411,7 @@ class SettingsController extends Controller
             }
 
             return view('settings.roles-and-permissions.invite', [
-                'user' => $currentUser,
+                'user' => $user,
                 'invitationable' => $invitationable,
                 'roles' => Options::forArray($roles)->toArray(),
             ]);

@@ -83,6 +83,7 @@ class Project extends Model
         'outcome_analysis_other' => 'array',
         'outcomes' => 'array',
         'public_outcomes' => 'boolean',
+        'team_size' => 'array',
         'team_has_disability_or_deaf_lived_experience' => 'boolean',
         'team_has_other_lived_experience' => 'boolean',
         'team_languages' => 'array',
@@ -91,6 +92,7 @@ class Project extends Model
         'consultant_responsibilities' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
+        'contact_person_response_time' => 'array',
     ];
 
     public array $translatable = [
@@ -101,6 +103,8 @@ class Project extends Model
         'outcome_analysis_other',
         'outcomes',
         'consultant_responsibilities',
+        'contact_person_response_time',
+        'team_size',
     ];
 
     public function getRoutePrefix(): string
@@ -115,7 +119,20 @@ class Project extends Model
 
     public function started(): bool
     {
-        return $this->start_date < Carbon::now();
+        if ($this->start_date) {
+            return $this->start_date < Carbon::now();
+        }
+
+        return false;
+    }
+
+    public function finished(): bool
+    {
+        if ($this->end_date) {
+            return $this->end_date < Carbon::now();
+        }
+
+        return false;
     }
 
     public function teamTrainings(): Attribute
@@ -143,19 +160,18 @@ class Project extends Model
         );
     }
 
+    public function isPublishable(): bool
+    {
+        return true; // TODO: add appropriate checks.
+    }
+
     public function timeframe(): string
     {
-        if ($this->end_date) {
-            if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
-                return $this->start_date->translatedFormat('F').'&ndash;'.$this->end_date->translatedFormat('F Y');
-            } else {
-                return $this->start_date->translatedFormat('F Y').'&ndash;'.$this->end_date->translatedFormat('F Y');
-            }
+        if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
+            return $this->start_date->translatedFormat('F').'&ndash;'.$this->end_date->translatedFormat('F Y');
+        } else {
+            return $this->start_date->translatedFormat('F Y').'&ndash;'.$this->end_date->translatedFormat('F Y');
         }
-
-        return $this->start_date > Carbon::now()
-            ? __('Starting :date', ['date' => $this->start_date->translatedFormat('F Y')])
-            : __('Started :date', ['date' => $this->start_date->translatedFormat('F Y')]);
     }
 
     public function regulatedOrganization(): BelongsTo
