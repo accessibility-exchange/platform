@@ -21,7 +21,7 @@ test('users with organization or regulated organization admin role can create pr
 
     expect($user->projects())->toHaveCount(0);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.create'));
+    $response = $this->actingAs($user)->get(localized_route('projects.show-context-selection'));
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
@@ -29,6 +29,9 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     $response->assertSessionMissing('ancestor');
+
+    $response = $this->actingAs($user)->get(localized_route('projects.create'));
+    $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => ['en', 'fr', 'ase', 'fcs'],
@@ -78,6 +81,9 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     $response->assertSessionMissing('ancestor');
+
+    $response = $this->actingAs($user)->get(localized_route('projects.show-language-selection'));
+    $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => ['en', 'fr', 'ase', 'fcs'],
@@ -133,15 +139,25 @@ test('users without regulated organization admin role cannot create projects', f
 });
 
 test('projects can be published and unpublished', function () {
+    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($adminUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => 'member'])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
+    expect($project->isPublishable())->toBeTrue();
+
     $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'publish' => true,
     ]);
 
@@ -153,6 +169,12 @@ test('projects can be published and unpublished', function () {
         'unpublish' => true,
     ]);
 
+    $response->assertForbidden();
+
+    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+        'unpublish' => true,
+    ]);
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('projects.show', $project));
 
@@ -160,7 +182,7 @@ test('projects can be published and unpublished', function () {
 
     $this->assertTrue($project->checkStatus('draft'));
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertSee('draft');
 });
 
@@ -397,6 +419,11 @@ test('projects have timeframes', function () {
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
         'end_date' => Carbon::now()->addMonths(3)->format('Y-m-d'),
     ]);
+
+    expect($org_past_project)->finished()->toBeTrue();
+    expect($org_current_project->finished())->toBeFalse();
+    expect($org_current_project->started())->toBeTrue();
+    expect($org_future_project->started())->toBeFalse();
 
     $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
