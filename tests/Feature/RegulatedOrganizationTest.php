@@ -108,7 +108,7 @@ test('users with admin role can edit regulated organizations', function () {
         'publish' => 'Publish',
     ]);
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->service_regions)->toBeArray()->toHaveKey('northern-territories');
@@ -519,7 +519,7 @@ test('users with admin role can delete regulated organizations', function () {
     $response->assertRedirect(localized_route('dashboard'));
 });
 
-test('users with admin role can not delete entities with wrong password', function () {
+test('users with admin role can not delete regulated organizations with wrong password', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
     $regulatedOrganization = RegulatedOrganization::factory()

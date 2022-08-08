@@ -2,28 +2,18 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Impact;
+use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateProjectRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->project);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
@@ -35,25 +25,28 @@ class UpdateProjectRequest extends FormRequest
             'scope.*' => 'string|nullable',
             'scope.en' => 'required_without:scope.fr|nullable|string',
             'scope.fr' => 'required_without:scope.en|nullable|string',
-            'impacts' => [
+            'regions' => 'required|array',
+            'regions.*' => [
                 'nullable',
-                'array',
-                Rule::in(Impact::pluck('id')->toArray()),
+                new Enum(ProvinceOrTerritory::class),
             ],
-            'out_of_scope.*' => 'string|nullable',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'outcomes.*' => 'string|nullable',
-            'public_outcomes' => 'boolean|nullable',
+            'impacts' => 'required|array',
+            'impacts.*' => 'nullable|exists:impacts,id',
+            'out_of_scope' => 'nullable|array',
+            'out_of_scope.*' => 'nullable|string',
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date',
+            'outcome_analysis' => 'nullable|array',
+            'outcome_analysis.*' => 'string|in:internal,external',
+            'outcome_analysis_other' => 'nullable|array',
+            'outcome_analysis_other.*' => 'nullable|string',
+            'outcomes' => 'nullable|array',
+            'outcomes.*' => 'nullable|string',
+            'public_outcomes' => 'nullable|boolean',
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.*.unique_translation' => __('A project with this name already exists.'),
@@ -61,5 +54,13 @@ class UpdateProjectRequest extends FormRequest
             'goals.*.required_without' => __('Project goals must be provided in at least one language.'),
             'scope.*.required_without' => __('Project scope must be provided in at least one language.'),
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        request()->mergeIfMissing([
+            'impacts' => [],
+            'regions' => [],
+        ]);
     }
 }

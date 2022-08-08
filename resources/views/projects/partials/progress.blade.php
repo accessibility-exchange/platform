@@ -6,24 +6,23 @@
             <a href="{{ localized_route('projects.edit', ['project' => $project]) }}">{{ __('About the project') }}</a>
         </li>
         <li>
-            <a href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{{ __('Team') }}</a>
-        </li>
-        <li>
-            <a href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 3]) }}">{{ __('Who we’re looking for') }}</a>
+            <a href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{{ __('Project team') }}</a>
         </li>
     </ol>
 
     @can('update', $project)
-    @if($project->checkStatus('draft'))
-        <p>
-            <x-hearth-input type="submit" name="preview" :value="__('Preview project')" />
-            <x-hearth-input type="submit" name="publish" :value="__('Publish project')" />
-        </p>
-        <p class="field__hint">{{ __('Once you publish your project, others can find it.') }}</p>
-    @else
-        <p>
-            <x-hearth-input type="submit" name="unpublish" :value="__('Unpublish project')" />
-        </p>
-    @endif
+        @if($project->checkStatus('draft'))
+            <div class="stack">
+                <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                <button name="publish" value="1" @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
+                <p><em>{{ __('Once you publish your project, others can find it.') }}</em></p>
+            </div>
+        @else
+            @can('unpublish', $project)
+                <p class="stack">
+                    <button name="unpublish" value="1">{{ __('Unpublish page') }}</button>
+                </p>
+            @endcan
+        @endif
     @endcan
 </div>

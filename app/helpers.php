@@ -118,6 +118,16 @@ if (! function_exists('get_language_exonym')) {
 if (! function_exists('get_regions_from_provinces_and_territories')) {
     function get_regions_from_provinces_and_territories(array $provinces_and_territories): array
     {
+        if (empty($provinces_and_territories)) {
+            return [
+                'west-coast' => __('West Coast'),
+                'prairie-provinces' => __('Prairie Provinces'),
+                'central-canada' => __('Central Canada'),
+                'northern-territories' => __('Northern Territories'),
+                'atlantic-provinces' => __('Atlantic Provinces'),
+            ];
+        }
+
         $regions = [];
 
         if (! empty(array_intersect(['BC'], $provinces_and_territories))) {

@@ -4,7 +4,7 @@
     </legend>
 
     @if($hint)
-    <x-hearth-hint :for="$name">{{ $hint }}</x-heart-hint>
+    <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
     @endif
 
     <div class="field field--year stack">

@@ -34,16 +34,19 @@ return new class extends Migration
             $table->json('outcome_analysis_other')->nullable();
             $table->json('outcomes')->nullable();
             $table->boolean('public_outcomes')->nullable();
-            $table->string('team_size')->nullable();
+            $table->json('team_size')->nullable();
             $table->boolean('team_has_disability_or_deaf_lived_experience')->nullable();
-            $table->boolean('team_has_other_lived_experience')->nullable();
             $table->json('team_languages')->nullable();
             $table->json('team_trainings')->nullable();
             $table->boolean('seeking_consultant')->nullable();
             $table->string('consultant_name')->nullable();
-            $table->bigInteger('consultant_id')
+            $table->bigInteger('individual_consultant_id')
                 ->references('id')
                 ->on('individuals')
+                ->nullable();
+            $table->bigInteger('organizational_consultant_id')
+                ->references('id')
+                ->on('organizations')
                 ->nullable();
             $table->json('consultant_responsibilities')->nullable();
             $table->string('contact_person_name')->nullable();
@@ -51,7 +54,7 @@ return new class extends Migration
             $table->string('contact_person_phone')->nullable();
             $table->boolean('contact_person_vrs')->nullable();
             $table->string('preferred_contact_method')->default('email');
-            $table->string('contact_person_response_time')->nullable();
+            $table->json('contact_person_response_time')->nullable();
         });
     }
 

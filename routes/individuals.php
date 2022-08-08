@@ -74,12 +74,12 @@ Route::controller(IndividualController::class)->prefix('individuals')
 
         Route::multilingual('/{individual}/express-interest', 'expressInterest')
             ->method('post')
-            ->middleware(['auth', 'can:update,individual'])
+            ->middleware(['auth', 'can:manage,individual'])
             ->name('express-interest');
 
         Route::multilingual('/{individual}/remove-interest', 'removeInterest')
             ->method('post')
-            ->middleware(['auth', 'can:update,individual'])
+            ->middleware(['auth', 'can:manage,individual'])
             ->name('remove-interest');
 
         Route::multilingual('/{individual}/delete', 'destroy')

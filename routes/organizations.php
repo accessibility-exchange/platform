@@ -34,10 +34,14 @@ Route::controller(OrganizationController::class)
             ->middleware(['auth', 'verified', 'can:update,organization'])
             ->name('show-role-selection');
 
-        Route::multilingual('/{organization}/roles/store', 'storeRoles')
-            ->method('post')
+        Route::multilingual('/{organization}/roles/edit', 'showRoleEdit')
             ->middleware(['auth', 'verified', 'can:update,organization'])
-            ->name('store-roles');
+            ->name('show-role-edit');
+
+        Route::multilingual('/{organization}/roles/save', 'saveRoles')
+            ->method('put')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->name('save-roles');
 
         Route::multilingual('/{organization}/languages/select', 'showLanguageSelection')
             ->middleware(['auth', 'can:update,organization'])

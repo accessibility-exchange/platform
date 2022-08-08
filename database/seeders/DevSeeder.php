@@ -47,5 +47,9 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
                 'context' => 'organization',
             ]);
+
+        $this->call([
+            TestDataSeeder::class,
+        ]);
     }
 }

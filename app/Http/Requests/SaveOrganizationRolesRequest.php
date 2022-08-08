@@ -6,7 +6,7 @@ use App\Models\OrganizationRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreOrganizationRolesRequest extends FormRequest
+class SaveOrganizationRolesRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,10 +17,17 @@ class StoreOrganizationRolesRequest extends FormRequest
     {
         return [
             'roles' => [
-                'required',
+                'nullable',
                 'array',
                 Rule::in(OrganizationRole::pluck('id')->toArray()),
             ],
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        request()->mergeIfMissing([
+            'roles' => [],
+        ]);
     }
 }

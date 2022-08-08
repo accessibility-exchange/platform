@@ -73,16 +73,16 @@ class UserController extends Controller
      */
     public function dashboard(): View
     {
-        $currentUser = Auth::user();
+        $user = Auth::user();
 
-        $memberable = match ($currentUser->context) {
-            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
-            'organization' => $currentUser->organization ?? null,
+        $memberable = match ($user->context) {
+            'regulated-organization' => $user->regulatedOrganization ?? null,
+            'organization' => $user->organization ?? null,
             default => null,
         };
 
         return view('dashboard', [
-            'currentUser' => $currentUser,
+            'user' => $user,
             'memberable' => $memberable,
         ]);
     }
@@ -143,25 +143,6 @@ class UserController extends Controller
         }
 
         return redirect(localized_route('register', ['step' => 2]));
-    }
-
-    /**
-     * Show the "my projects" view for the logged-in user.
-     *
-     * @return RedirectResponse|View
-     */
-    public function showMyProjects(): RedirectResponse|View
-    {
-        if (Auth::user()->regulatedOrganization) {
-            $regulatedOrganization = Auth::user()->regulatedOrganization;
-            $regulatedOrganization->load('completedProjects', 'inProgressProjects');
-
-            return view('regulated-organizations.my-projects', [
-                'regulatedOrganization' => Auth::user()->regulatedOrganization,
-            ]);
-        }
-
-        return redirect(localized_route('dashboard'));
     }
 
     /**
