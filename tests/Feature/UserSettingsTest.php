@@ -358,6 +358,11 @@ test('email can be changed', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+        'email' => $user->email,
+    ]);
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
         'email' => 'me@example.net',
     ]);
     $response->assertOk();
