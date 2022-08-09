@@ -21,6 +21,7 @@ env:
   SESSION_LIFETIME: "120"
   SAIL_XDEBUG_MODE: "develop,debug,coverage"
   FILES_PATH: "/opt/data/storage"
+  CACHE_PATH: "/opt/data/cache"
 ### Place those values in Vault
 # secrets:
 #   APP_KEY: ""
