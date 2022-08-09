@@ -351,14 +351,31 @@ test('guests can not edit roles and permissions', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
+test('email can be changed', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+        'email' => 'me@example.net',
+    ]);
+    $response->assertOk();
+    $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
+
+    $user = $user->fresh();
+    $this->assertEquals($user->email, 'me@example.net');
+    $this->assertNull($user->email_verified_at);
+});
+
 test('password can be updated', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.change-password'));
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
 
     $response->assertOk();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -367,13 +384,13 @@ test('password can be updated', function () {
         ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with incorrect current password', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'wrong_password',
@@ -382,13 +399,13 @@ test('password cannot be updated with incorrect current password', function () {
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that do not match', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -397,13 +414,13 @@ test('password cannot be updated with password that do not match', function () {
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that does not meet requirements', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -412,7 +429,7 @@ test('password cannot be updated with password that does not meet requirements',
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('users can delete their own accounts', function () {

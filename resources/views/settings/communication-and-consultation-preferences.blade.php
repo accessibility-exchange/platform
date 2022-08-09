@@ -30,7 +30,8 @@
 
                 <div class="field @error('email') field-error @enderror">
                     <x-hearth-label for="email" :value="__('Email')" />
-                    <x-hearth-input type="email" name="email" :value="old('email', !empty($individual->user->email) ? $individual->user->email : $individual->user->email)" />
+                    <x-hearth-input type="email" name="email" :value="old('email', $individual->user->email)" />
+                    <x-hearth-hint for="email">{{ __('If you change your email address here, you will need to sign in to this website using the new email address.') }}</x-hearth-hint>
                     <x-hearth-error for="email" />
                 </div>
                 <div class="field @error('phone') field-error @enderror">

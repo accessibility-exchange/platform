@@ -2,14 +2,16 @@
 
 namespace App\Actions\Fortify;
 
+use App\Traits\UserEmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 {
+    use UserEmailVerification;
+
     /**
      * Validate and update the given user's profile information.
      *
@@ -20,7 +22,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update($user, array $input): void
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -28,14 +29,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
         ])->validateWithBag('updateProfileInformation');
 
         if (
             $input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail
         ) {
-            $this->updateVerifiedUser($user, $input);
+            $this->updateVerifiedUser($user, $input['email']);
         } else {
             $user->forceFill([
                 'name' => $input['name'],
@@ -45,26 +45,5 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         }
 
         flash(__('Your information has been updated.'), 'success');
-
-        Cookie::queue('locale', $input['locale']);
-    }
-
-    /**
-     * Update the given verified user's profile information.
-     *
-     * @param  mixed  $user
-     * @param  array  $input
-     * @return void
-     */
-    protected function updateVerifiedUser($user, array $input): void
-    {
-        $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-            'locale' => $input['locale'],
-        ])->save();
-
-        $user->sendEmailVerificationNotification();
     }
 }
