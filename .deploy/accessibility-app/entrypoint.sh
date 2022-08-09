@@ -15,20 +15,7 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  if [ "$APP_ENV" == "production" ]
-  then
-    php artisan migrate --step --force
-  else
-    php artisan migrate:fresh --step 
-    php artisan db:seed DevSeeder
-  fi
-
-  php artisan google-fonts:fetch
-  php artisan storage:link
-  php artisan cache:clear
-  php artisan view:clear
-  php artisan optimize 
-  php artisan event:cache
+  php artisan deploy:initial
   
 fi
 
