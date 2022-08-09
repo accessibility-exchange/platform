@@ -5,6 +5,7 @@ use App\Http\Controllers\ResourceController;
 use Illuminate\Support\Facades\Route;
 
 Route::multilingual('/resources/all', [ResourceController::class, 'index'])
+    ->middleware(['auth'])
     ->name('resources.index');
 
 Route::multilingual('/resources/create', [ResourceController::class, 'create'])
@@ -17,6 +18,7 @@ Route::multilingual('/resources/create', [ResourceController::class, 'store'])
     ->name('resources.store');
 
 Route::multilingual('/resources/{resource}', [ResourceController::class, 'show'])
+    ->middleware(['auth'])
     ->name('resources.show');
 
 Route::multilingual('/resources/{resource}/edit', [ResourceController::class, 'edit'])
