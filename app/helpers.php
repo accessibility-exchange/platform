@@ -161,7 +161,9 @@ if (! function_exists('normalize_url')) {
     function normalize_url(string $url, string $scheme = 'https://'): string
     {
         if (! blank($url)) {
-            return parse_url($url, PHP_URL_SCHEME) === null ? $scheme.$url : $url;
+            $result = is_null(parse_url($url, PHP_URL_SCHEME)) ? $scheme.$url : $url;
+
+            return (filter_var($result, FILTER_VALIDATE_URL)) ? $result : $url;
         }
 
         return $url;
