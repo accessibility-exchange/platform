@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\AccessSupport;
 use App\Models\ConsultingMethod;
 use App\Models\IndividualRole;
 use App\Models\Organization;
@@ -34,10 +35,17 @@ test('individual users can manage access needs', function () {
 
     $response->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
+    $additionalNeeds = AccessSupport::where('name->en', 'I would like to speak to someone to discuss additional access needs or concerns')->first();
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), [
+        'additional_needs_or_concerns' => $additionalNeeds->id,
+    ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-access-needs'));
+
+    $individual = $user->individual->fresh();
+    expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
 });
 
 test('other users cannot manage access needs', function () {
@@ -72,10 +80,21 @@ test('individual users can manage communication and consultation preferences', f
         'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
     ]);
 
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'preferred_contact_person' => 'me',
+        'email' => 'me@example.com',
+        'preferred_contact_method' => 'email',
+        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+    ]);
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
 
+    expect($user->fresh()->email_verified_at)->toBeNull();
+
     $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'phone' => '902-444-4444',
+        'vrs' => '1',
         'preferred_contact_person' => 'support-person',
         'support_person_phone' => '9021234567',
         'preferred_contact_method' => 'email',
@@ -83,6 +102,24 @@ test('individual users can manage communication and consultation preferences', f
     ]);
 
     $response->assertSessionHasErrors(['support_person_name', 'preferred_contact_method', 'meeting_types']);
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'phone' => '902-444-4444',
+        'vrs' => '1',
+        'preferred_contact_person' => 'support-person',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'me@here.com',
+        'preferred_contact_method' => 'email',
+        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+
+    $user = $user->fresh();
+
+    expect($user->phone)->toBeNull();
+    expect($user->vrs)->toBeFalse();
 });
 
 test('other users cannot manage communication and consultation preferences', function () {
@@ -351,14 +388,36 @@ test('guests can not edit roles and permissions', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
+test('email can be changed', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+        'email' => $user->email,
+    ]);
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+        'email' => 'me@example.net',
+    ]);
+    $response->assertOk();
+    $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
+
+    $user = $user->fresh();
+    $this->assertEquals($user->email, 'me@example.net');
+    $this->assertNull($user->email_verified_at);
+});
+
 test('password can be updated', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.change-password'));
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
 
     $response->assertOk();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -367,13 +426,13 @@ test('password can be updated', function () {
         ]);
 
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with incorrect current password', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'wrong_password',
@@ -382,13 +441,13 @@ test('password cannot be updated with incorrect current password', function () {
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that do not match', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -397,13 +456,13 @@ test('password cannot be updated with password that do not match', function () {
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that does not meet requirements', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.change-password'))
+    $response = $this->from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
@@ -412,7 +471,7 @@ test('password cannot be updated with password that does not meet requirements',
         ]);
 
     $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.change-password'));
+    $response->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('users can delete their own accounts', function () {
