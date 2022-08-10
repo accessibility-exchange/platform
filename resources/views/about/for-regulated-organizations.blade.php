@@ -6,7 +6,7 @@
         </ol>
         <h1>
             <span class="weight:normal">{{ __('How this works for') }}</span><br />
-            {{ __('Federally Regulated Organizations') }}
+            {{ __('federally regulated organizations') }}
         </h1>
     </x-slot>
 
@@ -24,7 +24,7 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-turquoise-5 pt-8 stack">
                     <h3>{{ __('Get input on your accessibility projects') }}</h3>
-                    <p>{{ __('You can work on any projects related to accessibility on this website. This can be your organization’s Accessibility Report (under the Accessible Canada Act), or just getting feedback on your services both in terms of customer service and creating an accessible workplace. ') }}</p>
+                    <p>{{ __('You can work on any projects related to accessibility on this website. This can be your organization’s Accessibility Plan or Report (as required under the Accessible Canada Act), or getting feedback on your customer service or accessibility in your workplace.') }}</p>
                     <p><a href="{{ localized_route('about.regulated-organization-get-input') }}">{{ __('Learn more about getting input for your projects') }}</a></p>
                 </div>
             </x-media-text>
@@ -35,7 +35,7 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Find Consultation Participants') }}</h3>
-                    <p>{{ __('Find people with disabilities, Deaf people and community organizations (i.e., disability or other relevant civil society organizations, e.g., Indigenous services), to consult with on your accessibility project.') }}</p>
+                    <p>{{ __('Find people with disabilities, Deaf people and community organizations (for example, disability or other relevant civil society organizations, like Indigenous groups), to consult with on your accessibility project.') }}</p>
                 </div>
             </x-media-text>
 
@@ -45,7 +45,7 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-green-5 pt-8 stack">
                     <h3>{{ __('Access resources and trainings') }}</h3>
-                    <p>{{ __('We have a hub of resources and trainings for you and your team to deepen your understanding of accessibility and inclusion.') }}</p>
+                    <p>{{ __('We have a hub of resources and trainings. The materials can help you and your team deepen your understanding of disability and inclusion.') }}</p>
                     <p><a href="{{ localized_route('resource-collections.index') }}">{{ __('Go to our Resource Hub') }}</a></p>
                 </div>
             </x-media-text>
