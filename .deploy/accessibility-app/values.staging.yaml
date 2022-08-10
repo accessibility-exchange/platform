@@ -1,8 +1,10 @@
 hosts:
-  - iris-accessibility.v2.kube.stage.colab.coop
+  - staging.accessibilityexchange.ca
 auth:
   - username: colab
     password: colab
+  - username: tae
+    password: tae
 disks:
   - size: 10Gi
     name: accessibility-app-data
@@ -10,8 +12,8 @@ env:
   APP_NAME: "The Accessibility Exchange"
   APP_ENV: "development"
   APP_DEBUG: "false"
-  APP_URL: "https://iris-accessibility.v2.kube.stage.colab.coop"
-  APP_SERVICE: "iris-accessibility.v2.kube.stage.colab.coop"
+  APP_URL: "https://staging.accessibilityexchange.ca"
+  APP_SERVICE: "staging.accessibilityexchange.ca"
   LOG_CHANNEL: "stack"
   LOG_LEVEL: "debug"
   BROADCAST_DRIVER: "log"
