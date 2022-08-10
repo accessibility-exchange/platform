@@ -158,7 +158,7 @@ if (! function_exists('normalize_url')) {
     /**
      * Normalize a URL by adding a scheme if one isn't already present.
      */
-    function normalize_url(string $url, string $scheme = 'https://'): string
+    function normalize_url(string|null $url, string $scheme = 'https://'): string|null
     {
         if (! blank($url)) {
             $result = is_null(parse_url($url, PHP_URL_SCHEME)) ? $scheme.$url : $url;

@@ -56,7 +56,7 @@ class UpdateIndividualRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'social_links' => array_map('normalize_url', $this->social_links),
+            'social_links' => array_map('normalize_url', $this->social_links ?? []),
             'website_link' => normalize_url($this->website_link),
         ]);
     }

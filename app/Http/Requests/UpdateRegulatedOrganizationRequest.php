@@ -91,8 +91,10 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
         $this->merge([
             'accessibility_and_inclusion_links' => array_map(function ($item) {
                 $item['url'] = normalize_url($item['url']);
-            }, $this->accessibility_and_inclusion_links),
-            'social_links' => array_map('normalize_url', $this->social_links),
+
+                return $item;
+            }, $this->accessibility_and_inclusion_links ?? []),
+            'social_links' => array_map('normalize_url', $this->social_links ?? []),
             'website_link' => normalize_url($this->website_link),
         ]);
     }
