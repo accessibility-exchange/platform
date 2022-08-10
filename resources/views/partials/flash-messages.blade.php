@@ -1,6 +1,6 @@
 <div x-data="{ready: false}" x-init="ready = true" role="alert">
     <template x-if="ready">
-        <div>
+        <div class="stack">
             @if (flash()->message)
                 <x-hearth-alert :type="flash()->class">
                     <p>{{ flash()->message }}

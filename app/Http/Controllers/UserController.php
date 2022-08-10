@@ -15,16 +15,6 @@ use function localized_route;
 class UserController extends Controller
 {
     /**
-     * Instantiate a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('localize')->only('edit');
-    }
-
-    /**
      * Show an introduction page for the logged-in user.
      *
      * @return View
@@ -84,18 +74,6 @@ class UserController extends Controller
         return view('dashboard', [
             'user' => $user,
             'memberable' => $memberable,
-        ]);
-    }
-
-    /**
-     * Show the profile edit view for the logged-in user.
-     *
-     * @return View
-     */
-    public function edit(): View
-    {
-        return view('users.edit', [
-            'user' => Auth::user(),
         ]);
     }
 
