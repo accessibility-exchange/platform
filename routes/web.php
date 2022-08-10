@@ -106,7 +106,9 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
 
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
-})->name('people-and-organizations');
+})
+    ->middleware(['auth'])
+    ->name('people-and-organizations');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
