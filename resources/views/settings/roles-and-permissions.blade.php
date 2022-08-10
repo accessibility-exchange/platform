@@ -79,8 +79,8 @@
                         <form action="{{ route('memberships.destroy', $member->membership->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button class="secondary" :aria-label="__('Remove :user from :membershipable', ['user' => $joiner->name, 'membershipable' => $membershipable->name])">
-                                {{ __('Remove') }}
+                            <button class="secondary" aria-label="{{ $member->id === $user->id ? __('Leave :membershipable', ['membershipable' => $membershipable->name]) : __('Remove :user from :membershipable', ['user' => $member->name, 'membershipable' => $membershipable->name]) }}">
+                                {{ $member->id === $user->id ? __('Leave organization') : __('Remove') }}
                             </button>
                         </form>
                     </td>
