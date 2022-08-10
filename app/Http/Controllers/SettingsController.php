@@ -191,7 +191,7 @@ class SettingsController extends Controller
         $individual = $user->individual;
 
         if (
-            $data['email'] !== $user->email && $user instanceof MustVerifyEmail
+            isset($data['email']) && $data['email'] !== $user->email && $user instanceof MustVerifyEmail
         ) {
             $this->updateVerifiedUser($user, $data['email']);
         }
