@@ -1,19 +1,40 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('Change password') }}</x-slot>
+    <x-slot name="title">{{ __('Account Details') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
-            {{ __('Change password') }}
+            {{ __('Account Details') }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form action="{{ localized_route('user-password.update') }}" method="POST" novalidate>
+    <h2>{{ __('Change account email') }}</h2>
+
+    <p>{{ __('This is the email you use to sign into the website.') }}</p>
+
+    <form class="stack" action="{{ localized_route('user-profile-information.update') }}" method="POST" novalidate>
+        @csrf
+        @method('put')
+
+        <div class="field @error('email', 'updateProfileInformation') field--error @enderror">
+            <x-hearth-label for="email" :value="__('Email')" />
+            <x-hearth-input name="email" type="email" :value="old('email', $user->email)" required />
+            <x-hearth-error for="email" bag="updateProfileInformation" />
+        </div>
+
+        <button>
+            {{ __('Change email') }}
+        </button>
+    </form>
+
+    <h2>{{ __('Change password') }}</h2>
+
+    <form class="stack" action="{{ localized_route('user-password.update') }}" method="POST" novalidate>
         @csrf
         @method('PUT')
 
