@@ -153,3 +153,17 @@ if (! function_exists('get_regions_from_provinces_and_territories')) {
         return $regions;
     }
 }
+
+if (! function_exists('normalize_url')) {
+    /**
+     * Normalize a URL by adding a scheme if one isn't already present.
+     */
+    function normalize_url(string $url, string $scheme = 'https://'): string
+    {
+        if (! blank($url)) {
+            return parse_url($url, PHP_URL_SCHEME) === null ? $scheme.$url : $url;
+        }
+
+        return $url;
+    }
+}
