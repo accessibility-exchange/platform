@@ -1,10 +1,10 @@
 .link-list a {
     align-items: center;
-    border-block-start: var(--border-size-1) solid currentcolor;
+    border-block-start: var(--border) solid currentcolor;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-block: var(--size-4);
+    padding-block: var(--space-5);
     text-decoration: none;
     width: 100%;
 }
@@ -17,6 +17,6 @@
     background-repeat: no-repeat;
     content: "";
     display: inline-block;
-    height: var(--size-4);
-    width: var(--size-4);
+    height: var(--space-5);
+    width: var(--space-5);
 }

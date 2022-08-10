@@ -12,6 +12,7 @@ use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\IndividualRole;
 use App\Models\LivedExperience;
+use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AgeBracketSeeder;
@@ -23,7 +24,7 @@ use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\LivedExperienceSeeder;
 
-test('individual users can select a individual role', function () {
+test('individual users can select an individual role', function () {
     $this->seed(IndividualRoleSeeder::class);
     $user = User::factory()->create();
 
@@ -44,7 +45,7 @@ test('individual users can select a individual role', function () {
     expect($user->individual->individualRoles[0]->id)->toEqual($firstRole->id);
 });
 
-test('non-individuals cannot select a individual role', function () {
+test('non-individuals cannot select an individual role', function () {
     $nonCommunityUser = User::factory()->create([
         'context' => 'regulated-organization',
     ]);
@@ -59,8 +60,8 @@ test('individuals can edit their roles', function () {
 
     $individual = $user->individual;
 
-    $participantRole = IndividualRole::where('name->en', 'Consultation participant')->first();
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
     $individual->individualRoles()->sync([$consultantRole->id]);
     $individual->publish();
 
@@ -102,7 +103,7 @@ test('users can create individual pages', function () {
     $user = Auth::user();
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -151,6 +152,18 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
     $this->assertTrue($individual->checkStatus('published'));
 
+    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
+        'name' => $user->name,
+        'region' => 'NS',
+        'bio' => ['en' => 'This is my bio.'],
+        'consulting_services' => [
+            'planning-consultation',
+            'running-consultation',
+        ],
+        'save' => __('Save'),
+    ]);
+    $response->assertSee('You have successfully saved your individual page.');
+
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
@@ -161,7 +174,6 @@ test('users can create individual pages', function () {
         ],
         'unpublish' => __('Unpublish'),
     ]);
-
     $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
     $this->assertFalse($individual->checkStatus('published'));
@@ -250,9 +262,9 @@ test('users can create individual pages', function () {
 
     expect($individual->relevant_experiences)->toHaveCount(1);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-meeting-preferences', $individual), [
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
-        'phone' => '902-123-4567',
+        'phone' => '902-444-4567',
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'me',
         'meeting_types' => ['in_person', 'web_conference'],
@@ -262,12 +274,12 @@ test('users can create individual pages', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-meeting-preferences', $individual), [
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
-        'phone' => '902-123-4567',
+        'phone' => '902-444-4567',
         'support_person_name' => 'Someone',
         'support_person_email' => 'me@here.com',
-        'support_person_phone' => '438-123-4567',
+        'support_person_phone' => '438-444-4567',
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'support-person',
         'meeting_types' => ['in_person', 'web_conference'],
@@ -276,8 +288,8 @@ test('users can create individual pages', function () {
 
     $individual = $individual->fresh();
 
-    expect($individual->phone)->toEqual('');
-    expect($individual->support_person_phone)->toEqual('438-123-4567');
+    expect($individual->user->phone)->toEqual('');
+    expect($individual->user->support_person_phone)->toEqual('+14384444567');
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -296,8 +308,9 @@ test('individuals with connector role can represent individuals with disabilitie
 
     $user = User::factory()->create();
     $individual = $user->individual;
+    expect($individual->base_disability_type)->toBeFalse();
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
 
@@ -334,7 +347,7 @@ test('individuals with connector role can represent cross-disability individuals
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
     $areaType = AreaType::first();
@@ -367,7 +380,7 @@ test('individuals with connector role can represent individuals in specific age 
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $ageBracket = AgeBracket::first();
@@ -402,7 +415,7 @@ test('individuals with connector role can represent refugees and immigrants', fu
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
@@ -435,7 +448,7 @@ test('individuals with connector role can represent gender and sexual minorities
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $areaType = AreaType::first();
     $women = GenderIdentity::where('name_plural->en', 'Women')->first();
@@ -486,7 +499,7 @@ test('individuals with connector role can represent ethnoracial identities', fun
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
     $livedExperience = LivedExperience::first();
     $ethnoracialIdentity = EthnoracialIdentity::where('name->en', 'Black')->first();
     $areaType = AreaType::first();
@@ -518,7 +531,7 @@ test('individuals can have participant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $participantRole = IndividualRole::where('name->en', 'Consultation participant')->first();
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
     $individual->individualRoles()->sync([$participantRole->id]);
 
     expect($individual->isParticipant())->toBeTrue();
@@ -530,7 +543,7 @@ test('individuals can have consultant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
     $individual->individualRoles()->sync([$consultantRole->id]);
 
     expect($individual->isConsultant())->toBeTrue();
@@ -544,7 +557,12 @@ test('users can edit individual pages', function () {
 
     expect($individual->isPublishable())->toBeFalse();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
+
+    $individual->individualRoles()->sync([$participantRole->id]);
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
+    $response->assertNotFound();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -568,7 +586,7 @@ test('users can edit individual pages', function () {
     $draftUser = User::factory()->create();
     $draftIndividual = $draftUser->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $draftIndividual->individualRoles()->sync([$consultantRole->id]);
 
@@ -603,7 +621,7 @@ test('users can not edit others individual pages', function () {
 
     $individual = $user->individual;
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -660,7 +678,7 @@ test('users can view their own draft individual pages', function () {
 
     $individual = Individual::factory()->create(['published_at' => null, 'consulting_services' => ['analysis']]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -673,7 +691,7 @@ test('users can not view others draft individual pages', function () {
     $individual = Individual::factory()->create(['published_at' => null]);
 
     $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
-    $response->assertForbidden();
+    $response->assertNotFound();
 });
 
 test('users can view individual pages', function () {
@@ -681,7 +699,7 @@ test('users can view individual pages', function () {
 
     $individual = Individual::factory()->create(['consulting_services' => ['analysis']]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -699,7 +717,7 @@ test('guests can not view individual pages', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -715,7 +733,7 @@ test('individual pages can be published', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -736,7 +754,7 @@ test('individual pages can be unpublished', function () {
 
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -760,7 +778,7 @@ test('draft individuals do not appear on individual index', function () {
         'published_at' => null,
     ]);
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -774,7 +792,7 @@ test('published individuals appear on individual index', function () {
     $user = User::factory()->create();
     $individual = Individual::factory()->create();
 
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility consultant')->first();
+    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
 
     $individual->individualRoles()->sync([$consultantRole->id]);
 
@@ -790,174 +808,13 @@ test('individuals can participate in engagements', function () {
     expect($participant->engagements)->toHaveCount(1);
 });
 
-test('individual\'s first name can be retrieved', function () {
-    $individual = Individual::factory()->create(['name' => 'Jonny Appleseed']);
-    expect($individual->first_name)->toEqual('Jonny');
-});
-
-test('individual\'s contact person can be retrieved', function () {
-    $individual = Individual::factory()->create(['name' => 'Jonny Appleseed', 'preferred_contact_person' => 'me', 'support_person_name' => 'Jenny Appleseed']);
-
-    expect($individual->contact_person)->toEqual('Jonny');
-
-    $individual->update(['preferred_contact_person' => 'support_person']);
-
-    expect($individual->contact_person)->toEqual('Jenny Appleseed');
-});
-
-test('individual\'s vrs requirement can be retrieved', function () {
-    $individual = Individual::factory()->create([
-        'preferred_contact_person' => 'me',
-        'vrs' => true,
-        'support_person_vrs' => false,
-    ]);
-
-    expect($individual->requires_vrs)->toBeTrue();
-
-    $individual->update(['preferred_contact_person' => 'support_person']);
-
-    expect($individual->requires_vrs)->toBeFalse();
-});
-
-test('individual\'s primary contact point can be retrieved', function () {
-    $individual = Individual::factory()->create();
-
-    expect($individual->primary_contact_point)->toBeNull();
-
-    $individual->update([
-        'name' => 'Jonny Appleseed',
-        'email' => 'jonny@example.com',
-        'phone' => '9059999999',
-        'vrs' => true,
-        'preferred_contact_person' => 'me',
-        'preferred_contact_method' => 'email',
-        'support_person_name' => 'Jenny Appleseed',
-        'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
-        'support_person_vrs' => false,
-    ]);
-
-    expect($individual->primary_contact_point)->toEqual('jonny@example.com');
-
-    $individual->update(['preferred_contact_person' => 'support-person']);
-
-    expect($individual->primary_contact_point)->toEqual('jenny@example.com');
-
-    $individual->update(['preferred_contact_method' => 'phone']);
-
-    expect($individual->primary_contact_point)->toEqual('9051111111');
-
-    $individual->update(['preferred_contact_person' => 'me']);
-
-    expect($individual->primary_contact_point)->toEqual("9059999999.  \nJonny requires VRS for phone calls");
-});
-
-test('individual\'s primary contact method can be retrieved', function () {
-    $individual = Individual::factory()->create();
-
-    expect($individual->primary_contact_method)->toBeNull();
-
-    $individual->update([
-        'name' => 'Jonny Appleseed',
-        'email' => 'jonny@example.com',
-        'phone' => '9059999999',
-        'vrs' => true,
-        'preferred_contact_person' => 'me',
-        'preferred_contact_method' => 'email',
-        'support_person_name' => 'Jenny Appleseed',
-        'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
-        'support_person_vrs' => false,
-    ]);
-
-    expect($individual->primary_contact_method)->toEqual('Send an email to Jonny at [jonny@example.com](mailto:jonny@example.com).');
-
-    $individual->update(['preferred_contact_person' => 'support-person']);
-
-    expect($individual->primary_contact_method)->toEqual('Send an email to Jonny’s support person, Jenny Appleseed, at [jenny@example.com](mailto:jenny@example.com).');
-
-    $individual->update(['preferred_contact_method' => 'phone']);
-
-    expect($individual->primary_contact_method)->toEqual('Call Jonny’s support person, Jenny Appleseed, at 9051111111.');
-
-    $individual->update(['preferred_contact_person' => 'me']);
-
-    expect($individual->primary_contact_method)->toEqual("Call Jonny at 9059999999.  \nJonny requires VRS for phone calls.");
-});
-
-test('individual\'s alternate contact point can be retrieved', function () {
-    $individual = Individual::factory()->create();
-
-    expect($individual->alternate_contact_point)->toBeNull();
-
-    $individual->update([
-        'name' => 'Jonny Appleseed',
-        'email' => 'jonny@example.com',
-        'phone' => '9059999999',
-        'vrs' => true,
-        'preferred_contact_person' => 'me',
-        'preferred_contact_method' => 'phone',
-        'support_person_name' => 'Jenny Appleseed',
-        'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
-        'support_person_vrs' => false,
-    ]);
-
-    expect($individual->alternate_contact_point)->toEqual('jonny@example.com');
-
-    $individual->update(['preferred_contact_person' => 'support-person']);
-
-    expect($individual->alternate_contact_point)->toEqual('jenny@example.com');
-
-    $individual->update(['preferred_contact_method' => 'email']);
-
-    expect($individual->alternate_contact_point)->toEqual('9051111111');
-
-    $individual->update(['preferred_contact_person' => 'me']);
-
-    expect($individual->alternate_contact_point)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
-});
-
-test('individual\'s alternate contact method can be retrieved', function () {
-    $individual = Individual::factory()->create();
-
-    expect($individual->alternate_contact_method)->toBeNull();
-
-    $individual->update([
-        'name' => 'Jonny Appleseed',
-        'email' => 'jonny@example.com',
-        'phone' => '9059999999',
-        'vrs' => true,
-        'preferred_contact_person' => 'me',
-        'preferred_contact_method' => 'phone',
-        'support_person_name' => 'Jenny Appleseed',
-        'support_person_email' => 'jenny@example.com',
-        'support_person_phone' => '9051111111',
-        'support_person_vrs' => false,
-    ]);
-
-    expect($individual->alternate_contact_method)->toEqual('[jonny@example.com](mailto:jonny@example.com)');
-
-    $individual->update(['preferred_contact_person' => 'support-person']);
-
-    expect($individual->alternate_contact_method)->toEqual('[jenny@example.com](mailto:jenny@example.com)');
-
-    $individual->update(['preferred_contact_method' => 'email']);
-
-    expect($individual->alternate_contact_method)->toEqual('9051111111');
-
-    $individual->update(['preferred_contact_person' => 'me']);
-
-    expect($individual->alternate_contact_method)->toEqual("9059999999  \nJonny requires VRS for phone calls.");
-});
-
 test('individual view routes can be retrieved based on role', function () {
     $this->seed(IndividualRoleSeeder::class);
 
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $connectorRole = IndividualRole::where('name->en', 'Community connector')->first();
+    $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-experiences');
 
@@ -966,4 +823,51 @@ test('individual view routes can be retrieved based on role', function () {
     $individual = $individual->fresh();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-constituencies');
+});
+
+test('individual relationships to projects can be derived from both projects and engagements', function () {
+    $this->seed(IndividualRoleSeeder::class);
+
+    $individual = Individual::factory()->create();
+    $individual->individualRoles()->sync(IndividualRole::pluck('id'));
+
+    $individual = $individual->fresh();
+
+    $consultingProject = Project::factory()->create([
+        'individual_consultant_id' => $individual->id,
+    ]);
+
+    $consultingEngagement = Engagement::factory()->create([
+        'individual_consultant_id' => $individual->id,
+    ]);
+
+    expect($consultingEngagement->consultant->id)->toEqual($individual->id);
+
+    $consultingEngagementProject = $consultingEngagement->project;
+
+    $connectingEngagement = Engagement::factory()->create([
+        'individual_connector_id' => $individual->id,
+    ]);
+
+    expect($connectingEngagement->connector->id)->toEqual($individual->id);
+
+    $connectingEngagementProject = $connectingEngagement->project;
+
+    $participatingEngagement = Engagement::factory()->create();
+
+    $participatingEngagement->participants()->attach($individual->id);
+
+    $participatingEngagement = $participatingEngagement->fresh();
+
+    $participatingEngagementProject = $participatingEngagement->project;
+
+    expect($individual->contractedProjects->pluck('id')->toArray())
+        ->toHaveCount(3)
+        ->toContain($connectingEngagementProject->id)
+        ->toContain($consultingEngagementProject->id)
+        ->toContain($consultingProject->id);
+
+    expect($individual->participatingProjects->pluck('id')->toArray())
+        ->toHaveCount(1)
+        ->toContain($participatingEngagementProject->id);
 });

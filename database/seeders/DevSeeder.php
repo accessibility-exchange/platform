@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\IndividualRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +30,8 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
             ]);
 
+        $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
+
         $regulatedOrganizationUser = User::factory()
             ->create([
                 'name' => 'Regulated Organization User',
@@ -44,5 +47,9 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
                 'context' => 'organization',
             ]);
+
+        $this->call([
+            TestDataSeeder::class,
+        ]);
     }
 }

@@ -6,14 +6,14 @@
 <p>{{ $project->team_size }}</p>
 @endif
 
-@if($project->team_has_disability_or_deaf_lived_experience || $project->team_has_other_lived_experience)
-<h4>{{ __('Team lived experience') }}</h4>
+@if($project->team_has_disability_or_deaf_lived_experience)
+<h4>{{ __('Lived and living experiences') }}</h4>
 
 <p>{{ $project->teamExperience() }}</p>
 @endif
 
 @if($project->team_languages)
-<h4>{{ __('Team languages') }}</h4>
+<h4>{{ __('Languages used') }}</h4>
 
 <ul>
     @foreach($project->team_languages as $language)
@@ -23,35 +23,45 @@
 @endif
 
 @if($project->has_consultant)
-<h4>{{ __('Accessibility consultant') }}</h4>
+<h4>{{ __('Accessibility Consultant') }}</h4>
 
-@if($project->accessibilityConsultant)
-<p><a href="{{ localized_route('individuals.show', $project->accessibilityConsultant) }}">{{ $project->accessibilityConsultant->name }}</a></p>
+@if($project->consultant)
+<p><a href="{{ localized_route('individuals.show', $project->consultant) }}">{{ $project->consultant->name }}</a></p>
 @else
 <p>{{ $project->consultant_name }}</p>
 @endif
 
 @if($project->consultant_responsibilities)
 @markdown
-{{ $project->consultant_responsibilities }}
+{{ $project->getWrittenTranslation('consultant_responsibilities', $language) }}
 @endmarkdown
 @endif
 @endif
 
 @if($project->team_trainings && count($project->team_trainings))
-<h3>{{ __('Trainings') }}</h3>
+<h3>{{ __('Training') }}</h3>
 
-<p>{{ __('Members of our team have received the following trainings:') }}</p>
+<p>{{ __('Members of our team have received the following training:') }}</p>
 
 <ul role="list" class="stack">
     @foreach($project->team_trainings as $training)
     <li class="stack">
-        <p><strong>{{ $training['name'] }}</strong></p>
+        <p class="h4">{{ $training['name'] }}</p>
         <p>
-            {!! __('Conducted by :trainer', ['trainer' => "<a href='{$training['trainer_url']}' rel='external'>{$training['trainer_name']}</a>"]) !!}<br />
-            {{ __('Date: :date', ['date' => $training['date']]) }}
+            <strong>
+            {{ __('Date') }}<br />
+            {{ Illuminate\Support\Carbon::parse($training['date'])->translatedFormat('F Y') }}
+            </strong>
+        </p>
+        <p>
+            <strong>
+            {{ __('Trainer') }}<br />
+            <a href='{{ $training['trainer_url'] }}' rel='external'>{{ $training['trainer_name'] }}</a>
+            </strong>
         </p>
     </li>
     @endforeach
 </ul>
 @endif
+
+@include('projects.partials.questions')

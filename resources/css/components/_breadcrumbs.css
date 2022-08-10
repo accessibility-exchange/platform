@@ -2,14 +2,14 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: var(--size-1);
+    gap: var(--space-1);
 }
 
 .breadcrumbs li {
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: var(--size-1);
+    gap: var(--space-1);
 }
 
 .breadcrumbs li + li::before {
@@ -20,6 +20,6 @@
     background-repeat: no-repeat;
     content: "";
     display: inline-block;
-    height: var(--size-4);
-    width: var(--size-4);
+    height: var(--space-5);
+    width: var(--space-5);
 }

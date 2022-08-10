@@ -3,29 +3,29 @@
 set -e
 
 mkdir -p $FILES_PATH
+mkdir -p $CACHE_PATH
 
 rsync -a /app/storage/ $FILES_PATH/
 rm -rf /app/storage
 
+rsync -a /app/bootstrap/cache/ $CACHE_PATH/
+rm -rf /app/bootstrap/cache
+
 ln -s $FILES_PATH /app/storage
-chown www-data:root /opt/data/storage/ -R
+chown www-data:root $FILES_PATH/ -R
+
+ln -s $CACHE_PATH /app/bootstrap/cache
+chown www-data:root $CACHE_PATH/ -R
 
 if [ ! -f $FILES_PATH/../deploy.lock ]
 then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan migrate --step --force
-  php artisan google-fonts:fetch
+  php artisan deploy:initial
   
 fi
 
 rm -rf $FILES_PATH/../deploy.lock
-
-php artisan storage:link
-php artisan cache:clear
-php artisan view:clear
-php artisan route:cache
-php artisan config:cache
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

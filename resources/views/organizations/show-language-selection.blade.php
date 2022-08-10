@@ -4,7 +4,7 @@
     <x-slot name="header">
         <p class="h2">{{ __('Create organization profile') }}</p>
         <h1>
-            {{ __('Languages available') }}
+            {{ __('Page translations') }}
         </h1>
     </x-slot>
 

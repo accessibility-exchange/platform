@@ -1,16 +1,16 @@
 .help-bar {
     background: var(--theme-help-bar-background, var(--help-bar-background));
-    border-block-end: var(--border-size-1) dashed var(--help-bar-border);
+    border-block-end: var(--border) dashed var(--help-bar-border);
     color: var(--help-bar-color);
-    height: var(--size-9);
+    height: var(--space-16);
 }
 
 .help-bar .center {
-    --gutter: var(--size-3);
+    --gutter: var(--space-4);
 
     align-items: center;
     display: flex;
-    height: var(--size-9);
+    height: var(--space-16);
     justify-content: space-between;
 }
 
@@ -42,7 +42,7 @@
     display: none;
     left: 0;
     position: absolute;
-    top: var(--size-9);
+    top: var(--space-16);
     width: 100vw;
 }
 
@@ -52,17 +52,17 @@
 
 .help-bar .responsive-switcher div {
     align-items: center;
-    border-block-start: var(--border-size-1) solid white;
+    border-block-start: var(--border) solid white;
     display: flex;
     flex-wrap: wrap;
     height: auto;
-    min-height: var(--size-9);
-    padding: var(--size-3);
+    min-height: var(--space-16);
+    padding: var(--space-4);
 }
 
 @media (min-width: 60rem) {
     .help-bar {
-        height: var(--size-9);
+        height: var(--space-16);
     }
 
     .help-bar [aria-expanded] {
@@ -70,7 +70,7 @@
     }
 
     .help-bar .responsive-switcher {
-        --space: var(--size-7);
+        --space: var(--space-8);
 
         display: flex;
         left: 0;

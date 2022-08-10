@@ -11,15 +11,15 @@ class OrganizationRoleSeeder extends Seeder
     {
         $roles = [
             [
-                'name' => __('Accessibility consultant'),
+                'name' => __('Accessibility Consultant'),
                 'description' => __('Federally Regulated Entities can hire my organization to design and run consultations, as well as to synthesize results and to contribute systemic analysis'),
             ],
             [
-                'name' => __('Community connector'),
-                'description' => __('Federally Regulated Entities can hire my organization to recruit consultation participants for them'),
+                'name' => __('Community Connector'),
+                'description' => __('Federally Regulated Entities can hire my organization to recruit Consultation Participants for them'),
             ],
             [
-                'name' => __('Consultation participant'),
+                'name' => __('Consultation Participant'),
                 'description' => __('Allow Federally Regulated Entities to reach out to my organization to participate in consultation'),
             ],
         ];

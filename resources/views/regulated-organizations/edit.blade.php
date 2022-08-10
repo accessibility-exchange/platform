@@ -61,7 +61,7 @@
                     </div>
                     <div class="field">
                         <x-hearth-label for="region" :value="__('forms.label_region')" />
-                        <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$regions"/>
+                        <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$nullableRegions"/>
                     </div>
                 </fieldset>
 
@@ -115,6 +115,37 @@
                 <div class="field">
                     <x-hearth-label for="website_link" :value="__('Website link (optional)')" />
                     <x-hearth-input type="url" name="website_link" :value="old('website_link', $regulatedOrganization->website_link)" />
+                </div>
+
+                <h3>{{ __('Contact information') }}</h3>
+
+                <div class="field @error("contact_person_name") field-error @enderror">
+                    <x-hearth-label for="contact_person_name" :value="__('Name of contact person (required)')" />
+                    <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}</x-hearth-hint>
+                    <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $regulatedOrganization->contact_person_name)" required hinted />
+                    <x-hearth-error for="contact_person_name" field="contact_person_name" />
+                </div>
+                <div class="field @error('contact_person_email') field-error @enderror">
+                    <x-hearth-label for="contact_person_email" :value="__('Contact person’s email')" />
+                    <x-hearth-input type="email" name="contact_person_email" :value="old('contact_person_email', $regulatedOrganization->contact_person_email)" />
+                    <x-hearth-error for="contact_person_email" />
+                </div>
+                <div class="field @error('contact_person_phone') field-error @enderror">
+                    <x-hearth-label for="contact_person_phone" :value="__('Contact person’s phone number')" />
+                    <x-hearth-input type="tel" name="contact_person_phone" :value="old('contact_person_phone', $regulatedOrganization->contact_person_phone?->formatForCountry('CA'))" />
+                    <x-hearth-error for="contact_person_phone" />
+                </div>
+
+                <div class="field @error('contact_person_vrs') field-error @enderror">
+                    <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $regulatedOrganization->contact_person_vrs ?? false)" />
+                    <x-hearth-label for="contact_person_vrs" :value="__('They require Video Relay Service (VRS) for phone calls')" />
+                    <x-hearth-error for="contact_person_vrs" />
+                </div>
+
+                <div class="field @error('preferred_contact_method') field-error @enderror">
+                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
+                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $regulatedOrganization->preferred_contact_method ?? 'email')"/>
+                    <x-hearth-error for="preferred_contact_method" />
                 </div>
 
                 <button>{{ __('Save') }}</button>

@@ -12,12 +12,12 @@ class RequirePassword extends RequirePasswordMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  \Closure  $next
      * @param  string|null  $redirectToRoute
      * @return mixed
      */
-    public function handle($request, Closure $next, $redirectToRoute = null, $passwordTimeoutSeconds = null)
+    public function handle($request, Closure $next, $redirectToRoute = null, $passwordTimeoutSeconds = null): mixed
     {
         if ($this->shouldConfirmPassword($request, $passwordTimeoutSeconds)) {
             if ($request->expectsJson()) {

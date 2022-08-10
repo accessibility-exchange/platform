@@ -4,13 +4,13 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
             <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
-            <li><a href="{{ localized_route('about.individual-consultation-participants') }}">{{ __('Consultation participants') }}</a></li>
+            <li><a href="{{ localized_route('about.individual-consultation-participants') }}">{{ __('Consultation Participants') }}</a></li>
         </ol>
         <div class="w-full lg:w-2/3">
             <h1 id="what-we-ask-for">
                 {{ __('What information do we ask for?') }}
             </h1>
-            <p class="h4">{{ __('Information that we ask consultation participants, accessibility consultants, and community connectors to share.') }}</p>
+            <p class="h4">{{ __('Information that we ask Consultation Participants, accessibility consultants, and Community Connectors to share.') }}</p>
         </div>
     </x-slot>
 
@@ -19,7 +19,7 @@
             @include('about.partials.what-we-ask-for-navigation')
             <div class="stack">
                 <h2>{{ __('Consultation Participants — Individual') }}</h2>
-                <p>{{ __('We ask consultation participants for the following information:') }}</p>
+                <p>{{ __('We ask Consultation Participants for the following information:') }}</p>
                 <x-expander :summary="__('Lived or living experience')" level="3">
                     <p>{{ __('All of the following questions are optional, besides the ones marked as required. For all questions that are multiple choice, there is an option to select “prefer not to answer”.') }}</p>
                     <ul>
@@ -41,7 +41,7 @@
                         <li>{{ __('Whether they consider themselves to be living in poverty or financially precarious') }}</li>
                     </ul>
                     <h4>{{ __('Why do we ask this?') }}</h4>
-                    <p>{{ __('When creating a group of consultation participants, our website will allow you to get a diverse group of participants in terms of type of disability and those living with other marginalized identities, in order that  many perspectives can be represented.') }}</p>
+                    <p>{{ __('When creating a group of Consultation Participants, our website will allow you to get a diverse group of participants in terms of type of disability and those living with other marginalized identities, in order that  many perspectives can be represented.') }}</p>
                     <p>{{ __('Sometimes, governments and businesses also want to talk to people with specific experiences. For example, people from a certain location. Or, people who speak a certain first language.') }}</p>
                     <p>{{ __('Because of these reasons, we ask you to provide this information so we can match you with an engagement that is looking for your experience.') }}</p>
                 </x-expander>
@@ -85,7 +85,7 @@
         <x-section class="bg-turquoise-2 align:center mt-16">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
-                {{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}
+                {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
             </p>
         </x-section>
 
@@ -100,7 +100,7 @@
                         </div>
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => settings()->get('phone', '1-800-123-4567')]) }}</p>
+                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
                             <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
         <h2>{{ __('Create new community organization') }}</h2>
     </x-slot>
 
-    <form class="stack" action="{{ localized_route('organizations.store-roles', $organization) }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('organizations.save-roles', $organization) }}" method="post" novalidate>
         <fieldset class="field @error('type') field--error @enderror">
             <legend>{{ __('What type of organization are you?') }}</legend>
             <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', [])" />
@@ -18,5 +18,6 @@
         <button>{{ __('Next') }}</button>
 
         @csrf
+        @method('put')
     </form>
 </x-app-layout>

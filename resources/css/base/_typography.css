@@ -6,7 +6,7 @@ body {
     color: var(--body-color);
     font-family: var(--font-base);
     font-size: var(--text-base);
-    line-height: var(--font-lineheight-3);
+    line-height: 1.5;
 }
 
 * + h1,

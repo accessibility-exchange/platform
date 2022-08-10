@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
-use App\Enums\ConsultingServices;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Http\Requests\DestroyOrganizationRequest;
+use App\Http\Requests\SaveOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
-use App\Http\Requests\StoreOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationTypeRequest;
 use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
@@ -83,7 +83,20 @@ class OrganizationController extends Controller
 
     public function store(StoreOrganizationRequest $request): RedirectResponse
     {
+        $user = $request->user();
         $data = $request->validated();
+
+        $data['contact_person_name'] = $user->name;
+        $data['contact_person_email'] = $user->email;
+        $data['preferred_contact_method'] = 'email';
+
+        $data['working_languages'] = [$user->locale];
+
+        if ($user->signed_language) {
+            $data['working_languages'][] = $user->signed_language;
+        }
+
+        $data['languages'] = ['en', 'fr', 'ase', 'fcs'];
 
         $organization = Organization::create($data);
 
@@ -105,11 +118,22 @@ class OrganizationController extends Controller
         ]);
     }
 
-    public function storeRoles(StoreOrganizationRolesRequest $request, Organization $organization): RedirectResponse
+    public function showRoleEdit(Organization $organization): View
+    {
+        return view('organizations.show-role-edit', [
+            'organization' => $organization,
+            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
+            'selectedRoles' => $organization->organizationRoles->pluck('id')->toArray(),
+        ]);
+    }
+
+    public function saveRoles(SaveOrganizationRolesRequest $request, Organization $organization): RedirectResponse
     {
         $data = $request->validated();
 
         $organization->organizationRoles()->sync($data['roles'] ?? []);
+
+        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }
@@ -155,9 +179,10 @@ class OrganizationController extends Controller
 
         return view('organizations.edit', [
             'organization' => $organization,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'nullableRegions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'roles' => $roles,
-            'consultingServices' => Options::forEnum(ConsultingServices::class)->toArray(),
+            'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
@@ -179,7 +204,17 @@ class OrganizationController extends Controller
 
     public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
     {
-        $organization->fill($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['working_languages'])) {
+            $data['working_languages'] = array_filter($data['working_languages']);
+        }
+
+        if (isset($data['social_links'])) {
+            $data['social_links'] = array_filter($data['social_links']);
+        }
+
+        $organization->fill($data);
         $organization->save();
 
         return $organization->handleUpdateRequest($request, 1);

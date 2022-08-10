@@ -8,15 +8,17 @@
 
     @foreach(['en', 'fr'] as $locale)
         @error('name.' . $locale)
-        <div class="stack">
-            @php
-                $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first()
-            @endphp
-            <x-hearth-alert type="error">
-                {{ __('There is already a :type with the name “:name” on this website. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('organization.types.' . $type . '.name'), 'name' => old('name.' . $locale)]) }}
-            </x-hearth-alert>
-            <x-organization-card level="3" :organization="$organization" />
-        </div>
+            @if($message === __('A :type with this name already exists.', ['type' => __('organization.types.' . $type . '.name')]))
+            <div class="stack">
+                @php
+                    $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first()
+                @endphp
+                <x-hearth-alert type="error">
+                    {{ __('There is already a :type with the name “:name” on this website. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('organization.types.' . $type . '.name'), 'name' => old('name.' . $locale)]) }}
+                </x-hearth-alert>
+                <x-organization-card level="3" :organization="$organization" />
+            </div>
+            @endif
         @break
         @enderror
     @endforeach

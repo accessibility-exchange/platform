@@ -33,6 +33,9 @@ class UserFactory extends Factory
             'locale' => config('app.locale'),
             'theme' => 'system',
             'context' => 'individual',
+            'preferred_contact_person' => 'me',
+            'preferred_contact_method' => 'email',
+            'preferred_notification_method' => 'email',
         ];
     }
 }

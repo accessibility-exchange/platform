@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Impact;
-use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -38,27 +36,11 @@ class StoreProjectRequest extends FormRequest
             'ancestor_id' => [
                 'nullable',
                 'integer',
-                Rule::in(Project::pluck('id')->toArray()),
+                'exists|projects,id',
             ],
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
             'name.en' => 'required_without:name.fr|nullable|string|max:255',
             'name.fr' => 'required_without:name.en|nullable|string|max:255',
-            'goals.*' => 'string|nullable',
-            'goals.en' => 'required_without:goals.fr|nullable|string',
-            'goals.fr' => 'required_without:goals.en|nullable|string',
-            'scope.*' => 'string|nullable',
-            'scope.en' => 'required_without:scope.fr|nullable|string',
-            'scope.fr' => 'required_without:scope.en|nullable|string',
-            'impacts' => [
-                'nullable',
-                'array',
-                Rule::in(Impact::pluck('id')->toArray()),
-            ],
-            'out_of_scope.*' => 'string|nullable',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date',
-            'outcomes.*' => 'string|nullable',
-            'public_outcomes' => 'boolean|nullable',
         ];
     }
 

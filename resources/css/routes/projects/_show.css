@@ -10,7 +10,7 @@
 }
 
 .score__indicator {
-    margin-inline-end: var(--step--3);
+    margin-inline-end: var(--space-3);
 }
 
 @media (min-width: 1024px) {
@@ -20,7 +20,7 @@
 
     .scores,
     .comments {
-        column-gap: var(--step-5);
+        column-gap: var(--space-12);
     }
 }
 

@@ -25,6 +25,10 @@ class StoreRegulatedOrganizationRequest extends FormRequest
         return [
             'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
             'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
+            'name.en.required_if' => __('An English name is required for government organizations.'),
+            'name.fr.required_if' => __('A French name is required for government organizations.'),
+            'name.en.required_without' => __('An English name is required if a French name is not provided.'),
+            'name.fr.required_without' => __('A French name is required if a French name is not provided.'),
         ];
     }
 }

@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('db:refresh') // use custom command to make sure that the commands are chained
+            ->daily() // Run daily at midnight
+            ->environments(['staging', 'dev', 'local']) // only run for APP_ENV tagged staging, dev, or local
+            ->onOneServer(); // run only on a single server at once
     }
 
     /**

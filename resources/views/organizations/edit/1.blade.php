@@ -33,7 +33,7 @@
 
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label for="region" :value="__('Province or territory')" />
-                    <x-hearth-select name="region" :options="$regions" :selected="old('region', $organization->region)" required />
+                    <x-hearth-select name="region" :options="$nullableRegions" :selected="old('region', $organization->region)" required />
                     <x-hearth-error for="region" />
                 </div>
 
@@ -97,6 +97,4 @@
             </p>
         </div>
     </div>
-
-
 </form>

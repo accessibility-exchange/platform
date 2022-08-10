@@ -36,7 +36,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
 
         Route::multilingual('/{individual}/communication-and-meetings', 'show')
             ->middleware(['auth', 'can:view,individual'])
-            ->name('show-communication-and-meeting-preferences');
+            ->name('show-communication-and-consultation-preferences');
 
         Route::multilingual('/{individual}/edit', 'edit')
             ->middleware(['auth', 'can:update,individual'])
@@ -62,10 +62,10 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->method('put')
             ->name('update-experiences');
 
-        Route::multilingual('/{individual}/edit-communication-and-meeting-preferences', 'updateCommunicationAndMeetingPreferences')
+        Route::multilingual('/{individual}/edit-communication-and-consultation-preferences', 'updateCommunicationAndConsultationPreferences')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
-            ->name('update-communication-and-meeting-preferences');
+            ->name('update-communication-and-consultation-preferences');
 
         Route::multilingual('/{individual}/change-status', 'updatePublicationStatus')
             ->middleware(['auth', 'can:update,individual'])
@@ -74,12 +74,12 @@ Route::controller(IndividualController::class)->prefix('individuals')
 
         Route::multilingual('/{individual}/express-interest', 'expressInterest')
             ->method('post')
-            ->middleware(['auth', 'can:update,individual'])
+            ->middleware(['auth', 'can:manage,individual'])
             ->name('express-interest');
 
         Route::multilingual('/{individual}/remove-interest', 'removeInterest')
             ->method('post')
-            ->middleware(['auth', 'can:update,individual'])
+            ->middleware(['auth', 'can:manage,individual'])
             ->name('remove-interest');
 
         Route::multilingual('/{individual}/delete', 'destroy')

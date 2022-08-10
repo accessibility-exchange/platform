@@ -3,16 +3,16 @@
 // @formatter:off
 // phpcs:ignoreFile
 
-    /**
-     * A helper file for Laravel, to provide autocomplete information to your IDE
-     * Generated for Laravel 9.19.0.
-     *
-     * This file should not be included in your code, only analyzed by your IDE!
-     *
-     * @author Barry vd. Heuvel <barryvdh@gmail.com>
-     *
-     * @see https://github.com/barryvdh/laravel-ide-helper
-     */
+/**
+ * A helper file for Laravel, to provide autocomplete information to your IDE
+ * Generated for Laravel 9.22.1.
+ *
+ * This file should not be included in your code, only analyzed by your IDE!
+ *
+ * @author Barry vd. Heuvel <barryvdh@gmail.com>
+ *
+ * @see https://github.com/barryvdh/laravel-ide-helper
+ */
 
 namespace Illuminate\Support\Facades {
         /**
@@ -6664,16 +6664,17 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
-             * Get the MD5 hash of the file at the given path.
+             * Get the hash of the file at the given path.
              *
              * @param  string  $path
+             * @param  string  $algorithm
              * @return string
              * @static
              */
-            public static function hash($path)
+            public static function hash($path, $algorithm = 'md5')
             {
                 /** @var \Illuminate\Filesystem\Filesystem $instance */
-                return $instance->hash($path);
+                return $instance->hash($path, $algorithm);
             }
 
             /**
@@ -7570,6 +7571,35 @@ namespace Illuminate\Support\Facades {
                 /** @var \Illuminate\Auth\Access\Gate $instance */
                 return $instance->setContainer($container);
             }
+
+            /**
+             * Deny with a HTTP status code.
+             *
+             * @param  int  $status
+             * @param \Illuminate\Auth\Access\?string $message
+             * @param \Illuminate\Auth\Access\?int $code
+             * @return \Illuminate\Auth\Access\Response
+             * @static
+             */
+            public static function denyWithStatus($status, $message = null, $code = null)
+            {
+                /** @var \Illuminate\Auth\Access\Gate $instance */
+                return $instance->denyWithStatus($status, $message, $code);
+            }
+
+            /**
+             * Deny with a 404 HTTP status code.
+             *
+             * @param \Illuminate\Auth\Access\?string $message
+             * @param \Illuminate\Auth\Access\?int $code
+             * @return \Illuminate\Auth\Access\Response
+             * @static
+             */
+            public static function denyAsNotFound($message = null, $code = null)
+            {
+                /** @var \Illuminate\Auth\Access\Gate $instance */
+                return $instance->denyAsNotFound($message, $code);
+            }
         }
         /**
          * @see \Illuminate\Hashing\HashManager
@@ -7765,7 +7795,7 @@ namespace Illuminate\Support\Facades {
          * @method static \Illuminate\Http\Client\PendingRequest asJson()
          * @method static \Illuminate\Http\Client\PendingRequest asMultipart()
          * @method static \Illuminate\Http\Client\PendingRequest async()
-         * @method static \Illuminate\Http\Client\PendingRequest attach(string|array $name, string $contents = '', string|null $filename = null, array $headers = [])
+         * @method static \Illuminate\Http\Client\PendingRequest attach(string|array $name, string|resource $contents = '', string|null $filename = null, array $headers = [])
          * @method static \Illuminate\Http\Client\PendingRequest baseUrl(string $url)
          * @method static \Illuminate\Http\Client\PendingRequest beforeSending(callable $callback)
          * @method static \Illuminate\Http\Client\PendingRequest bodyFormat(string $format)
@@ -7873,7 +7903,7 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
-             * Indicate that an exception should not be thrown if any request is not faked.
+             * Indicate that an exception should be thrown if any request is not faked.
              *
              * @param  bool  $prevent
              * @return \Illuminate\Http\Client\Factory
@@ -10897,6 +10927,32 @@ namespace Illuminate\Support\Facades {
             }
 
             /**
+             * Set the locale for the request instance.
+             *
+             * @param  string  $locale
+             * @return void
+             * @static
+             */
+            public static function setRequestLocale($locale)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                $instance->setRequestLocale($locale);
+            }
+
+            /**
+             * Set the default locale for the request instance.
+             *
+             * @param  string  $locale
+             * @return void
+             * @static
+             */
+            public static function setDefaultRequestLocale($locale)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                $instance->setDefaultRequestLocale($locale);
+            }
+
+            /**
              * Get the user making the request.
              *
              * @param  string|null  $guard
@@ -12418,6 +12474,20 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\Http\Request $instance */
                 return $instance->date($key, $format, $tz);
+            }
+
+            /**
+             * Retrieve input from the request as an enum.
+             *
+             * @param  string  $key
+             * @param  string  $enumClass
+             * @return mixed|null
+             * @static
+             */
+            public static function enum($key, $enumClass)
+            {
+                /** @var \Illuminate\Http\Request $instance */
+                return $instance->enum($key, $enumClass);
             }
 
             /**
@@ -15644,6 +15714,18 @@ namespace Illuminate\Support\Facades {
             {
                 /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                 return $instance->url($path);
+            }
+
+            /**
+             * Determine if temporary URLs can be generated.
+             *
+             * @return bool
+             * @static
+             */
+            public static function providesTemporaryUrls()
+            {
+                /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                return $instance->providesTemporaryUrls();
             }
 
             /**
@@ -20003,6 +20085,22 @@ namespace Illuminate\View {
             public static function slot($slot)
             {
                 return \Illuminate\View\View::slot($slot);
+            }
+        }
+
+}
+
+namespace Illuminate\Validation {
+
+        class Rule
+        {
+            /**
+             * @see \Propaganistas\LaravelPhone\PhoneServiceProvider::boot()
+             * @static
+             */
+            public static function phone()
+            {
+                return \Illuminate\Validation\Rule::phone();
             }
         }
 

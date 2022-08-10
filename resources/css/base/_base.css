@@ -12,9 +12,9 @@ body {
 }
 
 main {
-    padding-block: var(--size-7);
+    padding-block: var(--space-8);
 }
 
 main > .center {
-    --gutter: var(--size-3);
+    --gutter: var(--space-4);
 }

@@ -1,5 +1,10 @@
 hosts:
-  - iris-accessibility.v2.kube.colab.coop
+  - future.accessibilityexchange.ca
+auth:
+  - username: colab
+    password: colab
+  - username: tae
+    password: tae
 disks:
   - size: 10Gi
     name: accessibility-app-data
@@ -7,8 +12,8 @@ env:
   APP_NAME: "The Accessibility Exchange"
   APP_ENV: "production"
   APP_DEBUG: "false"
-  APP_URL: "https://iris-accessibility.v2.kube.colab.coop"
-  APP_SERVICE: "iris-accessibility.v2.kube.colab.coop"
+  APP_URL: "https://future.accessibilityexchange.ca"
+  APP_SERVICE: "future.accessibilityexchange.ca"
   LOG_CHANNEL: "stack"
   LOG_LEVEL: "debug"
   BROADCAST_DRIVER: "log"
@@ -18,6 +23,7 @@ env:
   SESSION_LIFETIME: "120"
   SAIL_XDEBUG_MODE: "develop,debug,coverage"
   FILES_PATH: "/opt/data/storage"
+  CACHE_PATH: "/opt/data/cache"
 ### Place those values in Vault
 # secrets:
 #   APP_KEY: ""

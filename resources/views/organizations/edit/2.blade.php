@@ -25,11 +25,11 @@
             <p><strong><em>{{ __('Primary constituency means a group that’s specifically in your mandate to :represent_or_serve_and_support.', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</em></strong></p>
 
             @if($organization->isConnector())
-            <p><em>{{ __('As you’ve indicated that your organization is playing the role of community connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em></p>
+            <p><em>{{ __('As you’ve indicated that your organization is playing the role of Community Connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em></p>
             @endif
 
             @if($organization->isParticipant())
-                <p><em>{{ __('As you’ve indicated that your organization is playing the role of consultation participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}</em></p>
+                <p><em>{{ __('As you’ve indicated that your organization is playing the role of Consultation Participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}</em></p>
             @endif
 
             @if($organization->type !== 'civil-society')
@@ -92,7 +92,7 @@
                 </div>
             </fieldset>
 
-            <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '' ? 'true' : 'false') }}}">
+            <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', $organization->other_ethnoracial_identity) ? 'true' : 'false' }}}">
                 <legend>{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities? (required)', ['represent_or_serve_and_support' => ($organization->type === 'representative') ? __('represent') : __('serve and support')]) }}</legend>
                 <div class="field">
                     <input type="radio" name="has_ethnoracial_identities" id="has_ethnoracial_identities-1" value="1" @checked(old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" /> <label for="has_ethnoracial_identities-1">{{ __('Yes') }}</label>

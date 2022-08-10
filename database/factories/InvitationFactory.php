@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Invitation;
 use App\Models\Organization;
-use Hearth\Models\Invitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvitationFactory extends Factory

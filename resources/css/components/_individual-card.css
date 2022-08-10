@@ -1,10 +1,9 @@
 .card--individual {
-    border: var(--ll-border-medium);
-    border-radius: var(--ll-border-radius);
-    padding: var(--step-0);
+    border: var(--border-3) solid;
+    padding: var(--space-5);
 }
 
 .card--individual .actions {
     display: flex;
-    gap: var(--step--2);
+    gap: var(--space-3);
 }

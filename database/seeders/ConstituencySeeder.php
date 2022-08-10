@@ -21,6 +21,11 @@ class ConstituencySeeder extends Seeder
                 'adjective' => __('Refugee or immigrant'),
             ],
             [
+                'name' => __('Single parent or guardian'),
+                'name_plural' => __('Single parents and/or guardians'),
+                'adjective' => __('Single parent or guardian'),
+            ],
+            [
                 'name' => __('Trans person'),
                 'name_plural' => __('Trans people'),
                 'adjective' => __('Trans'),

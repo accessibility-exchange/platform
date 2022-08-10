@@ -13,7 +13,7 @@
     @endmarkdown
 @endif
 
-@if(count($individual->relevant_experiences) > 0)
+@if($individual->relevant_experiences && count($individual->relevant_experiences) > 0)
     <h3>{{ __('Relevant experience') }}</h3>
     <p>{{ __('Relevant work and volunteer experience.') }}</p>
 

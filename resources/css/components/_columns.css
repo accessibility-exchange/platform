@@ -1,11 +1,11 @@
 .columns {
     display: flex;
     flex-direction: column;
-    gap: var(--step-0);
+    gap: var(--space-5);
 }
 
 .column > * + * {
-    margin-block-start: var(--step-0);
+    margin-block-start: var(--space-5);
 }
 
 @media (min-width: 1024px) {

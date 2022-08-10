@@ -8,9 +8,9 @@
 }
 
 .guest .cover {
-    --height: calc(100vh - var(--size-9));
+    --height: calc(100vh - var(--space-16));
 }
 
 .stack.hero {
-    --space: var(--size-5);
+    --space: var(--space-6);
 }

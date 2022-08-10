@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
-use App\Enums\ConsultingServices;
-use App\Enums\MeetingTypes;
-use App\Enums\ProvincesAndTerritories;
+use App\Enums\ConsultingService;
+use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
-use App\Http\Requests\UpdateIndividualCommunicationAndMeetingPreferencesRequest;
+use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
@@ -29,6 +29,8 @@ use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\IndividualStatus;
+use App\Traits\UserEmailVerification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,6 +39,8 @@ use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
 {
+    use UserEmailVerification;
+
     public function index(): View
     {
         return view('individuals.index', [
@@ -78,8 +82,10 @@ class IndividualController extends Controller
         $individual->individualRoles()->sync($data['roles'] ?? []);
 
         if (! $individual->fresh()->isConsultant() && ! $individual->fresh()->isConnector()) {
-            $individual->unpublish();
+            $individual->unpublish(true);
         }
+
+        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }
@@ -112,13 +118,13 @@ class IndividualController extends Controller
 
         return view('individuals.edit', [
             'individual' => $individual,
-            'regions' => Options::forEnum(ProvincesAndTerritories::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'constituencies' => Options::forModels(Constituency::class)->toArray(),
             'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
             'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
-            'consultingServices' => Options::forEnum(ConsultingServices::class)->toArray(),
+            'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
             'areaTypes' => Options::forModels(AreaType::class)->toArray(),
             'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
             'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
@@ -135,7 +141,7 @@ class IndividualController extends Controller
                 '0' => __('No'),
             ])->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
-            'meetingTypes' => Options::forEnum(MeetingTypes::class)->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,
         ]);
@@ -147,6 +153,10 @@ class IndividualController extends Controller
 
         if (isset($data['working_languages'])) {
             $data['working_languages'] = array_filter($data['working_languages']);
+        }
+
+        if (isset($data['social_links'])) {
+            $data['social_links'] = array_filter($data['social_links']);
         }
 
         $individual->fill($data);
@@ -179,11 +189,11 @@ class IndividualController extends Controller
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
-            $individual->extra_attributes->has_refugee_and_immigrant_constituency = 1;
+            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 1);
 
             $data['constituencies'][] = $refugeesAndImmigrants->id;
         } else {
-            $individual->extra_attributes->has_refugee_and_immigrant_constituency = 0;
+            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 0);
         }
 
         if (isset($data['gender_and_sexual_identities'])) {
@@ -213,9 +223,9 @@ class IndividualController extends Controller
                 $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
             }
 
-            $individual->extra_attributes->has_gender_and_sexual_identities = 1;
+            $individual->extra_attributes->set('has_gender_and_sexual_identities', 1);
         } else {
-            $individual->extra_attributes->has_gender_and_sexual_identities = 0;
+            $individual->extra_attributes->set('has_gender_and_sexual_identities', 0);
         }
 
         foreach ([
@@ -278,12 +288,7 @@ class IndividualController extends Controller
         $data = $request->validated();
 
         if (isset($data['relevant_experiences'])) {
-            $relevant_experiences = array_filter(array_map('array_filter', $data['relevant_experiences']));
-            if (empty($relevant_experiences)) {
-                unset($data['relevant_experiences']);
-            } else {
-                $data['relevant_experiences'] = $relevant_experiences;
-            }
+            $data['relevant_experiences'] = array_filter(array_map('array_filter', $data['relevant_experiences']));
         }
 
         $individual->fill($data);
@@ -303,13 +308,13 @@ class IndividualController extends Controller
 
         $individual->save();
 
-        $individual->sectors()->sync($data['sectors'] ?? []);
-        $individual->impacts()->sync($data['impacts'] ?? []);
+        $individual->sectorsOfInterest()->sync($data['sectors'] ?? []);
+        $individual->impactsOfInterest()->sync($data['impacts'] ?? []);
 
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('interests'));
     }
 
-    public function updateCommunicationAndMeetingPreferences(UpdateIndividualCommunicationAndMeetingPreferencesRequest $request, Individual $individual): RedirectResponse
+    public function updateCommunicationAndConsultationPreferences(UpdateIndividualCommunicationAndConsultationPreferencesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
 
@@ -321,16 +326,28 @@ class IndividualController extends Controller
         }
 
         if ($data['preferred_contact_person'] === 'support-person') {
-            $data['email'] = '';
             $data['phone'] = '';
             $data['vrs'] = 0;
         }
 
-        $individual->fill($data);
+        $user = Auth::user();
+        $individual = $user->individual;
 
+        if (
+            $data['email'] !== ''
+                && $data['email'] !== $user->email
+                && $user instanceof MustVerifyEmail
+        ) {
+            $this->updateVerifiedUser($user, $data['email']);
+        }
+
+        $user->fill($data);
+        $user->save();
+
+        $individual->fill($data);
         $individual->save();
 
-        return $individual->handleUpdateRequest($request, $individual->getStepForKey('communication-and-meeting-preferences'));
+        return $user->individual->handleUpdateRequest($request, $user->individual->getStepForKey('communication-and-consultation-preferences'));
     }
 
     public function updatePublicationStatus(Request $request, Individual $individual): RedirectResponse

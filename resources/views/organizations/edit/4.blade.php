@@ -30,7 +30,7 @@
             </div>
             <div class="field @error('contact_person_phone') field-error @enderror">
                 <x-hearth-label for="contact_person_phone" :value="__('Contact person’s phone number')" />
-                <x-hearth-input type="tel" name="contact_person_phone" :value="old('contact_person_phone', $organization->contact_person_phone)" />
+                <x-hearth-input type="tel" name="contact_person_phone" :value="old('contact_person_phone', $organization->contact_person_phone?->formatForCountry('CA'))" />
                 <x-hearth-error for="contact_person_phone" />
             </div>
 
