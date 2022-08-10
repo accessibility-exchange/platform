@@ -28,6 +28,9 @@ test('individual users can select an individual role', function () {
     $this->seed(IndividualRoleSeeder::class);
     $user = User::factory()->create();
 
+    $response = $this->actingAs($user)->get(localized_route('dashboard'));
+    $response->assertRedirect(localized_route('individuals.show-role-selection'));
+
     $response = $this->actingAs($user)->get(localized_route('individuals.show-role-selection'));
     $response->assertOk();
 

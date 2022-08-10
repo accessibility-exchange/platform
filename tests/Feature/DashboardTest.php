@@ -1,16 +1,22 @@
 <?php
 
+use App\Models\IndividualRole;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\IndividualRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 test('user can access dashboard', function () {
+    $this->seed(IndividualRoleSeeder::class);
+
     $user = User::factory()->create([
         'context' => 'individual',
     ]);
+
+    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('dashboard'));
 

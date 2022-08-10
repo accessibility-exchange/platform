@@ -6,7 +6,7 @@
         </ol>
         <h1>
             <span class="weight:normal">{{ __('How this works for') }}</span><br />
-            {{ __('Individuals with Disabilities and Deaf Individuals') }}
+            {{ __('individuals') }}
         </h1>
     </x-slot>
 
@@ -16,6 +16,7 @@
         <x-section aria-labelledby="what" class="stack:lg">
             <div class="align:center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
+                <p>{{ __('You can choose how you would like to take part:')}}</p>
             </div>
 
             <x-media-text>
@@ -24,7 +25,7 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
-                    <p>{{ __('Participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. Access resources and training on how to do this.') }}</p>
+                    <p>{{ __('As an individual with a disability, Deaf person, or a supporter, you can participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. You can also gain access to resources and training on how to do this.') }}</p>
                     <p><a href="{{ localized_route('about.individual-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a></p>
                 </div>
             </x-media-text>
@@ -36,7 +37,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-magenta-2 pt-8 stack">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}</p>
-                    <p><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Learn more about being an accessibility consultant') }}</a></p>
+                    <p><a href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Learn more about being an Accessibility Consultant') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -71,7 +72,6 @@
                     <div class="stack">
                         <h3>{{ __('Sign up on the phone') }}</h3>
                         <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
-                        <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
                     </div>
                 </div>
             </div>
