@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('regulated_organizations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('validated_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->json('name');
             $table->json('slug');
