@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\IndividualRole;
+use App\Enums\IndividualRole;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class SaveIndividualRolesRequest extends FormRequest
 {
@@ -16,11 +16,8 @@ class SaveIndividualRolesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roles' => [
-                'required',
-                'array',
-                Rule::in(IndividualRole::pluck('id')->toArray()),
-            ],
+            'roles' => 'required|array',
+            'roles.*' => [new Enum(IndividualRole::class)],
         ];
     }
 

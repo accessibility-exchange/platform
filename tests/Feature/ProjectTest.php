@@ -2,16 +2,12 @@
 
 use App\Models\Impact;
 use App\Models\Individual;
-use App\Models\IndividualRole;
 use App\Models\Organization;
-use App\Models\OrganizationRole;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\IndividualRoleSeeder;
-use Database\Seeders\OrganizationRoleSeeder;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -529,15 +525,11 @@ test('project retrieves team trainings properly', function () {
 });
 
 test('registered users can access my projects page', function () {
-    $this->seed(IndividualRoleSeeder::class);
-    $this->seed(OrganizationRoleSeeder::class);
-
-    $individualConsultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-    $individualParticipantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
-
     $individualUser = User::factory()->create();
     $individual = $individualUser->individual;
-    $individual->individualRoles()->sync([$individualParticipantRole->id]);
+    $individual->roles = ['participant'];
+    $individual->save();
+    $individual = $individual->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
@@ -550,8 +542,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertNotFound();
 
-    $individual->individualRoles()->sync([$individualParticipantRole->id, $individualConsultantRole->id]);
-
+    $individual->roles = ['participant', 'consultant'];
+    $individual->save();
     $individualUser = $individualUser->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
@@ -561,8 +553,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertOk();
 
-    $individual->individualRoles()->sync([$individualConsultantRole->id]);
-
+    $individual->roles = ['consultant'];
+    $individual->save();
     $individualUser = $individualUser->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
@@ -571,7 +563,7 @@ test('registered users can access my projects page', function () {
     $response->assertSee('Projects I am contracted for');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()
+    RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
     $regulatedOrganizationUser = $regulatedOrganizationUser->fresh();
@@ -587,9 +579,6 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'));
     $response->assertNotFound();
-
-    $organizationConsultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
-    $organizationParticipantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -612,7 +601,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertNotFound();
 
-    $organization->organizationRoles()->sync([$organizationConsultantRole->id]);
+    $organization->roles = ['consultant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
@@ -630,7 +620,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
 
-    $organization->organizationRoles()->sync([$organizationConsultantRole->id, $organizationParticipantRole->id]);
+    $organization->roles = ['consultant', 'participant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
@@ -648,7 +639,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
 
-    $organization->organizationRoles()->sync([$organizationParticipantRole->id]);
+    $organization->roles = ['participant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));

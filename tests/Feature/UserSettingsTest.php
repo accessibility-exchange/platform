@@ -2,7 +2,6 @@
 
 use App\Models\AccessSupport;
 use App\Models\ConsultingMethod;
-use App\Models\IndividualRole;
 use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
@@ -10,7 +9,6 @@ use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\ConsultingMethodSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
@@ -64,10 +62,10 @@ test('other users cannot manage access needs', function () {
 
 test('individual users can manage communication and consultation preferences', function () {
     $this->seed(ConsultingMethodSeeder::class);
-    $this->seed(IndividualRoleSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
-    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
+    $user->individual->roles = ['participant'];
+    $user->individual->save();
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
 

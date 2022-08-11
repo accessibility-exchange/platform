@@ -13,8 +13,8 @@
                 <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a>
             </x-slot>
             <p>
-                <strong>{{ __('Community organization') }}</strong>@if($organization->roles)<br />
-                <strong class="weight:semibold">{{__('Roles') }}:</strong> @foreach($organization->roles as $role){{ $role->name }}@if(!$loop->last), @endif @endforeach @endif
+                <strong>{{ __('Community organization') }}</strong>@if($organization->display_roles)<br />
+                <strong class="weight:semibold">{{__('Roles') }}:</strong> @foreach($organization->display_roles as $role){{ $role }}@if(!$loop->last), @endif @endforeach @endif
             </p>
 
             @if($organization->hasAddedDetails())

@@ -7,7 +7,7 @@
             </h1>
             <p class="meta">
                 <strong>{{ Str::ucfirst(__('organization.types.' . $organization->type . '.name')) }}</strong><br />
-                @foreach($organization->organizationRoles as $role) {{ $role->name }}@if(!$loop->last), @endif @endforeach<br />
+                @foreach($organization->roles as $role) {{ $role }}@if(!$loop->last), @endif @endforeach<br />
                 {{ $organization->locality }}, {{ $organization->region }}
             </p>
             <div class="repel">

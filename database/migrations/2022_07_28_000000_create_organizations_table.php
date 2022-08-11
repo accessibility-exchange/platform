@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('slug');
             $table->string('type');
             $table->json('languages')->nullable();
+            $table->json('roles')->nullable();
             $table->string('region')->nullable();
             $table->string('locality')->nullable();
             $table->json('about')->nullable();
