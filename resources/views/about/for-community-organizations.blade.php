@@ -17,16 +17,16 @@
             <h2 class="text-center" id="definitions">{{ __('What do we mean when we say “Community organizations”?') }}</h2>
             <div class="grid">
                 <div class="stack">
-                    <h3>{{ __('Disability and deaf representative organizations') }}</h3>
-                    <p>TODO.</p>
+                    <h3>{{ __('Disability and Deaf representative organizations') }}</h3>
+                    <p>{{ __('These organizations, coalitions, cross-disability or umbrella groups are made up of, and controlled by, persons with disabilities, Deaf persons, and/or their family members. These organizations were created to advance and defend the rights of persons with disabilities.')}}</p>
                 </div>
                 <div class="stack">
-                    <h3>{{ __('Disability and deaf support organizations') }}</h3>
-                    <p>TODO.</p>
+                    <h3>{{ __('Disability and Deaf support organizations') }}</h3>
+                    <p>{{ __('These organizations provide services to people with disabilities and/or Deaf persons, advocate on their behalf, undertake research, provide training and awareness building, and/or deliver accessibility services. ')}}</p>
                 </div>
                 <div class="stack">
                     <h3>{{ __('Other civil societies organizations relevant to people with disabilities, Deaf people, and supporters') }}</h3>
-                    <p>TODO.</p>
+                    <p>{{ __('These organizations have constituencies which include persons with disabilities, Deaf persons, and family members. Disability and Deaf services are not the primary mandate of these organizations. ')}}</p>
                 </div>
             </div>
         </x-section>
@@ -34,6 +34,7 @@
         <x-section aria-labelledby="what" class="stack:lg">
             <div class="align:center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
+                <p>{{ __('You can choose how you would like to take part:')}}</p>
             </div>
 
             <x-media-text>
@@ -43,7 +44,7 @@
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-magenta-2 pt-8 stack">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}</p>
-                    <p><a href="{{ localized_route('about.organization-accessibility-consultants') }}">{{ __('Learn more about being an accessibility consultant') }}</a></p>
+                    <p><a href="{{ localized_route('about.organization-accessibility-consultants') }}">{{ __('Learn more about being an Accessibility Consultant') }}</a></p>
                 </div>
             </x-media-text>
 
@@ -75,7 +76,7 @@
                 </x-slot>
                 <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-lavender-3 pt-8 stack">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
-                    <p>{{ __('Participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this.') }}</p>
+                    <p>{{ __('Participate in consultations for organizations and businesses who are working on accessibility projects, and get paid for your participation.') }}</p>
                     <p><a href="{{ localized_route('about.organization-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a></p>
                 </div>
             </x-media-text>
