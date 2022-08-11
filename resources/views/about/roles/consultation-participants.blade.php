@@ -20,8 +20,25 @@
 
     <div class="stack stack:xl -mb-8">
         <x-section aria-labelledby="experiences" class="stack:lg">
-            <h2 id="experiences" class="text-center">{!! __('What experiences should I have to be a :role?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
-            <p>TODO.</p>
+            <h2 id="experiences" class="text-center">{!! __('Who can be a :role?', ['role' => __('Consultation Participant')]) !!}</h2>
+            <x-media-text>
+                <x-slot name="media">
+                    <x-placeholder width="915" height="515" />
+                </x-slot>
+                <div class="stack flex flex-col justify-center h-full">
+                    <p>{{ __('A person who brings lived experience of disability, a member of the Deaf community and/or a supporter of persons who are Deaf, disabled or both.') }}</p>
+                    <p>{{ __('Any of the following could be Consultation Participants:')}}
+                        <ul>
+                            <li>{{('persons with disabilities')}}</li>
+                            <li>{{('Deaf persons')}}</li>
+                            <li>{{('their supporters')}}</li>
+                            <li>{{('persons representing Disability organizations')}}</li>
+                            <li>{{('Disability support organizations')}}</li>
+                            <li>{{('broader civil society organizations.')}}</li>
+                        </ul>
+                    </p>
+                </div>
+            </x-media-text>
         </x-section>
 
         <x-section aria-labelledby="how" class="stack:lg">
@@ -33,7 +50,7 @@
                     <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Sign up for the website and share a bit about yourself') }}</h3>
+                    <h3>{{ __('Sign up for the website and share a bit about yourself or your organization') }}</h3>
                     <p>{{ __('If you are willing to share more about your lived experience, we can match you to governments and businesses who are eager to hear from someone like you.') }}</p>
                     @if(request()->localizedRouteIs('about.individual-consultation-participants'))
                     <p><a href="{{ localized_route('about.individual-consultation-participants-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a></p>
@@ -48,7 +65,7 @@
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Wait for the website to match you with a project') }}</h3>
-                    <p>{{ __('Our website will match you to a project once one becomes available, and is looking for someone with your experience. Once there is a match, you will get an email or text message asking if you would like to participate—it’s up to you to say yes or no.') }}</p>
+                    <p>{{ __('Our website will match you to a project once one looking for someone with your experience becomes available. Once there is a match, you will get an email or text message asking if you would like to participate - it’s up to you to say yes or no.') }}</p>
                 </div>
             </x-media-text>
 
@@ -57,7 +74,7 @@
                     <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Work directly with governments and businesses') }}</h3>
+                    <h3>{{ __('Work directly with businesses and governments') }}</h3>
                     <p>{{ __('You can communicate directly with the business or government to figure out when and how to work on their accessibility project. You will be paid for your work.') }}</a></p>
                 </div>
             </x-media-text>
