@@ -17,12 +17,12 @@ enum OrganizationRole: string
         ];
     }
 
-    public static function descriptions(): array
+    public function description(): string
     {
-        return [
-            'consultant' => __('Federally Regulated Entities can hire my organization to design and run consultations, as well as to synthesize results and to contribute systemic analysis'),
-            'connector' => __('Federally Regulated Entities can hire my organization to recruit Consultation Participants for them'),
-            'participant' => __('Allow Federally Regulated Entities to reach out to my organization to participate in consultation'),
-        ];
+        return match ($this) {
+            self::AccessibilityConsultant => __('Federally Regulated Entities can hire my organization to design and run consultations, as well as to synthesize results and to contribute systemic analysis'),
+            self::CommunityConnector => __('Federally Regulated Entities can hire my organization to recruit Consultation Participants for them'),
+            self::ConsultationParticipant => __('Allow Federally Regulated Entities to reach out to my organization to participate in consultation'),
+        };
     }
 }

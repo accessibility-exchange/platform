@@ -33,7 +33,7 @@
                     <p>{{ $individual->pronouns }}</p>
                     @endif
                     <p>@if($individual->locality){{ $individual->locality }}, @endif{{ get_region_name($individual->region, ["CA"], locale()) }}</p>
-                    <p><strong>{{ implode(', ', $individual->individualRoles()->pluck('name')->toArray()) }}</strong>@can('update', $individual) <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>@endcan</p>
+                    <p><strong>{{ implode(', ', $individual->display_roles) }}</strong>@can('update', $individual) <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>@endcan</p>
                 </div>
                 @if($individual->social_links && count($individual->social_links) > 0 || !empty($individual->website_link))
                 <ul role="list" class="cluster">

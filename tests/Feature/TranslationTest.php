@@ -1,17 +1,9 @@
 <?php
 
 use App\Models\Individual;
-use App\Models\IndividualRole;
-use Database\Seeders\IndividualRoleSeeder;
 
 test('adding a translation succeeds for a valid translatable model', function () {
-    $this->seed(IndividualRoleSeeder::class);
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-
-    $individual = Individual::factory()->create();
-    $individual->individualRoles()->sync([
-        $consultantRole->id,
-    ]);
+    $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
     $response = $this->actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))
@@ -28,13 +20,7 @@ test('adding a translation succeeds for a valid translatable model', function ()
 });
 
 test('removing a translation succeeds for a valid translatable model', function () {
-    $this->seed(IndividualRoleSeeder::class);
-    $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-
-    $individual = Individual::factory()->create();
-    $individual->individualRoles()->sync([
-        $consultantRole->id,
-    ]);
+    $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
     $response = $this->actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))

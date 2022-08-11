@@ -17,12 +17,12 @@ enum IndividualRole: string
         ];
     }
 
-    public static function descriptions(): array
+    public function description(): string
     {
-        return [
-            'consultant' => __('Help regulated organizations design and implement their consultations'),
-            'connector' => __('Connect organizations with participants from my community'),
-            'participant' => __('Participate in consultations'),
-        ];
+        return match ($this) {
+            self::AccessibilityConsultant => __('Help regulated organizations design and implement their consultations'),
+            self::CommunityConnector => __('Connect organizations with participants from my community'),
+            self::ConsultationParticipant => __('Participate in consultations'),
+        };
     }
 }

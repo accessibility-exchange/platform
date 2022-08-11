@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\OrganizationRole;
+use App\Enums\OrganizationRole;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class SaveOrganizationRolesRequest extends FormRequest
 {
@@ -16,11 +16,8 @@ class SaveOrganizationRolesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roles' => [
-                'nullable',
-                'array',
-                Rule::in(OrganizationRole::pluck('id')->toArray()),
-            ],
+            'roles' => 'required|array',
+            'roles.*' => [new Enum(OrganizationRole::class)],
         ];
     }
 

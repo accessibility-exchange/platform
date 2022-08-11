@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('slug');
             $table->json('picture_alt')->nullable();
             $table->json('languages')->nullable();
+            $table->json('roles')->nullable();
             $table->json('pronouns')->nullable();
             $table->json('bio')->nullable();
             $table->string('region')->nullable();

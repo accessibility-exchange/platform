@@ -12,7 +12,7 @@
 
     <form class="stack" action="{{ localized_route('organizations.save-roles', $organization) }}" method="post" novalidate>
         <fieldset class="field @error('roles') field--error @enderror">
-            <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', $selectedRoles ?? [])" />
+            <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', $organization->roles ?? [])" />
             <x-hearth-error for="roles" />
         </fieldset>
 
