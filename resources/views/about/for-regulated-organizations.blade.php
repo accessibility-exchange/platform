@@ -49,6 +49,18 @@
                     <p><a href="{{ localized_route('resource-collections.index') }}">{{ __('Go to our Resource Hub') }}</a></p>
                 </div>
             </x-media-text>
+
+            <x-media-text>
+                <x-slot name="media">
+                    <x-placeholder width="915" height="515" class="text-magenta-2" />
+                </x-slot>
+                <div class="border-solid border-x-0 border-b-0 border-t-[6px] border-t-magenta-2 pt-8 stack">
+                    <h3>{{ __('Tap into our support network') }}</h3>
+                    <p>{{ __('Accessibility Consultants could help you design consultations that are inclusive and accessible.') }}</p>
+                    <p>{{ __('Community Connectors could help you connect with groups that may be hard to reach otherwise.') }}</p>
+                    <p>{{ __('Community organizations could provide research, recommendations, and also support the interpretation of your consultation results to deepen your understanding of Deaf and disability access.') }}</p>
+                </div>
+            </x-media-text>
         </x-section>
 
         <x-section aria-labelledby="faq">
