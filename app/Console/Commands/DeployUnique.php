@@ -4,40 +4,37 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class DeployInitial extends Command
+class DeployUnique extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'deploy:initial';
+    protected $signature = 'deploy:unique';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'All commands that should be run when a container boots.';
+    protected $description = 'All commands that should be run on a single webhead when a container boots.';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        // split migrate commands between production and development versions
+        // Split migrate commands between production and development versions
         if (config('app.env') === 'production') {
             $this->call('migrate', ['--step' => true, '--force' => true]);
         } else {
             $this->call('db:refresh');
         }
 
-        $this->call('google-fonts:fetch');
-        $this->call('storage:link');
-        $this->call('cache:clear');
-        $this->call('view:clear');
+        $this->call('optimize:clear');
         $this->call('optimize');
         $this->call('event:cache');
 

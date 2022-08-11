@@ -22,8 +22,9 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan deploy:initial
-  
+  php artisan deploy:shared
+  php artisan deploy:unique
+
 fi
 
 rm -rf $FILES_PATH/../deploy.lock
