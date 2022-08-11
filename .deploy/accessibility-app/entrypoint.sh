@@ -22,10 +22,12 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan deploy:initial
-  
+  php artisan deploy:global
+
 fi
 
 rm -rf $FILES_PATH/../deploy.lock
+
+php artisan deploy:local
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
