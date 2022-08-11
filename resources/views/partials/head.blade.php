@@ -8,12 +8,12 @@
         <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
 
         <!-- Manifest -->
-        <link rel="manifest" href="/manifest.webmanifest">
+        <link rel="manifest" href="{{ asset('/manifest.webmanifest') }}" crossorigin="use-credentials">
 
         <!-- Icons -->
-        <link rel="icon" href="/favicon.ico">
-        <link rel="icon" href="/icon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <link rel="icon" href="{{ asset('/favicon.ico') }}">
+        <link rel="icon" href="{{ asset('/icon.svg') }}" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="{{ asset('/apple-touch-icon.png') }}">
 
         <!-- Styles -->
         @vite('resources/css/app.css')
