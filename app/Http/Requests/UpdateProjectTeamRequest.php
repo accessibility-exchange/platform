@@ -2,52 +2,40 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Individual;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateProjectTeamRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'team_size' => 'nullable|string',
+            'team_size' => 'nullable|array',
+            'team_size.*' => 'nullable|string',
             'team_has_disability_or_deaf_lived_experience' => 'nullable|boolean',
-            'team_has_other_lived_experience' => 'nullable|boolean',
             'team_languages' => 'required|array|min:1',
-            'contacts.*.name' => 'nullable|string',
-            'contacts.*.email' => 'nullable|email|required_with:contacts.*.name',
-            'contacts.*.phone' => 'nullable|string|required_with:contacts.*.name',
-            'has_consultant' => 'required|boolean',
-            'consultant_id' => [
-                'exclude_unless:has_consultant,true',
-                'exclude_unless:consultant_origin,platform',
-                'required',
-                Rule::in(Individual::pluck('id')->toArray()),
+            'team_languages.*' => [
+                'nullable',
+                Rule::in(array_keys(get_available_languages(true))),
             ],
-            'consultant_name' => 'exclude_unless:has_consultant,true|exclude_unless:consultant_origin,external|required|string',
-            'consultant_responsibilities.*' => 'exclude_unless:has_consultant,true|nullable|string',
-            'consultant_responsibilities.en' => 'exclude_unless:has_consultant,true|nullable|string',
-            'consultant_responsibilities.fr' => 'exclude_unless:has_consultant,true|nullable|string',
+            'team_trainings' => 'nullable|array',
             'team_trainings.*.name' => 'nullable|string',
             'team_trainings.*.date' => 'nullable|date|required_with:trainings.*.name',
             'team_trainings.*.trainer_name' => 'nullable|string|required_with:trainings.*.name',
             'team_trainings.*.trainer_url' => 'nullable|url|required_with:trainings.*.name',
+            'contact_person_name' => 'required|string',
+            'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
+            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_vrs' => 'nullable|boolean',
+            'preferred_contact_method' => 'required|in:email,phone',
+            'contact_person_response_time' => 'required|array',
+            'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr|nullable|string',
+            'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en|nullable|string',
         ];
     }
 }

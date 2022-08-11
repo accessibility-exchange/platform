@@ -5,11 +5,11 @@
 }
 
 .date .field--year input {
-    width: 6ch;
+    width: 9ch;
 }
 
 .date .field--day input {
-    width: 4ch;
+    width: 7ch;
 }
 
 .date .field--month select {
@@ -20,4 +20,8 @@
 .date legend,
 .date .field__hint {
     width: 100%;
+}
+
+.date > legend + * {
+    margin-block-start: var(--space-2);
 }

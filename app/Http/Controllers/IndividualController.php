@@ -29,6 +29,8 @@ use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\IndividualStatus;
+use App\Traits\UserEmailVerification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,6 +39,8 @@ use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
 {
+    use UserEmailVerification;
+
     public function index(): View
     {
         return view('individuals.index', [
@@ -80,6 +84,8 @@ class IndividualController extends Controller
         if (! $individual->fresh()->isConsultant() && ! $individual->fresh()->isConnector()) {
             $individual->unpublish(true);
         }
+
+        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }
@@ -320,13 +326,20 @@ class IndividualController extends Controller
         }
 
         if ($data['preferred_contact_person'] === 'support-person') {
-            $data['email'] = '';
             $data['phone'] = '';
             $data['vrs'] = 0;
         }
 
         $user = Auth::user();
         $individual = $user->individual;
+
+        if (
+            $data['email'] !== ''
+                && $data['email'] !== $user->email
+                && $user instanceof MustVerifyEmail
+        ) {
+            $this->updateVerifiedUser($user, $data['email']);
+        }
 
         $user->fill($data);
         $user->save();

@@ -46,6 +46,20 @@ class ProjectPolicy
         return $user->isAdministratorOf($project->projectable);
     }
 
+    public function publish(User $user, Project $project): Response
+    {
+        return $user->isAdministratorOf($project->projectable) && $project->isPublishable()
+            ? Response::allow()
+            : Response::deny(__('You cannot publish this organization.'));
+    }
+
+    public function unpublish(User $user, Project $project): Response
+    {
+        return $user->isAdministratorOf($project->projectable)
+            ? Response::allow()
+            : Response::deny(__('You cannot unpublish this organization.'));
+    }
+
     /**
      * Determine whether the user can delete the model.
      *

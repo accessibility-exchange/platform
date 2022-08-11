@@ -16,7 +16,7 @@
             <header class="dark full">
                 <div class="center center:wide stack stack:lg">
                     <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
-                    <p class="h4">{{ __('Connecting the disability and Deaf communities and supporters with') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}</p>
+                    <p class="h4">{{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}</p>
                     @guest
                         <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                     @endguest
@@ -28,8 +28,8 @@
                     <h2 id="what" class="align:center">{{ __('What is the Accessibility Exchange?') }}</h2>
                     <div class="grid">
                         <div class="box border-t-lavender-3">
-                            <h3>{{ __('Connects the Disability Community to Organizations') }}</h3>
-                            <p>{{ __('Connects disability communities and supporters to organizations that are “regulated” or supervised and monitored by the federal government, to work on accessibility projects, as required by the Accessible Canada Act.') }}</p>
+                            <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}</h3>
+                            <p>{{ __('Connects the disability and Deaf communities and supporters with organizations that are “regulated” or supervised and monitored by the federal government, so that together they can work on accessibility projects, as required by the Accessible Canada Act.') }}</p>
                         </div>
                         <div class="box border-t-magenta-3">
                             <h3>{{ __('Provides Guidance and Resources') }}</h3>
@@ -43,12 +43,14 @@
 
                 <section aria-labelledby="how" class="stack stack:lg">
                     <h2 id="how" class="align:center">{{ __('How does this work?') }}</h2>
+                    <p>{{ __('This site is for three kinds of users. Select an option below to learn more.')}}</p>
                     <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
                         <x-slot name="media">
                             <x-placeholder width="915" height="515" class="text-blue-6" />
                         </x-slot>
                         <div class="h-full flex flex-col justify-center">
-                            <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For individuals with Disabilities or Deaf Individuals') }}</a></h3>
+                            <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a></h3>
+                            <p>{{ __('This is for individuals with disabilities or Deaf individuals, their supporters, and those wishing to offer accessibility consulting and community connection services.')}}</p>
                         </div>
                     </x-media-text>
                     <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
@@ -57,7 +59,7 @@
                         </x-slot>
                         <div class="h-full flex flex-col justify-center">
                             <h3><a href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Governments, Businesses, and other Non-Profits') }}</a></h3>
-                            <p>{{ __('This is for Federally Regulated Organizations under the Accessible Canada Act.') }}</p>
+                            <p>{{ __('This is for federally regulated organizations under the Accessible Canada Act.') }}</p>
                         </div>
                     </x-media-text>
                     <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
@@ -79,7 +81,8 @@
                             </div>
                             <div class="stack">
                                 <p class="h4">{{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}</p>
-                                <p><a class="weight:normal" href="#TODO">{{ __('Learn more about disability') }}</a></p>
+                                {{-- TODO: add link to glossary definition --}}
+                                {{-- <p><a class="weight:normal" href="">{{ __('Learn more about disability') }}</a></p> --}}
                             </div>
                         </div>
                         <div class="frame">
@@ -95,7 +98,7 @@
                 @guest
                 <section aria-labelledby="join" class="full bg-grey-2">
                     <div class="center center:wide stack stack:xl align:center">
-                        <h2 id="join">{{ __('Join our Accessibility Community') }}</h2>
+                        <h2 id="join">{{ __('Join our accessibility community') }}</h2>
                         <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                     </div>
                 </section>

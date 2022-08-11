@@ -20,6 +20,8 @@ use App\Models\ConsultingMethod;
 use App\Models\Impact;
 use App\Models\PaymentType;
 use App\Models\Sector;
+use App\Traits\UserEmailVerification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +31,13 @@ use Spatie\LaravelOptions\Options;
 
 class SettingsController extends Controller
 {
+    use UserEmailVerification;
+
+    public function __construct()
+    {
+        $this->middleware('localize')->only('editLanguagePreferences');
+    }
+
     public function settings(): View
     {
         return view(
@@ -180,6 +189,12 @@ class SettingsController extends Controller
         $user = Auth::user();
 
         $individual = $user->individual;
+
+        if (
+            isset($data['email']) && $data['email'] !== $user->email && $user instanceof MustVerifyEmail
+        ) {
+            $this->updateVerifiedUser($user, $data['email']);
+        }
 
         $user->fill($data);
 
@@ -396,10 +411,10 @@ class SettingsController extends Controller
 
     public function inviteToInvitationable(): View|RedirectResponse
     {
-        $currentUser = Auth::user();
-        $invitationable = match ($currentUser->context) {
-            'organization' => $currentUser->organization ?? null,
-            'regulated-organization' => $currentUser->regulatedOrganization ?? null,
+        $user = Auth::user();
+        $invitationable = match ($user->context) {
+            'organization' => $user->organization ?? null,
+            'regulated-organization' => $user->regulatedOrganization ?? null,
             default => null,
         };
 
@@ -411,7 +426,7 @@ class SettingsController extends Controller
             }
 
             return view('settings.roles-and-permissions.invite', [
-                'user' => $currentUser,
+                'user' => $user,
                 'invitationable' => $invitationable,
                 'roles' => Options::forArray($roles)->toArray(),
             ]);
@@ -420,9 +435,9 @@ class SettingsController extends Controller
         return redirect(localized_route('settings.edit-roles-and-permissions'));
     }
 
-    public function changePassword(): View
+    public function editAccountDetails(): View
     {
-        return view('settings.change-password', ['user' => Auth::user()]);
+        return view('settings.account-details', ['user' => Auth::user()]);
     }
 
     public function deleteAccount(): View

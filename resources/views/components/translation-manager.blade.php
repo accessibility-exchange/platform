@@ -1,4 +1,4 @@
-<x-expander level="2" :summary="__('Language settings')" x-data>
+<x-expander level="2" :summary="__('Page translations')" x-data>
     @foreach($model->languages as $language)
         <div x-data="modal()">
             <p class="repel">{{ get_language_exonym($language) }}@if(count($model->languages) > 1)<button class="secondary" @click="showModal">{{ __('Remove') }}<span class="visually-hidden"> {{ get_language_exonym($language) }}</span></button>@endif</p>

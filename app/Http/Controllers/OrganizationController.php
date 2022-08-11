@@ -7,9 +7,9 @@ use App\Enums\ConsultingService;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Http\Requests\DestroyOrganizationRequest;
+use App\Http\Requests\SaveOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
 use App\Http\Requests\StoreOrganizationRequest;
-use App\Http\Requests\StoreOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationTypeRequest;
 use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
@@ -118,11 +118,22 @@ class OrganizationController extends Controller
         ]);
     }
 
-    public function storeRoles(StoreOrganizationRolesRequest $request, Organization $organization): RedirectResponse
+    public function showRoleEdit(Organization $organization): View
+    {
+        return view('organizations.show-role-edit', [
+            'organization' => $organization,
+            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
+            'selectedRoles' => $organization->organizationRoles->pluck('id')->toArray(),
+        ]);
+    }
+
+    public function saveRoles(SaveOrganizationRolesRequest $request, Organization $organization): RedirectResponse
     {
         $data = $request->validated();
 
         $organization->organizationRoles()->sync($data['roles'] ?? []);
+
+        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }

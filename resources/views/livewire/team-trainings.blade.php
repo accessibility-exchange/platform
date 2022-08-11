@@ -11,7 +11,7 @@
                     <x-hearth-error :for="'team_trainings_' . $i . '_name'" :field="'team_trainings.' . $i . '.name'" />
                 </div>
 
-                <x-hearth-date-input :label="__('Date of training')" :name="'team_trainings_' . $i . '_date'" :value="old('team_trainings_' . $i . '_date', '')" />
+                <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
             </fieldset>
             <fieldset>
                 <legend>{{ __('Training organization or trainer') }}</legend>

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('engagement_individual', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum('status', ['invited', 'confirmed', 'declined', 'removed', 'exited'])->default('invited');
+            $table->string('status')->default('invited');
             $table->foreignId('individual_id')
                 ->constrained()
                 ->onDelete('cascade');

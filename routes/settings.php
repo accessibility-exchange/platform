@@ -81,9 +81,9 @@ Route::controller(SettingsController::class)
             ->middleware(['auth'])
             ->name('invite-to-invitationable');
 
-        Route::multilingual('/change-password', 'changePassword')
+        Route::multilingual('/account-details', 'editAccountDetails')
             ->middleware(['auth'])
-            ->name('change-password');
+            ->name('edit-account-details');
 
         Route::multilingual('/delete-account', 'deleteAccount')
             ->middleware(['auth'])

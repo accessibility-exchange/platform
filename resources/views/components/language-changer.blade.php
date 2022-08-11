@@ -2,7 +2,8 @@
     'modelName' => 'name'
 ])
 
-<x-expander level="2" :summary="__('Change language')">
+@if(count($model->languages) > 1)
+<x-expander level="2" :summary="__('Change page language')">
     <h3>{{ __('Available languages') }}</h3>
     <ul role="list">
     @foreach($model->languages as $code)
@@ -20,3 +21,4 @@
 
     <p><a href="#TODO">{{ __('Contact support') }}</a></p>
 </x-expander>
+@endif

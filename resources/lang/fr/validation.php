@@ -147,7 +147,7 @@ return [
             'length' => 'The :attribute must be at least :length characters.',
         ],
         'membership' => [
-            'not_last_admin' => 'Il faut avoir au moins un administrateur.',
+            'not_last_admin' => 'Sorry, you cannot leave an organization if you are the only administrator. Please make another member from your organization an administrator.',
         ],
         'organization' => [
             'name_exists' => 'Une organisation avec ce nom existe déjà.',

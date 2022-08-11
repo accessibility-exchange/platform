@@ -56,7 +56,7 @@ class UpdateOrganizationRequest extends FormRequest
                 'array',
             ],
             'service_areas.*' => [
-                Rule::in(get_region_codes()),
+                new Enum(ProvinceOrTerritory::class),
             ],
             'working_languages' => 'required|array',
             'consulting_services' => [

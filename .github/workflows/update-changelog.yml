@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: dev
+          token: ${{ secrets.PAT }}
 
       - name: Update changelog
         uses: stefanzweifel/changelog-updater-action@v1
@@ -22,9 +23,13 @@ jobs:
           release-notes: ${{ github.event.release.body }}
           latest-version: ${{ github.event.release.name }}
 
-      - name: Commit updated changelog
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Create pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
         with:
-          branch: dev
-          commit_message: "chore(docs): update changelog"
-          file_pattern: CHANGELOG.md
+          commit-message: "chore(docs): update changelog"
+          branch: chore/changelog
+          delete-branch: true
+          title: 'chore(docs): update changelog'
+          labels: documentation
+          team-reviewers: maintainers
