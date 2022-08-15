@@ -23,8 +23,8 @@ class ResourceCollectionFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->words(3, true),
-            'description' => $this->faker->sentence(),
+            'title' => ['en' => $this->faker->words(3, true)],
+            'description' => ['en' => $this->faker->sentence()],
             'user_id' => User::factory(),
         ];
     }

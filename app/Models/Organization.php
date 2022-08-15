@@ -110,8 +110,10 @@ class Organization extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
+        return SlugOptions::createWithLocales(['en', 'fr'])
+            ->generateSlugsFrom(function (Organization $model, $locale): string {
+                return $model->getTranslation('name', $locale);
+            })
             ->saveSlugsTo('slug');
     }
 

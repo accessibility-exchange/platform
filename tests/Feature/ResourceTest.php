@@ -147,3 +147,13 @@ test('deleting resource collection with resource', function () {
         'resource_id' => $resource->id,
     ]);
 });
+
+test('resources have slugs in both languages even if only one is provided', function () {
+    $resource = Resource::factory()->create();
+    expect($resource->getTranslation('slug', 'fr', false))
+        ->toEqual($resource->getTranslation('slug', 'en', false));
+
+    $resource = Resource::factory()->create(['title' => ['fr' => 'Mon ressource']]);
+    expect($resource->getTranslation('slug', 'en', false))
+        ->toEqual($resource->getTranslation('slug', 'fr', false));
+});
