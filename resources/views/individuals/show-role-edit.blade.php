@@ -10,7 +10,7 @@
 
     <p>{{ __('You can always change this later.') }} <a href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
 
-    <form class="stack" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate x-data="{initialRoles: {{ json_encode($individual->roles) }}, roles: {{ old('roles', json_encode($individual->roles) ?? '[]') }}}">
+    <form class="stack" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate x-data="{initialRoles: {{ json_encode($individual->roles) }}, roles: {{ json_encode(old('roles', $individual->roles ?? [])) }}}">
         <fieldset class="field @error('roles') field--error @enderror">
             <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', $individual->roles ?? [])" x-model="roles" />
             <x-hearth-error for="roles" />
