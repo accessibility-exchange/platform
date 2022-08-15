@@ -23,16 +23,9 @@
     </x-slot>
 
     <div class="stack stack:xl -mb-8">
-        <x-section aria-labelledby="projects" class="stack:lg">
-            <div class="center">
-                <h2 id="projects" class="text-center">{!! __('What types of projects could you get input on?') !!}</h2>
-            </div>
-            <p>TODO.</p>
-        </x-section>
-
         <x-section aria-labelledby="how" class="stack:lg">
             <div class="center text-center">
-                <h2 id="how">{!! __('How does :gettingInput work?', ['gettingInput' => '<strong>' . __('getting input for your projects') . '</strong>']) !!}</h2>
+                <h2 id="how">{!! __('How does getting input for your projects work?') !!}</h2>
             </div>
             <x-media-text>
                 <x-slot name="media">
@@ -40,7 +33,7 @@
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Sign up and share more about your organization') }}</h3>
-                    <p>{{ __('This information will help other members of the website like governments, businesses, and individuals with disabilities or who are Deaf learn about your organization.') }}</p>
+                    <p>{{ __('This information will help potential Consultation Participants on the website like individuals with disabilities, and individuals who are Deaf learn about your organization.') }}</p>
                 </div>
             </x-media-text>
 
@@ -49,8 +42,16 @@
                     <x-placeholder width="915" height="515" class="text-turquoise-2" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Share more about your projects and who you’re looking to engage') }}</h3>
-                    <p>{{ __('You can create a criterion of who you’re looking to engage in your project. You can opt for an open project, where anyone who matches your criteria can sign up.') }}@if(request()->localizedRouteIs('about.regulated-organization-get-input')){{ __('You can also opt to use our matching system to automatically match you to a group of people who meet your criteria.') }}@endif</p>
+                    <h3>{{ __('Share more about your projects and who you are looking to engage') }}</h3>
+                    <p>{{ __('Organizations can decide which criteria they would like the participants for a project to have. They then have a choice between:')}}
+                        <ul>
+                            <li>{{ __('creating an open project, where anyone who matches their criteria can sign up. ')}}</li>
+                            @if(request()->localizedRouteIs('about.regulated-organization-get-input'))
+                                <li>{{ __('using the matching service to match the regulated organization with a group of people who meet the criteria.')}}</li>
+                            @endif
+                            <li>{{ __('conneting to a Community Connector to help recruit Consultation Participants.')}}</li>
+                        </ul>
+                    </p>
                 </div>
             </x-media-text>
 
@@ -60,7 +61,7 @@
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Work directly with people on your accessibility project') }}</h3>
-                    <p>{{ __('Once individuals agree to work on your project, you can reach out to them directly to coordinate how and when to work together.') }}</a></p>
+                    <p>{{ __('Once individuals agree to work on your project as Consultation Participants, you can reach out to them directly to coordinate how and when to work together.') }}</a></p>
                 </div>
             </x-media-text>
         </x-section>
@@ -81,21 +82,10 @@
                             <h3>{{ __('Sign up online') }}</h3>
                             <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                         </div>
-                        @if(request()->localizedRouteIs('about.regulated-organization-get-input'))
-                            <div class="stack">
-                                <h3 class="h4">{{ __('Request an introductory phone call') }}</h3>
-                                <p><a class="cta" href="#TODO"> {{ __('Request a call') }}</a></p>
-                            </div>
-                            <div class="stack">
-                                <h3 class="h4">{{ __('Learn about our pricing') }}</h3>
-                                <p><a class="cta" href="{{ localized_route('about.pricing') }}"> {{ __('Go to pricing') }}</a></p>
-                            </div>
-                        @elseif(request()->localizedRouteIs('about.organization-get-input'))
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
                             <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
                         </div>
-                        @endif
                     </div>
                 </div>
             </x-section>
