@@ -10,11 +10,13 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
+        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
         <li>
             <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                 {{ __('Projects') }}
             </x-nav-link>
         </li>
+        @endif
         @else
         <li class="account">
             <x-nav-link :href="localized_route('register')">
@@ -29,6 +31,7 @@
         @endauth
 
         @auth
+        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
         <li>
             <x-nav-link :href="localized_route('people-and-organizations')">
                 {{ __('People and organizations') }}
@@ -39,6 +42,7 @@
                 {{ __('Resources and training') }}
             </x-nav-link>
         </li>
+        @endif
         <li class="account">
             <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
                 <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
