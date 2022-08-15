@@ -47,8 +47,10 @@ class Resource extends Model
      */
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('title')
+        return SlugOptions::createWithLocales(['en', 'fr'])
+            ->generateSlugsFrom(function (Resource $model, $locale): string {
+                return $model->getTranslation('title', $locale);
+            })
             ->saveSlugsTo('slug');
     }
 

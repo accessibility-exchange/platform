@@ -20,12 +20,10 @@ class ResourceFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
-        $title = $this->faker->words(3, true);
-
         return [
-            'title' => $title,
+            'title' => ['en' => $this->faker->words(3, true)],
             'summary' => $this->faker->sentence(),
             'user_id' => User::factory(),
         ];
