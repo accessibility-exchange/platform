@@ -10,13 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectForOnboarding
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @param Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return Response|RedirectResponse
-     */
     public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
         $user = Auth::user();
@@ -31,6 +24,10 @@ class RedirectForOnboarding
 
         if ($user->context === 'organization' && ! $user->organization) {
             return redirect(localized_route('organizations.show-type-selection'));
+        }
+
+        if ($user->organization && empty($user->organization->roles)) {
+            return redirect(localized_route('organizations.show-role-selection', $user->organization));
         }
 
         return $next($request);
