@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrganizationRole;
 use App\Traits\HasContactPerson;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -56,6 +57,7 @@ class Organization extends Model
         'name',
         'type',
         'languages',
+        'roles',
         'region',
         'locality',
         'about',
@@ -81,6 +83,7 @@ class Organization extends Model
         'published_at' => 'datetime:Y-m-d',
         'name' => 'array',
         'languages' => 'array',
+        'roles' => 'array',
         'about' => 'array',
         'service_areas' => 'array',
         'working_languages' => 'array',
@@ -312,30 +315,19 @@ class Organization extends Model
         return $this->notificationRecipients()->where('user_id', $user->id)->exists();
     }
 
-    public function organizationRoles(): BelongsToMany
-    {
-        return $this->belongsToMany(OrganizationRole::class);
-    }
-
     public function isParticipant(): bool
     {
-        $participantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
-
-        return $this->organizationRoles->contains($participantRole);
+        return in_array('participant', $this->roles ?? []);
     }
 
     public function isConsultant(): bool
     {
-        $consultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
-
-        return $this->organizationRoles->contains($consultantRole);
+        return in_array('consultant', $this->roles ?? []);
     }
 
     public function isConnector(): bool
     {
-        $connectorRole = OrganizationRole::where('name->en', 'Community Connector')->first();
-
-        return $this->organizationRoles->contains($connectorRole);
+        return in_array('connector', $this->roles ?? []);
     }
 
     public function impacts(): BelongsToMany
@@ -411,5 +403,12 @@ class Organization extends Model
         return $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Non-binary people')->firstOrFail())
             || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->firstOrFail())
             || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender fluid people')->firstOrFail());
+    }
+
+    public function displayRoles(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => array_map(fn ($role) => OrganizationRole::labels()[$role], json_decode($attributes['roles'])),
+        );
     }
 }

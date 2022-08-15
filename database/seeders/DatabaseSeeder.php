@@ -23,8 +23,6 @@ class DatabaseSeeder extends Seeder
             EthnoracialIdentitySeeder::class,
             GenderIdentitySeeder::class,
             IndigenousIdentitySeeder::class,
-            IndividualRoleSeeder::class,
-            OrganizationRoleSeeder::class,
             ConstituencySeeder::class,
             ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,

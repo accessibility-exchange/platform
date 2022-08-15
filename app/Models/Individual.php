@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\IndividualRole;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,6 +56,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'slug',
         'picture_alt',
         'languages',
+        'roles',
         'pronouns',
         'bio',
         'region',
@@ -87,6 +90,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'published_at' => 'datetime:Y-m-d',
         'picture_alt' => 'array',
         'languages' => 'array',
+        'roles' => 'array',
         'pronouns' => 'array',
         'bio' => 'array',
         'working_languages' => 'array',
@@ -354,16 +358,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     }
 
     /**
-     * Get the roles belonging to the individual.
-     *
-     * @return BelongsToMany
-     */
-    public function individualRoles(): BelongsToMany
-    {
-        return $this->belongsToMany(IndividualRole::class);
-    }
-
-    /**
      * Has the user added any details to the individual?
      *
      * @return bool
@@ -387,40 +381,19 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return false;
     }
 
-    /**
-     * Is the individual a participant?
-     *
-     * @return bool
-     */
     public function isParticipant(): bool
     {
-        $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
-
-        return $this->individualRoles->contains($participantRole);
+        return in_array('participant', $this->roles ?? []);
     }
 
-    /**
-     * Is the individual an accessibility consultant?
-     *
-     * @return bool
-     */
     public function isConsultant(): bool
     {
-        $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-
-        return $this->individualRoles->contains($consultantRole);
+        return in_array('consultant', $this->roles ?? []);
     }
 
-    /**
-     * Is the individual a Community Connector?
-     *
-     * @return bool
-     */
     public function isConnector(): bool
     {
-        $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
-
-        return $this->individualRoles->contains($connectorRole);
+        return in_array('connector', $this->roles ?? []);
     }
 
     public function livedExperienceConnections(): MorphToMany
@@ -500,5 +473,12 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         }
 
         return $this->blocks()->where('user_id', $user->id)->exists();
+    }
+
+    public function displayRoles(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => array_map(fn ($role) => IndividualRole::labels()[$role], json_decode($attributes['roles'])),
+        );
     }
 }

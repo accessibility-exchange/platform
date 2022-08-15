@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Http\Requests\DestroyOrganizationRequest;
@@ -26,7 +27,6 @@ use App\Models\IndigenousIdentity;
 use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
-use App\Models\OrganizationRole;
 use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -114,7 +114,9 @@ class OrganizationController extends Controller
     {
         return view('organizations.show-role-selection', [
             'organization' => $organization,
-            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
+            'roles' => Options::forEnum(OrganizationRole::class)->append(fn (OrganizationRole $role) => [
+                'hint' => $role->description(),
+            ])->toArray(),
         ]);
     }
 
@@ -122,16 +124,16 @@ class OrganizationController extends Controller
     {
         return view('organizations.show-role-edit', [
             'organization' => $organization,
-            'roles' => Options::forModels(OrganizationRole::class)->toArray(),
-            'selectedRoles' => $organization->organizationRoles->pluck('id')->toArray(),
+            'roles' => Options::forEnum(OrganizationRole::class)->append(fn (OrganizationRole $role) => [
+                'hint' => $role->description(),
+            ])->toArray(),
         ]);
     }
 
     public function saveRoles(SaveOrganizationRolesRequest $request, Organization $organization): RedirectResponse
     {
-        $data = $request->validated();
-
-        $organization->organizationRoles()->sync($data['roles'] ?? []);
+        $organization->fill($request->validated());
+        $organization->save();
 
         flash(__('Your roles have been saved.'), 'success');
 
