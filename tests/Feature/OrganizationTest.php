@@ -9,13 +9,11 @@ use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
-use App\Models\OrganizationRole;
 use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\OrganizationRoleSeeder;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
@@ -29,8 +27,6 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
-    $this->seed(OrganizationRoleSeeder::class);
-
     $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
@@ -58,27 +54,22 @@ test('users can create organizations', function () {
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
-
-    $consultantRole = OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id;
-    $connectorRole = OrganizationRole::firstWhere('name->en', 'Community Connector')->id;
-    $participantRole = OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id;
-
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$consultantRole],
+        'roles' => ['consultant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$connectorRole],
+        'roles' => ['connector'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$participantRole],
+        'roles' => ['participant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -86,10 +77,10 @@ test('users can create organizations', function () {
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-edit', $organization));
     $response->assertOk();
-    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-'.$participantRole.'" value="'.$participantRole.'" aria-describedby="roles-'.$participantRole.'-hint" checked  />', false);
+    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
+        'roles' => ['consultant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -868,10 +859,7 @@ test('guests cannot view organizations', function () {
 });
 
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
-    $this->seed(OrganizationRoleSeeder::class);
-
-    $organization = Organization::factory()->create();
-    $organization->organizationRoles()->sync(OrganizationRole::pluck('id'));
+    $organization = Organization::factory()->create(['roles' => ['consultant', 'connector', 'participant']]);
 
     $organization = $organization->fresh();
 

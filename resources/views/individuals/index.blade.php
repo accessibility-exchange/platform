@@ -13,8 +13,8 @@
                 <a href="{{ localized_route('individuals.show', $individual) }}">{{ $individual->name }}</a>
             </x-slot>
             <p>
-                <strong>{{ __('Individual') }}</strong>@if($individual->roles)<br />
-                <strong class="weight:semibold">{{ __('Role') }}:</strong> @foreach($individual->user->individualRoles()->pluck('name')->toArray() as $role){{ $role }}@if(!$loop->last), @endif @endforeach @endif
+                <strong>{{ __('Individual') }}</strong>@if($individual->display_roles)<br />
+                <strong class="weight:semibold">{{ __('Role') }}:</strong> @foreach($individual->display_roles as $role){{ $role }}@if(!$loop->last), @endif @endforeach @endif
             </p>
             <p>
                 <strong class="weight:semibold">{{ __('Location') }}:</strong> {{ $individual->locality }}, {{ get_region_name($individual->region, ["CA"], locale()) }}

@@ -6,11 +6,11 @@
             {{ __('My dashboard') }}
         </h1>
         @if($user->context == 'individual')
-        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->individualRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
+        <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
 
         @if($user->context == 'organization')
-            <p><strong>{{ __('Roles:') }}</strong> {{ $user->organization->organizationRoles->isEmpty() ? __('None selected') : implode(', ', $user->organization->organizationRoles()->pluck('name')->toArray()) }}. <a href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a></p>
+            <p><strong>{{ __('Roles:') }}</strong> {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}. <a href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a></p>
         @endif
     </x-slot>
 

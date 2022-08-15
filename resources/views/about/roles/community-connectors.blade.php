@@ -20,19 +20,31 @@
 
     <div class="stack stack:xl -mb-8">
         <x-section aria-labelledby="experiences" class="stack:lg">
-            <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => '<strong>' . __('Community Connector') . '</strong>']) !!}</h2>
-            <p>TODO.</p>
-        </x-section>
-
-        <x-section aria-labelledby="how" class="stack:lg">
-            <h2 class="text-center" id="how">{!! __('How does being a :role work?', ['role' => '<strong>' . __('Community Connector') . '</strong>']) !!}</h2>
+            <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) !!}</h2>
             <x-media-text>
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Sign up for the website and build your Consultant profile') }}</h3>
-                    <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}</p>
+                    <p>{{ __('Ideally a Community Connector has:')}}
+                        <ul>
+                            <li>{{ __('lived experience of disability, or of being Deaf, or both')}}</li>
+                            <li>{{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).')}}</li>
+                        </ul>
+                    </p>
+                </div>
+            </x-media-text>
+        </x-section>
+
+        <x-section aria-labelledby="how" class="stack:lg">
+            <h2 class="text-center" id="how">{!! __('How does being a :role work?', ['role' => __('Community Connector')]) !!}</h2>
+            <x-media-text>
+                <x-slot name="media">
+                    <x-placeholder width="915" height="515" />
+                </x-slot>
+                <div class="stack flex flex-col justify-center h-full">
+                    <h3>{{ __('Sign up for the website and build your Community Connector profile') }}</h3>
+                    <p>{{ __('Share some information about yourself, including which communities you are connected to, so governments and businesses can get to know you and how you may be able to help them.') }}</p>
                     @if(request()->localizedRouteIs('about.individual-community-connectors'))
                         <p><a href="{{ localized_route('about.individual-community-connectors-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a></p>
                     @endif
@@ -45,8 +57,8 @@
                     <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Find projects that are looking for an Accessibility Consultant') }}</h3>
-                    <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}</p>
+                    <h3>{{ __('Find projects that are looking for a Community Connector') }}</h3>
+                    <p>{{ __('Access governments and businesses who are looking for a Community Connector to help with a project.') }}</p>
                 </div>
             </x-media-text>
 
@@ -56,7 +68,7 @@
                 </x-slot>
                 <div class="stack flex flex-col justify-center h-full">
                     <h3>{{ __('Work directly with governments and businesses') }}</h3>
-                    <p>{{ __('Coordinate directly with governments and businesses on what they’d like you to consult on.') }}</a></p>
+                    <p>{{ __('Coordinate directly with governments and businesses on what help they need and whom they are seeking.') }}</a></p>
                 </div>
             </x-media-text>
         </x-section>
