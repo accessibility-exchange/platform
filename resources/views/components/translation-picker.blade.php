@@ -40,7 +40,9 @@
                 this.languages.splice(e.target.dataset.index, 1);
             },
             addLanguage() {
-                this.languages.push({code: this.newLanguage, exonym: this.exonyms[this.newLanguage]});
+                if(this.newLanguage !== '') {
+                    this.languages.push({code: this.newLanguage, exonym: this.exonyms[this.newLanguage]});
+                }
             }
         }))
     });
