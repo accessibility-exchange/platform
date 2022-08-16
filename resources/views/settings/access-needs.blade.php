@@ -15,12 +15,13 @@
     <form class="stack" action="{{ localized_route('settings.update-access-needs') }}" novalidate method="post">
         @csrf
         @method('put')
-        <fieldset class="field @error('general_access_needs') field--error @enderror" x-data="{other: {{ old('other', !is_null($individual->other_general_access_need) && $individual->other_general_access_need !== '' ? 'true' : 'false') }}}">
+
+        <fieldset class="field @error('general_access_needs') field--error @enderror" x-data="{other: {{ old('other', !is_null($individual->other_access_need) && $individual->other_access_need !== '') ? 'true' : 'false' }}}">
             <legend><h2>{{ __('General access needs') }}</h2></legend>
 
             <x-hearth-checkboxes name="general_access_needs" :options="$generalAccessSupports" :checked="old('general_access_needs', $selectedAccessSupports)" />
             <div class="field @error('general_access_needs') field--error @enderror">
-                <x-hearth-checkbox name="other" :checked="old('other', !is_null($individual->other_general_access_need) && $individual->other_general_access_need !== '' || 1)" x-model="other" /> <x-hearth-label for='other'>{{ __('Other (please describe)') }}</x-hearth-label>
+                <x-hearth-checkbox name="other" :checked="old('other', !is_null($individual->other_access_need) && $individual->other_access_need !== '' || 1)" x-model="other" /> <x-hearth-label for='other'>{{ __('Other (please describe)') }}</x-hearth-label>
             </div>
             <div class="field__subfield @error('other_access_need') field--error @enderror stack" x-show="other" x-cloak>
                 <x-hearth-label for="other_access_need">{{ __('Access need') }}</x-hearth-label>
@@ -135,7 +136,6 @@
 
         <fieldset>
             <legend><h2>{{ __('Additional needs or concerns') }}</h2></legend>
-
             <x-hearth-checkbox name="additional_needs_or_concerns" :value="$additionalNeedsOrConcerns->id" :checked="in_array($additionalNeedsOrConcerns->id, old('additional_needs_or_concerns', $selectedAccessSupports))" /> <x-hearth-label for='additional_needs_or_concerns'>{{ $additionalNeedsOrConcerns->name }}</x-hearth-label>
         </fieldset>
 
