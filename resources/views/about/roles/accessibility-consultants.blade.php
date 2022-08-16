@@ -100,9 +100,6 @@
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
                             <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
-                            @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
-                                <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
-                            @endif
                         </div>
                     </div>
                 </div>
