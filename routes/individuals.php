@@ -6,7 +6,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
     ->name('individuals.')
     ->group(function () {
         Route::multilingual('', 'index')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified'])
             ->name('index');
 
         Route::multilingual('/roles/select', 'showRoleSelection')
@@ -23,19 +23,19 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->name('save-roles');
 
         Route::multilingual('/{individual}', 'show')
-            ->middleware(['auth', 'can:view,individual'])
+            ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show');
 
         Route::multilingual('/{individual}/interests', 'show')
-            ->middleware(['auth', 'can:view,individual'])
+            ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-interests');
 
         Route::multilingual('/{individual}/experiences', 'show')
-            ->middleware(['auth', 'can:view,individual'])
+            ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-experiences');
 
         Route::multilingual('/{individual}/communication-and-meetings', 'show')
-            ->middleware(['auth', 'can:view,individual'])
+            ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-communication-and-consultation-preferences');
 
         Route::multilingual('/{individual}/edit', 'edit')
