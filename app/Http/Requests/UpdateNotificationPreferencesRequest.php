@@ -74,6 +74,13 @@ class UpdateNotificationPreferencesRequest extends FormRequest
                 'array',
             ],
             'notification_settings.projects.engagements.*' => $user->context === 'individual' ? 'in:lived-experience,of-interest' : 'in:constituents',
+            'notification_settings.updates.channels' => [
+                'nullable',
+                'array',
+            ],
+            'notification_settings.updates.channels.*' => [
+                new Enum(NotificationChannel::class),
+            ],
         ];
     }
 
@@ -87,6 +94,7 @@ class UpdateNotificationPreferencesRequest extends FormRequest
             'notification_settings.projects.creators' => [],
             'notification_settings.projects.types' => [],
             'notification_settings.projects.engagements' => [],
+            'notification_settings.updates.channels' => [],
         ]);
     }
 
