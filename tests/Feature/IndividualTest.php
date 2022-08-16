@@ -683,6 +683,24 @@ test('users can view individual pages', function () {
     $response->assertOk();
 });
 
+test('users without a verified email can not view individual pages', function () {
+    $individual = Individual::factory()->create([
+        'consulting_services' => ['analysis'],
+        'roles' => ['consultant'],
+    ]);
+
+    $individual->publish();
+    $individual = $individual->fresh();
+
+    $user = User::factory()->create(['email_verified_at' => null]);
+
+    $response = $this->actingAs($user)->get(localized_route('individuals.index'));
+    $response->assertRedirect(localized_route('verification.notice'));
+
+    $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
+    $response->assertRedirect(localized_route('verification.notice'));
+});
+
 test('guests can not view individual pages', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 

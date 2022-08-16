@@ -623,3 +623,13 @@ test('user can view regulated organization in different languages', function () 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
     $response->assertSee('Agence du revenue du Canada');
 });
+
+test('regulated organizations have slugs in both languages even if only one is provided', function () {
+    $regulatedOrg = RegulatedOrganization::factory()->create();
+    expect($regulatedOrg->getTranslation('slug', 'fr', false))
+        ->toEqual($regulatedOrg->getTranslation('slug', 'en', false));
+
+    $regulatedOrg = RegulatedOrganization::factory()->create(['name' => ['fr' => 'Santé Canada']]);
+    expect($regulatedOrg->getTranslation('slug', 'en', false))
+        ->toEqual($regulatedOrg->getTranslation('slug', 'fr', false));
+});

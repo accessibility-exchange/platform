@@ -12,6 +12,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    concurrency: deploy-dev
+
     steps:
       - name: Start deployment
         uses: bobheadxi/deployments@v0.6.0

@@ -107,6 +107,10 @@ class SettingsController extends Controller
 
         $individual = Auth::user()->individual;
 
+        if (! isset($data['other'])) {
+            $data['other_access_need'] = null;
+        }
+
         if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($signLanguageInterpretation, $data['meeting_access_needs']))) {
             $data['signed_language_for_interpretation'] = null;
         }
