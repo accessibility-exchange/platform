@@ -27,7 +27,7 @@ class UpdateProjectTeamRequest extends FormRequest
             'team_trainings.*.name' => 'nullable|string',
             'team_trainings.*.date' => 'nullable|date|required_with:trainings.*.name',
             'team_trainings.*.trainer_name' => 'nullable|string|required_with:trainings.*.name',
-            'team_trainings.*.trainer_url' => 'nullable|url|required_with:trainings.*.name',
+            'team_trainings.*.trainer_url' => 'nullable|active_url|required_with:trainings.*.name',
             'contact_person_name' => 'required|string',
             'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
             'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',

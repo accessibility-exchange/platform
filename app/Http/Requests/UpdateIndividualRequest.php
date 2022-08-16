@@ -28,6 +28,8 @@ class UpdateIndividualRequest extends FormRequest
      */
     public function rules(): array
     {
+        ray($this->get('website_link'));
+
         return [
             'name' => 'required|string|max:255',
             'locality' => 'nullable|string|max:255',
@@ -48,8 +50,8 @@ class UpdateIndividualRequest extends FormRequest
                 new Enum(ConsultingService::class),
 
             ],
-            'social_links.*' => 'nullable|url',
-            'website_link' => 'nullable|url',
+            'social_links.*' => 'nullable|active_url',
+            'website_link' => 'nullable|active_url',
         ];
     }
 
