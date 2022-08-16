@@ -26,8 +26,8 @@
         @if($user->context === 'individual')
         <li><a href="{{ localized_route('settings.edit-access-needs') }}">{{ __('Access needs') }}</a></li>
         <li><a href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">{{ __('Communication and consultation preferences') }}</a></li>
-        @endif
         <li><a href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a></li>
+        @endif
         @if($user->context === 'individual')
         <li><a href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a></li>
         <li><a href="{{ localized_route('settings.edit-areas-of-interest') }}">{{ __('Areas of interest') }}</a></li>
@@ -36,6 +36,9 @@
     <h2>{{ __('For this website') }}</h2>
     <p>{{ __('Please provide settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
+        @if($user->context !== 'individual')
+        <li><a href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a></li>
+        @endif
         <li><a href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a></li>
         @if($user->context === 'organization' && $user->organization || $user->context === 'regulated-organization' && $user->regulatedOrganization)
         <li><a href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a></li>
