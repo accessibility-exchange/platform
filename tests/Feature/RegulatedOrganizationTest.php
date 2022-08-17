@@ -6,6 +6,7 @@ use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
+use function Pest\Faker\faker;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
 uses(RefreshDatabase::class);
@@ -415,6 +416,25 @@ test('invitation can be accepted', function () {
     $response->assertRedirect(localized_route('dashboard'));
 });
 
+test('invitation can be declined', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => $user->email,
+    ]);
+
+    $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($user)->delete($declineUrl);
+
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
+    $this->assertModelMissing($invitation);
+
+    $response->assertRedirect(localized_route('dashboard'));
+});
+
 test('invitation cannot be accepted by different user', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $other_user = User::factory()->create(['context' => 'regulated-organization']);
@@ -433,6 +453,24 @@ test('invitation cannot be accepted by different user', function () {
 
     $this->assertFalse($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
     $response->assertForbidden();
+});
+
+test('invitation can not be declined by a different user', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => faker()->email,
+    ]);
+
+    $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($user)->delete($declineUrl);
+    $response->assertForbidden();
+
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
+    $this->assertModelExists($invitation);
 });
 
 test('users with admin role can remove members', function () {

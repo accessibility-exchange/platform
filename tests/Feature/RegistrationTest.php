@@ -98,19 +98,23 @@ test('users can register via invitation to (regulated) organization', function (
     $response = $this->get(localized_route('register', [
         'context' => 'regulated-organization',
         'invitation' => 1,
+        'email' => 'test@example.com',
     ]));
 
     $response->assertSee('<input name="context" type="hidden" value="regulated-organization" />', false);
     $response->assertSee('<input name="invitation" type="hidden" value="1" />', false);
+    $response->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
     $response = $this->post(localized_route('register-languages'), [
         'locale' => 'en',
         'context' => 'regulated-organization',
         'invitation' => 1,
+        'email' => 'test@example.com',
     ]);
 
     $response->assertSessionHas('context', 'regulated-organization');
     $response->assertSessionHas('invitation', '1');
+    $response->assertSessionHas('email', 'test@example.com');
 
     $response = $this->withSession([
         'locale' => 'en',
@@ -153,22 +157,26 @@ test('users can register via invitation to engagement', function () {
         'context' => 'individual',
         'role' => 'participant',
         'invitation' => 1,
+        'email' => 'test@example.com',
     ]));
 
     $response->assertSee('<input name="context" type="hidden" value="individual" />', false);
     $response->assertSee('<input name="invitation" type="hidden" value="1" />', false);
     $response->assertSee('<input name="role" type="hidden" value="participant" />', false);
+    $response->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
     $response = $this->post(localized_route('register-languages'), [
         'locale' => 'en',
         'context' => 'individual',
         'invitation' => 1,
         'role' => 'participant',
+        'email' => 'test@example.com',
     ]);
 
     $response->assertSessionHas('context', 'individual');
     $response->assertSessionHas('invitation', '1');
     $response->assertSessionHas('invited_role', 'participant');
+    $response->assertSessionHas('email', 'test@example.com');
 
     $response = $this->withSession([
         'locale' => 'en',
