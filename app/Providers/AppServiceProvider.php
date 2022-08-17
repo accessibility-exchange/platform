@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
         StatusManager::bind(Organization::class, OrganizationStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
-        Translatable::fallback(fallbackLocale: 'en');
+        Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
         User::observe(UserObserver::class);
     }
 }

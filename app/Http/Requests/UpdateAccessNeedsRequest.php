@@ -69,6 +69,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             'meeting_access_needs' => [],
             'in_person_access_needs' => [],
             'document_access_needs' => [],
+            'additional_needs_or_concerns' => 0,
         ]);
     }
 

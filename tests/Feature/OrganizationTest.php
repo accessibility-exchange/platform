@@ -903,3 +903,13 @@ test('organizational relationships to projects can be derived from both projects
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
 });
+
+test('organizations have slugs in both languages even if only one is provided', function () {
+    $organization = Organization::factory()->create();
+    expect($organization->getTranslation('slug', 'fr', false))
+        ->toEqual($organization->getTranslation('slug', 'en', false));
+
+    $organization = Organization::factory()->create(['name' => ['fr' => 'Mon entreprise']]);
+    expect($organization->getTranslation('slug', 'en', false))
+        ->toEqual($organization->getTranslation('slug', 'fr', false));
+});
