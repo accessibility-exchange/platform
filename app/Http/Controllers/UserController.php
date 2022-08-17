@@ -38,7 +38,7 @@ class UserController extends Controller
         }
 
         if (isset($data['role'])) {
-            session()->put('roles', [$data['role']]);
+            session()->put('invited_role', $data['role']);
         }
 
         return redirect(localized_route('register', ['step' => 2]));

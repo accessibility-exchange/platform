@@ -31,8 +31,8 @@ class CreateNewUser implements CreatesNewUsers
         if (session('roles') || session('invitation')) {
             $input['extra_attributes'] = [];
 
-            if (session('roles')) {
-                $input['extra_attributes']['roles'] = session('roles');
+            if (session('invited_role')) {
+                $input['extra_attributes']['invited_role'] = session('invited_role');
             }
 
             if (session('invitation')) {

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasSchemalessAttributes;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -28,7 +27,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 {
     use CascadesDeletes;
     use HasFactory;
-    use HasSchemalessAttributes;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;

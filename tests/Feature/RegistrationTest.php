@@ -168,7 +168,7 @@ test('users can register via invitation to engagement', function () {
 
     $response->assertSessionHas('context', 'individual');
     $response->assertSessionHas('invitation', '1');
-    $response->assertSessionHas('roles', ['participant']);
+    $response->assertSessionHas('invited_role', 'participant');
 
     $response = $this->withSession([
         'locale' => 'en',
@@ -176,7 +176,7 @@ test('users can register via invitation to engagement', function () {
         'email' => 'test@example.com',
         'context' => 'individual',
         'invitation' => 1,
-        'role' => 'participant',
+        'invited_role' => 'participant',
     ])->post(localized_route('register-store'), [
         'password' => 'password',
         'password_confirmation' => 'password',
@@ -188,7 +188,7 @@ test('users can register via invitation to engagement', function () {
     $user = Auth::user();
 
     expect($user->extra_attributes->invitation)->toEqual(1);
-    expect($user->extra_attributes->roles)->toEqual(['participant']);
+    expect($user->extra_attributes->invited_role)->toEqual('participant');
 
     expect($user->invitation()->id)->toEqual($invitation->id);
 
