@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasSchemalessAttributes;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -26,6 +27,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasSchemalessAttributes;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
@@ -57,6 +59,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'preferred_contact_person',
         'preferred_notification_method',
         'notification_settings',
+        'extra_attributes',
     ];
 
     protected $hidden = [
@@ -75,6 +78,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
         'notification_settings' => SchemalessAttributes::class,
+        'extra_attributes' => SchemalessAttributes::class,
     ];
 
     protected mixed $cascadeDeletes = [
@@ -97,6 +101,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    public function invitation(): Invitation
+    {
+        return Invitation::where('email', $this->email)->firstOrFail();
     }
 
     public function introduction(): string

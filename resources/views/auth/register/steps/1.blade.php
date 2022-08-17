@@ -2,6 +2,23 @@
 
 <form class="stack" method="POST" action="{{ localized_route('register-languages') }}" novalidate>
     @csrf
+
+    @if(request()->get('context'))
+        <input name="context" type="hidden" value="{{ request()->get('context') }}" />
+    @endif
+
+    @if(request()->get('role'))
+        <input name="role" type="hidden" value="{{ request()->get('role') }}" />
+    @endif
+
+    @if(request()->get('invitation'))
+        <input name="invitation" type="hidden" value="{{ request()->get('invitation') }}" />
+    @endif
+
+    @if(request()->get('email'))
+        <input name="email" type="hidden" value="{{ request()->get('email') }}" />
+    @endif
+
     <fieldset class="stack">
         <legend>{{ __('Please tell us which language you would like to use on The Accessibility Exchange.') }}</legend>
 

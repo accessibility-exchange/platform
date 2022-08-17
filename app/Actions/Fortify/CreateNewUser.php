@@ -18,7 +18,7 @@ class CreateNewUser implements CreatesNewUsers
      * Validate and create a newly registered user.
      *
      * @param  array  $input
-     * @return \App\Models\User
+     * @return User
      */
     public function create(array $input): User
     {
@@ -27,6 +27,18 @@ class CreateNewUser implements CreatesNewUsers
         $input['name'] = session('name');
         $input['email'] = session('email');
         $input['context'] = session('context');
+
+        if (session('roles') || session('invitation')) {
+            $input['extra_attributes'] = [];
+
+            if (session('roles')) {
+                $input['extra_attributes']['roles'] = session('roles');
+            }
+
+            if (session('invitation')) {
+                $input['extra_attributes']['invitation'] = 1;
+            }
+        }
 
         Validator::make(
             $input,
@@ -45,6 +57,7 @@ class CreateNewUser implements CreatesNewUsers
                     'string',
                     Rule::in(config('app.contexts')),
                 ],
+                'extra_attributes' => 'nullable|array',
                 'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
                 'signed_language' => 'nullable|string|in:ase,fcs',
             ],
@@ -69,6 +82,7 @@ class CreateNewUser implements CreatesNewUsers
             'context' => $input['context'],
             'locale' => $input['locale'],
             'signed_language' => $input['signed_language'],
+            'extra_attributes' => $input['extra_attributes'] ?? null,
         ]);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
     /**
@@ -167,5 +168,15 @@ if (! function_exists('normalize_url')) {
         }
 
         return $url;
+    }
+}
+
+if (! function_exists('context_from_model')) {
+    /**
+     * Get the context version (kebab case) of a model's class name.
+     */
+    function context_from_model(mixed $model): string
+    {
+        return Str::kebab(class_basename(get_class($model)));
     }
 }

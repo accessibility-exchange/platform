@@ -10,10 +10,40 @@ use App\Http\Requests\UpdateUserIntroductionStatusRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use function localized_route;
 
 class UserController extends Controller
 {
+    public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('locale', $data['locale']);
+
+        if (isset($data['signed_language'])) {
+            session()->put('signed_language', $data['signed_language']);
+        }
+
+        if (isset($data['invitation'])) {
+            session()->put('invitation', $data['invitation']);
+        }
+
+        if (isset($data['context'])) {
+            session()->put('context', $data['context']);
+        }
+
+        if (isset($data['email'])) {
+            session()->put('email', $data['email']);
+        }
+
+        if (isset($data['role'])) {
+            session()->put('roles', [$data['role']]);
+        }
+
+        return redirect(localized_route('register', ['step' => 2]));
+    }
+
     /**
      * Show an introduction page for the logged-in user.
      *
@@ -74,6 +104,9 @@ class UserController extends Controller
         return view('dashboard', [
             'user' => $user,
             'memberable' => $memberable,
+            'invitation' => $user->invitation() ?? null,
+            'invitationable' => $user->invitation()?->invitationable ?? null,
+            'acceptUrl' => $user->invitation() ? URL::signedRoute('invitations.accept', $user->invitation()) : null,
         ]);
     }
 
@@ -86,6 +119,7 @@ class UserController extends Controller
     public function saveContext(SaveUserContextRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
         session()->put('context', $data['context']);
 
         return redirect(localized_route('register', ['step' => 3]));
@@ -100,27 +134,11 @@ class UserController extends Controller
     public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
         session()->put('name', $data['name']);
         session()->put('email', $data['email']);
 
         return redirect(localized_route('register', ['step' => 4]));
-    }
-
-    /**
-     * Store a new user's language preferences in the session.
-     *
-     * @param  SaveUserLanguagesRequest  $request
-     * @return RedirectResponse
-     */
-    public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-        session()->put('locale', $data['locale']);
-        if ($data['signed_language']) {
-            session()->put('signed_language', $data['signed_language']);
-        }
-
-        return redirect(localized_route('register', ['step' => 2]));
     }
 
     /**

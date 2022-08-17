@@ -25,7 +25,6 @@
 
     <!-- Validation Errors -->
     <x-auth-validation-errors />
-
     @if(request()->get('step'))
         @include('auth.register.steps.' . request()->get('step'))
     @else
