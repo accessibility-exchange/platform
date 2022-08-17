@@ -101,12 +101,14 @@ class UserController extends Controller
             default => null,
         };
 
+        $invitation = $user->invitation();
+
         return view('dashboard', [
             'user' => $user,
             'memberable' => $memberable,
-            'invitation' => $user->invitation() ?? null,
-            'invitationable' => $user->invitation()?->invitationable ?? null,
-            'acceptUrl' => $user->invitation() ? URL::signedRoute('invitations.accept', $user->invitation()) : null,
+            'invitation' => $invitation,
+            'invitationable' => ! is_null($invitation) ? $invitation->invitationable : null,
+            'acceptUrl' => ! is_null($invitation) ? URL::signedRoute('invitations.accept', $user->invitation()) : null,
         ]);
     }
 

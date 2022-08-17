@@ -6,6 +6,7 @@ use App\Traits\HasSchemalessAttributes;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,7 +21,7 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use TheIconic\NameParser\Parser as NameParser;
 
 class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
@@ -31,6 +32,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -77,14 +79,27 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'vrs' => 'boolean',
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
-        'extra_attributes' => SchemalessAttributes::class,
     ];
 
-    protected mixed $cascadeDeletes = [
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+        'notification_settings',
+    ];
+
+    protected array $cascadeDeletes = [
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
+    }
+
+    public function scopeWithNotificationSettings(): Builder
+    {
+        return $this->notification_settings->modelScope();
+    }
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
@@ -103,9 +118,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->locale;
     }
 
-    public function invitation(): Invitation
+    public function invitation(): Invitation|null
     {
-        return Invitation::where('email', $this->email)->firstOrFail();
+        return Invitation::where('email', $this->email)->first() ?? null;
     }
 
     public function introduction(): string
