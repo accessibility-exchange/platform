@@ -66,10 +66,11 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     cd platform
     ```
 
-4. Create a `.env` file from the included example file:
+4. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
 
     ```bash
     cp .env.example .env
+    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
     ```
     
 5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
@@ -140,10 +141,11 @@ of how some key tasks can be carried out using Sail:
     cd platform
     ```
 
-6. Create a `.env` file from the included example file:
+6. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
 
     ```bash
     cp .env.example .env
+    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
     ```
 
 7. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
