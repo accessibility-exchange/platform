@@ -73,13 +73,15 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        Auth::user()->fill($data);
-        Auth::user()->save();
+        $user = Auth::user();
+
+        $user->fill($data);
+        $user->save();
 
         $redirectTo = match (Auth::user()->context) {
             'individual' => localized_route('individuals.show-role-selection'),
-            'organization' => localized_route('organizations.show-type-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
+            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 

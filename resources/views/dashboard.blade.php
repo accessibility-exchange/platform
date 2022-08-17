@@ -4,7 +4,14 @@
         @if($invitationable)
             <x-invitation>
                 <p class="flex items-center gap-4"><span class="bg-magenta-3 w-5 h-5 rounded-full"></span>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $invitationable->name]) }}</p>
-                <p><a class="cta secondary" href="{{ $acceptUrl }}">{{ __('Accept') }}</a></p>
+                <div class="flex items-center gap-4">
+                    <a class="cta secondary" href="{{ $acceptUrl }}">{{ __('Accept') }}</a>
+                    <form class="inline" action="{{ route('invitations.decline', $invitation) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button class="secondary">{{ __('Decline') }}</button>
+                    </form>
+                </div>
             </x-invitation>
         @endif
         <p>{{ $user->name }}@if($memberable), {{ $memberable->name }}@endif</p>
