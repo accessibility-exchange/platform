@@ -71,27 +71,33 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     ```bash
     cp .env.example .env
     ```
+    
+5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
-5. Start the development environment by running the following command from within the project directory:
+    ```bash
+    echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
+    ```
+
+6. Start the development environment by running the following command from within the project directory:
 
     ```bash
     sail up -d
     ```
 
-6. Install Composer and NPM dependencies:
+7. Install Composer and NPM dependencies:
 
     ```bash
     sail composer install
     sail npm install
     ```
     
-7. Generate an application key:
+8. Generate an application key:
 
     ```bash
     sail artisan key:generate
     ```
 
-8. Run the required database migrations:
+9. Run the required database migrations:
 
     ```bash
     sail artisan migrate
@@ -106,10 +112,10 @@ of how some key tasks can be carried out using Sail:
 ### Local development setup using Laravel Valet
 
 1. Install [Homebrew](https://brew.sh).
-2. Install PHP 8.0 via Homebrew:
+2. Install PHP 8.1 via Homebrew:
    
    ```bash
-   brew install php@8.0
+   brew install php@8.1
    ```
    
 3. Install [Composer](https://getcomposer.org/).
@@ -132,32 +138,39 @@ of how some key tasks can be carried out using Sail:
     ```bash
     cp .env.example .env
     ```
-   
-7. Install Composer and NPM dependencies:
+
+7. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+
+    ```bash
+    echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
+    ```
+
+8. Install Composer and NPM dependencies:
 
     ```bash
     composer install
     npm install
     ```
 
-8. Generate an application key:
+9. Generate an application key:
 
     ```bash
     php artisan key:generate
     ```
-9. Create a database:
+ 
+10. Create a database:
 
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     ```
 
-10. Run the required database migrations:
+11. Run the required database migrations:
 
      ```bash
      php artisan migrate
      ``` 
    
-11. Tell Valet to serve the application:
+12. Tell Valet to serve the application:
 
       ```bash
       valet link
