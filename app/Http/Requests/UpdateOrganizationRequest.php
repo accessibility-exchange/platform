@@ -68,8 +68,8 @@ class UpdateOrganizationRequest extends FormRequest
             'consulting_services.*' => [
                 new Enum(ConsultingService::class),
             ],
-            'social_links.*' => 'nullable|url',
-            'website_link' => 'nullable|url',
+            'social_links.*' => 'nullable|active_url',
+            'website_link' => 'nullable|active_url',
         ];
     }
 
