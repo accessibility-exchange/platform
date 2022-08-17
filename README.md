@@ -66,10 +66,11 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     cd platform
     ```
 
-4. Create a `.env` file from the included example file:
+4. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
 
     ```bash
     cp .env.example .env
+    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
     ```
     
 5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
@@ -102,6 +103,13 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     ```bash
     sail artisan migrate
     ```
+
+10. Download the application fonts:
+
+    ```bash
+    sail artisan google-fonts:fetch
+    ```
+
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Sail:
 
@@ -133,10 +141,11 @@ of how some key tasks can be carried out using Sail:
     cd platform
     ```
 
-6. Create a `.env` file from the included example file:
+6. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
 
     ```bash
     cp .env.example .env
+    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
     ```
 
 7. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
@@ -169,8 +178,14 @@ of how some key tasks can be carried out using Sail:
      ```bash
      php artisan migrate
      ``` 
-   
-12. Tell Valet to serve the application:
+
+12. Download the application fonts:
+
+    ```bash
+    php artisan google-fonts:fetch
+    ```
+
+13. Tell Valet to serve the application:
 
       ```bash
       valet link
@@ -185,17 +200,18 @@ of how some key tasks can be carried out using Valet:
 
 ### Development workflow
 
--   This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
+- This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
     All commit messages and pull request titles must follow these standards.
--   The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains refined features
+- The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains features
     that have been prototyped and gone through one or more co-design sessions.
--   Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
-    must be named according to the format `feat/<feature>`. Once a refined feature is ready to merge into `dev`, the
-    merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
--   The [`main`](https://github.com/accessibility-exchange/platform/tree/main) branch contains refined features that
+- Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
+    must be named according to the format `feat/<feature>`.
+- Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+- Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
+- The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined features that
     are considered production-ready.
--   Prereleases must be tagged from the `dev` branch.
--   Releases must be tagged from the `main` branch.
+- Prereleases must be tagged from the `dev` branch.
+- Releases must be tagged from the `production` branch.
 
 ## License
 
