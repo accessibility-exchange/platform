@@ -50,7 +50,7 @@
                 <x-expander :summary="__('Communication and meeting preferences')" level="3">
                     <p>{{ __('We will ask you about what is the best way to contact you, and your contact information. We will also ask you about whether you have a preference for either in-person or virtual meetings.') }}</p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
-                    <p>{{ __('Once you confirm your participation for an engagement, we will share your preferred contact method and your contact information with the government or business. This information enables them to contact you to discuss  the details of your participation.') }}</p>
+                    <p>{{ __('Once you confirm your participation for an engagement, we will share your preferred contact method and your contact information with the government or business. This information enables them to contact you to discuss the details of your participation.') }}</p>
                     <p>{{ __('Your preferences for in-person or virtual engagements will determine what projects and engagements you are matched to.')}}</p>
                 </x-expander>
                 <x-expander :summary="__('Language preferences')" level="3">
