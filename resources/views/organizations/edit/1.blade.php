@@ -46,11 +46,11 @@
 
             <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('What provinces or territories does your organization serve? (required)') }}</legend>
-                <p class="stack" x-cloak>
+                <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $organization->service_areas ?? [])" required />
+                <div class="stack" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
-                </p>
-                <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $organization->service_areas ?? [])" required />
+                </div>
             </fieldset>
 
             <fieldset>
