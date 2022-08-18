@@ -66,17 +66,28 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     cd platform
     ```
 
-4. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
+4. Create a `.env` file from the included example file:
 
     ```bash
     cp .env.example .env
-    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
+    ```
+
+   Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
     ```
     
 5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
     ```bash
-    echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
+    openssl rand -hex 32
+    ```
+
+   Add it to your `.env` file:
+
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
     ```
 
 6. Start the development environment by running the following command from within the project directory:
@@ -141,55 +152,83 @@ of how some key tasks can be carried out using Sail:
     cd platform
     ```
 
-6. Create a `.env` file from the included example file and change the `APP_ENV` value to `local`:
+6. Create a `.env` file from the included example file:
 
     ```bash
     cp .env.example .env
-    sed -i 's/APP_ENV=development/APP_ENV=LOCAL/g' .env
+    ```
+   
+    Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
     ```
 
-7. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+8. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
     ```bash
-    echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
+    openssl rand -hex 32
     ```
 
-8. Install Composer and NPM dependencies:
+    Add it to your `.env` file:
+    
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
+    ```
+
+9. Install Composer and NPM dependencies:
 
     ```bash
     composer install
     npm install
     ```
 
-9. Generate an application key:
+10. Generate an application key:
 
-    ```bash
-    php artisan key:generate
-    ```
+     ```bash
+     php artisan key:generate
+     ```
  
-10. Create a database:
+11. Create a database:
 
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     ```
 
-11. Run the required database migrations:
+12. Run the required database migrations:
 
      ```bash
      php artisan migrate
      ``` 
 
-12. Download the application fonts:
+13. Download the application fonts:
 
     ```bash
     php artisan google-fonts:fetch
     ```
 
-13. Tell Valet to serve the application:
+14. Tell Valet to serve the application:
 
       ```bash
       valet link
       ```
+
+15. Install [Mailhog](https://github.com/mailhog/MailHog) so that you can access transactional email from the platform:
+
+    ```bash
+    brew install mailhog
+    brew services start mailhog
+    ```
+    
+    Then, make sure that your `.env` file contains the following values:
+
+    ```dotenv
+    MAIL_MAILER=smtp
+    MAIL_HOST=127.0.0.1
+    MAIL_PORT=1025
+    ```
+    
+    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Valet:
