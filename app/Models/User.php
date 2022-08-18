@@ -147,9 +147,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $methods = [];
 
         if ($this->preferred_contact_person == 'me') {
-            if (! empty($this->email)) {
-                $methods[] = 'email';
-            }
+            $methods[] = 'email';
             if (! empty($this->phone)) {
                 $methods[] = 'phone';
             }
@@ -168,13 +166,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->email :
-                $this->support_person_email,
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->phone->formatForCountry('CA') :
                 $this->support_person_phone->formatForCountry('CA'),
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
         };
 
         if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
@@ -194,30 +191,28 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
-                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'email' => '<'.$this->primary_contact_point.'>',
-            ]),
             'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
                 'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
                 'phone_number' => $this->primary_contact_point,
             ]),
-            default => null
+            default => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'email' => '<'.$this->primary_contact_point.'>',
+            ])
         };
     }
 
     public function getAlternateContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->phone?->formatForCountry('CA') :
-                $this->support_person_phone?->formatForCountry('CA'),
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->email ?? null :
                 $this->support_person_email ?? null,
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->phone?->formatForCountry('CA') :
+                $this->support_person_phone?->formatForCountry('CA'),
         };
 
         if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
@@ -230,9 +225,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getAlternateContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => $this->alternate_contact_point ?? null,
             'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
-            default => null
+            default => $this->alternate_contact_point ?? null,
         };
     }
 

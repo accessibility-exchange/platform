@@ -82,12 +82,44 @@ test('user’s first name can be retrieved', function () {
     expect($user->first_name)->toEqual('Jonny');
 });
 
+test('user’s contact methods can be retrieved', function () {
+    $user = User::factory()->create();
+
+    expect($user->contact_methods)->toEqual(['email']);
+
+    $user->update([
+        'phone' => '19024445555',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+
+    $user->update([
+        'preferred_contact_person' => 'support-person',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email']);
+
+    $user->update([
+        'support_person_phone' => '19024445555',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+
+    $user->update([
+        'support_person_email' => null,
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['phone']);
+});
+
 test('user’s contact person can be retrieved', function () {
     $user = User::factory()->create(['name' => 'Jonny Appleseed', 'preferred_contact_person' => 'me', 'support_person_name' => 'Jenny Appleseed']);
 
     expect($user->contact_person)->toEqual('Jonny');
 
-    $user->update(['preferred_contact_person' => 'support_person']);
+    $user->update(['preferred_contact_person' => 'support-person']);
 
     expect($user->contact_person)->toEqual('Jenny Appleseed');
 });
@@ -101,7 +133,7 @@ test('user’s vrs requirement can be retrieved', function () {
 
     expect($user->requires_vrs)->toBeTrue();
 
-    $user->update(['preferred_contact_person' => 'support_person']);
+    $user->update(['preferred_contact_person' => 'support-person']);
 
     expect($user->requires_vrs)->toBeFalse();
 });
