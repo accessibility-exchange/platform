@@ -7,54 +7,37 @@ use Illuminate\Validation\Rule;
 
 class StoreInvitationRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
 
         return $invitationable && $this->user()->can('update', $invitationable);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         $invitationable_type = $this->input('invitationable_type');
         $invitationable_id = $this->input('invitationable_id');
+        $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
 
         return [
-            'email' => ['required', 'email', Rule::unique('invitations')->where(function ($query) use ($invitationable_type, $invitationable_id) {
-                $query
-                    ->where('invitationable_type', $invitationable_type)
-                    ->where('invitationable_id', $invitationable_id);
-            })],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('invitations')->where(function ($query) use ($invitationable_type, $invitationable_id) {
+                    $query->where('invitationable_type', $invitationable_type)->where('invitationable_id', $invitationable_id);
+                }),
+                Rule::notIn($invitationable->users->pluck('email')->toArray()),
+            ],
+            // TODO: Clarify these roles, move to Enum.
             'role' => ['required', 'string', Rule::in(config('hearth.organizations.roles'))],
         ];
     }
 
-    /**
-     * Configure the validator instance.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
+    public function messages(): array
     {
-        $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
-
-        $validator->after(function ($validator) use ($invitationable) {
-            $validator->errors()->addIf(
-                $invitationable->hasUserWithEmail($this->email),
-                'email',
-                __('invitation.invited_user_already_belongs_to_team')
-            );
-        })->validateWithBag('inviteMember');
+        return [
+            'email.not_in' => __('This user already belongs to this team.'),
+        ];
     }
 }

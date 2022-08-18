@@ -629,7 +629,7 @@ test('existing members cannot be invited', function () {
             'role' => 'member',
         ]);
 
-    $response->assertSessionHasErrorsIn('inviteMember', ['email']);
+    $response->assertSessionHasErrors(['email']);
     $response->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
