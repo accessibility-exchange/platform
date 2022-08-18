@@ -3,8 +3,8 @@
                 @endif @endif @endforeach
     })">
     <template x-for="(language, index) in languages">
-        <div x-data="modal()">
-            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage" x-show="languages.length > 1">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
+        <div>
+            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
 
             <input name="languages[]" type="hidden" x-bind:value="language.code" />
         </div>
