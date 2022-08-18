@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('preferred_contact_method')->default('email');
             $table->string('preferred_notification_method')->default('email');
             $table->schemalessAttributes('notification_settings')->nullable();
+            $table->schemalessAttributes('extra_attributes')->nullable();
         });
     }
 

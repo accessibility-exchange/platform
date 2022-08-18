@@ -11,7 +11,7 @@
     <form class="stack" action="{{ localized_route('organizations.save-roles', $organization) }}" method="post" novalidate>
         <fieldset class="field @error('type') field--error @enderror">
             <legend>{{ __('What type of organization are you?') }}</legend>
-            <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', [])" />
+            <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', session()->get('roles') ?? [])" />
             <x-hearth-error for="roles" />
         </fieldset>
 

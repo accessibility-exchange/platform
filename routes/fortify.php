@@ -25,6 +25,11 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->middleware('guest')
         ->name('register');
 
+    Route::multilingual('/register/save/languages', [UserController::class, 'saveLanguages'])
+        ->method('post')
+        ->middleware('guest')
+        ->name('register-languages');
+
     Route::multilingual('/register/save/context', [UserController::class, 'saveContext'])
         ->method('post')
         ->middleware('guest')
@@ -34,11 +39,6 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->method('post')
         ->middleware('guest')
         ->name('register-details');
-
-    Route::multilingual('/register/save/languages', [UserController::class, 'saveLanguages'])
-        ->method('post')
-        ->middleware('guest')
-        ->name('register-languages');
 
     Route::multilingual('/register', [RegisteredUserController::class, 'store'])
         ->method('post')

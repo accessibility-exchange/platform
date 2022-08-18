@@ -5,6 +5,7 @@ namespace App\Models;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,7 +20,7 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use TheIconic\NameParser\Parser as NameParser;
 
 class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
@@ -29,6 +30,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -57,6 +59,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'preferred_contact_person',
         'preferred_notification_method',
         'notification_settings',
+        'extra_attributes',
     ];
 
     protected $hidden = [
@@ -74,13 +77,27 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'vrs' => 'boolean',
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
     ];
 
-    protected mixed $cascadeDeletes = [
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+        'notification_settings',
+    ];
+
+    protected array $cascadeDeletes = [
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
+    }
+
+    public function scopeWithNotificationSettings(): Builder
+    {
+        return $this->notification_settings->modelScope();
+    }
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
@@ -97,6 +114,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    public function invitation(): Invitation|null
+    {
+        return Invitation::where('email', $this->email)->first() ?? null;
     }
 
     public function introduction(): string
@@ -125,9 +147,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $methods = [];
 
         if ($this->preferred_contact_person == 'me') {
-            if (! empty($this->email)) {
-                $methods[] = 'email';
-            }
+            $methods[] = 'email';
             if (! empty($this->phone)) {
                 $methods[] = 'phone';
             }
@@ -146,13 +166,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->email :
-                $this->support_person_email,
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->phone->formatForCountry('CA') :
                 $this->support_person_phone->formatForCountry('CA'),
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
         };
 
         if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
@@ -172,30 +191,28 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
-                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'email' => '<'.$this->primary_contact_point.'>',
-            ]),
             'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
                 'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
                 'phone_number' => $this->primary_contact_point,
             ]),
-            default => null
+            default => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'email' => '<'.$this->primary_contact_point.'>',
+            ])
         };
     }
 
     public function getAlternateContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->phone?->formatForCountry('CA') :
-                $this->support_person_phone?->formatForCountry('CA'),
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->email ?? null :
                 $this->support_person_email ?? null,
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->phone?->formatForCountry('CA') :
+                $this->support_person_phone?->formatForCountry('CA'),
         };
 
         if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
@@ -208,9 +225,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getAlternateContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => $this->alternate_contact_point ?? null,
             'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
-            default => null
+            default => $this->alternate_contact_point ?? null,
         };
     }
 

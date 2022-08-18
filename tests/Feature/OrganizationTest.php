@@ -629,7 +629,7 @@ test('existing members cannot be invited', function () {
             'role' => 'member',
         ]);
 
-    $response->assertSessionHasErrorsIn('inviteMember', ['email']);
+    $response->assertSessionHasErrors(['email']);
     $response->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
@@ -647,7 +647,7 @@ test('invitation can be accepted', function () {
     $response = $this->actingAs($user)->get($acceptUrl);
 
     $this->assertTrue($organization->fresh()->hasUserWithEmail($user->email));
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('invitation cannot be accepted by user with existing membership', function () {
@@ -688,8 +688,7 @@ test('invitation cannot be accepted by different user', function () {
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
     $this->assertFalse($organization->fresh()->hasUserWithEmail($user->email));
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    $response->assertForbidden();
 });
 
 test('users with admin role can remove members', function () {
