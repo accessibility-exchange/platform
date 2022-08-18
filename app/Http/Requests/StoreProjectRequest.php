@@ -36,7 +36,7 @@ class StoreProjectRequest extends FormRequest
             'ancestor_id' => [
                 'nullable',
                 'integer',
-                'exists|projects,id',
+                'exists:App\Models\Project,id',
             ],
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
             'name.en' => 'required_without:name.fr|nullable|string|max:255',
