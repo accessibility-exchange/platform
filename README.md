@@ -225,7 +225,7 @@ of how some key tasks can be carried out using Sail:
     ```dotenv
     MAIL_MAILER=smtp
     MAIL_HOST=127.0.0.1
-    MAIL_PORT=8025
+    MAIL_PORT=1025
     ```
     
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
