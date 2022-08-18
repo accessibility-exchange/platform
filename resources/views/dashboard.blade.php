@@ -18,11 +18,11 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>
-        @if($user->context == 'individual')
+        @if($user->individual)
         <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}. <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
         @endif
 
-        @if($user->context == 'organization')
+        @if($user->organization)
             <p><strong>{{ __('Roles:') }}</strong> {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}. <a href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a></p>
         @endif
     </x-slot>
@@ -34,5 +34,4 @@
     @elseif ($user->context === 'regulated-organization')
         @include('dashboard.regulated-organization')
     @endif
-
 </x-app-wide-layout>
