@@ -14,21 +14,63 @@ class Engagement extends Model
     use HasFactory;
     use HasTranslations;
 
+    protected $attributes = [
+        'paid' => true,
+    ];
+
     protected $fillable = [
-        'name',
         'project_id',
-        'goals',
+        'name',
+        'format',
+        'ideal_participants',
+        'minimum_participants',
+        'paid',
+        'description',
         'recruitment',
+        'who',
+        'recruitment',
+        'regions',
+        'localities',
+        'paid',
+        'payment',
+        'signup_by_date',
+        'materials_by_date',
+        'complete_by_date',
+        'start_date',
+        'end_date',
+        'timezone',
+        'weekday_availabilities',
+        'document_languages',
+        'accepted_formats',
+        'individual_connector_id',
+        'organizational_connector_id',
+        'individual_consultant_id',
+        'organizational_consultant_id',
     ];
 
     protected $casts = [
         'name' => 'array',
-        'goals' => 'array',
+        'ideal_participants' => 'integer',
+        'minimum_participants' => 'integer',
+        'description' => 'array',
+        'regions' => 'array',
+        'localities' => 'array',
+        'paid' => 'boolean',
+        'payment' => 'array',
+        'signup_by_date' => 'datetime:Y-m-d',
+        'materials_by_date' => 'datetime:Y-m-d',
+        'complete_by_date' => 'datetime:Y-m-d',
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d',
+        'weekday_availabilities' => 'array',
+        'document_languages' => 'array',
+        'accepted_formats' => 'array',
     ];
 
     public array $translatable = [
         'name',
-        'goals',
+        'description',
+        'payment',
     ];
 
     public function project(): BelongsTo

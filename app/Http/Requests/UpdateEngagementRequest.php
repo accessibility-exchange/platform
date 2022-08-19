@@ -2,52 +2,32 @@
 
 namespace App\Http\Requests;
 
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateEngagementRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    use HasFactory;
+
+    public function authorize(): bool
     {
         return $this->user()->can('update', $this->project);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name.*' => [
-                'required',
-                'string',
-                'max:255',
-                UniqueTranslationRule::for('engagements')->ignore($this->engagement->id),
-            ],
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
-            'goals.*' => 'string|nullable',
-            'recruitment' => 'string|required|in:automatic,open',
+            'description.*' => 'nullable|string',
+            'description.en' => 'required_without:description.fr',
+            'description.fr' => 'required_without:description.en',
+            'signup_by_date' => 'required|date',
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
         return [
-            'name.*.unique_translation' => __('An engagement with this name already exists.'),
-            'name.*.required_without' => __('An engagement name field must be provided in at least one language.'),
+            'description.*.required_without' => __('An engagement description must be provided in at least one language.'),
         ];
     }
 }

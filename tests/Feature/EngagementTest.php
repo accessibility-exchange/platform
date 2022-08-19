@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Requests\StoreEngagementRequest;
+use App\Http\Requests\UpdateEngagementRequest;
 use App\Models\Engagement;
-use App\Models\MatchingStrategy;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -18,18 +19,17 @@ test('users with regulated organization admin role can create engagements', func
     $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
     $response->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('engagements.create', $project), [
+    $data = StoreEngagementRequest::factory()->create([
         'project_id' => $project->id,
-        'name' => ['en' => 'Test Engagement'],
-        'goals' => ['en' => 'This is what we want to do.'],
-        'recruitment' => 'automatic',
     ]);
 
-    $engagement = Engagement::where('name->en', 'Test Engagement')->get()->first();
-
-    $url = localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement->id]);
+    $response = $this->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
     $response->assertSessionHasNoErrors();
+
+    $engagement = Engagement::where('name->en', $data['name']['en'])->first();
+
+    $url = localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]);
 
     $response->assertRedirect($url);
 });
@@ -78,25 +78,16 @@ test('users with regulated organization admin role can edit engagements', functi
         'project_id' => $project->id,
     ]);
 
-    $strategy = MatchingStrategy::factory()->create();
-
-    $engagement->matchingStrategy()->save($strategy);
-
-    $engagement = $engagement->fresh();
-
-    expect($engagement->matchingStrategy->id)->toEqual($strategy->id);
-
     $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
     $response->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
-        'name' => ['en' => 'My renamed engagement'],
-        'recruitment' => 'automatic',
-    ]);
+    $data = UpdateEngagementRequest::factory()->create();
 
-    $updated_engagement = Engagement::where('name->en', 'My renamed engagement')->first();
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), $data);
 
     $response->assertRedirect(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+
+    expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 });
 
 test('users without regulated organization admin role cannot edit engagements', function () {
