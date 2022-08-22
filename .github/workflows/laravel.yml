@@ -29,7 +29,7 @@ jobs:
       - name: Create test database
         run: |
           sudo systemctl start mysql.service
-          mysqladmin create accessibilityexchange --user="root" --password="root"
+          mysqladmin create accessibilityexchange_test --user="root" --password="root"
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
