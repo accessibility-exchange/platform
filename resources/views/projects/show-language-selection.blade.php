@@ -7,14 +7,14 @@
         </ol>
         <p class="h3">{{ __('Create new project') }}</p>
         <h1>
-            {{ __('Languages available') }}
+            {{ __('Project translations') }}
         </h1>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Please indicate the language you would like to use to provide the details of your project. ') }}</p>
+    <p>{{ __('You can add different language translations to your project. If you pick a language here, you will have to add the translation yourself in the following pages.') }}</p>
 
     <x-hearth-alert :title="__('Translations')">
        <p>{{ __('It is highly recommended that you add French, ASL, and LSQ translations to your content.') }}</p>
