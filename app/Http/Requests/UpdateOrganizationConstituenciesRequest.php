@@ -71,6 +71,13 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
         ];
     }
 
+    public function prepareForValidation()
+    {
+        request()->mergeIfMissing([
+            'lived_experiences' => [],
+        ]);
+    }
+
     public function withValidator($validator)
     {
         $validator->sometimes('other_disability_type.en', 'required_without:other_disability_type.fr', function ($input) {

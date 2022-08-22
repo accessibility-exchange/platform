@@ -6,7 +6,7 @@
 
         @include('organizations.partials.progress')
 
-        <div class="stack" x-data="{livedExperiences: [{{ implode(', ', $organization->livedExperiences->pluck('id')->toArray())}}]}">
+        <div class="stack" x-data="{livedExperiences: [{{ implode(', ', old('lived_experiences', $organization->livedExperiences->pluck('id')->toArray() ?? []))}}]}">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Groups your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => ($organization->type === 'representative') ? __('represents') : __('serves and supports')]) }}
@@ -60,18 +60,19 @@
                 <div class="field">
                     <x-hearth-input type="radio" name="has_gender_and_sexual_identities" id="has_gender_and_sexual_identities-1" value="1" x-model="hasGenderAndSexualIdentities" /> <label for="has_gender_and_sexual_identities-1">{{ __('Yes') }}</label>
                 </div>
+
                 <div class="field__subfield stack" x-show="hasGenderAndSexualIdentities == 1">
                     <div class="field">
-                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-women' value='women' :checked="old('gender_and_sexual_identities.women', $organization->genderIdentities->contains($women) ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}</x-hearth-label>
+                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-women' value='women' :checked="in_array('women', old('gender_and_sexual_identities', [])) || $organization->genderIdentities->contains($women) ?? false" /> <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}</x-hearth-label>
                     </div>
                     <div class="field">
-                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-nb-gnc-fluid-people' value='nb-gnc-fluid-people' :checked="old('gender_and_sexual_identities.nb-gnc-fluid-people', $organization->has_nb_gnc_fluid_constituents ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
+                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-nb-gnc-fluid-people' value='nb-gnc-fluid-people' :checked="in_array('nb-gnc-fluid-people', old('gender_and_sexual_identities', [])) || $organization->has_nb_gnc_fluid_constituents ?? false" /> <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
                     </div>
                     <div class="field">
-                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-trans-people' value='trans-people' :checked="old('gender_and_sexual_identities.trans-people', $organization->constituencies->contains($transPeople) ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-trans-people'>{{ $transPeople->name_plural }}</x-hearth-label>
+                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-trans-people' value='trans-people' :checked="in_array('trans-people', old('gender_and_sexual_identities', [])) || $organization->constituencies->contains($transPeople) ?? false" /> <x-hearth-label for='gender_and_sexual_identities-trans-people'>{{ $transPeople->name_plural }}</x-hearth-label>
                     </div>
                     <div class="field">
-                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-2slgbtqiaplus-people' value='2slgbtqiaplus-people' :checked="old('gender_and_sexual_identities.2slgbtqiaplus-people', $organization->constituencies->contains($twoslgbtqiaplusPeople) ?? false)" /> <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>{{ $twoslgbtqiaplusPeople->name_plural }}</x-hearth-label>
+                        <x-hearth-checkbox name='gender_and_sexual_identities[]' id='gender_and_sexual_identities-2slgbtqiaplus-people' value='2slgbtqiaplus-people' :checked="in_array('2slgbtqiaplus-people', old('gender_and_sexual_identities', [])) || $organization->constituencies->contains($twoslgbtqiaplusPeople) ?? false" /> <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>{{ $twoslgbtqiaplusPeople->name_plural }}</x-hearth-label>
                     </div>
                 </div>
                 <div class="field">
