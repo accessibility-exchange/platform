@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @if(request()->get('step') > 1)
-            <p class="h4">{{ __('Create an account') }}</p>
+            <p class="h4">{{ __('Please create an account to join The Accessibility Exchange.') }}</p>
         @endif
         <h1>
         @switch(request()->get('step'))
@@ -9,7 +9,7 @@
             {{ __('Create an account') }}
             @break
             @case(2)
-            {{ __('Your role') }}
+            {{ __('Who you’re joining as') }}
             @break
             @case(3)
             {{ __('Your details') }}
