@@ -182,7 +182,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ],
             2 => [
                 'edit' => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
-                'show' => $this->isConnector() ? 'individuals.show-constituencies' : 'individuals.show-experiences',
+                'show' => $this->isConnector() ? 'individuals.show' : 'individuals.show-experiences',
             ],
             3 => [
                 'edit' => $this->isConnector() ? 'experiences' : 'interests',
