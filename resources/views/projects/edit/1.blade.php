@@ -47,9 +47,9 @@
 
             <h3>{{ __('Project timeframe') }}</h3>
 
-            <livewire:date-picker :label="__('Project start date (required)')" name="start_date" minimumYear="2021" :value="old('start_date', $project->start_date)" />
+            <livewire:date-picker :label="__('Project start date (required)')" name="start_date" minimumYear="2021" :value="old('start_date', $project->start_date->format('Y-m-d'))" />
 
-            <livewire:date-picker :label="__('Project end date (required)')" name="end_date" minimumYear="2021" :value="old('end_date', $project->end_date)" />
+            <livewire:date-picker :label="__('Project end date (required)')" name="end_date" minimumYear="2021" :value="old('end_date', $project->end_date->format('Y-m-d'))" />
 
             <h3>{{ __('Project outcome') }}</h3>
 

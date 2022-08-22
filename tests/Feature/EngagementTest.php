@@ -29,9 +29,28 @@ test('users with regulated organization admin role can create engagements', func
 
     $engagement = Engagement::where('name->en', $data['name']['en'])->first();
 
-    $url = localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]);
+    $response->assertRedirect(localized_route('engagements.show-outreach-selection', $engagement));
 
-    $response->assertRedirect($url);
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-outreach', $engagement), [
+        'who' => 'individuals',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
+        'recruitment' => 'open-call',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-outreach', $engagement), [
+        'who' => 'organization',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
 });
 
 test('users without regulated organization admin role cannot create engagements', function () {
@@ -78,14 +97,14 @@ test('users with regulated organization admin role can edit engagements', functi
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
     $response->assertOk();
 
     $data = UpdateEngagementRequest::factory()->create();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), $data);
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), $data);
 
-    $response->assertRedirect(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 });
@@ -103,18 +122,18 @@ test('users without regulated organization admin role cannot edit engagements', 
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
     $response->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), [
         'name' => ['en' => 'My renamed engagement'],
     ]);
     $response->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($other_user)->get(localized_route('engagements.edit', $engagement));
     $response->assertForbidden();
 
-    $response = $this->actingAs($other_user)->put(localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]), [
+    $response = $this->actingAs($other_user)->put(localized_route('engagements.update', $engagement), [
         'name' => ['en' => 'My renamed engagement'],
     ]);
     $response->assertForbidden();
@@ -132,7 +151,7 @@ test('users with regulated organization admin role can manage engagements', func
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertOk();
 });
 
@@ -151,10 +170,10 @@ test('users without regulated organization admin role cannot manage engagements'
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]));
+    $response = $this->actingAs($other_user)->get(localized_route('engagements.manage', $engagement));
     $response->assertForbidden();
 });
 

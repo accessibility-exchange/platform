@@ -12,5 +12,5 @@
         </h1>
     </x-slot>
 
-    <p><a class="cta secondary" href="{{ localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]) }}">{{ __('Add engagement details') }}</a></p>
+    <p><a class="cta secondary" href="{{ localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]) }}">{{ __('Edit engagement details') }}</a></p>
 </x-app-wide-layout>

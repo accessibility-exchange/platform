@@ -8,7 +8,7 @@
             <li><a href="{{ localized_route('engagements.show', ['project' => $project, 'engagement' => $engagement]) }}">{{ $engagement->name }}</a></li>
         </ol>
         <h1>
-            {{ __('Add engagement details') }}
+            {{ __('Edit engagement details') }}
         </h1>
     </x-slot>
 
@@ -19,6 +19,10 @@
         @csrf
         @method('put')
 
+        <h2>{{ __('Name') }}</h2>
+
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :model="$engagement" />
+
         <h2>{{ __('Description') }}</h2>
 
         <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :hint="__('This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.')" :model="$engagement" />
@@ -26,9 +30,9 @@
         <h2>{{ __('Sign up deadline') }}</h2>
 
         <div class="field @error('signup_by_date') field--error @enderror">
-            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :value="old('signup_by_date')" />
+            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
         </div>
 
-        <button>{{ __('Update engagement') }}</button>
+        <button class="w-1/2">{{ __('Save') }}</button>
     </form>
 </x-app-wide-layout>
