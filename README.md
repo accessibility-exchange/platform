@@ -239,7 +239,7 @@ of how some key tasks can be carried out using Valet:
 
 ### Running tests
 
-The project uses [Pest](http://pestphp.com) for testing. Running tests locally requires the presence of a database named `accessibilityexchange_test`. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
+The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
 
 ### Development workflow
 
