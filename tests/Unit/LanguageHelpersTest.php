@@ -17,6 +17,8 @@ test('get all available languages', function () {
     $languages = get_available_languages(true);
 
     expect($languages)->toHaveKey('es');
+    expect(isset($languages['en_CA']))->toBeFalse();
+    expect(isset($languages['fr_CA']))->toBeFalse();
 });
 
 test('get a signed language exonym', function () {

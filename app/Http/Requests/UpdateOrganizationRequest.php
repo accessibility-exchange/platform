@@ -21,31 +21,18 @@ class UpdateOrganizationRequest extends FormRequest
 
     public function rules(): array
     {
-        $nameRules = [
-            'string',
-            'max:255',
-            UniqueTranslationRule::for('organizations')->ignore($this->organization->id),
-        ];
-
-        $aboutRules = [
-            'string',
-        ];
-
         return [
-            'name.*' => ['nullable'] + $nameRules,
-            'name.en' => [
-                'required_without:name.fr',
-            ] + $nameRules,
-            'name.fr' => [
-                'required_without:name.en',
-            ] + $nameRules,
-            'about.*' => ['nullable'] + $aboutRules,
-            'about.en' => [
-                'required_without:about.fr',
-            ] + $aboutRules,
-            'about.fr' => [
-                'required_without:about.en',
-            ] + $aboutRules,
+            'name.*' => [
+                'nullable',
+                'string',
+                'max:255',
+                UniqueTranslationRule::for('organizations')->ignore($this->organization->id),
+            ],
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'about.*' => 'nullable|string',
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
             'region' => [
                 'required',
                 new Enum(ProvinceOrTerritory::class),
