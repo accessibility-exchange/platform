@@ -27,7 +27,7 @@ class StoreEngagementRequest extends FormRequest
                 'required',
                 new Enum(EngagementFormat::class),
             ],
-            'ideal_participants' => 'required|integer|gte:minimum_participants',
+            'ideal_participants' => 'required|integer',
             'minimum_participants' => 'required|integer|lte:ideal_participants',
         ];
     }
@@ -37,6 +37,7 @@ class StoreEngagementRequest extends FormRequest
         return [
             'name.*.unique_translation' => __('An engagement with this name already exists.'),
             'name.*.required_without' => __('An engagement name must be provided in at least one language.'),
+            'minimum_participants.lte' => __('The minimum number of participants must be less than or equal to the ideal number of participants.'),
         ];
     }
 }
