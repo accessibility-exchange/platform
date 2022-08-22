@@ -31,12 +31,20 @@ test('users with regulated organization admin role can create engagements', func
 
     $response->assertRedirect(localized_route('engagements.show-outreach-selection', $engagement));
 
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-outreach-selection', $engagement));
+
+    $response->assertOk();
+
     $response = $this->actingAs($user)->put(localized_route('engagements.store-outreach', $engagement), [
         'who' => 'individuals',
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-recruitment-selection', $engagement));
+
+    $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
         'recruitment' => 'open-call',
