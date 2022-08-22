@@ -29,7 +29,7 @@ jobs:
       - name: Create test database
         run: |
           sudo systemctl start mysql.service
-          mysqladmin create accessibilityexchange_test --user="root" --password="root"
+          mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
@@ -42,6 +42,7 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Run tests with Pest
         env:
+          DB_DATABASE: accessibilityexchange
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |

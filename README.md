@@ -237,6 +237,10 @@ of how some key tasks can be carried out using Valet:
 - [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
 - [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
 
+### Running tests
+
+The project uses [Pest](http://pestphp.com) for testing. Running tests locally requires the presence of a database named `accessibilityexchange_test`. For more information about testing Laravel, [read the documentation]().
+
 ### Development workflow
 
 - This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
