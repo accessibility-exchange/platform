@@ -7,7 +7,7 @@
         </ol>
         <p class="h3">{{ __('Create new project') }}</p>
         <h1>
-            {{ __('Project Translations') }}
+            {{ __('Project translations') }}
         </h1>
     </x-slot>
 
