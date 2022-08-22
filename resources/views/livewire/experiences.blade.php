@@ -14,7 +14,7 @@
             </div>
             <div class="field @error("work_and_volunteer_experiences.{$i}.start_year") field--error @enderror">
                 <x-hearth-label :for="$name . '_start_year_' . $i" :value="__('Start year')" />
-                <x-hearth-input type="number" pattern="[0-9]*" inputmode="numeric" min="1900" :max="date('Y')" :id="$name . '_' . $i . '_start_year'" :name="$name . '[' . $i . '][start_year]'" :value="$experience['start_year']" />
+                <x-hearth-input type="number" pattern="[0-9]*" inputmode="numeric" min="1900" :max="date('Y')" :id="$name . '_' . $i . '_start_year'" :name="$name . '[' . $i . '][start_year]'" :value="$experience['start_year'] ?? ''" />
                 <x-hearth-error :for="$name . '_' . $i . '_start_year'" :field="$name . '.' . $i . '.start_year'" />
             </div>
             <div class="field @error("work_and_volunteer_experiences.{$i}.end_year") field--error @enderror">
