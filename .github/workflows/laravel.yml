@@ -42,7 +42,7 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
       - name: Run tests with Pest
         env:
-          DB_DATABASE: accessibilityexchange
+          DB_NAME: accessibilityexchange
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
