@@ -12,9 +12,11 @@ return [
     'cancel_invitation_succeeded' => 'L\'invitation a été annulée.',
     'email_not_valid' => 'Vous êtes connecté en tant que :email, mais cette invitation est pour une autre adresse e-mail.',
     'accept_invitation_succeeded' => 'Vous avez rejoint l\'équipe :invitationable.',
+    'decline_invitation_succeeded' => 'You have declined your invitation to join the :invitationable team.',
     'invitations_title' => 'Invitations des membres',
     'invitation_email' => 'Courriel',
     'invitation_status' => 'Statut',
     'invitation_role' => 'Rôle',
     'member_invited' => 'Invité',
+    'invitatation_title' => 'Invitation',
 ];
