@@ -88,7 +88,7 @@
                 <fieldset class="stack">
                     <legend><h2>{{ __('Accessibility and inclusion links (optional)') }}</h2></legend>
                     <p class="field__hint">{{ __('Please include any links that describes the accessibility and inclusion initiatives your regulated entity has. This can include reports, case studies, and more.') }}</p>
-                    <livewire:web-links name="accessibility_and_inclusion_links" :links="$regulatedOrganization->accessibility_and_inclusion_links ?? [['title' => '', 'url' => '']]" />
+                    <livewire:web-links name="accessibility_and_inclusion_links" :links="$regulatedOrganization->accessibility_and_inclusion_links ?? []" />
                 </fieldset>
 
 

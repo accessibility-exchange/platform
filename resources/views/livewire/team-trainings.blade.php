@@ -28,9 +28,7 @@
                 </div>
             </fieldset>
 
-            @if($loop->count > 1)
             <button class="secondary" type="button" wire:click="removeTraining({{ $i }})">{{ __('Remove this training') }}</button>
-            @endif
         </li>
         @endforeach
     </ul>

@@ -35,7 +35,7 @@
             <fieldset class="field stack">
                 <legend class="h4">{{ __('Training your team has received (optional)') }}</legend>
                 <p class="field__hint">{{ __('Please list any relevant training your team members have received.') }}</p>
-                <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => '']])" />
+                <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [])" />
             </fieldset>
 
             <fieldset class="field stack">

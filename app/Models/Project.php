@@ -147,7 +147,7 @@ class Project extends Model
 
                     return array_map(function ($training) {
                         $date = new Carbon($training['date']);
-                        $training['date'] = $date->translatedFormat('F Y');
+                        $training['date'] = $date->format('Y-m-d');
 
                         return $training;
                     }, $trainings);
