@@ -28,12 +28,16 @@ class RegulatedOrganizationPolicy
 
     public function view(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
-        return $regulatedOrganization->blockedBy($user)
-            ? Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
+        if ($regulatedOrganization->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
                 'regulatedOrganization' => '<strong>'.$regulatedOrganization->getTranslation('name', locale()).'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
-            ]))
-            : Response::allow();
+            ]));
+        }
+
+        return $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
     }
 
     public function update(User $user, RegulatedOrganization $regulatedOrganization): Response
