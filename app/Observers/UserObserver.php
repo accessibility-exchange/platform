@@ -20,6 +20,7 @@ class UserObserver
                 ))->decryptValue($user->name),
                 'first_language' => $user->locale,
                 'languages' => [$user->locale],
+                'roles' => $user->extra_attributes->invited_role ? [$user->extra_attributes->invited_role] : null,
             ]);
         }
     }

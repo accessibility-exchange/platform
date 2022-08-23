@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProjectNameRequest extends FormRequest
+class StoreEngagementOutreachRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class StoreProjectNameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'who' => 'required|in:individuals,organization',
         ];
     }
 }

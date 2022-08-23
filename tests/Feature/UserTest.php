@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use function Pest\Faker\faker;
 
 test('users can view the introduction', function () {
     $user = User::factory()->create();
@@ -81,12 +82,44 @@ test('user’s first name can be retrieved', function () {
     expect($user->first_name)->toEqual('Jonny');
 });
 
+test('user’s contact methods can be retrieved', function () {
+    $user = User::factory()->create();
+
+    expect($user->contact_methods)->toEqual(['email']);
+
+    $user->update([
+        'phone' => '19024445555',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+
+    $user->update([
+        'preferred_contact_person' => 'support-person',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'jenny@example.com',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email']);
+
+    $user->update([
+        'support_person_phone' => '19024445555',
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+
+    $user->update([
+        'support_person_email' => null,
+    ]);
+
+    expect($user->fresh()->contact_methods)->toEqual(['phone']);
+});
+
 test('user’s contact person can be retrieved', function () {
     $user = User::factory()->create(['name' => 'Jonny Appleseed', 'preferred_contact_person' => 'me', 'support_person_name' => 'Jenny Appleseed']);
 
     expect($user->contact_person)->toEqual('Jonny');
 
-    $user->update(['preferred_contact_person' => 'support_person']);
+    $user->update(['preferred_contact_person' => 'support-person']);
 
     expect($user->contact_person)->toEqual('Jenny Appleseed');
 });
@@ -100,7 +133,7 @@ test('user’s vrs requirement can be retrieved', function () {
 
     expect($user->requires_vrs)->toBeTrue();
 
-    $user->update(['preferred_contact_person' => 'support_person']);
+    $user->update(['preferred_contact_person' => 'support-person']);
 
     expect($user->requires_vrs)->toBeFalse();
 });
@@ -229,4 +262,31 @@ test('user’s alternate contact method can be retrieved', function () {
     $user->update(['preferred_contact_person' => 'me']);
 
     expect($user->alternate_contact_method)->toEqual("1 (905) 555-5555  \nJonny requires VRS for phone calls.");
+});
+
+test('user extra attributes and notification settings can be queried', function () {
+    $users = User::factory()->count(5)->create([
+        'extra_attributes' => [
+            'invited_role' => faker()->randomElement(['participant', 'consultant', 'connector']),
+        ],
+        'notification_settings' => [
+            'updates' => [
+                'channels' => [
+                    'contact',
+                ],
+            ],
+        ],
+    ]);
+
+    $invitedParticipants = User::withExtraAttributes('invited_role', 'participant')->get();
+
+    foreach ($invitedParticipants as $participant) {
+        expect($participant->extra_attributes->invited_role)->toEqual('participant');
+    }
+
+    $updateNotificationUsers = User::withNotificationSettings(['updates' => ['channels' => 'contact']])->get();
+
+    foreach ($updateNotificationUsers as $user) {
+        expect($user->notification_settings->updates->channels)->toEqual(['contact']);
+    }
 });

@@ -39,15 +39,14 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
         ];
 
         return [
-            'name.*' => ['nullable'] + $nameRules,
-            'name.en' => [
-                'required_without:name.fr',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
-            ] + $nameRules,
-            'name.fr' => [
-                'required_without:name.en',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
-            ] + $nameRules,
+            'name.*' => [
+                'nullable',
+                'string',
+                'max:255',
+                UniqueTranslationRule::for('regulated_organizations')->ignore($this->regulatedOrganization->id),
+            ],
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
@@ -68,11 +67,9 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'about.*' => ['nullable'] + $aboutRules,
             'about.en' => [
                 'required_without:about.fr',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
             ] + $aboutRules,
             'about.fr' => [
                 'required_without:about.en',
-                Rule::requiredIf($this->regulatedOrganization->type === 'government'),
             ] + $aboutRules,
             'accessibility_and_inclusion_links.*.title' => 'nullable|string|required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'nullable|active_url|required_with:accessibility_and_inclusion_links.*.title',

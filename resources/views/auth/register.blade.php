@@ -25,7 +25,6 @@
 
     <!-- Validation Errors -->
     <x-auth-validation-errors />
-
     @if(request()->get('step'))
         @include('auth.register.steps.' . request()->get('step'))
     @else
@@ -33,8 +32,6 @@
     @endif
 
     <p>
-        {{ __('Already have an account?') }} <a href="{{ localized_route('login') }}">
-            {{ __('Sign in.') }}
-        </a>
+        {!! __('If you already have an account, please :sign_in', ['sign_in' => '<a href="'.localized_route('login').'">'.__('sign in.').'</a>']) !!}
     </p>
 </x-app-layout>

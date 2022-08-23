@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
     /**
@@ -34,7 +35,7 @@ if (! function_exists('get_available_languages')) {
         ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
 
         if ($all) {
-            $result = $languages;
+            $result = array_filter($languages, fn ($language) => (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr')) || ! strpos($language, '_'), ARRAY_FILTER_USE_KEY);
         } else {
             $result = [];
             $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
@@ -167,5 +168,15 @@ if (! function_exists('normalize_url')) {
         }
 
         return $url;
+    }
+}
+
+if (! function_exists('context_from_model')) {
+    /**
+     * Get the context version (kebab case) of a model's class name.
+     */
+    function context_from_model(mixed $model): string
+    {
+        return Str::kebab(class_basename(get_class($model)));
     }
 }

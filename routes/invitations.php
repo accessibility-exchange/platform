@@ -10,6 +10,10 @@ Route::get('/invitations/{invitation}', [InvitationController::class, 'accept'])
     ->middleware(['signed'])
     ->name('invitations.accept');
 
+Route::delete('/invitations/{invitation}/decline', [InvitationController::class, 'decline'])
+    ->middleware(['auth'])
+    ->name('invitations.decline');
+
 Route::delete('/invitations/{invitation}/cancel', [InvitationController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('invitations.destroy');

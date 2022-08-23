@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AcceptInvitationRequest;
+use App\Http\Requests\DeclineInvitationRequest;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
@@ -15,13 +16,7 @@ use Illuminate\Support\Facades\Mail;
 
 class InvitationController extends Controller
 {
-    /**
-     * Create an invitation.
-     *
-     * @param  StoreInvitationRequest  $request
-     * @return RedirectResponse
-     */
-    public function create(StoreInvitationRequest $request)
+    public function create(StoreInvitationRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -36,14 +31,7 @@ class InvitationController extends Controller
         return redirect(localized_route('settings.edit-roles-and-permissions'));
     }
 
-    /**
-     * Accept the specified invitation.
-     *
-     * @param  AcceptInvitationRequest  $request
-     * @param  Invitation  $invitation
-     * @return RedirectResponse
-     */
-    public function accept(AcceptInvitationRequest $request, Invitation $invitation)
+    public function accept(AcceptInvitationRequest $request, Invitation $invitation): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -54,17 +42,24 @@ class InvitationController extends Controller
             'success'
         );
 
-        return redirect(localized_route($invitation->invitationable->getRoutePrefix().'.show', $invitation->invitationable));
+        return redirect(localized_route('dashboard'));
     }
 
-    /**
-     * Cancel the specified invitation.
-     *
-     * @param  Request  $request
-     * @param  Invitation  $invitation
-     * @return RedirectResponse
-     */
-    public function destroy(Request $request, Invitation $invitation)
+    public function decline(DeclineInvitationRequest $request, Invitation $invitation): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        $invitation->delete();
+
+        flash(
+            __('invitation.decline_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
+            'success'
+        );
+
+        return redirect(localized_route('dashboard'));
+    }
+
+    public function destroy(Request $request, Invitation $invitation): RedirectResponse
     {
         if (! Gate::forUser($request->user())->check('update', $invitation->invitationable)) {
             throw new AuthorizationException();

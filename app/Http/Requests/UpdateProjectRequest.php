@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\ProvinceOrTerritory;
+use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -16,15 +17,21 @@ class UpdateProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name.*' => 'nullable|string|max:255|unique_translation:projects',
-            'name.en' => 'required_without:name.fr|nullable|string|max:255',
-            'name.fr' => 'required_without:name.en|nullable|string|max:255',
-            'goals.*' => 'string|nullable',
-            'goals.en' => 'required_without:goals.fr|nullable|string',
-            'goals.fr' => 'required_without:goals.en|nullable|string',
-            'scope.*' => 'string|nullable',
-            'scope.en' => 'required_without:scope.fr|nullable|string',
-            'scope.fr' => 'required_without:scope.en|nullable|string',
+
+            'name.*' => [
+                'nullable',
+                'string',
+                'max:255',
+                UniqueTranslationRule::for('projects')->ignore($this->project->id),
+            ],
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'goals.*' => 'nullable|string',
+            'goals.en' => 'required_without:goals.fr',
+            'goals.fr' => 'required_without:goals.en',
+            'scope.*' => 'nullable|string',
+            'scope.en' => 'required_without:scope.fr',
+            'scope.fr' => 'required_without:scope.en',
             'regions' => 'required|array',
             'regions.*' => [
                 'nullable',

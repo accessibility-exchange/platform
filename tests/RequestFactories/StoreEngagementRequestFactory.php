@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Factories;
+namespace Tests\RequestFactories;
 
 use App\Models\Project;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Worksome\RequestFactories\RequestFactory;
 
-class EngagementFactory extends Factory
+class StoreEngagementRequestFactory extends RequestFactory
 {
     public function definition(): array
     {

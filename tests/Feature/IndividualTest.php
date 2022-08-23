@@ -781,7 +781,7 @@ test('individual view routes can be retrieved based on role', function () {
 
     $individual = $individual->fresh();
 
-    expect($individual->steps()[2]['show'])->toEqual('individuals.show-constituencies');
+    expect($individual->steps()[2]['show'])->toEqual('individuals.show');
 });
 
 test('individual relationships to projects can be derived from both projects and engagements', function () {

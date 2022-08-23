@@ -18,8 +18,16 @@ class RedirectForOnboarding
             return redirect(localized_route('individuals.show-role-selection'));
         }
 
+        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization && $user->extra_attributes->get('invitation')) {
+            return $next($request);
+        }
+
         if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization) {
             return redirect(localized_route('regulated-organizations.show-type-selection'));
+        }
+
+        if ($user->context === 'organization' && ! $user->organization && $user->extra_attributes->get('invitation')) {
+            return $next($request);
         }
 
         if ($user->context === 'organization' && ! $user->organization) {

@@ -72,30 +72,55 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     cp .env.example .env
     ```
 
-5. Start the development environment by running the following command from within the project directory:
+   Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
+    ```
+    
+5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+
+    ```bash
+    openssl rand -hex 32
+    ```
+
+   Add it to your `.env` file:
+
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
+    ```
+
+6. Start the development environment by running the following command from within the project directory:
 
     ```bash
     sail up -d
     ```
 
-6. Install Composer and NPM dependencies:
+7. Install Composer and NPM dependencies:
 
     ```bash
     sail composer install
     sail npm install
     ```
     
-7. Generate an application key:
+8. Generate an application key:
 
     ```bash
     sail artisan key:generate
     ```
 
-8. Run the required database migrations:
+9. Run the required database migrations:
 
     ```bash
     sail artisan migrate
     ```
+
+10. Download the application fonts:
+
+    ```bash
+    sail artisan google-fonts:fetch
+    ```
+
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Sail:
 
@@ -106,10 +131,10 @@ of how some key tasks can be carried out using Sail:
 ### Local development setup using Laravel Valet
 
 1. Install [Homebrew](https://brew.sh).
-2. Install PHP 8.0 via Homebrew:
+2. Install PHP 8.1 via Homebrew:
    
    ```bash
-   brew install php@8.0
+   brew install php@8.1
    ```
    
 3. Install [Composer](https://getcomposer.org/).
@@ -133,35 +158,77 @@ of how some key tasks can be carried out using Sail:
     cp .env.example .env
     ```
    
-7. Install Composer and NPM dependencies:
+    Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
+    ```
+
+8. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+
+    ```bash
+    openssl rand -hex 32
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
+    ```
+
+9. Install Composer and NPM dependencies:
 
     ```bash
     composer install
     npm install
     ```
 
-8. Generate an application key:
+10. Generate an application key:
 
-    ```bash
-    php artisan key:generate
-    ```
-9. Create a database:
+     ```bash
+     php artisan key:generate
+     ```
+ 
+11. Create a database:
 
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     ```
 
-10. Run the required database migrations:
+12. Run the required database migrations:
 
      ```bash
      php artisan migrate
      ``` 
-   
-11. Tell Valet to serve the application:
+
+13. Download the application fonts:
+
+    ```bash
+    php artisan google-fonts:fetch
+    ```
+
+14. Tell Valet to serve the application:
 
       ```bash
       valet link
       ```
+
+15. Install [Mailhog](https://github.com/mailhog/MailHog) so that you can access transactional email from the platform:
+
+    ```bash
+    brew install mailhog
+    brew services start mailhog
+    ```
+    
+    Then, make sure that your `.env` file contains the following values:
+
+    ```dotenv
+    MAIL_MAILER=smtp
+    MAIL_HOST=127.0.0.1
+    MAIL_PORT=1025
+    ```
+    
+    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Valet:
@@ -170,19 +237,24 @@ of how some key tasks can be carried out using Valet:
 - [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
 - [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
 
+### Running tests
+
+The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
+
 ### Development workflow
 
--   This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
+- This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
     All commit messages and pull request titles must follow these standards.
--   The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains refined features
+- The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains features
     that have been prototyped and gone through one or more co-design sessions.
--   Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
-    must be named according to the format `feat/<feature>`. Once a refined feature is ready to merge into `dev`, the
-    merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
--   The [`main`](https://github.com/accessibility-exchange/platform/tree/main) branch contains refined features that
+- Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
+    must be named according to the format `feat/<feature>`.
+- Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+- Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
+- The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined features that
     are considered production-ready.
--   Prereleases must be tagged from the `dev` branch.
--   Releases must be tagged from the `main` branch.
+- Prereleases must be tagged from the `dev` branch.
+- Releases must be tagged from the `production` branch.
 
 ## License
 
