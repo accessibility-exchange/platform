@@ -16,7 +16,7 @@ Route::controller(EngagementController::class)
     ->name('engagements.')
     ->group(function () {
         Route::multilingual('/{engagement}', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');
 
         Route::multilingual('/{engagement}/outreach/select', 'showOutreachSelection')

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('engagements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('project_id')
                 ->constrained()
                 ->onDelete('cascade');

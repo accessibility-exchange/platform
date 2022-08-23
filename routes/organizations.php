@@ -9,7 +9,7 @@ Route::controller(OrganizationController::class)
     ->name('organizations.')
     ->group(function () {
         Route::multilingual('', 'index')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Organization'])
             ->name('index');
 
         Route::multilingual('/type/select', 'showTypeSelection')

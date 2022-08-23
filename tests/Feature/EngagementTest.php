@@ -82,14 +82,14 @@ test('users can view engagements', function () {
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show', ['project' => $engagement->project, 'engagement' => $engagement->id]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.show', $engagement));
     $response->assertOk();
 });
 
 test('guests cannot view engagements', function () {
     $engagement = Engagement::factory()->create();
 
-    $response = $this->get(localized_route('engagements.show', ['project' => $engagement->project, 'engagement' => $engagement->id]));
+    $response = $this->get(localized_route('engagements.show', $engagement));
     $response->assertRedirect(localized_route('login'));
 });
 
@@ -194,6 +194,6 @@ test('engagement participants can participate in engagements', function () {
     $this->assertTrue($engagement->participants->isNotEmpty());
     $this->assertTrue($engagement->confirmedParticipants->isNotEmpty());
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.participate', ['project' => $engagement->project, 'engagement' => $engagement]));
+    $response = $this->actingAs($user)->get(localized_route('engagements.participate', $engagement));
     $response->assertOk();
 });

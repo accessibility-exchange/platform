@@ -651,7 +651,7 @@ test('registered users can access my projects page', function () {
 
     $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
-    $response->assertNotFound();
+    $response->assertForbidden();
 });
 
 test('guests can not access my projects page', function () {

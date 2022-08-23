@@ -10,6 +10,7 @@ class EngagementFactory extends Factory
     public function definition(): array
     {
         return [
+            'published_at' => date('Y-m-d h:i:s', time()),
             'project_id' => Project::factory(),
             'name' => ['en' => 'Workshop'],
             'format' => 'workshop',

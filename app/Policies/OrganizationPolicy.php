@@ -11,6 +11,14 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+                ? Response::allow()
+                : Response::deny();
+    }
+
     public function create(User $user): Response
     {
         return $user->context === 'organization' && $user->organizations->isEmpty()
@@ -20,12 +28,16 @@ class OrganizationPolicy
 
     public function view(User $user, Organization $organization): Response
     {
-        return $organization->blockedBy($user)
-            ? Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
+        if ($organization->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
                 'organization' => '<strong>'.$organization->getTranslation('name', locale()).'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
-            ]))
-            : Response::allow();
+            ]));
+        }
+
+        return $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
     }
 
     public function update(User $user, Organization $organization): Response

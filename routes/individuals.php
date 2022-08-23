@@ -6,7 +6,7 @@ Route::controller(IndividualController::class)->prefix('individuals')
     ->name('individuals.')
     ->group(function () {
         Route::multilingual('', 'index')
-            ->middleware(['auth', 'verified'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Individual'])
             ->name('index');
 
         Route::multilingual('/roles/select', 'showRoleSelection')
