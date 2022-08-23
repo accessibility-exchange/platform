@@ -80,6 +80,7 @@ select {
     padding-inline-end: var(--space-12);
 }
 
+.field--error select,
 select[aria-invalid="true"] {
     background-image: var(
         --select-error-chevron,
