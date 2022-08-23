@@ -84,7 +84,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'notification_settings',
     ];
 
-    protected array $cascadeDeletes = [
+    protected mixed $cascadeDeletes = [
         'organizations',
         'regulatedOrganizations',
     ];

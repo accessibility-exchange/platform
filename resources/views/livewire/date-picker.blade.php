@@ -10,7 +10,7 @@
     <div class="flex flex-wrap md:flex-nowrap gap-4 w-full">
         <div class="field stack @error($name) field--error @enderror">
             <x-hearth-label :for="$name . '_year'" :value="__('forms.label_year')" />
-            <x-hearth-input class="w-20" type="number" :name="$name . '_year'" :min="$minimumYear" pattern="[0-9]*" inputmode="numeric" :required="$required" :disabled="$disabled" :aria-describedby="$name.'-hint'" :value="old($name.'_year')" wire:model.lazy="year" />
+            <x-hearth-input class="w-20" type="number" :name="$name . '_year'" :min="$minimumYear ?? $maximumYear - 25" :max="$maximumYear ?? $minimumYear + 25" pattern="[0-9]*" inputmode="numeric" :required="$required" :disabled="$disabled" :aria-describedby="$name.'-hint'" :value="old($name.'_year')" wire:model.lazy="year" />
         </div>
 
         <div class="field stack @error($name) field--error @enderror">
