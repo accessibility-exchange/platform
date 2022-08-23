@@ -4,19 +4,19 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserProjectsController;
 
 Route::multilingual('/projects', [UserProjectsController::class, 'show'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
     ->name('projects.my-projects');
 
 Route::multilingual('/projects/contracted', [UserProjectsController::class, 'showContracted'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
     ->name('projects.my-contracted-projects');
 
 Route::multilingual('/projects/participating', [UserProjectsController::class, 'showParticipating'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
     ->name('projects.my-participating-projects');
 
 Route::multilingual('/projects/running', [UserProjectsController::class, 'showRunning'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
     ->name('projects.my-running-projects');
 
 Route::controller(ProjectController::class)
@@ -24,7 +24,7 @@ Route::controller(ProjectController::class)
     ->name('projects')
     ->group(function () {
         Route::multilingual('/all', 'index')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
             ->name('.index');
 
         Route::multilingual('/context/select', 'showContextSelection')
@@ -55,19 +55,19 @@ Route::controller(ProjectController::class)
             ->name('.store');
 
         Route::multilingual('/{project}', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:view,project'])
             ->name('.show');
 
         Route::multilingual('/{project}/team', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:view,project'])
             ->name('.show-team');
 
         Route::multilingual('/{project}/engagements', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:view,project'])
             ->name('.show-engagements');
 
         Route::multilingual('/{project}/outcomes', 'show')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:view,project'])
             ->name('.show-outcomes');
 
         Route::multilingual('/{project}/edit', 'edit')
