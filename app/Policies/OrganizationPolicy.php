@@ -16,7 +16,7 @@ class OrganizationPolicy
         return
              $user->individual || $user->organization || $user->regulated_organization
                 ? Response::allow()
-                : Response::denyAsNotFound();
+                : Response::deny();
     }
 
     public function create(User $user): Response
