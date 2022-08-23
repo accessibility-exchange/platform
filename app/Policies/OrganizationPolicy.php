@@ -11,6 +11,14 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+                ? Response::allow()
+                : Response::denyAsNotFound();
+    }
+
     public function create(User $user): Response
     {
         return $user->context === 'organization' && $user->organizations->isEmpty()

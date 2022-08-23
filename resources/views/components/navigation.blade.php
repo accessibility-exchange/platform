@@ -10,7 +10,7 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
-        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
+        @if(Auth::user()->can('viewAny', 'App\Models\Project'))
         <li>
             <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                 {{ __('Projects') }}
@@ -31,7 +31,11 @@
         @endauth
 
         @auth
-        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
+        @if(
+            Auth::user()->can('viewAny', 'App\Models\Individual')
+            || Auth::user()->can('viewAny', 'App\Models\Organization')
+            || Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization')
+        )
         <li>
             <x-nav-link :href="localized_route('people-and-organizations')">
                 {{ __('People and organizations') }}

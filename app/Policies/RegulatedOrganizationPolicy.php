@@ -18,6 +18,14 @@ class RegulatedOrganizationPolicy
             : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
     }
 
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+                ? Response::allow()
+                : Response::deny();
+    }
+
     public function view(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
         return $regulatedOrganization->blockedBy($user)

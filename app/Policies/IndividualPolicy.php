@@ -11,13 +11,14 @@ class IndividualPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  User  $user
-     * @param  Individual  $model
-     * @return Response
-     */
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
     public function view(User $user, Individual $model): Response
     {
         if ($model->checkStatus('draft')) {
