@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Makeable\EloquentStatus\HasStatus;
 use Spatie\Translatable\HasTranslations;
 
 class Engagement extends Model
 {
     use HasFactory;
+    use HasStatus;
     use HasTranslations;
 
     protected $attributes = [

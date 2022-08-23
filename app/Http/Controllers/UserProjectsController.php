@@ -12,48 +12,33 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->regulatedOrganization) {
-            $projectable = $user->projectable();
+        if ($user->regulated_organization) {
+            $projectable = $user->regulated_organization;
             $projectable->load('projects');
-
-            return view('projects.my-projects', [
-                'user' => $user,
-                'projectable' => $projectable,
-            ]);
         }
 
-        $projectable = null;
-        $section = null;
-
         if ($user->organization) {
-            if ($user->organization->isConsultant() || $user->organization->isConnector()) {
+            $projectable = $user->organization;
+            if ($projectable->isConsultant() || $projectable->isConnector()) {
                 $section = 'contracted';
-            } elseif ($user->organization->isParticipant()) {
+            } elseif ($projectable->isParticipant()) {
                 $section = 'participating';
             } else {
-                $projectable = $user->projectable();
                 $projectable->load('projects');
             }
-
-            return view('projects.my-projects', [
-                'user' => $user,
-                'projectable' => $projectable,
-                'section' => $section,
-            ]);
         }
 
         if ($user->context === 'individual') {
             if (! $user->individual->isParticipant()) {
                 $section = 'contracted';
             }
-
-            return view('projects.my-projects', [
-                'user' => $user,
-                'section' => $section,
-            ]);
         }
 
-        abort(404);
+        return view('projects.my-projects', [
+            'user' => $user,
+            'projectable' => $projectable ?? null,
+            'section' => $section ?? null,
+        ]);
     }
 
     public function showContracted(): Response|View

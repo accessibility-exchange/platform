@@ -10,7 +10,7 @@
                 {{ __('Dashboard') }}
             </x-nav-link>
         </li>
-        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
+        @if(Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewAny', 'App\Models\Project'))
         <li>
             <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                 {{ __('Projects') }}
@@ -31,18 +31,23 @@
         @endauth
 
         @auth
-        @if(Auth::user()->individual || Auth::user()->organization || Auth::user()->regulatedOrganization)
+        @if(
+            Auth::user()->hasVerifiedEmail()
+            && Auth::user()->can('viewAny', 'App\Models\Individual')
+            && Auth::user()->can('viewAny', 'App\Models\Organization')
+            && Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization')
+        )
         <li>
             <x-nav-link :href="localized_route('people-and-organizations')">
                 {{ __('People and organizations') }}
             </x-nav-link>
         </li>
+        @endif
         <li>
             <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
                 {{ __('Resources and training') }}
             </x-nav-link>
         </li>
-        @endif
         <li class="account">
             <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
                 <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
