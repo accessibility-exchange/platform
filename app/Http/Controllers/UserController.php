@@ -53,7 +53,8 @@ class UserController extends Controller
     {
         $skipTo = match (Auth::user()->context) {
             'individual' => localized_route('individuals.show-role-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
+            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
