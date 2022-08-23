@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use Carbon\Exceptions\InvalidFormatException;
-use Carbon\Exceptions\OutOfRangeException;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
 
@@ -50,17 +49,13 @@ class DatePicker extends Component
 
     public function getDateProperty(): string
     {
-        if ($this->year && $this->month && $this->day) {
-            try {
-                $date = Carbon::create((int) $this->year, (int) $this->month, (int) $this->day);
+        try {
+            $date = Carbon::createFromFormat('Y-m-d', implode('-', [$this->year, $this->month, $this->day]));
 
-                return $date->format('Y-m-d');
-            } catch (OutOfRangeException|InvalidFormatException $exception) {
-                return implode('-', [$this->year, $this->month, $this->day]);
-            }
+            return $date->format('Y-m-d');
+        } catch (InvalidFormatException $exception) {
+            return implode('-', [$this->year, $this->month, $this->day]);
         }
-
-        return implode('-', [$this->year, $this->month, $this->day]);
     }
 
     public function render()

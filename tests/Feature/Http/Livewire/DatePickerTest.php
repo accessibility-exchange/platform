@@ -18,6 +18,10 @@ test('incorrectly filled date picker can be rendered', function () {
         ->assertSee('name="date" id="date" type="hidden" value="2022-08-"', false);
 
     livewire(DatePicker::class, ['name' => 'date', 'value' => '2022-08-01'])
-        ->set('year', 0)
-        ->assertSee('name="date" id="date" type="hidden" value="0-08-1"', false);
+        ->set('year', '')
+        ->assertSee('name="date" id="date" type="hidden" value="-08-1"', false);
+
+    livewire(DatePicker::class, ['name' => 'date', 'value' => '2022-08-01'])
+        ->set('day', '')
+        ->assertSee('name="date" id="date" type="hidden" value="2022-08-"', false);
 });
