@@ -102,7 +102,7 @@ test('individual users can block and unblock organizations', function () {
 
 test('individual users can block and unblock individuals', function () {
     $user = User::factory()->create();
-    $individual = Individual::factory()->create();
+    $individual = Individual::factory()->create(['roles' => ['consultant'], 'consulting_services' => ['analysis']]);
 
     $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
     $response->assertSee('Block');
