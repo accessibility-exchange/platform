@@ -30,7 +30,7 @@
         <h2>{{ __('Sign up deadline') }}</h2>
 
         <div class="field @error('signup_by_date') field--error @enderror">
-            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
         </div>
 
         <button class="w-1/2">{{ __('Save') }}</button>

@@ -26,9 +26,8 @@
                 <x-hearth-checkbox :id="$name . '_' . $i . '_current'" :name="$name . '[' . $i . '][current]'" :checked="$experience['current'] ?? false" />
                 <x-hearth-label :for="$name . '_' . $i . '_current'" :value="__('I currently work or volunteer here')" />
             </div>
-            @if($loop->count > 1)
+
             <button class="secondary" type="button" wire:click="removeExperience({{ $i }})">{{ __('Remove experience') }}</button>
-            @endif
         </li>
         @endforeach
     </ul>
