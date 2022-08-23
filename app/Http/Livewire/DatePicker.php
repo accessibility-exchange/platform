@@ -28,7 +28,9 @@ class DatePicker extends Component
 
     public array $months;
 
-    public int $minimumYear = 2022;
+    public int|null $minimumYear = null;
+
+    public int|null $maximumYear = null;
 
     public function mount(): void
     {

@@ -11,7 +11,7 @@
                     <x-hearth-error :for="'team_trainings_' . $i . '_name'" :field="'team_trainings.' . $i . '.name'" />
                 </div>
 
-                <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
+                <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25" :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
             </fieldset>
             <fieldset>
                 <legend>{{ __('Training organization or trainer') }}</legend>

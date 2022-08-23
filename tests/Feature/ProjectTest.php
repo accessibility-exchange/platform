@@ -513,7 +513,7 @@ test('project retrieves team trainings properly', function () {
         ],
     ]);
 
-    expect($project->team_trainings[0]['date'])->toEqual('April 2022');
+    expect($project->team_trainings[0]['date'])->toEqual('2022-04-01');
 
     $projectWithNullTrainings = Project::factory()->create([
         'team_trainings' => [
