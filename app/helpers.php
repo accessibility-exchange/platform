@@ -35,7 +35,45 @@ if (! function_exists('get_available_languages')) {
         ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
 
         if ($all) {
-            $result = array_filter($languages, fn ($language) => (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr')) || ! strpos($language, '_'), ARRAY_FILTER_USE_KEY);
+            $result = array_filter(
+                $languages,
+                function ($language) {
+                    return
+                        (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
+                        || ! strpos($language, '_')
+                        || in_array($language, [
+                            'egy',
+                            'grc',
+                            'zbl',
+                            'nwc',
+                            'syc',
+                            'eo',
+                            'jam',
+                            'dum',
+                            'enm',
+                            'frm',
+                            'gmh',
+                            'mga',
+                            'mul',
+                            'mgo',
+                            'zxx',
+                            'ang',
+                            'fro',
+                            'goh',
+                            'sga',
+                            'non',
+                            'peo',
+                            'pro',
+                            'pfl',
+                            'pdc',
+                            'de_CH',
+                            'frc',
+                            'und',
+                            'tlh',
+                        ]);
+                },
+                ARRAY_FILTER_USE_KEY
+            );
         } else {
             $result = [];
             $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
