@@ -38,4 +38,15 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en|nullable|string',
         ];
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'team_trainings' => array_map(function ($training) {
+                $training['trainer_url'] = normalize_url($training['trainer_url']);
+
+                return $training;
+            }, $this->team_trainings ?? []),
+        ]);
+    }
 }
