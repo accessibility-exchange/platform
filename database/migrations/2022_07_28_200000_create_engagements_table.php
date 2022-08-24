@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('project_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->json('languages')->nullable();
             $table->json('name');
             $table->json('description')->nullable();
             $table->string('format');

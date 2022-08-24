@@ -28,6 +28,8 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
+        $data['languages'] = $project->languages;
+
         $engagement = Engagement::create($data);
 
         flash(__('Your engagement has been created.'), 'success');
