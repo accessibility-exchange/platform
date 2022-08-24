@@ -2,14 +2,18 @@
 
 use App\Http\Controllers\EngagementController;
 
-Route::multilingual('/projects/{project}/engagements/create', [EngagementController::class, 'create'])
-    ->middleware(['auth', 'can:createEngagement,project'])
-    ->name('engagements.create');
+Route::controller(EngagementController::class)
+    ->name('engagements.')
+    ->group(function () {
+        Route::multilingual('/projects/{project}/engagements/create', 'create')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('create');
 
-Route::multilingual('/projects/{project}/engagements/create', [EngagementController::class, 'store'])
-    ->method('post')
-    ->middleware(['auth', 'can:createEngagement,project'])
-    ->name('engagements.store');
+        Route::multilingual('/projects/{project}/engagements/create', 'store')
+            ->method('post')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('store');
+    });
 
 Route::controller(EngagementController::class)
     ->prefix('engagements')
