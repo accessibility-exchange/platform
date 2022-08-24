@@ -14,7 +14,7 @@
                 </div>
             </x-invitation>
         @endif
-        <p>{{ $user->name }}@if($memberable), {{ $memberable->name }}@endif</p>
+        <p>{{ $memberable->name }} - {{ $user->name }}@if($memberable)@endif</p>
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>

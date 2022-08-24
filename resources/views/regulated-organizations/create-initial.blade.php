@@ -6,23 +6,6 @@
         <h1>{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}</h1>
     </x-slot>
 
-    @foreach(['en', 'fr'] as $locale)
-        @error('name.' . $locale)
-            @if($message === __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
-            <div class="stack">
-                @php
-                $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
-                @endphp
-                <x-hearth-alert type="error">
-                    {{ __('There is already a :type with the name “:name” on this website. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
-                </x-hearth-alert>
-                <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
-            </div>
-            @break
-            @endif
-        @enderror
-    @endforeach
-
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
         <fieldset class="stack">
             <legend>{{ __('Your organization’s name') }}</legend>
@@ -40,8 +23,25 @@
             <x-hearth-input type="hidden" name="type" :value="$type" />
         </fieldset>
 
-        <button>{{ __('Create') }}</button>
+        <button>{{ __('Create Organization') }}</button>
 
         @csrf
     </form>
+
+    @foreach(['en', 'fr'] as $locale)
+        @error('name.' . $locale)
+            @if($message === __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
+            <div class="stack">
+                @php
+                $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first()
+                @endphp
+                <x-hearth-alert type="error">
+                    {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
+                </x-hearth-alert>
+                <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
+            </div>
+            @break
+            @endif
+        @enderror
+    @endforeach
 </x-app-layout>
