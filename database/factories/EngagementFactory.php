@@ -14,6 +14,7 @@ class EngagementFactory extends Factory
             'project_id' => Project::factory(),
             'name' => ['en' => 'Workshop'],
             'format' => 'workshop',
+            'recruitment' => 'open-call',
             'ideal_participants' => 25,
             'minimum_participants' => 15,
             'paid' => true,

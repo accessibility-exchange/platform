@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,6 +53,7 @@ class Engagement extends Model
     ];
 
     protected $casts = [
+        'published_at' => 'datetime:Y-m-d',
         'name' => 'array',
         'ideal_participants' => 'integer',
         'minimum_participants' => 'integer',
@@ -73,6 +77,20 @@ class Engagement extends Model
         'description',
         'payment',
     ];
+
+    public function displayFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => EngagementFormat::labels()[$attributes['format']],
+        );
+    }
+
+    public function displayRecruitment(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => EngagementRecruitment::labels()[$attributes['recruitment']],
+        );
+    }
 
     public function project(): BelongsTo
     {
