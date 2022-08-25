@@ -13,7 +13,7 @@ enum RegulatedOrganizationType: string
         return [
             'government' => __('Government'),
             'business' => __('Business'),
-            'public-sector' => __('Other public sector organization'),
+            'public-sector' => __('Other public sector organization, which is regulated by the Accessible Canada Act'),
         ];
     }
 }
