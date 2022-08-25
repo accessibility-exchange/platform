@@ -8,6 +8,7 @@ use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementOutreachRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
+use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Models\Engagement;
 use App\Models\Project;
@@ -115,6 +116,24 @@ class EngagementController extends Controller
             'project' => $engagement->project,
             'engagement' => $engagement,
         ]);
+    }
+
+    public function editLanguages(Engagement $engagement): View
+    {
+        return view('engagements.show-language-edit', [
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function updateLanguages(UpdateEngagementLanguagesRequest $request, Engagement $engagement): RedirectResponse
+    {
+        $engagement->fill($request->validated());
+        $engagement->save();
+
+        flash(__('Your engagement translations have been updated.'), 'success');
+
+        return redirect(localized_route('engagements.manage', $engagement));
     }
 
     public function update(UpdateEngagementRequest $request, Engagement $engagement)

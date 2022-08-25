@@ -24,8 +24,8 @@ return new class extends Migration
             $table->json('name');
             $table->json('description')->nullable();
             $table->string('format');
-            $table->integer('ideal_participants');
-            $table->integer('minimum_participants');
+            $table->integer('ideal_participants')->nullable();
+            $table->integer('minimum_participants')->nullable();
             $table->string('who')->nullable();
             $table->string('recruitment')->nullable();
             $table->json('regions')->nullable();

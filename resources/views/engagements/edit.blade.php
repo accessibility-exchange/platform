@@ -5,11 +5,12 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             <li><a href="{{ localized_route('projects.show', $engagement->project) }}">{{ $engagement->project->name }}</a></li>
-            <li><a href="{{ localized_route('engagements.show', ['project' => $project, 'engagement' => $engagement]) }}">{{ $engagement->name }}</a></li>
+            <li><a href="{{ localized_route('engagements.show', $engagement) }}">{{ $engagement->name }}</a></li>
         </ol>
         <h1>
             {{ __('Edit engagement details') }}
         </h1>
+        <p><a href="{{ localized_route('engagements.edit-languages', $engagement) }}">{{ __('Edit page translations') }}</a></p>
     </x-slot>
 
     <!-- Form Validation Errors -->
