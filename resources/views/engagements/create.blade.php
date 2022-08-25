@@ -31,26 +31,6 @@
             <x-hearth-error for="format" />
         </fieldset>
 
-        <fieldset class="field stack">
-            <legend>{{ __('How many participants would you like to engage?') }}</legend>
-
-            <x-hearth-hint for="participants">{{ __('Please enter a number, for example 20') }}</x-hearth-hint>
-
-            <div class="field @error('ideal_participants') field--error @enderror">
-                <x-hearth-label for="ideal_participants">{{ __('Ideal number of participants') }}</x-hearth-label>
-                <x-hearth-hint for="ideal_participants">{{ __('This is the ideal number of participants you would like to have for this engagement.') }}</x-hearth-hint>
-                <x-hearth-input name="ideal_participants" type="number" :value="old('ideal_participants')" min="1" hinted required />
-                <x-hearth-error for="ideal_participants" />
-            </div>
-
-            <div class="field @error('minimum_participants') field--error @enderror">
-                <x-hearth-label for="minimum_participants">{{ __('Minimum number of participants') }}</x-hearth-label>
-                <x-hearth-hint for="minimum_participants">{{ __('The least number of participants you can have to go forward with your engagement.') }}</x-hearth-hint>
-                <x-hearth-input name="minimum_participants" type="number" :value="old('minimum_participants')" min="1" hinted required />
-                <x-hearth-error for="minimum_participants" />
-            </div>
-        </fieldset>
-
         <div class="repel">
             <a class="cta secondary" href="{{ localized_route('engagements.show-language-selection', $project) }}">{{ __('Back') }}</a>
             <button>{{ __('Next') }}</button>

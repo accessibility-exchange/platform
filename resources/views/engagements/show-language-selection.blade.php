@@ -15,10 +15,10 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Please select the languages that your organization is able to translate your engagement details to.') }}</p>
+    <p>{{ __('Please select the languages that your engagement information can be translated into by your organization.') }}</p>
 
     <x-hearth-alert :title="__('Recommendation')">
-        <p>{{ __('Although it is not compulsory, we highly recommend that you add French, American Sign Language (ASL) and Langue des signes du Québec (LSQ) translations to your content. These languages are listed under the Accessible Canada Act.') }}</p>
+        <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.') }}</p>
     </x-hearth-alert>
 
     <h2>{{ __('Translations') }}</h2>
