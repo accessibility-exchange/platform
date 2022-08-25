@@ -11,7 +11,7 @@
 
     <form class="stack" action="{{ localized_route('regulated-organizations.store-type') }}" method="post" novalidate>
         <fieldset class="field @error('type') field--error @enderror">
-            <legend>{{ __('What type of regulated organization are you?') }}</legend>
+            <legend>{{ __('Please identify the type of Regulated Organization yours is:') }}</legend>
             <x-hearth-radio-buttons name="type" :options="$types" :checked="old('type', '')" />
             <x-hearth-error for="type" />
         </fieldset>

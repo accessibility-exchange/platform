@@ -12,7 +12,7 @@
     <!-- Email Address -->
     <div class="field @error('email') field--error @enderror stack">
         <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-        <x-hearth-hint for="email">{{ __('This is the email address you will use to sign in.') }}</x-hearth-hint>
+        <x-hearth-hint for="email">{{ __('This is the email address you will use to sign in to The Accessibility Exchange.') }}</x-hearth-hint>
         <x-hearth-input type="email" name="email" value="{{ old('email', session('email')) }}" required />
         <x-hearth-error for="email" />
     </div>
