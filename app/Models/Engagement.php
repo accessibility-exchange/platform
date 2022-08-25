@@ -24,6 +24,7 @@ class Engagement extends Model
 
     protected $fillable = [
         'project_id',
+        'languages',
         'name',
         'format',
         'ideal_participants',
@@ -54,6 +55,7 @@ class Engagement extends Model
 
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
+        'languages' => 'array',
         'name' => 'array',
         'ideal_participants' => 'integer',
         'minimum_participants' => 'integer',

@@ -52,7 +52,7 @@
         </fieldset>
 
         <div class="repel">
-            <a class="cta secondary" href="{{ localized_route('projects.manage', $project) }}">{{ __('Cancel') }}</a>
+            <a class="cta secondary" href="{{ localized_route('engagements.show-language-selection', $project) }}">{{ __('Back') }}</a>
             <button>{{ __('Next') }}</button>
         </div>
     </form>

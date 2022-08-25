@@ -16,6 +16,15 @@ test('users with regulated organization admin role can create engagements', func
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-language-selection', $project));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->post(localized_route('engagements.store-languages', $project), [
+        'languages' => ['en', 'fr', 'ase', 'fcs'],
+    ]);
+    $response->assertRedirect(localized_route('engagements.create', $project));
+    $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+
     $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
     $response->assertOk();
 
@@ -23,7 +32,9 @@ test('users with regulated organization admin role can create engagements', func
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->post(localized_route('engagements.store', $project), $data);
+    $response = $this->withSession([
+        'languages' => ['en', 'fr', 'ase', 'fcs'],
+    ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
     $response->assertSessionHasNoErrors();
 

@@ -6,8 +6,8 @@
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></li>
         </ol>
-        <p>{{ __('Create engagement') }}</p>
-        <h1>
+        <p class="h4">{{ __('Create engagement') }}</p>
+        <h1 class="mt-0">
             {{ __('How do you want to recruit them?') }}
         </h1>
     </x-slot>

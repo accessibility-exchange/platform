@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementOutreachRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
@@ -16,6 +17,23 @@ use Spatie\LaravelOptions\Options;
 
 class EngagementController extends Controller
 {
+    public function showLanguageSelection(Project $project): View
+    {
+        return view('engagements.show-language-selection', [
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'project' => $project,
+        ]);
+    }
+
+    public function storeLanguages(StoreEngagementLanguagesRequest $request, Project $project): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('languages', $data['languages']);
+
+        return redirect(localized_route('engagements.create', $project));
+    }
+
     public function create(Project $project): View
     {
         return view('engagements.create', [
@@ -28,9 +46,11 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
-        $data['languages'] = $project->languages;
+        $data['languages'] = session('languages', $project->languages);
 
         $engagement = Engagement::create($data);
+
+        session()->forget('languages');
 
         flash(__('Your engagement has been created.'), 'success');
 

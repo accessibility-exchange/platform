@@ -1,14 +1,16 @@
-<div class="stack" x-data="translationPicker([ @foreach($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if(!$loop->last), @endif @endforeach ], {
+<div class="translation-picker stack" x-data="translationPicker([ @foreach($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if(!$loop->last), @endif @endforeach ], {
                 @foreach($availableLanguages as $language)@if($language['value'] !== '')'{{ $language['value'] }}': '{{ $language['label'] }}'@if(!$loop->last),
                 @endif @endif @endforeach
     })">
-    <template x-for="(language, index) in languages">
-        <div>
-            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
+    <div class="languages">
+        <template x-for="(language, index) in languages">
+            <div class="h-14 flex w-full justify-between items-center first-of-type:border-t-0 border border-solid border-x-0 border-b-0 border-t-grey-3">
+                <p class="repel w-full"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
 
-            <input name="languages[]" type="hidden" x-bind:value="language.code" />
-        </div>
-    </template>
+                <input name="languages[]" type="hidden" x-bind:value="language.code" />
+            </div>
+        </template>
+    </div>
 
     <div x-data="modal()">
         <button type="button" class="secondary" @click="showModal">{{ __('Add language') }}</button>

@@ -5,6 +5,15 @@ use App\Http\Controllers\EngagementController;
 Route::controller(EngagementController::class)
     ->name('engagements.')
     ->group(function () {
+        Route::multilingual('/projects/{project}/engagements/create/languages/select', 'showLanguageSelection')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('show-language-selection');
+
+        Route::multilingual('/projects/{project}/engagements/create/store-languages', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('store-languages');
+
         Route::multilingual('/projects/{project}/engagements/create', 'create')
             ->middleware(['auth', 'can:createEngagement,project'])
             ->name('create');
