@@ -7,7 +7,7 @@
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
         <div class="field__hint" id="password-hint">
-            {{ __('For your security, please make sure your password has:') }}
+            <p>{{ __('For your security, please make sure your password has:') }}</p>
             <ul>
                 <li>{{ __('8 characters or more') }}</li>
                 <li>{{ __('At least 1 upper case letter') }}</li>
