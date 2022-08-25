@@ -11,6 +11,22 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
+    public function viewAny(User $user): Response
+    {
+        return $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function view(User $user, Project $project): Response
+    {
+        return
+            $user->individual || $user->organization || $user->regulated_organization
+            && $project->checkStatus('published') || $user->can('update', $project)
+                ? Response::allow()
+                : Response::denyAsNotFound();
+    }
+
     /**
      * Determine whether the user can create models.
      *

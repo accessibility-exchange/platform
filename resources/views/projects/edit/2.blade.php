@@ -19,7 +19,7 @@
             <h3>{{ __('About your team') }}</h3>
 
             <div class="field @error('team_size') field--error @enderror stack">
-                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.')" :hint="__('You can give an exact number or range.')" :model="$project" />
+                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.')" :hint="__('You can provide either an exact number or a range.')" :model="$project" />
             </div>
 
             <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
@@ -35,7 +35,7 @@
             <fieldset class="field stack">
                 <legend class="h4">{{ __('Training your team has received (optional)') }}</legend>
                 <p class="field__hint">{{ __('Please list any relevant training your team members have received.') }}</p>
-                <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [['name' => '', 'date' => '', 'trainer_name' => '', 'trainer_url' => '']])" />
+                <livewire:team-trainings :trainings="old('team_trainings', $project->team_trainings ?? [])" />
             </fieldset>
 
             <fieldset class="field stack">
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="field @error('contact_person_email') field-error @enderror">
-                    <x-hearth-label for="contact_person_email" :value="__('Email')" />
+                    <x-hearth-label for="contact_person_email" :value="__('Email (required)')" />
                     <x-hearth-input type="email" name="contact_person_email" :value="old('contact_person_email', $project->contact_person_email)" />
                     <x-hearth-error for="contact_person_email" />
                 </div>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
-                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
+                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method') }}</x-hearth-label>
                     <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $project->preferred_contact_method ?? 'email')"/>
                     <x-hearth-error for="preferred_contact_method" />
                 </div>

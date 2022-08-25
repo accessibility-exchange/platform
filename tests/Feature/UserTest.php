@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use function Pest\Faker\faker;
 
 test('users can view the introduction', function () {
     $user = User::factory()->create();
@@ -267,7 +266,7 @@ test('user’s alternate contact method can be retrieved', function () {
 test('user extra attributes and notification settings can be queried', function () {
     $users = User::factory()->count(5)->create([
         'extra_attributes' => [
-            'invited_role' => faker()->randomElement(['participant', 'consultant', 'connector']),
+            'invited_role' => 'participant',
         ],
         'notification_settings' => [
             'updates' => [
@@ -280,13 +279,17 @@ test('user extra attributes and notification settings can be queried', function 
 
     $invitedParticipants = User::withExtraAttributes('invited_role', 'participant')->get();
 
+    expect($invitedParticipants)->toHaveCount(5);
+
     foreach ($invitedParticipants as $participant) {
         expect($participant->extra_attributes->invited_role)->toEqual('participant');
     }
 
-    $updateNotificationUsers = User::withNotificationSettings(['updates' => ['channels' => 'contact']])->get();
+    $updateNotificationUsers = User::withNotificationSettings('updates->channels', '["contact"]')->get();
+
+    expect($updateNotificationUsers)->toHaveCount(5);
 
     foreach ($updateNotificationUsers as $user) {
-        expect($user->notification_settings->updates->channels)->toEqual(['contact']);
+        expect($user->notification_settings->updates['channels'])->toContain('contact');
     }
 });

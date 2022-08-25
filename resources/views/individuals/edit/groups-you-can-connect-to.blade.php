@@ -126,7 +126,7 @@
             </fieldset>
 
             <fieldset class="field @error('constituent_languages') field--error @enderror">
-                <legend>{{ __('What languages are used by the people you can connect to? (required)') }}</legend>
+                <legend>{{ __('What languages are used by the people you can connect to? (optional)') }}</legend>
                 <livewire:language-picker name="constituent_languages" :languages="$individual->languageConnections->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
             </fieldset>
 

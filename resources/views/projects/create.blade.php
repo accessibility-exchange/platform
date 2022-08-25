@@ -5,7 +5,7 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
         </ol>
-        <p class="h3">{{ __('Create new project') }}</p>
+        <p class="h3">{{ __('Create a new project') }}</p>
     </x-slot>
 
     <!-- Form Validation Errors -->
