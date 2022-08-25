@@ -4,7 +4,7 @@
     })">
     <template x-for="(language, index) in languages">
         <div>
-            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
+            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
 
             <input name="languages[]" type="hidden" x-bind:value="language.code" />
         </div>
@@ -43,6 +43,13 @@
                 if(this.newLanguage !== '') {
                     this.languages.push({code: this.newLanguage, exonym: this.exonyms[this.newLanguage]});
                 }
+            },
+            canRemove(language) {
+                if (language === 'fr')
+                    return this.languages.some((language) => language.code === 'en');
+                if (language === 'en')
+                    return this.languages.some((language) => language.code === 'fr');
+                return true;
             }
         }))
     });

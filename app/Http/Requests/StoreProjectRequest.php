@@ -39,8 +39,8 @@ class StoreProjectRequest extends FormRequest
                 'exists:App\Models\Project,id',
             ],
             'name.*' => 'nullable|string|max:255|unique_translation:projects',
-            'name.en' => 'required_without:name.fr|nullable|string|max:255',
-            'name.fr' => 'required_without:name.en|nullable|string|max:255',
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
         ];
     }
 

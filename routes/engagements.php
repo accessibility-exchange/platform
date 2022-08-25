@@ -8,25 +8,49 @@ Route::multilingual('/projects/{project}/engagements/create', [EngagementControl
 
 Route::multilingual('/projects/{project}/engagements/create', [EngagementController::class, 'store'])
     ->method('post')
+    ->middleware(['auth', 'can:createEngagement,project'])
     ->name('engagements.store');
 
-Route::multilingual('/projects/{project}/engagements/{engagement}', [EngagementController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('engagements.show');
+Route::controller(EngagementController::class)
+    ->prefix('engagements')
+    ->name('engagements.')
+    ->group(function () {
+        Route::multilingual('/{engagement}', 'show')
+            ->middleware(['auth', 'verified', 'can:view,engagement'])
+            ->name('show');
 
-Route::multilingual('/projects/{project}/engagements/{engagement}/edit', [EngagementController::class, 'edit'])
-    ->middleware(['auth', 'can:update,engagement'])
-    ->name('engagements.edit');
+        Route::multilingual('/{engagement}/outreach/select', 'showOutreachSelection')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('show-outreach-selection');
 
-Route::multilingual('/projects/{project}/engagements/{engagement}/update', [EngagementController::class, 'update'])
-    ->middleware(['auth', 'can:update,engagement'])
-    ->method('put')
-    ->name('engagements.update');
+        Route::multilingual('/{engagement}/outreach/store', 'storeOutreach')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('store-outreach');
 
-Route::multilingual('/projects/{project}/engagements/{engagement}/manage', [EngagementController::class, 'manage'])
-    ->middleware(['auth', 'can:update,engagement'])
-    ->name('engagements.manage');
+        Route::multilingual('/{engagement}/recruitment/select', 'showRecruitmentSelection')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('show-recruitment-selection');
 
-    Route::multilingual('/projects/{project}/engagements/{engagement}/participants', [EngagementController::class, 'participate'])
-    ->middleware(['auth', 'can:participate,engagement'])
-    ->name('engagements.participate');
+        Route::multilingual('/{engagement}/recruitment/store', 'storeRecruitment')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('store-recruitment');
+
+        Route::multilingual('/{engagement}/edit', 'edit')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('edit');
+
+        Route::multilingual('/{engagement}/update', 'update')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('update');
+
+        Route::multilingual('/{engagement}/manage', 'manage')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('manage');
+
+        Route::multilingual('/{engagement}/participants', 'participate')
+            ->middleware(['auth', 'can:participate,engagement'])
+            ->name('participate');
+    });
