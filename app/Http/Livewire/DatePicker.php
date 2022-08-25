@@ -35,13 +35,17 @@ class DatePicker extends Component
     public function mount(): void
     {
         if ($this->value) {
+            [$y, $m, $d] = explode('-', $this->value);
             try {
-                $date = Carbon::createFromFormat('Y-m-d', $this->value);
+                $date = Carbon::createFromFormat('Y-m-d', implode('-', [
+                    $y,
+                    $m,
+                    $d === '0' ? '' : $d,
+                ]));
                 $this->year = strval($date->year);
                 $this->month = str_pad(strval($date->month), 2, '0', STR_PAD_LEFT);
                 $this->day = strval($date->day);
             } catch (InvalidFormatException $exception) {
-                [$y, $m, $d] = explode('-', $this->value);
                 $this->year = $y;
                 $this->month = $m;
                 $this->day = $d;
@@ -52,7 +56,13 @@ class DatePicker extends Component
     public function getDateProperty(): string
     {
         try {
-            $date = Carbon::createFromFormat('Y-m-d', implode('-', [$this->year, $this->month, $this->day]));
+            $str = implode('-', [
+                $this->year,
+                $this->month,
+                $this->day === '0' ? '' : $this->day,
+            ]);
+
+            $date = Carbon::createFromFormat('Y-m-d', $str);
 
             return $date->format('Y-m-d');
         } catch (InvalidFormatException $exception) {
