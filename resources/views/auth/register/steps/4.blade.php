@@ -6,9 +6,15 @@
     <!-- Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-        <x-hearth-hint for="password">
-            {{ __('Passwords must be at least eight characters in length and include at least one uppercase letter, at least one number, and at least one special character.') }}
-        </x-hearth-hint>
+        <div class="field__hint" id="password-hint">
+            <p>{{ __('For your security, please make sure your password has:') }}</p>
+            <ul>
+                <li>{{ __('8 characters or more') }}</li>
+                <li>{{ __('At least 1 upper case letter') }}</li>
+                <li>{{ __('At least 1 number') }}</li>
+                <li>{{ __('At least 1 special character (!@#$%^&*()-)') }}</li>
+            </ul>
+        </div>
         <x-password-input name="password" autocomplete="new-password" hinted />
         <x-hearth-error for="password" />
     </div>
