@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Create engagement') }}</x-slot>
     <x-slot name="header">
@@ -15,15 +14,18 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Please select the languages that your engagement information can be translated into by your organization.') }}</p>
+    <p>{{ __('Please select the languages that your engagement information can be translated into by your organization.') }}
+    </p>
 
     <x-hearth-alert :title="__('Recommendation')">
-        <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.') }}</p>
+        <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.') }}
+        </p>
     </x-hearth-alert>
 
     <h2>{{ __('Translations') }}</h2>
 
-    <form class="stack" action="{{ localized_route('engagements.store-languages', $project) }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('engagements.store-languages', $project) }}" method="post"
+        novalidate>
         <x-translation-picker />
 
         <p class="repel" x-data>

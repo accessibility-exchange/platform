@@ -6,9 +6,9 @@
     "integrity": "sha384-+9cmNZNMSMZfXc7KHf84suXPNBeNMwOjFq5Cu4QEc6PZUI0rxmHvMt9FPHV1o19s"
   },
   "resources/css/app.css": {
-    "file": "assets/app.2dd14fd9.css",
+    "file": "assets/app.034b116b.css",
     "src": "resources/css/app.css",
     "isEntry": true,
-    "integrity": "sha384-IsqFbDImsMFVoYsqCAl/Xwvl1QlV58Qv2oulzwneq2z2qSyqmxBARkCAUg9tbxa4"
+    "integrity": "sha384-gU4aEFXiBoEnIe/iATetd+BfVPEABnigjqvskWoBOm7FAZNpSrRfMcyZ2xB+O5up"
   }
 }

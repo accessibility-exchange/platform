@@ -14,13 +14,15 @@
             @csrf
 
             <!-- Password Reset Token -->
-            <input type="hidden" name="token" value="{{ request()->route('token') }}">
-            <input type="hidden" name="email" value="{{ request()->get('email') }}">
+            <input name="token" type="hidden" value="{{ request()->route('token') }}">
+            <input name="email" type="hidden" value="{{ request()->get('email') }}">
 
             <!-- Password -->
             <div class="field @error('password') field--error @enderror">
                 <x-hearth-label for="password" :value="__('New password')" />
-                <x-hearth-hint for="password">{{ __('Passwords must be at least eight characters in length and include at least one uppercase letter, at least one number, and at least one special character.') }}</x-hearth-hint>
+                <x-hearth-hint for="password">
+                    {{ __('Passwords must be at least eight characters in length and include at least one uppercase letter, at least one number, and at least one special character.') }}
+                </x-hearth-hint>
                 <x-password-input name="password" hinted />
                 <x-hearth-error for="password" />
             </div>

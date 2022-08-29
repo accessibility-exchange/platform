@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Delete your individual page') }}</x-slot>
     <x-slot name="header">
@@ -10,7 +9,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Your individual page will be deleted and cannot be recovered. If you still want to delete your individual page, please enter your current password to proceed.') }}</p>
+    <p>{{ __('Your individual page will be deleted and cannot be recovered. If you still want to delete your individual page, please enter your current password to proceed.') }}
+    </p>
 
     <form action="{{ localized_route('individuals.destroy', $individual) }}" method="POST" novalidate>
         @csrf

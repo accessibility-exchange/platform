@@ -7,7 +7,8 @@
         </h1>
     </x-slot>
     <div class="manage">
-        <a href="{{ localized_route('engagements.show-language-selection', $project) }}" class="cta">Create an engagement</a>
+        <a class="cta" href="{{ localized_route('engagements.show-language-selection', $project) }}">Create an
+            engagement</a>
     </div>
 
 </x-app-wide-layout>

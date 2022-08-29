@@ -22,7 +22,7 @@
             @method('put')
             @csrf
 
-            <input type="hidden" name="finished_introduction" value="1" />
+            <input name="finished_introduction" type="hidden" value="1" />
             <button>{{ __('Continue') }}</button>
         </form>
     </div>
