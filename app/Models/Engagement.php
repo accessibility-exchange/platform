@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Translatable\HasTranslations;
 
@@ -137,5 +138,10 @@ class Engagement extends Model
     public function organizationalConnector(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organizational_connector_id');
+    }
+
+    public function matchingStrategy(): MorphOne
+    {
+        return $this->morphOne(MatchingStrategy::class, 'matchable');
     }
 }

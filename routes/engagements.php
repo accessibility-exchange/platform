@@ -50,6 +50,15 @@ Route::controller(EngagementController::class)
             ->method('put')
             ->name('store-recruitment');
 
+        Route::multilingual('/{engagement}/criteria/select', 'showCriteriaSelection')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('show-criteria-selection');
+
+        Route::multilingual('/{engagement}/critera/store', 'storeCriteria')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('store-criteria');
+
         Route::multilingual('/{engagement}/edit', 'edit')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('edit');

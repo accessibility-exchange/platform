@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\ProvinceOrTerritory;
+use App\Http\Requests\StoreEngagementCriteriaRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementOutreachRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -11,6 +13,7 @@ use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Models\Engagement;
+use App\Models\MatchingStrategy;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -50,6 +53,10 @@ class EngagementController extends Controller
         $data['languages'] = session('languages', $project->languages);
 
         $engagement = Engagement::create($data);
+
+        $matchingStrategy = new MatchingStrategy();
+
+        $engagement->matchingStrategy()->save($matchingStrategy);
 
         session()->forget('languages');
 
@@ -99,7 +106,30 @@ class EngagementController extends Controller
 
         flash(__('Your engagement has been updated.'), 'success');
 
-        return redirect(localized_route('engagements.manage', $engagement));
+        return redirect(localized_route('engagements.show-criteria-selection', $engagement));
+    }
+
+    public function showCriteriaSelection(Engagement $engagement): View
+    {
+        return view('engagements.show-criteria-selection', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
+        ]);
+    }
+
+    public function storeCriteria(StoreEngagementCriteriaRequest $request, Engagement $engagement): RedirectResponse
+    {
+        ray($request->validated());
+
+//        $engagement->matchingStrategy->fill($request->validated());
+//        $engagement->matchingStrategy->save();
+
+        flash(__('Your engagement has been updated.'), 'success');
+
+        return redirect(localized_route('engagements.show-criteria-selection', $engagement));
+
+//        return redirect(localized_route('engagements.manage', $engagement));
     }
 
     public function show(Engagement $engagement)
