@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Create engagement') }}</x-slot>
     <x-slot name="header">
@@ -15,7 +14,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="stack" action="{{ localized_route('engagements.store-recruitment', $engagement) }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('engagements.store-recruitment', $engagement) }}" method="post"
+        novalidate>
         @csrf
         @method('put')
 

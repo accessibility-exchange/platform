@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Create engagement') }}</x-slot>
     <x-slot name="header">
@@ -14,14 +13,16 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('An engagement involves a group of people participating in one set way (for example, a focus group or a survey). An engagement like a focus group can have multiple meetings.') }}</p>
+    <p>{{ __('An engagement involves a group of people participating in one set way (for example, a focus group or a survey). An engagement like a focus group can have multiple meetings.') }}
+    </p>
 
-    <p>{{ __('For example: The engagement group could be a focus group for Deaf customers. There could be three times the focus group meets to discuss different topics.') }}</p>
+    <p>{{ __('For example: The engagement group could be a focus group for Deaf customers. There could be three times the focus group meets to discuss different topics.') }}
+    </p>
 
     <form class="stack" action="{{ localized_route('engagements.store', $project) }}" method="post" novalidate>
         @csrf
 
-        <x-hearth-input id="project_id" type="hidden" name="project_id" :value="$project->id" required />
+        <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
         <x-translatable-input name="name" :label="__('What is the name of your engagement?')" />
 
@@ -38,15 +39,21 @@
 
             <div class="field @error('ideal_participants') field--error @enderror">
                 <x-hearth-label for="ideal_participants">{{ __('Ideal number of participants') }}</x-hearth-label>
-                <x-hearth-hint for="ideal_participants">{{ __('This is the ideal number of participants you would like to have for this engagement.') }}</x-hearth-hint>
-                <x-hearth-input name="ideal_participants" type="number" :value="old('ideal_participants')" min="1" hinted required />
+                <x-hearth-hint for="ideal_participants">
+                    {{ __('This is the ideal number of participants you would like to have for this engagement.') }}
+                </x-hearth-hint>
+                <x-hearth-input name="ideal_participants" type="number" :value="old('ideal_participants')" min="1" hinted
+                    required />
                 <x-hearth-error for="ideal_participants" />
             </div>
 
             <div class="field @error('minimum_participants') field--error @enderror">
                 <x-hearth-label for="minimum_participants">{{ __('Minimum number of participants') }}</x-hearth-label>
-                <x-hearth-hint for="minimum_participants">{{ __('The least number of participants you can have to go forward with your engagement.') }}</x-hearth-hint>
-                <x-hearth-input name="minimum_participants" type="number" :value="old('minimum_participants')" min="1" hinted required />
+                <x-hearth-hint for="minimum_participants">
+                    {{ __('The least number of participants you can have to go forward with your engagement.') }}
+                </x-hearth-hint>
+                <x-hearth-input name="minimum_participants" type="number" :value="old('minimum_participants')" min="1" hinted
+                    required />
                 <x-hearth-error for="minimum_participants" />
             </div>
         </fieldset>

@@ -20,7 +20,7 @@
             <!-- Email Address -->
             <div class="field @error('email') field--error @enderror">
                 <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-                <x-hearth-input type="email" name="email" :value="old('email')" required autofocus />
+                <x-hearth-input name="email" type="email" :value="old('email')" required autofocus />
                 <x-hearth-error for="email" />
             </div>
 
