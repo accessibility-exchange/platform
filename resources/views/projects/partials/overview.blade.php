@@ -1,16 +1,12 @@
 <h3>{{ __('Project goals') }}</h3>
 
-@markdown
-    {{ $project->getWrittenTranslation('goals', $language) }}
-@endmarkdown
+@markdown{{ $project->getWrittenTranslation('goals', $language) }}@endmarkdown
 
 <h3>{{ __('Project impact') }}</h3>
 
 <h4>{{ __('Communities this project hopes to engage and how they will be impacted') }}</h4>
 
-@markdown
-    {{ $project->getWrittenTranslation('scope', $language) }}
-@endmarkdown
+@markdown{{ $project->getWrittenTranslation('scope', $language) }}@endmarkdown
 
 <h4>{{ __('Geographical areas this project will impact') }}</h4>
 
@@ -33,9 +29,7 @@
 @if ($project->out_of_scope)
     <h4>{{ __('Not in this project') }}</h4>
 
-    @markdown
-        {{ $project->getWrittenTranslation('out_of_scope', $language) }}
-    @endmarkdown
+    @markdown{{ $project->getWrittenTranslation('out_of_scope', $language) }}@endmarkdown
 @endif
 
 <h3>{{ __('Project timeframe') }}</h3>
@@ -57,9 +51,7 @@
 
     <h4>{{ __('Tangible outcomes of this project') }}</h4>
 
-    @markdown
-        {{ $project->getWrittenTranslation('outcomes', $language) }}
-    @endmarkdown
+    @markdown{{ $project->getWrittenTranslation('outcomes', $language) }}@endmarkdown
 @endif
 
 <h4>{{ __('Project reports') }}</h4>
@@ -82,6 +74,6 @@
 @else
     <p>{{ __('No upcoming engagements.') }}</p>
 @endif
-<p><a href="{{ localized_route('projects.show-engagements', $project) }}">Go to all engagements</a></p>
+<p><a href="{{ localized_route('projects.show-engagements', $project) }}">{{ __('Go to all engagements') }}</a></p>
 
 @include('projects.partials.questions')
