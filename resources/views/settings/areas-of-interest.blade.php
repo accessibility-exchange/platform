@@ -22,8 +22,11 @@
         </fieldset>
 
         <fieldset class="field @error('impacts') field--error @enderror">
-            <legend>{{ __('What areas would you most like to impact within a Regulated Organization? (optional)') }}</legend>
-            <x-hearth-hint for="impacts">{{ __('These are the seven areas listed within the Accessible Canada Act. By law, Federally Regulated Organizations must ensure these areas are accessible.') }}</x-hearth-hint>
+            <legend>{{ __('What areas would you most like to impact within a Regulated Organization? (optional)') }}
+            </legend>
+            <x-hearth-hint for="impacts">
+                {{ __('These are the seven areas listed within the Accessible Canada Act. By law, Federally Regulated Organizations must ensure these areas are accessible.') }}
+            </x-hearth-hint>
             <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $individual->impactsOfInterest->pluck('id')->toArray())" hinted />
         </fieldset>
 

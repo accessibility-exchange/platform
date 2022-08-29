@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Delete regulated organization') }}</x-slot>
     <x-slot name="header">
@@ -10,9 +9,11 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Your regulated organization, :name, will be deleted and cannot be recovered. If you still want to delete your regulated organization, please enter your current password to proceed.', ['name' => $regulatedOrganization->name]) }}</p>
+    <p>{{ __('Your regulated organization, :name, will be deleted and cannot be recovered. If you still want to delete your regulated organization, please enter your current password to proceed.', ['name' => $regulatedOrganization->name]) }}
+    </p>
 
-    <form action="{{ localized_route('regulated-organizations.destroy', $regulatedOrganization) }}" method="POST" novalidate>
+    <form action="{{ localized_route('regulated-organizations.destroy', $regulatedOrganization) }}" method="POST"
+        novalidate>
         @csrf
         @method('DELETE')
 

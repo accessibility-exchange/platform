@@ -8,7 +8,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('membership.edit_user_role_intro', ['user' => $user->name, 'membershipable' => $membershipable->name]) }}</p>
+    <p>{{ __('membership.edit_user_role_intro', ['user' => $user->name, 'membershipable' => $membershipable->name]) }}
+    </p>
 
     <form class="stack" action="{{ localized_route('memberships.update', $membership) }}" method="POST" novalidate>
         @csrf
@@ -19,7 +20,8 @@
             <x-hearth-error for="role" field="membership" />
         </fieldset>
         <p class="repel">
-            <a class="cta secondary" href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('organization.action_cancel_user_role_update') }}</a>
+            <a class="cta secondary"
+                href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('organization.action_cancel_user_role_update') }}</a>
             <button>{{ __('organization.action_update_user_role') }}</button>
         </p>
     </form>

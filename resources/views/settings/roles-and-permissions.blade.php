@@ -14,7 +14,8 @@
     @include('partials.validation-errors')
 
     <p>
-        <a class="cta" href="{{ localized_route('settings.invite-to-invitationable') }}">{{ __('Invite new member') }}</a>
+        <a class="cta"
+            href="{{ localized_route('settings.invite-to-invitationable') }}">{{ __('Invite new member') }}</a>
     </p>
 
     <h2 id="pending-invitations">{{ __('Pending invitations') }}</h2>
@@ -22,11 +23,11 @@
     <div role="region" aria-labelledby="pending-invitations" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Email address') }}</th>
-                <th>{{ __('Role') }}</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>{{ __('Email address') }}</th>
+                    <th>{{ __('Role') }}</th>
+                    <th></th>
+                </tr>
             </thead>
             @forelse ($membershipable->invitations as $invitation)
                 <tr>
@@ -36,7 +37,8 @@
                         <form action="{{ route('invitations.destroy', $invitation) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button class="secondary" :aria-label="__('Cancel invitation for :email', ['email' => $invitation->email])">
+                            <button class="secondary"
+                                :aria-label="__('Cancel invitation for :email', ['email' => $invitation - > email])">
                                 {{ __('Cancel invitation') }}
                             </button>
                         </form>
@@ -57,14 +59,14 @@
     <div role="region" aria-labelledby="your-members" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-                <th>{{ __('Email address') }}</th>
-                <th>{{ __('Status') }}</th>
-                <th>{{ __('Role') }}</th>
-                <th></th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('Email address') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th>{{ __('Role') }}</th>
+                    <th></th>
+                    <th></th>
+                </tr>
             </thead>
             @foreach ($membershipable->users as $member)
                 <tr>
@@ -73,13 +75,16 @@
                     <td>{{ __('Active') }}</td>
                     <td>{{ __('roles.' . $member->membership->role) }}</td>
                     <td>
-                        <a class="cta secondary" aria-label="{{ __('Edit :user’s role', ['user' => $member->name]) }}" href="{{ localized_route('memberships.edit', $member->membership->id) }}">{{ __('Edit') }}</a>
+                        <a class="cta secondary"
+                            href="{{ localized_route('memberships.edit', $member->membership->id) }}"
+                            aria-label="{{ __('Edit :user’s role', ['user' => $member->name]) }}">{{ __('Edit') }}</a>
                     </td>
                     <td>
                         <form action="{{ route('memberships.destroy', $member->membership->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button class="secondary" aria-label="{{ $member->id === $user->id ? __('Leave :membershipable', ['membershipable' => $membershipable->name]) : __('Remove :user from :membershipable', ['user' => $member->name, 'membershipable' => $membershipable->name]) }}">
+                            <button class="secondary"
+                                aria-label="{{ $member->id === $user->id ? __('Leave :membershipable', ['membershipable' => $membershipable->name]) : __('Remove :user from :membershipable', ['user' => $member->name, 'membershipable' => $membershipable->name]) }}">
                                 {{ $member->id === $user->id ? __('Leave organization') : __('Remove') }}
                             </button>
                         </form>

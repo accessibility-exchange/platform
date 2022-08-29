@@ -1,7 +1,7 @@
 <form class="stack" method="POST" action="{{ localized_route('register-store') }}" novalidate>
     @csrf
 
-    <x-hearth-input id="locale" type="hidden" name="locale" value="{{ locale() ?: config('app.locale') }}" />
+    <x-hearth-input id="locale" name="locale" type="hidden" value="{{ locale() ?: config('app.locale') }}" />
 
     <!-- Password -->
     <div class="field @error('password') field--error @enderror stack">

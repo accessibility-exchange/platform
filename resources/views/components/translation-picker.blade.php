@@ -1,17 +1,20 @@
-<div class="stack" x-data="translationPicker([ @foreach($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if(!$loop->last), @endif @endforeach ], {
-                @foreach($availableLanguages as $language)@if($language['value'] !== '')'{{ $language['value'] }}': '{{ $language['label'] }}'@if(!$loop->last),
+<div class="stack" x-data="translationPicker([@foreach ($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if (!$loop->last), @endif @endforeach], {
+    @foreach ($availableLanguages as $language)@if ($language['value'] !== '')'{{ $language['value'] }}': '{{ $language['label'] }}'@if (!$loop->last),
                 @endif @endif @endforeach
-    })">
+})">
     <template x-for="(language, index) in languages">
         <div>
-            <p class="repel"><span x-text="language.exonym"></span><button type="button" class="secondary" x-bind:data-index="index" @click="removeLanguage($event)" x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span class="visually-hidden" x-text="language.exonym"></span></button></p>
+            <p class="repel"><span x-text="language.exonym"></span><button class="secondary" type="button"
+                    x-bind:data-index="index" @click="removeLanguage($event)"
+                    x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span
+                        class="visually-hidden" x-text="language.exonym"></span></button></p>
 
             <input name="languages[]" type="hidden" x-bind:value="language.code" />
         </div>
     </template>
 
     <div x-data="modal()">
-        <button type="button" class="secondary" @click="showModal">{{ __('Add language') }}</button>
+        <button class="secondary" type="button" @click="showModal">{{ __('Add language') }}</button>
         <template x-teleport="body">
             <div class="modal-wrapper" x-show="showingModal">
                 <div class="modal stack" @keydown.escape.window="hideModal">
@@ -19,7 +22,8 @@
 
                     <div class="field @error('new_language') field--error @enderror">
                         <x-hearth-label for="new_language">{{ __('Language') }}</x-hearth-label>
-                        <x-hearth-select name="new_language" :options="$availableLanguages" :selected="old('new_language', '')" required x-model="newLanguage" />
+                        <x-hearth-select name="new_language" :options="$availableLanguages" :selected="old('new_language', '')" required
+                            x-model="newLanguage" />
                     </div>
 
                     <p class="repel">
@@ -30,29 +34,31 @@
             </div>
         </template>
     </div>
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('translationPicker', (languages, exonyms) => ({
-            languages: languages,
-            exonyms: exonyms,
-            newLanguage: '',
-            removeLanguage(e) {
-                this.languages.splice(e.target.dataset.index, 1);
-            },
-            addLanguage() {
-                if(this.newLanguage !== '') {
-                    this.languages.push({code: this.newLanguage, exonym: this.exonyms[this.newLanguage]});
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('translationPicker', (languages, exonyms) => ({
+                languages: languages,
+                exonyms: exonyms,
+                newLanguage: '',
+                removeLanguage(e) {
+                    this.languages.splice(e.target.dataset.index, 1);
+                },
+                addLanguage() {
+                    if (this.newLanguage !== '') {
+                        this.languages.push({
+                            code: this.newLanguage,
+                            exonym: this.exonyms[this.newLanguage]
+                        });
+                    }
+                },
+                canRemove(language) {
+                    if (language === 'fr')
+                        return this.languages.some((language) => language.code === 'en');
+                    if (language === 'en')
+                        return this.languages.some((language) => language.code === 'fr');
+                    return true;
                 }
-            },
-            canRemove(language) {
-                if (language === 'fr')
-                    return this.languages.some((language) => language.code === 'en');
-                if (language === 'en')
-                    return this.languages.some((language) => language.code === 'fr');
-                return true;
-            }
-        }))
-    });
-</script>
+            }))
+        });
+    </script>
 </div>
-

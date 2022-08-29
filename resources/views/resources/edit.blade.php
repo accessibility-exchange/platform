@@ -15,9 +15,9 @@
 
         <div class="field @error('title') field--error @enderror">
             <x-hearth-label for="title" :value="__('resource.label_title')" />
-            <x-hearth-input id="title" type="text" name="title" :value="old('title', $resource->title)" required />
+            <x-hearth-input id="title" name="title" type="text" :value="old('title', $resource->title)" required />
             <x-hearth-error for="title" />
-            </div>
+        </div>
         <div class="field @error('language') field--error @enderror">
             <x-hearth-label for="language" :value="__('resource.label_language')" />
             <x-hearth-locale-select name="language" :selected="old('language', $resource->language)" />
