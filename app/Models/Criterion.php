@@ -15,6 +15,7 @@ class Criterion extends Model
         'matching_strategy_id',
         'criteriable_type',
         'criteriable_id',
+        'weight',
     ];
 
     public function matchingStrategy(): BelongsTo

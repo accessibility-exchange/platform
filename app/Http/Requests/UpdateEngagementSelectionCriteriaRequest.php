@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateEngagementSelectionCriteriaRequest extends FormRequest
 {
@@ -14,6 +16,11 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'regions' => 'nullable|array',
+            'regions.*' => [new Enum(ProvinceOrTerritory::class)],
+            'locations' => 'nullable|array',
+            'locations.*.region' => ['required', new Enum(ProvinceOrTerritory::class)],
+            'locations.*.locality' => 'required|string',
             'ideal_participants' => 'required|integer',
             'minimum_participants' => 'required|integer|lte:ideal_participants',
         ];

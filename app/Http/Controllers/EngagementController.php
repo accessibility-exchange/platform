@@ -12,6 +12,7 @@ use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
+use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\MatchingStrategy;
 use App\Models\Project;
@@ -115,15 +116,29 @@ class EngagementController extends Controller
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
+            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
         ]);
     }
 
     public function storeCriteria(StoreEngagementCriteriaRequest $request, Engagement $engagement): RedirectResponse
     {
-        ray($request->validated());
+        $engagementData = $request->safe()->only(['ideal_participants', 'minimum_participants']);
 
-//        $engagement->matchingStrategy->fill($request->validated());
-//        $engagement->matchingStrategy->save();
+        $matchingStrategyData = $request->safe()->except(['ideal_participants', 'minimum_participants']);
+
+        if ($matchingStrategyData['location_type'] === 'regions') {
+            $matchingStrategyData['locations'] = [];
+        }
+
+        if ($matchingStrategyData['location_type'] === 'localities') {
+            $matchingStrategyData['regions'] = [];
+        }
+
+        $engagement->fill($engagementData);
+        $engagement->save();
+
+        $engagement->matchingStrategy->fill($matchingStrategyData);
+        $engagement->matchingStrategy->save();
 
         flash(__('Your engagement has been updated.'), 'success');
 

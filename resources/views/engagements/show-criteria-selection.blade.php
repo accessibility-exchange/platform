@@ -24,27 +24,85 @@
         @method('put')
 
         <h3>{{ __('Location') }}</h3>
-        <p>{{ $engagement->matchingStrategy->location_summary }}</p>
+        {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
 
-        <fieldset x-data="enhancedCheckboxes()">
-            <legend>{{ __('Specific provinces or territories') }}</legend>
-            <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
-            <div class="stack" x-cloak>
-                <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
-                <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
+        <div class="stack" x-data="{ expanded: false }">
+            <button class="borderless" type="button" @click="expanded = !expanded"
+                x-bind:aria-expanded="expanded.toString()">{{ __('Edit location criteria') }}
+                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
+                    x-bind:class="expanded && 'rotate-180'" />
+            </button>
+            <div x-show="expanded">
+                <div class="stack" x-data="{ locationType: '{{ $engagement->matchingStrategy->location_type }}' }">
+                    <fieldset class="field">
+                        <legend>
+                            {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
+                        </legend>
+                        <x-hearth-radio-buttons name="location_type" :options="Spatie\LaravelOptions\Options::forArray([
+                            'regions' => __('Specific provinces or territories'),
+                            'localities' => __('Specific cities or towns'),
+                        ])->toArray()" x-model="locationType" />
+                        <x-hearth-error for="context" />
+                    </fieldset>
+
+                    <fieldset x-data="enhancedCheckboxes()" x-show="locationType == 'regions'">
+                        <legend>{{ __('Specific provinces or territories') }}</legend>
+                        <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
+                        <div class="stack mt-8" x-cloak>
+                            <button class="secondary" type="button"
+                                x-on:click="selectAll()">{{ __('Select all') }}</button>
+                            <button class="secondary" type="button"
+                                x-on:click="selectNone()">{{ __('Select none') }}</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset x-show="locationType == 'localities'">
+                        <legend>{{ __('Specific cities or towns') }}</legend>
+                        <livewire:locations :locations="old('locations', $engagement->matchingStrategy->locations ?? [])" />
+                    </fieldset>
+                </div>
             </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>{{ __('Specific cities or towns') }}</legend>
-            <livewire:locations :locations="[]" />
-        </fieldset>
+        </div>
 
         <h3>{{ __('Disability or Deaf group') }}</h3>
-        <p>{{ $engagement->matchingStrategy->disability_and_deaf_group_summary }}</p>
+        {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+
+        <div class="stack" x-data="{ expanded: false }">
+            <button class="borderless" type="button" @click="expanded = !expanded"
+                x-bind:aria-expanded="expanded.toString()">{{ __('Edit disability or Deaf group criteria') }}
+                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
+                    x-bind:class="expanded && 'rotate-180'" />
+            </button>
+            <div x-show="expanded">
+                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityType($crossDisability) }} }">
+                    <fieldset class="field">
+                        <legend>
+                            {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
+                        </legend>
+                        <x-hearth-radio-buttons name="cross_disability" :options="Spatie\LaravelOptions\Options::forArray([
+                            '1' => __(
+                                'No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)',
+                            ),
+                            '0' => __('Yes, I’m interested in a specific disability or Deaf group or groups'),
+                        ])->toArray()" x-model="crossDisability" />
+                        <x-hearth-error for="context" />
+                    </fieldset>
+                </div>
+            </div>
+        </div>
 
         <h3>{{ __('Other identities') }}</h3>
-        <p>{{ $engagement->matchingStrategy->other_identities_summary }}</p>
+        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+
+        <div class="stack" x-data="{ expanded: false }">
+            <button class="borderless" type="button" @click="expanded = !expanded"
+                x-bind:aria-expanded="expanded.toString()">{{ __('Edit other identities criteria') }}
+                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
+                    x-bind:class="expanded && 'rotate-180'" />
+            </button>
+            <div x-show="expanded">
+            </div>
+        </div>
 
         <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
 
@@ -62,7 +120,7 @@
                 <x-hearth-hint for="ideal_participants">
                     {{ __('This is the ideal number of participants you would like to have for this engagement.') }}
                 </x-hearth-hint>
-                <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants')" min="1"
+                <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)" min="1"
                     hinted required />
                 <x-hearth-error for="ideal_participants" />
             </div>
@@ -72,7 +130,7 @@
                 <x-hearth-hint for="minimum_participants">
                     {{ __('The least number of participants you can have to go forward with your engagement.') }}
                 </x-hearth-hint>
-                <x-hearth-input class="w-24" name="minimum_participants" type="number" :value="old('minimum_participants')"
+                <x-hearth-input class="w-24" name="minimum_participants" type="number" :value="old('minimum_participants', $engagement->minimum_participants)"
                     min="1" hinted required />
                 <x-hearth-error for="minimum_participants" />
             </div>
