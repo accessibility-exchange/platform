@@ -126,6 +126,17 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-languages', $engagement), [
+        'languages' => ['en', 'fr'],
+    ]);
+
+    $engagement = $engagement->fresh();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+    expect($engagement->languages)->toEqual(['en', 'fr']);
 });
 
 test('users without regulated organization admin role cannot edit engagements', function () {
