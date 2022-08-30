@@ -35,20 +35,23 @@
             <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
                 <h3>{{ __('Recruitment method') }}</h3>
                 <p>{{ $engagement->display_recruitment }}</p>
-                {{-- TODO: edit recruitment method? --}}
             </div>
             <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                {{-- TODO: load from matching strategy --}}
                 <h3>{{ __('Participant selection criteria') }}</h3>
-                <p>
-                    <strong>{{ __('Location') }}</strong><br />
-                </p>
-                <p>
-                    <strong>{{ __('Disability or Deaf group') }}</strong><br />
-                </p>
-                <p>
-                    <strong>{{ __('Other identities') }}</strong><br />
-                </p>
+                <div>
+                    <p class="font-bold">{{ __('Location') }}</p>
+                    {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+                </div>
+                <div>
+                    <p class="font-bold">{{ __('Disability or Deaf group') }}</p>
+                    {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+                </div>
+                <div>
+                    <p class="font-bold">{{ __('Other identities') }}</p>
+                    {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+                </div>
+                <a class="cta secondary"
+                    href="{{ localized_route('engagements.edit-criteria', $engagement) }}">{{ __('Edit') }}</a>
             </div>
             <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
                 <h3>{{ __('Accessibility Consultant') }}</h3>

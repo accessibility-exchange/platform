@@ -32,9 +32,9 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-show="expanded">
+            <div x-cloak x-show="expanded">
                 <div class="stack" x-data="{ locationType: '{{ $engagement->matchingStrategy->location_type }}' }">
-                    <fieldset class="field">
+                    <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
                             {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
                         </legend>
@@ -42,10 +42,11 @@
                             'regions' => __('Specific provinces or territories'),
                             'localities' => __('Specific cities or towns'),
                         ])->toArray()" x-model="locationType" />
-                        <x-hearth-error for="context" />
+                        <x-hearth-error for="location_type" />
                     </fieldset>
 
-                    <fieldset x-data="enhancedCheckboxes()" x-show="locationType == 'regions'">
+                    <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()" x-cloak
+                        x-show="locationType == 'regions'">
                         <legend>{{ __('Specific provinces or territories') }}</legend>
                         <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
                         <div class="stack mt-8" x-cloak>
@@ -54,11 +55,14 @@
                             <button class="secondary" type="button"
                                 x-on:click="selectNone()">{{ __('Select none') }}</button>
                         </div>
+                        <x-hearth-error for="regions" />
                     </fieldset>
 
-                    <fieldset x-show="locationType == 'localities'">
+                    <fieldset class="field @error('locations') field--error @enderror" x-cloak
+                        x-show="locationType == 'localities'">
                         <legend>{{ __('Specific cities or towns') }}</legend>
                         <livewire:locations :locations="old('locations', $engagement->matchingStrategy->locations ?? [])" />
+                        <x-hearth-error for="locations" />
                     </fieldset>
                 </div>
             </div>
@@ -73,9 +77,9 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-show="expanded">
-                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityType($crossDisability) }} }">
-                    <fieldset class="field">
+            <div x-cloak x-show="expanded">
+                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 'null' }} }">
+                    <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
                             {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
                         </legend>
@@ -84,8 +88,22 @@
                                 'No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)',
                             ),
                             '0' => __('Yes, I’m interested in a specific disability or Deaf group or groups'),
-                        ])->toArray()" x-model="crossDisability" />
-                        <x-hearth-error for="context" />
+                        ])->toArray()"
+                            x-model.number="crossDisability" />
+                        <x-hearth-error for="cross_disability" />
+                    </fieldset>
+                    <fieldset x-cloak x-show="crossDisability == 0">
+                        <legend>
+                            {{ __('What specific disability and Deaf group or groups are you interested in engaging? (required)') }}
+                        </legend>
+                        <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old(
+                            'disability_types',
+                            $engagement->matchingStrategy
+                                ->criteria()
+                                ->where('criteriable_type', 'App\Models\DisabilityType')
+                                ->pluck('criteriable_id')
+                                ->toArray(),
+                        )" required />
                     </fieldset>
                 </div>
             </div>
@@ -100,7 +118,7 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-show="expanded">
+            <div x-cloak x-show="expanded">
             </div>
         </div>
 

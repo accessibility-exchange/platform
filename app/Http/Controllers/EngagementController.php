@@ -12,6 +12,7 @@ use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
+use App\Models\Criterion;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\MatchingStrategy;
@@ -117,11 +118,31 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
+            'disabilityTypes' => Options::forModels(DisabilityType::query()->where([
+                ['name->en', '!=', 'Cross-disability'],
+                ['name->en', '!=', 'Temporary disabilities'],
+            ]))->toArray(),
+        ]);
+    }
+
+    public function editCriteria(Engagement $engagement): View
+    {
+        return view('engagements.show-criteria-selection', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
+            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
+            'disabilityTypes' => Options::forModels(DisabilityType::query()->where([
+                ['name->en', '!=', 'Cross-disability'],
+                ['name->en', '!=', 'Temporary disabilities'],
+            ]))->toArray(),
         ]);
     }
 
     public function storeCriteria(StoreEngagementCriteriaRequest $request, Engagement $engagement): RedirectResponse
     {
+        $matchingStrategy = $engagement->matchingStrategy;
+
         $engagementData = $request->safe()->only(['ideal_participants', 'minimum_participants']);
 
         $matchingStrategyData = $request->safe()->except(['ideal_participants', 'minimum_participants']);
@@ -137,10 +158,45 @@ class EngagementController extends Controller
         $engagement->fill($engagementData);
         $engagement->save();
 
-        $engagement->matchingStrategy->fill($matchingStrategyData);
-        $engagement->matchingStrategy->save();
+        $matchingStrategy->fill($matchingStrategyData);
+        $matchingStrategy->save();
 
-        flash(__('Your engagement has been updated.'), 'success');
+        $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
+
+        if ($matchingStrategyData['cross_disability'] == 1) {
+            // Remove all disability type criteria except for cross-disability.
+            Criterion::destroy(
+                $matchingStrategy->criteria()
+                    ->where([
+                        ['criteriable_type', 'App\Models\DisabilityType'],
+                        ['criteriable_id', '!=', $crossDisability->id],
+                    ])->get()
+            );
+
+            // Set cross-disability to 100%.
+            $matchingStrategy->criteria()->updateOrCreate(
+                ['criteriable_type' => 'App\Models\DisabilityType', 'criteriable_id' => $crossDisability->id],
+                ['weight' => 1]
+            );
+        } elseif ($matchingStrategyData['cross_disability'] == 0) {
+            // Remove all disability type criteria not included in the submission.
+            Criterion::destroy(
+                $matchingStrategy->criteria()
+                    ->whereNotIn('criteriable_id', $matchingStrategyData['disability_types'])
+                    ->where('criteriable_type', 'App\Models\DisabilityType')
+                    ->get()
+            );
+
+            // Set disability type criteria included in the submission to equal.
+            foreach ($matchingStrategyData['disability_types'] as $id) {
+                $matchingStrategy->criteria()->updateOrCreate(
+                    ['criteriable_type' => 'App\Models\DisabilityType', 'criteriable_id' => $id],
+                    ['weight' => 1 / count($matchingStrategyData['disability_types'])]
+                );
+            }
+        }
+
+        flash(__('Your participant selection criteria have been updated.'), 'success');
 
         return redirect(localized_route('engagements.show-criteria-selection', $engagement));
 

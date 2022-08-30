@@ -34,6 +34,11 @@ class MatchingStrategy extends Model
         return $this->morphTo(__FUNCTION__, 'matchable_type', 'matchable_id');
     }
 
+    public function hasDisabilityTypes(): bool
+    {
+        return $this->criteria()->where('criteriable_type', DisabilityType::class)->count() > 0;
+    }
+
     public function hasDisabilityType(DisabilityType $disabilityType): bool
     {
         return $this->criteria()->where('criteriable_type', DisabilityType::class)->with('criteriable')->get()->pluck('criteriable')->contains($disabilityType);
@@ -59,7 +64,7 @@ class MatchingStrategy extends Model
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                if (count($this->regions)) {
+                if (count($this->regions ?? [])) {
                     if (count($this->regions) === 13) {
                         return __('All provinces and territories.');
                     } else {
@@ -67,11 +72,13 @@ class MatchingStrategy extends Model
 
                         return implode(', ', Arr::sort($regions));
                     }
-                } else {
-                    $locations = Arr::map($this->locations, fn ($location) => '* '.$location['locality'].', '.ProvinceOrTerritory::labels()[$location['region']]);
+                } elseif (count($this->locations ?? [])) {
+                    $locations = Arr::map($this->locations ?? [], fn ($location) => $location['locality'].', '.ProvinceOrTerritory::labels()[$location['region']]);
 
-                    return implode("\n", Arr::sort($locations));
+                    return implode("  \n", Arr::sort($locations));
                 }
+
+                return __('All provinces and territories.');
             },
         );
     }
@@ -80,8 +87,13 @@ class MatchingStrategy extends Model
     {
         return Attribute::make(
             get: function ($value, $attributes) {
-                // TODO Handle all cases.
-                return __('Cross disability (includes people with disabilities, Deaf people, and supporters).');
+                if ($this->hasDisabilityType(DisabilityType::where('name->en', 'Cross-disability')->first())) {
+                    return __('Cross disability (includes people with disabilities, Deaf people, and supporters).');
+                } else {
+                    $disabilityAndDeafGroups = $this->criteria()->where('criteriable_type', 'App\Models\DisabilityType')->get()->map(fn ($group) => $group->criteriable->name)->toArray();
+
+                    return implode("  \n", $disabilityAndDeafGroups);
+                }
             },
         );
     }

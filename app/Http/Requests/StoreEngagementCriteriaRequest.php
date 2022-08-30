@@ -22,6 +22,9 @@ class StoreEngagementCriteriaRequest extends FormRequest
             'locations' => 'nullable|array|exclude_if:location_type,regions',
             'locations.*.region' => ['required', new Enum(ProvinceOrTerritory::class)],
             'locations.*.locality' => 'required|string',
+            'cross_disability' => 'required|boolean',
+            'disability_types' => 'nullable|array|required_if:cross_disability,false|exclude_if:cross_disability,true',
+            'disability_types.*' => 'exists:disability_types,id',
             'ideal_participants' => 'required|integer',
             'minimum_participants' => 'required|integer|lte:ideal_participants',
         ];
@@ -39,6 +42,7 @@ class StoreEngagementCriteriaRequest extends FormRequest
         $this->mergeIfMissing([
             'regions' => [],
             'locations' => [],
+            'disability_types' => [],
         ]);
     }
 }

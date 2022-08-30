@@ -77,6 +77,15 @@ Route::controller(EngagementController::class)
             ->method('put')
             ->name('update-languages');
 
+        Route::multilingual('/{engagement}/criteria/edit', 'editCriteria')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('edit-criteria');
+
+        Route::multilingual('/{engagement}/criteria/update', 'storeCriteria')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('update-criteria');
+
         Route::multilingual('/{engagement}/manage', 'manage')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('manage');
