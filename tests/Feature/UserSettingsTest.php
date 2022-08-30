@@ -355,7 +355,7 @@ test('users can edit roles and permissions', function () {
     $response->assertOk();
 });
 
-test('users can invite new members to their organization or regulated organization', function () {
+test('users belong to an organization can invite new members to their organization or regulated organization', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
@@ -378,7 +378,7 @@ test('users can invite new members to their organization or regulated organizati
 
     $individualUser = User::factory()->create();
     $response = $this->actingAs($individualUser)->get(localized_route('settings.invite-to-invitationable'));
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
 });
 
 test('guests can not edit roles and permissions', function () {
