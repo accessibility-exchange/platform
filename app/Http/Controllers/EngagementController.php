@@ -12,9 +12,15 @@ use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
+use App\Models\AgeBracket;
+use App\Models\AreaType;
+use App\Models\Constituency;
 use App\Models\Criterion;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\EthnoracialIdentity;
+use App\Models\GenderIdentity;
+use App\Models\IndigenousIdentity;
 use App\Models\MatchingStrategy;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
@@ -136,6 +142,14 @@ class EngagementController extends Controller
                 ['name->en', '!=', 'Cross-disability'],
                 ['name->en', '!=', 'Temporary disabilities'],
             ]))->toArray(),
+            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
+            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
+            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
+            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
+            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
+            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
         ]);
     }
 
@@ -198,9 +212,7 @@ class EngagementController extends Controller
 
         flash(__('Your participant selection criteria have been updated.'), 'success');
 
-        return redirect(localized_route('engagements.show-criteria-selection', $engagement));
-
-//        return redirect(localized_route('engagements.manage', $engagement));
+        return redirect(localized_route('engagements.manage', $engagement));
     }
 
     public function show(Engagement $engagement)

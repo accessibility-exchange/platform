@@ -78,7 +78,7 @@
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
             <div x-cloak x-show="expanded">
-                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 'null' }} }">
+                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1 }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
                             {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
@@ -92,7 +92,8 @@
                             x-model.number="crossDisability" />
                         <x-hearth-error for="cross_disability" />
                     </fieldset>
-                    <fieldset x-cloak x-show="crossDisability == 0">
+                    <fieldset class="field @error('disability_types') field--error @enderror" x-cloak
+                        x-show="crossDisability == 0">
                         <legend>
                             {{ __('What specific disability and Deaf group or groups are you interested in engaging? (required)') }}
                         </legend>
@@ -103,7 +104,7 @@
                                 ->where('criteriable_type', 'App\Models\DisabilityType')
                                 ->pluck('criteriable_id')
                                 ->toArray(),
-                        )" required />
+                        )" />
                     </fieldset>
                 </div>
             </div>
@@ -119,6 +120,96 @@
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
             <div x-cloak x-show="expanded">
+                <div class="stack" x-data="{ intersectional: {{ $engagement->matchingStrategy->hasOtherIdentityTypes() ? 0 : 1 }}, otherIdentityType: null }">
+                    <fieldset class="field @error('intersectional') field--error @enderror">
+                        <legend>
+                            {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
+                        </legend>
+                        <x-hearth-radio-buttons name="intersectional" :options="Spatie\LaravelOptions\Options::forArray([
+                            '1' => __('No, give me a group with intersectional experiences and/or identities'),
+                            '0' => __(
+                                'Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)',
+                            ),
+                        ])->toArray()"
+                            x-model.number="intersectional" />
+                        <x-hearth-error for="intersectional" />
+                    </fieldset>
+                    <div class="field @error('other_identity_type') field--error @enderror" x-cloak
+                        x-show="intersectional == 0">
+                        <x-hearth-label for="other_identity_type">{{ __('Types of experiences or identities') }}
+                        </x-hearth-label>
+                        <x-hearth-select name="other_identity_type" :options="Spatie\LaravelOptions\Options::forArray([
+                            'age' => __('Age'),
+                            'gender-and-sexual-identity' => __('Gender and sexual identity'),
+                            'indigenous' => __('Indigenous'),
+                            'race-and-ethnicity' => __('Race and ethnicity'),
+                            'immigrants-and-refugees' => __('Immigrants and/or refugees'),
+                            'first-language' => __('First language'),
+                            'area' => __('Living in urban, rural, or remote areas'),
+                        ])
+                            ->nullable(__('Select a criteria…'))
+                            ->toArray()" :selected="old('other_identity_type', '')"
+                            x-model="otherIdentityType" />
+                        <x-hearth-error for="other_identity_type" />
+                    </div>
+                    <fieldset x-cloak x-show="otherIdentityType == 'age'">
+                        <legend>{{ __('What age group are you interested in engaging?') }}</legend>
+                        <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old('age_brackets', [])" required />
+                    </fieldset>
+                    <fieldset x-cloak x-show="otherIdentityType == 'gender-and-sexual-identity'">
+                        <legend>
+                            {{ __('What group that has been marginalized based on gender or sexual identity are you interested in engaging?') }}
+                        </legend>
+                        <div class="field">
+                            <x-hearth-checkbox id='gender_and_sexual_identities-women'
+                                name='gender_and_sexual_identities[]' value='women' :checked="old('gender_and_sexual_identities.women', false)" />
+                            <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}
+                            </x-hearth-label>
+                        </div>
+                        <div class="field">
+                            <x-hearth-checkbox id='gender_and_sexual_identities-nb-gnc-fluid-people'
+                                name='gender_and_sexual_identities[]' value='nb-gnc-fluid-people' :checked="old('gender_and_sexual_identities.nb-gnc-fluid-people', false)" />
+                            <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>
+                                {{ __('Non-binary, gender non-conforming and/or gender fluid people') }}
+                            </x-hearth-label>
+                        </div>
+                        <div class="field">
+                            <x-hearth-checkbox id='gender_and_sexual_identities-trans-people'
+                                name='gender_and_sexual_identities[]' value='trans-people' :checked="old('gender_and_sexual_identities.trans-people', false)" />
+                            <x-hearth-label for='gender_and_sexual_identities-trans-people'>
+                                {{ $transPeople->name_plural }}
+                            </x-hearth-label>
+                        </div>
+                        <div class="field">
+                            <x-hearth-checkbox id='gender_and_sexual_identities-2slgbtqiaplus-people'
+                                name='gender_and_sexual_identities[]' value='2slgbtqiaplus-people' :checked="old('gender_and_sexual_identities.2slgbtqiaplus-people', false)" />
+                            <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>
+                                {{ $twoslgbtqiaplusPeople->name_plural }}</x-hearth-label>
+                        </div>
+                    </fieldset>
+                    <fieldset x-cloak x-show="otherIdentityType == 'indigenous'">
+                        <legend>
+                            {{ __('What group of people Indigenous to what is now known as Canada are you interested in engaging?') }}
+                        </legend>
+                        <x-hearth-checkboxes name="indigenous_identities" :options="$indigenousIdentities" :checked="old('indigenous_identities', [])" />
+                    </fieldset>
+                    <fieldset x-cloak x-show="otherIdentityType == 'race-and-ethnicity'">
+                        <legend>{{ __('What ethno-racial group are you interested in engaging?') }}</legend>
+                        <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old('ethnoracial_identities', [])" />
+                    </fieldset>
+                    <fieldset x-cloak x-show="otherIdentityType == 'first-language'">
+                        <legend>{{ __('What first languages are used by the people you’re interested in engaging?') }}
+                        </legend>
+                        <livewire:language-picker name="first_languages" :languages="[]" :availableLanguages="$languages" />
+                    </fieldset>
+                    <fieldset class="field @error('area_types') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'area'">
+                        <legend>{{ __('Where do the people you’re interested in engaging live?') }}</legend>
+                        <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                        <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', [])"
+                            hinted="area_types-hint" />
+                    </fieldset>
+                </div>
             </div>
         </div>
 
@@ -138,8 +229,8 @@
                 <x-hearth-hint for="ideal_participants">
                     {{ __('This is the ideal number of participants you would like to have for this engagement.') }}
                 </x-hearth-hint>
-                <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)" min="1"
-                    hinted required />
+                <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)"
+                    min="1" hinted required />
                 <x-hearth-error for="ideal_participants" />
             </div>
 

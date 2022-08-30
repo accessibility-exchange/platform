@@ -44,6 +44,12 @@ class MatchingStrategy extends Model
         return $this->criteria()->where('criteriable_type', DisabilityType::class)->with('criteriable')->get()->pluck('criteriable')->contains($disabilityType);
     }
 
+    public function hasOtherIdentityTypes(): bool
+    {
+        return false;
+//        return $this->criteria()->where('criteriable_type', DisabilityType::class)->count() > 0;
+    }
+
     public function locationType(): Attribute
     {
         return Attribute::make(
@@ -103,7 +109,7 @@ class MatchingStrategy extends Model
         return Attribute::make(
             get: function ($value, $attributes) {
                 // TODO Handle all cases.
-                return __('Intersectional.');
+                return __('Intersectional');
             },
         );
     }
