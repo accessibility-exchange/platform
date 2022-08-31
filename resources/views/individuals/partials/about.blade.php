@@ -13,7 +13,7 @@
     @else
         <li>{{ get_language_exonym($individual->user->locale) }}</li>
         @if ($individual->user->singed_language)
-            <li>{{ get_language_exonym($language) }}</li>
+            <li>{{ get_language_exonym($individual->user->singed_language) }}</li>
         @endif
     @endif
 </ul>
