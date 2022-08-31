@@ -84,7 +84,7 @@ class MatchingStrategy extends Model
             get: function ($value, $attributes) {
                 if (count($this->regions ?? [])) {
                     if (count($this->regions) === 13) {
-                        return __('All provinces and territories.');
+                        return __('All provinces and territories');
                     } else {
                         $regions = Arr::map($this->regions, fn ($region) => ProvinceOrTerritory::labels()[$region]);
 
@@ -96,7 +96,7 @@ class MatchingStrategy extends Model
                     return implode("  \n", Arr::sort($locations));
                 }
 
-                return __('All provinces and territories.');
+                return __('All provinces and territories');
             },
         );
     }

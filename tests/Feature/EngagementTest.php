@@ -3,8 +3,12 @@
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
+use App\Models\AgeBracket;
+use App\Models\AreaType;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\EthnoracialIdentity;
+use App\Models\IndigenousIdentity;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -69,6 +73,10 @@ test('users with regulated organization admin role can create engagements', func
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
+
+    expect($engagement->matchingStrategy->location_summary)->toEqual('All provinces and territories');
+    expect($engagement->matchingStrategy->disability_and_deaf_group_summary)->toEqual('Cross disability (includes people with disabilities, Deaf people, and supporters)');
+    expect($engagement->matchingStrategy->other_identities_summary)->toEqual('Intersectional');
 
     $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
     $response->assertOk();
@@ -148,9 +156,11 @@ test('users with regulated organization admin role can edit engagements', functi
         ],
         'cross_disability' => 0,
         'disability_types' => [
-            DisabilityType::where('name->en', 'Deaf')->first()->id,
             DisabilityType::where('name->en', 'Hard-of-hearing')->first()->id,
         ],
+        'intersectional' => 0,
+        'other_identity_type' => 'age-bracket',
+        'age_brackets' => [AgeBracket::where('name->en', 'Older people (65+)')->first()->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -160,8 +170,103 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertSee('Halifax, Nova Scotia');
-    $response->assertSee('<p>Deaf', false);
-    $response->assertSee('Hard-of-hearing</p>', false);
+    $response->assertSee('Hard-of-hearing');
+    $response->assertSee('Older people (65+)');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'gender-and-sexual-identity',
+        'gender_and_sexual_identities' => ['women', 'nb-gnc-fluid-people', 'trans-people', '2slgbtqiaplus-people'],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+
+    $response->assertSee('Women');
+    $response->assertSee('Non-binary people');
+    $response->assertSee('Gender non-conforming people');
+    $response->assertSee('Gender fluid people');
+    $response->assertSee('Trans people');
+    $response->assertSee('2SLGBTQIA+ people');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'indigenous-identity',
+        'indigenous_identities' => IndigenousIdentity::all()->pluck('id')->toArray(),
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('First Nations');
+    $response->assertSee('Métis');
+    $response->assertSee('Inuit');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'ethnoracial-identity',
+        'ethnoracial_identities' => EthnoracialIdentity::all()->pluck('id')->toArray(),
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('Black');
+    $response->assertSee('South Asian');
+    $response->assertSee('Latin American');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'refugee-or-immigrant',
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('Refugees and/or immigrants');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'first-language',
+        'first_languages' => ['fr', 'fcs'],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('French');
+    $response->assertSee('Quebec Sign Language');
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'intersectional' => 0,
+        'other_identity_type' => 'area-type',
+        'area_types' => AreaType::all()->pluck('id')->toArray(),
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('Urban');
+    $response->assertSee('Rural');
+    $response->assertSee('Remote');
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
     $response->assertOk();
