@@ -1,13 +1,17 @@
 <?php
 
+use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Models\Engagement;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\DisabilityTypeSeeder;
 
 test('users with regulated organization admin role can create engagements', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -59,6 +63,18 @@ test('users with regulated organization admin role can create engagements', func
 
     $response = $this->actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
         'recruitment' => 'open-call',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), [
+        'location_type' => 'regions',
+        'regions' => array_column(ProvinceOrTerritory::cases(), 'value'),
+        'cross_disability' => 1,
+        'intersectional' => 1,
+        'ideal_participants' => 25,
+        'minimum_participants' => 15,
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -170,6 +186,8 @@ test('users without regulated organization admin role cannot edit engagements', 
 });
 
 test('users with regulated organization admin role can manage engagements', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])

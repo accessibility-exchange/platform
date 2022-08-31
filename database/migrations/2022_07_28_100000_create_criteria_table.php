@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
             $table->morphs('criteriable');
-            $table->float('weight');
+            $table->float('weight')->nullable();
         });
     }
 

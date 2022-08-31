@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreEngagementCriteriaRequest extends FormRequest
@@ -26,6 +27,19 @@ class StoreEngagementCriteriaRequest extends FormRequest
             'disability_types' => 'nullable|array|required_if:cross_disability,false|exclude_if:cross_disability,true',
             'disability_types.*' => 'exists:disability_types,id',
             'intersectional' => 'required|boolean',
+            'other_identity_type' => 'nullable|string|required_if:intersectional,false|exclude_if:intersectional,true',
+            'age_brackets' => 'nullable|array|required_if:other_identity_type,age-bracket|exclude_unless:other_identity_type,age-bracket',
+            'age_brackets.*' => 'exists:age_brackets,id',
+            'gender_and_sexual_identities' => 'nullable|array|required_if:other_identity_type,gender-and-sexual-identity|exclude_unless:other_identity_type,gender-and-sexual-identity',
+            'gender_and_sexual_identities.*' => 'in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',
+            'indigenous_identities' => 'nullable|array|required_if:other_identity_type,indigenous-identity|exclude_unless:other_identity_type,indigenous-identity',
+            'indigenous_identities.*' => 'exists:indigenous_identities,id',
+            'ethnoracial_identities' => 'nullable|array|required_if:other_identity_type,ethnoracial-identity|exclude_unless:other_identity_type,ethnoracial-identity',
+            'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
+            'first_languages' => 'nullable|array|required_if:other_identity_type,first-language|exclude_unless:other_identity_type,first-language',
+            'first_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
+            'area_types' => 'nullable|array|required_if:other_identity_type,area-type|exclude_unless:other_identity_type,area-type',
+            'area_types.*' => 'exists:area_types,id',
             'ideal_participants' => 'required|integer',
             'minimum_participants' => 'required|integer|lte:ideal_participants',
         ];
@@ -44,6 +58,11 @@ class StoreEngagementCriteriaRequest extends FormRequest
             'regions' => [],
             'locations' => [],
             'disability_types' => [],
+            'age_brackets' => [],
+            'gender_and_sexual_identities' => [],
+            'indigenous_identities' => [],
+            'ethnoracial_identities' => [],
+            'area_types' => [],
         ]);
     }
 }
