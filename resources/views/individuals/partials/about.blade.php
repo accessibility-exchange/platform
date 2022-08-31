@@ -1,6 +1,4 @@
-@markdown
-    {{ $individual->getWrittenTranslation('bio', $language) }}
-@endmarkdown
+@markdown{{ $individual->getWrittenTranslation('bio', $language) }}@endmarkdown
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>

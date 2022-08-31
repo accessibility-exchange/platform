@@ -9,14 +9,14 @@
         ]) !!}</p>
         @can('update', $project)
             <a class="button"
-                href="{{ localized_route('engagements.manage', ['project' => $project, 'engagement' => $engagement]) }}">{{ __('Engagement dashboard') }}</a>
+                href="{{ localized_route('engagements.manage', $engagement) }}">{{ __('Engagement dashboard') }}</a>
         @endcan
     </x-slot>
 
     <div class="has-nav-secondary">
         <nav class="secondary" aria-labelledby="engagement">
             <ul role="list">
-                <x-nav-link :href="localized_route('engagements.show', ['project' => $project, 'engagement' => $engagement])" :active="request()->localizedRouteIs('engagements.show')">{{ __('Engagement overview') }}</x-nav-link>
+                <x-nav-link :href="localized_route('engagements.show', $engagement)" :active="request()->localizedRouteIs('engagements.show')">{{ __('Engagement overview') }}</x-nav-link>
             </ul>
         </nav>
 
@@ -25,7 +25,7 @@
                 <h2>{{ __('Overview') }}</h2>
                 @can('update', $project)
                     <p><a class="button"
-                            href="{{ localized_route('engagements.edit', ['project' => $project, 'engagement' => $engagement]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('overview') . '</span>']) !!}</a>
+                            href="{{ localized_route('engagements.edit', $engagement) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('overview') . '</span>']) !!}</a>
                     </p>
                 @endcan
                 @include('engagements.partials.overview', ['level' => 3])

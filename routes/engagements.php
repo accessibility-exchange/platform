@@ -2,14 +2,27 @@
 
 use App\Http\Controllers\EngagementController;
 
-Route::multilingual('/projects/{project}/engagements/create', [EngagementController::class, 'create'])
-    ->middleware(['auth', 'can:createEngagement,project'])
-    ->name('engagements.create');
+Route::controller(EngagementController::class)
+    ->name('engagements.')
+    ->group(function () {
+        Route::multilingual('/projects/{project}/engagements/create/languages/select', 'showLanguageSelection')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('show-language-selection');
 
-Route::multilingual('/projects/{project}/engagements/create', [EngagementController::class, 'store'])
-    ->method('post')
-    ->middleware(['auth', 'can:createEngagement,project'])
-    ->name('engagements.store');
+        Route::multilingual('/projects/{project}/engagements/create/store-languages', 'storeLanguages')
+            ->method('post')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('store-languages');
+
+        Route::multilingual('/projects/{project}/engagements/create', 'create')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('create');
+
+        Route::multilingual('/projects/{project}/engagements/create', 'store')
+            ->method('post')
+            ->middleware(['auth', 'can:createEngagement,project'])
+            ->name('store');
+    });
 
 Route::controller(EngagementController::class)
     ->prefix('engagements')
@@ -37,6 +50,10 @@ Route::controller(EngagementController::class)
             ->method('put')
             ->name('store-recruitment');
 
+        Route::multilingual('/{engagement}/criteria/select', 'showCriteriaSelection')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('show-criteria-selection');
+
         Route::multilingual('/{engagement}/edit', 'edit')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('edit');
@@ -45,6 +62,24 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('update');
+
+        Route::multilingual('/{engagement}/languages/edit', 'editLanguages')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('edit-languages');
+
+        Route::multilingual('/{engagement}/languages/update', 'updateLanguages')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('update-languages');
+
+        Route::multilingual('/{engagement}/criteria/edit', 'editCriteria')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('edit-criteria');
+
+        Route::multilingual('/{engagement}/criteria/update', 'updateCriteria')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->method('put')
+            ->name('update-criteria');
 
         Route::multilingual('/{engagement}/manage', 'manage')
             ->middleware(['auth', 'can:update,engagement'])

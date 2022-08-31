@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Observers\EngagementObserver;
 use App\Observers\UserObserver;
 use App\Settings;
 use App\Statuses\EngagementStatus;
@@ -62,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
+        Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);
     }
 }

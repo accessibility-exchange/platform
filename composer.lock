@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe2fb806fb9fcbc45494c9804e7e259c",
+    "content-hash": "afbc9cfacbbbdb22ecac2d596b52ceb4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -204,25 +204,25 @@
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
-            "version": "1.3.1",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-heroicons.git",
-                "reference": "a2749abc7b8eb6149ff643ffa99a3d33a2de7961"
+                "reference": "b52c421f8850645f6f4ac199a80bc67f0bfc6d9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/a2749abc7b8eb6149ff643ffa99a3d33a2de7961",
-                "reference": "a2749abc7b8eb6149ff643ffa99a3d33a2de7961",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/b52c421f8850645f6f4ac199a80bc67f0bfc6d9e",
+                "reference": "b52c421f8850645f6f4ac199a80bc67f0bfc6d9e",
                 "shasum": ""
             },
             "require": {
                 "blade-ui-kit/blade-icons": "^1.1",
-                "illuminate/support": "^8.0|^9.0",
-                "php": "^7.4|^8.0"
+                "illuminate/support": "^9.0",
+                "php": "^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.0|^7.0",
+                "orchestra/testbench": "^7.0",
                 "phpunit/phpunit": "^9.0"
             },
             "type": "library",
@@ -257,7 +257,7 @@
             ],
             "support": {
                 "issues": "https://github.com/blade-ui-kit/blade-heroicons/issues",
-                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/1.3.1"
+                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/2.0.1"
             },
             "funding": [
                 {
@@ -269,7 +269,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-02T11:50:13+00:00"
+            "time": "2022-08-28T09:30:28+00:00"
         },
         {
             "name": "blade-ui-kit/blade-icons",

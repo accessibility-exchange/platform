@@ -33,9 +33,7 @@
     @endif
 
     @if ($project->consultant_responsibilities)
-        @markdown
-            {{ $project->getWrittenTranslation('consultant_responsibilities', $language) }}
-        @endmarkdown
+        @markdown{{ $project->getWrittenTranslation('consultant_responsibilities', $language) }}@endmarkdown
     @endif
 @endif
 

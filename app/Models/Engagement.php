@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Translatable\HasTranslations;
 
@@ -21,6 +25,7 @@ class Engagement extends Model
 
     protected $fillable = [
         'project_id',
+        'languages',
         'name',
         'format',
         'ideal_participants',
@@ -50,6 +55,8 @@ class Engagement extends Model
     ];
 
     protected $casts = [
+        'published_at' => 'datetime:Y-m-d',
+        'languages' => 'array',
         'name' => 'array',
         'ideal_participants' => 'integer',
         'minimum_participants' => 'integer',
@@ -73,6 +80,20 @@ class Engagement extends Model
         'description',
         'payment',
     ];
+
+    public function displayFormat(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => EngagementFormat::labels()[$attributes['format']],
+        );
+    }
+
+    public function displayRecruitment(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) => EngagementRecruitment::labels()[$attributes['recruitment']],
+        );
+    }
 
     public function project(): BelongsTo
     {
@@ -117,5 +138,10 @@ class Engagement extends Model
     public function organizationalConnector(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organizational_connector_id');
+    }
+
+    public function matchingStrategy(): MorphOne
+    {
+        return $this->morphOne(MatchingStrategy::class, 'matchable');
     }
 }

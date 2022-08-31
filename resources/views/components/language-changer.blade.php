@@ -16,7 +16,7 @@
                     @endif
                 @else
                     <li><a
-                            href="{{ localized_route($model->getRoutePrefix() . '.show', [Str::camel(class_basename(get_class($model))) => $model, 'language' => $code], get_written_language_for_signed_language($code)) }}">{{ get_language_exonym($code) }}</a>
+                            href="{{ localized_route($model->getRoutePrefix() . '.show', [Str::camel(class_basename($model)) => $model, 'language' => $code], get_written_language_for_signed_language($code)) }}">{{ get_language_exonym($code) }}</a>
                     </li>
                 @endif
             @endforeach

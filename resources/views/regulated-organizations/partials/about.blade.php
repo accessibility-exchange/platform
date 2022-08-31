@@ -1,8 +1,6 @@
 <h3>{{ __('About the organization') }}</h3>
 
-@markdown
-    {{ $regulatedOrganization->getWrittenTranslation('about', $language) }}
-@endmarkdown
+@markdown{{ $regulatedOrganization->getWrittenTranslation('about', $language) }}@endmarkdown
 
 <h3>{{ __('Service areas') }}</h3>
 

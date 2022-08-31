@@ -3,7 +3,7 @@
     @click.away="open = false">
     <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
         @keyup.escape.window="open = false">
-        <x-heroicon-o-menu class="indicator" aria-hidden="true" /><span>{{ __('Menu') }}</span>
+        <x-heroicon-o-bars-3 class="indicator" aria-hidden="true" /><span>{{ __('Menu') }}</span>
     </button>
     <ul role="list">
         @auth
