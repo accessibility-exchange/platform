@@ -47,6 +47,10 @@
                         </form>
                     @endif
                 @endif
+                @can('manage', $project)
+                    <a class="ml-auto"
+                        href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage this project') }}</a>
+                @endcan
                 @can('publish', $project)
                     @if ($project->checkStatus('published'))
                         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST"

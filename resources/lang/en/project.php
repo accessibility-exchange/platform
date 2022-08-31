@@ -2,6 +2,7 @@
 
 return [
     'singular_name' => 'project',
+    'singular_name_titlecase' => 'Project',
     'statuses' => [
         'upcoming' => 'Upcoming',
         'current' => 'In progress',

@@ -8,36 +8,16 @@ use Spatie\LaravelOptions\Options;
 
 class TranslationPicker extends Component
 {
-    /**
-     * The languages selected for translation.
-     *
-     * @var array
-     */
     public array $languages;
 
-    /**
-     * The languages available for translation.
-     *
-     * @var array
-     */
-    public array $availableLanguages = [];
+    public array $availableLanguages;
 
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(?array $languages = null, ?array $availableLanguages = null)
     {
-        $this->languages = ['en', 'fr', 'ase', 'fcs'];
-        $this->availableLanguages = Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray();
+        $this->languages = $languages ?? ['en', 'fr', 'ase', 'fcs'];
+        $this->availableLanguages = $availableLanguages ?? Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray();
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return View
-     */
     public function render(): View
     {
         return view('components.translation-picker');
