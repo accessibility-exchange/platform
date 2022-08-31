@@ -5,9 +5,12 @@ namespace App\Http\Requests;
 use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateEngagementSelectionCriteriaRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return true;

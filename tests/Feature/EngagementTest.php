@@ -1,8 +1,8 @@
 <?php
 
-use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
+use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Models\Engagement;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -68,14 +68,9 @@ test('users with regulated organization admin role can create engagements', func
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), [
-        'location_type' => 'regions',
-        'regions' => array_column(ProvinceOrTerritory::cases(), 'value'),
-        'cross_disability' => 1,
-        'intersectional' => 1,
-        'ideal_participants' => 25,
-        'minimum_participants' => 15,
-    ]);
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create();
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), $data);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
