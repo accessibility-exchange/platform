@@ -16,4 +16,16 @@ class UserPolicy
             ? Response::allow()
             : Response::deny(__('You cannot select a role.'));
     }
+
+    public function editRolesAndPermissions(User $user): Response
+    {
+        return ($user->context == 'regulated-organization' && $user->regulatedOrganization) || ($user->context == 'organization' && $user->organization)
+            ? Response::allow()
+            : Response::deny(__('You must belong to an :organization in order to manage its roles and permissions.', [
+                'organization' => match ($user->context) {
+                    'regulated-organization' => __('regulated organization'),
+                    default => __('organization.singular_name')
+                },
+            ]));
+    }
 }
