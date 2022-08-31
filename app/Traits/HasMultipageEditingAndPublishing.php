@@ -10,7 +10,7 @@ trait HasMultipageEditingAndPublishing
 {
     public function getSingularName(): string
     {
-        return __(Str::kebab(class_basename(get_class($this))).'.singular_name');
+        return __(Str::kebab(class_basename($this)).'.singular_name');
     }
 
     public function publish(): void
