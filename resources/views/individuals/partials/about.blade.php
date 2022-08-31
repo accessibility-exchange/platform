@@ -6,9 +6,15 @@
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
 
 <ul>
-    @foreach ($individual->working_languages as $language)
-        <li>{{ get_language_exonym($language) }}</li>
-    @endforeach
+    @if ($individual->working_languages)
+        @foreach ($individual->working_languages as $language)
+            <li>{{ get_language_exonym($language) }}</li>
+        @endforeach
+    @else
+        @foreach ($individual->languages as $language)
+            <li>{{ get_language_exonym($language) }}</li>
+        @endforeach
+    @endif
 </ul>
 
 @if ($individual->isConsultant())
