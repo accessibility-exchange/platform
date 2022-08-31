@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\ProvinceOrTerritory;
-use App\Http\Requests\StoreEngagementCriteriaRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementOutreachRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
+use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
@@ -207,7 +207,7 @@ class EngagementController extends Controller
         ]);
     }
 
-    public function storeCriteria(StoreEngagementCriteriaRequest $request, Engagement $engagement): RedirectResponse
+    public function updateCriteria(UpdateEngagementSelectionCriteriaRequest $request, Engagement $engagement): RedirectResponse
     {
         $matchingStrategy = $engagement->matchingStrategy;
 

@@ -18,7 +18,7 @@
 
     <p>{{ __('Please tell us more about the individuals you’d like participating in your engagement.') }}</p>
 
-    <form class="stack" action="{{ localized_route('engagements.store-criteria', $engagement) }}" method="post"
+    <form class="stack" action="{{ localized_route('engagements.update-criteria', $engagement) }}" method="post"
         novalidate>
         @csrf
         @method('put')

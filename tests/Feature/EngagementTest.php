@@ -75,7 +75,7 @@ test('users with regulated organization admin role can create engagements', func
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), $data);
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
@@ -134,10 +134,18 @@ test('users with regulated organization admin role can edit engagements', functi
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
+    $response = $this->actingAs($user)->get(localized_route('engagements.edit-criteria', $engagement));
     $response->assertOk();
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'location_type' => 'localities',
+        'regions' => $engagement->matchingStrategy->regions ?? [],
+        'locations' => [
+            [
+                'region' => 'NS',
+                'locality' => 'Halifax',
+            ],
+        ],
         'cross_disability' => 0,
         'disability_types' => [
             DisabilityType::where('name->en', 'Deaf')->first()->id,
@@ -145,12 +153,13 @@ test('users with regulated organization admin role can edit engagements', functi
         ],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), $data);
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('Halifax, Nova Scotia');
     $response->assertSee('<p>Deaf', false);
     $response->assertSee('Hard-of-hearing</p>', false);
 
