@@ -11,9 +11,12 @@
             <li>{{ get_language_exonym($language) }}</li>
         @endforeach
     @else
-        @foreach ($individual->languages as $language)
-            <li>{{ get_language_exonym($language) }}</li>
-        @endforeach
+        <li>{{ get_language_exonym($individual->user->locale) }}
+            @if ($individual->user->singed_language)
+                @foreach ($individual->user->singed_language as $language)
+        <li>{{ get_language_exonym($language) }}</li>
+    @endforeach
+    @endif
     @endif
 </ul>
 
