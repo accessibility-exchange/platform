@@ -3,14 +3,16 @@
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
+use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
 
 test('users with regulated organization admin role can create engagements', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(DatabaseSeeder::class);
 
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -68,6 +70,9 @@ test('users with regulated organization admin role can create engagements', func
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
 
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
+    $response->assertOk();
+
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create();
 
     $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), $data);
@@ -116,6 +121,8 @@ test('guests cannot view engagements', function () {
 });
 
 test('users with regulated organization admin role can edit engagements', function () {
+    $this->seed(DatabaseSeeder::class);
+
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -126,6 +133,26 @@ test('users with regulated organization admin role can edit engagements', functi
     $engagement = Engagement::factory()->create([
         'project_id' => $project->id,
     ]);
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
+    $response->assertOk();
+
+    $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
+        'cross_disability' => 0,
+        'disability_types' => [
+            DisabilityType::where('name->en', 'Deaf')->first()->id,
+            DisabilityType::where('name->en', 'Hard-of-hearing')->first()->id,
+        ],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-criteria', $engagement), $data);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response->assertSee('<p>Deaf', false);
+    $response->assertSee('Hard-of-hearing</p>', false);
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
     $response->assertOk();
