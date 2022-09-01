@@ -29,6 +29,8 @@ class DeployLocal extends Command
     {
         $this->call('storage:link');
         $this->call('google-fonts:fetch');
+        $this->call('icons:clear');
+        $this->call('icons:cache');
 
         return 0;
     }
