@@ -4,9 +4,9 @@
     <div class="stack hero">
         <div class="center max-w-prose">
             <div class="stack text-center">
-                <div class="w-1/2 mx-auto">
-                    <x-tae-logo role="presentation" class="logo" />
-                    <x-tae-logo-mono role="presentation" class="logo logo--themeable" />
+                <div class="mx-auto w-1/2">
+                    <x-tae-logo class="logo" role="presentation" />
+                    <x-tae-logo-mono class="logo logo--themeable" role="presentation" />
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </div>
 
@@ -18,6 +18,5 @@
             </div>
         </div>
     </div>
-
 
 </x-guest-layout>

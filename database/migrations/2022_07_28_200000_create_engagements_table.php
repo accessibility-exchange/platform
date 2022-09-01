@@ -16,14 +16,16 @@ return new class extends Migration
         Schema::create('engagements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('project_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->json('languages')->nullable();
             $table->json('name');
             $table->json('description')->nullable();
             $table->string('format');
-            $table->integer('ideal_participants');
-            $table->integer('minimum_participants');
+            $table->integer('ideal_participants')->nullable();
+            $table->integer('minimum_participants')->nullable();
             $table->string('who')->nullable();
             $table->string('recruitment')->nullable();
             $table->json('regions')->nullable();

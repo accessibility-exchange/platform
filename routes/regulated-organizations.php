@@ -7,7 +7,7 @@ Route::controller(RegulatedOrganizationController::class)
     ->name('regulated-organizations.')
     ->group(function () {
         Route::multilingual('', 'index')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\RegulatedOrganization'])
             ->name('index');
 
         Route::multilingual('/type/select', 'showTypeSelection')

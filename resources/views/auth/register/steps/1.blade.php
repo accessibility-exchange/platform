@@ -1,21 +1,19 @@
-
-
 <form class="stack" method="POST" action="{{ localized_route('register-languages') }}" novalidate>
     @csrf
 
-    @if(request()->get('context'))
+    @if (request()->get('context'))
         <input name="context" type="hidden" value="{{ request()->get('context') }}" />
     @endif
 
-    @if(request()->get('role'))
+    @if (request()->get('role'))
         <input name="role" type="hidden" value="{{ request()->get('role') }}" />
     @endif
 
-    @if(request()->get('invitation'))
+    @if (request()->get('invitation'))
         <input name="invitation" type="hidden" value="{{ request()->get('invitation') }}" />
     @endif
 
-    @if(request()->get('email'))
+    @if (request()->get('email'))
         <input name="email" type="hidden" value="{{ request()->get('email') }}" />
     @endif
 
@@ -35,8 +33,16 @@
 
         <div class="field @error('signed_language') field--error @enderror stack">
             <x-hearth-label for="signed_language" :value="__('Sign Language (optional)')" />
-            <x-hearth-hint for="signed_language">{{ __('If you use Sign Language, you can select which Sign Language you use. When content is available in the Sign Language you select, the content will appear as a video.') }}</x-hearth-hint>
-            <x-hearth-select name="signed_language" :options="Spatie\LaravelOptions\Options::forArray(['ase' => __('American Sign Language (ASL)'), 'fcs' => 'Langue des signes québécoise (LSQ)'])->nullable(__('Choose a signed language…'))->toArray()" :selected="old('signed_language', '')" hinted="languages-hint signed_language-hint" />
+            <x-hearth-hint for="signed_language">
+                {{ __('If you use Sign Language, you can select which Sign Language you use. When content is available in the Sign Language you select, the content will appear as a video.') }}
+            </x-hearth-hint>
+            <x-hearth-select name="signed_language" :options="Spatie\LaravelOptions\Options::forArray([
+                'ase' => __('American Sign Language (ASL)'),
+                'fcs' => 'Langue des signes québécoise (LSQ)',
+            ])
+                ->nullable(__('Choose a signed language…'))
+                ->toArray()" :selected="old('signed_language', '')"
+                hinted="languages-hint signed_language-hint" />
             <x-hearth-error for="signed_language" />
         </div>
     </fieldset>

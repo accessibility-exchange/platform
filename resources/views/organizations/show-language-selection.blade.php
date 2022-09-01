@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Create organization profile') }}</x-slot>
     <x-slot name="header">
@@ -13,7 +12,8 @@
 
     <p>{{ __('Please list any languages that you will be using to describe your organization.') }}</p>
 
-    <form class="stack" action="{{ localized_route('organizations.store-languages', $organization) }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('organizations.store-languages', $organization) }}" method="post"
+        novalidate>
         <x-translation-picker />
 
         <p class="repel">

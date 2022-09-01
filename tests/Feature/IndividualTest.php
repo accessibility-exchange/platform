@@ -683,6 +683,17 @@ test('users can view individual pages', function () {
     $response->assertOk();
 });
 
+test('users can not view individual pages if the individual is not a consultant or connector', function () {
+    $individual = Individual::factory()->create([
+        'roles' => ['participant'],
+    ]);
+
+    $otherUser = User::factory()->create();
+
+    $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
+    $response->assertNotFound();
+});
+
 test('users without a verified email can not view individual pages', function () {
     $individual = Individual::factory()->create([
         'consulting_services' => ['analysis'],

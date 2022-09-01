@@ -9,9 +9,9 @@
     <div role="region" aria-labelledby="employment-statuses" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                </tr>
             </thead>
             @forelse ($employmentStatuses as $employmentStatus)
                 <tr>
@@ -25,5 +25,3 @@
         </table>
     </div>
 </x-app-layout>
-
-

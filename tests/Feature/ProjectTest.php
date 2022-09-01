@@ -293,6 +293,9 @@ test('users with regulated organization admin role can edit projects', function 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'team_languages' => ['en'],
+        'team_trainings' => [
+            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
+        ],
         'contact_person_email' => 'me@here.com',
         'contact_person_name' => 'Jonny Appleseed',
         'preferred_contact_method' => 'email',
@@ -302,6 +305,9 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
 });
 
 test('users without regulated organization admin role cannot edit projects', function () {
@@ -513,7 +519,7 @@ test('project retrieves team trainings properly', function () {
         ],
     ]);
 
-    expect($project->team_trainings[0]['date'])->toEqual('April 2022');
+    expect($project->team_trainings[0]['date'])->toEqual('2022-04-01');
 
     $projectWithNullTrainings = Project::factory()->create([
         'team_trainings' => [
@@ -651,7 +657,7 @@ test('registered users can access my projects page', function () {
 
     $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
-    $response->assertNotFound();
+    $response->assertForbidden();
 });
 
 test('guests can not access my projects page', function () {

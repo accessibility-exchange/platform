@@ -8,12 +8,12 @@
         <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
 
         <!-- Manifest -->
-        <link rel="manifest" href="{{ asset('/manifest.webmanifest') }}" crossorigin="use-credentials">
+        <link href="{{ asset('/manifest.webmanifest') }}" rel="manifest" crossorigin="use-credentials">
 
         <!-- Icons -->
-        <link rel="icon" href="{{ asset('/favicon.ico') }}">
-        <link rel="icon" href="{{ asset('/icon.svg') }}" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="{{ asset('/apple-touch-icon.png') }}">
+        <link href="{{ asset('/favicon.ico') }}" rel="icon">
+        <link type="image/svg+xml" href="{{ asset('/icon.svg') }}" rel="icon">
+        <link href="{{ asset('/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
         <!-- Styles -->
         @vite('resources/css/app.css')
@@ -21,6 +21,7 @@
         @livewireStyles()
 
         <!-- Scripts -->
-        <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+        <script>
+            document.documentElement.className = document.documentElement.className.replace("no-js", "js");
+        </script>
         @vite('resources/js/app.js')
-

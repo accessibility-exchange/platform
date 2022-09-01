@@ -217,6 +217,6 @@ class ProjectController extends Controller
      */
     public function manage(Request $request, Project $project): View
     {
-        return view('projects.organizer-dashboard', ['project' => $project]);
+        return view('projects.manage', ['project' => $project]);
     }
 }

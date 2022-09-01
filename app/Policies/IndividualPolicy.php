@@ -11,27 +11,36 @@ class IndividualPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  User  $user
-     * @param  Individual  $model
-     * @return Response
-     */
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
     public function view(User $user, Individual $model): Response
     {
+        if (! $model->isConsultant() && ! $model->isConnector()) {
+            return Response::denyAsNotFound();
+        }
+
+        if ($model->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :individual. If you want to visit this page, you can :unblock and return to this page.', [
+                'individual' => '<strong>'.$model->name.'</strong>',
+                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
+            ]));
+        }
+
         if ($model->checkStatus('draft')) {
-            return $user->id !== $model->user_id || (! $model->isConsultant() && ! $model->isConnector())
+            return $user->id !== $model->user_id
                 ? Response::denyAsNotFound()
                 : Response::allow();
         }
 
-        return $model->blockedBy($user)
-            ? Response::deny(__('You’ve blocked :individual. If you want to visit this page, you can :unblock and return to this page.', [
-                'individual' => '<strong>'.$model->name.'</strong>',
-                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
-            ]))
-            : Response::allow();
+        return $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
     }
 
     public function manage(User $user, Individual $individual): Response
