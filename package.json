@@ -56,7 +56,7 @@
         "vite-plugin-manifest-sri": "^0.1.0"
     },
     "dependencies": {
-        "@popperjs/core": "^2.11.5",
+        "@popperjs/core": "^2.11.6",
         "accessible-autocomplete": "^2.0.4",
         "alpinejs": "^3.10.3",
         "axios": "^0.27.2",
