@@ -26,10 +26,10 @@
     <div role="region" aria-labelledby="regulated-organizations" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                    <th></th>
+                </tr>
             </thead>
             @forelse (Auth::user()->blockedRegulatedOrganizations as $blockable)
                 <tr>
@@ -37,9 +37,10 @@
                     <td>
                         <form action="{{ localized_route('block-list.unblock') }}" method="POST">
                             @csrf
-                            <x-hearth-input type="hidden" name="blockable_type" :value="get_class($blockable)" />
-                            <x-hearth-input type="hidden" name="blockable_id" :value="$blockable->id" />
-                            <button class="secondary" :aria-label="__('Unblock :blockable', ['blockable' => $blockable->name])">
+                            <x-hearth-input name="blockable_type" type="hidden" :value="get_class($blockable)" />
+                            <x-hearth-input name="blockable_id" type="hidden" :value="$blockable->id" />
+                            <button class="secondary"
+                                :aria-label="__('Unblock :blockable', ['blockable' => $blockable - > name])">
                                 {{ __('Unblock') }}
                             </button>
                         </form>
@@ -59,10 +60,10 @@
     <div role="region" aria-labelledby="community-organizations" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                    <th></th>
+                </tr>
             </thead>
             @forelse (Auth::user()->blockedOrganizations as $blockable)
                 <tr>
@@ -70,9 +71,10 @@
                     <td>
                         <form action="{{ localized_route('block-list.unblock') }}" method="POST">
                             @csrf
-                            <x-hearth-input type="hidden" name="blockable_type" :value="get_class($blockable)" />
-                            <x-hearth-input type="hidden" name="blockable_id" :value="$blockable->id" />
-                            <button class="secondary" aria-label="{{ __('Unblock :blockable', ['blockable' => $blockable->name]) }}">
+                            <x-hearth-input name="blockable_type" type="hidden" :value="get_class($blockable)" />
+                            <x-hearth-input name="blockable_id" type="hidden" :value="$blockable->id" />
+                            <button class="secondary"
+                                aria-label="{{ __('Unblock :blockable', ['blockable' => $blockable->name]) }}">
                                 {{ __('Unblock') }}
                             </button>
                         </form>
@@ -92,10 +94,10 @@
     <div role="region" aria-labelledby="individuals" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                    <th></th>
+                </tr>
             </thead>
             @forelse (Auth::user()->blockedIndividuals as $blockable)
                 <tr>
@@ -103,9 +105,10 @@
                     <td>
                         <form action="{{ localized_route('block-list.unblock') }}" method="POST">
                             @csrf
-                            <x-hearth-input type="hidden" name="blockable_type" :value="get_class($blockable)" />
-                            <x-hearth-input type="hidden" name="blockable_id" :value="$blockable->id" />
-                            <button class="secondary" :aria-label="__('Unblock :blockable', ['blockable' => $blockable->name])">
+                            <x-hearth-input name="blockable_type" type="hidden" :value="get_class($blockable)" />
+                            <x-hearth-input name="blockable_id" type="hidden" :value="$blockable->id" />
+                            <button class="secondary"
+                                :aria-label="__('Unblock :blockable', ['blockable' => $blockable - > name])">
                                 {{ __('Unblock') }}
                             </button>
                         </form>

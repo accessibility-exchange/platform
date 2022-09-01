@@ -9,7 +9,8 @@
         <h2>{{ __('What would you like to do on this website?') }}</h2>
     </x-slot>
 
-    <p>{{ __('You can always change this later.') }} <a href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
+    <p>{{ __('You can always change this later.') }} <a
+            href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
 
     <form class="stack" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate>
         <fieldset class="field @error('roles') field--error @enderror">

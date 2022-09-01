@@ -18,6 +18,9 @@ class DisabilityTypeSeeder extends Seeder
                 'description' => __('Includes individuals with sight loss, blind individuals, and partially sighted individuals'),
             ],
             [
+                'name' => __('Deaf'),
+            ],
+            [
                 'name' => __('Hard-of-hearing'),
             ],
             [

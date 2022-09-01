@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\CarbonInterface;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
 
@@ -18,29 +18,56 @@ class DatePicker extends Component
 
     public bool $disabled = false;
 
-    public string|Carbon|null $value;
+    public string|null $value = null;
 
-    public int|null $year = null;
+    public string|null $year = null;
 
-    public int|null $month = null;
+    public string|null $month = null;
 
-    public int|null $day = null;
+    public string|null $day = null;
 
     public array $months;
 
-    public int $minimumYear = 2022;
+    public int|null $minimumYear = null;
+
+    public int|null $maximumYear = null;
 
     public function mount(): void
     {
-        if ($this->value && ! $this->value instanceof CarbonInterface) {
-            $this->value = Carbon::parse($this->value);
-        } else {
-            $this->value = null;
+        if ($this->value) {
+            [$y, $m, $d] = explode('-', $this->value);
+            try {
+                $date = Carbon::createFromFormat('Y-m-d', implode('-', [
+                    $y,
+                    $m,
+                    $d === '0' ? '' : $d,
+                ]));
+                $this->year = strval($date->year);
+                $this->month = str_pad(strval($date->month), 2, '0', STR_PAD_LEFT);
+                $this->day = strval($date->day);
+            } catch (InvalidFormatException $exception) {
+                $this->year = $y;
+                $this->month = $m;
+                $this->day = $d;
+            }
         }
+    }
 
-        $this->year = $this->value?->year;
-        $this->month = $this->value?->month;
-        $this->day = $this->value?->day;
+    public function getDateProperty(): string
+    {
+        try {
+            $str = implode('-', [
+                $this->year,
+                $this->month,
+                $this->day === '0' ? '' : $this->day,
+            ]);
+
+            $date = Carbon::createFromFormat('Y-m-d', $str);
+
+            return $date->format('Y-m-d');
+        } catch (InvalidFormatException $exception) {
+            return implode('-', [$this->year, $this->month, $this->day]);
+        }
     }
 
     public function render()
@@ -51,52 +78,52 @@ class DatePicker extends Component
                 'label' => __('Choose a month…'),
             ],
             [
-                'value' => '1',
-                'label' => __('forms.month_january'),
+                'value' => '01',
+                'label' => __('forms.months.1'),
             ],
             [
-                'value' => '2',
-                'label' => __('forms.month_february'),
+                'value' => '02',
+                'label' => __('forms.months.2'),
             ],
             [
-                'value' => '3',
-                'label' => __('forms.month_march'),
+                'value' => '03',
+                'label' => __('forms.months.3'),
             ],
             [
-                'value' => '4',
-                'label' => __('forms.month_april'),
+                'value' => '04',
+                'label' => __('forms.months.4'),
             ],
             [
-                'value' => '5',
-                'label' => __('forms.month_may'),
+                'value' => '05',
+                'label' => __('forms.months.5'),
             ],
             [
-                'value' => '6',
-                'label' => __('forms.month_june'),
+                'value' => '06',
+                'label' => __('forms.months.6'),
             ],
             [
-                'value' => '7',
-                'label' => __('forms.month_july'),
+                'value' => '07',
+                'label' => __('forms.months.7'),
             ],
             [
-                'value' => '8',
-                'label' => __('forms.month_august'),
+                'value' => '08',
+                'label' => __('forms.months.8'),
             ],
             [
-                'value' => '9',
-                'label' => __('forms.month_september'),
+                'value' => '09',
+                'label' => __('forms.months.9'),
             ],
             [
                 'value' => '10',
-                'label' => __('forms.month_october'),
+                'label' => __('forms.months.10'),
             ],
             [
                 'value' => '11',
-                'label' => __('forms.month_november'),
+                'label' => __('forms.months.11'),
             ],
             [
                 'value' => '12',
-                'label' => __('forms.month_december'),
+                'label' => __('forms.months.12'),
             ],
         ];
 

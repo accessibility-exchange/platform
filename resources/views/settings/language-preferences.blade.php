@@ -28,12 +28,14 @@
 
         <div class="field @error('signed_language') field--error @enderror stack">
             <x-hearth-label for="signed_language" :value="__('Signed language')" />
-            <x-hearth-hint for="signed_language">{{ __('When content is available in the sign language you select, it will appear as a video.') }}</x-hearth-hint>
+            <x-hearth-hint for="signed_language">
+                {{ __('When content is available in the sign language you select, it will appear as a video.') }}
+            </x-hearth-hint>
             <x-hearth-select name="signed_language" :options="$signedLanguages" :selected="old('signed_language', $user->signed_language)" hinted />
             <x-hearth-error for="signed_language" />
         </div>
 
-        @if($user->context === 'individual')
+        @if ($user->context === 'individual')
             <h2>{{ __('First language') }}</h2>
 
             <p>{{ __('Please indicate the language you are most comfortable using.') }}</p>
@@ -45,11 +47,16 @@
             </div>
 
             <fieldset class="field @error('working_languages.*') field--error @enderror stack">
-                <legend><h2>{{ __('Working languages') }}</h2></legend>
+                <legend>
+                    <h2>{{ __('Working languages') }}</h2>
+                </legend>
 
                 <p>{{ __('The languages you can work in.') }}</p>
 
-                <livewire:language-picker name="working_languages" :languages="old('working_languages', !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages)" :availableLanguages="$languages" />
+                <livewire:language-picker name="working_languages" :languages="old(
+                    'working_languages',
+                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
+                )" :availableLanguages="$languages" />
                 <x-hearth-error for="working_languages.*" />
             </fieldset>
         @endif

@@ -10,26 +10,29 @@
         </h1>
     </x-slot>
 
-    @if($user->context === 'individual')
-    <nav aria-labelledby="notifications" class="full bg-white shadow-md">
-        <div class="center center:wide">
-            <ul role="list" class="flex gap-6 -mt-4">
-                <li class="w-1/2">
-                    <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('settings.edit-notification-preferences')" :active="request()->localizedRouteIs('settings.edit-notification-preferences')">{{ __('Manage notifications') }}</x-nav-link>
-                </li>
-                <li class="w-1/2">
-                    <x-nav-link class="inline-flex items-center justify-center w-full border-t-0" :href="localized_route('notification-list.show')" :active="request()->localizedRouteIs('notification-list.show')">{{ __('Notification list') }}</x-nav-link>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    @if ($user->context === 'individual')
+        <nav class="full bg-white shadow-md" aria-labelledby="notifications">
+            <div class="center center:wide">
+                <ul class="-mt-4 flex gap-6" role="list">
+                    <li class="w-1/2">
+                        <x-nav-link class="inline-flex w-full items-center justify-center border-t-0" :href="localized_route('settings.edit-notification-preferences')"
+                            :active="request()->localizedRouteIs('settings.edit-notification-preferences')">{{ __('Manage notifications') }}</x-nav-link>
+                    </li>
+                    <li class="w-1/2">
+                        <x-nav-link class="inline-flex w-full items-center justify-center border-t-0" :href="localized_route('notification-list.show')"
+                            :active="request()->localizedRouteIs('notification-list.show')">{{ __('Notification list') }}</x-nav-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     @endif
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
     <h2>{{ __('Manage my notifications') }}</h2>
-    <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}</p>
+    <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}
+    </p>
 
-    @include('settings.notifications.'.$user->context)
+    @include('settings.notifications.' . $user->context)
 </x-app-wide-tabbed-layout>

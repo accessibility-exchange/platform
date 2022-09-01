@@ -24,10 +24,10 @@ class UpdateProjectTeamRequest extends FormRequest
                 Rule::in(array_keys(get_available_languages(true))),
             ],
             'team_trainings' => 'nullable|array',
-            'team_trainings.*.name' => 'nullable|string',
-            'team_trainings.*.date' => 'nullable|date|required_with:trainings.*.name',
-            'team_trainings.*.trainer_name' => 'nullable|string|required_with:trainings.*.name',
-            'team_trainings.*.trainer_url' => 'nullable|active_url|required_with:trainings.*.name',
+            'team_trainings.*.name' => 'required|string',
+            'team_trainings.*.date' => 'required|date',
+            'team_trainings.*.trainer_name' => 'required|string',
+            'team_trainings.*.trainer_url' => 'required|active_url',
             'contact_person_name' => 'required|string',
             'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
             'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',
@@ -37,5 +37,16 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr|nullable|string',
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en|nullable|string',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'team_trainings' => array_map(function ($training) {
+                $training['trainer_url'] = normalize_url($training['trainer_url']);
+
+                return $training;
+            }, $this->team_trainings ?? []),
+        ]);
     }
 }

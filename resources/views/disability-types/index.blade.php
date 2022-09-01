@@ -9,9 +9,9 @@
     <div role="region" aria-labelledby="disability-types" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                </tr>
             </thead>
             @forelse ($disabilityTypes as $disabilityType)
                 <tr>
@@ -25,5 +25,3 @@
         </table>
     </div>
 </x-app-layout>
-
-

@@ -392,6 +392,9 @@ class SettingsController extends Controller
     public function editRolesAndPermissions(): View
     {
         $user = Auth::user();
+
+        $this->authorize('editRolesAndPermissions', $user);
+
         $roles = [];
 
         foreach (config('hearth.organizations.roles') as $role) {
@@ -416,6 +419,9 @@ class SettingsController extends Controller
     public function inviteToInvitationable(): View|RedirectResponse
     {
         $user = Auth::user();
+
+        $this->authorize('editRolesAndPermissions', $user);
+
         $invitationable = match ($user->context) {
             'organization' => $user->organization ?? null,
             'regulated-organization' => $user->regulatedOrganization ?? null,

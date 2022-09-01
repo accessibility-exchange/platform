@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Observers\EngagementObserver;
 use App\Observers\UserObserver;
 use App\Settings;
+use App\Statuses\EngagementStatus;
 use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
@@ -54,11 +57,13 @@ class AppServiceProvider extends ServiceProvider
             return InstalledVersions::getRootPackage()['pretty_version'];
         });
 
+        StatusManager::bind(Engagement::class, EngagementStatus::class);
         StatusManager::bind(Individual::class, IndividualStatus::class);
         StatusManager::bind(Organization::class, OrganizationStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
+        Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);
     }
 }

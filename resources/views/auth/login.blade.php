@@ -39,21 +39,25 @@
                 <x-hearth-label for="remember" :value="__('hearth::auth.label_remember_me')" />
             </div>
 
-
             <button>
                 {{ __('hearth::auth.sign_in') }}
             </button>
 
             <p>
-                {{ __('Don’t have an account yet?') }} <a href="{{ localized_route('register') }}">{{ __('Create an account') }}</a>
+                {{ __('Don’t have an account yet?') }} <a
+                    href="{{ localized_route('register') }}">{{ __('Create an account') }}</a>
             </p>
         </form>
 
         @env('local')
-            <x-login-link :user-attributes="['context' => 'administrator']" label="Sign in as platform administrator" redirect-url="{{ localized_route('dashboard') }}" />
-            <x-login-link :user-attributes="['context' => 'individual']" label="Sign in as individual user" redirect-url="{{ localized_route('dashboard') }}" />
-            <x-login-link :user-attributes="['context' => 'organization']" label="Sign in as community organization user" redirect-url="{{ localized_route('dashboard') }}" />
-            <x-login-link :user-attributes="['context' => 'regulated-organization']" label="Sign in as regulated organization user" redirect-url="{{ localized_route('dashboard') }}" />
+        <x-login-link :user-attributes="['context' => 'administrator']" label="Sign in as platform administrator"
+            redirect-url="{{ localized_route('dashboard') }}" />
+        <x-login-link :user-attributes="['context' => 'individual']" label="Sign in as individual user"
+            redirect-url="{{ localized_route('dashboard') }}" />
+        <x-login-link :user-attributes="['context' => 'organization']" label="Sign in as community organization user"
+            redirect-url="{{ localized_route('dashboard') }}" />
+        <x-login-link :user-attributes="['context' => 'regulated-organization']" label="Sign in as regulated organization user"
+            redirect-url="{{ localized_route('dashboard') }}" />
         @endenv
     </x-auth-card>
 </x-guest-layout>
