@@ -27,13 +27,7 @@ class DeployGlobal extends Command
      */
     public function handle(): int
     {
-        // Split migrate commands between production and development versions
-        if (config('app.env') === 'production') {
-            $this->call('migrate', ['--step' => true, '--force' => true]);
-        } else {
-            $this->call('db:refresh');
-        }
-
+        $this->call('migrate', ['--step' => true, '--force' => true]);
         $this->call('optimize:clear');
         $this->call('optimize');
         $this->call('event:cache');
