@@ -215,6 +215,6 @@ if (! function_exists('context_from_model')) {
      */
     function context_from_model(mixed $model): string
     {
-        return Str::kebab(class_basename(get_class($model)));
+        return Str::kebab(class_basename($model));
     }
 }

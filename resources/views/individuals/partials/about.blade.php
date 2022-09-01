@@ -1,14 +1,19 @@
-@markdown
-    {{ $individual->getWrittenTranslation('bio', $language) }}
-@endmarkdown
+@markdown{{ $individual->getWrittenTranslation('bio', $language) }}@endmarkdown
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
 
 <ul>
-    @foreach ($individual->working_languages as $language)
-        <li>{{ get_language_exonym($language) }}</li>
-    @endforeach
+    @if ($individual->working_languages)
+        @foreach ($individual->working_languages as $language)
+            <li>{{ get_language_exonym($language) }}</li>
+        @endforeach
+    @else
+        <li>{{ get_language_exonym($individual->user->locale) }}</li>
+        @if ($individual->user->signed_language)
+            <li>{{ get_language_exonym($individual->user->signed_language) }}</li>
+        @endif
+    @endif
 </ul>
 
 @if ($individual->isConsultant())

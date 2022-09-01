@@ -6,9 +6,7 @@
         </h1>
     </x-slot>
 
-    @markdown
-        {{ $resourceCollection->description }}
-    @endmarkdown
+    @markdown{{ $resourceCollection->description }}@endmarkdown
 
     <div class="stack">
         <h2>{{ __('Search') }}</h2>
