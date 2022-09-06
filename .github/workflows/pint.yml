@@ -2,6 +2,7 @@ name: Check & fix PHP formatting
 
 on:
   push:
+    branches: [dev]
     paths:
       - composer.json
       - composer.lock

@@ -21,6 +21,16 @@ jobs:
               - composer.json
               - composer.lock
               - '**.php'
+            - job: codecov/patch
+              paths:
+              - composer.json
+              - composer.lock
+              - '**.php'
+            - job: codecov/project
+              paths:
+              - composer.json
+              - composer.lock
+              - '**.php'
             - job: frontend-tests
               paths:
               - composer.json
