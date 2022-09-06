@@ -43,8 +43,8 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'first_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
             'area_types' => 'nullable|array|required_if:other_identity_type,area-type|exclude_unless:other_identity_type,area-type',
             'area_types.*' => 'exists:area_types,id',
-            'ideal_participants' => 'required|integer',
-            'minimum_participants' => 'required|integer|lte:ideal_participants',
+            'ideal_participants' => 'required|integer|min:10',
+            'minimum_participants' => 'required|integer|min:10|lte:ideal_participants',
         ];
     }
 
