@@ -19,11 +19,11 @@ jobs:
           patterns: |
             composer.json
             composer.lock
-            **.php
+            **/*.php
             package.json
             package-lock.json
-            **.css
-            **.js"
+            **/*.css
+            **/*.js"
       - name: Set up PHP
         if: env.GIT_DIFF
         uses: shivammathur/setup-php@v2

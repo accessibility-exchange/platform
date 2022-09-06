@@ -20,11 +20,11 @@ jobs:
           patterns: |
             composer.json
             composer.lock
-            **.php
+            **/*.php
             package.json
             package-lock.json
-            **.css
-            **.js"
+            **/*.css
+            **/*.js"
       - name: Cache Composer packages
         if: env.GIT_DIFF
         uses: actions/cache@v3
