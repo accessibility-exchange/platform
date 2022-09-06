@@ -30,7 +30,8 @@ footer .brand {
 }
 
 footer .center {
-    padding: var(--space-16) var(--space-4);
+    padding-block: var(--space-16);
+    padding-inline: var(--space-4);
 }
 
 footer nav .stack {
