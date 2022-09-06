@@ -2,7 +2,7 @@
     @if ($locations)
         <ul class="stack" role="list">
             @foreach ($locations as $i => $location)
-                <li class="space-y-6 bg-grey-2 px-6 py-8" wire:key="location-{{ $i }}">
+                <li class="space-y-6 bg-grey-1 px-6 py-8" wire:key="location-{{ $i }}">
                     <fieldset>
                         <legend class="visually-hidden">{{ __('Location :number', ['number' => $i + 1]) }}</legend>
                         <div class="field @error("{$name}.{$i}.region") field--error @enderror mt-0">
