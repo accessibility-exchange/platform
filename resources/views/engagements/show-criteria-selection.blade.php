@@ -33,7 +33,7 @@
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
             <div x-cloak x-show="expanded">
-                <div class="stack" x-data="{ locationType: '{{ $engagement->matchingStrategy->location_type ?? 'regions' }}' }">
+                <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
                             {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
@@ -45,11 +45,7 @@
                     <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()" x-cloak
                         x-show="locationType == 'regions'">
                         <legend>{{ __('Specific provinces or territories') }}</legend>
-                        <x-hearth-checkboxes name="regions" :options="$regions" :checked="old(
-                            'regions',
-                            $engagement->matchingStrategy->regions ??
-                                array_column(\App\Enums\ProvinceOrTerritory::cases(), 'value'),
-                        )" required />
+                        <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
                         <div class="stack mt-8" x-cloak>
                             <button class="secondary" type="button"
                                 x-on:click="selectAll()">{{ __('Select all') }}</button>

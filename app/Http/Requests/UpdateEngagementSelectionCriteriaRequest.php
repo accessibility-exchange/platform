@@ -21,9 +21,9 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     {
         return [
             'location_type' => 'required|in:regions,localities',
-            'regions' => 'nullable|array|exclude_if:location_type,localities',
+            'regions' => 'nullable|array|required_if:location_type,regions|exclude_if:location_type,localities',
             'regions.*' => [new Enum(ProvinceOrTerritory::class)],
-            'locations' => 'nullable|array|exclude_if:location_type,regions',
+            'locations' => 'nullable|array|required_if:location_type,localities|exclude_if:location_type,regions',
             'locations.*.region' => ['required', new Enum(ProvinceOrTerritory::class)],
             'locations.*.locality' => 'required|string',
             'cross_disability' => 'required|boolean',
