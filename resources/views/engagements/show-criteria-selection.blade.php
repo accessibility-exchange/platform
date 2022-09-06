@@ -26,7 +26,7 @@
         <h3>{{ __('Location') }}</h3>
         {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
 
-        <div class="stack" x-data="{ expanded: false }">
+        <div class="stack" x-data="{ expanded: @if ($errors->hasAny(['location_type', 'regions', 'locations'])) true @else false @endif }">
             <button class="borderless" type="button" @click="expanded = !expanded"
                 x-bind:aria-expanded="expanded.toString()">{{ __('Edit location criteria') }}
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
@@ -68,14 +68,14 @@
         <h3>{{ __('Disability or Deaf group') }}</h3>
         {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
 
-        <div class="stack" x-data="{ expanded: false }">
+        <div class="stack" x-data="{ expanded: @if ($errors->hasAny(['cross_disability', 'disability_types'])) true @else false @endif }">
             <button class="borderless" type="button" @click="expanded = !expanded"
                 x-bind:aria-expanded="expanded.toString()">{{ __('Edit disability or Deaf group criteria') }}
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
             <div x-cloak x-show="expanded">
-                <div class="stack" x-data="{ crossDisability: {{ $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1 }} }">
+                <div class="stack" x-data="{ crossDisability: {{ old('cross_disability', $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1) }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
                             {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
@@ -110,7 +110,16 @@
         <h3>{{ __('Other identities') }}</h3>
         {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
 
-        <div class="stack" x-data="{ expanded: true }">
+        <div class="stack" x-data="{ expanded: @if ($errors->hasAny([
+            'intersectional',
+            'other_identity_type',
+            'age_brackets',
+            'gender_and_sexual_identities',
+            'indigenous_identities',
+            'ethnoracial_identities',
+            'first_languages',
+            'area_types',
+        ])) true @else false @endif }">
             <button class="borderless" type="button" @click="expanded = !expanded"
                 x-bind:aria-expanded="expanded.toString()">{{ __('Edit other identities criteria') }}
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
@@ -118,8 +127,8 @@
             </button>
             <div x-cloak x-show="expanded">
                 <div class="stack" x-data="{
-                    intersectional: {{ $engagement->matchingStrategy->extra_attributes->get('other_identity_type', false) ? 0 : 1 }},
-                    otherIdentityType: '{{ $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '') }}'
+                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('other_identity_type')) ? 1 : 0 }},
+                    otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'
                 }">
                     <fieldset class="field @error('intersectional') field--error @enderror">
                         <legend>
@@ -140,7 +149,8 @@
                             x-model="otherIdentityType" />
                         <x-hearth-error for="other_identity_type" />
                     </div>
-                    <fieldset x-cloak x-show="otherIdentityType == 'age-bracket'">
+                    <fieldset class="field @error('age_brackets') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'age-bracket'">
                         <legend>{{ __('What age group are you interested in engaging?') }}</legend>
                         <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old(
                             'age_brackets',
@@ -150,8 +160,10 @@
                                 ->pluck('criteriable_id')
                                 ->toArray(),
                         )" required />
+                        <x-hearth-error for="age_brackets" />
                     </fieldset>
-                    <fieldset x-cloak x-show="otherIdentityType == 'gender-and-sexual-identity'">
+                    <fieldset class="field @error('gender_and_sexual_identities') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'gender-and-sexual-identity'">
                         <legend>
                             {{ __('What group that has been marginalized based on gender or sexual identity are you interested in engaging?') }}
                         </legend>
@@ -200,8 +212,10 @@
                             <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>
                                 {{ $twoslgbtqiaplusPeople->name_plural }}</x-hearth-label>
                         </div>
+                        <x-hearth-error for="gender_and_sexual_identities" />
                     </fieldset>
-                    <fieldset x-cloak x-show="otherIdentityType == 'indigenous-identity'">
+                    <fieldset class="field @error('indigenous_identities') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'indigenous-identity'">
                         <legend>
                             {{ __('What Indigenous group are you interested in engaging?') }}
                         </legend>
@@ -213,8 +227,10 @@
                                 ->pluck('criteriable_id')
                                 ->toArray(),
                         )" />
+                        <x-hearth-error for="indigenous_identities" />
                     </fieldset>
-                    <fieldset x-cloak x-show="otherIdentityType == 'ethnoracial-identity'">
+                    <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'ethnoracial-identity'">
                         <legend>{{ __('What ethno-racial group are you interested in engaging?') }}</legend>
                         <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
                             'ethnoracial_identities',
@@ -224,8 +240,10 @@
                                 ->pluck('criteriable_id')
                                 ->toArray(),
                         )" />
+                        <x-hearth-error for="ethnoracial_identities" />
                     </fieldset>
-                    <fieldset x-cloak x-show="otherIdentityType == 'first-language'">
+                    <fieldset class="field @error('first_languages') field--error @enderror" x-cloak
+                        x-show="otherIdentityType == 'first-language'">
                         <legend>{{ __('What first languages are used by the people you’re interested in engaging?') }}
                         </legend>
                         <livewire:language-picker name="first_languages" :languages="old(
@@ -239,6 +257,7 @@
                                 ->pluck('code')
                                 ->toArray(),
                         )" :availableLanguages="$languages" />
+                        <x-hearth-error for="first_languages" />
                     </fieldset>
                     <fieldset class="field @error('area_types') field--error @enderror" x-cloak
                         x-show="otherIdentityType == 'area-type'">
@@ -253,6 +272,7 @@
                                 ->toArray(),
                         )"
                             hinted="area_types-hint" />
+                        <x-hearth-error for="area_types" />
                     </fieldset>
                 </div>
             </div>
