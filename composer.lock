@@ -7358,16 +7358,16 @@
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",
-            "version": "v1.15.3",
+            "version": "v1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/eloquent-has-many-deep.git",
-                "reference": "d58289df406b577dd8be599fa4d081a18879bbcf"
+                "reference": "14abcb86912d306862841edc8279d94117fed526"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/d58289df406b577dd8be599fa4d081a18879bbcf",
-                "reference": "d58289df406b577dd8be599fa4d081a18879bbcf",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/14abcb86912d306862841edc8279d94117fed526",
+                "reference": "14abcb86912d306862841edc8279d94117fed526",
                 "shasum": ""
             },
             "require": {
@@ -7375,6 +7375,7 @@
                 "php": "^8.0.2"
             },
             "require-dev": {
+                "awobaz/compoships": "^2.1",
                 "illuminate/pagination": "^9.0",
                 "phpunit/phpunit": "^9.5",
                 "staudenmeir/eloquent-eager-limit": "^1.7"
@@ -7398,7 +7399,7 @@
             "description": "Laravel Eloquent HasManyThrough relationships with unlimited levels",
             "support": {
                 "issues": "https://github.com/staudenmeir/eloquent-has-many-deep/issues",
-                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.15.3"
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.16"
             },
             "funding": [
                 {
@@ -7406,7 +7407,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-07-02T15:13:12+00:00"
+            "time": "2022-08-27T06:55:03+00:00"
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
