@@ -1,6 +1,11 @@
 name: Check & fix PHP formatting
 
-on: [push]
+on:
+  push:
+    paths:
+      - composer.json
+      - composer.lock
+      - "**.php"
 
 jobs:
   pint:

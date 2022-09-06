@@ -2,9 +2,20 @@ name: Lint JS and CSS assets
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - package.json
+      - package-lock.json
+      - "**.css"
+      - "**.js"
+
   pull_request:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - package.json
+      - package-lock.json
+      - "**.css"
+      - "**.js"
 
 jobs:
   asset-lint:

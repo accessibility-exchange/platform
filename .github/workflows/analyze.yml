@@ -2,9 +2,17 @@ name: Analyze PHP code
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - composer.json
+      - composer.lock
+      - "**.php"
   pull_request:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - composer.json
+      - composer.lock
+      - "**.php"
 
 jobs:
   php-analyze:

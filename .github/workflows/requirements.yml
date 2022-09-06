@@ -1,0 +1,43 @@
+name: Required Checks
+
+on:
+  push:
+    branches: [dev, staging, production]
+  pull_request:
+    branches: [dev, staging, production]
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ensure conditional checks have passed
+        uses: blend/require-conditional-status-checks@2022.02.04
+        with:
+          interval: 30s
+          checks-yaml: |
+            - job: php-analyze
+              paths:
+              - composer.json
+              - composer.lock
+              - '**.php'
+            - job: frontend-tests
+              paths:
+              - composer.json
+              - composer.lock
+              - '**.php'
+              - package.json
+              - package-lock.json
+              - '**.css'
+              - '**.js'
+            - job: laravel-tests
+              paths:
+              - composer.json
+              - composer.lock
+              - '**.php'
+            - job: lint
+              paths:
+              - package.json
+              - package-lock.json
+              - '**.css'
+              - '**.js'
