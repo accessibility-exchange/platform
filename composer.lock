@@ -9975,16 +9975,16 @@
         },
         {
             "name": "worksome/request-factories",
-            "version": "v2.0.2",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/worksome/request-factories.git",
-                "reference": "74c663b449a2f342a5fbf5cc79644dd8ee54b21d"
+                "reference": "7f4848f5fffb954ca4a40534da8b616995d02b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/worksome/request-factories/zipball/74c663b449a2f342a5fbf5cc79644dd8ee54b21d",
-                "reference": "74c663b449a2f342a5fbf5cc79644dd8ee54b21d",
+                "url": "https://api.github.com/repos/worksome/request-factories/zipball/7f4848f5fffb954ca4a40534da8b616995d02b67",
+                "reference": "7f4848f5fffb954ca4a40534da8b616995d02b67",
                 "shasum": ""
             },
             "require": {
@@ -10037,7 +10037,7 @@
             ],
             "support": {
                 "issues": "https://github.com/worksome/request-factories/issues",
-                "source": "https://github.com/worksome/request-factories/tree/v2.0.2"
+                "source": "https://github.com/worksome/request-factories/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -10045,7 +10045,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-07-25T08:12:25+00:00"
+            "time": "2022-08-30T21:31:11+00:00"
         }
     ],
     "packages-dev": [
