@@ -3,24 +3,8 @@ name: Run front-end tests
 on:
   push:
     branches: [dev, staging, production]
-    paths:
-      - composer.json
-      - composer.lock
-      - "**.php"
-      - package.json
-      - package-lock.json
-      - "**.css"
-      - "**.js"
   pull_request:
     branches: [dev, staging, production]
-    paths:
-      - composer.json
-      - composer.lock
-      - "**.php"
-      - package.json
-      - package-lock.json
-      - "**.css"
-      - "**.js"
 
 jobs:
   frontend-tests:
@@ -31,28 +15,46 @@ jobs:
         with:
           php-version: "8.1"
       - uses: actions/checkout@v3
+      - uses: technote-space/get-diff-action@v6
+        with:
+          patterns: |
+            composer.json
+            composer.lock
+            **.php
+            package.json
+            package-lock.json
+            **.css
+            **.js"
       - name: Cache Composer packages
+        if: env.GIT_DIFF
         uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
       - name: Create test database
+        if: env.GIT_DIFF
         run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Copy .env
+        if: env.GIT_DIFF
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
+        if: env.GIT_DIFF
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate keys
+        if: env.GIT_DIFF
         run: |
           echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
       - name: Upgrade Chrome Driver
+        if: env.GIT_DIFF
         run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
       - name: Start Chrome Driver
+        if: env.GIT_DIFF
         run: ./vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
+        if: env.GIT_DIFF
         run: |
           php artisan migrate
           php artisan storage:link
@@ -61,6 +63,7 @@ jobs:
           DB_PASSWORD: root
           DB_HOST: localhost
       - name: Run Dusk Tests
+        if: env.GIT_DIFF
         env:
           APP_URL: "http://127.0.0.1:8000"
         run: php artisan dusk
