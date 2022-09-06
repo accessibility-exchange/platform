@@ -478,7 +478,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     public function displayRoles(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => array_map(fn ($role) => IndividualRole::labels()[$role], json_decode($attributes['roles'])),
+            get: fn ($value) => array_map(fn ($role) => IndividualRole::labels()[$role], $this->roles),
         );
     }
 }

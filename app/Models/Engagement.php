@@ -84,14 +84,14 @@ class Engagement extends Model
     public function displayFormat(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => EngagementFormat::labels()[$attributes['format']],
+            get: fn ($value) => EngagementFormat::labels()[$this->format],
         );
     }
 
     public function displayRecruitment(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => EngagementRecruitment::labels()[$attributes['recruitment']],
+            get: fn ($value) => EngagementRecruitment::labels()[$this->recruitment],
         );
     }
 
