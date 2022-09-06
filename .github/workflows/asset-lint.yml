@@ -17,8 +17,8 @@ jobs:
           patterns: |
             package.json
             package-lock.json
-            **.css
-            **.js"
+            **/*.css
+            **/*.js"
       - uses: actions/setup-node@v3
         if: env.GIT_DIFF
         with:
