@@ -32,7 +32,7 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-cloak x-show="expanded">
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
                 <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
@@ -74,7 +74,7 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-cloak x-show="expanded">
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
                 <div class="stack" x-data="{ crossDisability: {{ old('cross_disability', $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1) }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
@@ -125,7 +125,7 @@
                 <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
                     x-bind:class="expanded && 'rotate-180'" />
             </button>
-            <div x-cloak x-show="expanded">
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
                 <div class="stack" x-data="{
                     intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('other_identity_type')) ? 1 : 0 }},
                     otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'
