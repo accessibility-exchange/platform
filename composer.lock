@@ -1916,16 +1916,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.12.52",
+            "version": "8.12.54",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "9a5269012e21d5a357f93d413fcc7a854a36b69d"
+                "reference": "d0bad134ca7206d36784c2c5ec531ba4513efde7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/9a5269012e21d5a357f93d413fcc7a854a36b69d",
-                "reference": "9a5269012e21d5a357f93d413fcc7a854a36b69d",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/d0bad134ca7206d36784c2c5ec531ba4513efde7",
+                "reference": "d0bad134ca7206d36784c2c5ec531ba4513efde7",
                 "shasum": ""
             },
             "require": {
@@ -1985,7 +1985,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php"
             },
-            "time": "2022-07-20T12:38:47+00:00"
+            "time": "2022-08-22T06:43:42+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -3942,16 +3942,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.62.0",
+            "version": "2.62.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7507aec3d626797ce2123cf6c6556683be22b5f8"
+                "reference": "01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7507aec3d626797ce2123cf6c6556683be22b5f8",
-                "reference": "7507aec3d626797ce2123cf6c6556683be22b5f8",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a",
+                "reference": "01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a",
                 "shasum": ""
             },
             "require": {
@@ -4040,7 +4040,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T19:48:05+00:00"
+            "time": "2022-09-02T07:48:13+00:00"
         },
         {
             "name": "nette/schema",
@@ -4721,16 +4721,16 @@
         },
         {
             "name": "propaganistas/laravel-phone",
-            "version": "4.3.7",
+            "version": "4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Propaganistas/Laravel-Phone.git",
-                "reference": "fb3b5faddf9150ac21c1c59a7633ee964d4f2a00"
+                "reference": "5b0fef1d28e720c0a594fe0f22cb1d5b1d576474"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Propaganistas/Laravel-Phone/zipball/fb3b5faddf9150ac21c1c59a7633ee964d4f2a00",
-                "reference": "fb3b5faddf9150ac21c1c59a7633ee964d4f2a00",
+                "url": "https://api.github.com/repos/Propaganistas/Laravel-Phone/zipball/5b0fef1d28e720c0a594fe0f22cb1d5b1d576474",
+                "reference": "5b0fef1d28e720c0a594fe0f22cb1d5b1d576474",
                 "shasum": ""
             },
             "require": {
@@ -4781,9 +4781,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Propaganistas/Laravel-Phone/issues",
-                "source": "https://github.com/Propaganistas/Laravel-Phone/tree/4.3.7"
+                "source": "https://github.com/Propaganistas/Laravel-Phone/tree/4.3.8"
             },
-            "time": "2022-06-08T15:44:51+00:00"
+            "time": "2022-09-04T18:30:31+00:00"
         },
         {
             "name": "psr/cache",
