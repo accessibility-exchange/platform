@@ -204,16 +204,16 @@
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-heroicons.git",
-                "reference": "b52c421f8850645f6f4ac199a80bc67f0bfc6d9e"
+                "reference": "ecd25c602c94600e0c057ba1034a1f2ba770503a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/b52c421f8850645f6f4ac199a80bc67f0bfc6d9e",
-                "reference": "b52c421f8850645f6f4ac199a80bc67f0bfc6d9e",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-heroicons/zipball/ecd25c602c94600e0c057ba1034a1f2ba770503a",
+                "reference": "ecd25c602c94600e0c057ba1034a1f2ba770503a",
                 "shasum": ""
             },
             "require": {
@@ -257,7 +257,7 @@
             ],
             "support": {
                 "issues": "https://github.com/blade-ui-kit/blade-heroicons/issues",
-                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/2.0.1"
+                "source": "https://github.com/blade-ui-kit/blade-heroicons/tree/2.0.2"
             },
             "funding": [
                 {
@@ -269,20 +269,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-08-28T09:30:28+00:00"
+            "time": "2022-08-31T08:47:40+00:00"
         },
         {
             "name": "blade-ui-kit/blade-icons",
-            "version": "1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blade-ui-kit/blade-icons.git",
-                "reference": "57a7c41e1e79e38aed029d3e6ae690b04344c99e"
+                "reference": "efa53eb8bfc674306a02304eb6186adb078c8815"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/57a7c41e1e79e38aed029d3e6ae690b04344c99e",
-                "reference": "57a7c41e1e79e38aed029d3e6ae690b04344c99e",
+                "url": "https://api.github.com/repos/blade-ui-kit/blade-icons/zipball/efa53eb8bfc674306a02304eb6186adb078c8815",
+                "reference": "efa53eb8bfc674306a02304eb6186adb078c8815",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-11T12:38:11+00:00"
+            "time": "2022-08-24T13:35:42+00:00"
         },
         {
             "name": "brick/math",
