@@ -2,9 +2,25 @@ name: Run Lighthouse CI
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - composer.json
+      - composer.lock
+      - "**.php"
+      - package.json
+      - package-lock.json
+      - "**.css"
+      - "**.js"
   pull_request:
-    branches: [dev, main]
+    branches: [dev, staging, production]
+    paths:
+      - composer.json
+      - composer.lock
+      - "**.php"
+      - package.json
+      - package-lock.json
+      - "**.css"
+      - "**.js"
 
 jobs:
   lighthouse-ci:
