@@ -63,10 +63,10 @@ jobs:
           proxy_port: ${{ secrets.SSH_PROXY_PORT }}
           script: |
             cd /srv/tae-dev && \
+            cat public/build/manifest.json && \
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan down --render="maintenance" && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --optimize-autoloader && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan db:seed DevSeeder --force && \
@@ -77,7 +77,6 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan up
 
       - name: Wait
         run: sleep 15
