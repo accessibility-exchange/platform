@@ -35,6 +35,21 @@ jobs:
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
+      - uses: actions/setup-node@v3
+        if: env.GIT_DIFF
+        with:
+          node-version: "16"
+      - name: Cache node modules
+        if: env.GIT_DIFF
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: env.GIT_DIFF
+        run: npm install
+        env:
+          CI: true
       - name: Copy .env
         if: env.GIT_DIFF
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
