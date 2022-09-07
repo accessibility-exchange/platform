@@ -3,8 +3,7 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a
-                    href="{{ localized_route('projects.show', $engagement->project) }}">{{ $engagement->project->name }}</a>
+            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a>
             </li>
         </ol>
         <p class="mt-8 text-2xl"><strong>{{ __('Engagement') }}</strong></p>
@@ -16,11 +15,11 @@
             <div class="flex flex-col gap-6 md:flex-row md:gap-20">
                 <div>
                     <p><strong>{{ __('project.singular_name_titlecase') }}</strong></p>
-                    <p>{{ $engagement->project->name }}</p>
+                    <p>{{ $project->name }}</p>
                 </div>
                 <div>
                     <p><strong>{{ __('Run by') }}</strong></p>
-                    <p>{{ $engagement->project->projectable->name }}</p>
+                    <p>{{ $project->projectable->name }}</p>
                 </div>
             </div>
             <div>
@@ -30,14 +29,12 @@
         </div>
     </x-slot>
 
-    <div class="w-prose mt-12 flex grid-cols-3 flex-col gap-8 lg:grid">
-        <div class="col-start-1 col-end-2 flex flex-col gap-8">
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                <h3>{{ __('Recruitment method') }}</h3>
+    <x-manage-grid>
+        <x-manage-columns class="col-start-1 col-end-2">
+            <x-manage-section :title="__('Recruitment method')">
                 <p>{{ $engagement->display_recruitment }}</p>
-            </div>
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                <h3>{{ __('Participant selection criteria') }}</h3>
+            </x-manage-section>
+            <x-manage-section :title="__('Participant selection criteria')">
                 <div>
                     <p class="font-bold">{{ __('Location') }}</p>
                     {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
@@ -52,38 +49,74 @@
                 </div>
                 <a class="cta secondary"
                     href="{{ localized_route('engagements.edit-criteria', $engagement) }}">{{ __('Edit') }}</a>
-            </div>
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                <h3>{{ __('Accessibility Consultant') }}</h3>
+            </x-manage-section>
+            <x-manage-section :title="__('Accessibility Consultant')">
                 @if (!$engagement->consultant && !$engagement->organizationalConsultant)
                     <div class="box stack bg-grey-2">
                         <p>{{ __('You do not have an Accessibility Consultant on this engagement.') }}</p>
                         {{-- TODO: add/manage accessibility consultant --}}
                     </div>
                 @endif
-            </div>
-        </div>
-        <div class="col-start-2 col-end-4 flex flex-col gap-8">
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md" x-data="copyLink">
-                <h3>{{ __('Engagement details') }}</h3>
-                @if ($engagement->checkStatus('draft'))
-                    <p>{{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
-                    </p>
-                    <div class="box stack bg-grey-2">
-                        <p>{{ __('You have not finished adding your engagement details.') }}</p>
+            </x-manage-section>
+        </x-manage-columns>
+        <x-manage-columns class="col-start-2 col-end-4">
+            @if ($engagement->checkStatus('draft'))
+                <x-manage-section
+                    title="{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
+
+                    @if (!$project->checkStatus('estimateApproved') && !$project->checkStatus('agreementReceived'))
                         <p>
-                            <a class="cta secondary"
-                                href="{{ localized_route('engagements.edit', $engagement) }}">{{ __('Edit engagement details') }}</a>
+                            @if (!$engagement->isPublishable())
+                                {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
+                            @else
+                                {!! Str::inlineMarkdown(
+                                    __(
+                                        'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
+                                        [
+                                            'get_estimate' => localized_route('projects.manage', $project),
+                                        ],
+                                    ),
+                                ) !!}
+                            @endif
                         </p>
-                    </div>
-                @elseif($engagement->checkStatus('published'))
-                    <p>{{ __('Last updated on :date', ['date' => $engagement->published_at->translatedFormat('F j, Y')]) }}
+                        <p>
+                            <a class="with-icon"
+                                href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
+                                <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                            </a>
+                        </p>
+                        <p>
+                            <span class="badge badge--status badge--stop">
+                                <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" /> {{ __('Not ready to publish') }}
+                            </span>
+                        </p>
+                    @elseif($project->checkStatus('estimateApproved') && $project->checkStatus('agreementReceived'))
+                        <p>{{ __('Please review and publish your engagement details.') }}</p>
+                        <p>
+                            <a class="with-icon"
+                                href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
+                                <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                            </a>
+                        </p>
+                        <p>
+                            <span class="badge badge--status badge--go">
+                                <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Ready to publish') }}
+                            </span>
+                        </p>
+                    @endif
+                </x-manage-section>
+            @endif
+            @if ($engagement->checkStatus('published'))
+                <x-manage-section :title="__('Edit engagement details')" x-data="copyLink">
+                    <p>{{ __('Published on :date', ['date' => $engagement->published_at->translatedFormat('F j, Y')]) }}
                     </p>
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
-                        <a class="cta secondary"
-                            href="{{ localized_route('engagements.edit', $engagement) }}">{{ __('Edit engagement details') }}</a>
-                        <a href="{{ localized_route('engagements.show', $engagement) }}">{{ __('View') }} <span
-                                class="sr-only">{{ $engagement->name }}</span></a>
+                        <a class="cta secondary" href="{{ localized_route('engagements.edit', $engagement) }}">
+                            <x-heroicon-o-pencil /> {{ __('Edit') }} <span
+                                class="sr-only">{{ $engagement->name }}</span>
+                        </a>
+                        <a href="{{ localized_route('engagements.show', $engagement) }}">{{ __('View') }}
+                            <span class="sr-only">{{ $engagement->name }}</span></a>
                         <div>
                             <button class="borderless" @click="copy">
                                 <x-heroicon-o-clipboard role="presentation" aria-hidden="true" />
@@ -95,19 +128,59 @@
                             <p class="font-semibold" x-text="message"></p>
                         </div>
                     </div>
-                @endif
-            </div>
+                </x-manage-section>
+            @endif
+
+            <x-manage-section :title="__('Estimates and agreements')">
+                <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
+                    <div class="space-y-2">
+
+                        <p class="font-bold">{{ __('Estimate status') }}</p>
+                        <p>
+                            @if ($project->checkStatus('estimateApproved'))
+                                <span class="badge badge--status badge--go">
+                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
+                                    {{ __('Estimate approved') }}
+                                </span>
+                            @elseif ($project->checkStatus('estimateRequested'))
+                                <span class="badge badge--status badge--progress">
+                                    <x-heroicon-o-arrow-path class="icon mr-2 h-5 w-5" />
+                                    {{ __('Estimate requested') }}
+                                </span>
+                            @else
+                                <span class="badge badge--status">
+                                    {{ __('No estimate requested') }}
+                                </span>
+                            @endif
+                        </p>
+                    </div>
+                    <div class="space-y-2">
+
+                        <p class="font-bold">{{ __('Agreement status') }}</p>
+                        <p>
+                            @if ($project->checkStatus('agreementReceived'))
+                                <span class="badge badge--status badge--go">
+                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Received') }}
+                                </span>
+                            @else
+                                <span class="badge badge--status">
+                                    {{ __('Not received') }}
+                                </span>
+                            @endif
+                        </p>
+                    </div>
+                </div>
+            </x-manage-section>
+
             @if ($engagement->recruitment === 'connector')
-                <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                    <h3>{{ __('Community Connector') }}</h3>
+                <x-manage-section :title="__('Community Connector')">
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
                     <x-hearth-alert>
                         {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
                     </x-hearth-alert>
-                </div>
+                </x-manage-section>
             @endif
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                <h3>{{ __('Manage participants') }}</h3>
+            <x-manage-section :title="__('Manage participants')">
                 <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                     <p>{!! __(':count participants confirmed', [
                         'count' => '<span class="h4">' . $engagement->confirmedParticipants->count() . '</span><br />',
@@ -119,35 +192,34 @@
                     {{-- TODO: manage participants --}}
                     <a class="cta secondary" href="#">{{ __('Manage participants') }}</a>
                 </p>
-            </div>
-            <div class="space-y-6 rounded bg-white px-6 py-8 shadow-md">
-                <h3>{{ __('Documents') }}</h3>
+            </x-manage-section>
+            <x-manage-section :title="__('Documents')">
                 <p>{{ __('This includes reports, contracts, or anything else you would like Consultation Participants to be able to access.') }}
                 </p>
-            </div>
-        </div>
-    </div>
+            </x-manage-section>
+        </x-manage-columns>
+    </x-manage-grid>
     <script>
         function copyLink() {
             return {
                 link: '{{ localized_route('engagements.show', $engagement) }}',
-                message: '',
+                message: "",
                 status: false,
                 alert: false,
                 copy() {
                     navigator.clipboard.writeText(this.link).then(() => {
                         this.message = '{{ __('Link copied!') }}';
-                        this.status = 'success';
+                        this.status = "success";
                         this.alert = true;
                         setTimeout(() => this.alert = false, 3000);
                     }, () => {
                         this.message = '{{ __('The link could not be copied.') }}';
-                        this.status = 'failure';
+                        this.status = "failure";
                         this.alert = true;
                         setTimeout(() => this.alert = false, 3000);
                     });
                 }
-            }
+            };
         }
     </script>
 </x-app-wide-tabbed-layout>

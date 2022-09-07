@@ -66,6 +66,9 @@ class Project extends Model
         'contact_person_vrs',
         'preferred_contact_method',
         'contact_person_response_time',
+        'estimate_requested_at',
+        'estimate_approved_at',
+        'agreement_received_at',
     ];
 
     protected $casts = [
@@ -91,6 +94,9 @@ class Project extends Model
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
         'contact_person_response_time' => 'array',
+        'estimate_requested_at' => 'datetime:Y-m-d',
+        'estimate_approved_at' => 'datetime:Y-m-d',
+        'agreement_received_at' => 'datetime:Y-m-d',
     ];
 
     public array $translatable = [

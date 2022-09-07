@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ use Spatie\Translatable\HasTranslations;
 class Engagement extends Model
 {
     use HasFactory;
+    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslations;
 
@@ -52,6 +54,7 @@ class Engagement extends Model
         'organizational_connector_id',
         'individual_consultant_id',
         'organizational_consultant_id',
+        'extra_attributes',
     ];
 
     protected $casts = [
@@ -86,6 +89,11 @@ class Engagement extends Model
         return Attribute::make(
             get: fn ($value) => EngagementFormat::labels()[$this->format],
         );
+    }
+
+    public function isPublishable(): bool
+    {
+        return ! is_null($this->signup_by_date);
     }
 
     public function displayRecruitment(): Attribute
