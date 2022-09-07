@@ -35,6 +35,21 @@ jobs:
         run: npm install
         env:
           CI: true
+
+      - name: Deploy assets
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.SSH_HOSTNAME }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          proxy_host: ${{ secrets.SSH_PROXY_HOSTNAME }}
+          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
+          proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
+          proxy_port: ${{ secrets.SSH_PROXY_PORT }}
+          source: "public/build"
+          target: "public/build"
+
       - name: Deploy stack
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -63,20 +78,6 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan up
-
-      - name: Deploy assets
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOSTNAME }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          proxy_host: ${{ secrets.SSH_PROXY_HOSTNAME }}
-          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
-          proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
-          proxy_port: ${{ secrets.SSH_PROXY_PORT }}
-          source: "public/build"
-          target: "public/build"
 
       - name: Wait
         run: sleep 15
