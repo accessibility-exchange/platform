@@ -31,9 +31,25 @@
 
     <x-manage-grid>
         <x-manage-columns class="col-start-1 col-end-2">
-            <x-manage-section :title="__('Recruitment method')">
-                <p>{{ $engagement->display_recruitment }}</p>
-            </x-manage-section>
+            @if ($engagement->recruitment)
+                <x-manage-section :title="__('Recruitment method')">
+                    <p class="with-icon">
+                        @switch($engagement->recruitment)
+                            @case('connector')
+                                <x-heroicon-o-user-group class="icon mr-2 h-5 w-5" />
+                            @break
+
+                            @case('open-call')
+                                <x-heroicon-o-megaphone class="icon mr-2 h-5 w-5" />
+                            @break
+
+                            @default
+                                <x-heroicon-o-puzzle-piece class="icon mr-2 h-5 w-5" />
+                        @endswitch
+                        {{ $engagement->display_recruitment }}
+                    </p>
+                </x-manage-section>
+            @endif
             <x-manage-section :title="__('Participant selection criteria')">
                 <div>
                     <p class="font-bold">{{ __('Location') }}</p>
@@ -47,8 +63,9 @@
                     <p class="font-bold">{{ __('Other identities') }}</p>
                     {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
                 </div>
-                <a class="cta secondary"
-                    href="{{ localized_route('engagements.edit-criteria', $engagement) }}">{{ __('Edit') }}</a>
+                <a class="cta secondary" href="{{ localized_route('engagements.edit-criteria', $engagement) }}">
+                    <x-heroicon-o-pencil /> {{ __('Edit') }}
+                </a>
             </x-manage-section>
             <x-manage-section :title="__('Accessibility Consultant')">
                 @if (!$engagement->consultant && !$engagement->organizationalConsultant)
@@ -63,8 +80,7 @@
             @if ($engagement->checkStatus('draft'))
                 <x-manage-section
                     title="{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
-
-                    @if (!$project->checkStatus('estimateApproved') && !$project->checkStatus('agreementReceived'))
+                    @if (!$engagement->hasEstimateAndAgreement())
                         <p>
                             @if (!$engagement->isPublishable())
                                 {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
@@ -90,7 +106,7 @@
                                 <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" /> {{ __('Not ready to publish') }}
                             </span>
                         </p>
-                    @elseif($project->checkStatus('estimateApproved') && $project->checkStatus('agreementReceived'))
+                    @elseif($engagement->hasEstimateAndAgreement())
                         <p>{{ __('Please review and publish your engagement details.') }}</p>
                         <p>
                             <a class="with-icon"
@@ -190,12 +206,18 @@
                 </div>
                 <p>
                     {{-- TODO: manage participants --}}
-                    <a class="cta secondary" href="#">{{ __('Manage participants') }}</a>
+                    <a class="cta secondary" href="#">
+                        <x-heroicon-o-users /> {{ __('Manage participants') }}
+                    </a>
                 </p>
             </x-manage-section>
             <x-manage-section :title="__('Documents')">
                 <p>{{ __('This includes reports, contracts, or anything else you would like Consultation Participants to be able to access.') }}
                 </p>
+                <div class="box stack bg-grey-2">
+                    <p>{{ __('You have not added any documents yet.') }}</p>
+                    {{-- TODO: add/manage documents --}}
+                </div>
             </x-manage-section>
         </x-manage-columns>
     </x-manage-grid>

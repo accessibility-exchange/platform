@@ -91,6 +91,11 @@ class Engagement extends Model
         );
     }
 
+    public function hasEstimateAndAgreement(): bool
+    {
+        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
+    }
+
     public function isPublishable(): bool
     {
         return ! is_null($this->signup_by_date);
