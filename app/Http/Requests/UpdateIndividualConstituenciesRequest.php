@@ -55,7 +55,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'has_age_brackets' => 'required|boolean',
             'age_brackets' => 'nullable|array|required_if:has_age_brackets,true|exclude_if:has_age_brackets,false',
             'age_brackets.*' => 'exists:age_brackets,id',
-            'has_ethnoracial_identities' => 'boolean',
+            'has_ethnoracial_identities' => 'required|boolean',
             'ethnoracial_identities' => [
                 'nullable',
                 'array',
