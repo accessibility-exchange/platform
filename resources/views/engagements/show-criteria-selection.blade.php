@@ -127,7 +127,7 @@
             </button>
             <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
                 <div class="stack" x-data="{
-                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('other_identity_type')) ? 1 : 0 }},
+                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1)) }},
                     otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'
                 }">
                     <fieldset class="field @error('intersectional') field--error @enderror">
