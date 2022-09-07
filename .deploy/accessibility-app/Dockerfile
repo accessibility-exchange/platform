@@ -52,7 +52,6 @@ COPY . $APP_HOME
 RUN composer install
 
 RUN npm install
-RUN npm run build
 
 RUN chown www-data:root $APP_HOME/public/ -R
 
