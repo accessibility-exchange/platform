@@ -32,14 +32,14 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');
 
-        Route::multilingual('/{engagement}/outreach/select', 'showOutreachSelection')
+        Route::multilingual('/{engagement}/format/select', 'showFormatSelection')
             ->middleware(['auth', 'can:update,engagement'])
-            ->name('show-outreach-selection');
+            ->name('show-format-selection');
 
-        Route::multilingual('/{engagement}/outreach/store', 'storeOutreach')
+        Route::multilingual('/{engagement}/format/store', 'storeFormat')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
-            ->name('store-outreach');
+            ->name('store-format');
 
         Route::multilingual('/{engagement}/recruitment/select', 'showRecruitmentSelection')
             ->middleware(['auth', 'can:update,engagement'])

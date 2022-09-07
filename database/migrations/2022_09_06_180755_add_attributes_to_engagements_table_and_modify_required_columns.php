@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::table('engagements', function (Blueprint $table) {
             $table->schemalessAttributes('extra_attributes');
+            $table->string('format')->nullable()->change();
+            $table->string('who')->nullable(false)->change();
         });
     }
 
@@ -27,6 +29,8 @@ return new class extends Migration
     {
         Schema::table('engagements', function (Blueprint $table) {
             $table->dropColumn('extra_attributes');
+            $table->string('format')->nullable(false)->change();
+            $table->string('who')->nullable()->change();
         });
     }
 };

@@ -50,14 +50,14 @@ test('users with regulated organization admin role can create engagements', func
 
     $engagement = Engagement::where('name->en', $data['name']['en'])->first();
 
-    $response->assertRedirect(localized_route('engagements.show-outreach-selection', $engagement));
+    $response->assertRedirect(localized_route('engagements.show-format-selection', $engagement));
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-outreach-selection', $engagement));
+    $response = $this->actingAs($user)->get(localized_route('engagements.show-format-selection', $engagement));
 
     $response->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-outreach', $engagement), [
-        'who' => 'individuals',
+    $response = $this->actingAs($user)->put(localized_route('engagements.store-format', $engagement), [
+        'format' => 'survey',
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -88,12 +88,17 @@ test('users with regulated organization admin role can create engagements', func
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-outreach', $engagement), [
+    $data = StoreEngagementRequest::factory()->create([
+        'project_id' => $project->id,
         'who' => 'organization',
     ]);
 
+    $response = $this->withSession([
+        'languages' => ['en', 'fr', 'ase', 'fcs'],
+    ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
+
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+    $response->assertRedirect(localized_route('engagements.manage', Engagement::where('name->en', $data['name'])->first()));
 });
 
 test('users without regulated organization admin role cannot create engagements', function () {

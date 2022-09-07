@@ -10,7 +10,9 @@
         <h1 class="mt-0">
             {{ $engagement->name }}
         </h1>
-        <p class="h4">{{ $engagement->display_format }}</p>
+        @if ($engagement->format)
+            <p class="h4">{{ $engagement->display_format }}</p>
+        @endif
         <div class="flex flex-col gap-6 md:flex-row md:justify-between">
             <div class="flex flex-col gap-6 md:flex-row md:gap-20">
                 <div>
@@ -31,7 +33,7 @@
 
     <x-manage-grid>
         <x-manage-columns class="col-start-1 col-end-2">
-            @if ($engagement->recruitment)
+            @if ($engagement->who === 'individuals')
                 <x-manage-section :title="__('Recruitment method')">
                     <p class="with-icon">
                         @switch($engagement->recruitment)
@@ -50,7 +52,8 @@
                     </p>
                 </x-manage-section>
             @endif
-            <x-manage-section :title="__('Participant selection criteria')">
+            <x-manage-section
+                title="{{ $engagement->who === 'individuals' ? __('Participant selection criteria') : __('Organization selection criteria') }}">
                 <div>
                     <p class="font-bold">{{ __('Location') }}</p>
                     {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
@@ -196,21 +199,23 @@
                     </x-hearth-alert>
                 </x-manage-section>
             @endif
-            <x-manage-section :title="__('Manage participants')">
-                <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
-                    <p>{!! __(':count participants confirmed', [
-                        'count' => '<span class="h4">' . $engagement->confirmedParticipants->count() . '</span><br />',
-                    ]) !!}</p>
-                    {{-- TODO: aggregate participant access needs --}}
-                    {{-- <p>{{ __(':count access needs listed', ['count' => $engagement->confirmedParticipantAccessNeeds->count()]) }}</p> --}}
-                </div>
-                <p>
-                    {{-- TODO: manage participants --}}
-                    <a class="cta secondary" href="#">
-                        <x-heroicon-o-users /> {{ __('Manage participants') }}
-                    </a>
-                </p>
-            </x-manage-section>
+            @if ($engagement->who === 'individuals')
+                <x-manage-section :title="__('Manage participants')">
+                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
+                        <p>{!! __(':count participants confirmed', [
+                            'count' => '<span class="h4">' . $engagement->confirmedParticipants->count() . '</span><br />',
+                        ]) !!}</p>
+                        {{-- TODO: aggregate participant access needs --}}
+                        {{-- <p>{{ __(':count access needs listed', ['count' => $engagement->confirmedParticipantAccessNeeds->count()]) }}</p> --}}
+                    </div>
+                    <p>
+                        {{-- TODO: manage participants --}}
+                        <a class="cta secondary" href="#">
+                            <x-heroicon-o-users /> {{ __('Manage participants') }}
+                        </a>
+                    </p>
+                </x-manage-section>
+            @endif
             <x-manage-section :title="__('Documents')">
                 <p>{{ __('This includes reports, contracts, or anything else you would like Consultation Participants to be able to access.') }}
                 </p>
