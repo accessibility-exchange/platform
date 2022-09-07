@@ -5,66 +5,48 @@ namespace App\Policies;
 use App\Models\ResourceCollection;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ResourceCollectionPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user)
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, ResourceCollection $resourceCollection)
-    {
-        return true;
-    }
-
-    /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param  User  $user
+     * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param  User  $user
+     * @param  ResourceCollection  $resourceCollection
+     * @return Response
      */
-    public function update(User $user, ResourceCollection $resourceCollection)
+    public function update(User $user, ResourceCollection $resourceCollection): Response
     {
-        return false;
+        return $user->id === $resourceCollection->user_id
+            ? Response::allow()
+            : Response::deny('You cannot edit this resource collection.');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param  User  $user
+     * @param  ResourceCollection  $resourceCollection
+     * @return Response
      */
-    public function delete(User $user, ResourceCollection $resourceCollection)
+    public function delete(User $user, ResourceCollection $resourceCollection): Response
     {
-        return false;
+        return $user->id === $resourceCollection->user_id
+            ? Response::allow()
+            : Response::deny('You cannot delete this resource collection.');
     }
 }

@@ -6,7 +6,7 @@
         </h1>
     </x-slot>
 
-    @markdown{{ $resourceCollection->description }}@endmarkdown
+    {!! Illuminate\Mail\Markdown::parse($resourceCollection->description) !!}
 
     <div class="stack">
         <h2>{{ __('Search') }}</h2>
@@ -100,4 +100,10 @@
             @endforelse
         </div>
     </div>
+
+    @can('update', $resourceCollection)
+        <p><a
+                href="{{ localized_route('resource-collections.edit', $resourceCollection) }}">{{ __('resource-collection.edit_resource_collection') }}</a>
+        </p>
+    @endcan
 </x-app-layout>

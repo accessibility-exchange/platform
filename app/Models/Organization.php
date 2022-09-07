@@ -140,7 +140,7 @@ class Organization extends Model
     protected function serviceRegions(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => get_regions_from_provinces_and_territories(json_decode($attributes['service_areas']) ?? []),
+            get: fn ($value) => get_regions_from_provinces_and_territories($this->service_areas ?? []),
         );
     }
 
@@ -410,7 +410,7 @@ class Organization extends Model
     public function displayRoles(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => array_map(fn ($role) => OrganizationRole::labels()[$role], json_decode($attributes['roles'])),
+            get: fn ($value) => array_map(fn ($role) => OrganizationRole::labels()[$role], $this->roles),
         );
     }
 }

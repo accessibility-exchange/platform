@@ -20,31 +20,22 @@
         <p><a href="{{ localized_route('resources.index') }}">{{ __('Browse all resources') }}</a></p>
     </div>
     <div class="stack">
-        <h2>{{ __('Resources based on your role') }}</h2>
-        <div class="stack cards cards--collections">
-            @foreach ($roleCollections as $resourceCollection)
-                <div class="box card card--collection stack">
-                    <h3 id="{{ Str::slug($resourceCollection->title) }}">{{ $resourceCollection->title }}</h3>
-                    <p>{{ $resourceCollection->description }}</p>
-                    <p class="actions"><a class="button"
-                            href="{{ localized_route('resource-collections.show', $resourceCollection) }}"
-                            aria-describedby="{{ Str::slug($resourceCollection->title) }}">{{ __('Visit resources') }}</a>
-                    </p>
-                </div>
-            @endforeach
-        </div>
-        <h2>{{ __('Resource based on topics') }}</h2>
-        <div class="stack cards cards--collections">
-            @foreach ($topicCollections as $resourceCollection)
-                <div class="box card card--collection stack">
-                    <h3 id="{{ Str::slug($resourceCollection->title) }}">{{ $resourceCollection->title }}</h3>
-                    <p>{{ $resourceCollection->description }}</p>
-                    <p class="actions"><a class="button"
-                            href="{{ localized_route('resource-collections.show', $resourceCollection) }}"
-                            aria-describedby="{{ Str::slug($resourceCollection->title) }}">{{ __('Visit resources') }}</a>
-                    </p>
-                </div>
-            @endforeach
-        </div>
+        <h2>{{ __('Resource collections') }}</h2>
+        @if ($resourceCollections->count() > 0)
+            <div class="stack cards cards--collections">
+                @foreach ($resourceCollections as $resourceCollection)
+                    <div class="box card card--collection stack">
+                        <h3 id="{{ Str::slug($resourceCollection->title) }}">{{ $resourceCollection->title }}</h3>
+                        <p>{{ $resourceCollection->description }}</p>
+                        <p class="actions"><a class="button"
+                                href="{{ localized_route('resource-collections.show', $resourceCollection) }}"
+                                aria-describedby="{{ Str::slug($resourceCollection->title) }}">{{ __('Visit resources') }}</a>
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p>{{ __('resource-collection.none_found') }}</p>
+        @endif
     </div>
 </x-app-wide-layout>

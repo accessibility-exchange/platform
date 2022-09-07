@@ -30,6 +30,6 @@ jobs:
           commit-message: "chore(docs): update changelog"
           branch: chore/changelog
           delete-branch: true
-          title: 'chore(docs): update changelog'
+          title: "chore(docs): update changelog"
           labels: documentation
           team-reviewers: maintainers

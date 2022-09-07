@@ -2,38 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateResourceCollectionRequest;
+use App\Http\Requests\DestroyResourceCollectionRequest;
+use App\Http\Requests\UpdateResourceCollectionRequest;
 use App\Models\ContentType;
 use App\Models\Format;
 use App\Models\Phase;
 use App\Models\ResourceCollection;
 use App\Models\Topic;
-use Illuminate\Contracts\View\View;
 
 class ResourceCollectionController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource collection.
      *
-     * @return View
+     * @return \Illuminate\View\View
      */
-    public function index(): View
+    public function index()
     {
-        $roleCollectionIds = settings()->get('roleCollectionIds', [1, 2, 3]);
-        $topicCollectionIds = settings()->get('topicCollectionIds', [4, 5, 6, 7]);
+        return view('resource-collections.index', ['resourceCollections' => ResourceCollection::orderBy('title')->get()]);
+    }
 
-        return view('resource-collections.index', [
-            'roleCollections' => ResourceCollection::whereIn('id', $roleCollectionIds)->get(),
-            'topicCollections' => ResourceCollection::whereIn('id', $topicCollectionIds)->get(),
+    /**
+     * Show the form for creating a new resource collection.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        $this->authorize('create', ResourceCollection::class);
+
+        return view('resource-collections.create', [
+            'resourceCollectionId' => null,
         ]);
     }
 
     /**
-     * Display the specified resource.
+     * Store a newly created resource in storage.
      *
-     * @param  ResourceCollection  $resourceCollection
-     * @return View
+     * @param  \App\Http\Requests\CreateResourceCollectionRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function show(ResourceCollection $resourceCollection): View
+    public function store(CreateResourceCollectionRequest $request)
+    {
+        $data = $request->validated();
+
+        $resourceCollection = ResourceCollection::create($data);
+
+        $resourceCollection->resources()->attach($data['resource_ids']);
+
+        flash(__('resource-collection.create_succeeded'), 'success');
+
+        return redirect(\localized_route('resource-collections.show', ['resourceCollection' => $resourceCollection]));
+    }
+
+    /**
+     * Display the specified resource collection.
+     *
+     * @param  \App\Models\ResourceCollection  $resourceCollection
+     * @return \Illuminate\View\View
+     */
+    public function show(ResourceCollection $resourceCollection)
     {
         return view('resource-collections.show', [
             'resourceCollection' => $resourceCollection,
@@ -44,5 +73,53 @@ class ResourceCollectionController extends Controller
             'languages' => ['en', 'fr'],
             'phases' => Phase::all(),
         ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource collection.
+     *
+     * @param  \App\Models\ResourceCollection  $resourceCollection
+     * @return \Illuminate\View\View
+     */
+    public function edit(ResourceCollection $resourceCollection)
+    {
+        return view('resource-collections.edit', [
+            'resourceCollection' => $resourceCollection,
+            'resourceCollectionId' => $resourceCollection->id,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateResourceCollectionRequest  $request
+     * @param  \App\Models\ResourceCollection  $resourceCollection
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateResourceCollectionRequest $request, ResourceCollection $resourceCollection)
+    {
+        $resourceCollection->fill($request->validated());
+        $resourceCollection->resources()->sync($request['resource_ids']);
+        $resourceCollection->save();
+
+        flash(__('resource-collection.update_succeeded'), 'success');
+
+        return redirect(\localized_route('resource-collections.show', $resourceCollection));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Http\Requests\DestroyResourceCollectionRequest  $request
+     * @param  \App\Models\ResourceCollection  $resourceCollection
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(DestroyResourceCollectionRequest $request, ResourceCollection $resourceCollection)
+    {
+        $resourceCollection->delete();
+
+        flash(__('resource-collection.destroy_succeeded'), 'success');
+
+        return redirect(\localized_route('dashboard'));
     }
 }
