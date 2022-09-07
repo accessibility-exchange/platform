@@ -33,22 +33,7 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port: ${{ secrets.SSH_PROXY_PORT }}
-          script: |
-            cd /srv/tae-dev && \
-            git checkout dev && \
-            git pull && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate --build && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app npm install && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --optimize-autoloader && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan db:seed DevSeeder --force && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan view:clear && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan storage:link && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan google-fonts:fetch && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:clear && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:cache && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
+          script: cd /srv/tae-dev && ./bin/deploy-dev.sh
 
       - name: Wait
         run: sleep 15
