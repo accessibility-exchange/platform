@@ -5,10 +5,10 @@ set -e
 mkdir -p $FILES_PATH
 mkdir -p $CACHE_PATH
 
-rsync -a /app/storage/ $FILES_PATH/
+rsync -a /app/storage/ $FILES_PATH
 rm -rf /app/storage
 
-rsync -a /app/bootstrap/cache/ $CACHE_PATH/
+rsync -a /app/bootstrap/cache/ $CACHE_PATH
 rm -rf /app/bootstrap/cache
 
 ln -s $FILES_PATH /app/storage
@@ -21,8 +21,6 @@ if [ ! -f $FILES_PATH/../deploy.lock ]
 then
 
   touch $FILES_PATH/../deploy.lock
-
-  npm run build
 
   php artisan deploy:global
 

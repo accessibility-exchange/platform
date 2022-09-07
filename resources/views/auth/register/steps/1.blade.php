@@ -40,7 +40,7 @@
                 'ase' => __('American Sign Language (ASL)'),
                 'fcs' => 'Langue des signes québécoise (LSQ)',
             ])
-                ->nullable(__('Choose a signed language…'))
+                ->nullable(__('Choose a sign language…'))
                 ->toArray()" :selected="old('signed_language', '')"
                 hinted="languages-hint signed_language-hint" />
             <x-hearth-error for="signed_language" />
