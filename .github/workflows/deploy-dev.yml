@@ -48,7 +48,7 @@ jobs:
           proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port: ${{ secrets.SSH_PROXY_PORT }}
           source: "public/build"
-          target: "public/build"
+          target: "/srv/tae-dev/public/build"
 
       - name: Deploy stack
         uses: appleboy/ssh-action@v0.1.5
