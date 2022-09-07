@@ -22,20 +22,6 @@ jobs:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
           env: dev
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-        env:
-          CI: true
-
       - name: Deploy stack
         uses: appleboy/ssh-action@v0.1.5
         with:
@@ -52,6 +38,8 @@ jobs:
             git checkout dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app npm install && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan down --render="maintenance" && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app composer install --optimize-autoloader && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan migrate:fresh --force && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan db:seed DevSeeder --force && \
@@ -61,36 +49,8 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:clear && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
-
-      - name: Deploy assets
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SSH_HOSTNAME }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          proxy_host: ${{ secrets.SSH_PROXY_HOSTNAME }}
-          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
-          proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
-          proxy_port: ${{ secrets.SSH_PROXY_PORT }}
-          source: "public/build"
-          target: "/srv/tae-dev/public/build"
-
-      - name: Test for presence of asset manifest
-        uses: appleboy/ssh-action@v0.1.5
-        with:
-          host: ${{ secrets.SSH_HOSTNAME }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          proxy_host: ${{ secrets.SSH_PROXY_HOSTNAME }}
-          proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
-          proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
-          proxy_port: ${{ secrets.SSH_PROXY_PORT }}
-          script: |
-            cd /srv/tae-dev && \
-            cat public/build/manifest.json
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan up
 
       - name: Wait
         run: sleep 15
