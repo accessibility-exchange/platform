@@ -65,7 +65,7 @@ class MatchingStrategy extends Model
     public function locationType(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
+            get: function ($value) {
                 if (! empty($this->regions)) {
                     return 'regions';
                 }
@@ -81,7 +81,7 @@ class MatchingStrategy extends Model
     public function locationSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
+            get: function ($value) {
                 if (count($this->regions ?? [])) {
                     if (count($this->regions) === 13) {
                         return __('All provinces and territories');
@@ -104,7 +104,7 @@ class MatchingStrategy extends Model
     public function disabilityAndDeafGroupSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
+            get: function ($value) {
                 if ($this->hasDisabilityType(DisabilityType::where('name->en', 'Cross-disability')->first())) {
                     return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
                 }
@@ -121,7 +121,7 @@ class MatchingStrategy extends Model
     public function otherIdentitiesSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value, $attributes) {
+            get: function ($value) {
                 return match ($this->extra_attributes->get('other_identity_type', null)) {
                     'age-bracket' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\AgeBracket')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
                     'gender-and-sexual-identity' => implode("  \n", $this->criteria()->whereIn('criteriable_type', ['App\Models\Constituency', 'App\Models\GenderIdentity'])->get()->map(fn ($group) => $group->criteriable->name_plural)->toArray()),

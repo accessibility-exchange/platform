@@ -296,7 +296,7 @@ class EngagementController extends Controller
             }
             if ($matchingStrategyData['other_identity_type'] === 'indigenous-identity') {
                 $matchingStrategy->syncMutuallyExclusiveCriteria(
-                        'App\Models\IndigenousIdentity',
+                    'App\Models\IndigenousIdentity',
                     $matchingStrategyData['indigenous_identities'],
                     [
                         'App\Models\AgeBracket',

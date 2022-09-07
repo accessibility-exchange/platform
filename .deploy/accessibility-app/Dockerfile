@@ -35,18 +35,10 @@ RUN pecl install -o -f redis && \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-ENV NVM_DIR /root/.nvm
 ENV NODE_VERSION 16
-
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-
-RUN . $NVM_DIR/nvm.sh && \
-    nvm install $NODE_VERSION && \
-    nvm alias default $NODE_VERSION && \
-    nvm use default
-
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH      $NVM_DIR/v$NODE_VERSION/bin:$PATH
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+    && apt install -y nodejs \
+    && npm install -g npm 
 
 COPY .deploy/accessibility-app/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 COPY .deploy/accessibility-app/nginx.conf /etc/nginx/nginx.conf
@@ -59,8 +51,7 @@ COPY . $APP_HOME
 
 RUN composer install
 
-RUN . $NVM_DIR/nvm.sh && \
-    npm install
+RUN npm install
 
 RUN chown www-data:root $APP_HOME/public/ -R
 

@@ -2,39 +2,72 @@ name: Run Lighthouse CI
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, staging, production]
   pull_request:
-    branches: [dev, main]
+    branches: [dev, staging, production]
 
 jobs:
   lighthouse-ci:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.1"
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }} # https://github.com/GoogleChrome/lighthouse-ci/issues/172
+      - uses: technote-space/get-diff-action@v6
+        with:
+          patterns: |
+            composer.json
+            composer.lock
+            **/*.php
+            package.json
+            package-lock.json
+            **/*.css
+            **/*.js"
+      - name: Set up PHP
+        if: env.GIT_DIFF
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
       - name: Cache Composer packages
+        if: env.GIT_DIFF
         uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
+      - uses: actions/setup-node@v3
+        if: env.GIT_DIFF
+        with:
+          node-version: "16"
+      - name: Cache node modules
+        if: env.GIT_DIFF
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: env.GIT_DIFF
+        run: npm install
+        env:
+          CI: true
       - name: Copy .env
+        if: env.GIT_DIFF
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
+        if: env.GIT_DIFF
         run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Create test database
+        if: env.GIT_DIFF
         run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Generate keys
+        if: env.GIT_DIFF
         run: |
           echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
       - name: Run database migration
+        if: env.GIT_DIFF
         run: |
           php artisan migrate
           php artisan storage:link
@@ -43,10 +76,12 @@ jobs:
           DB_PASSWORD: root
           DB_HOST: localhost
       - name: Use Node 16.x
+        if: env.GIT_DIFF
         uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: Run Lighthouse CI
+        if: env.GIT_DIFF
         run: |
           npm install -g @lhci/cli@0.9.x
           lhci autorun

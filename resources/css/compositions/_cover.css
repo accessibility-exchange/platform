@@ -4,7 +4,8 @@
     display: flex;
     flex-direction: column;
     min-block-size: var(--height);
-    padding: var(--space-6) var(--space-4);
+    padding-block: var(--space-6);
+    padding-inline: var(--space-4);
 }
 
 .cover > * {

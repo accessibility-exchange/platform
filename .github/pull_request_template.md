@@ -11,4 +11,4 @@ If this PR changes PHP code or dependencies:
 If this PR changes CSS or JavaScript code or dependencies:
 
 - [ ] I've run `npm run lint` and fixed any linting issues.
-- [ ] I've run `npm run build` and committed built assets to the PR branch.
+- [ ] I've run `npm run build` and ensured that CSS and JavaScript assets can be compiled.
