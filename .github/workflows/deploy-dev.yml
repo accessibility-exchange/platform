@@ -48,7 +48,7 @@ jobs:
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:clear && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan icons:cache && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan route:cache && \
-            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache && \
+            /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app ./artisan config:cache
 
       - name: Wait
         run: sleep 15
