@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-medium-layout>
     <x-slot name="title">{{ $title }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -312,4 +312,4 @@
 
         <button>{{ __('Next') }}</button>
     </form>
-</x-app-layout>
+</x-app-medium-layout>
