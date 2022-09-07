@@ -87,7 +87,7 @@ class SettingsController extends Controller
             'signedLanguages' => Options::forArray([
                 'ase' => __('locales.ase'),
                 'fcs' => __('locales.fcs'),
-            ])->nullable(__('Choose a signed language…'))->toArray(),
+            ])->nullable(__('Choose a sign language…'))->toArray(),
             'spokenOrWrittenLanguages' => Options::forArray(get_available_languages(true, false))->nullable(__('Choose a language…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'guessedSpokenOrWrittenLanguage' => $individual->first_language && ! is_signed_language($individual->first_language) ? $individual->first_language : false,
@@ -235,7 +235,7 @@ class SettingsController extends Controller
             'signedLanguages' => Options::forArray([
                 'ase' => __('locales.ase'),
                 'fcs' => __('locales.fcs'),
-            ])->nullable(__('Choose a signed language…'))->toArray(),
+            ])->nullable(__('Choose a sign language…'))->toArray(),
             'workingLanguages' => $workingLanguages,
         ]);
     }
