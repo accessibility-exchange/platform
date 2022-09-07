@@ -22,8 +22,6 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  npm run build
-
   php artisan deploy:global
 
 fi

@@ -170,7 +170,7 @@
             </fieldset>
 
             <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{ hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Can you connect to a specific ethnoracial identity or identities? (optional)') }}
+                <legend>{{ __('Can you connect to a specific ethnoracial identity or identities? (required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_ethnoracial_identities-1" name="has_ethnoracial_identities" type="radio"
