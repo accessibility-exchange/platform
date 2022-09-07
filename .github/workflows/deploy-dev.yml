@@ -36,7 +36,6 @@ jobs:
           script: |
             cd /srv/tae-dev && \
             git checkout dev && \
-            git reset --hard origin/dev && \
             git pull && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml up -d --force-recreate && \
             /usr/local/bin/docker-compose -f docker-compose.cloud.yml exec -T app npm install && \
