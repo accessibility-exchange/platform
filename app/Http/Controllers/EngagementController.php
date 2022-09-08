@@ -103,7 +103,11 @@ class EngagementController extends Controller
         return view('engagements.show-recruitment-selection', [
             'project' => $engagement->project,
             'engagement' => $engagement,
-            'recruitments' => Options::forEnum(EngagementRecruitment::class)->toArray(),
+            'recruitments' => Options::forEnum(EngagementRecruitment::class)->append(fn (EngagementRecruitment $engagementRecruitment) => [
+                'hint' => $engagementRecruitment === EngagementRecruitment::CommunityConnector ?
+                    __('Hire a Community Connector (who can be an individual or a Community Organization) to recruit people manually from within their networks. This option is best if you are looking for a specific or hard-to-reach group.') :
+                    __('Post your engagement as an open call. Anyone who fits your selection criteria can sign up. It is first-come, first-served until the number of participants you are seeking has been reached.'),
+            ])->toArray(),
         ]);
     }
 

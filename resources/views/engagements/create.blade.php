@@ -27,7 +27,10 @@
         <x-translatable-input name="name" :label="__('What is the name of your engagement?')" />
 
         <fieldset class="field @error('format') field--error @enderror">
-            <legend>{{ __('What format would you like to use?') }}</legend>
+            <legend>{{ __('Format') }}</legend>
+            <p class="field__hint">
+                {{ __('What format would you like to use?') }}
+            </p>
             <x-hearth-radio-buttons name="format" :options="$formats" :checked="old('format', '')" />
             <x-hearth-error for="format" />
         </fieldset>
