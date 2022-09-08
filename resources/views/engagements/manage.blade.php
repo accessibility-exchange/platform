@@ -74,7 +74,12 @@
                 @if (!$engagement->consultant && !$engagement->organizationalConsultant)
                     <div class="box stack bg-grey-2">
                         <p>{{ __('You do not have an Accessibility Consultant on this engagement.') }}</p>
-                        {{-- TODO: add/manage accessibility consultant --}}
+                        <p>
+                            <a class="cta secondary"
+                                href="{{ localized_route('engagements.manage-consultant', $engagement) }}">
+                                <x-heroicon-o-wrench /> {{ __('Manage') }}
+                            </a>
+                        </p>
                     </div>
                 @endif
             </x-manage-section>
@@ -197,6 +202,12 @@
                     <x-hearth-alert>
                         {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
                     </x-hearth-alert>
+                    <p>
+                        <a class="cta secondary"
+                            href="{{ localized_route('engagements.manage-connector', $engagement) }}">
+                            <x-heroicon-o-wrench /> {{ __('Manage') }}
+                        </a>
+                    </p>
                 </x-manage-section>
             @endif
             @if ($engagement->who === 'individuals')
