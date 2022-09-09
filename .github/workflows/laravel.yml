@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2]
+        php: [8.1]
 
     name: tests - PHP ${{ matrix.php }}
 
