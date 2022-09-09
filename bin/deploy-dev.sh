@@ -16,7 +16,7 @@ $COMPOSE_CMD up -d --force-recreate --build
 
 # Deploy app
 $EXEC_CMD npm install
-$EXEC_CMD composer install --optimize-autoloader --ignore-platform-reqs
+$EXEC_CMD composer install --optimize-autoloader
 $EXEC_CMD ./artisan migrate:fresh --force
 $EXEC_CMD ./artisan db:seed DevSeeder --force
 $EXEC_CMD ./artisan view:clear
