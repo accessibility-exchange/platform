@@ -378,3 +378,35 @@ test('engagement participants can participate in engagements', function () {
     $response = $this->actingAs($user)->get(localized_route('engagements.participate', $engagement));
     $response->assertOk();
 });
+
+test('engagements can reflect parent project’s estimate and agreement status', function () {
+    $engagement = Engagement::factory()->create();
+
+    expect($engagement->hasEstimateAndAgreement())->toBeFalse();
+
+    $project = $engagement->project;
+
+    $project->update(['estimate_requested_at' => now()]);
+
+    expect($engagement->hasEstimateAndAgreement())->toBeFalse();
+
+    $project->update(['estimate_approved_at' => now()]);
+
+    expect($engagement->hasEstimateAndAgreement())->toBeFalse();
+
+    $project->update(['agreement_received_at' => now()]);
+
+    expect($engagement->hasEstimateAndAgreement())->toBeTrue();
+});
+
+test('engagements are only publishable if required fields are completed', function () {
+    $engagement = Engagement::factory()->create();
+
+    expect($engagement->isPublishable())->toBeFalse();
+
+    $engagement->update(['signup_by_date' => now()]);
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->isPublishable())->toBeTrue();
+});
