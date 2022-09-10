@@ -33,7 +33,12 @@ jobs:
           proxy_username: ${{ secrets.SSH_PROXY_USERNAME }}
           proxy_key: ${{ secrets.SSH_PROXY_PRIVATE_KEY }}
           proxy_port: ${{ secrets.SSH_PROXY_PORT }}
-          script: cd /srv/tae-dev && ./bin/deploy-dev.sh
+          script: |
+            cd /srv/tae-dev && \
+            git checkout -f && \
+            git checkout dev && \
+            git pull && \
+            ./bin/deploy-dev.sh
 
       - name: Wait
         run: sleep 15

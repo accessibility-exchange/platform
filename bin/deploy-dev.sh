@@ -6,11 +6,6 @@ CONTAINER_USER="sail"
 COMPOSE_CMD="/usr/local/bin/docker-compose -f docker-compose.cloud.yml"
 EXEC_CMD="$COMPOSE_CMD exec -T --user $CONTAINER_USER app"
 
-# Fetch updates
-git checkout -f
-git checkout dev
-git pull
-
 # Build image and (re)create containers
 $COMPOSE_CMD up -d --force-recreate --build --pull always
 
