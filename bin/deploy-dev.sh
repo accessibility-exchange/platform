@@ -12,7 +12,7 @@ git checkout dev
 git pull
 
 # Build image and (re)create containers
-$COMPOSE_CMD up -d --force-recreate --build
+$COMPOSE_CMD up -d --force-recreate --build --pull always
 
 # Deploy app
 $EXEC_CMD npm install
