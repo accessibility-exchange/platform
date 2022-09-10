@@ -16,6 +16,7 @@ $COMPOSE_CMD up -d --force-recreate --build
 
 # Deploy app
 $EXEC_CMD npm install
+$EXEC_CMD ./artisan down --render="maintenance"
 $EXEC_CMD composer install --optimize-autoloader
 $EXEC_CMD ./artisan migrate:fresh --force
 $EXEC_CMD ./artisan db:seed DevSeeder --force
@@ -26,3 +27,4 @@ $EXEC_CMD ./artisan icons:clear
 $EXEC_CMD ./artisan icons:cache
 $EXEC_CMD ./artisan route:cache
 $EXEC_CMD ./artisan config:cache
+$EXEC_CMD ./artisan up
