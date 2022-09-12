@@ -36,14 +36,14 @@
                             method="post">
                             @csrf
                             <x-hearth-input name="project_id" type="hidden" :value="$project->id" />
-                            <button>{{ __('I’m interested in this project') }}</button>
+                            <button>{{ __('I’m interested in participating') }}</button>
                         </form>
                     @else
                         <form action="{{ localized_route('individuals.remove-interest', Auth::user()->individual) }}"
                             method="post">
                             @csrf
                             <x-hearth-input name="project_id" type="hidden" :value="$project->id" />
-                            <button type="submit">{{ __('I’m not interested in this project') }}</button>
+                            <button type="submit">{{ __('I’m not interested in participating') }}</button>
                         </form>
                     @endif
                 @endif
