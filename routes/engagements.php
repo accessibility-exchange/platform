@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\EngagementController;
+use App\Http\Livewire\AddEngagementConnector;
 use App\Http\Livewire\ManageEngagementConnector;
-use App\Http\Livewire\ManageEngagementConsultant;
 
 Route::controller(EngagementController::class)
     ->name('engagements.')
@@ -92,10 +92,10 @@ Route::controller(EngagementController::class)
             ->name('participate');
     });
 
-Route::multilingual('/engagements/{engagement}/consultant/manage', [ManageEngagementConsultant::class, '__invoke'])
-    ->middleware(['auth', 'can:update,engagement'])
-    ->name('engagements.manage-consultant');
-
 Route::multilingual('/engagements/{engagement}/connector/manage', [ManageEngagementConnector::class, '__invoke'])
     ->middleware(['auth', 'can:update,engagement'])
     ->name('engagements.manage-connector');
+
+Route::multilingual('/engagements/{engagement}/connector/add', [AddEngagementConnector::class, '__invoke'])
+    ->middleware(['auth', 'can:update,engagement'])
+    ->name('engagements.add-connector');

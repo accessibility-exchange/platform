@@ -70,19 +70,6 @@
                     <x-heroicon-o-pencil /> {{ __('Edit') }}
                 </a>
             </x-manage-section>
-            <x-manage-section :title="__('Accessibility Consultant')">
-                @if (!$engagement->consultant && !$engagement->organizationalConsultant)
-                    <div class="box stack bg-grey-2">
-                        <p>{{ __('You do not have an Accessibility Consultant on this engagement.') }}</p>
-                        <p>
-                            <a class="cta secondary"
-                                href="{{ localized_route('engagements.manage-consultant', $engagement) }}">
-                                <x-heroicon-o-wrench /> {{ __('Manage') }}
-                            </a>
-                        </p>
-                    </div>
-                @endif
-            </x-manage-section>
         </x-manage-columns>
         <x-manage-columns class="col-start-2 col-end-4">
             @if ($engagement->checkStatus('draft'))

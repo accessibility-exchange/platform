@@ -62,7 +62,7 @@
     </p>
 
     <p>
-        <a class="cta secondary" href="#TODO">
+        <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
             <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
             {{ __('Add Community Connector') }}
         </a>
