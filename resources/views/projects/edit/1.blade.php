@@ -26,7 +26,7 @@
             <h3>{{ __('Project scope') }}</h3>
 
             <x-translatable-textarea name="scope" :label="__(
-                'Please identify the communities this project hopes to engage and how they will be impacted. (required)',
+                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project. (required)',
             )" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
@@ -57,7 +57,8 @@
             <h3>{{ __('Project outcome') }}</h3>
 
             <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('other', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Who is analyzing the results?') }}</legend>
+                <legend>{{ __('Who will be going through the results from this project and writing a report?') }}
+                </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forArray([
                     'internal' => __('Internal team'),
                     'external' => __('External team'),
