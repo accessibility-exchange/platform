@@ -8,6 +8,8 @@
         <h1>
             {{ __('Access needs') }}
         </h1>
+        <p>{{ __('Unless specified, your access needs will be shared with the organization you are working with anonymously.') }}
+        </p>
     </x-slot>
 
     @include('partials.validation-errors')
@@ -38,10 +40,11 @@
 
         <fieldset class="field @error('meeting_access_needs') field--error @enderror" x-data="{
             interpretationSigned: {{ in_array($signLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
-            interpretationSpoken: {{ in_array($spokenLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }}
+            interpretationSpoken: {{ in_array($spokenLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
+            followUpNeeds: {{ in_array($followUpCallsOrEmails, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
         }">
             <legend>
-                <h2>{{ __('For meetings') }}</h2>
+                <h2>{{ __('For meeting in real time') }}</h2>
             </legend>
             @foreach ($meetingAccessSupports as $option)
                 <div class="field">
@@ -77,13 +80,32 @@
                         <div class="field__subfield @error('spoken_language_for_interpretation') field--error @enderror stack"
                             x-show="interpretationSpoken" x-cloak>
                             <x-hearth-label for="spoken_language_for_interpretation">
-                                {{ __('Spoken language for interpretation') }}</x-hearth-label>
+                                {{ __('Select language') }}</x-hearth-label>
                             <x-hearth-select name="spoken_language_for_interpretation" :options="$spokenOrWrittenLanguages"
                                 :selected="old(
                                     'spoken_language_for_interpretation',
                                     $individual->spoken_language_for_interpretation ?? $guessedSpokenOrWrittenLanguage,
                                 )" hinted />
                             <x-hearth-error for="spoken_language_for_interpretation" />
+                        </div>
+                    @elseif($option['value'] === $followUpCallsOrEmails)
+                        <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
+                            name="meeting_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
+                                $option['value'],
+                                old('meeting_access_needs', $selectedAccessSupports ?? []),
+                            )"
+                            x-model="followUpNeeds" />
+                        <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
+                        </x-hearth-label>
+                        <div class="stack" x-show="followUpNeeds" x-cloak>
+                            <x-card :level="4">
+                                <x-slot name="title">
+                                    {{ __('Notice') }}
+                                </x-slot>
+                                <p>
+                                    {{ __('For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this.') }}
+                                </p>
+                            </x-card>
                         </div>
                     @else
                         <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
@@ -131,6 +153,14 @@
             <legend>
                 <h2>{{ __('For engagement documents') }}</h2>
             </legend>
+            <x-card :level="4">
+                <x-slot name="title">
+                    {{ __('Notice') }}
+                </x-slot>
+                <p>
+                    {{ __('For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this.') }}
+                </p>
+            </x-card>
             @foreach ($documentAccessSupports as $option)
                 <div class="field">
                     @if ($option['value'] === $signLanguageTranslation)
@@ -145,7 +175,7 @@
                         <div class="field__subfield @error('signed_language_for_translation') field--error @enderror stack"
                             x-show="translationSigned" x-cloak>
                             <x-hearth-label for="signed_language_for_translation">
-                                {{ __('Signed language for translation') }}</x-hearth-label>
+                                {{ __('Select language') }}</x-hearth-label>
                             <x-hearth-select name="signed_language_for_translation" :options="$signedLanguages"
                                 :selected="old(
                                     'signed_language_for_translation',
@@ -165,7 +195,7 @@
                         <div class="field__subfield @error('written_language_for_translation') field--error @enderror stack"
                             x-show="translationWritten" x-cloak>
                             <x-hearth-label for="written_language_for_translation">
-                                {{ __('Written language for translation') }}</x-hearth-label>
+                                {{ __('Select language') }}</x-hearth-label>
                             <x-hearth-select name="written_language_for_translation" :options="$spokenOrWrittenLanguages"
                                 :selected="old(
                                     'written_language_for_translation',

@@ -340,6 +340,28 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $notificationable->isNotifying($this);
     }
 
+    public function isOnlyAdministratorOfOrganization(): bool
+    {
+        if (count($this->organizations) > 0) {
+            if ($this->organization->administrators()->count() === 1 && $this->isAdministratorOf($this->organization)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isOnlyAdministratorOfRegulatedOrganization(): bool
+    {
+        if (count($this->regulatedOrganizations) > 0) {
+            if ($this->regulatedOrganization->administrators()->count() === 1 && $this->isAdministratorOf($this->regulatedOrganization)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Is two-factor authentication enabled for this user?
      *

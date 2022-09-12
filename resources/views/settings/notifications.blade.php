@@ -31,7 +31,7 @@
     @include('partials.validation-errors')
 
     <h2>{{ __('Manage my notifications') }}</h2>
-    <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}
+    <p>{{ __('The Accessibility Exchange will send you notifications, based on what you chose to be notified of here.') }}
     </p>
 
     @include('settings.notifications.' . $user->context)

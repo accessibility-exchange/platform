@@ -118,7 +118,7 @@ class AccessSupportSeeder extends Seeder
                 'documents' => true,
             ],
             [
-                'name' => __('Audio version of engagement documents'),
+                'name' => __('Audio versions of engagement documents'),
                 'documents' => true,
             ],
             [

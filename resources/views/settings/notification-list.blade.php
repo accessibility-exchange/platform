@@ -30,7 +30,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Regulated or community organizations that you want to be notified about.') }}</p>
+    <p>{{ __('Organizations or projects that you want to be notified about.') }}</p>
 
     <h2 id="regulated-organizations">{{ __('Regulated organizations') }}</h2>
 
