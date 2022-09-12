@@ -7,6 +7,7 @@ If this PR changes PHP code or dependencies:
 - [ ] I've run `composer format` and fixed any code formatting issues.
 - [ ] I've run `composer analyze` and addressed any static analysis issues.
 - [ ] I've run `php artisan test` and ensured that all tests pass.
+- [ ] I've run `composer localize` to update localization source files and committed any changes.
 
 If this PR changes CSS or JavaScript code or dependencies:
 
