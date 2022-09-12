@@ -7,7 +7,7 @@
         </ol>
         <p class="h4">{{ __('Create engagement') }}</p>
         <h1 class="mt-0">
-            {{ __('What format would you like to use?') }}
+            {{ __('Format') }}
         </h1>
     </x-slot>
 

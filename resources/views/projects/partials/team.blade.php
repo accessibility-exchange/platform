@@ -1,4 +1,4 @@
-<h3>{{ __('Team composition') }}</h3>
+<h3>{{ __('About the project team') }}</h3>
 
 @if ($project->team_size)
     <h4>{{ __('Number of team members') }}</h4>
