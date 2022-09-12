@@ -111,6 +111,10 @@
         ],
         "analyze": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint",
+        "localize": [
+            "rm -f -- resources/lang/en.json",
+            "@php artisan localize en,fr"
+        ],
         "test": "php artisan test",
         "test-coverage": "php artisan test --coverage"
     }
