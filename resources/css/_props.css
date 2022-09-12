@@ -63,7 +63,7 @@
     --alert-background-success: var(--theme-alert-background-success, var(--color-green-1));
     --alert-border-success: var(--theme-alert-border-success, var(--alert-background-success));
     --alert-color-success: var(--theme-alert-color-success, var(--color-graphite-8));
-    --hint-color: var(--theme-hint-color, var(--color-graphite-6));
+    --hint-color: var(--theme-hint-color, var(--color-graphite-7));
     --input-border: var(--theme-input-border, var(--color-graphite-7));
     --input-color: var(--theme-input-color, var(--color-graphite-7));
     --input-error-border: var(--theme-input-error-border, var(--color-red-8));
