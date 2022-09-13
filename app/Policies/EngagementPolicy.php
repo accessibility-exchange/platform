@@ -24,7 +24,7 @@ class EngagementPolicy
     {
         return $user->can('update', $engagement->project)
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::deny();
     }
 
     public function addConnector(User $user, Engagement $engagement): Response
