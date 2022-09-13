@@ -80,14 +80,7 @@
                             aria-label="{{ __('Edit :user’s role', ['user' => $member->name]) }}">{{ __('Edit') }}</a>
                     </td>
                     <td>
-                        <form action="{{ route('memberships.destroy', $member->membership->id) }}" method="POST">
-                            @csrf
-                            @method('delete')
-                            <button class="secondary"
-                                aria-label="{{ $member->id === $user->id ? __('Leave :membershipable', ['membershipable' => $membershipable->name]) : __('Remove :user from :membershipable', ['user' => $member->name, 'membershipable' => $membershipable->name]) }}">
-                                {{ $member->id === $user->id ? __('Leave organization') : __('Remove') }}
-                            </button>
-                        </form>
+                        <x-remove-member-modal :member="$member" :membershipable="$membershipable" :user="$user" />
                     </td>
                 </tr>
             @endforeach

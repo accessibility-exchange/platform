@@ -27,6 +27,7 @@ class MembershipController extends Controller
             $roles[] = [
                 'value' => $role,
                 'label' => __('roles.'.$role),
+                'hint' => $role === 'admin' ? __('Can create and edit the organization page, projects, and engagements.') : __('Can only view the organization page, projects, and engagements.'),
             ];
         }
 

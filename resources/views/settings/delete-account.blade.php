@@ -17,8 +17,6 @@
             </x-hearth-alert>
         </div>
     @endif
-    <!-- Form Validation Errors -->
-    @include('partials.validation-errors')
     <h2>{{ __('Are you sure you want to delete your account?') }}</h2>
     <p>{{ __('If you delete your account:') }}</p>
     @if ($user->context === 'individual')
@@ -80,19 +78,22 @@
         </div>
     @endif
 
-    <form
-        class="{{ $user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization() ? 'disabled' : '' }}"
-        action="{{ localized_route('users.destroy') }}" method="post" novalidate>
+    <!-- Form Validation Errors -->
+    @include('partials.validation-errors')
+    <form class="@if ($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization()) disabled @endif" action="{{ localized_route('users.destroy') }}"
+        method="post" novalidate>
         @csrf
         @method('delete')
 
         <div class="field @error('current_password', 'destroyAccount') field--error @enderror">
             <x-hearth-label for="current_password" :value="__('Confirm by typing your current password')" />
-            <x-password-input name="current_password" />
+            <x-password-input name="current_password"
+                disabled="{{ $user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization() }}" />
             <x-hearth-error for="current_password" bag="destroyAccount" />
         </div>
 
-        <button>
+        <button
+            disabled="{{ $user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization() }}">
             {{ __('hearth::user.action_delete_account') }}
         </button>
     </form>
