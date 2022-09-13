@@ -7,7 +7,7 @@
         </ol>
         <p class="h4">{{ __('Create a new engagement') }}</p>
         <h1 class="mt-0">
-            {{ __('Page translations') }}
+            {{ __('Engagement translations') }}
         </h1>
     </x-slot>
 
@@ -17,12 +17,12 @@
     <p>{{ __('Please select the languages that your engagement information can be translated into by your organization.') }}
     </p>
 
-    <x-hearth-alert :title="__('Recommendation')">
+    <x-hearth-alert :title="__('Translation')">
         <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.') }}
         </p>
     </x-hearth-alert>
 
-    <h2>{{ __('Translations') }}</h2>
+    <h2>{{ __('Selected translations') }}</h2>
 
     <form class="stack" action="{{ localized_route('engagements.store-languages', $project) }}" method="post"
         novalidate>
