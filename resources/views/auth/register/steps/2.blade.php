@@ -4,12 +4,17 @@
         <x-hearth-hint for="context">
             {{ __('If more than one of these apply to you, you have the option to register additional accounts.') }}
         </x-hearth-hint>
+        <x-expander :summary="__('Learn more')" level="3">
+            <p>
+                {{ __('You can only choose one of these options for each account. So, if you are a Deaf person who would like to participate in consultations, and you are also the contact for an organization that serves Deaf people, you should create two separate accounts, one as an individual, and as a Community Organization. That way, we can be sure to show you the right information based on who you’ve joined as.') }}
+            </p>
+        </x-expander>
         <x-hearth-radio-buttons name="context" :options="[
             [
                 'value' => 'individual',
-                'label' => __('As an individual'),
+                'label' => __('Individual'),
                 'hint' => __(
-                    'I have lived experience of being disabled or Deaf, and I want to work on accessibility projects.',
+                    'I am someone who has lived experience of being disabled or Deaf, or I am a family member or supporter or a person who is disabled or Deaf.',
                 ),
             ],
             [
