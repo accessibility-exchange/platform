@@ -97,5 +97,5 @@ Route::multilingual('/engagements/{engagement}/connector/manage', [ManageEngagem
     ->name('engagements.manage-connector');
 
 Route::multilingual('/engagements/{engagement}/connector/add', [AddEngagementConnector::class, '__invoke'])
-    ->middleware(['auth', 'can:update,engagement'])
+    ->middleware(['auth', 'can:addConnector,engagement'])
     ->name('engagements.add-connector');

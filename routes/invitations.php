@@ -28,10 +28,6 @@ Route::controller(ContractorInvitationController::class)
     ->prefix('invitations/contractors')
     ->name('contractor-invitations.')
     ->group(function () {
-        Route::multilingual('/create', 'create')
-            ->method('post')
-            ->name('create');
-
         Route::get('/{invitation}', 'accept')
             ->middleware(['signed', 'verified'])
             ->name('accept');

@@ -22,51 +22,73 @@
         </div>
     </div>
 
-    <h2>{{ __('Find a Community Connector') }}</h2>
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <h2>{{ __('Find a Community Connector') }}</h2>
 
-    <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
-    </p>
+        <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
+        </p>
 
-    <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
+        <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
 
-    <p>{!! __(
-        'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
-        [
-            'browse' => '<a href="' . localized_route('projects.index') . '">' . __('browse projects') . '</a>',
-        ],
-    ) !!}
-    </p>
+        <p>{!! __(
+            'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
+            [
+                'browse' => '<a href="' . localized_route('projects.index') . '">' . __('browse projects') . '</a>',
+            ],
+        ) !!}
+        </p>
 
-    <div class="field">
-        <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
-            wire:click="updateStatus" />
-        <x-hearth-label for="seeking_community_connector">
-            {{ __('I am currently seeing an Community Connector for this engagement') }}</x-hearth-label>
-    </div>
+        <div class="field">
+            <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
+                wire:click="updateStatus" />
+            <x-hearth-label for="seeking_community_connector">
+                {{ __('I am currently seeing an Community Connector for this engagement') }}</x-hearth-label>
+        </div>
 
-    <hr class="border-t-1 mt-16 mb-12 border-x-0 border-b-0 border-solid border-t-blue-7" />
+        <hr class="border-t-1 mt-16 mb-12 border-x-0 border-b-0 border-solid border-t-blue-7" />
 
-    <h3>{{ __('Browse for an Community Connector') }}</h3>
+        <h3>{{ __('Browse for an Community Connector') }}</h3>
 
-    <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
+        <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
 
-    <p>
-        <a class="cta secondary" href="#TODO">{{ __('Browse Community Connectors') }}</a>
-    </p>
+        <p>
+            <a class="cta secondary"
+                href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
+        </p>
 
-    <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+        <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+    @endif
 
     <h2>{{ __('Manage Community Connector') }}</h2>
 
-    <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}
-    </p>
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}
+        </p>
 
-    <p>
-        <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
-            <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
-            {{ __('Add Community Connector') }}
-        </a>
-    </p>
+        <p>
+            <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
+                <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                {{ __('Add Community Connector') }}
+            </a>
+        </p>
+    @else
+        @if ($invitation->type === 'individual')
+            @if ($invitee)
+                <x-individual-card level="3" :model="$invitee" />
+            @else
+                <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
+            @endif
+        @elseif($invitation->type === 'organization')
+            @if ($invitee)
+                <x-organization-card level="3" :model="$invitee" />
+            @else
+                {{ $invitation->email }}
+            @endif
+        @endif
+        <button class="borderless" wire:click="cancelInvitation">
+            <x-heroicon-s-x-mark role="presentation" aria-hidden="true" /> {{ __('Cancel invitation') }}
+        </button>
+    @endif
 
     <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
 

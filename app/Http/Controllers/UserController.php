@@ -113,7 +113,11 @@ class UserController extends Controller
             'memberable' => $memberable,
             'invitation' => $invitation,
             'invitationable' => ! is_null($invitation) ? $invitation->invitationable : null,
-            'acceptUrl' => ! is_null($invitation) ? URL::signedRoute('invitations.accept', $user->invitation()) : null,
+            'acceptUrl' => match ($invitation?->role) {
+                'admin', 'member' => URL::signedRoute('invitations.accept', $user->invitation()),
+                'connector', 'consultant' => URL::signedRoute('contractor-invitations.accept', $user->invitation()),
+                default => null
+            },
         ]);
     }
 

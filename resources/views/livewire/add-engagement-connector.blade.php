@@ -13,7 +13,7 @@
     </h1>
 </x-slot>
 
-<div class="stack">
+<form class="stack" wire:submit.prevent="inviteConnector">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
         @clear-flash-message.window="visible = false"
         @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
@@ -44,8 +44,8 @@
         <fieldset>
             <legend>{{ __('Community Connector') }}</legend>
             @if ($who === 'individual')
-                <p>{{ __('Please enter the email address of your Community Connector.') }}</p>
-
+                <p>{{ __('Please enter the email address of the individual you have hired as a Community Connector.') }}
+                </p>
                 <div class="field @error('email') field--error @enderror">
                     <x-hearth-label for="email">{{ __('Email address') }}</x-hearth-label>
                     <x-hearth-hint for="email">{{ __('This is the email your invitation will be sent to.') }}
@@ -54,21 +54,30 @@
                     <x-hearth-error for="email" />
                 </div>
             @elseif($who === 'organization')
-                <p>{{ __('Please make sure your Community Connector is a registered member on this website.') }}
-                </p>
-                <livewire:model-search model="App\Models\Organization" :label="__('Find your organization')" />
-                <x-hearth-input name='email' type="email" wire:model.lazy="email" :value="$organization?->contact_person_email" hinted />
+                <div class="field @error('organization') field--error @enderror">
+                    <x-hearth-label for="organization">{{ __('Community organization') }}</x-hearth-label>
+                    <x-hearth-select name="organization" :options="$organizations" wire:model="organization" />
+                    <x-hearth-error for="organization" />
+                </div>
             @endif
     @endif
     </fieldset>
     <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
     <div class="flex flex-row gap-6">
-        <a class="cta secondary"
-            href="{{ localized_route('engagements.manage-connector', $engagement) }}">{{ __('Cancel') }}</a>
+        <a class="cta secondary" href="{{ localized_route('engagements.manage-connector', $engagement) }}">
+            <x-heroicon-o-arrow-left role="presentation" aria-hidden="true" /> {{ __('Cancel') }}
+        </a>
         @if ($who === 'individual')
-            <button wire:click="inviteIndividual">{{ __('Send invitation') }}</button>
+            <button>{{ __('Send invitation') }} @if ($email)
+                    <span class="sr-only">{{ __('to :email', ['email' => $email]) }}</span>
+                @endif
+            </button>
         @elseif($who === 'organization')
-            <button wire:click="inviteOrganization">{{ __('Send invitation') }}</button>
+            <button>{{ __('Send invitation') }} @if ($organization)
+                    <span
+                        class="sr-only">{{ __('to :organization', ['organization' => App\Models\Organization::find($organization)->name]) }}</span>
+                @endif
+            </button>
         @endif
     </div>
-</div>
+</form>

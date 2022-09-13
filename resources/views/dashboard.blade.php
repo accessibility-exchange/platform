@@ -2,6 +2,7 @@
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         @if ($invitationable)
+            @ray($invitation)
             <x-invitation>
                 <p class="flex items-center gap-4"><span
                         class="h-5 w-5 rounded-full bg-magenta-3"></span>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $invitationable->name]) }}

@@ -340,11 +340,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $notificationable->isNotifying($this);
     }
 
-    /**
-     * Is two-factor authentication enabled for this user?
-     *
-     * @return bool
-     */
     public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);

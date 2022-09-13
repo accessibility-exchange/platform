@@ -24,7 +24,7 @@ class ContractorInvitation extends Mailable
     public function build(): ContractorInvitation
     {
         return $this->markdown(
-            'mail.contractor-invitation',
+            'mail.individual-contractor-invitation',
             [
                 'acceptUrl' => URL::signedRoute('contractor-invitations.accept', $this->invitation),
                 'invitation' => $this->invitation,

@@ -15,11 +15,18 @@ class ModelSearch extends Component
 
     public Collection $results;
 
+    public ?bool $selectable;
+
     public mixed $selection;
 
-    public function mount()
+    public string $component = 'card';
+
+    public int $level = 2;
+
+    public function mount(bool $selectable = false)
     {
         $this->label = $this->label ?? __('Search');
+        $this->selectable = $selectable;
         $this->query = '';
         $this->results = new Collection([]);
     }
@@ -29,6 +36,12 @@ class ModelSearch extends Component
         $this->results = $this->model::where('name->en', 'like', '%'.$this->query.'%')
             ->orWhere('name->fr', 'like', '%'.$this->query.'%')
             ->get();
+    }
+
+    public function sendSelection(int $id)
+    {
+        $this->selection = $this->model::find($id);
+        $this->emitUp('sendSelection', $id);
     }
 
     public function render()
