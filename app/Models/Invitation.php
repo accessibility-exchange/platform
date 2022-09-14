@@ -18,20 +18,30 @@ class Invitation extends HearthInvitation
         $this->mergeFillable(['type']);
     }
 
-    public function accept(string $type = 'individual'): void
+    public function accept(?string $type = null): void
     {
-        if ($type === 'individual') {
-            $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
-            if ($this->role === 'connector') {
-                $this->invitationable->connector()->associate($invitee->individual);
-                $this->invitationable->save();
+        if ($type) {
+            if ($type === 'individual') {
+                $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+                if ($this->role === 'connector') {
+                    $this->invitationable->connector()->associate($invitee->individual);
+                    $this->invitationable->save();
+                }
+            }
+            if ($type === 'organization') {
+                $invitee = Organization::where('contact_person_email', $this->email)->first();
+                if ($this->role === 'connector') {
+                    $this->invitationable->organizationalConnector()->associate($invitee);
+                    $this->invitationable->save();
+                }
             }
         } else {
-            $invitee = Organization::where('contact_person_email', $this->email)->first();
-            if ($this->role === 'connector') {
-                $this->invitationable->organizationalConnector()->associate($invitee);
-                $this->invitationable->save();
-            }
+            $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+
+            $this->invitationable->users()->attach(
+                $invitee,
+                ['role' => $this->role]
+            );
         }
 
         $this->delete();
