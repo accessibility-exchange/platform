@@ -135,7 +135,7 @@ class Organization extends Model
     public function singularName(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => __('organization'),
+            get: fn ($value) => __('organization.singular_name'),
         );
     }
 

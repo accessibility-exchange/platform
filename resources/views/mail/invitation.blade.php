@@ -19,5 +19,5 @@
         {{ __('Accept Invitation') }}
     @endcomponent
 
-{{ __('If you did not expect to receive an invitation to this :invitationable_type, you may discard this email.'. ['invitationable_type' => $invitation->invitationable->singular_name]) }}
+{{ __('If you did not expect to receive an invitation to this :invitationable_type, you may discard this email.', ['invitationable_type' => $invitation->invitationable->singular_name]) }}
 @endcomponent
