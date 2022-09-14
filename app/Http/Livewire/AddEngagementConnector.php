@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Mail\ContractorInvitation;
 use App\Models\Engagement;
-use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\User;
@@ -63,7 +62,7 @@ class AddEngagementConnector extends Component
                     $user = User::whereBlind('email', 'email_index', $this->email)->first() ?? null;
                     if ($user) {
                         $individual = $user->individual ?? null;
-                        if (is_null($individual) || ! $individual->isConnector()) {
+                        if (is_null($individual) || ! $individual->checkStatus('published') || ! $individual->isConnector()) {
                             $validator->errors()->add('email', __('The individual on this website with the email address you provided is not a community connector.'));
                         }
                     }
@@ -83,19 +82,7 @@ class AddEngagementConnector extends Component
 
             $validated['type'] = 'individual';
         } else {
-            $organization = Organization::find((int) $this->organization);
-            $this->email = $organization->contact_person_email;
-            $validated = $this->withValidator(function (Validator $validator) {
-                $validator->after(function ($validator) {
-                    if (Invitation::where([
-                        ['invitationable_type', 'App\Models\Engagement'],
-                        ['invitationable_id', $this->engagement->id],
-                        ['email', $this->email],
-                    ])->count()) {
-                        $validator->errors()->add('organization', __('This organization has already been invited.'));
-                    }
-                });
-            })->validate(
+            $validated = $this->validate(
                 [
                     'organization' => [
                         'required',
@@ -104,11 +91,23 @@ class AddEngagementConnector extends Component
                             return $query->whereJsonContains('roles', 'connector');
                         }),
                     ],
+                    'email' => [
+                        'required',
+                        'email',
+                        Rule::unique('invitations')->where(function ($query) {
+                            return $query->where([
+                                ['invitationable_type', 'App\Models\Engagement'],
+                                ['invitationable_id', $this->engagement->id],
+                            ]);
+                        }),
+                    ],
+                ],
+                [
+                    'email.unique' => __('This organization has already been invited.'),
                 ]
             );
 
             $validated['type'] = 'organization';
-            $validated['email'] = $this->email;
         }
 
         $validated['role'] = 'connector';
@@ -134,5 +133,14 @@ class AddEngagementConnector extends Component
         flash(__('invitation.create_invitation_succeeded'), 'success');
 
         return redirect(localized_route('engagements.manage-connector', $this->engagement));
+    }
+
+    protected function prepareForValidation($attributes): array
+    {
+        if (! empty($attributes['organization'])) {
+            $attributes['email'] = Organization::find((int) $attributes['organization'])->contact_person_email;
+        }
+
+        return $attributes;
     }
 }

@@ -5,7 +5,7 @@ use App\Models\Engagement;
 use App\Models\User;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
-    $engagement = Engagement::factory()->create();
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
 
     $regulatedOrganization = $engagement->project->projectable;
 

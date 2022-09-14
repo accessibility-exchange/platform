@@ -190,7 +190,7 @@
                         <x-individual-card :model="$engagement->connector" />
                     @elseif($engagement->organizationalConnector)
                         <x-organization-card :model="$engagement->organizationalConnector" />
-                    @elseif($connectorInvitation->where('role', 'connector'))
+                    @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
                         @if ($connectorInvitation->type === 'individual')
                             @if ($connectorInvitee)
                                 <x-individual-card level="3" :model="$invitee" />
