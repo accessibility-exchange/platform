@@ -85,6 +85,13 @@ class Engagement extends Model
         'payment',
     ];
 
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('engagement'),
+        );
+    }
+
     public function displayFormat(): Attribute
     {
         return Attribute::make(

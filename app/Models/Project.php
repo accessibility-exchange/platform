@@ -121,6 +121,13 @@ class Project extends Model
         return 'project';
     }
 
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('project'),
+        );
+    }
+
     public function started(): bool
     {
         if ($this->start_date) {

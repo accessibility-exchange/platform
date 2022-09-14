@@ -132,6 +132,13 @@ class Organization extends Model
         return 'organization';
     }
 
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('organization'),
+        );
+    }
+
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'invitationable');
