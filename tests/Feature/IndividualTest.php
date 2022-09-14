@@ -41,6 +41,15 @@ test('individual users can select an individual role', function () {
 
     $response->assertRedirect(localized_route('dashboard'));
 
+    $response = $this->actingAs($user)
+        ->followingRedirects()
+        ->from(localized_route('individuals.show-role-selection'))
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => ['participant'],
+        ]);
+
+    $response->assertSee('You have successfully updated your role to Consultation Participant.');
+
     $user = $user->fresh();
     expect($user->individual->isParticipant())->toBeTrue();
 });
