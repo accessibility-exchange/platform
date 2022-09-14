@@ -94,4 +94,27 @@ class ManageEngagementConnector extends Component
 
         $this->dispatchBrowserEvent('remove-flash-message');
     }
+
+    public function removeConnector()
+    {
+        $this->authorize('update', $this->engagement);
+
+        if ($this->engagement->connector) {
+            $this->engagement->connector()->dissociate();
+        }
+
+        if ($this->engagement->organizationalConnector) {
+            $this->engagement->organizationalConnector()->dissociate();
+        }
+
+        $this->engagement->save();
+
+        $this->dispatchBrowserEvent('clear-flash-message');
+
+        session()->flash('message', __('Your Community Connector has been removed.'));
+
+        $this->dispatchBrowserEvent('add-flash-message');
+
+        $this->dispatchBrowserEvent('remove-flash-message');
+    }
 }

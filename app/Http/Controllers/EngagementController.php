@@ -22,7 +22,9 @@ use App\Models\GenderIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Spatie\LaravelOptions\Options;
@@ -438,9 +440,22 @@ class EngagementController extends Controller
 
     public function manage(Engagement $engagement)
     {
+        $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
+        $connectorInvitee = null;
+        if ($connectorInvitation) {
+            if ($connectorInvitation->type === 'individual') {
+                $individual = User::whereBlind('email', 'email_index', $connectorInvitation->email)->first()->individual ?? null;
+                $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
+            } elseif ($connectorInvitation->type === 'organization') {
+                $connectorInvitee = Organization::where('contact_person_email', $connectorInvitation->email)->first() ?? null;
+            }
+        }
+
         return view('engagements.manage', [
             'engagement' => $engagement,
             'project' => $engagement->project,
+            'connectorInvitation' => $connectorInvitation,
+            'connectorInvitee' => $connectorInvitee,
         ]);
     }
 

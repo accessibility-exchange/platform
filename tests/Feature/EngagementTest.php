@@ -9,6 +9,7 @@ use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
+use App\Models\Invitation;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -409,4 +410,29 @@ test('engagements are only publishable if required fields are completed', functi
     $engagement = $engagement->fresh();
 
     expect($engagement->isPublishable())->toBeTrue();
+});
+
+test('individual user can accept invitation to an engagement as a connector', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $user = User::factory()->create();
+    $user->individual->update(['roles' => ['connector']]);
+    $individual = $user->individual->fresh();
+
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $engagement->id,
+        'role' => 'connector',
+        'type' => 'individual',
+        'email' => $individual->user->email,
+    ]);
+
+    $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($individual->user)->get($acceptUrl);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->connector->id)->toEqual($individual->id);
 });

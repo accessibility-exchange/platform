@@ -186,15 +186,34 @@
             @if ($engagement->recruitment === 'connector')
                 <x-manage-section :title="__('Community Connector')">
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
-                    <x-hearth-alert>
-                        {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
-                    </x-hearth-alert>
-                    <p>
-                        <a class="cta secondary"
-                            href="{{ localized_route('engagements.manage-connector', $engagement) }}">
-                            <x-heroicon-o-wrench /> {{ __('Manage') }}
-                        </a>
-                    </p>
+                    @if ($engagement->connector)
+                        <x-individual-card :model="$engagement->connector" />
+                    @elseif($engagement->organizationalConnector)
+                        <x-organization-card :model="$engagement->organizationalConnector" />
+                    @elseif($connectorInvitation->where('role', 'connector'))
+                        @if ($connectorInvitation->type === 'individual')
+                            @if ($connectorInvitee)
+                                <x-individual-card level="3" :model="$invitee" />
+                            @else
+                                <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
+                                </p>
+                            @endif
+                        @elseif($connectorInvitation->type === 'organization')
+                            <x-organization-card level="3" :model="$connectorInvitee" />
+                        @endif
+                    @endif
+                    @if ($engagement->hasEstimateAndAgreement())
+                        <p>
+                            <a class="cta secondary"
+                                href="{{ localized_route('engagements.manage-connector', $engagement) }}">
+                                <x-heroicon-o-wrench /> {{ __('Manage') }}
+                            </a>
+                        </p>
+                    @else
+                        <x-hearth-alert>
+                            {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
+                        </x-hearth-alert>
+                    @endif
                 </x-manage-section>
             @endif
             @if ($engagement->who === 'individuals')

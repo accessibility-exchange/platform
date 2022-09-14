@@ -22,9 +22,10 @@ class Invitation extends HearthInvitation
     {
         if ($type) {
             if ($type === 'individual') {
-                $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+                $user = User::whereBlind('email', 'email_index', $this->email)->first();
+                $invitee = $user->individual;
                 if ($this->role === 'connector') {
-                    $this->invitationable->connector()->associate($invitee->individual);
+                    $this->invitationable->connector()->associate($invitee);
                     $this->invitationable->save();
                 }
             }

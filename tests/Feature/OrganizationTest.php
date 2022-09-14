@@ -646,8 +646,6 @@ test('invitation can be accepted', function () {
 
     $response = $this->actingAs($user)->get($acceptUrl);
 
-    ray($response);
-
     $this->assertTrue($organization->fresh()->hasUserWithEmail($user->email));
     $response->assertRedirect(localized_route('dashboard'));
 });

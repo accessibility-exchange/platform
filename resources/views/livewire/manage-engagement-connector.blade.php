@@ -72,22 +72,29 @@
             </a>
         </p>
     @else
-        @if ($invitation->type === 'individual')
-            @if ($invitee)
-                <x-individual-card level="3" :model="$invitee" />
-            @else
-                <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
-            @endif
-        @elseif($invitation->type === 'organization')
-            @if ($invitee)
+        @if ($invitation)
+            @if ($invitation->type === 'individual')
+                @if ($invitee)
+                    <x-individual-card level="3" :model="$invitee" />
+                @else
+                    <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
+                @endif
+            @elseif($invitation->type === 'organization')
                 <x-organization-card level="3" :model="$invitee" />
-            @else
-                {{ $invitation->email }}
             @endif
+            <button class="borderless destructive" wire:click="cancelInvitation">
+                <x-heroicon-s-x-mark role="presentation" aria-hidden="true" /> {{ __('Cancel invitation') }}
+            </button>
+        @elseif($engagement->connector || $engagement->organizationalConnector)
+            @if ($engagement->connector)
+                <x-organization-card level="3" :model="$engagement->connector" />
+            @elseif($engagement->organizationalConnector)
+                <x-organization-card level="3" :model="$engagement->organizationalConnector" />
+            @endif
+            <button class="borderless destructive" wire:click="removeConnector">
+                <x-heroicon-s-trash role="presentation" aria-hidden="true" /> {{ __('Remove') }}
+            </button>
         @endif
-        <button class="borderless" wire:click="cancelInvitation">
-            <x-heroicon-s-x-mark role="presentation" aria-hidden="true" /> {{ __('Cancel invitation') }}
-        </button>
     @endif
 
     <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
