@@ -9,6 +9,7 @@
     'url' => localized_route('register', [
         'invitation' => 1,
         'context' => 'individual',
+        'role' => $invitation->role,
         'email' => $invitation->email,
     ]),
 ])

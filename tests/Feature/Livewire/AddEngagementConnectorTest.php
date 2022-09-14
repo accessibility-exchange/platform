@@ -97,6 +97,13 @@ test('registered individual can be invited to be an engagement’s community con
     $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
     $response->assertOk();
     $response->assertSee($individual->name);
+
+    expect($individualUser->notifications)->toHaveCount(1);
+
+    $response = $this->actingAs($individualUser)->get(localized_route('dashboard'));
+    $response->assertOk();
+    $response->assertSee('Accept');
+    $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
 });
 
 test('registered organization can be invited to be an engagement’s community connector', function () {
@@ -112,6 +119,13 @@ test('registered organization can be invited to be an engagement’s community c
     );
 
     $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+
+    $organization->users()->attach(
+        $organizationUser,
+        ['role' => 'admin']
+    );
 
     $response = $this->actingAs($user)->get(localized_route('engagements.add-connector', $engagement));
     $response->assertOk();
@@ -171,4 +185,11 @@ test('registered organization can be invited to be an engagement’s community c
     $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
     $response->assertOk();
     $response->assertSee($organization->name);
+
+    expect($organizationUser->notifications)->toHaveCount(1);
+
+    $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
+    $response->assertOk();
+    $response->assertSee('Accept');
+    $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
 });

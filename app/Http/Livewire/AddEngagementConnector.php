@@ -56,10 +56,23 @@ class AddEngagementConnector extends Component
     {
         $this->authorize('update', $this->engagement);
 
+        $emailValidationRules = [
+            'required',
+            'email',
+            Rule::unique('invitations')->where(function ($query) {
+                return $query->where([
+                    ['invitationable_type', 'App\Models\Engagement'],
+                    ['invitationable_id', $this->engagement->id],
+                ]);
+            }),
+        ];
+
+        $user = null;
+
         if ($this->who === 'individual') {
-            $validated = $this->withValidator(function (Validator $validator) {
-                $validator->after(function ($validator) {
-                    $user = User::whereBlind('email', 'email_index', $this->email)->first() ?? null;
+            $user = User::whereBlind('email', 'email_index', $this->email)->first() ?? null;
+            $validated = $this->withValidator(function (Validator $validator) use ($user) {
+                $validator->after(function ($validator) use ($user) {
                     if ($user) {
                         $individual = $user->individual ?? null;
                         if (is_null($individual) || ! $individual->checkStatus('published') || ! $individual->isConnector()) {
@@ -67,18 +80,7 @@ class AddEngagementConnector extends Component
                         }
                     }
                 });
-            })->validate([
-                'email' => [
-                    'required',
-                    'email',
-                    Rule::unique('invitations')->where(function ($query) {
-                        return $query->where([
-                            ['invitationable_type', 'App\Models\Engagement'],
-                            ['invitationable_id', $this->engagement->id],
-                        ]);
-                    }),
-                ],
-            ]);
+            })->validate(['email' => $emailValidationRules]);
 
             $validated['type'] = 'individual';
         } else {
@@ -91,16 +93,7 @@ class AddEngagementConnector extends Component
                             return $query->whereJsonContains('roles', 'connector');
                         }),
                     ],
-                    'email' => [
-                        'required',
-                        'email',
-                        Rule::unique('invitations')->where(function ($query) {
-                            return $query->where([
-                                ['invitationable_type', 'App\Models\Engagement'],
-                                ['invitationable_id', $this->engagement->id],
-                            ]);
-                        }),
-                    ],
+                    'email' => $emailValidationRules,
                 ],
                 [
                     'email.unique' => __('This organization has already been invited.'),
@@ -115,7 +108,6 @@ class AddEngagementConnector extends Component
         $invitation = $this->engagement->invitations()->create($validated);
 
         if ($this->who === 'individual') {
-            $user = User::whereBlind('email', 'email_index', $this->email)->first() ?? null;
             if ($user) {
                 $user->notify(new IndividualContractorInvited($invitation));
             } else {
