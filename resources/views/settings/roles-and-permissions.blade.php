@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Roles and permissions') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>

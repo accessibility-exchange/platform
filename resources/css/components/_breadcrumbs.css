@@ -26,6 +26,6 @@
 
 @media (min-width: 1024px) {
     .breadcrumbs {
-        flex-direction: row;
+        flex-flow: row wrap;
     }
 }

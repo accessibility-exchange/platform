@@ -7,6 +7,7 @@ use App\Enums\NotificationChannel;
 use App\Enums\NotificationMethod;
 use App\Enums\OrganizationNotificationChannel;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\TeamRole;
 use App\Enums\Theme;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
@@ -396,12 +397,6 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        $roles = [];
-
-        foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.'.$role);
-        }
-
         if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
             $membershipable = $user->regulatedOrganization;
         } elseif ($user->context === 'organization' && $user->organization) {
@@ -412,7 +407,7 @@ class SettingsController extends Controller
 
         return view('settings.roles-and-permissions', [
             'user' => $user,
-            'roles' => Options::forArray($roles)->toArray(),
+            'roles' => Options::forEnum(TeamRole::class)->toArray(),
             'membershipable' => $membershipable,
         ]);
     }
@@ -430,16 +425,10 @@ class SettingsController extends Controller
         };
 
         if ($invitationable) {
-            $roles = [];
-
-            foreach (config('hearth.organizations.roles') as $role) {
-                $roles[$role] = __('roles.'.$role);
-            }
-
             return view('settings.roles-and-permissions.invite', [
                 'user' => $user,
                 'invitationable' => $invitationable,
-                'roles' => Options::forArray($roles)->toArray(),
+                'roles' => Options::forEnum(TeamRole::class)->toArray(),
             ]);
         }
 

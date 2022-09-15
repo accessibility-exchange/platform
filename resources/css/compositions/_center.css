@@ -11,6 +11,10 @@
     text-align: center;
 }
 
+.center.center\:medium {
+    max-inline-size: var(--max-w-form);
+}
+
 .center.center\:wide {
     max-inline-size: calc(2 * var(--max-w-prose));
 }

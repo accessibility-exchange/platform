@@ -36,9 +36,11 @@
                     @php
                         $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first();
                     @endphp
-                    <x-hearth-alert type="error">
-                        {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
-                    </x-hearth-alert>
+                    <x-live-region>
+                        <x-hearth-alert type="error">
+                            {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
+                        </x-hearth-alert>
+                    </x-live-region>
                     <x-regulated-organization-card level="3" :regulatedOrganization="$regulatedOrganization" />
                 </div>
             @break

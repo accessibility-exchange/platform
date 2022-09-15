@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-medium-layout>
     <x-slot name="title">{{ $title }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -24,15 +24,16 @@
         @method('put')
 
         <h3>{{ __('Location') }}</h3>
-        {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
 
-        <div class="stack" x-data="{ expanded: @if ($errors->hasAny(['location_type', 'regions', 'locations'])) true @else false @endif }">
-            <button class="borderless" type="button" @click="expanded = !expanded"
-                x-bind:aria-expanded="expanded.toString()">{{ __('Edit location criteria') }}
-                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
-                    x-bind:class="expanded && 'rotate-180'" />
-            </button>
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
+        <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
+            <div class="stack" x-show="!editing">
+                {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+                <button class="secondary" type="button" @click="editing = !editing">
+                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
+                </button>
+            </div>
+
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
@@ -66,15 +67,17 @@
         </div>
 
         <h3>{{ __('Disability or Deaf group') }}</h3>
-        {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
 
-        <div class="stack" x-data="{ expanded: @if ($errors->hasAny(['cross_disability', 'disability_types'])) true @else false @endif }">
-            <button class="borderless" type="button" @click="expanded = !expanded"
-                x-bind:aria-expanded="expanded.toString()">{{ __('Edit disability or Deaf group criteria') }}
-                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
-                    x-bind:class="expanded && 'rotate-180'" />
-            </button>
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
+        <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
+            <div class="stack" x-show="!editing">
+                {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+                <button class="secondary" type="button" @click="editing = !editing">
+                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span
+                        class="sr-only">{{ __('Disability or Deaf group') }}</span>
+                </button>
+            </div>
+
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ crossDisability: {{ old('cross_disability', $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1) }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
@@ -108,26 +111,18 @@
         </div>
 
         <h3>{{ __('Other identities') }}</h3>
-        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
 
-        <div class="stack" x-data="{ expanded: @if ($errors->hasAny([
-            'intersectional',
-            'other_identity_type',
-            'age_brackets',
-            'gender_and_sexual_identities',
-            'indigenous_identities',
-            'ethnoracial_identities',
-            'first_languages',
-            'area_types',
-        ])) true @else false @endif }">
-            <button class="borderless" type="button" @click="expanded = !expanded"
-                x-bind:aria-expanded="expanded.toString()">{{ __('Edit other identities criteria') }}
-                <x-heroicon-o-chevron-down class="none transition-transform motion-reduce:transition"
-                    x-bind:class="expanded && 'rotate-180'" />
-            </button>
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="expanded">
+        <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
+            <div class="stack" x-show="!editing">{!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+                <button class="secondary" type="button" @click="editing = !editing">
+                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span
+                        class="sr-only">{{ __('Other identities') }}</span>
+                </button>
+            </div>
+
+            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{
-                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('other_identity_type')) ? 1 : 0 }},
+                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1)) }},
                     otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'
                 }">
                     <fieldset class="field @error('intersectional') field--error @enderror">
@@ -169,46 +164,39 @@
                         </legend>
                         <div class="field">
                             <x-hearth-checkbox id='gender_and_sexual_identities-women'
-                                name='gender_and_sexual_identities[]' value='women' :checked="old(
-                                    'gender_and_sexual_identities.women',
-                                    $engagement->matchingStrategy->hasCriterion(get_class($women), $women),
-                                )" />
+                                name='gender_and_sexual_identities[]' value='women' :checked="in_array('women', old('gender_and_sexual_identities', [])) ||
+                                    $engagement->matchingStrategy->hasCriterion(get_class($women), $women)" />
                             <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}
                             </x-hearth-label>
                         </div>
                         <div class="field">
                             <x-hearth-checkbox id='gender_and_sexual_identities-nb-gnc-fluid-people'
-                                name='gender_and_sexual_identities[]' value='nb-gnc-fluid-people' :checked="old(
-                                    'gender_and_sexual_identities.nb-gnc-fluid-people',
+                                name='gender_and_sexual_identities[]' value='nb-gnc-fluid-people' :checked="in_array('nb-gnc-fluid-people', old('gender_and_sexual_identities', [])) ||
                                     $engagement->matchingStrategy->hasCriteria('App\Models\GenderIdentity', [
                                         $nb,
                                         $gnc,
                                         $fluid,
-                                    ]),
-                                )" />
+                                    ])" />
                             <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>
                                 {{ __('Non-binary, gender non-conforming and/or gender fluid people') }}
                             </x-hearth-label>
                         </div>
                         <div class="field">
                             <x-hearth-checkbox id='gender_and_sexual_identities-trans-people'
-                                name='gender_and_sexual_identities[]' value='trans-people' :checked="old(
-                                    'gender_and_sexual_identities.trans-people',
-                                    $engagement->matchingStrategy->hasCriterion(get_class($transPeople), $transPeople),
-                                )" />
+                                name='gender_and_sexual_identities[]' value='trans-people' :checked="in_array('trans-people', old('gender_and_sexual_identities', [])) ||
+                                    $engagement->matchingStrategy->hasCriterion(get_class($transPeople), $transPeople)" />
                             <x-hearth-label for='gender_and_sexual_identities-trans-people'>
                                 {{ $transPeople->name_plural }}
                             </x-hearth-label>
                         </div>
                         <div class="field">
                             <x-hearth-checkbox id='gender_and_sexual_identities-2slgbtqiaplus-people'
-                                name='gender_and_sexual_identities[]' value='2slgbtqiaplus-people' :checked="old(
-                                    'gender_and_sexual_identities.2slgbtqiaplus-people',
+                                name='gender_and_sexual_identities[]' value='2slgbtqiaplus-people'
+                                :checked="in_array('2slgbtqiaplus-people', old('gender_and_sexual_identities', [])) ||
                                     $engagement->matchingStrategy->hasCriterion(
                                         get_class($twoslgbtqiaplusPeople),
                                         $twoslgbtqiaplusPeople,
-                                    ),
-                                )" />
+                                    )" />
                             <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>
                                 {{ $twoslgbtqiaplusPeople->name_plural }}</x-hearth-label>
                         </div>
@@ -312,4 +300,4 @@
 
         <button>{{ __('Create engagement') }}</button>
     </form>
-</x-app-layout>
+</x-app-medium-layout>

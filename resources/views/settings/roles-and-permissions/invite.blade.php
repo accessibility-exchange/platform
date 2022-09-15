@@ -18,7 +18,7 @@
     <p>{{ __('Invite someone to become a member of your organization. If they do not have an account on this website yet, they will be invited to create one first.') }}
     </p>
 
-    <form class="stack" action="{{ localized_route('invitations.create') }}" method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('invitations.create') }}" method="post" novalidate>
         @csrf
         <x-hearth-input name="invitationable_id" type="hidden" :value="$invitationable->id"></x-hearth-input>
         <x-hearth-input name="invitationable_type" type="hidden" :value="get_class($invitationable)"></x-hearth-input>

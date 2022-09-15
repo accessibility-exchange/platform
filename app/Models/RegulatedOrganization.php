@@ -133,6 +133,13 @@ class RegulatedOrganization extends Model
         return 'regulatedOrganization';
     }
 
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('regulated organization'),
+        );
+    }
+
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'invitationable');

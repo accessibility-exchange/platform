@@ -1,4 +1,5 @@
-<div class="alert alert--{{ $type }} stack" {{ $attributes }}>
+<div class="alert alert--{{ $type }} stack" {{ $attributes }} x-show="visible"
+    x-transition:leave.duration.500ms>
     <p class="title">
         @switch($type)
             @case('error')
