@@ -14,7 +14,7 @@
                 'value' => 'individual',
                 'label' => __('Individual'),
                 'hint' => __(
-                    'I am someone who has lived experience of being disabled or Deaf, or I am a family member or supporter or a person who is disabled or Deaf.',
+                    'I am someone who has lived experience of being disabled or Deaf, or I am a family member or supporter of a person who is disabled or Deaf.',
                 ),
             ],
             [
