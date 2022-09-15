@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Language preferences') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
@@ -38,7 +38,7 @@
         @if ($user->context === 'individual')
             <h2>{{ __('First language') }}</h2>
 
-            <p>{{ __('Please indicate the language you are most comfortable using.') }}</p>
+            <p>{{ __('The language you are most comfortable using.') }}</p>
 
             <div class="field @error('first_language') field--error @enderror stack">
                 <x-hearth-label for="first_language" :value="__('First language')" />

@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Account Details') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
@@ -13,9 +13,9 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <h2>{{ __('Change account email') }}</h2>
+    <h2>{{ __('Change login email') }}</h2>
 
-    <p>{{ __('This is the email you use to sign into the website.') }}</p>
+    <p>{{ __('This is the email you use to log into the website.') }}</p>
 
     <form class="stack" action="{{ localized_route('user-profile-information.update') }}" method="POST" novalidate>
         @csrf

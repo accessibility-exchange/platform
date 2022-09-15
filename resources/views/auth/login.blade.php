@@ -44,8 +44,9 @@
             </button>
 
             <p>
-                {{ __('Don’t have an account yet?') }} <a
+                {{ __('Don’t have an account yet? Please') }} <a
                     href="{{ localized_route('register') }}">{{ __('Create an account') }}</a>
+                {{ __('to join The Accessibility Exchange') }}
             </p>
         </form>
 

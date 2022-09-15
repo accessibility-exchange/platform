@@ -106,9 +106,31 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
 
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
-})
-    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Individual', 'can:viewAny,App\Models\Organization', 'can:viewAny,App\Models\RegulatedOrganization'])
-    ->name('people-and-organizations');
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+    'can:viewAny,App\Models\RegulatedOrganization',
+])->name('people-and-organizations');
+
+Route::multilingual('/people-and-organizations/consultants', function () {
+    return 'The Accessibility Consultants page is not yet available.';
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+])->name('people-and-organizations.consultants');
+
+Route::multilingual('/people-and-organizations/connectors', function () {
+    return 'The Community Consultants page is not yet available.';
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+])->name('people-and-organizations.connectors');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')

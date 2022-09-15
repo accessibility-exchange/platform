@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Makeable\EloquentStatus\HasStatus;
 use Spatie\Translatable\HasTranslations;
@@ -16,6 +18,7 @@ use Spatie\Translatable\HasTranslations;
 class Engagement extends Model
 {
     use HasFactory;
+    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslations;
 
@@ -52,6 +55,7 @@ class Engagement extends Model
         'organizational_connector_id',
         'individual_consultant_id',
         'organizational_consultant_id',
+        'extra_attributes',
     ];
 
     protected $casts = [
@@ -81,11 +85,28 @@ class Engagement extends Model
         'payment',
     ];
 
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('engagement'),
+        );
+    }
+
     public function displayFormat(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => EngagementFormat::labels()[$this->format],
         );
+    }
+
+    public function hasEstimateAndAgreement(): bool
+    {
+        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
+    }
+
+    public function isPublishable(): bool
+    {
+        return ! is_null($this->signup_by_date);
     }
 
     public function displayRecruitment(): Attribute
@@ -98,6 +119,11 @@ class Engagement extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function invitations(): MorphMany
+    {
+        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     public function participants(): BelongsToMany
