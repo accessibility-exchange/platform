@@ -87,7 +87,7 @@
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)
-                <x-organization-card level="3" :model="$engagement->connector" />
+                <x-individual-card level="3" :model="$engagement->connector" />
             @elseif($engagement->organizationalConnector)
                 <x-organization-card level="3" :model="$engagement->organizationalConnector" />
             @endif
