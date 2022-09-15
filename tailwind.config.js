@@ -93,6 +93,7 @@ module.exports = {
             full: "9999px"
         },
         maxWidth: {
+            form: "48rem",
             prose: "70ch"
         },
         spacing: {
@@ -130,7 +131,8 @@ module.exports = {
             64: "16rem",
             72: "18rem",
             80: "20rem",
-            96: "24rem"
+            96: "24rem",
+            192: "48rem"
         }
     },
     corePlugins: {

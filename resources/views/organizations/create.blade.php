@@ -37,10 +37,12 @@
                     @php
                         $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first();
                     @endphp
-                    <x-hearth-alert type="error">
-                        {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('organization.types.' . $type . '.name'), 'name' => old('name.' . $locale)]) }}
-                    </x-hearth-alert>
-                    <x-organization-card level="3" :organization="$organization" />
+                    <x-live-region>
+                        <x-hearth-alert type="error">
+                            {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('organization.types.' . $type . '.name'), 'name' => old('name.' . $locale)]) }}
+                        </x-hearth-alert>
+                    </x-live-region>
+                    <x-organization-card level="3" :model="$organization" />
                 </div>
             @endif
         @break

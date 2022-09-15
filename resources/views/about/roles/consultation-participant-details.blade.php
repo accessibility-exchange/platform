@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('What information do we ask for?') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessbility Exchange') }}</a></li>
             <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
             </li>
             <li><a

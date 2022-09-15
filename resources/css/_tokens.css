@@ -1,4 +1,4 @@
-/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-09-06.
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-09-07.
     Tokens location: ./tailwind.config.js */
 :root {
     --color-black: #000;
@@ -62,6 +62,7 @@
     --space-72: 18rem;
     --space-80: 20rem;
     --space-96: 24rem;
+    --space-192: 48rem;
     --space-px: 1px;
     --space-0_5: 0.125rem;
     --space-1_5: 0.375rem;
@@ -109,5 +110,6 @@
     --font-bold: 700;
     --font-extrabold: 800;
     --font-black: 900;
+    --max-w-form: 48rem;
     --max-w-prose: 70ch;
 }

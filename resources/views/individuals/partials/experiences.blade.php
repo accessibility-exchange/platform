@@ -15,7 +15,7 @@
     @foreach ($individual->relevant_experiences as $experience)
         <h4>{{ $experience['title'] }}</h4>
         <p>{{ $experience['organization'] }}<br />
-            {{ $experience['start_year'] }}&ndash;{{ $experience['current'] ? __('present') : $experience['end_year'] }}
+            {{ $experience['start_year'] }}&ndash;{{ isset($experience['current']) ? __('present') : $experience['end_year'] }}
         </p>
     @endforeach
 @endif
