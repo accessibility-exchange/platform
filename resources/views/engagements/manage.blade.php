@@ -233,14 +233,6 @@
                     </p>
                 </x-manage-section>
             @endif
-            <x-manage-section :title="__('Documents')">
-                <p>{{ __('This includes reports, contracts, or anything else you would like Consultation Participants to be able to access.') }}
-                </p>
-                <div class="box stack bg-grey-2">
-                    <p>{{ __('You have not added any documents yet.') }}</p>
-                    {{-- TODO: add/manage documents --}}
-                </div>
-            </x-manage-section>
         </x-manage-columns>
     </x-manage-grid>
     <script>
