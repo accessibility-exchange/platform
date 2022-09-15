@@ -22,15 +22,16 @@
     @if ($user->context === 'individual')
         <ul>
             <li>
-                <p>{{ __('you will no longer be able to access information about the [number] engagements you are participating in') }}
+                <p>{{ __('you will no longer be able to access information about the :count engagements you are participating in', ['count' => 0]) }}
                 </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to access information about the [number] projects you are contracted for') }}
+                <p>{{ __('you will no longer be able to access information about the :count projects you are contracted for', ['count' => 0]) }}
                 </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to access your [number] training certificates') }}</p>
+                <p>{{ __('you will no longer be able to access your :count training certificates', ['count' => 0]) }}
+                </p>
             </li>
             <li>
                 <p>{{ __('your public profile will be removed from the platform') }}</p>
@@ -42,18 +43,20 @@
     @elseif($user->context === 'organization')
         <ul>
             <li>
-                <p>{{ __('you will no longer be able to access information about the [number] projects you are contracted for') }}
+                <p>{{ __('you will no longer be able to access information about the :count projects you are contracted for', ['count' => 0]) }}
                 </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to access information about the [number] projects you are participating in') }}
+                <p>{{ __('you will no longer be able to access information about the :count projects you are participating in', ['count' => 0]) }}
                 </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to manage the [number] projects you are running') }}</p>
+                <p>{{ __('you will no longer be able to manage the :count projects you are running', ['count' => 0]) }}
+                </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to access your [number] training certificates') }}</p>
+                <p>{{ __('you will no longer be able to access your :count training certificates', ['count' => 0]) }}
+                </p>
             </li>
             <li>
                 <p>{{ __('your public profile will be removed from the platform') }}</p>
@@ -62,10 +65,12 @@
     @elseif($user->context === 'regulated-organization')
         <ul>
             <li>
-                <p>{{ __('you will no longer be able to manage the [number] projects you are running') }}</p>
+                <p>{{ __('you will no longer be able to manage the :count projects you are running', ['count' => 0]) }}
+                </p>
             </li>
             <li>
-                <p>{{ __('you will no longer be able to access your [number] training certificates') }}</p>
+                <p>{{ __('you will no longer be able to access your :count training certificates', ['count' => 0]) }}
+                </p>
             </li>
         </ul>
     @endif
