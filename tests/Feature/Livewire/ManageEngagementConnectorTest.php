@@ -2,6 +2,7 @@
 
 use App\Http\Livewire\ManageEngagementConnector;
 use App\Models\Engagement;
+use App\Models\Invitation;
 use App\Models\User;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
@@ -31,5 +32,37 @@ test('engagement consultant management page can be rendered and connector can be
 });
 
 test('connector invitations can be cancelled', function () {
-    $this->markTestIncomplete();
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $user = User::factory()->create();
+    $user->individual->update(['roles' => ['connector']]);
+    $user->individual->publish();
+    $individual = $user->individual->fresh();
+
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $engagement->id,
+        'role' => 'connector',
+        'type' => 'individual',
+        'email' => $individual->user->email,
+    ]);
+
+    $this->actingAs($regulatedOrganizationUser);
+
+    $this->livewire(ManageEngagementConnector::class, [
+        'engagement' => $engagement,
+    ])
+        ->assertSee($individual->name)
+        ->assertSee('Cancel')
+        ->call('cancelInvitation');
+
+    $this->assertModelMissing($invitation);
 });
