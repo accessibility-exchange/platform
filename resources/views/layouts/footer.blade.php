@@ -59,3 +59,4 @@
     </div>
 </footer>
 @livewireScripts()
+@stack('livewireScripts')

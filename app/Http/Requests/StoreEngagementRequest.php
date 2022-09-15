@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\EngagementFormat;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
 class StoreEngagementRequest extends FormRequest
@@ -23,10 +21,7 @@ class StoreEngagementRequest extends FormRequest
             'name.*' => 'nullable|string|max:255|unique_translation:engagements',
             'name.en' => 'required_without:name.fr|nullable|string|max:255',
             'name.fr' => 'required_without:name.en|nullable|string|max:255',
-            'format' => [
-                'required',
-                new Enum(EngagementFormat::class),
-            ],
+            'who' => 'required|in:individuals,organization',
         ];
     }
 

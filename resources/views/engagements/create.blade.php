@@ -26,13 +26,19 @@
 
         <x-translatable-input name="name" :label="__('What is the name of your engagement?')" />
 
-        <fieldset class="field @error('format') field--error @enderror">
-            <legend>{{ __('Format') }}</legend>
-            <p class="field__hint">
-                {{ __('What format would you like to use?') }}
-            </p>
-            <x-hearth-radio-buttons name="format" :options="$formats" :checked="old('format', '')" />
-            <x-hearth-error for="format" />
+        <fieldset class="field @error('who') field--error @enderror">
+            <legend>{{ __('Who do you want to engage?') }}</legend>
+            <div class="field">
+                <x-hearth-radio-button id="who-individuals" name="who" value="individuals" :checked="old('who') === 'individuals'" />
+                <x-hearth-label for="who-individuals">{!! Str::inlineMarkdown(__('**Individuals** with lived experience of being disabled or Deaf')) !!}</x-hearth-label>
+            </div>
+            <div class="field">
+                <x-hearth-radio-button id="who-organization" name="who" value="organization" :checked="old('who') === 'organization'" />
+                <x-hearth-label for="who-organization">{!! Str::inlineMarkdown(
+                    __('**A community organization** who represents or supports the disability or Deaf community'),
+                ) !!}</x-hearth-label>
+            </div>
+            <x-hearth-error for="who" />
         </fieldset>
 
         <div class="repel">
