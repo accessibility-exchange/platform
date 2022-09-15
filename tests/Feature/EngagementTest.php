@@ -445,6 +445,9 @@ test('individual user can accept invitation to an engagement as a connector', fu
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
 
+    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
+    $response->assertForbidden();
+
     $response = $this->actingAs($individual->user)->get($acceptUrl);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -489,6 +492,9 @@ test('organization user can accept invitation to an engagement as a connector', 
     $response->assertSee($organization->name);
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
+
+    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
+    $response->assertForbidden();
 
     $response = $this->actingAs($organizationUser)->get($acceptUrl);
     $response->assertSessionHasNoErrors();
