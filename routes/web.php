@@ -115,6 +115,7 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('users.destroy');
 
+require __DIR__.'/admin.php';
 require __DIR__.'/identifiers.php';
 require __DIR__.'/block-list.php';
 require __DIR__.'/individuals.php';
