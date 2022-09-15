@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->dateTime('estimate_requested_at')->nullable();
+            $table->dateTime('estimate_returned_at')->nullable();
             $table->dateTime('estimate_approved_at')->nullable();
             $table->dateTime('agreement_received_at')->nullable();
         });
