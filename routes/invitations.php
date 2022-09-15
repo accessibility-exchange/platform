@@ -1,19 +1,42 @@
 <?php
 
+use App\Http\Controllers\ContractorInvitationController;
 use App\Http\Controllers\InvitationController;
 
-Route::multilingual('/invitations/create', [InvitationController::class, 'create'])
-    ->method('post')
-    ->name('invitations.create');
+Route::controller(InvitationController::class)
+    ->prefix('invitations')
+    ->name('invitations.')
+    ->group(function () {
+        Route::multilingual('/create', 'create')
+            ->method('post')
+            ->name('create');
 
-Route::get('/invitations/{invitation}', [InvitationController::class, 'accept'])
-    ->middleware(['signed', 'verified'])
-    ->name('invitations.accept');
+        Route::get('/{invitation}', 'accept')
+            ->middleware(['signed', 'verified'])
+            ->name('accept');
 
-Route::delete('/invitations/{invitation}/decline', [InvitationController::class, 'decline'])
-    ->middleware(['auth', 'verified'])
-    ->name('invitations.decline');
+        Route::delete('/{invitation}/decline', 'decline')
+            ->middleware(['auth', 'verified'])
+            ->name('decline');
 
-Route::delete('/invitations/{invitation}/cancel', [InvitationController::class, 'destroy'])
-    ->middleware(['auth'])
-    ->name('invitations.destroy');
+        Route::delete('/{invitation}/cancel', 'destroy')
+            ->middleware(['auth'])
+            ->name('destroy');
+    });
+
+Route::controller(ContractorInvitationController::class)
+    ->prefix('invitations/contractors')
+    ->name('contractor-invitations.')
+    ->group(function () {
+        Route::get('/{invitation}', 'accept')
+            ->middleware(['signed', 'verified'])
+            ->name('accept');
+
+        Route::delete('/{invitation}/decline', 'decline')
+            ->middleware(['auth', 'verified'])
+            ->name('decline');
+
+        Route::delete('/{invitation}/cancel', 'destroy')
+            ->middleware(['auth'])
+            ->name('destroy');
+    });

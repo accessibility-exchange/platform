@@ -16,7 +16,7 @@
     <p>{{ __('Please select the languages that your project information can be translated into by your organization.') }}
     </p>
 
-    <x-hearth-alert :title="__('Translations')">
+    <x-hearth-alert :title="__('Translations')" x-show="true">
         <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.') }}
         </p>
     </x-hearth-alert>

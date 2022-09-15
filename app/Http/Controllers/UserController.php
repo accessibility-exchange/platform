@@ -7,6 +7,7 @@ use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
 use App\Http\Requests\UpdateUserIntroductionStatusRequest;
+use App\Models\Invitation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -106,14 +107,26 @@ class UserController extends Controller
             default => null,
         };
 
-        $invitation = $user->invitation();
+        $contractorInvitations = collect([]);
+
+        foreach ($user->unreadNotifications as $notification) {
+            if (in_array($notification->type, ['App\Notifications\IndividualContractorInvited', 'App\Notifications\OrganizationalContractorInvited'])) {
+                $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
+                if ($contractorInvitation) {
+                    $contractorInvitations->push($contractorInvitation);
+                }
+            }
+        }
+
+        $teamInvitation = $user->teamInvitation() ?? null;
 
         return view('dashboard', [
             'user' => $user,
             'memberable' => $memberable,
-            'invitation' => $invitation,
-            'invitationable' => ! is_null($invitation) ? $invitation->invitationable : null,
-            'acceptUrl' => ! is_null($invitation) ? URL::signedRoute('invitations.accept', $user->invitation()) : null,
+            'teamInvitation' => $teamInvitation,
+            'teamInvitationable' => ! is_null($teamInvitation) ? $teamInvitation->invitationable : null,
+            'teamAcceptUrl' => $teamInvitation ? URL::signedRoute('invitations.accept', $user->teamInvitation()) : null,
+            'contractorInvitations' => $contractorInvitations,
         ]);
     }
 
