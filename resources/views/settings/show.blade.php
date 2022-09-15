@@ -48,7 +48,7 @@
         @endif
     </ul>
     <h2>{{ __('For this website') }}</h2>
-    <p>{{ __('Please provide settings that will help you use this website.') }}</p>
+    <p>{{ __('Adjust settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
         @if ($user->context !== 'individual')
             <li><a

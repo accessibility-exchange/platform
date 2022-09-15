@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\EngagementController;
+use App\Http\Livewire\AddEngagementConnector;
+use App\Http\Livewire\ManageEngagementConnector;
 
 Route::controller(EngagementController::class)
     ->name('engagements.')
@@ -32,14 +34,14 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');
 
-        Route::multilingual('/{engagement}/outreach/select', 'showOutreachSelection')
+        Route::multilingual('/{engagement}/format/select', 'showFormatSelection')
             ->middleware(['auth', 'can:update,engagement'])
-            ->name('show-outreach-selection');
+            ->name('show-format-selection');
 
-        Route::multilingual('/{engagement}/outreach/store', 'storeOutreach')
+        Route::multilingual('/{engagement}/format/store', 'storeFormat')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
-            ->name('store-outreach');
+            ->name('store-format');
 
         Route::multilingual('/{engagement}/recruitment/select', 'showRecruitmentSelection')
             ->middleware(['auth', 'can:update,engagement'])
@@ -89,3 +91,11 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('participate');
     });
+
+Route::multilingual('/engagements/{engagement}/connector/manage', [ManageEngagementConnector::class, '__invoke'])
+    ->middleware(['auth', 'can:update,engagement'])
+    ->name('engagements.manage-connector');
+
+Route::multilingual('/engagements/{engagement}/connector/add', [AddEngagementConnector::class, '__invoke'])
+    ->middleware(['auth', 'can:addConnector,engagement'])
+    ->name('engagements.add-connector');

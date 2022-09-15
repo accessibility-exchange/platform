@@ -10,8 +10,8 @@ enum NotificationChannel: string
     public static function labels(): array
     {
         return [
-            'website' => __('Notify me through the website'),
-            'contact' => __('Notify me or my support person directly'),
+            'website' => __('Through the website'),
+            'contact' => __('Through contacting me or my support person'),
         ];
     }
 }

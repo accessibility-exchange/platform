@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Blocked individuals and organizations') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
@@ -17,9 +17,10 @@
         <li>{{ __('show up on search results for them') }}</li>
         <li>{{ __('receive communication from them') }}</li>
     </ul>
+    <p> {{ __('They will not know you have blocked them.') }}
 
-    <!-- Form Validation Errors -->
-    @include('partials.validation-errors')
+        <!-- Form Validation Errors -->
+        @include('partials.validation-errors')
 
     <h2 id="regulated-organizations">{{ __('Regulated organizations') }}</h2>
 

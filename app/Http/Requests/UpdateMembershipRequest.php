@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TeamRole;
 use App\Rules\NotLastAdmin;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 
 class UpdateMembershipRequest extends FormRequest
@@ -30,7 +31,7 @@ class UpdateMembershipRequest extends FormRequest
             'role' => [
                 'required',
                 'string',
-                Rule::in(config('hearth.organizations.roles')),
+                new Enum(TeamRole::class),
             ],
         ];
     }

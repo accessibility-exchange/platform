@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Notifications') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1 id="notifications">
@@ -31,7 +31,7 @@
     @include('partials.validation-errors')
 
     <h2>{{ __('Manage my notifications') }}</h2>
-    <p>{{ __('The Accessibility Exchange will occasionally send you notifications, based on what you chose to be notified of here.') }}
+    <p>{{ __('The Accessibility Exchange will send you notifications, based on what you chose to be notified of here.') }}
     </p>
 
     @include('settings.notifications.' . $user->context)

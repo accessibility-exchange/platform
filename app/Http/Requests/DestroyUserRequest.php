@@ -45,27 +45,23 @@ class DestroyUserRequest extends FormRequest
                     __('hearth::auth.wrong_password')
                 );
             }
-            if (count($this->user()->organizations) > 0) {
-                if ($this->user()->organization->administrators()->count() === 1 && $this->user()->isAdministratorOf($this->user()->organization)) {
-                    $validator->errors()->add(
-                        'organizations',
-                        __(
-                            'organization.error_new_administrator_required_before_user_deletion',
-                            ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->organization).'">'.$this->user()->organization->getTranslation('name', locale()).'</a>'],
-                        )
-                    );
-                }
+            if ($this->user()->isOnlyAdministratorOfOrganization()) {
+                $validator->errors()->add(
+                    'organizations',
+                    __(
+                        'organization.error_new_administrator_required_before_user_deletion',
+                        ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->organization).'">'.$this->user()->organization->getTranslation('name', locale()).'</a>'],
+                    )
+                );
             }
-            if (count($this->user()->regulatedOrganizations) > 0) {
-                if ($this->user()->regulatedOrganization->administrators()->count() === 1 && $this->user()->isAdministratorOf($this->user()->regulatedOrganization)) {
-                    $validator->errors()->add(
-                        'organizations',
-                        __(
-                            'organization.error_new_administrator_required_before_user_deletion',
-                            ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->regulatedOrganization).'">'.$this->user()->regulatedOrganization->getTranslation('name', locale()).'</a>'],
-                        )
-                    );
-                }
+            if ($this->user()->isOnlyAdministratorOfRegulatedOrganization()) {
+                $validator->errors()->add(
+                    'organizations',
+                    __(
+                        'organization.error_new_administrator_required_before_user_deletion',
+                        ['organization' => '<a href="'.localized_route('organizations.edit', $this->user()->regulatedOrganization).'">'.$this->user()->regulatedOrganization->getTranslation('name', locale()).'</a>'],
+                    )
+                );
             }
         })->validateWithBag('destroyAccount');
     }

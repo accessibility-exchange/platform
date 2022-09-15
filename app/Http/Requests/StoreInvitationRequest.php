@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TeamRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreInvitationRequest extends FormRequest
 {
@@ -29,8 +31,7 @@ class StoreInvitationRequest extends FormRequest
                 }),
                 Rule::notIn($invitationable->users->pluck('email')->toArray()),
             ],
-            // TODO: Clarify these roles, move to Enum.
-            'role' => ['required', 'string', Rule::in(config('hearth.organizations.roles'))],
+            'role' => ['required', new Enum(TeamRole::class)],
         ];
     }
 

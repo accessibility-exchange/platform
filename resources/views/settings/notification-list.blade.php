@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Notification list') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
             <li><a href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notifications') }}</a>
             </li>
@@ -30,7 +30,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <p>{{ __('Regulated or community organizations that you want to be notified about.') }}</p>
+    <p>{{ __('Organizations or projects that you want to be notified about.') }}</p>
 
     <h2 id="regulated-organizations">{{ __('Regulated organizations') }}</h2>
 
