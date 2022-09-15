@@ -29,3 +29,7 @@ test('engagement consultant management page can be rendered and connector can be
 
     expect($engagement->extra_attributes->get('seeking_community_connector'))->toBeTrue();
 });
+
+test('connector invitations can be cancelled', function () {
+    $this->markTestIncomplete();
+});

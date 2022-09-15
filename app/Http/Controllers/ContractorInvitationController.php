@@ -31,7 +31,7 @@ class ContractorInvitationController extends Controller
     {
         if (
             $invitation->type === 'individual' && $request->user()->email !== $invitation->email
-            || $invitation->type === 'organization' && $request->user()->organization->contact_person_email !== $invitation->email
+            || $invitation->type === 'organization' && $request->user()->organization?->contact_person_email !== $invitation->email
         ) {
             abort(403);
         }

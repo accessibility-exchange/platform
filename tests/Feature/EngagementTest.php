@@ -457,6 +457,40 @@ test('individual user can accept invitation to an engagement as a connector', fu
     expect($engagement->connector->id)->toEqual($individual->id);
 });
 
+test('individual user can decline invitation to an engagement as a connector', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $user = User::factory()->create();
+    $user->individual->update(['roles' => ['connector']]);
+    $user->individual->publish();
+    $individual = $user->individual->fresh();
+
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $engagement->id,
+        'role' => 'connector',
+        'type' => 'individual',
+        'email' => $individual->user->email,
+    ]);
+
+    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($individual->user)->delete(route('contractor-invitations.decline', $invitation));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $this->assertModelMissing($invitation);
+});
+
 test('organization user can accept invitation to an engagement as a connector', function () {
     $this->seed(DisabilityTypeSeeder::class);
 
@@ -503,4 +537,42 @@ test('organization user can accept invitation to an engagement as a connector', 
     $engagement = $engagement->fresh();
 
     expect($engagement->organizationalConnector->id)->toEqual($organization->id);
+});
+
+test('organization user can decline invitation to an engagement as a connector', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+
+    $organization->users()->attach(
+        $organizationUser,
+        ['role' => 'admin']
+    );
+
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $engagement->id,
+        'role' => 'connector',
+        'type' => 'organization',
+        'email' => $organization->contact_person_email,
+    ]);
+
+    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($organizationUser)->delete(route('contractor-invitations.decline', $invitation));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $this->assertModelMissing($invitation);
 });
