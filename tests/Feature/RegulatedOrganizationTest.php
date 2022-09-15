@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;

@@ -1,14 +1,31 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
-        @if ($invitationable)
+        @foreach ($contractorInvitations as $invitation)
             <x-invitation>
-                <p class="flex items-center gap-4"><span
-                        class="h-5 w-5 rounded-full bg-magenta-3"></span>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $invitationable->name]) }}
+                <p class="flex items-center gap-4">
+                    <span class="h-5 w-5 rounded-full bg-magenta-3"></span>
+                    {{ __('You have been invited to join the :invitationable_type “:invitationable” as a :role.', ['invitationable_type' => $invitation->invitationable->singular_name, 'invitationable' => $invitation->invitationable->name, 'role' => App\Enums\IndividualRole::labels()[$invitation->role]]) }}
                 </p>
                 <div class="flex items-center gap-4">
-                    <a class="cta secondary" href="{{ $acceptUrl }}">{{ __('Accept') }}</a>
+                    <a class="cta secondary"
+                        href="{{ URL::signedRoute('contractor-invitations.accept', $invitation) }}">{{ __('Accept') }}</a>
                     <form class="inline" action="{{ route('invitations.decline', $invitation) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button class="secondary">{{ __('Decline') }}</button>
+                    </form>
+                </div>
+            </x-invitation>
+        @endforeach
+        @if ($teamInvitation)
+            <x-invitation>
+                <p class="flex items-center gap-4"><span
+                        class="h-5 w-5 rounded-full bg-magenta-3"></span>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $teamInvitationable->name]) }}
+                </p>
+                <div class="flex items-center gap-4">
+                    <a class="cta secondary" href="{{ $teamAcceptUrl }}">{{ __('Accept') }}</a>
+                    <form class="inline" action="{{ route('invitations.decline', $teamInvitation) }}" method="post">
                         @csrf
                         @method('delete')
                         <button class="secondary">{{ __('Decline') }}</button>
@@ -31,7 +48,8 @@
 
         @if ($user->organization)
             <p><strong>{{ __('Roles:') }}</strong>
-                {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}.
+                {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}
+                .
                 <a
                     href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a>
             </p>

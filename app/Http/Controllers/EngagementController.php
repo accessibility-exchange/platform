@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\ProvinceOrTerritory;
+use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
-use App\Http\Requests\StoreEngagementOutreachRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
@@ -22,7 +22,9 @@ use App\Models\GenderIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Spatie\LaravelOptions\Options;
@@ -50,7 +52,6 @@ class EngagementController extends Controller
     {
         return view('engagements.create', [
             'project' => $project,
-            'formats' => Options::forEnum(EngagementFormat::class)->toArray(),
         ]);
     }
 
@@ -70,18 +71,24 @@ class EngagementController extends Controller
 
         flash(__('Your engagement has been created.'), 'success');
 
-        return redirect(localized_route('engagements.show-outreach-selection', $engagement));
+        $redirect = match ($engagement->who) {
+            'organization' => localized_route('engagements.manage', $engagement),
+            default => localized_route('engagements.show-format-selection', $engagement),
+        };
+
+        return redirect($redirect);
     }
 
-    public function showOutreachSelection(Engagement $engagement): View
+    public function showFormatSelection(Engagement $engagement): View
     {
-        return view('engagements.show-outreach-selection', [
+        return view('engagements.show-format-selection', [
             'project' => $engagement->project,
             'engagement' => $engagement,
+            'formats' => Options::forEnum(EngagementFormat::class)->toArray(),
         ]);
     }
 
-    public function storeOutreach(StoreEngagementOutreachRequest $request, Engagement $engagement): RedirectResponse
+    public function storeFormat(StoreEngagementFormatRequest $request, Engagement $engagement): RedirectResponse
     {
         $engagement->fill($request->validated());
         $engagement->save();
@@ -90,12 +97,7 @@ class EngagementController extends Controller
 
         $engagement = $engagement->fresh();
 
-        $redirect = match ($engagement->who) {
-            'organization' => localized_route('engagements.manage', $engagement),
-            default => localized_route('engagements.show-recruitment-selection', $engagement),
-        };
-
-        return redirect($redirect);
+        return redirect(localized_route('engagements.show-recruitment-selection', $engagement));
     }
 
     public function showRecruitmentSelection(Engagement $engagement): View
@@ -438,9 +440,22 @@ class EngagementController extends Controller
 
     public function manage(Engagement $engagement)
     {
+        $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
+        $connectorInvitee = null;
+        if ($connectorInvitation) {
+            if ($connectorInvitation->type === 'individual') {
+                $individual = User::whereBlind('email', 'email_index', $connectorInvitation->email)->first()->individual ?? null;
+                $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
+            } elseif ($connectorInvitation->type === 'organization') {
+                $connectorInvitee = Organization::where('contact_person_email', $connectorInvitation->email)->first() ?? null;
+            }
+        }
+
         return view('engagements.manage', [
             'engagement' => $engagement,
             'project' => $engagement->project,
+            'connectorInvitation' => $connectorInvitation,
+            'connectorInvitee' => $connectorInvitee,
         ]);
     }
 

@@ -134,7 +134,7 @@ test('users can register via invitation to (regulated) organization', function (
 
     expect($user->extra_attributes->invitation)->toEqual(1);
 
-    expect($user->invitation()->id)->toEqual($invitation->id);
+    expect($user->teamInvitation()->id)->toEqual($invitation->id);
 
     $user->finished_introduction = 1;
     $user->save();
@@ -151,6 +151,7 @@ test('users can register via invitation to engagement', function () {
         'invitationable_id' => $engagement->id,
         'invitationable_type' => get_class($engagement),
         'email' => 'test@example.com',
+        'role' => 'participant',
     ]);
 
     $response = $this->get(localized_route('register', [
@@ -198,7 +199,7 @@ test('users can register via invitation to engagement', function () {
     expect($user->extra_attributes->invitation)->toEqual(1);
     expect($user->extra_attributes->invited_role)->toEqual('participant');
 
-    expect($user->invitation()->id)->toEqual($invitation->id);
+    expect($user->participantInvitations()->pluck('id'))->toContain($invitation->id);
 
     $user = $user->fresh();
 

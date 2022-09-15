@@ -14,6 +14,7 @@ class OrganizationFactory extends Factory
             'languages' => ['en', 'fr', 'ase', 'fcs'],
             'roles' => [],
             'working_languages' => ['en', 'fr'],
+            'contact_person_email' => $this->faker->email(),
         ];
     }
 }

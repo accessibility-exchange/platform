@@ -23,6 +23,9 @@ use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use TheIconic\NameParser\Parser as NameParser;
 
+/**
+ * @property Collection $unreadNotifications
+ */
 class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
@@ -116,9 +119,17 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->locale;
     }
 
-    public function invitation(): Invitation|null
+    public function teamInvitation(): Invitation|null
     {
-        return Invitation::where('email', $this->email)->first() ?? null;
+        return Invitation::where('email', $this->email)->whereIn('invitationable_type', ['App\Models\Organization', 'App\Models\RegulatedOrganization'])->first() ?? null;
+    }
+
+    public function participantInvitations(): Collection
+    {
+        return Invitation::where([
+            ['email', $this->email],
+            ['role', 'participant'],
+        ])->get();
     }
 
     public function introduction(): string
@@ -340,11 +351,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $notificationable->isNotifying($this);
     }
 
-    /**
-     * Is two-factor authentication enabled for this user?
-     *
-     * @return bool
-     */
     public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);

@@ -7,6 +7,7 @@ use App\Enums\ConsultingService;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
+use App\Enums\TeamRole;
 use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\SaveOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
@@ -173,17 +174,11 @@ class OrganizationController extends Controller
 
     public function edit(Organization $organization): View
     {
-        $roles = [];
-
-        foreach (config('hearth.organizations.roles') as $role) {
-            $roles[$role] = __('roles.'.$role);
-        }
-
         return view('organizations.edit', [
             'organization' => $organization,
             'nullableRegions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
-            'roles' => $roles,
+            'roles' => Options::forEnum(TeamRole::class)->toArray(),
             'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),

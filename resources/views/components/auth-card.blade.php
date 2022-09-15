@@ -5,9 +5,11 @@
 
         <!-- Session Status -->
         @if (session('status') == 'verification-link-sent')
-            <x-hearth-alert type="success">
-                {{ __('hearth::auth.verification_sent') }}
-            </x-hearth-alert>
+            <x-live-region>
+                <x-hearth-alert type="success">
+                    {{ __('hearth::auth.verification_sent') }}
+                </x-hearth-alert>
+            </x-live-region>
         @else
             <x-auth-session-status :status="session('status')" />
         @endif
