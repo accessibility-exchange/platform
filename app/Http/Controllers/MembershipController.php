@@ -28,7 +28,7 @@ class MembershipController extends Controller
             'user' => $membership->user,
             'membershipable' => $membership->membershipable(),
             'roles' => Options::forEnum(TeamRole::class)->append(fn (TeamRole $role) => [
-                'hint' => $role->description() ?? '',
+                'hint' => $role->description(),
             ])->toArray(),
         ]);
     }
