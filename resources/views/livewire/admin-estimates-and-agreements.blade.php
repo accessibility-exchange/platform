@@ -17,10 +17,10 @@
             </thead>
             @forelse ($projects as $project)
                 <tr>
-                    <th>
+                    <td>
                         <a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a><br />
                         <span class="font-normal">{{ $project->projectable->name }}</span>
-                    </th>
+                    </td>
                     <td>
                         @if ($project->estimate_approved_at)
                             {{ __('Estimate approved') }}
@@ -50,14 +50,14 @@
                         @endif
                     </td>
                     <td>
-                        @if ($project->estimate_returned_at && !$project->agreemn)
+                        @if ($project->estimate_returned_at && !$project->agreement_received_at)
                             <button class="secondary"
-                                wire:click="markAgreementAsReceived({{ $project->id }})">{{ __('Mark agreement as received') }}
+                                wire:click="markAgreementReceived({{ $project->id }})">{{ __('Mark agreement as received') }}
                                 <span
                                     class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span></button>
                         @elseif(!$project->estimate_returned_at)
                             <button class="secondary"
-                                wire:click="markEstimateAsReturned({{ $project->id }})">{{ __('Mark estimate as returned') }}
+                                wire:click="markEstimateReturned({{ $project->id }})">{{ __('Mark estimate as returned') }}
                                 <span
                                     class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span></button>
                         @endif

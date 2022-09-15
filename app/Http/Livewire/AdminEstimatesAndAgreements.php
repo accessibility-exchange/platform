@@ -23,13 +23,13 @@ class AdminEstimatesAndAgreements extends Component
         $this->resetPage();
     }
 
-    public function markEstimateReturned()
+    public function markEstimateReturned(int $id)
     {
-        // TODO
+        Project::find($id)->update(['estimate_returned_at' => now()]);
     }
 
-    public function markAgreementReceived()
+    public function markAgreementReceived(int $id)
     {
-        // TODO
+        Project::find($id)->update(['agreement_received_at' => now()]);
     }
 }

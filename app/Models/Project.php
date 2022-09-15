@@ -67,6 +67,7 @@ class Project extends Model
         'preferred_contact_method',
         'contact_person_response_time',
         'estimate_requested_at',
+        'estimate_returned_at',
         'estimate_approved_at',
         'agreement_received_at',
     ];
@@ -95,6 +96,7 @@ class Project extends Model
         'contact_person_vrs' => 'boolean',
         'contact_person_response_time' => 'array',
         'estimate_requested_at' => 'datetime:Y-m-d',
+        'estimate_returned_at' => 'datetime:Y-m-d',
         'estimate_approved_at' => 'datetime:Y-m-d',
         'agreement_received_at' => 'datetime:Y-m-d',
     ];
