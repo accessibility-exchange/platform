@@ -114,8 +114,6 @@ class UserController extends Controller
                 $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
                 if ($contractorInvitation) {
                     $contractorInvitations->push($contractorInvitation);
-                } else {
-                    $notification->markAsRead();
                 }
             }
         }

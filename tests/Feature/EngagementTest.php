@@ -413,9 +413,21 @@ test('engagements are only publishable if required fields are completed', functi
 });
 
 test('individual user can accept invitation to an engagement as a connector', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
     $user = User::factory()->create();
     $user->individual->update(['roles' => ['connector']]);
+    $user->individual->publish();
     $individual = $user->individual->fresh();
 
     $invitation = Invitation::factory()->create([
@@ -426,6 +438,10 @@ test('individual user can accept invitation to an engagement as a connector', fu
         'email' => $individual->user->email,
     ]);
 
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage', $engagement));
+    $response->assertOk();
+    $response->assertSee($individual->name);
+
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
 
     $response = $this->actingAs($individual->user)->get($acceptUrl);
@@ -435,4 +451,8 @@ test('individual user can accept invitation to an engagement as a connector', fu
     $engagement = $engagement->fresh();
 
     expect($engagement->connector->id)->toEqual($individual->id);
+});
+
+test('organization user can accept invitation to an engagement as a connector', function () {
+    $this->markTestIncomplete();
 });

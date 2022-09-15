@@ -193,7 +193,7 @@
                     @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
                         @if ($connectorInvitation->type === 'individual')
                             @if ($connectorInvitee)
-                                <x-individual-card level="3" :model="$invitee" />
+                                <x-individual-card level="3" :model="$connectorInvitee" />
                             @else
                                 <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
                                 </p>
