@@ -37,7 +37,7 @@
             {{-- </span> --}}
             {{-- </div> --}}
 
-            <div class="mt-12 hidden w-full space-y-6 sm:flex sm:flex-col sm:items-center sm:justify-between">
+            <div class="hidden w-full space-y-6 sm:flex sm:flex-col sm:items-center sm:justify-between">
                 <div class="w-full text-center">
                     <p class="">
                         {{ __('Showing :current_start to :current_end of :total results', [

@@ -4,7 +4,23 @@
     </h1>
 </x-slot>
 
-<div>
+<div class="space-y-12">
+    <form class="stack" wire:submit.prevent="search">
+        <x-hearth-label for="model" :value="__('Search by organization name')" />
+        <div class="repel">
+            <x-hearth-input name="model" type="search" wire:model.defer="query" wire:search="search" />
+            <button>{{ __('Search') }}</button>
+        </div>
+    </form>
+
+    <div role="alert">
+        @if ($query)
+            <p class="h4">
+                {{ __(':count results for “:query”', ['count' => $projects->count(), 'query' => $query]) }}
+            </p>
+        @endif
+    </div>
+
     <div role="region" aria-labelledby="estimates-and-agreements" tabindex="0">
         <table>
             <thead>
@@ -53,13 +69,13 @@
                         @if ($project->estimate_returned_at && !$project->agreement_received_at)
                             <button class="secondary"
                                 wire:click="markAgreementReceived({{ $project->id }})">{{ __('Mark agreement as received') }}
-                                <span
-                                    class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span></button>
+                                <span class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span>
+                            </button>
                         @elseif(!$project->estimate_returned_at)
                             <button class="secondary"
                                 wire:click="markEstimateReturned({{ $project->id }})">{{ __('Mark estimate as returned') }}
-                                <span
-                                    class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span></button>
+                                <span class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span>
+                            </button>
                         @endif
                     </td>
                 </tr>
@@ -72,7 +88,7 @@
                 </tr>
             @endforelse
         </table>
-
-        {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind') }}
     </div>
+
+    {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind') }}
 </div>

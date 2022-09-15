@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -10,10 +13,23 @@ class AdminEstimatesAndAgreements extends Component
 {
     use WithPagination;
 
+    public string $query = '';
+
     public function render()
     {
         return view('livewire.admin-estimates-and-agreements', [
-            'projects' => Project::whereNotNull('estimate_requested_at')->paginate(20),
+            'projects' => $this->query
+                ? Project::whereNotNull('estimate_requested_at')
+                    ->whereHasMorph(
+                        'projectable',
+                        [Organization::class, RegulatedOrganization::class],
+                        function (Builder $query) {
+                            $query->where('name->en', 'like', '%'.$this->query.'%')
+                                ->orWhere('name->fr', 'like', '%'.$this->query.'%');
+                        }
+                    )
+                    ->paginate(20)
+                : Project::whereNotNull('estimate_requested_at')->paginate(20),
         ])
             ->layout('layouts.app-wide');
     }
