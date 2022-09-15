@@ -3,6 +3,7 @@
 use App\Http\Livewire\ManageEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\User;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
@@ -65,4 +66,59 @@ test('connector invitations can be cancelled', function () {
         ->call('cancelInvitation');
 
     $this->assertModelMissing($invitation);
+});
+
+test('individual connector can be removed', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $user = User::factory()->create();
+    $user->individual->update(['roles' => ['connector']]);
+    $user->individual->publish();
+    $individual = $user->individual->fresh();
+
+    $engagement->connector()->associate($individual);
+
+    $this->livewire(ManageEngagementConnector::class, [
+        'engagement' => $engagement,
+    ])
+        ->assertSee($individual->name)
+        ->assertSee('Remove')
+        ->call('removeConnector');
+
+    $engagement = $engagement->fresh();
+    expect($engagement->connector)->toBeNull();
+});
+
+test('organizational connector can be removed', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+
+    $engagement->organizationalConnector()->associate($organization);
+
+    $this->livewire(ManageEngagementConnector::class, [
+        'engagement' => $engagement,
+    ])
+        ->assertSee($organization->name)
+        ->assertSee('Remove')
+        ->call('removeConnector');
+
+    $engagement = $engagement->fresh();
+    expect($engagement->organizationalConnector)->toBeNull();
 });
