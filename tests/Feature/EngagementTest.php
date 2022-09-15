@@ -10,6 +10,7 @@ use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -454,5 +455,46 @@ test('individual user can accept invitation to an engagement as a connector', fu
 });
 
 test('organization user can accept invitation to an engagement as a connector', function () {
-    $this->markTestIncomplete();
+    $this->seed(DisabilityTypeSeeder::class);
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+
+    $organizationUser = User::factory()->create(['context' => 'organization']);
+
+    $organization->users()->attach(
+        $organizationUser,
+        ['role' => 'admin']
+    );
+
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $engagement->id,
+        'role' => 'connector',
+        'type' => 'organization',
+        'email' => $organization->contact_person_email,
+    ]);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage', $engagement));
+    $response->assertOk();
+    $response->assertSee($organization->name);
+
+    $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($organizationUser)->get($acceptUrl);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->organizationalConnector->id)->toEqual($organization->id);
 });
