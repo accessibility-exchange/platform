@@ -4,7 +4,11 @@
 
 <h3>{{ __('Project impact') }}</h3>
 
-<h4>{{ __('Communities this project hopes to engage and how they will be impacted') }}</h4>
+@if ($project->checkStatus('published'))
+    <h4>{{ __('Communities this project hopes to engage and how they will be impacted') }}</h4>
+@else
+    <h4>{{ __('How the disability and Deaf communities will be impacted by the outcomes of this project') }}</h4>
+@endif
 
 @markdown{{ $project->getWrittenTranslation('scope', $language) }}@endmarkdown
 

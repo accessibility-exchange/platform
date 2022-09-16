@@ -30,12 +30,12 @@
             )" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
-                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
-                <div class="stack" x-cloak>
+                <div class="flex gap-4" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
+                <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
+                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
             </fieldset>
 
             <fieldset class="field @error('impacts') field--error @enderror stack">
@@ -80,6 +80,9 @@
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">
                 <legend>{{ __('Please indicate if the reports will be publicly available. (required)') }}</legend>
+                <x-hearth-hint for="public_outcomes">
+                    {{ __('This can mean either on this website, or on your organization’s website.') }}
+                </x-hearth-hint>
                 <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes)" />
             </fieldset>
 
