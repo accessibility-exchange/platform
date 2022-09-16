@@ -34,12 +34,13 @@ test('individual users can select an individual role', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)
+        ->followingRedirects()
         ->from(localized_route('individuals.show-role-selection'))
         ->put(localized_route('individuals.save-roles'), [
-            'roles' => ['participant'],
+            'roles' => ['participant', 'consultant'],
         ]);
 
-    $response->assertRedirect(localized_route('dashboard'));
+    $response->assertSee('Your roles have been saved.');
 
     $user = $user->fresh();
     expect($user->individual->isParticipant())->toBeTrue();
@@ -71,10 +72,13 @@ test('individuals can edit their roles', function () {
     $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
 
     $response = $this->actingAs($user)
+        ->followingRedirects()
         ->from(localized_route('individuals.show-role-edit'))
         ->put(localized_route('individuals.save-roles'), [
             'roles' => ['participant'],
         ]);
+
+    $response->assertSee('You have successfully updated your role to Consultation Participant.');
 
     $individual = $individual->fresh();
 

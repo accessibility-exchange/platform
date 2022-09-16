@@ -5,7 +5,7 @@
             {{ __('Edit your role') }}
         </h1>
 
-        <h2>{{ __('What would you like to do on this website?') }}</h2>
+        <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
     </x-slot>
 
     <p>{{ __('You can always change this later.') }} <a
@@ -21,7 +21,7 @@
         <div role="alert">
             <x-hearth-alert type="warning" x-cloak
                 x-show="(initialRoles.includes('consultant') || initialRoles.includes('connector')) && !roles.includes('consultant') && !roles.includes('connector')">
-                {{ __('Your role no longer includes the accessibility consultant or Community Connector roles. Your public profile will be unpublished. However, if you edit your role to add the accessibility consultant or Community Connector roles again, you will be able to publish your profile again.') }}
+                {{ __('By selecting Consultation Participant as your only role, your role no longer will include the Accessibility Consultant or Community Connector roles. You do not need a profile to be a Consultation Participant, so your profile will be unpublished and saved, and will no longer be visible by other members of The Accessibility Exchange. However, if you edit your role to add the Accessibility Consultant or Community Connector roles again, you will be able to publish your profile again all your saved information will be restored.') }}
             </x-hearth-alert>
         </div>
 

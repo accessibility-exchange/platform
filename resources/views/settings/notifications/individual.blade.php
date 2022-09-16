@@ -62,8 +62,7 @@
             <h4>{{ __('As a Consultation Participant') }}</h4>
 
             <p>
-                {{ __('We will always notify you when you are invited to engagements by contacting you or your support person.') }}
-                {{ __('You will also be notified through the website.') }}
+                {{ __('We will notify you about being invited to engagements by directly contacting you or your support person.') }}
             </p>
         @endif
 
@@ -71,7 +70,7 @@
             <fieldset>
                 <legend>{{ __('As an accessibility consultant') }}</legend>
                 <x-hearth-hint for="consultants-contact">
-                    {{ __('Would you like to be notified directly when you are added to a project as an accessibility consultant?') }}<br />
+                    {{ __('Would you like to be notified directly when you are added as an Accessibility Consultant to a project?') }}<br />
                     {{ __('You will always get a notification on the website.') }}
                 </x-hearth-hint>
                 <div class="field">
@@ -211,7 +210,9 @@
             {{ __('Keeping my information up to date') }}</h3>
 
         <fieldset class="field @error('notification_settings.updates.channels') field--error @enderror">
-            <legend>{{ __('Out of date information') }}</legend>
+            <legend>
+                {{ __('Please indicate how you would like to be notified to review and update your information.') }}
+            </legend>
             @if ($user->individual->isParticipant())
                 <p>{{ __('Information such as your matching information, your communication preferences, and your consultation preferences might be out of date if it has not been updated for over a year.') }}
                 </p>

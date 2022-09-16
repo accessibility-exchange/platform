@@ -13,3 +13,8 @@ fieldset > legend + * {
 form .repel:last-child {
     margin-block-start: var(--space-12);
 }
+
+form.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}

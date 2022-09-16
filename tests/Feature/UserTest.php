@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 
 test('users can view the introduction', function () {
@@ -292,4 +294,36 @@ test('user extra attributes and notification settings can be queried', function 
     foreach ($updateNotificationUsers as $user) {
         expect($user->notification_settings->updates['channels'])->toContain('contact');
     }
+});
+
+test('user is only admin of an organization', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $anotherUser = User::factory()->create(['context' => 'organization']);
+
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->create();
+
+    expect($user->isOnlyAdministratorOfOrganization())->toBeFalse();
+
+    $anotherUser->delete();
+
+    expect($user->isOnlyAdministratorOfOrganization())->toBeTrue();
+});
+
+test('user is only admin of a regulated organization', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $anotherUser = User::factory()->create(['context' => 'regulated-organization']);
+
+    $organization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->create();
+
+    expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeFalse();
+
+    $anotherUser->delete();
+
+    expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeTrue();
 });
