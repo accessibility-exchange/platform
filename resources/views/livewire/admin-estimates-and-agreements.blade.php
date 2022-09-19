@@ -1,3 +1,7 @@
+<x-slot name="title">
+    {{ __('Estimates and agreements') }}
+</x-slot>
+
 <x-slot name="header">
     <h1 id="estimates-and-agreements">
         {{ __('Estimates and agreements') }}
@@ -5,10 +9,22 @@
 </x-slot>
 
 <div class="space-y-12">
+    <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
+        @clear-flash-message.window="visible = false"
+        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
+        <div x-show="visible" x-transition:leave.duration.500ms>
+            @if (session()->has('message'))
+                <x-hearth-alert type="success">
+                    {!! Str::markdown(session('message')) !!}
+                </x-hearth-alert>
+            @endif
+        </div>
+    </div>
+
     <form class="stack" wire:submit.prevent="search">
-        <x-hearth-label for="model" :value="__('Search by organization name')" />
+        <x-hearth-label for="query" :value="__('Search by organization name')" />
         <div class="repel">
-            <x-hearth-input name="model" type="search" wire:model.defer="query" wire:search="search" />
+            <x-hearth-input name="query" type="search" wire:model.defer="query" wire:search="search" />
             <button>{{ __('Search') }}</button>
         </div>
     </form>
@@ -16,7 +32,7 @@
     <div role="alert">
         @if ($query)
             <p class="h4">
-                {{ __(':count results for “:query”', ['count' => $projects->count(), 'query' => $query]) }}
+                {{ __(':count results for “:query”', ['count' => $projects->total(), 'query' => $query]) }}
             </p>
         @endif
     </div>
@@ -55,15 +71,7 @@
                         @endif
                     </td>
                     <td>
-                        @if ($project->agreement_received_at)
-                            {{ $project->agreement_received_at->format('Y-m-d') }}
-                        @elseif ($project->estimate_approved_at)
-                            {{ $project->estimate_approved_at->format('Y-m-d') }}
-                        @elseif($project->estimate_returned_at)
-                            {{ $project->estimate_returned_at->format('Y-m-d') }}
-                        @elseif($project->estimate_requested_at)
-                            {{ $project->estimate_requested_at->format('Y-m-d') }}
-                        @endif
+                        {{ $project->estimate_or_agreement_updated_at->format('Y-m-d') }}
                     </td>
                     <td>
                         @if ($project->estimate_returned_at && !$project->agreement_received_at)

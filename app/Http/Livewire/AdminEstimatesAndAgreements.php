@@ -26,10 +26,12 @@ class AdminEstimatesAndAgreements extends Component
                         function (Builder $query) {
                             $query->where('name->en', 'like', '%'.$this->query.'%')
                                 ->orWhere('name->fr', 'like', '%'.$this->query.'%');
-                        }
-                    )
+                        })
+                    ->orderBy('estimate_or_agreement_updated_at', 'desc')
                     ->paginate(20)
-                : Project::whereNotNull('estimate_requested_at')->paginate(20),
+                : Project::whereNotNull('estimate_requested_at')
+                    ->orderBy('estimate_or_agreement_updated_at', 'desc')
+                    ->paginate(20),
         ])
             ->layout('layouts.app-wide');
     }
@@ -41,11 +43,31 @@ class AdminEstimatesAndAgreements extends Component
 
     public function markEstimateReturned(int $id)
     {
-        Project::find($id)->update(['estimate_returned_at' => now()]);
+        $project = Project::find($id);
+
+        $project->update(['estimate_returned_at' => now()]);
+
+        $this->dispatchBrowserEvent('clear-flash-message');
+
+        session()->flash('message', __('The estimate for “:project” has been marked as returned.', ['project' => $project->name]));
+
+        $this->dispatchBrowserEvent('add-flash-message');
+
+        $this->dispatchBrowserEvent('remove-flash-message');
     }
 
     public function markAgreementReceived(int $id)
     {
-        Project::find($id)->update(['agreement_received_at' => now()]);
+        $project = Project::find($id);
+
+        $project->update(['agreement_received_at' => now()]);
+
+        $this->dispatchBrowserEvent('clear-flash-message');
+
+        session()->flash('message', __('The agreement for “:project” has been marked as received.', ['project' => $project->name]));
+
+        $this->dispatchBrowserEvent('add-flash-message');
+
+        $this->dispatchBrowserEvent('remove-flash-message');
     }
 }

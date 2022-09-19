@@ -99,6 +99,8 @@ class Project extends Model
         'estimate_returned_at' => 'datetime:Y-m-d',
         'estimate_approved_at' => 'datetime:Y-m-d',
         'agreement_received_at' => 'datetime:Y-m-d',
+        'estimate_or_agreement_updated_at' => 'datetime:Y-m-d',
+        'estimate_or_agreement_status' => 'integer',
     ];
 
     public array $translatable = [
