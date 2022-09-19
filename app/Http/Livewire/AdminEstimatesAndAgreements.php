@@ -49,7 +49,7 @@ class AdminEstimatesAndAgreements extends Component
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
-        session()->flash('message', __('The estimate for “:project” has been marked as returned.', ['project' => $project->name]));
+        session()->flash('message', __('The estimate for “:project” has been marked as returned.', ['project' => $project->getTranslation('name', locale())]));
 
         $this->dispatchBrowserEvent('add-flash-message');
 
@@ -64,7 +64,7 @@ class AdminEstimatesAndAgreements extends Component
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
-        session()->flash('message', __('The agreement for “:project” has been marked as received.', ['project' => $project->name]));
+        session()->flash('message', __('The agreement for “:project” has been marked as received.', ['project' => $project->getTranslation('name', locale())]));
 
         $this->dispatchBrowserEvent('add-flash-message');
 

@@ -7,6 +7,6 @@ Route::controller(AdminController::class)->prefix('admin')
     ->name('admin.')
     ->group(function () {
         Route::multilingual('/estimates-and-agreements', [AdminEstimatesAndAgreements::class, '__invoke'])
-            ->middleware(['auth'])
+            ->middleware(['auth', 'admin'])
             ->name('estimates-and-agreements');
     });
