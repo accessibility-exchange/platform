@@ -68,7 +68,7 @@
 @if (!$project->engagements->isEmpty())
     <div class="grid">
         @foreach ($project->engagements as $engagement)
-            <x-engagement-card :engagement="$engagement" :level="5" />
+            <x-engagement-card :model="$engagement" :level="5" />
         @endforeach
     </div>
 @else

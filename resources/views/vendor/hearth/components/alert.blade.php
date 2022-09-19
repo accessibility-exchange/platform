@@ -1,3 +1,7 @@
+@props([
+    'dismissable' => true,
+])
+
 <div class="alert alert--{{ $type }} stack" {{ $attributes }}
     x-show="@if (in_array($type, ['error', 'warning'])) true @else visible @endif" x-transition:leave.duration.500ms>
     <p class="title">
@@ -22,7 +26,7 @@
 
             <div class="flex gap-2 px-1">
                 {{ $actions ?? '' }}
-                @if (!in_array($type, ['error', 'warning']))
+                @if (!in_array($type, ['error', 'warning']) && $dismissable !== false)
                     <button class="borderless" type="button" @click="visible = false">
                         {{ __('Dismiss') }}
                     </button>

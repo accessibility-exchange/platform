@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
+use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Project;
@@ -222,7 +223,10 @@ class ProjectController extends Controller
 
     public function manageEstimatesAndAgreements(Request $request, Project $project): View
     {
-        return view('projects.manage-estimates-and-agreements', ['project' => $project]);
+        return view('projects.manage-estimates-and-agreements', [
+            'project' => $project,
+            'engagements' => Engagement::publishable()->get(),
+        ]);
     }
 
     public function suggestedSteps(Request $request, Project $project): View
