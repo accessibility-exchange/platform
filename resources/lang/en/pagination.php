@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'previous' => 'Previous',
-    'next' => 'Next',
+    'previous' => 'Previous page',
+    'next' => 'Next page',
 
 ];

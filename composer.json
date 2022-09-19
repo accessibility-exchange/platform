@@ -26,6 +26,7 @@
         "livewire/livewire": "^2.10",
         "makeabledk/laravel-eloquent-status": "^2.0",
         "propaganistas/laravel-phone": "^4.3",
+        "ralphjsmit/livewire-urls": "^1.1",
         "spatie/laravel-backup": "^8.1",
         "spatie/laravel-ciphersweet": "^1.0.2",
         "spatie/laravel-collection-macros": "^7.11",
