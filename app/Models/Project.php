@@ -132,22 +132,27 @@ class Project extends Model
         );
     }
 
-    public function started(): bool
+    public function getStartedAttribute(): bool
     {
-        if ($this->start_date) {
-            return $this->start_date < Carbon::now();
-        }
-
-        return false;
+        return $this->start_date?->lessThan(Carbon::now()) ?? false;
     }
 
-    public function finished(): bool
+    public function getFinishedAttribute(): bool
     {
-        if ($this->end_date) {
-            return $this->end_date < Carbon::now();
+        return $this->end_date?->lessThan(Carbon::now()) ?? false;
+    }
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->checkStatus('draft')) {
+            return __('Draft');
+        } elseif (! $this->started) {
+            return __('Upcoming');
+        } elseif (! $this->finished) {
+            return __('In progress');
         }
 
-        return false;
+        return __('Complete');
     }
 
     public function teamTrainings(): Attribute

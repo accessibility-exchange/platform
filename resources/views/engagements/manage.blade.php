@@ -24,10 +24,10 @@
                     <p>{{ $project->projectable->name }}</p>
                 </div>
             </div>
-            <div>
-                {{-- TODO: cancel engagement --}}
-                <button class="borderless destructive">{{ __('Cancel engagement') }}</button>
-            </div>
+            {{-- TODO: cancel engagement --}}
+            {{-- <div> --}}
+            {{-- <button class="borderless destructive">{{ __('Cancel engagement') }}</button> --}}
+            {{-- </div> --}}
         </div>
     </x-slot>
 

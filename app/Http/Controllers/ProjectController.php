@@ -219,4 +219,14 @@ class ProjectController extends Controller
     {
         return view('projects.manage', ['project' => $project]);
     }
+
+    public function manageEstimatesAndAgreements(Request $request, Project $project): View
+    {
+        return view('projects.manage-estimates-and-agreements', ['project' => $project]);
+    }
+
+    public function suggestedSteps(Request $request, Project $project): View
+    {
+        return view('projects.suggested-steps', ['project' => $project]);
+    }
 }
