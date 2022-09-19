@@ -20,18 +20,19 @@
                     <p><span class="badge badge--status">{{ __('Approved') }}</span></p>
                 @elseif($project->estimate_returned_at)
                     <p><span class="badge badge--status">{{ __('Returned') }}</span></p>
+                    <p>{{ __('This estimate was sent to :contact on :date.', ['contact' => $project->contact_person_email, 'date' => $project->estimate_requested_at->translatedFormat('F j, Y')]) }}
+                        @include('projects.partials.included-engagements')
+                    <div class="flex items-center gap-6">
+                        <livewire:estimate-approver :model="$project" />
+                        <a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">{{ __('Contact us') }}
+                            <x-heroicon-s-chevron-right class="h-5 w-5" role="presentation" aria-hidden="true" />
+                        </a>
+                    </div>
                 @else
                     <p><span class="badge badge--status">{{ __('Pending') }}</span></p>
                     <p>{{ __('You sent this request on :date.', ['date' => $project->estimate_requested_at->translatedFormat('F j, Y')]) }}
                     </p>
-                    <p><strong>{{ __('This estimate includes the following engagements:') }}</strong></p>
-                    <ul>
-                        @forelse($engagements as $engagement)
-                            <li>{{ $engagement->name }}</li>
-                        @empty
-                            <li>{{ __('None found.') }}</li>
-                        @endforelse
-                    </ul>
+                    @include('projects.partials.included-engagements')
                 @endif
             @else
                 <p>
@@ -40,14 +41,7 @@
                     </span>
                 </p>
                 <h4>{{ __('New estimate request') }}</h4>
-                <p><strong>{{ __('This estimate includes the following engagements:') }}</strong></p>
-                <ul>
-                    @forelse($engagements as $engagement)
-                        <li>{{ $engagement->name }}</li>
-                    @empty
-                        <li>{{ __('None found.') }}</li>
-                    @endforelse
-                </ul>
+                @include('projects.partials.included-engagements')
                 <x-hearth-alert class="bg-grey-1" x-show="true" :dismissable="false" :title="__('Missing an engagement?')">
                     <p>{{ __('To include an engagement in a quote request, you must have filled out the engagement invitation.') }}
                     </p>
