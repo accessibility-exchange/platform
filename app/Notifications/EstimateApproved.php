@@ -32,7 +32,7 @@ class EstimateApproved extends Notification
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('New Estimate Approval from :projectable', ['projectable' => $this->projectable->name]))
+            ->subject(__('New Estimate Approval from :projectable', ['projectable' => $this->projectable->getTranslation('name', locale())]))
             ->markdown(
                 'mail.estimate-approved',
                 [
