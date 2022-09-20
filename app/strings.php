@@ -238,23 +238,13 @@ return [
             __('Preview'),
             __('Publish project'),
             __('Once you publish your project, others can find it.'),
-            __('French translation of project goals'),
+            __(':language translation of project goals'),
             __('Unsaved content'),
-            __('ASL translation of project goals'),
-            __('LSQ translation of project goals'),
             __('Content added'),
-            __('French translation of how communities will be impacted'),
-            __('ASL translation of how communities will be impacted'),
-            __('LSQ translation of how communities will be impacted'),
-            __('French translation of what is out of scope'),
-            __('ASL translation of what is out of scope'),
-            __('LSQ translation of what is out of scope'),
-            __('French translation of who is going through the results'),
-            __('ASL translation of who is going through the results'),
-            __('LSQ translation of who is going through the results'),
-            __('French translation of tangible outcomes of this project'),
-            __('ASL translation of tangible outcomes of this project'),
-            __('LSQ translation of tangible outcomes of this project'),
+            __(':language translation of how communities will be impacted'),
+            __(':language translation of what is out of scope'),
+            __(':language translation of who is going through the results'),
+            __(':language translation of tangible outcomes of this project'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1229%3A13916
         'create new project - 4' => [
@@ -483,7 +473,7 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2612%3A66872
         'Manage engagement/algorithm/create invitation/new meeting' => [
             __('Title of meeting'),
-            __('French translation of meeting title'),
+            __(':language translation of meeting title'),
             __('Time and date'),
             __('Date'),
             __('Start time'),
@@ -717,7 +707,7 @@ return [
             __('Audio recording'),
             __('Video recording'),
             __('Other:'),
-            __('French translation of other accepted format'),
+            __(':language translation of other accepted format'),
             __('Open to other formats suggested by participant'),
             __('Participants must respond to their invitation by the following date.'),
         ],
@@ -934,7 +924,7 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A13370
         'Resources Hub/Search results' => [
-            __('12 results for “:search” found'),
+            __(':count results for “:search” found'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2838%3A76275
         'Resources Hub/Resource view/Text' => [
@@ -1145,7 +1135,7 @@ return [
             __('Upload a file'),
             __('You can upload videos, images, audio, or other files.'),
             __('Browse file'),
-            __('French translation of your bio'),
+            __(':language translation of your bio'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2613%3A68551
         'Consultant Community Connector / create profile - 9' => [
@@ -1161,8 +1151,8 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1725%3A47554
         'Consultant Community Connector / create profile - 8' => [
-            __('French translation of your lived experience'),
-            __('French translation of your skills and strengths'),
+            __(':language translation of your lived experience'),
+            __(':language translation of your skills and strengths'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A16052
         'Consultant Community Connector / preview profile' => [
@@ -1197,7 +1187,7 @@ return [
             __('About your organization'),
             __('Communities your organization serves'),
             __('Contact information'),
-            __('French translation of about your organization'),
+            __(':language translation of about your organization'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2560%3A65260
         'Rep orgs' => [
@@ -1225,8 +1215,6 @@ return [
         'FCO/Create profile/info' => [
             __('Once you publish your profile, other users on this website can access your page.'),
             __('Step :current of :total'),
-            __('ASL translation of about your organization'),
-            __('LSQ translation of about your organization'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3476%3A100144
         'FCO/Create profile/contact' => [
