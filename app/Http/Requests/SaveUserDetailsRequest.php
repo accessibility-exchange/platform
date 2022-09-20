@@ -36,4 +36,17 @@ class SaveUserDetailsRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please fill this in.',
+            'email.required' => 'Please fill this in.',
+        ];
+    }
 }
