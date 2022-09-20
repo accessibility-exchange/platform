@@ -436,9 +436,9 @@ test('projects have timeframes', function () {
         'end_date' => null,
     ]);
 
-    expect($org_past_project)->finished()->toBeTrue();
-    expect($org_current_project->finished())->toBeFalse();
-    expect($indeterminate_project->finished())->toBeFalse();
+    expect($org_past_project)->finished->toBeTrue();
+    expect($org_current_project->finished)->toBeFalse();
+    expect($indeterminate_project->finished)->toBeFalse();
     expect($org_current_project->started)->toBeTrue();
     expect($org_future_project->started)->toBeFalse();
     expect($indeterminate_project)->started()->toBeFalse();
