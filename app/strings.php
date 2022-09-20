@@ -151,7 +151,7 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2118%3A56436
         'Dashboard/CommOrg/org admin filled' => [
-            __(':numRSVPs new rsvp’s to your engagement, :engagement'),
+            __(':numRSVPs new RSVPs to your engagement, :engagement'),
             __('Go to engagement dashboard'),
         ],
 
