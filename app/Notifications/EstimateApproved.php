@@ -2,31 +2,20 @@
 
 namespace App\Notifications;
 
-use App\Models\Organization;
 use App\Models\Project;
-use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class EstimateApproved extends Notification
+class EstimateApproved extends PlatformNotification
 {
-    use Queueable;
-
     public Project $project;
 
-    public Organization|RegulatedOrganization $projectable;
+    public mixed $projectable;
 
     public function __construct(Project $project)
     {
         $this->project = $project;
         $this->projectable = $this->project->projectable;
-    }
-
-    public function via(User $notifiable): array
-    {
-        return ['mail', 'database'];
     }
 
     public function toMail(User $notifiable): MailMessage

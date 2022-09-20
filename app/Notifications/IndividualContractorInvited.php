@@ -7,6 +7,7 @@ use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\URL;
 
@@ -16,14 +17,12 @@ class IndividualContractorInvited extends Notification
 
     public Invitation $invitation;
 
+    public mixed $invitationable;
+
     public function __construct(Invitation $invitation)
     {
         $this->invitation = $invitation;
-    }
-
-    public function via(User $notifiable): array
-    {
-        return ['mail', 'database'];
+        $this->invitationable = $this->invitation->invitationable;
     }
 
     public function toMail(User $notifiable): MailMessage
@@ -37,6 +36,22 @@ class IndividualContractorInvited extends Notification
                     'invitation' => $this->invitation,
                 ]
             );
+    }
+
+    public function toVonage(User $notifiable): VonageMessage
+    {
+        return (new VonageMessage)
+            ->content(
+                __(
+                    'You have been invited to the :invitationable_type ":invitationable" as a :role on The Accessibility Exchange. Sign in to your account at https://accessibilityexchange.ca to continue.',
+                    [
+                        'invitationable_type' => $this->invitationable->singular_name,
+                        'invitationable' => $this->invitationable->getTranslation('name', locale()),
+                        'role' => IndividualRole::labels()[$this->invitation->role],
+                    ]
+                )
+            )
+            ->unicode();
     }
 
     public function toArray(User $notifiable): array

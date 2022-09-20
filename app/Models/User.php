@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
@@ -91,6 +92,22 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => [$this->support_person_email => $this->support_person_name],
+            default => [$this->email => $this->name]
+        };
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => $this->support_person_phone,
+            default => $this->phone
+        };
+    }
 
     public function scopeWithExtraAttributes(): Builder
     {

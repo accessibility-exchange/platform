@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
@@ -130,6 +131,16 @@ class Project extends Model
         return Attribute::make(
             get: fn ($value) => __('project'),
         );
+    }
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return [$this->contact_person_email => $this->contact_person_name];
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->contact_person_phone;
     }
 
     public function getStartedAttribute(): bool
