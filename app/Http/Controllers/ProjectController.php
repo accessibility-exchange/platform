@@ -221,8 +221,10 @@ class ProjectController extends Controller
         return view('projects.manage', ['project' => $project]);
     }
 
-    public function manageEstimatesAndAgreements(Request $request, Project $project): View
+    public function manageEstimatesAndAgreements(Project $project): View
     {
+        // TODO: Restrict access to publishable projects with at least one publishable engagement.
+
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
             'engagements' => Engagement::publishable()->get(),
