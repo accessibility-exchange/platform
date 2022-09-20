@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Enums\OrganizationRole;
 use App\Models\Invitation;
 use App\Models\Organization;
-use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Support\Facades\URL;
@@ -35,7 +34,7 @@ class OrganizationalContractorInvited extends PlatformNotification
             );
     }
 
-    public function toVonage(User $notifiable): VonageMessage
+    public function toVonage(Organization $notifiable): VonageMessage
     {
         return (new VonageMessage)
             ->content(

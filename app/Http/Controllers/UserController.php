@@ -109,11 +109,24 @@ class UserController extends Controller
 
         $contractorInvitations = collect([]);
 
-        foreach ($user->unreadNotifications as $notification) {
-            if (in_array($notification->type, ['App\Notifications\IndividualContractorInvited', 'App\Notifications\OrganizationalContractorInvited'])) {
-                $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
-                if ($contractorInvitation) {
-                    $contractorInvitations->push($contractorInvitation);
+        if ($user->context === 'individual') {
+            foreach ($user->unreadNotifications as $notification) {
+                if ($notification->type === 'App\Notifications\IndividualContractorInvited') {
+                    $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
+                    if ($contractorInvitation) {
+                        $contractorInvitations->push($contractorInvitation);
+                    }
+                }
+            }
+        }
+
+        if ($user->context === 'organization') {
+            foreach ($memberable->unreadNotifications as $notification) {
+                if ($notification->type === 'App\Notifications\OrganizationalContractorInvited') {
+                    $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
+                    if ($contractorInvitation) {
+                        $contractorInvitations->push($contractorInvitation);
+                    }
                 }
             }
         }

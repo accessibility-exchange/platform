@@ -186,7 +186,7 @@ test('registered organization can be invited to be an engagement’s community c
     $response->assertOk();
     $response->assertSee($organization->name);
 
-    expect($organizationUser->notifications)->toHaveCount(1);
+    expect($organization->notifications)->toHaveCount(1);
 
     $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
     $response->assertOk();
