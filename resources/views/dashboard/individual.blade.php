@@ -70,7 +70,7 @@
                 <h2>{{ __('My active engagements') }}</h2>
                 @if (count($user->individual->engagements) > 0)
                     @foreach ($user->individual->engagements as $engagement)
-                        <x-engagement-card :model="$engagement" />
+                        <x-card.engagement:model="$engagement" />
                     @endforeach
                 @else
                     <p>{{ __('You have no active engagements right now.') }}</p>

@@ -75,7 +75,7 @@
                         </a>
                     @endif
                     @forelse($project->engagements as $engagement)
-                        <x-engagement-card :model="$engagement" :level="4" />
+                        <x-card.engagement:model="$engagement" :level="4" />
                     @empty
                         <div class="box stack bg-grey-2">
                             <p>{{ __('You have not added any engagements yet.') }}</p>

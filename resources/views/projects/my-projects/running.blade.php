@@ -24,28 +24,28 @@
 @if (!$projectable->draftProjects->isEmpty())
     <h3>{{ __('Draft') }}</h3>
     @foreach ($projectable->draftProjects as $project)
-        <x-project-card :project="$project" :level="4" />
+        <x-card.project :project="$project" :level="4" />
     @endforeach
 @endif
 
 @if (!$projectable->inProgressProjects->isEmpty())
     <h3>{{ __('In progress') }}</h3>
     @foreach ($projectable->inProgressProjects as $project)
-        <x-project-card :project="$project" :level="4" />
+        <x-card.project :project="$project" :level="4" />
     @endforeach
 @endif
 
 @if (!$projectable->upcomingProjects->isEmpty())
     <h3>{{ __('In progress') }}</h3>
     @foreach ($projectable->upcomingProjects as $project)
-        <x-project-card :project="$project" :level="4" />
+        <x-card.project :project="$project" :level="4" />
     @endforeach
 @endif
 
 @if (!$projectable->completedProjects->isEmpty())
     <x-expander level="3" :summary="__('Completed')">
         @forelse ($projectable->completedProjects as $project)
-            <x-project-card :project="$project" :level="4" />
+            <x-card.project :project="$project" :level="4" />
         @empty
             <p>{{ __('No projects found.') }}</p>
         @endforelse

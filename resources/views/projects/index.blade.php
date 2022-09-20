@@ -8,7 +8,7 @@
 
     <div class="projects stack">
         @forelse($projects as $project)
-            <x-project-card :project="$project" :level="2" />
+            <x-card.project :project="$project" :level="2" />
         @empty
             <p>{{ __('No projects found.') }}</p>
         @endforelse

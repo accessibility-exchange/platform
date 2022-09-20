@@ -187,19 +187,19 @@
                 <x-manage-section :title="__('Community Connector')">
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
                     @if ($engagement->connector)
-                        <x-individual-card :model="$engagement->connector" />
+                        <x-card.individual :model="$engagement->connector" />
                     @elseif($engagement->organizationalConnector)
-                        <x-organization-card :model="$engagement->organizationalConnector" />
+                        <x-card.organization :model="$engagement->organizationalConnector" />
                     @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
                         @if ($connectorInvitation->type === 'individual')
                             @if ($connectorInvitee)
-                                <x-individual-card level="3" :model="$connectorInvitee" />
+                                <x-card.individual level="3" :model="$connectorInvitee" />
                             @else
                                 <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
                                 </p>
                             @endif
                         @elseif($connectorInvitation->type === 'organization')
-                            <x-organization-card level="3" :model="$connectorInvitee" />
+                            <x-card.organization level="3" :model="$connectorInvitee" />
                         @endif
                     @endif
                     @if ($engagement->hasEstimateAndAgreement())

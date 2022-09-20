@@ -75,21 +75,21 @@
         @if ($invitation)
             @if ($invitation->type === 'individual')
                 @if ($invitee)
-                    <x-individual-card level="3" :model="$invitee" />
+                    <x-card.individual level="3" :model="$invitee" />
                 @else
                     <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
                 @endif
             @elseif($invitation->type === 'organization')
-                <x-organization-card level="3" :model="$invitee" />
+                <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">
                 <x-heroicon-s-x-mark role="presentation" aria-hidden="true" /> {{ __('Cancel invitation') }}
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)
-                <x-individual-card level="3" :model="$engagement->connector" />
+                <x-card.individual level="3" :model="$engagement->connector" />
             @elseif($engagement->organizationalConnector)
-                <x-organization-card level="3" :model="$engagement->organizationalConnector" />
+                <x-card.organization level="3" :model="$engagement->organizationalConnector" />
             @endif
             <button class="borderless destructive" wire:click="removeConnector">
                 <x-heroicon-s-trash role="presentation" aria-hidden="true" /> {{ __('Remove') }}

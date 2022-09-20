@@ -130,6 +130,26 @@ class UserController extends Controller
         ]);
     }
 
+    public function notifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->unreadNotifications,
+        ]);
+    }
+
+    public function allNotifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->notifications,
+        ]);
+    }
+
     /**
      * Store a new user's context in the session.
      *
