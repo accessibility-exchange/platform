@@ -871,7 +871,7 @@ return [
             __('Here you may find resources to assist in running inclusive and accessible consultations.'),
             __('Browse resources for Regulated Organizations'),
             __('Here you may find resources for employees of the Regulated Organizations.'),
-            __('Browse resources by CCRW'),
+            __('Browse resources by :creator'),
             __('Featured collections'),
             __('Collection'),
             __('Featured trainings'),
