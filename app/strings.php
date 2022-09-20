@@ -904,7 +904,6 @@ return [
             __('Browse resources for community organizations'),
             __('Here you may find resources to assist in running inclusive and accessible consultations.'),
             __('Browse resources for Regulated Organizations'),
-            __('[CCRW Tools]'),
             __('Here you may find resources for employees of the Regulated Organizations.'),
             __('Browse resources by CCRW'),
             __('Featured collections'),
