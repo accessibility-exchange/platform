@@ -441,7 +441,7 @@ test('projects have timeframes', function () {
     expect($indeterminate_project->finished)->toBeFalse();
     expect($org_current_project->started)->toBeTrue();
     expect($org_future_project->started)->toBeFalse();
-    expect($indeterminate_project)->started()->toBeFalse();
+    expect($indeterminate_project)->started->toBeFalse();
 
     $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
