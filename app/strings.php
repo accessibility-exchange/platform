@@ -13,7 +13,6 @@ return [
             __('About'),
             __('Glossary'),
             __('Privacy Policy'),
-            __('Available :start to :end Easter Standard Time'),
             __('Available :start to :end :timeZone'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A3283
