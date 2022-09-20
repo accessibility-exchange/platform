@@ -30,12 +30,12 @@
             )" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
-                <div class="flex gap-4" x-cloak>
+                <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
+                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
+                <div class="stack" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
-                <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
-                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
             </fieldset>
 
             <fieldset class="field @error('impacts') field--error @enderror stack">
