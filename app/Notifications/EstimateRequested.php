@@ -2,7 +2,9 @@
 
 namespace App\Notifications;
 
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,9 +16,12 @@ class EstimateRequested extends Notification
 
     public Project $project;
 
+    public Organization|RegulatedOrganization $projectable;
+
     public function __construct(Project $project)
     {
         $this->project = $project;
+        $this->projectable = $this->project->projectable;
     }
 
     public function via(User $notifiable): array
@@ -31,8 +36,8 @@ class EstimateRequested extends Notification
             ->markdown(
                 'mail.estimate-requested',
                 [
-                    'url' => localized_route('admin.estimates-and-agreements'),
                     'project' => $this->project,
+                    'projectable' => $this->projectable,
                 ]
             );
     }
@@ -40,7 +45,6 @@ class EstimateRequested extends Notification
     public function toArray(User $notifiable): array
     {
         return [
-            'url' => localized_route('admin.estimates-and-agreements'),
             'project_id' => $this->project->id,
         ];
     }
