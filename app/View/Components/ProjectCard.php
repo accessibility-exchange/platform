@@ -46,7 +46,7 @@ class ProjectCard extends Component
      */
     public function render()
     {
-        return view('components.project-card', [
+        return view('components.card.project', [
             'project' => $this->project,
             'level' => $this->level,
             'showRegulatedOrganization' => $this->showRegulatedOrganization,
