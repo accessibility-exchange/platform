@@ -41,6 +41,7 @@
     <div class="mx-auto flex max-w-prose flex-col gap-6">
         @forelse($notifications as $notification)
             <x-dynamic-component :component="'notification.' . Str::kebab(class_basename($notification->type))" :notification="$notification" />
+            {{-- TODO: paginate 'em --}}
         @empty
             <p>{{ __('No notifications found.') }}</p>
         @endforelse
