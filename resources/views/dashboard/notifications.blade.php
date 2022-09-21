@@ -42,7 +42,7 @@
         @forelse($notifications as $notification)
             <x-dynamic-component :component="'notification.' . Str::kebab(class_basename($notification->type))" :notification="$notification" />
         @empty
-            <p>{{ __('No notifications found.') }}</p>
+            <p>{{ __('At present, you have no unread notifications.') }}</p>
         @endforelse
         {{ $notifications->links() }}
     </div>

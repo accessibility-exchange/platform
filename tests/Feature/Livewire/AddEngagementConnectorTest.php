@@ -105,11 +105,18 @@ test('registered individual can be invited to be an engagement’s community con
     $this->assertStringContainsString('You have been invited', $notification->toVonage($individualUser)->content);
 
     expect($individualUser->notifications)->toHaveCount(1);
+    $databaseNotification = $individualUser->notifications->first();
 
     $response = $this->actingAs($individualUser)->get(localized_route('dashboard'));
     $response->assertOk();
     $response->assertSee('Accept');
     $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+
+    $response = $this->actingAs($individualUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+    $response->assertRedirect(localized_route('dashboard'));
+
+    expect($engagement->fresh()->connector->id)->toEqual($individual->id);
+    $this->assertModelMissing($databaseNotification);
 });
 
 test('registered organization can be invited to be an engagement’s community connector', function () {
@@ -197,9 +204,16 @@ test('registered organization can be invited to be an engagement’s community c
     $this->assertStringContainsString('Your organization has been invited', $notification->toVonage($organization)->content);
 
     expect($organization->notifications)->toHaveCount(1);
+    $databaseNotification = $organization->notifications->first();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
     $response->assertOk();
     $response->assertSee('Accept');
     $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+
+    $response = $this->actingAs($organizationUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+    $response->assertRedirect(localized_route('dashboard'));
+
+    expect($engagement->fresh()->organizationalConnector->id)->toEqual($organization->id);
+    $this->assertModelMissing($databaseNotification);
 });
