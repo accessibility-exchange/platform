@@ -123,11 +123,11 @@ test('projects can be searched by organization name', function () {
     $otherProject = Project::factory()->create(['estimate_requested_at' => now()]);
 
     livewire(AdminEstimatesAndAgreements::class)
-        ->assertSee($project->name)
-        ->assertSee($otherProject->name)
+        ->assertSee(localized_route('projects.show', $project))
+        ->assertSee(localized_route('projects.show', $otherProject))
         ->set('query', 'Umbrella')
         ->call('search')
-        ->assertSee($project->name)
-        ->assertDontSee($otherProject->name)
+        ->assertSee(localized_route('projects.show', $project))
+        ->assertDontSee(localized_route('projects.show', $otherProject))
         ->assertSee('1 result');
 });
