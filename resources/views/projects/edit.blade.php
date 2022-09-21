@@ -17,7 +17,7 @@
         </div>
         @if ($project->checkStatus('published'))
             <p>
-                <a href="{{ localized_route('projects.show', $project) }}">{{ __('View page') }}</a>
+                <a href="{{ localized_route('projects.show', $project) }}">{{ __('Go to published page') }}</a>
             </p>
         @endif
     </x-slot>

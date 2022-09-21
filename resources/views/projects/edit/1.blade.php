@@ -80,6 +80,9 @@
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">
                 <legend>{{ __('Please indicate if the reports will be publicly available. (required)') }}</legend>
+                <x-hearth-hint for="public_outcomes">
+                    {{ __('This can mean either on this website, or on your organization’s website.') }}
+                </x-hearth-hint>
                 <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes)" />
             </fieldset>
 
