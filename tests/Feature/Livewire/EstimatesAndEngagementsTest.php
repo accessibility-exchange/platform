@@ -3,6 +3,8 @@
 use App\Http\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Notifications\AgreementReceived;
+use App\Notifications\EstimateReturned;
 use function Pest\Livewire\livewire;
 
 test('estimates and engagements appear in expected order', function () {
@@ -50,6 +52,15 @@ test('estimate can be marked as returned', function () {
         ->assertSee('Estimate returned')
         ->assertSee('Agreement pending')
         ->assertSee('Mark agreement as received');
+
+    $notification = new EstimateReturned($project);
+    $rendered = $notification->toMail($project)->render();
+    $this->assertStringContainsString('Your estimate for', $rendered);
+    $this->assertStringContainsString('along with a project agreement for you to sign, has been sent to', $rendered);
+    $this->assertStringContainsString("Your estimate has been returned for {$project->name}, along with a project agreement for you to sign.", $notification->toVonage($project)->content);
+
+    expect($project->unreadNotifications)->toHaveCount(1);
+    expect($project->unreadNotifications->first()->type)->toEqual('App\Notifications\EstimateReturned');
 });
 
 test('agreement can be marked as received', function () {
@@ -67,6 +78,13 @@ test('agreement can be marked as received', function () {
         ->assertDontSee('Agreement pending')
         ->assertDontSee('Mark agreement as received')
         ->assertSee('Agreement received');
+
+    $notification = new AgreementReceived($project);
+    $this->assertStringContainsString('Your agreement has been received', $notification->toMail($project)->render());
+    $this->assertStringContainsString('Your agreement has been received', $notification->toVonage($project)->content);
+
+    expect($project->unreadNotifications)->toHaveCount(1);
+    expect($project->unreadNotifications->first()->type)->toEqual('App\Notifications\AgreementReceived');
 });
 
 test('projects can be searched by organization name', function () {

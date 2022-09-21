@@ -34,7 +34,7 @@ class EstimateReturned extends PlatformNotification
         return (new VonageMessage)
             ->content(
                 __(
-                    'Your estimates has been returned for :project, along with a project agreement for you to sign. Sign in to your account at https://accessibilityexchange.ca for further details.',
+                    'Your estimate has been returned for :project, along with a project agreement for you to sign. Sign in to your account at https://accessibilityexchange.ca for further details.',
                     [
                         'project' => $this->project->getTranslation('name', locale()),
                     ]
