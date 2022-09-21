@@ -17,6 +17,6 @@ return [
     'sent' => 'We have emailed you a password reset link for The Accessibility Exchange. Please check your email.',
     'throttled' => 'Please wait before retrying.',
     'token' => 'This password reset token is invalid.',
-    'user' => "We can't find an account with that email address. Please try again.",
+    'user' => "We can't find an account with that email address.",
 
 ];

@@ -36,7 +36,7 @@ class StoreRegulatedOrganizationTypeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'type.required' => __('Please select at least one option.'),
+            'type.required' => __('You must select what type of organization you are.'),
         ];
     }
 }

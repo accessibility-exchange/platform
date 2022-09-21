@@ -36,7 +36,7 @@ class SaveOrganizationRolesRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'roles.required' => __('No role has been selected. Please select at least one role and try again.'),
+            'roles.required' => __('You must select a role for your organization.'),
         ];
     }
 }

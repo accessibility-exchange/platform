@@ -45,8 +45,8 @@ class SaveUserDetailsRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => __('Please fill this in.'),
-            'email.required' => __('Please fill this in.'),
+            'name.required' => __('You must enter your full name.'),
+            'email.required' => __('You must enter your email.'),
         ];
     }
 }

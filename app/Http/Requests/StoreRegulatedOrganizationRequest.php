@@ -26,8 +26,8 @@ class StoreRegulatedOrganizationRequest extends FormRequest
         return [
             'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
             'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('regulated-organization.types.'.$this->type)]),
-            'name.en.required_without' => __('No name has been entered. Please enter your organization`s name in English'),
-            'name.fr.required_without' => __('No name has been entered. Please enter your organization`s name in French'),
+            'name.en.required_without' => __("You must enter your organization's name in either English or French."),
+            'name.fr.required_without' => __("You must enter your organization's name in either English or French."),
         ];
     }
 }

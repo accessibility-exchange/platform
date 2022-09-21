@@ -36,7 +36,7 @@ class SaveIndividualRolesRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'roles.required' => __('Select at least one role.'),
+            'roles.required' => __('You must select what you would like to do on the website.'),
         ];
     }
 }
