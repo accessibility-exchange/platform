@@ -3,6 +3,7 @@
 use App\Http\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Models\User;
 use App\Notifications\AgreementReceived;
 use App\Notifications\EstimateReturned;
 use function Pest\Livewire\livewire;
@@ -41,9 +42,16 @@ test('estimates and engagements appear in expected order', function () {
 });
 
 test('estimate can be marked as returned', function () {
+    $administrator = User::factory()->create(['context' => 'administrator']);
+
     $project = Project::factory()->create([
         'estimate_requested_at' => now(),
     ]);
+
+    $projectManager = User::factory()->create(['context' => 'regulated-organization']);
+    $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
+
+    $this->actingAs($administrator);
 
     livewire(AdminEstimatesAndAgreements::class)
         ->assertSee($project->name)
@@ -61,14 +69,26 @@ test('estimate can be marked as returned', function () {
 
     expect($project->unreadNotifications)->toHaveCount(1);
     expect($project->unreadNotifications->first()->type)->toEqual('App\Notifications\EstimateReturned');
+
+    $response = $this->actingAs($projectManager)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+    $response->assertSee('Your estimate has been returned');
+    $response->assertSee("Your estimate for <strong>{$project->name}</strong>, along with a project agreement for to sign", false);
 });
 
 test('agreement can be marked as received', function () {
+    $administrator = User::factory()->create(['context' => 'administrator']);
+
     $project = Project::factory()->create([
         'estimate_requested_at' => now(),
         'estimate_returned_at' => now(),
         'estimate_approved_at' => now(),
     ]);
+
+    $projectManager = User::factory()->create(['context' => 'regulated-organization']);
+    $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
+
+    $this->actingAs($administrator);
 
     livewire(AdminEstimatesAndAgreements::class)
         ->assertSee($project->name)
@@ -85,6 +105,11 @@ test('agreement can be marked as received', function () {
 
     expect($project->unreadNotifications)->toHaveCount(1);
     expect($project->unreadNotifications->first()->type)->toEqual('App\Notifications\AgreementReceived');
+
+    $response = $this->actingAs($projectManager)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+    $response->assertSee('Your agreement has been received');
+    $response->assertSee("Your agreement has been received for <strong>{$project->name}</strong>", false);
 });
 
 test('projects can be searched by organization name', function () {
