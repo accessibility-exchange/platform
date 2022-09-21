@@ -2,18 +2,19 @@
 
 namespace App\View\Components\Card;
 
+use App\Models\Project as ProjectModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class Project extends Component
 {
-    public Project $project;
+    public ProjectModel $project;
 
     public int $level;
 
     public bool $showRegulatedOrganization;
 
-    public function __construct(Project $project, int $level = 3, bool $showRegulatedOrganization = true)
+    public function __construct(ProjectModel $project, int $level = 3, bool $showRegulatedOrganization = true)
     {
         $this->project = $project;
         $this->level = (int) $level;
