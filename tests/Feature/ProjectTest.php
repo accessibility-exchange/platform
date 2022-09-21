@@ -202,6 +202,9 @@ test('users can view projects', function () {
     expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
     expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
 
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
+
     $response = $this->actingAs($user)->get(localized_route('projects.index'));
     $response->assertOk();
 
