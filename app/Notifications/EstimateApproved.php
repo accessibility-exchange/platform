@@ -26,6 +26,7 @@ class EstimateApproved extends PlatformNotification
                 'mail.estimate-approved',
                 [
                     'project' => $this->project,
+                    'projectable' => $this->projectable,
                 ]
             );
     }

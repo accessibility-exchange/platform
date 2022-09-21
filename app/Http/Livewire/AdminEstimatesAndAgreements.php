@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Notifications\AgreementReceived;
+use App\Notifications\EstimateReturned;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -47,6 +49,8 @@ class AdminEstimatesAndAgreements extends Component
 
         $project->update(['estimate_returned_at' => now()]);
 
+        $project->notify(new EstimateReturned($project));
+
         $this->dispatchBrowserEvent('clear-flash-message');
 
         session()->flash('message', __('The estimate for “:project” has been marked as returned.', ['project' => $project->getTranslation('name', locale())]));
@@ -61,6 +65,8 @@ class AdminEstimatesAndAgreements extends Component
         $project = Project::find($id);
 
         $project->update(['agreement_received_at' => now()]);
+
+        $project->notify(new AgreementReceived($project));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
