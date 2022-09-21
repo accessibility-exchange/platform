@@ -18,7 +18,6 @@ use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use Composer\InstalledVersions;
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\LaravelIgnition\Facades\Flare;
@@ -47,10 +46,6 @@ class AppServiceProvider extends ServiceProvider
     {
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
-        }
-
-        if (config('app.env') === 'local') {
-            DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
         }
 
         Flare::determineVersionUsing(function () {
