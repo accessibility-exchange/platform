@@ -27,4 +27,16 @@ class SaveOrganizationRolesRequest extends FormRequest
             'roles' => [],
         ]);
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'roles.required' => __('No role has been selected. Please select at least one role and try again.'),
+        ];
+    }
 }

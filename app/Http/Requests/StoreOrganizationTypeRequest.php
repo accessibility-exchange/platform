@@ -27,4 +27,16 @@ class StoreOrganizationTypeRequest extends FormRequest
             'type' => 'required|string|in:representative,support,civil-society',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'type.required' => __('Please select at least one option.'),
+        ];
+    }
 }

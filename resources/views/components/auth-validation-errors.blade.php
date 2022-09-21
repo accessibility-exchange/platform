@@ -6,9 +6,12 @@
             {{ __('The following field is required:') }}
             <ul>
                 @foreach ($errors->getBags()['default']->messages() as $key => $value)
-                    <li>{{ ucfirst($key) }}</li>
+                    @if ($key !== 'context' && $key !== 'locale')
+                        <li>{{ ucfirst($key) }}</li>
+                    @endif
                 @endforeach
             </ul>
+            {{ __('Please fill in this field and try saving again.') }}
         </x-hearth-alert>
     </x-live-region>
 @endif

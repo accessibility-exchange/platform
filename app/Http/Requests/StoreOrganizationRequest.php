@@ -24,8 +24,10 @@ class StoreOrganizationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
-            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
+            'name.en.unique_translation' => __('There is already an organization with the name ":name" on this website. Please contact your colleagues to get an invitation. If this isn`t your organization, please use a different name.', ['name' => $this->name['en']]),
+            'name.fr.unique_translation' => __('There is already an organization with the name ":name" on this website. Please contact your colleagues to get an invitation. If this isn`t your organization, please use a different name.', ['name' => $this->name['fr']]),
+            'name.en.required_without' => __('No name has been entered. Please enter your organization`s name in English'),
+            'name.fr.required_without' => __('No name has been entered. Please enter your organization`s name in French'),
         ];
     }
 }

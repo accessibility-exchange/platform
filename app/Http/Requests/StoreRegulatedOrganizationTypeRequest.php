@@ -27,4 +27,16 @@ class StoreRegulatedOrganizationTypeRequest extends FormRequest
             'type' => 'required|string|in:government,business,public-sector',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'type.required' => __('Please select at least one option.'),
+        ];
+    }
 }
