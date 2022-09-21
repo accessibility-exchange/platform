@@ -670,3 +670,15 @@ test('regulated organizations have slugs in both languages even if only one is p
     expect($regulatedOrg->getTranslation('slug', 'en', false))
         ->toEqual($regulatedOrg->getTranslation('slug', 'fr', false));
 });
+
+test('notifications can be routed for regulated organizations', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'contact_person_name' => faker()->name(),
+        'contact_person_email' => faker()->email(),
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
+    expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
+});

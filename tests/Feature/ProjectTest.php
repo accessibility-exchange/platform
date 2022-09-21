@@ -8,6 +8,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
+use function Pest\Faker\faker;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -199,12 +200,6 @@ test('users can view projects', function () {
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
-    expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
-    expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
-
-    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
-    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
-
     $response = $this->actingAs($user)->get(localized_route('projects.index'));
     $response->assertOk();
 
@@ -219,6 +214,18 @@ test('users can view projects', function () {
 
     $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
     $response->assertOk();
+});
+
+test('notifications can be routed for projects', function () {
+    $project = Project::factory()->create([
+        'contact_person_name' => faker()->name(),
+        'contact_person_email' => faker()->email(),
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('individuals can express interest in projects', function () {
