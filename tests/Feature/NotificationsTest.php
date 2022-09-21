@@ -53,4 +53,10 @@ test('organizational users see merged notifications for their organizations and 
 
     $response->assertSee('Your agreement has been received');
     $response->assertDontSee('Your organization has been invited as a Community Connector');
+
+    $response = $this->actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('Your agreement has been received');
+    $response->assertSee('Your organization has been invited as a Community Connector');
 });
