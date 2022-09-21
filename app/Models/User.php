@@ -425,7 +425,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
                 $notifications = $notifications->merge($project->notifications);
             }
         } else {
-            $notifications->merge($this->unreadNotifications);
+            return $this->notifications->paginate(20);
         }
 
         return $notifications->sortByDesc('created_at')->paginate(20);
@@ -448,7 +448,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } else {
-            $notifications->merge($this->unreadNotifications);
+            return $this->unreadNotifications->paginate(20);
         }
 
         return $notifications->sortByDesc('created_at')->paginate(20);
