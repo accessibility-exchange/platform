@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
 use Livewire\Redirector;
+use RalphJSmit\Livewire\Urls\Facades\Url;
 
 class MarkNotificationAsRead extends Component
 {
@@ -21,6 +22,6 @@ class MarkNotificationAsRead extends Component
 
         flash(__('The notification has been marked as read.'), 'success');
 
-        return redirect()->to(localized_route('dashboard.notifications'));
+        return redirect()->to(Url::current());
     }
 }

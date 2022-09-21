@@ -61,7 +61,6 @@ return [
             __('Quick links'),
             __('Projects I’m participating in'),
             __('Projects I’m participating in as a Consultation Participant.'),
-            __('At present, you have no new notifications.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1780%3A48437
         'Dashboard/Ind-CP/Enter personal info-1' => [

@@ -93,6 +93,11 @@ class Engagement extends Model
         );
     }
 
+    public function getRoutePrefix(): string
+    {
+        return 'engagements';
+    }
+
     public function displayFormat(): Attribute
     {
         return Attribute::make(

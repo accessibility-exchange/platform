@@ -45,9 +45,13 @@
                 </p>
             </div>
 
-            <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
-            </div>
+            @if ($memberable)
+                <div class="column stack">
+                    @include('dashboard.partials.notifications', [
+                        'notifications' => $memberable->unreadNotifications,
+                    ])
+                </div>
+            @endif
 
             <div class="stack">
                 <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
@@ -78,9 +82,13 @@
                 @endif
             </div>
         @else
-            <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
-            </div>
+            @if ($memberable)
+                <div class="column stack">
+                    @include('dashboard.partials.notifications', [
+                        'notifications' => $memberable->unreadNotifications,
+                    ])
+                </div>
+            @endif
 
             <div class="stack">
                 <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>

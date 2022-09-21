@@ -56,7 +56,9 @@
         @endif
     </x-slot>
 
-    @if ($user->context === 'individual')
+    @if ($user->context === 'administrator')
+        @include('dashboard.administrator')
+    @elseif ($user->context === 'individual')
         @include('dashboard.individual')
     @elseif($user->context === 'organization')
         @include('dashboard.organization')

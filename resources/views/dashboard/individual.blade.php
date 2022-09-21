@@ -55,7 +55,9 @@
             </div>
 
             <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
+                @include('dashboard.partials.notifications', [
+                    'notifications' => $user->unreadNotifications,
+                ])
             </div>
 
             <div class="stack">
@@ -70,7 +72,7 @@
                 <h2>{{ __('My active engagements') }}</h2>
                 @if (count($user->individual->engagements) > 0)
                     @foreach ($user->individual->engagements as $engagement)
-                        <x-card.engagement:model="$engagement" />
+                        <x-card.engagement :model="$engagement" />
                     @endforeach
                 @else
                     <p>{{ __('You have no active engagements right now.') }}</p>
@@ -78,7 +80,9 @@
             </div>
         @else
             <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
+                @include('dashboard.partials.notifications', [
+                    'notifications' => $user->unreadNotifications,
+                ])
             </div>
 
             <div class="stack">
