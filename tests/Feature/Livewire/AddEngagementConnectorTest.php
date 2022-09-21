@@ -5,6 +5,7 @@ use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
+use App\Notifications\IndividualContractorInvited;
 use Spatie\LaravelOptions\Options;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
@@ -97,6 +98,10 @@ test('registered individual can be invited to be an engagement’s community con
     $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
     $response->assertOk();
     $response->assertSee($individual->name);
+
+    $notification = new IndividualContractorInvited($engagement->invitations->first());
+    $this->assertStringContainsString('You have been invited', $notification->toMail($individualUser)->render());
+    $this->assertStringContainsString('You have been invited', $notification->toVonage($individualUser)->content);
 
     expect($individualUser->notifications)->toHaveCount(1);
 
