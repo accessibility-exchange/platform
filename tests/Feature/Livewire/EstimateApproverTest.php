@@ -3,6 +3,7 @@
 use App\Http\Livewire\EstimateApprover;
 use App\Models\Project;
 use App\Models\User;
+use App\Notifications\EstimateApproved;
 
 test('unauthorized user cannot approve an estimate', function () {
     $project = Project::factory()->create();
@@ -35,7 +36,18 @@ test('authorized user can approve an estimate', function () {
 
     expect($project->fresh()->estimate_approved_at)->toBeTruthy();
 
-    $notification = $administrator->fresh()->notifications->first();
+    $notification = new EstimateApproved($project);
+    $this->assertStringContainsString("{$regulatedOrganization->name} has approved an estimate for their project", $notification->toMail($administrator)->render());
+    $this->assertStringContainsString($project->name, $notification->toMail($administrator)->render());
+
+    $administrator = $administrator->fresh();
+
+    expect($administrator->unreadNotifications)->toHaveCount(1);
+    $notification = $administrator->unreadNotifications->first();
+
+    $response = $this->actingAs($administrator)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+    $response->assertSee('New estimate approval');
 
     expect($notification->type)->toEqual('App\Notifications\EstimateApproved');
     expect($notification->data['project_id'])->toEqual($project->id);
