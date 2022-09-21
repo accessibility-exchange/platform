@@ -124,6 +124,7 @@ class UserController extends Controller
         return view('dashboard.notifications', [
             'user' => $user,
             'notifications' => $user->allUnreadNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
         ]);
     }
 
@@ -134,6 +135,7 @@ class UserController extends Controller
         return view('dashboard.notifications', [
             'user' => $user,
             'notifications' => $user->allNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
         ]);
     }
 
