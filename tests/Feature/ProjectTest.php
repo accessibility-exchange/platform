@@ -353,6 +353,12 @@ test('users with regulated organization admin role can manage projects', functio
 
     $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
     $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.manage-estimates-and-agreements', $project));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.suggested-steps', $project));
+    $response->assertOk();
 });
 
 test('users without regulated organization admin role cannot manage projects', function () {

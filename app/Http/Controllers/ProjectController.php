@@ -227,7 +227,7 @@ class ProjectController extends Controller
 
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
-            'engagements' => Engagement::publishable()->get(),
+            'engagements' => Engagement::wherePublishable()->get(),
         ]);
     }
 
