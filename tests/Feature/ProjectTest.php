@@ -184,18 +184,23 @@ test('projects can be published and unpublished', function () {
 
 test('users can view projects', function () {
     $user = User::factory()->create();
-    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
+    $adminUser = User::factory()->create(['context' => 'regulated-organization', 'phone' => '19024444567']);
     $regulatedOrganization = RegulatedOrganization::factory()->create([
-        'contact_person_name' => $adminUser->contact_person_name,
-        'contact_person_email' => $adminUser->contact_person_email,
+        'contact_person_name' => $adminUser->name,
+        'contact_person_email' => $adminUser->email,
+        'contact_person_phone' => $adminUser->phone,
         'preferred_contact_method' => $adminUser->preferred_contact_method,
     ]);
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'contact_person_name' => $regulatedOrganization->contact_person_name,
         'contact_person_email' => $regulatedOrganization->contact_person_email,
+        'contact_person_phone' => $regulatedOrganization->contact_person_phone,
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
+
+    expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
+    expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
 
     $response = $this->actingAs($user)->get(localized_route('projects.index'));
     $response->assertOk();

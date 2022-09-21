@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Traits\HasSchemalessAttributes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -113,11 +112,6 @@ class Engagement extends Model
     public function isPublishable(): bool
     {
         return ! is_null($this->signup_by_date);
-    }
-
-    public function scopePublishable(Builder $query): Builder
-    {
-        return $query->whereNotNull('signup_by_date');
     }
 
     public function displayRecruitment(): Attribute
