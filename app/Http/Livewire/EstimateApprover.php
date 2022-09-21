@@ -29,7 +29,7 @@ class EstimateApprover extends StatusUpdater
     {
         flash($this->successMessage, 'success');
 
-        $administrators = User::administrator()->get();
+        $administrators = User::whereAdministrator()->get();
         Notification::send($administrators, new EstimateApproved($this->model));
     }
 }

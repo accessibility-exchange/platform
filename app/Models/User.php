@@ -403,7 +403,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->context === 'administrator';
     }
 
-    public function scopeAdministrator(Builder $query): Builder
+    public function scopeWhereAdministrator(Builder $query): Builder
     {
         return $query->where('context', 'administrator');
     }

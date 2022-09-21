@@ -94,6 +94,8 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
 
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->phone);
+
     $user->update([
         'preferred_contact_person' => 'support-person',
         'support_person_name' => 'Jenny Appleseed',
@@ -112,7 +114,11 @@ test('user’s contact methods can be retrieved', function () {
         'support_person_email' => null,
     ]);
 
-    expect($user->fresh()->contact_methods)->toEqual(['phone']);
+    $user = $user->fresh();
+
+    expect($user->contact_methods)->toEqual(['phone']);
+
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->support_person_phone);
 });
 
 test('user’s contact person can be retrieved', function () {
@@ -326,4 +332,21 @@ test('user is only admin of a regulated organization', function () {
     $anotherUser->delete();
 
     expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeTrue();
+});
+
+test('user’s two factor status can be retrieved', function () {
+    $user = User::factory()->create();
+    expect($user->twoFactorAuthEnabled())->tobeFalse();
+});
+
+test('administrative user can be retrieved via query scope', function () {
+    $user = User::factory()->create();
+    $adminUser = User::factory()->create(['context' => 'administrator']);
+
+    expect(User::all())->toHaveCount(2);
+    expect(User::whereAdministrator()->get())->toHaveCount(1);
+});
+
+test('user’s notifications can be merged from all available sources', function () {
+    $this->markTestIncomplete();
 });
