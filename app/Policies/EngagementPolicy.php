@@ -16,11 +16,6 @@ class EngagementPolicy
         return $user->isAdministrator() ? true : null;
     }
 
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
     public function view(User $user, Engagement $engagement): Response
     {
         return
