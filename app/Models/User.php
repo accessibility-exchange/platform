@@ -6,7 +6,6 @@ use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
@@ -22,6 +23,7 @@ use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use TheIconic\NameParser\Parser as NameParser;
 
 /**
@@ -35,6 +37,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
     use SchemalessAttributesTrait;
+    use HasMergedRelationships;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -403,5 +406,51 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function scopeAdministrator(Builder $query): Builder
     {
         return $query->where('context', 'administrator');
+    }
+
+    public function allNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->notifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->notifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } else {
+            $notifications->merge($this->unreadNotifications);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
+    }
+
+    public function allUnreadNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->unreadNotifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } else {
+            $notifications->merge($this->unreadNotifications);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
     }
 }

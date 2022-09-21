@@ -48,7 +48,7 @@
             @if ($memberable)
                 <div class="column stack">
                     @include('dashboard.partials.notifications', [
-                        'notifications' => $memberable->unreadNotifications,
+                        'notifications' => $user->allUnreadNotifications(),
                     ])
                 </div>
             @endif
@@ -85,7 +85,7 @@
             @if ($memberable)
                 <div class="column stack">
                     @include('dashboard.partials.notifications', [
-                        'notifications' => $memberable->unreadNotifications,
+                        'notifications' => $user->allUnreadNotifications(),
                     ])
                 </div>
             @endif

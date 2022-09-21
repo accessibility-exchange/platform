@@ -3,6 +3,6 @@
 
     </div>
     <div class="column stack">
-        <div class="stack">@include('dashboard.partials.notifications', ['notifications' => $user->unreadNotifications])</div>
+        <div class="stack">@include('dashboard.partials.notifications', ['notifications' => $user->allUnreadNotifications()])</div>
     </div>
 </div>

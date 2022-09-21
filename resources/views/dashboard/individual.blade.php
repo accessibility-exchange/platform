@@ -56,7 +56,7 @@
 
             <div class="stack">
                 @include('dashboard.partials.notifications', [
-                    'notifications' => $user->unreadNotifications,
+                    'notifications' => $user->allUnreadNotifications(),
                 ])
             </div>
 
@@ -81,7 +81,7 @@
         @else
             <div class="stack">
                 @include('dashboard.partials.notifications', [
-                    'notifications' => $user->unreadNotifications,
+                    'notifications' => $user->allUnreadNotifications(),
                 ])
             </div>
 

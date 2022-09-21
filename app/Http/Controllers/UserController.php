@@ -149,8 +149,7 @@ class UserController extends Controller
 
         return view('dashboard.notifications', [
             'user' => $user,
-            // TODO: Merge notifications for (regulated) organization and projects for users in those contexts.
-            'notifications' => $user->unreadNotifications,
+            'notifications' => $user->allUnreadNotifications(),
         ]);
     }
 
@@ -160,8 +159,7 @@ class UserController extends Controller
 
         return view('dashboard.notifications', [
             'user' => $user,
-            // TODO: Merge notifications for (regulated) organization and projects for users in those contexts.
-            'notifications' => $user->notifications,
+            'notifications' => $user->allNotifications(),
         ]);
     }
 
