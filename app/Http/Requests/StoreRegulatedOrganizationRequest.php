@@ -15,9 +15,8 @@ class StoreRegulatedOrganizationRequest extends FormRequest
     {
         return [
             'type' => 'required|string|in:government,business,public-sector',
-            'name.*' => 'nullable|string|max:255|unique_translation:regulated_organizations',
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
+            'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:regulated_organizations',
+            'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:regulated_organizations',
         ];
     }
 
