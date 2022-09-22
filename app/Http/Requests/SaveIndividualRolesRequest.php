@@ -27,4 +27,16 @@ class SaveIndividualRolesRequest extends FormRequest
             'roles' => [],
         ]);
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'roles.required' => __('You must select what you would like to do on the website.'),
+        ];
+    }
 }
