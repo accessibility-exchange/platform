@@ -37,16 +37,10 @@ class SaveUserDetailsRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages(): array
+    public function attributes()
     {
         return [
-            'name.required' => __('You must enter your full name.'),
-            'email.required' => __('You must enter your email.'),
+            'name' => 'full name',
         ];
     }
 }
