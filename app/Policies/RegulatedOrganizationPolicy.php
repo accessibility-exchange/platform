@@ -11,6 +11,11 @@ class RegulatedOrganizationPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): null|bool
+    {
+        return $user->isAdministrator() ? true : null;
+    }
+
     public function create(User $user): Response
     {
         return $user->context === 'regulated-organization' && $user->regulatedOrganizations->isEmpty()

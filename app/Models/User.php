@@ -6,13 +6,15 @@ use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
@@ -21,6 +23,7 @@ use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use TheIconic\NameParser\Parser as NameParser;
 
 /**
@@ -34,6 +37,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
     use SchemalessAttributesTrait;
+    use HasMergedRelationships;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -91,6 +95,22 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => [$this->support_person_email => $this->support_person_name],
+            default => [$this->email => $this->name]
+        };
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => $this->support_person_phone,
+            default => $this->phone
+        };
+    }
 
     public function scopeWithExtraAttributes(): Builder
     {
@@ -376,5 +396,61 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->context === 'administrator';
+    }
+
+    public function scopeWhereAdministrator(Builder $query): Builder
+    {
+        return $query->where('context', 'administrator');
+    }
+
+    public function allNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->notifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->notifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } else {
+            return $this->notifications->paginate(20);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
+    }
+
+    public function allUnreadNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->unreadNotifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } else {
+            return $this->unreadNotifications->paginate(20);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
     }
 }

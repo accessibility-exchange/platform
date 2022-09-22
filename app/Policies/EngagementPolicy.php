@@ -11,6 +11,11 @@ class EngagementPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): null|bool
+    {
+        return $user->isAdministrator() ? true : null;
+    }
+
     public function view(User $user, Engagement $engagement): Response
     {
         return

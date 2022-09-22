@@ -5,12 +5,12 @@
         <div class="modal-wrapper" x-show="showingModal">
             <div class="modal stack" @keydown.escape.window="hideModal">
                 <h3>
-                @if ($member->id === $user->id)
-                    {{ __('Leave this organization') }}
-                @else
-                    {{ __('Remove :member from your organization', ['member' => $member->name]) }}
-              	@endif
-              	</h3>
+                    @if ($member->id === $user->id)
+                        {{ __('Leave this organization') }}
+                    @else
+                        {{ __('Remove :member from your organization', ['member' => $member->name]) }}
+                    @endif
+                </h3>
                 @if ($member->id === $user->id)
                     <p>
                         {{ __('Are you sure you want to leave :organization?', ['organization' => $membershipable->name]) }}

@@ -9,7 +9,8 @@
 
         <div class="stack" x-data="{ livedExperiences: [{{ implode(', ', old('lived_experiences', $individual->livedExperienceConnections->pluck('id')->toArray() ?? [])) }}] }">
             <h2>
-                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
+                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}
+                <br />
                 {{ __('Groups you can connect to') }}
             </h2>
 
@@ -23,7 +24,7 @@
                 {{ __('Which groups can you connect to Regulated Organizations?') }}
             </h3>
 
-            <p><em>{{ __('As a Community Connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}</em>
+            <p>{{ __('As a Community Connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}
             </p>
 
             <fieldset class="field @error('lived_experiences') field--error @enderror">
@@ -73,8 +74,8 @@
                 </legend>
                 <div class="field">
                     <input id="has_indigenous_identities-1" name="has_indigenous_identities" type="radio"
-                        value="1" @checked(old('has_indigenous_identities', $individual->extra_attributes->get('has_indigenous_identities', ''))) x-model="hasIndigenousIdentities" /> <label
-                        for="has_indigenous_identities-1">{{ __('Yes') }}</label>
+                        value="1" @checked(old('has_indigenous_identities', $individual->extra_attributes->get('has_indigenous_identities', ''))) x-model="hasIndigenousIdentities" />
+                    <label for="has_indigenous_identities-1">{{ __('Yes') }}</label>
                 </div>
                 <div class="field__subfield stack" x-show="hasIndigenousIdentities == 1">
                     <x-hearth-checkboxes name="indigenous_identities" :options="$indigenousIdentities" :checked="old(
@@ -84,8 +85,8 @@
                 </div>
                 <div class="field">
                     <input id="has_indigenous_identities-0" name="has_indigenous_identities" type="radio"
-                        value="0" @checked(!old('has_indigenous_identities', $individual->extra_attributes->get('has_indigenous_identities', ''))) x-model="hasIndigenousIdentities" /> <label
-                        for="has_indigenous_identities-0">{{ __('No') }}</label>
+                        value="0" @checked(!old('has_indigenous_identities', $individual->extra_attributes->get('has_indigenous_identities', ''))) x-model="hasIndigenousIdentities" />
+                    <label for="has_indigenous_identities-0">{{ __('No') }}</label>
                 </div>
             </fieldset>
 
@@ -105,8 +106,8 @@
                 </legend>
                 <div class="field">
                     <x-hearth-input id="has_gender_and_sexual_identities-1" name="has_gender_and_sexual_identities"
-                        type="radio" value="1" x-model="hasGenderAndSexualIdentities" /> <label
-                        for="has_gender_and_sexual_identities-1">{{ __('Yes') }}</label>
+                        type="radio" value="1" x-model="hasGenderAndSexualIdentities" />
+                    <label for="has_gender_and_sexual_identities-1">{{ __('Yes') }}</label>
                 </div>
                 <div class="field__subfield stack" x-show="hasGenderAndSexualIdentities == 1">
                     <div class="field">
@@ -147,8 +148,8 @@
                 </div>
                 <div class="field">
                     <x-hearth-input id="has_gender_and_sexual_identities-0" name="has_gender_and_sexual_identities"
-                        type="radio" value="0" x-model="hasGenderAndSexualIdentities" /> <label
-                        for="has_gender_and_sexual_identities-0">{{ __('No') }}</label>
+                        type="radio" value="0" x-model="hasGenderAndSexualIdentities" />
+                    <label for="has_gender_and_sexual_identities-0">{{ __('No') }}</label>
                 </div>
             </fieldset>
 
@@ -156,16 +157,16 @@
                 <legend>{{ __('Can you connect to a specific age bracket or brackets? (required)') }}</legend>
                 <div class="field">
                     <input id="has_age_brackets-1" name="has_age_brackets" type="radio" value="1"
-                        @checked(old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" /> <label
-                        for="has_age_brackets-1">{{ __('Yes') }}</label>
+                        @checked(old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" />
+                    <label for="has_age_brackets-1">{{ __('Yes') }}</label>
                 </div>
                 <div class="field__subfield stack" x-show="hasAgeBrackets == 1">
                     <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old('age_brackets', $individual->ageBracketConnections->pluck('id')->toArray())" required />
                 </div>
                 <div class="field">
                     <input id="has_age_brackets-0" name="has_age_brackets" type="radio" value="0"
-                        @checked(!old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" /> <label
-                        for="has_age_brackets-0">{{ __('No') }}</label>
+                        @checked(!old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" />
+                    <label for="has_age_brackets-0">{{ __('No') }}</label>
                 </div>
             </fieldset>
 
@@ -174,8 +175,8 @@
                 </legend>
                 <div class="field">
                     <input id="has_ethnoracial_identities-1" name="has_ethnoracial_identities" type="radio"
-                        value="1" @checked(old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" /> <label
-                        for="has_ethnoracial_identities-1">{{ __('Yes') }}</label>
+                        value="1" @checked(old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" />
+                    <label for="has_ethnoracial_identities-1">{{ __('Yes') }}</label>
                 </div>
                 <div class="field__subfield stack" x-show="hasEthnoracialIdentities == 1">
                     <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
@@ -199,8 +200,8 @@
                 </div>
                 <div class="field">
                     <input id="has_ethnoracial_identities-0" name="has_ethnoracial_identities" type="radio"
-                        value="0" @checked(!old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" /> <label
-                        for="has_ethnoracial_identities-0">{{ __('No') }}</label>
+                        value="0" @checked(!old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" />
+                    <label for="has_ethnoracial_identities-0">{{ __('No') }}</label>
                 </div>
             </fieldset>
 

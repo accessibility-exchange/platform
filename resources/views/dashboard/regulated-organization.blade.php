@@ -45,9 +45,13 @@
                 </p>
             </div>
 
-            <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
-            </div>
+            @if ($memberable)
+                <div class="column stack">
+                    @include('dashboard.partials.notifications', [
+                        'notifications' => $user->allUnreadNotifications(),
+                    ])
+                </div>
+            @endif
 
             <div class="stack">
                 <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
@@ -62,7 +66,7 @@
                 <h2>{{ __('My active projects') }}</h2>
                 @if (count($memberable->projects) > 0)
                     @foreach ($memberable->projects as $project)
-                        <x-project-card :project="$project" />
+                        <x-card.project :project="$project" />
                     @endforeach
                     <p><a href="{{ localized_route('projects.my-projects') }}">{{ __('Show all my projects') }}</a>
                     </p>
@@ -78,9 +82,13 @@
                 @endif
             </div>
         @else
-            <div class="stack">
-                <h2>{{ __('Notifications') }} <span class="badge">0</span></h2>
-            </div>
+            @if ($memberable)
+                <div class="column stack">
+                    @include('dashboard.partials.notifications', [
+                        'notifications' => $user->allUnreadNotifications(),
+                    ])
+                </div>
+            @endif
 
             <div class="stack">
                 <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>

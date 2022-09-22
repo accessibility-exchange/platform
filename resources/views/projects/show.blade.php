@@ -21,15 +21,7 @@
             ]) !!}</p>
             <p>{!! $project->timeframe() !!}</p>
             <div class="repel">
-                @if ($project->checkStatus('draft'))
-                    <span class="badge">{{ __('Draft') }}</span>
-                @elseif($project->started())
-                    <span class="badge">{{ __('In progress') }}</span>
-                @elseif($project->finished())
-                    <span class="badge">{{ __('Completed') }}</span>
-                @else
-                    <span class="badge">{{ __('Upcoming') }}</span>
-                @endif
+                <span class="badge">{{ $project->status }}</span>
                 @if (Auth::user()->individual)
                     @if (!Auth::user()->individual->projectsOfInterest->contains($project->id))
                         <form action="{{ localized_route('individuals.express-interest', Auth::user()->individual) }}"

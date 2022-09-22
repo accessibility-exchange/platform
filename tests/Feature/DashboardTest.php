@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('individual usercan access dashboard', function () {
+test('individual user can access dashboard', function () {
     $user = User::factory()->create([
         'context' => 'individual',
     ]);

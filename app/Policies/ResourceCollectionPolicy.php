@@ -11,6 +11,11 @@ class ResourceCollectionPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): null|bool
+    {
+        return $user->isAdministrator() ? true : null;
+    }
+
     /**
      * Determine whether the user can create models.
      *

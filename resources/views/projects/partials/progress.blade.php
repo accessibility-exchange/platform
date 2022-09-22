@@ -17,7 +17,7 @@
                 <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                 <button name="publish" value="1"
                     @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
-                <p><em>{{ __('Once you publish your project, others can find it.') }}</em></p>
+                <p>{{ __('Once you publish your project, others can find it.') }}</p>
             </div>
         @else
             @can('unpublish', $project)
