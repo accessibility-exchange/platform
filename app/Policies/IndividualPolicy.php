@@ -63,13 +63,9 @@ class IndividualPolicy
 
     public function publish(User $user, Individual $individual): Response
     {
-        if ($user->id !== $individual->user_id) {
-            return Response::deny(__('You cannot publish this individual page.'));
-        }
-
-        return $individual->isPublishable()
+        return $user->id === $individual->user_id && $individual->isPublishable()
             ? Response::allow()
-            : Response::deny(__('This individual page is missing some required information, and cannot be published yet.'));
+            : Response::deny(__('You cannot publish this individual page.'));
     }
 
     public function unpublish(User $user, Individual $individual): Response

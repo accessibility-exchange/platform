@@ -781,7 +781,7 @@ test('individual pages cannot be published by other users', function () {
         'published_at' => null,
     ]);
 
-    $response = $this->actingAs($user)->from(localized_route('individuals.show', $individual))->put(localized_route('individuals.update-publication-status', $individual), [
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-publication-status', $individual), [
         'publish' => true,
     ]);
 
