@@ -439,8 +439,8 @@ test('password can be updated', function () {
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
-            'password' => 'new_password',
-            'password_confirmation' => 'new_password',
+            'password' => 'correctHorse-batteryStaple7',
+            'password_confirmation' => 'correctHorse-batteryStaple7',
         ]);
 
     $response->assertSessionHasNoErrors();
