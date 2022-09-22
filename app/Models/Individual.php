@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
@@ -374,7 +377,47 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     public function isPublishable(): bool
     {
+        $publishRules = [
+            'bio.*' => 'required',
+            'connection_lived_experience' => 'required',
+            'consulting_services' => [
+                'nullable',
+                Rule::requiredIf(fn () => $this->isConsultant()),
+                Rule::excludeIf(fn () => ! $this->isConsultant()),
+            ],
+            'extra_attributes.has_age_brackets' => 'required',
+            'extra_attributes.has_ethnoracial_identities' => 'required',
+            'extra_attributes.has_gender_and_sexual_identities' => 'required',
+            'extra_attributes.has_indigenous_identities' => 'required',
+            'meeting_types' => 'required',
+            'name' => 'required',
+            'region' => 'required',
+            'roles' => 'required',
+        ];
+
         if ($this->isConnector() || $this->isConsultant()) {
+            try {
+                Validator::validate($this->toArray(), $publishRules);
+            } catch (ValidationException $exception) {
+                return false;
+            }
+
+            if (! $this->livedExperienceConnections()->count()) {
+                return false;
+            }
+
+            if (! $this->areaTypeConnections()->count()) {
+                return false;
+            }
+
+            if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentityConnections()->count()) {
+                return false;
+            }
+
+            if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
+                return false;
+            }
+
             return true;
         }
 

@@ -21,7 +21,7 @@
 
                             @if ($individual->checkStatus('published'))
                                 <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
-                            @else
+                            @elseif ($individual->isPublishable())
                                 <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')" />
                             @endif
                         </form>
