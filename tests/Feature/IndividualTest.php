@@ -96,8 +96,8 @@ test('users can create individual pages', function () {
         'email' => 'test@example.com',
         'context' => 'individual',
     ])->post(localized_route('register-store'), [
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
     ]);
 
     $this->assertAuthenticated();

@@ -66,11 +66,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Password::defaults(function () {
-            $rule = Password::min(8);
-
-            return $this->app->isProduction()
-                ? $rule->mixedCase()->numbers()->symbols()->uncompromised()
-                : $rule;
+            return Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised();
         });
     }
 }
