@@ -23,9 +23,8 @@
         @if ($individual->checkStatus('draft'))
             <p class="stack">
                 <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
-                @if ($individual->isPublishable())
-                    <button class="secondary" name="publish" value="1">{{ __('Publish page') }}</button>
-                @endif
+                <button class="secondary" name="publish" value="1"
+                    @cannot('publish', $individual) disabled @endcannot>{{ __('Publish page') }}</button>
             </p>
         @else
             <p class="stack">
