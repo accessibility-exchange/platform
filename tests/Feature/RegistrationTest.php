@@ -70,8 +70,8 @@ test('new users can register', function () {
         'email' => 'test@example.com',
         'context' => 'individual',
     ])->post(localized_route('register-store'), [
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
     ]);
 
     $this->assertAuthenticated();
@@ -123,8 +123,8 @@ test('users can register via invitation to (regulated) organization', function (
         'context' => 'regulated-organization',
         'invitation' => 1,
     ])->post(localized_route('register-store'), [
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
     ]);
 
     $this->assertAuthenticated();
@@ -187,8 +187,8 @@ test('users can register via invitation to engagement', function () {
         'invitation' => 1,
         'invited_role' => 'participant',
     ])->post(localized_route('register-store'), [
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
     ]);
 
     $this->assertAuthenticated();
