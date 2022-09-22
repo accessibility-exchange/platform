@@ -2,7 +2,7 @@
 
 use App\View\Components\PasswordInput;
 
-it('can be rendered', function () {
+test('password input can be rendered', function () {
     $view = $this->withViewErrors([])
         ->component(
             PasswordInput::class,
@@ -13,7 +13,7 @@ it('can be rendered', function () {
     $view->assertSee('id="password"', false);
 });
 
-it('can be rendered with custom id', function () {
+test('password input can be rendered with custom id', function () {
     $view = $this->withViewErrors([])
         ->component(
             PasswordInput::class,
@@ -27,7 +27,7 @@ it('can be rendered with custom id', function () {
     $view->assertSee('id="admin_password"', false);
 });
 
-it('can be rendered with an error', function () {
+test('password input can be rendered with an error', function () {
     $view = $this->withViewErrors(['password' => 'You have entered an incorrect password.'])
         ->component(
             PasswordInput::class,

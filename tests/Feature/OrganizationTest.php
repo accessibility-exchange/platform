@@ -336,6 +336,9 @@ test('users with admin role can edit organization contact information', function
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
 
+    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
+    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+
     expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
     expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
     expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");

@@ -8,14 +8,6 @@
         {{ implode(', ',$project->projectable->sectors()->pluck('name')->toArray()) }}
     </p>
     <p>
-        @if ($project->checkStatus('draft'))
-            <span class="badge">{{ __('Draft') }}</span>
-        @elseif($project->started())
-            <span class="badge">{{ __('In progress') }}</span>
-        @elseif($project->finished())
-            <span class="badge">{{ __('Completed') }}</span>
-        @else
-            <span class="badge">{{ __('Upcoming') }}</span>
-        @endif
+        <span class="badge">{{ $project->status }}</span>
     </p>
 </x-card>

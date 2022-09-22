@@ -11,6 +11,11 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): null|bool
+    {
+        return $user->isAdministrator() ? true : null;
+    }
+
     public function viewAny(User $user): Response
     {
         return

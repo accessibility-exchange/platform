@@ -98,6 +98,14 @@ Route::controller(ProjectController::class)
             ->middleware(['auth', 'can:manage,project'])
             ->name('.manage');
 
+        Route::multilingual('/{project}/estimates-and-agreements/manage', 'manageEstimatesAndAgreements')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.manage-estimates-and-agreements');
+
+        Route::multilingual('/{project}/suggested-steps', 'suggestedSteps')
+            ->middleware(['auth', 'can:manage,project'])
+            ->name('.suggested-steps');
+
         Route::multilingual('/{project}/participate', 'participate')
             ->middleware(['auth', 'can:participate,project'])
             ->name('.participate');

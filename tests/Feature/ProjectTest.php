@@ -8,6 +8,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
+use function Pest\Faker\faker;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -184,16 +185,18 @@ test('projects can be published and unpublished', function () {
 
 test('users can view projects', function () {
     $user = User::factory()->create();
-    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
+    $adminUser = User::factory()->create(['context' => 'regulated-organization', 'phone' => '19024444567']);
     $regulatedOrganization = RegulatedOrganization::factory()->create([
-        'contact_person_name' => $adminUser->contact_person_name,
-        'contact_person_email' => $adminUser->contact_person_email,
+        'contact_person_name' => $adminUser->name,
+        'contact_person_email' => $adminUser->email,
+        'contact_person_phone' => $adminUser->phone,
         'preferred_contact_method' => $adminUser->preferred_contact_method,
     ]);
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'contact_person_name' => $regulatedOrganization->contact_person_name,
         'contact_person_email' => $regulatedOrganization->contact_person_email,
+        'contact_person_phone' => $regulatedOrganization->contact_person_phone,
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
@@ -211,6 +214,18 @@ test('users can view projects', function () {
 
     $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
     $response->assertOk();
+});
+
+test('notifications can be routed for projects', function () {
+    $project = Project::factory()->create([
+        'contact_person_name' => faker()->name(),
+        'contact_person_email' => faker()->email(),
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('individuals can express interest in projects', function () {
@@ -348,6 +363,12 @@ test('users with regulated organization admin role can manage projects', functio
 
     $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
     $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.manage-estimates-and-agreements', $project));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.suggested-steps', $project));
+    $response->assertOk();
 });
 
 test('users without regulated organization admin role cannot manage projects', function () {
@@ -436,12 +457,15 @@ test('projects have timeframes', function () {
         'end_date' => null,
     ]);
 
-    expect($org_past_project)->finished()->toBeTrue();
-    expect($org_current_project->finished())->toBeFalse();
-    expect($indeterminate_project->finished())->toBeFalse();
-    expect($org_current_project->started())->toBeTrue();
-    expect($org_future_project->started())->toBeFalse();
-    expect($indeterminate_project)->started()->toBeFalse();
+    expect($org_past_project)->finished->toBeTrue();
+    expect($org_past_project->status)->toEqual('Complete');
+    expect($org_current_project->finished)->toBeFalse();
+    expect($org_current_project->status)->toEqual('In progress');
+    expect($indeterminate_project->finished)->toBeFalse();
+    expect($org_current_project->started)->toBeTrue();
+    expect($org_future_project->started)->toBeFalse();
+    expect($org_future_project->status)->toEqual('Upcoming');
+    expect($indeterminate_project)->started->toBeFalse();
 
     $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());

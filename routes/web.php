@@ -104,6 +104,14 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth', 'onboard'])
     ->name('dashboard');
 
+Route::multilingual('/dashboard/notifications', [UserController::class, 'notifications'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.notifications');
+
+Route::multilingual('/dashboard/notifications/all', [UserController::class, 'allNotifications'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.notifications-all');
+
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->middleware([
@@ -137,6 +145,7 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->middleware(['auth'])
     ->name('users.destroy');
 
+require __DIR__.'/admin.php';
 require __DIR__.'/identifiers.php';
 require __DIR__.'/block-list.php';
 require __DIR__.'/individuals.php';

@@ -7,7 +7,6 @@ use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
 use App\Http\Requests\SaveUserLanguagesRequest;
 use App\Http\Requests\UpdateUserIntroductionStatusRequest;
-use App\Models\Invitation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -107,17 +106,6 @@ class UserController extends Controller
             default => null,
         };
 
-        $contractorInvitations = collect([]);
-
-        foreach ($user->unreadNotifications as $notification) {
-            if (in_array($notification->type, ['App\Notifications\IndividualContractorInvited', 'App\Notifications\OrganizationalContractorInvited'])) {
-                $contractorInvitation = Invitation::find($notification->data['invitation_id']) ?? null;
-                if ($contractorInvitation) {
-                    $contractorInvitations->push($contractorInvitation);
-                }
-            }
-        }
-
         $teamInvitation = $user->teamInvitation() ?? null;
 
         return view('dashboard', [
@@ -126,7 +114,28 @@ class UserController extends Controller
             'teamInvitation' => $teamInvitation,
             'teamInvitationable' => ! is_null($teamInvitation) ? $teamInvitation->invitationable : null,
             'teamAcceptUrl' => $teamInvitation ? URL::signedRoute('invitations.accept', $user->teamInvitation()) : null,
-            'contractorInvitations' => $contractorInvitations,
+        ]);
+    }
+
+    public function notifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->allUnreadNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
+        ]);
+    }
+
+    public function allNotifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->allNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
         ]);
     }
 

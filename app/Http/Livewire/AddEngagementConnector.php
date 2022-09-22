@@ -13,7 +13,6 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Livewire\Component;
@@ -114,8 +113,8 @@ class AddEngagementConnector extends Component
                 Mail::to($validated['email'])->send(new ContractorInvitation($invitation));
             }
         } else {
-            $administrators = Organization::find((int) $this->organization)->administrators;
-            Notification::send($administrators, new OrganizationalContractorInvited($invitation));
+            $organization = Organization::find($this->organization);
+            $organization->notify(new OrganizationalContractorInvited($invitation));
         }
 
         $this->engagement->extra_attributes->set('seeking_community_connector', false);

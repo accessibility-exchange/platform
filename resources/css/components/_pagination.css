@@ -1,0 +1,36 @@
+.pagination .spacer,
+.pagination a {
+    align-items: center;
+    border-radius: var(--radius-full);
+    color: var(--pagination-color);
+    display: flex;
+    height: var(--space-10);
+    justify-content: center;
+    width: var(--space-10);
+}
+
+.pagination a {
+    text-decoration: underline;
+}
+
+.pagination a:hover {
+    background: var(--pagination-background-hover);
+    color: var(--pagination-color-hover);
+}
+
+.pagination a:focus {
+    border: var(--border) solid var(--pagination-border-focus);
+    box-shadow: none;
+}
+
+.pagination a:active {
+    background: var(--pagination-background-active);
+    color: var(--pagination-color-active);
+    text-decoration: underline;
+}
+
+.pagination a[aria-current="page"] {
+    background: var(--pagination-current-background);
+    color: var(--pagination-current-color);
+    text-decoration: none;
+}

@@ -93,6 +93,14 @@
     --theme-nav-child-background-focus: var(--color-graphite-7);
     --theme-nav-child-background-active: var(--color-graphite-6);
     --theme-nav-current-color: var(--color-lavender-2);
+    --theme-pagination-color: var(--color-grey-2);
+    --theme-pagination-background-hover: var(--color-blue-6);
+    --theme-pagination-color-hover: var(--color-grey-2);
+    --theme-pagination-border-focus: var(--color-grey-2);
+    --theme-pagination-background-active: var(--color-graphite-6);
+    --theme-pagination-color-active: var(--color-grey-2);
+    --theme-pagination-current-color: var(--color-blue-7);
+    --theme-pagination-current-background: var(--color-grey-2);
     --theme-expander-color: var(--color-turquoise-1);
     --theme-expander-border: var(--color-turquoise-1);
     --theme-expander-color-focus: var(--color-turquoise-1);
