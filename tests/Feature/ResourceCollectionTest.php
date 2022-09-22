@@ -140,7 +140,7 @@ test('create resource collection validation', function () {
         'title' => 'Test resource collection',
     ]);
 
-    $response->assertSessionHasErrors(['description' => 'The description field is required.']);
+    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
 
     $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
         'user_id' => $user->id,
@@ -155,7 +155,7 @@ test('create resource collection validation', function () {
         'description' => 'This is my resource collection',
     ]);
 
-    $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    $response->assertSessionHasErrors(['title' => 'You must enter your title.']);
 
     $lengthyTitle = '';
 
@@ -188,7 +188,7 @@ test('update resource collection validation', function () {
         'title' => $resourceCollection->title,
     ]);
 
-    $response->assertSessionHasErrors(['description' => 'The description field is required.']);
+    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
 
     $response = $this->actingAs($user)->put(localized_route('resource-collections.update', $resourceCollection), [
         'title' => $resourceCollection->title,
@@ -201,7 +201,7 @@ test('update resource collection validation', function () {
         'description' => 'This is my updated resource collection.',
     ]);
 
-    $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    $response->assertSessionHasErrors(['title' => 'You must enter your title.']);
 
     $lengthyTitle = '';
 
