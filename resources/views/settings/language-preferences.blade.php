@@ -38,7 +38,7 @@
         @if ($user->context === 'individual')
             <h2>{{ __('First language') }}</h2>
 
-            <p>{{ __('Please indicate the language you are most comfortable using.') }}</p>
+            <p>{{ __('The language you are most comfortable using.') }}</p>
 
             <div class="field @error('first_language') field--error @enderror stack">
                 <x-hearth-label for="first_language" :value="__('First language')" />

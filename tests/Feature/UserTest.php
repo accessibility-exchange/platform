@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 
 test('users can view the introduction', function () {
@@ -92,6 +94,8 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
 
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->phone);
+
     $user->update([
         'preferred_contact_person' => 'support-person',
         'support_person_name' => 'Jenny Appleseed',
@@ -110,7 +114,11 @@ test('user’s contact methods can be retrieved', function () {
         'support_person_email' => null,
     ]);
 
-    expect($user->fresh()->contact_methods)->toEqual(['phone']);
+    $user = $user->fresh();
+
+    expect($user->contact_methods)->toEqual(['phone']);
+
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->support_person_phone);
 });
 
 test('user’s contact person can be retrieved', function () {
@@ -292,4 +300,53 @@ test('user extra attributes and notification settings can be queried', function 
     foreach ($updateNotificationUsers as $user) {
         expect($user->notification_settings->updates['channels'])->toContain('contact');
     }
+});
+
+test('user is only admin of an organization', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $anotherUser = User::factory()->create(['context' => 'organization']);
+
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->create();
+
+    expect($user->isOnlyAdministratorOfOrganization())->toBeFalse();
+
+    $anotherUser->delete();
+
+    expect($user->isOnlyAdministratorOfOrganization())->toBeTrue();
+});
+
+test('user is only admin of a regulated organization', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $anotherUser = User::factory()->create(['context' => 'regulated-organization']);
+
+    $organization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->create();
+
+    expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeFalse();
+
+    $anotherUser->delete();
+
+    expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeTrue();
+});
+
+test('user’s two factor status can be retrieved', function () {
+    $user = User::factory()->create();
+    expect($user->twoFactorAuthEnabled())->tobeFalse();
+});
+
+test('administrative user can be retrieved via query scope', function () {
+    $user = User::factory()->create();
+    $adminUser = User::factory()->create(['context' => 'administrator']);
+
+    expect(User::all())->toHaveCount(2);
+    expect(User::whereAdministrator()->get())->toHaveCount(1);
+});
+
+test('user’s notifications can be merged from all available sources', function () {
+    $this->markTestIncomplete();
 });

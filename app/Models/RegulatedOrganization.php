@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
@@ -131,6 +132,16 @@ class RegulatedOrganization extends Model
     public function getRoutePlaceholder(): string
     {
         return 'regulatedOrganization';
+    }
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return [$this->contact_person_email => $this->contact_person_name];
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->contact_person_phone;
     }
 
     public function singularName(): Attribute

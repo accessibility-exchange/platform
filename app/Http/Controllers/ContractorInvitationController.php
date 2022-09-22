@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
 class ContractorInvitationController extends Controller
 {
@@ -18,6 +19,12 @@ class ContractorInvitationController extends Controller
         }
 
         $invitation->accept($invitation->type);
+
+        $notifications = DatabaseNotification::where('data->invitation_id', $invitation->id)->get();
+
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
 
         flash(
             __('You have joined :invitationable as a :role', ['invitationable' => $invitation->invitationable->name, 'role' => $invitation->role]),
@@ -37,6 +44,12 @@ class ContractorInvitationController extends Controller
         }
 
         $invitation->delete();
+
+        $notifications = DatabaseNotification::where('data->invitation_id', $invitation->id)->get();
+
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
 
         flash(
             $invitation->type === 'individual'

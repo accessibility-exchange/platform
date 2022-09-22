@@ -14,6 +14,7 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Notifications\IndividualContractorInvited;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
 
@@ -444,6 +445,9 @@ test('individual user can accept invitation to an engagement as a connector', fu
     $response->assertSee($individual->name);
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
+    $individual->user->notify(new IndividualContractorInvited($invitation));
+
+    $databaseNotification = $individual->user->notifications->first();
 
     $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
     $response->assertForbidden();
@@ -455,6 +459,7 @@ test('individual user can accept invitation to an engagement as a connector', fu
     $engagement = $engagement->fresh();
 
     expect($engagement->connector->id)->toEqual($individual->id);
+    $this->assertModelMissing($databaseNotification);
 });
 
 test('individual user can decline invitation to an engagement as a connector', function () {
@@ -481,6 +486,9 @@ test('individual user can decline invitation to an engagement as a connector', f
         'email' => $individual->user->email,
     ]);
 
+    $individual->user->notify(new IndividualContractorInvited($invitation));
+    $databaseNotification = $individual->user->notifications->first();
+
     $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
     $response->assertForbidden();
 
@@ -489,6 +497,7 @@ test('individual user can decline invitation to an engagement as a connector', f
     $response->assertRedirect(localized_route('dashboard'));
 
     $this->assertModelMissing($invitation);
+    $this->assertModelMissing($databaseNotification);
 });
 
 test('organization user can accept invitation to an engagement as a connector', function () {

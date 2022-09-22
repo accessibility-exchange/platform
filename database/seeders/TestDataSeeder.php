@@ -63,7 +63,7 @@ class TestDataSeeder extends Seeder
                     ],
                     'website_link' => 'https://www.Mysite.com',
                     'bio' => [
-                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free envirnment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report cards on issues affecting people with disabilities.',
+                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free envirnment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
                     ],
                     'meeting_types' => ['in_person', 'web_conference', 'phone'],
                     'connection_lived_experience' => 'yes-all',

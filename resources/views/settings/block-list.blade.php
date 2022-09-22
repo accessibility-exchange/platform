@@ -17,9 +17,10 @@
         <li>{{ __('show up on search results for them') }}</li>
         <li>{{ __('receive communication from them') }}</li>
     </ul>
+    <p> {{ __('They will not know you have blocked them.') }}
 
-    <!-- Form Validation Errors -->
-    @include('partials.validation-errors')
+        <!-- Form Validation Errors -->
+        @include('partials.validation-errors')
 
     <h2 id="regulated-organizations">{{ __('Regulated organizations') }}</h2>
 

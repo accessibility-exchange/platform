@@ -17,7 +17,7 @@
     </div>
 
     <div x-data="modal()">
-        <button class="secondary" type="button" @click="showModal">{{ __('Add translation') }}</button>
+        <button class="secondary" type="button" @click="showModal">{{ __('Add language') }}</button>
         <template x-teleport="body">
             <div class="modal-wrapper" x-show="showingModal">
                 <div class="modal stack" @keydown.escape.window="hideModal">

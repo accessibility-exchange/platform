@@ -87,9 +87,10 @@ class IndividualController extends Controller
 
         if (! $individual->fresh()->isConsultant() && ! $individual->fresh()->isConnector()) {
             $individual->unpublish(true);
+            flash(__('You have successfully updated your role to Consultation Participant.'), 'success');
+        } else {
+            flash(__('Your roles have been saved.'), 'success');
         }
-
-        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }

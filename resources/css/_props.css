@@ -142,6 +142,14 @@
     --nav-child-background-focus: var(--theme-nav-child-background-focus, var(--color-grey-1));
     --nav-child-background-active: var(--theme-nav-child-background-active, var(--color-grey-2));
     --nav-current-color: var(--theme-nav-current-color, var(--color-lavender-3));
+    --pagination-color: var(--theme-pagination-color, var(--color-graphite-7));
+    --pagination-background-hover: var(--theme-pagination-background-hover, var(--color-lavender-2));
+    --pagination-color-hover: var(--theme-pagination-color-hover, var(--color-black));
+    --pagination-border-focus: var(--theme-pagination-border-focus, var(--color-black));
+    --pagination-background-active: var(--theme-pagination-background-active, var(--color-grey-2));
+    --pagination-color-active: var(--theme-pagination-color-active, var(--color-blue-7));
+    --pagination-current-color: var(--theme-pagination-current-color, var(--color-grey-2));
+    --pagination-current-background: var(--theme-pagination-current-background, var(--color-blue-7));
     --expander-color: var(--theme-expander-color, var(--color-blue-6));
     --expander-border: var(--theme-expander-border, var(--color-blue-6));
     --expander-color-focus: var(--theme-expander-color-focus, var(--color-blue-7));

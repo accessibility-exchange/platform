@@ -5,7 +5,7 @@
             {{ __('Edit your role') }}
         </h1>
 
-        <h2>{{ __('What would you like to do on this website?') }}</h2>
+        <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
     </x-slot>
 
     <p>{{ __('You can always change this later.') }} <a

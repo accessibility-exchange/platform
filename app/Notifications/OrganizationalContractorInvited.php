@@ -4,29 +4,24 @@ namespace App\Notifications;
 
 use App\Enums\OrganizationRole;
 use App\Models\Invitation;
-use App\Models\User;
-use Illuminate\Bus\Queueable;
+use App\Models\Organization;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Support\Facades\URL;
 
-class OrganizationalContractorInvited extends Notification
+class OrganizationalContractorInvited extends PlatformNotification
 {
-    use Queueable;
-
     public Invitation $invitation;
+
+    public mixed $invitationable;
 
     public function __construct(Invitation $invitation)
     {
         $this->invitation = $invitation;
+        $this->invitationable = $this->invitation->invitationable;
     }
 
-    public function via(User $notifiable): array
-    {
-        return ['mail', 'database'];
-    }
-
-    public function toMail(User $notifiable): MailMessage
+    public function toMail(Organization $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject(__(':role Invitation', ['role' => OrganizationRole::labels()[$this->invitation->role]]))
@@ -39,7 +34,23 @@ class OrganizationalContractorInvited extends Notification
             );
     }
 
-    public function toArray(User $notifiable): array
+    public function toVonage(Organization $notifiable): VonageMessage
+    {
+        return (new VonageMessage)
+            ->content(
+                __(
+                    'Your organization has been invited to the :invitationable_type ":invitationable" as a :role on The Accessibility Exchange. Sign in to your account at https://accessibilityexchange.ca to continue.',
+                    [
+                        'invitationable_type' => $this->invitationable->singular_name,
+                        'invitationable' => $this->invitationable->getTranslation('name', locale()),
+                        'role' => OrganizationRole::labels()[$this->invitation->role],
+                    ]
+                )
+            )
+            ->unicode();
+    }
+
+    public function toArray(Organization $notifiable): array
     {
         return [
             'acceptUrl' => URL::signedRoute('contractor-invitations.accept', $this->invitation),
