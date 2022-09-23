@@ -15,9 +15,8 @@ class StoreOrganizationRequest extends FormRequest
     {
         return [
             'type' => 'required|string|in:representative,support,civil-society',
-            'name.*' => 'nullable|string|max:255|unique_translation:organizations',
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
+            'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:organizations',
+            'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:organizations',
         ];
     }
 
