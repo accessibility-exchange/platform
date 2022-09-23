@@ -41,7 +41,7 @@
                             {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('regulated-organization.types.' . $type), 'name' => old('name.' . $locale)]) }}
                         </x-hearth-alert>
                     </x-live-region>
-                    <x-card.regulated-organization level="3" :regulatedOrganization="$regulatedOrganization" />
+                    <x-card.regulated-organization level="3" :model="$regulatedOrganization" />
                 </div>
             @break
 
