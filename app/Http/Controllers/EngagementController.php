@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\TimeZone;
 use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -407,6 +409,8 @@ class EngagementController extends Controller
         return view('engagements.edit', [
             'project' => $engagement->project,
             'engagement' => $engagement,
+            'timezones' => Options::forEnum(TimeZone::class)->nullable(__('Please select your time zone…'))->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
         ]);
     }
 
