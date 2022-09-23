@@ -19,17 +19,17 @@
                 <div class="expander field @error($name . '.' . $language) field--error @enderror stack"
                     x-data="{ expanded: false, value: '{{ old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '') }}', badgeText: '{{ __('Content added') }}' }">
                     <p class="expander__summary"
-                        id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}">
+                        id="{{ Str::slug(__(':label :locale', ['label' => $label, 'locale' => get_language_exonym($language)])) }}">
                         <button type="button"
-                            aria-describedby="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"
+                            aria-describedby="{{ Str::slug(__(':label :locale', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"
                             x-bind:aria-expanded="expanded.toString()" x-on:click="expanded = !expanded">
-                            {{ __(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)]) }}
+                            {{ __(':locale translation of :label', ['label' => $shortLabel ?? $label, 'locale' => get_language_exonym($language)]) }}
                             <x-heroicon-s-plus aria-hidden="true" x-show="! expanded" />
                             <x-heroicon-s-minus aria-hidden="true" x-show="expanded" />
                         </button>
                     </p>
                     <span class="badge"
-                        id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"
+                        id="{{ Str::slug(__(':label :locale', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"
                         x-show="value && ! expanded" x-text="value ? badgeText : ''"></span>
                     <div class="expander__content" x-show="expanded">
                         <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old(
@@ -38,7 +38,10 @@
                         )"
                             :hinted="$name . '-hint'" x-model="value"
                             x-on:keyup="badgeText = '{{ __('Content added, unsaved changes') }}'" :aria-labelledby="Str::slug(
-                                __(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)]),
+                                __(':locale translation of :label', [
+                                    'label' => $shortLabel ?? $label,
+                                    'locale' => get_language_exonym($language),
+                                ]),
                             )" />
                         <x-hearth-error :for="$name . '.' . $language" />
                     </div>
