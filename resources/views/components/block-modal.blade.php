@@ -1,8 +1,8 @@
 <div x-data="modal()">
     <button class="borderless" type="button" @click="showModal">{{ __('Block') }}</button>
     <template x-teleport="body">
-        <div class="modal-wrapper" x-show="showingModal">
-            <div class="modal stack" @keydown.escape.window="hideModal">
+        <div class="modal-wrapper" x-show="showingModal" @keydown.escape.window="hideModal">
+            <div class="modal stack" @click.outside="hideModal">
                 <h3>{{ __('Block :blockable', ['blockable' => $blockable->name]) }}</h3>
 
                 <p>{{ __('When you block someone, you will not be able to:') }}</p>
