@@ -32,4 +32,16 @@ class SaveUserContextRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'context.required' => __("You must tell us who you're joining as."),
+        ];
+    }
 }
