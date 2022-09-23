@@ -1,10 +1,5 @@
 hosts:
   - staging.accessibilityexchange.ca
-# auth:
-#   - username: colab
-#     password: colab
-#   - username: tae
-#     password: tae
 disks:
   - size: 10Gi
     name: accessibility-app-data
