@@ -7,6 +7,7 @@ use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
+use App\Enums\Weekday;
 use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -411,6 +412,10 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'timezones' => Options::forEnum(TimeZone::class)->nullable(__('Please select your time zone…'))->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
+            'weekdays' => Options::forEnum(Weekday::class)->toArray(),
+            'weekdayAvailabilities' => Options::forArray(['yes' => __('Available'), 'upon-request' => __('Upon request'), 'no' => __('Not available')])->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
         ]);
     }
 

@@ -7,7 +7,3 @@
     padding-block: var(--space-6) var(--space-8);
     padding-inline: var(--space-8);
 }
-
-.box * {
-    color: inherit;
-}

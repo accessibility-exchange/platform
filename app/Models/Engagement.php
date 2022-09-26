@@ -42,7 +42,6 @@ class Engagement extends Model
         'regions',
         'localities',
         'paid',
-        'payment',
         'signup_by_date',
         'materials_by_date',
         'complete_by_date',
@@ -57,6 +56,24 @@ class Engagement extends Model
         'individual_consultant_id',
         'organizational_consultant_id',
         'extra_attributes',
+        'window_start_time',
+        'window_end_time',
+        'window_flexibility',
+        'meeting_types',
+        'street_address',
+        'unit_suite_floor',
+        'locality',
+        'region',
+        'postal_code',
+        'directions',
+        'meeting_software',
+        'alternative_meeting_software',
+        'meeting_url',
+        'additional_video_information',
+        'meeting_phone',
+        'additional_phone_information',
+        'other_accepted_format',
+        'open_to_other_formats',
     ];
 
     protected $casts = [
@@ -78,12 +95,20 @@ class Engagement extends Model
         'weekday_availabilities' => 'array',
         'document_languages' => 'array',
         'accepted_formats' => 'array',
+        'directions' => 'array',
+        'additional_video_information' => 'array',
+        'additional_phone_information' => 'array',
+        'other_accepted_format' => 'array',
     ];
 
     public array $translatable = [
         'name',
         'description',
-        'payment',
+        'directions',
+        'additional_video_information',
+        'additional_phone_information',
+        'additional_phone_information',
+        'other_accepted_format',
     ];
 
     public function singularName(): Attribute
