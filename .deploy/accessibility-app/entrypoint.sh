@@ -5,10 +5,10 @@ set -e
 mkdir -p $FILES_PATH
 mkdir -p $CACHE_PATH
 
-rsync -a /app/storage/ $FILES_PATH/
+rsync -a /app/storage/ $FILES_PATH
 rm -rf /app/storage
 
-rsync -a /app/bootstrap/cache/ $CACHE_PATH/
+rsync -a /app/bootstrap/cache/ $CACHE_PATH
 rm -rf /app/bootstrap/cache
 
 ln -s $FILES_PATH /app/storage
@@ -22,10 +22,12 @@ then
 
   touch $FILES_PATH/../deploy.lock
 
-  php artisan deploy:initial
-  
+  php artisan deploy:global
+
 fi
 
 rm -rf $FILES_PATH/../deploy.lock
+
+php artisan deploy:local
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
