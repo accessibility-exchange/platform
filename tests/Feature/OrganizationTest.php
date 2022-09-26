@@ -116,6 +116,7 @@ test('users with admin role can edit and publish organizations', function () {
                 'has_age_brackets' => 0,
                 'has_ethnoracial_identities' => 0,
                 'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
                 'has_indigenous_identities' => 0,
             ],
             'staff_lived_experience' => 'yes',

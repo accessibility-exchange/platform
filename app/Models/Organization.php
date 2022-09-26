@@ -314,6 +314,7 @@ class Organization extends Model
             'extra_attributes.has_age_brackets' => 'required',
             'extra_attributes.has_ethnoracial_identities' => 'required',
             'extra_attributes.has_gender_and_sexual_identities' => 'required',
+            'extra_attributes.has_refugee_and_immigrant_constituency' => 'required',
             'extra_attributes.has_indigenous_identities' => 'required',
             'languages' => 'required',
             'locality' => 'required',

@@ -5,27 +5,30 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 
 dataset('organizationIsPublishable', function () {
+    $baseModel = [
+        'about' => 'test organization about',
+        'consulting_services' => [ConsultingService::Analysis->value],
+        'contact_person_name' => 'contact name',
+        'contact_person_phone' => '4165555555',
+        'extra_attributes' => [
+            'has_age_brackets' => 0,
+            'has_ethnoracial_identities' => 0,
+            'has_gender_and_sexual_identities' => 0,
+            'has_refugee_and_immigrant_constituency' => 0,
+            'has_indigenous_identities' => 0,
+        ],
+        'locality' => 'Toronto',
+        'preferred_contact_method' => 'email',
+        'region' => 'ON',
+        'roles' => [OrganizationRole::AccessibilityConsultant],
+        'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        'staff_lived_experience' => 'yes',
+    ];
+
     return [
         'not publishable when missing about' => [
             false,
-            [
-                'about' => null,
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['about' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -33,24 +36,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing consulting_services as a consultant' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => null,
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['consulting_services' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -58,25 +44,10 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing contact_person_email' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
+            array_replace_recursive($baseModel, [
                 'contact_person_email' => null,
-                'contact_person_name' => 'contact name',
                 'contact_person_phone' => null,
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -84,24 +55,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing contact_person_name' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => null,
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['contact_person_name' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -109,25 +63,10 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing contact_person_phone' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
+            array_replace_recursive($baseModel, [
                 'contact_person_phone' => null,
                 'contact_person_vrs' => true,
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -135,24 +74,11 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing has_age_brackets' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_age_brackets' => null,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -160,24 +86,11 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing has_ethnoracial_identities' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
-                    'has_age_brackets' => 0,
                     'has_ethnoracial_identities' => null,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -185,24 +98,23 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing has_gender_and_sexual_identities' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
                     'has_gender_and_sexual_identities' => null,
-                    'has_indigenous_identities' => 0,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
             ],
+        ],
+        'not publishable when missing has_refugee_and_immigrant_constituency' => [
+            false,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_refugee_and_immigrant_constituency' => null,
+                ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -210,24 +122,11 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing has_indigenous_identities' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
                     'has_indigenous_identities' => null,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -235,25 +134,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing languages' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'languages' => null,
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['languages' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -261,24 +142,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing locality' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => null,
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['locality' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -286,25 +150,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing name' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'name' => null,
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['name' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -312,24 +158,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing preferred_contact_method' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => null,
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['preferred_contact_method' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -337,24 +166,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing region' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => null,
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['region' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -362,24 +174,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing roles' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => null,
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['roles' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -387,24 +182,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing service_areas' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => null,
-                'staff_lived_experience' => 'yes',
-            ],
+            array_replace_recursive($baseModel, ['service_areas' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -412,24 +190,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing staff_lived_experiences' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => null,
-            ],
+            array_replace_recursive($baseModel, ['staff_lived_experience' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -437,25 +198,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing type' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-                'type' => null,
-            ],
+            array_replace_recursive($baseModel, ['type' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -463,25 +206,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing working_languages' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-                'working_languages' => null,
-            ],
+            array_replace_recursive($baseModel, ['working_languages' => null]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -489,24 +214,11 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing ageBrackets' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_age_brackets' => 1,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -514,24 +226,11 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing indigenousIdentities' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
                     'has_indigenous_identities' => 1,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'areaTypes',
                 'livedExperiences',
@@ -539,72 +238,26 @@ dataset('organizationIsPublishable', function () {
         ],
         'not publishable when missing areaTypes' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            $baseModel,
             [
                 'livedExperiences',
             ],
         ],
         'not publishable when missing livedExperiences' => [
             false,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::AccessibilityConsultant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            $baseModel,
             [
                 'areaTypes',
             ],
         ],
         'publishable with all expected values' => [
             true,
-            [
-                'about' => 'test organization about',
-                'consulting_services' => [ConsultingService::Analysis->value],
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
+            array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_age_brackets' => 1,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
                     'has_indigenous_identities' => 1,
                 ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::ConsultationParticipant],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            ]),
             [
                 'ageBrackets',
                 'areaTypes',
@@ -614,23 +267,7 @@ dataset('organizationIsPublishable', function () {
         ],
         'publishable without optional values' => [
             true,
-            [
-                'about' => 'test organization about',
-                'contact_person_name' => 'contact name',
-                'contact_person_phone' => '4165555555',
-                'extra_attributes' => [
-                    'has_age_brackets' => 0,
-                    'has_ethnoracial_identities' => 0,
-                    'has_gender_and_sexual_identities' => 0,
-                    'has_indigenous_identities' => 0,
-                ],
-                'locality' => 'Toronto',
-                'preferred_contact_method' => 'email',
-                'region' => 'ON',
-                'roles' => [OrganizationRole::CommunityConnector],
-                'service_areas' => [ProvinceOrTerritory::Ontario->value],
-                'staff_lived_experience' => 'yes',
-            ],
+            $baseModel,
             [
                 'areaTypes',
                 'livedExperiences',
