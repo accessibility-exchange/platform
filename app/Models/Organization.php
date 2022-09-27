@@ -343,11 +343,19 @@ class Organization extends Model
             return false;
         }
 
-        if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
+        if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBrackets()->count()) {
             return false;
         }
 
-        if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBrackets()->count()) {
+        if ($this->extra_attributes['has_ethnoracial_identities'] && ! $this->ethnoracialIdentities()->count()) {
+            return false;
+        }
+
+        if ($this->extra_attributes['has_gender_and_sexual_identities'] && ! $this->genderIdentities()->count()) {
+            return false;
+        }
+
+        if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
             return false;
         }
 

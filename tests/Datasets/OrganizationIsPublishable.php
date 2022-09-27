@@ -224,6 +224,30 @@ dataset('organizationIsPublishable', function () {
                 'livedExperiences',
             ],
         ],
+        'not publishable when missing ethnoracialIdentities' => [
+            false,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_ethnoracial_identities' => 1,
+                ],
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
+            ],
+        ],
+        'not publishable when missing genderIdentities' => [
+            false,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_gender_and_sexual_identities' => 1,
+                ],
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
+            ],
+        ],
         'not publishable when missing indigenousIdentities' => [
             false,
             array_replace_recursive($baseModel, [
@@ -255,12 +279,16 @@ dataset('organizationIsPublishable', function () {
             array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_age_brackets' => 1,
+                    'has_ethnoracial_identities' => 1,
                     'has_indigenous_identities' => 1,
+                    'has_gender_and_sexual_identities' => 1,
                 ],
             ]),
             [
                 'ageBrackets',
                 'areaTypes',
+                'ethnoracialIdentities',
+                'genderIdentities',
                 'indigenousIdentities',
                 'livedExperiences',
             ],

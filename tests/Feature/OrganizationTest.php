@@ -8,6 +8,7 @@ use App\Models\AreaType;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
+use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
@@ -561,6 +562,8 @@ test('organization pages cannot be published by other users', function () {
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
     $this->seed(AgeBracketSeeder::class);
     $this->seed(AreaTypeSeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(EthnoracialIdentitySeeder::class);
     $this->seed(IndigenousIdentitySeeder::class);
     $this->seed(LivedExperienceSeeder::class);
 
@@ -569,20 +572,28 @@ test('organization isPublishable()', function ($expected, $data, $connections = 
     $organization->fill($data);
 
     foreach ($connections as $connection) {
-        if ($connection === 'livedExperiences') {
-            $organization->livedExperiences()->attach(LivedExperience::first()->id);
+        if ($connection === 'ageBrackets') {
+            $organization->ageBrackets()->attach(AgeBracket::first()->id);
         }
 
         if ($connection === 'areaTypes') {
             $organization->areaTypes()->attach(AreaType::first()->id);
         }
 
+        if ($connection === 'ethnoracialIdentities') {
+            $organization->ethnoracialIdentities()->attach(EthnoracialIdentity::first()->id);
+        }
+
+        if ($connection === 'genderIdentities') {
+            $organization->genderIdentities()->attach(GenderIdentity::first()->id);
+        }
+
         if ($connection === 'indigenousIdentities') {
             $organization->indigenousIdentities()->attach(IndigenousIdentity::first()->id);
         }
 
-        if ($connection === 'ageBrackets') {
-            $organization->ageBrackets()->attach(AgeBracket::first()->id);
+        if ($connection === 'livedExperiences') {
+            $organization->livedExperiences()->attach(LivedExperience::first()->id);
         }
     }
 
