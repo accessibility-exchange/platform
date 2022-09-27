@@ -5,6 +5,7 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
+use App\Models\Constituency;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
@@ -562,6 +563,7 @@ test('organization pages cannot be published by other users', function () {
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
     $this->seed(AgeBracketSeeder::class);
     $this->seed(AreaTypeSeeder::class);
+    $this->seed(ConstituencySeeder::class);
     $this->seed(GenderIdentitySeeder::class);
     $this->seed(EthnoracialIdentitySeeder::class);
     $this->seed(IndigenousIdentitySeeder::class);
@@ -594,6 +596,14 @@ test('organization isPublishable()', function ($expected, $data, $connections = 
 
         if ($connection === 'livedExperiences') {
             $organization->livedExperiences()->attach(LivedExperience::first()->id);
+        }
+
+        if ($connection === 'trans_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', 'Trans person')->id);
+        }
+
+        if ($connection === '2SLGBTQIA+_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', '2SLGBTQIA+ person')->id);
         }
     }
 

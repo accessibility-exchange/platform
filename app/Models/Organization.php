@@ -351,7 +351,12 @@ class Organization extends Model
             return false;
         }
 
-        if ($this->extra_attributes['has_gender_and_sexual_identities'] && ! $this->genderIdentities()->count()) {
+        if (
+            $this->extra_attributes['has_gender_and_sexual_identities'] &&
+            ! $this->genderIdentities()->count() &&
+            ! $this->constituencies->contains(Constituency::firstWhere('name->en', 'Trans person')) &&
+            ! $this->constituencies->contains(Constituency::firstWhere('name->en', '2SLGBTQIA+ person'))
+        ) {
             return false;
         }
 

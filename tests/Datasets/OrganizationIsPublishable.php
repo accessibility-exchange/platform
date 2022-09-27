@@ -293,6 +293,45 @@ dataset('organizationIsPublishable', function () {
                 'livedExperiences',
             ],
         ],
+        'publishable with gender identities' => [
+            true,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_gender_and_sexual_identities' => 1,
+                ],
+            ]),
+            [
+                'areaTypes',
+                'genderIdentities',
+                'livedExperiences',
+            ],
+        ],
+        'publishable with trans identity' => [
+            true,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_gender_and_sexual_identities' => 1,
+                ],
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
+                'trans_identity',
+            ],
+        ],
+        'publishable with 2SLGBTQIA+ identity' => [
+            true,
+            array_replace_recursive($baseModel, [
+                'extra_attributes' => [
+                    'has_gender_and_sexual_identities' => 1,
+                ],
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
+                '2SLGBTQIA+_identity',
+            ],
+        ],
         'publishable without optional values' => [
             true,
             $baseModel,
