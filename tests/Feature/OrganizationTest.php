@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ConsultingService;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
@@ -449,6 +450,112 @@ test('non members cannot edit or publish organizations', function () {
     $response->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeTrue();
+});
+
+test('organization pages can be published', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('published'));
+});
+
+test('organization pages can be unpublished', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+            'published_at' => date('Y-m-d h:i:s', time()),
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'unpublish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('draft'));
+});
+
+test('organization pages cannot be published by other users', function () {
+    $user = User::factory()->create();
+    $organization = Organization::factory()
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $organization = $organization->fresh();
+    $this->assertTrue($organization->checkStatus('draft'));
 });
 
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
