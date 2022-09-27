@@ -11,8 +11,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
@@ -145,7 +149,103 @@ class Engagement extends Model
 
     public function isPublishable(): bool
     {
-        return ! is_null($this->signup_by_date);
+        $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];
+
+        $publishRules = [
+            'name.*' => 'nullable|string',
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'description.*' => 'nullable|string',
+            'description.en' => 'required_without:description.fr',
+            'description.fr' => 'required_without:description.en',
+            'window_start_date' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'window_end_date' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'window_start_time' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'window_end_time' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'timezone' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'weekday_availabilities.monday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.tuesday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.wednesday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.thursday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.friday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.saturday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.sunday' => $weekdayAvailabilitiesRules,
+            'meeting_types' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'street_address' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+            ],
+            'locality' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+            ],
+            'region' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+            ],
+            'postal_code' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+            ],
+            'meeting_software' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types)),
+            ],
+            'meeting_url' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types)),
+            ],
+            'meeting_phone' => [
+                Rule::requiredIf($this->format === 'interviews' && in_array('phone', $this->meeting_types)),
+            ],
+            'materials_by_date' => [
+                Rule::requiredIf(in_array($this->format, ['interviews', 'survey', 'other-async'])),
+            ],
+            'complete_by_date' => [
+                Rule::requiredIf(in_array($this->format, ['interviews', 'survey', 'other-async'])),
+            ],
+            'document_languages' => [
+                Rule::requiredIf(in_array($this->format, ['survey', 'other-async'])),
+            ],
+            'accepted_formats' => [
+                Rule::requiredIf($this->format === 'interviews'),
+            ],
+            'other_accepted_formats' => [
+                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats)),
+            ],
+            'other_accepted_format' => [
+                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats),
+            ],
+            'other_accepted_format.en' => [
+                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats && ! $this->getTranslation('other_accepted_format', 'fr')),
+            ],
+            'other_accepted_format.fr' => [
+                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats && ! $this->getTranslation('other_accepted_format', 'en')),
+            ],
+            'signup_by_date' => 'required',
+        ];
+
+        try {
+            Validator::validate($this->toArray(), $publishRules);
+        } catch (ValidationException $exception) {
+            return false;
+        }
+
+        if (in_array($this->format, ['workshop', 'focus-group', 'other-sync']) && ! $this->meetings->count()) {
+            return false;
+        }
+
+        if (! $this->hasEstimateAndAgreement()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function scopeWherePublishable(Builder $query): Builder
@@ -213,5 +313,10 @@ class Engagement extends Model
     public function matchingStrategy(): MorphOne
     {
         return $this->morphOne(MatchingStrategy::class, 'matchable');
+    }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
     }
 }

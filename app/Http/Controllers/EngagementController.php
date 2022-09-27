@@ -453,12 +453,22 @@ class EngagementController extends Controller
             $data['window_end_time'] = $window_end_time;
         }
 
+        if (! isset($data['accepted_formats'])) {
+            $data['accepted_formats'] = [];
+        }
+
+        if (! isset($data['other_accepted_formats'])) {
+            $data['other_accepted_format'] = null;
+        }
+
+        ray($data);
+
         $engagement->fill($data);
         $engagement->save();
 
         flash(__('Your engagement has been updated.'), 'success');
 
-        return redirect(localized_route('engagements.manage', $engagement));
+        return redirect(localized_route('engagements.edit', $engagement));
     }
 
     public function manage(Engagement $engagement)

@@ -21,7 +21,7 @@ class UpdateEngagementRequest extends FormRequest
 
     public function rules(): array
     {
-        $weekday_availabilities_rules = [
+        $weekdayAvailabilitiesRules = [
             'nullable',
             Rule::excludeIf($this->engagement->format !== 'interviews'),
             Rule::requiredIf($this->engagement->format === 'interviews'),
@@ -76,13 +76,13 @@ class UpdateEngagementRequest extends FormRequest
                 Rule::requiredIf($this->engagement->format === 'interviews'),
                 'array',
             ],
-            'weekday_availabilities.monday' => $weekday_availabilities_rules,
-            'weekday_availabilities.tuesday' => $weekday_availabilities_rules,
-            'weekday_availabilities.wednesday' => $weekday_availabilities_rules,
-            'weekday_availabilities.thursday' => $weekday_availabilities_rules,
-            'weekday_availabilities.friday' => $weekday_availabilities_rules,
-            'weekday_availabilities.saturday' => $weekday_availabilities_rules,
-            'weekday_availabilities.sunday' => $weekday_availabilities_rules,
+            'weekday_availabilities.monday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.tuesday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.wednesday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.thursday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.friday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.saturday' => $weekdayAvailabilitiesRules,
+            'weekday_availabilities.sunday' => $weekdayAvailabilitiesRules,
             'meeting_types' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
@@ -170,25 +170,81 @@ class UpdateEngagementRequest extends FormRequest
                 Rule::requiredIf(in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
                 'date',
             ],
+            'document_languages' => [
+                'nullable',
+                Rule::requiredIf(in_array($this->engagement->format, ['survey', 'other-async'])),
+                'array',
+            ],
+            'document_languages.*' => [
+                Rule::in(array_keys(get_available_languages(true))),
+            ],
             'accepted_formats' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::requiredIf($this->engagement->format === 'interviews' && ! request('other_accepted_format')),
                 'array',
             ],
             'accepted_formats.*' => [
                 'nullable',
-                'in_array:writing,audio,video',
+                'in:writing,audio,video',
+            ],
+            'other_accepted_formats' => [
+                'nullable',
+                'boolean',
+                Rule::requiredIf($this->engagement->format === 'interviews' && empty(request('accepted_formats'))),
+            ],
+            'other_accepted_format' => [
+                'nullable',
+                Rule::excludeIf($this->engagement->format !== 'interviews'),
+                Rule::requiredIf($this->engagement->format === 'interviews' && request('other_accepted_formats')),
+                'array',
+            ],
+            'other_accepted_format.en' => [
+                'nullable',
+                'exclude_if:other_accepted_formats,false',
+                'string',
+            ],
+            'other_accepted_format.fr' => [
+                'nullable',
+                'exclude_if:other_accepted_formats,false',
+                'string',
+            ],
+            'open_to_other_formats' => [
+                'nullable',
+                Rule::excludeIf($this->engagement->format !== 'interviews'),
+                'boolean',
+            ],
+            'paid' => [
+                'nullable',
+                'boolean',
             ],
             'signup_by_date' => 'required|date',
         ];
     }
 
+    public function withValidator($validator)
+    {
+        $validator->sometimes('other_accepted_format.en', 'required_without:other_accepted_format.fr', function ($input) {
+            return $input->other_accepted_formats === false;
+        });
+
+        $validator->sometimes('other_accepted_format.fr', 'required_without:other_accepted_format.en', function ($input) {
+            return ! $input->other_accepted_formats === false;
+        });
+    }
+
     public function prepareForValidation(): void
     {
-        $this->merge([
-            'meeting_url' => normalize_url($this->meeting_url),
-        ]);
+        request()
+            ->merge([
+                'meeting_url' => normalize_url($this->meeting_url),
+            ])
+            ->mergeIfMissing([
+                'accepted_formats' => [],
+                'other_accepted_formats' => false,
+                'other_accepted_format' => [],
+                'paid' => false,
+            ]);
     }
 
     public function attributes(): array
@@ -211,6 +267,7 @@ class UpdateEngagementRequest extends FormRequest
             'materials_by_date' => __('sent by date'),
             'complete_by_date' => __('due date'),
             'signup_by_date' => __('sign up deadline'),
+            'other_accepted_formats' => __('accepted formats'),
         ];
     }
 
@@ -228,6 +285,8 @@ class UpdateEngagementRequest extends FormRequest
             'meeting_software.required' => __('You must indicate the :attribute.'),
             'meeting_url.required' => __('You must provide a :attribute.'),
             'accepted_formats.required' => __('You must indicate the :attribute.'),
+            'other_accepted_formats.required' => __('You must indicate the :attribute.'),
+            'other_accepted_format.*.required_without' => __('The other accepted format must be provided in at least one language.'),
         ];
     }
 }

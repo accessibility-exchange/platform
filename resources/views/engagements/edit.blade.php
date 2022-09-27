@@ -201,7 +201,9 @@
             <h4>{{ __('Dates') }}</h4>
             <livewire:date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
             <livewire:date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
-            <fieldset class="field @error('accepted_formats') field--error @enderror stack" x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !is_null($engagement->other_accepted_format) && $engagement->other_accepted_format !== '') ? 1 : 0 }} }">
+            <fieldset
+                class="field @error('accepted_formats') field--error @enderror @error('other_accepted_formats') field--error @enderror @error('other_accepted_format') field--error @enderror stack"
+                x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !empty($engagement->other_accepted_format)) ? 1 : 'null' }} }">
                 <legend>{{ __('Accepted formats') }}</legend>
                 <x-hearth-checkboxes name="accepted_formats" :options="[
                     [
@@ -217,17 +219,17 @@
                         'label' => __('Video recording'),
                     ],
                 ]" :checked="old('accepted_formats', $engagement->accepted_formats ?? [])" required />
+                <x-hearth-error for="accepted_formats" />
                 <div class="field">
-                    <x-hearth-checkbox name="other_accepted_formats" :checked="old(
-                        'other_accepted_formats',
-                        !is_null($engagement->other_accepted_format) && $engagement->other_accepted_format !== '',
-                    )"
+                    <x-hearth-checkbox name="other_accepted_formats" :checked="old('other_accepted_formats', !empty($engagement->other_accepted_format))"
                         x-model="otherAcceptedFormats" />
                     <x-hearth-label for="other_accepted_formats">{{ __('Other') }}</x-hearth-label>
+                    <x-hearth-error for="other_accepted_formats" />
                 </div>
                 <div class="field__subfield stack">
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
+                    <x-hearth-error for="other_accepted_format" />
                 </div>
             </fieldset>
             <div class="field @error('open_to_other_formats') field--error @enderror">
@@ -241,8 +243,8 @@
             </div>
         @endif
 
-        @if ($engagement->format === 'other-async')
-            <h2>{{ __('Materials') }}</h2>
+        @if (in_array($engagement->format, ['survey', 'other-async']))
+            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}</h2>
             <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
             <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <fieldset>
@@ -270,14 +272,29 @@
         <h2>{{ __('Sign up deadline') }}</h2>
 
         <div class="field @error('signup_by_date') field--error @enderror">
-            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
+                ? __('Participants must sign up for this engagement by the following date.')
+                : __('Participants must respond to their invitation by the following date.')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
         </div>
 
         <div class="flex gap-4">
             <button>{{ __('Save') }}</button>
             <button class="secondary" name="publish"
-                @cannot('publish', $engagement) disabled @endcannot>{{ __('Publish') }}</button>
+                @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
+                    ({{ __('not available yet') }})
+                @endif
+            </button>
         </div>
-        <p>{{ __('Once you publish your engagement details, anyone on this website will be able to access it.') }}</p>
+        @if (!$engagement->hasEstimateAndAgreement())
+            {!! Str::markdown(
+                __(
+                    'You must [approve your estimate and return your signed agreement](:estimates_and_agreements) before you can publish your engagement.',
+                    ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)],
+                ),
+            ) !!}
+        @else
+            <p>{{ __('Once you publish your engagement details, anyone on this website will be able to access it.') }}
+            </p>
+        @endif
     </form>
 </x-app-medium-layout>
