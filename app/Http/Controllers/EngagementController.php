@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
@@ -30,6 +31,7 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
 use Spatie\LaravelOptions\Options;
 
 class EngagementController extends Controller
@@ -413,7 +415,7 @@ class EngagementController extends Controller
             'timezones' => Options::forEnum(TimeZone::class)->nullable(__('Please select your time zone…'))->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'weekdays' => Options::forEnum(Weekday::class)->toArray(),
-            'weekdayAvailabilities' => Options::forArray(['yes' => __('Available'), 'upon-request' => __('Upon request'), 'no' => __('Not available')])->toArray(),
+            'weekdayAvailabilities' => Options::forEnum(Availability::class)->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
         ]);
@@ -439,7 +441,19 @@ class EngagementController extends Controller
 
     public function update(UpdateEngagementRequest $request, Engagement $engagement)
     {
-        $engagement->fill($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['window_start_time'])) {
+            $window_start_time = Carbon::createFromTimeString($data['window_start_time'])->toTimeString();
+            $data['window_start_time'] = $window_start_time;
+        }
+
+        if (isset($data['window_end_time'])) {
+            $window_end_time = Carbon::createFromTimeString($data['window_end_time'])->toTimeString();
+            $data['window_end_time'] = $window_end_time;
+        }
+
+        $engagement->fill($data);
         $engagement->save();
 
         flash(__('Your engagement has been updated.'), 'success');

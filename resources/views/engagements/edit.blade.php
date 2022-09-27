@@ -21,9 +21,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="stack"
-        action="{{ localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]) }}"
-        method="POST" novalidate>
+    <form class="stack" action="{{ localized_route('engagements.update', $engagement) }}" method="POST" novalidate>
         @csrf
         @method('put')
 
@@ -41,8 +39,8 @@
         @if ($engagement->format === 'interviews')
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <livewire:date-picker name="window_start_date" :label="__('Start date')" minimumYear="2022" :value="old('window_start_date', $project->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="window_end_date" :label="__('End date')" minimumYear="2022" :value="old('window_end_date', $project->window_end_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="window_start_date" :label="__('Start date')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="window_end_date" :label="__('End date')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
 
             <h2>{{ __('Ways to participate') }}</h2>
             <h3>{{ __('Real time interview') }}</h3>
@@ -55,14 +53,14 @@
                 <div class="flex gap-6">
                     <div class="field @error('window_start_time') field--error @enderror">
                         <x-hearth-label for="window_start_time">{{ __('Start time') }}</x-hearth-label>
-                        <x-hearth-input class="w-full" name="window_start_time" :value="old('window_start_time', $engagement->window_start_time)" hinted />
-                        <x-hearth-hint for="window_start_time">{{ __('For example, 9:00am') }}</x-hearth-hint>
+                        <x-hearth-input class="w-full" name="window_start_time" :value="old('window_start_time', $engagement->window_start_time?->format('G:i'))" hinted />
+                        <x-hearth-hint for="window_start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
                         <x-hearth-error for="window_start_time" />
                     </div>
                     <div class="field @error('window_end_time') field--error @enderror">
                         <x-hearth-label for="window_end_time">{{ __('End time') }}</x-hearth-label>
-                        <x-hearth-input class="w-full" name="window_end_time" :value="old('window_end_time', $engagement->window_end_time)" hinted />
-                        <x-hearth-hint for="window_end_time">{{ __('For example, 5:00pm') }}</x-hearth-hint>
+                        <x-hearth-input class="w-full" name="window_end_time" :value="old('window_end_time', $engagement->window_end_time?->format('G:i'))" hinted />
+                        <x-hearth-hint for="window_end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
                         <x-hearth-error for="window_end_time" />
                     </div>
                 </div>
@@ -86,36 +84,30 @@
             <h5 class="h4">
                 {{ __('Which days of the week are available for interviews to be scheduled?') }}</h5>
             @foreach ($weekdays as $weekday)
-                <fieldset class="field @error($weekday['value']) field--error @enderror">
+                <fieldset class="field @error('weekday_availabilities.' . $weekday['value']) field--error @enderror">
                     <legend class="text-base font-bold">{{ $weekday['label'] }}</legend>
                     <div class="flex flex-col gap-2 md:flex-row md:gap-4">
                         @foreach ($weekdayAvailabilities as $weekdayAvailability)
                             <div class="field">
-                                <x-hearth-radio-button :name="$weekday['value']" :id="$weekday['value'] . '-' . $weekdayAvailability['value']" :value="$weekdayAvailability['value']"
+                                <x-hearth-radio-button :name="'weekday_availabilities[' . $weekday['value'] . ']'" :id="$weekday['value'] . '-' . $weekdayAvailability['value']" :value="$weekdayAvailability['value']"
                                     :checked="old(
-                                        $weekday['value'],
+                                        'weekday_availabilities.' . $weekday['value'],
                                         $engagement->weekday_availabilities[$weekday['value']] ?? '',
                                     ) === $weekdayAvailability['value']" />
                                 <x-hearth-label :for="$weekday['value'] . '-' . $weekdayAvailability['value']">{{ $weekdayAvailability['label'] }}</x-hearth-label>
                             </div>
                         @endforeach
                     </div>
-                    <x-hearth-error :for="$weekday['value']" />
+                    <x-hearth-error :for="'weekday_availabilities.' . $weekday['value']" />
                 </fieldset>
             @endforeach
             <h4>{{ __('Ways to attend') }}</h4>
-            <div x-data="{
-                @foreach ($meetingTypes as $type)
-                '{{ $type['value'] }}': {{ old('meeting_types.' . $type['value'], in_array($type['value'], $engagement->meeting_types ?? [])) }}@if (!$loop->last),@endif @endforeach
-            }">
+            <div x-data="{ meetingTypes: {{ json_encode($engagement->meeting_types ?? []) }} }">
                 <div class="field">
-                    <x-hearth-checkbox id="meeting-types-in-person" :name="'meeting_types[in_person]'" :checked="old(
-                        'meeting_types.in_person',
-                        in_array('in_person', $engagement->meeting_types ?? []),
-                    ) == 1"
-                        x-model="in_person" />
-                    <x-hearth-label for="meeting-types-in-person">{{ __('In person') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="in_person">
+                    <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
+                        :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
+                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('in_person')">
                         <div class="field @error('street_address') field--error @enderror">
                             <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
                             <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $engagement->street_address)" required />
@@ -149,14 +141,11 @@
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting-types-web-conference" :name="'meeting_types[web_conference]'" :checked="old(
-                        'meeting_types.web_conference',
-                        in_array('web_conference', $engagement->meeting_types ?? []),
-                    ) == 1"
-                        x-model="web_conference" />
-                    <x-hearth-label for="meeting-types-web-conference">{{ __('Virtual — video call') }}
+                    <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" value="web_conference"
+                        :checked="in_array('web_conference', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="web_conference">
+                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('web_conference')">
                         <div class="field @error('meeting_software') field--error @enderror">
                             <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
                             <x-hearth-hint for="meeting_software">
@@ -187,16 +176,16 @@
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting-types-phone" :name="'meeting_types[phone]'" :checked="old('meeting_types.phone', in_array('phone', $engagement->meeting_types ?? [])) == 1"
-                        x-model="phone" />
-                    <x-hearth-label for="meeting-types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="phone">
+                    <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone"
+                        :checked="in_array('phone', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
+                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('phone')">
                         <div class="field @error('meeting_phone') field-error @enderror">
                             <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
                             <x-hearth-hint for="meeting_phone">
                                 {{ __('This will only be shared with participants who have accepted the invitation.') }}
                             </x-hearth-hint>
-                            <x-hearth-input name="meeting_phone" type="tel" :value="old('meeting_phone', $engagement->meeting_phone)" hinted />
+                            <x-hearth-input name="meeting_phone" type="tel" :value="old('meeting_phone', $engagement->meeting_phone?->formatForCountry('CA'))" hinted />
                             <x-hearth-error for="meeting_phone" />
                         </div>
                         <x-translatable-textarea name="additional_phone_information" :label="__('Additional information to join')"
@@ -210,8 +199,8 @@
             <p>{{ __('Some participants may not be able to meet in real-time. For them, you can send out a list of questions, and participants can respond to them in formats you accept.') }}
             </p>
             <h4>{{ __('Dates') }}</h4>
-            <livewire:date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('window_start_date', $project->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('window_end_date', $project->window_end_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <fieldset class="field @error('accepted_formats') field--error @enderror stack" x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !is_null($engagement->other_accepted_format) && $engagement->other_accepted_format !== '') ? 1 : 0 }} }">
                 <legend>{{ __('Accepted formats') }}</legend>
                 <x-hearth-checkboxes name="accepted_formats" :options="[
@@ -240,22 +229,22 @@
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
                 </div>
-                <div class="field @error('open_to_other_formats') field--error @enderror">
-                    <x-hearth-checkbox name="open_to_other_formats" :checked="old(
-                        'open_to_other_formats',
-                        $engagement->extra_attributes->get('open_to_other_formats', 0),
-                    ) == 1" />
-                    <x-hearth-label for="open_to_other_formats">
-                        {{ __('I am open to other formats suggested by participants') }}
-                    </x-hearth-label>
-                </div>
             </fieldset>
+            <div class="field @error('open_to_other_formats') field--error @enderror">
+                <x-hearth-checkbox name="open_to_other_formats" :checked="old(
+                    'open_to_other_formats',
+                    $engagement->extra_attributes->get('open_to_other_formats', 0),
+                ) == 1" />
+                <x-hearth-label for="open_to_other_formats">
+                    {{ __('I am open to other formats suggested by participants') }}
+                </x-hearth-label>
+            </div>
         @endif
 
         @if ($engagement->format === 'other-async')
             <h2>{{ __('Materials') }}</h2>
-            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('window_start_date', $project->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('window_end_date', $project->window_end_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <fieldset>
                 <legend>{{ __('Languages') }}</legend>
                 <x-hearth-hint for="document_languages">

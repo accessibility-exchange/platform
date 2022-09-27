@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Makeable\EloquentStatus\HasStatus;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
 
 class Engagement extends Model
@@ -45,8 +46,8 @@ class Engagement extends Model
         'signup_by_date',
         'materials_by_date',
         'complete_by_date',
-        'start_date',
-        'end_date',
+        'window_start_date',
+        'window_end_date',
         'timezone',
         'weekday_availabilities',
         'document_languages',
@@ -90,15 +91,22 @@ class Engagement extends Model
         'signup_by_date' => 'datetime:Y-m-d',
         'materials_by_date' => 'datetime:Y-m-d',
         'complete_by_date' => 'datetime:Y-m-d',
-        'start_date' => 'datetime:Y-m-d',
-        'end_date' => 'datetime:Y-m-d',
+        'window_start_date' => 'datetime:Y-m-d',
+        'window_end_date' => 'datetime:Y-m-d',
+        'window_start_time' => 'datetime:G:i',
+        'window_end_time' => 'datetime:G:i',
         'weekday_availabilities' => 'array',
+        'meeting_types' => 'array',
+        'meeting_phone' => E164PhoneNumberCast::class.':CA',
         'document_languages' => 'array',
         'accepted_formats' => 'array',
         'directions' => 'array',
         'additional_video_information' => 'array',
         'additional_phone_information' => 'array',
         'other_accepted_format' => 'array',
+        'window_flexibility' => 'boolean',
+        'alternative_meeting_software' => 'boolean',
+        'open_to_other_formats' => 'boolean',
     ];
 
     public array $translatable = [

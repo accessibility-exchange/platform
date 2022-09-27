@@ -18,7 +18,7 @@ return new class extends Migration
             $table->time('window_start_time')->after('window_end_date')->nullable();
             $table->time('window_end_time')->after('window_start_time')->nullable();
             $table->boolean('window_flexibility')->after('timezone')->nullable();
-            $table->string('meeting_types')->after('weekday_availabilities')->nullable();
+            $table->json('meeting_types')->after('weekday_availabilities')->nullable();
             $table->string('street_address')->after('meeting_types')->nullable();
             $table->string('unit_suite_floor')->after('street_address')->nullable();
             $table->string('locality')->after('unit_suite_floor')->nullable();
