@@ -34,7 +34,7 @@
                         <p class="stack">
                             <x-hearth-input class="secondary" name="preview" type="submit"
                                 value="{{ __('Preview page') }}" />
-                            <x-hearth-input name="publish" type="submit" value="{{ __('Publish page') }}" />
+                            <x-hearth-input name="publish" type="submit" :value="__('Publish page')" :disabled="!Auth::user()->can('publish', $regulatedOrganization)" />
                         </p>
                         <p>{{ __('Once you publish your page, other users on this website can access your page.') }}</p>
                     @else
