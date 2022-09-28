@@ -1,7 +1,9 @@
 <?php
 
+use App\Enums\ProvinceOrTerritory;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -175,10 +177,18 @@ test('non members can not edit regulated organizations', function () {
 });
 
 test('regulated organizations can be published', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'publish' => true,
@@ -193,10 +203,18 @@ test('regulated organizations can be published', function () {
 });
 
 test('regulated organizations can be unpublished', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'unpublish' => true,
@@ -209,6 +227,22 @@ test('regulated organizations can be unpublished', function () {
 
     $this->assertTrue($regulatedOrganization->checkStatus('draft'));
 });
+
+test('regulated organization isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(SectorSeeder::class);
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'sector') {
+            $regulatedOrganization->sectors()->attach(Sector::first()->id);
+        }
+    }
+
+    expect($regulatedOrganization->isPublishable())->toBe($expected);
+})->with('regulatedOrganizationIsPublishable');
 
 test('users with admin role can update other member roles', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
