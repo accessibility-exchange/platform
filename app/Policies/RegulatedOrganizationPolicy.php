@@ -54,8 +54,7 @@ class RegulatedOrganizationPolicy
 
     public function publish(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
-        // TODO: Ensure model is ready for publishing first.
-        return $user->isAdministratorOf($regulatedOrganization)
+        return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
             ? Response::allow()
             : Response::deny(__('You cannot publish this regulated organization.'));
     }
