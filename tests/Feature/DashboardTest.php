@@ -1,41 +1,39 @@
 <?php
 
-use App\Models\IndividualRole;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Database\Seeders\IndividualRoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('user can access dashboard', function () {
-    $this->seed(IndividualRoleSeeder::class);
-
+test('individual user can access dashboard', function () {
     $user = User::factory()->create([
         'context' => 'individual',
     ]);
 
-    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
+    $individual = $user->individual;
+    $individual->roles = ['participant'];
+    $individual->save();
 
     $response = $this->actingAs($user)->get(localized_route('dashboard'));
+    $response->assertOk();
+});
 
-    $response->assertStatus(200);
-    $response->assertSee('My dashboard');
-
+test('regulated organization user can access dashboard', function () {
     $regulatedOrganizationUser = User::factory()->create([
         'context' => 'regulated-organization',
     ]);
 
-    $regulatedOrganization = RegulatedOrganization::factory()
+    RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('dashboard'));
+    $response->assertOk();
+});
 
-    $response->assertStatus(200);
-    $response->assertSee('Create your federally regulated organization page');
-
+test('organization user can access dashboard', function () {
     $organizationUser = User::factory()->create([
         'context' => 'organization',
     ]);
@@ -46,6 +44,11 @@ test('user can access dashboard', function () {
 
     $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
 
-    $response->assertStatus(200);
-    $response->assertSee('Create your organization page');
+    $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
+
+    $organization->roles = ['consultant'];
+    $organization->save();
+
+    $response = $this->actingAs($organizationUser->fresh())->get(localized_route('dashboard'));
+    $response->assertOk();
 });

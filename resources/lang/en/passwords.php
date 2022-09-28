@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have emailed your password reset link!',
+    'reset' => 'You have successfully reset your password for The Accessibility Exchange.',
+    'sent' => 'We have emailed you a password reset link for The Accessibility Exchange. Please check your email.',
     'throttled' => 'Please wait before retrying.',
     'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that email address.",
+    'user' => "We can't find an account with that email address.",
 
 ];

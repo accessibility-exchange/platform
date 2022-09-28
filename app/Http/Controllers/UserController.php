@@ -10,10 +10,40 @@ use App\Http\Requests\UpdateUserIntroductionStatusRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use function localized_route;
 
 class UserController extends Controller
 {
+    public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        session()->put('locale', $data['locale']);
+
+        if (isset($data['signed_language'])) {
+            session()->put('signed_language', $data['signed_language']);
+        }
+
+        if (isset($data['invitation'])) {
+            session()->put('invitation', $data['invitation']);
+        }
+
+        if (isset($data['context'])) {
+            session()->put('context', $data['context']);
+        }
+
+        if (isset($data['email'])) {
+            session()->put('email', $data['email']);
+        }
+
+        if (isset($data['role'])) {
+            session()->put('invited_role', $data['role']);
+        }
+
+        return redirect(localized_route('register', ['step' => 2]));
+    }
+
     /**
      * Show an introduction page for the logged-in user.
      *
@@ -21,14 +51,17 @@ class UserController extends Controller
      */
     public function showIntroduction(): View
     {
-        $skipTo = match (Auth::user()->context) {
+        $user = Auth::user();
+
+        $skipTo = match ($user->context) {
             'individual' => localized_route('individuals.show-role-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
+            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
         return view('users.show-introduction', [
-            'user' => Auth::user(),
+            'user' => $user,
             'skipTo' => $skipTo,
         ]);
     }
@@ -43,13 +76,15 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        Auth::user()->fill($data);
-        Auth::user()->save();
+        $user = Auth::user();
+
+        $user->fill($data);
+        $user->save();
 
         $redirectTo = match (Auth::user()->context) {
             'individual' => localized_route('individuals.show-role-selection'),
-            'organization' => localized_route('organizations.show-type-selection'),
-            'regulated-organization' => localized_route('regulated-organizations.show-type-selection'),
+            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
@@ -71,9 +106,36 @@ class UserController extends Controller
             default => null,
         };
 
+        $teamInvitation = $user->teamInvitation() ?? null;
+
         return view('dashboard', [
             'user' => $user,
             'memberable' => $memberable,
+            'teamInvitation' => $teamInvitation,
+            'teamInvitationable' => ! is_null($teamInvitation) ? $teamInvitation->invitationable : null,
+            'teamAcceptUrl' => $teamInvitation ? URL::signedRoute('invitations.accept', $user->teamInvitation()) : null,
+        ]);
+    }
+
+    public function notifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->allUnreadNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
+        ]);
+    }
+
+    public function allNotifications(): View
+    {
+        $user = Auth::user();
+
+        return view('dashboard.notifications', [
+            'user' => $user,
+            'notifications' => $user->allNotifications(),
+            'unreadCount' => $user->allUnreadNotifications()->count(),
         ]);
     }
 
@@ -86,6 +148,7 @@ class UserController extends Controller
     public function saveContext(SaveUserContextRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
         session()->put('context', $data['context']);
 
         return redirect(localized_route('register', ['step' => 3]));
@@ -100,27 +163,11 @@ class UserController extends Controller
     public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
         session()->put('name', $data['name']);
         session()->put('email', $data['email']);
 
         return redirect(localized_route('register', ['step' => 4]));
-    }
-
-    /**
-     * Store a new user's language preferences in the session.
-     *
-     * @param  SaveUserLanguagesRequest  $request
-     * @return RedirectResponse
-     */
-    public function saveLanguages(SaveUserLanguagesRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-        session()->put('locale', $data['locale']);
-        if ($data['signed_language']) {
-            session()->put('signed_language', $data['signed_language']);
-        }
-
-        return redirect(localized_route('register', ['step' => 2]));
     }
 
     /**

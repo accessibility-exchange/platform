@@ -11,13 +11,13 @@
 
     <form action="{{ localized_route('resources.store') }}" method="POST" novalidate>
         @csrf
-        <x-hearth-input id="user_id" type="hidden" name="user_id" :value="Auth::user()->id" required />
+        <x-hearth-input id="user_id" name="user_id" type="hidden" :value="Auth::user()->id" required />
 
         <div class="field @error('title') field--error @enderror">
             <x-hearth-label for="title" :value="__('resource.label_title')" />
-            <x-hearth-input id="title" type="text" name="title" :value="old('title')" required />
+            <x-hearth-input id="title" name="title" type="text" :value="old('title')" required />
             <x-hearth-error for="title" />
-            </div>
+        </div>
         <div class="field @error('language') field--error @enderror">
             <x-hearth-label for="language" :value="__('resource.label_language')" />
             <x-hearth-locale-select name="language" :selected="old('language', config('app.locale'))" />

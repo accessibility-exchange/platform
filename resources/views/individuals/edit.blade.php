@@ -1,4 +1,3 @@
-
 <x-app-wide-layout>
     <x-slot name="title">{{ __('Edit your individual page') }}</x-slot>
     <x-slot name="header">
@@ -6,14 +5,15 @@
             <h1>
                 {{ $individual->name }}
             </h1>
-            @if($individual->checkStatus('draft'))
+            @if ($individual->checkStatus('draft'))
                 <span class="badge">{{ __('Draft mode') }}</span>
             @endif
         </div>
-        @if($individual->checkStatus('published'))
+        @if ($individual->checkStatus('published'))
             <p>
-                @if(request()->get('step'))
-                    <a href="{{ localized_route($individual->steps()[request()->get('step')]['show'], $individual) }}">{{ __('View page') }}</a>
+                @if (request()->get('step'))
+                    <a
+                        href="{{ localized_route($individual->steps()[request()->get('step')]['show'], $individual) }}">{{ __('View page') }}</a>
                 @else
                     <a href="{{ localized_route('individuals.show', $individual) }}">{{ __('View page') }}</a>
                 @endif
@@ -26,7 +26,7 @@
 
     <x-translation-manager :model="$individual" />
 
-    @if(request()->get('step'))
+    @if (request()->get('step'))
         @include('individuals.edit.' . $individual->steps()[request()->get('step')]['edit'])
     @else
         @include('individuals.edit.about-you')

@@ -48,20 +48,16 @@ class UpdateIndividualRequest extends FormRequest
                 new Enum(ConsultingService::class),
 
             ],
-            'social_links.*' => 'nullable|url',
-            'website_link' => 'nullable|url',
+            'social_links.*' => 'nullable|active_url',
+            'website_link' => 'nullable|active_url',
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages(): array
+    public function prepareForValidation()
     {
-        return [
-            'social_links.*.url' => __('The link must be a valid web address.'),
-        ];
+        $this->merge([
+            'social_links' => array_map('normalize_url', $this->social_links ?? []),
+            'website_link' => normalize_url($this->website_link),
+        ]);
     }
 }

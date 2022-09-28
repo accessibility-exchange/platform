@@ -10,7 +10,6 @@ use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
-use App\Models\IndividualRole;
 use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
@@ -42,9 +41,9 @@ class TestDataSeeder extends Seeder
                 'livedExperiences' => ['People who experience disabilities'],
                 'sectors' => ['Transportation', 'Financial services', 'Federal government programs and services'],
                 'impacts' => ['Buildings and public spaces', 'Buying goods, services, facilities'],
-                'individualRoles' => ['Accessibility Consultant', 'Community Connector'],
                 'individualDetails' => [
                     'published_at' => now(),
+                    'roles' => ['consultant', 'connector'],
                     'region' => 'AB',
                     'locality' => 'Edmonton',
                     'pronouns' => ['en' => 'he/him'],
@@ -64,7 +63,7 @@ class TestDataSeeder extends Seeder
                     ],
                     'website_link' => 'https://www.Mysite.com',
                     'bio' => [
-                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free envirnment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report cards on issues affecting people with disabilities.',
+                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free envirnment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
                     ],
                     'meeting_types' => ['in_person', 'web_conference', 'phone'],
                     'connection_lived_experience' => 'yes-all',
@@ -73,7 +72,6 @@ class TestDataSeeder extends Seeder
             [
                 'name' => 'K Torres',
                 'email' => 'k@accessibilityexchange.ca',
-
                 'preferred_contact_person' => 'me',
                 'preferred_contact_method' => 'email',
                 'constituentLanguages' => ['ase', 'fcs', 'en', 'fr'],
@@ -99,9 +97,9 @@ class TestDataSeeder extends Seeder
                     'Buying goods, services, facilities',
                     'Transportation',
                 ],
-                'individualRoles' => ['Accessibility Consultant', 'Community Connector'],
                 'individualDetails' => [
                     'published_at' => now(),
+                    'roles' => ['consultant', 'connector'],
                     'region' => 'NS',
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
@@ -129,7 +127,6 @@ class TestDataSeeder extends Seeder
             [
                 'name' => 'Han Roy',
                 'email' => 'Han@accessibilityexchange.ca',
-
                 'preferred_contact_person' => 'me',
                 'preferred_contact_method' => 'email',
                 'constituentLanguages' => ['en', 'fr', 'moh', 'cr', 'iu', 'oj'],
@@ -162,9 +159,9 @@ class TestDataSeeder extends Seeder
                     'Buying goods, services, facilities',
                     'Transportation',
                 ],
-                'individualRoles' => ['Accessibility Consultant', 'Community Connector'],
                 'individualDetails' => [
                     'published_at' => now(),
+                    'roles' => ['consultant', 'connector'],
                     'region' => 'ON',
                     'locality' => 'Toronto',
                     'pronouns' => ['en' => 'He/him'],
@@ -217,9 +214,9 @@ class TestDataSeeder extends Seeder
                     'Buying goods, services, facilities',
                     'Transportation',
                 ],
-                'individualRoles' => ['Community Connector'],
                 'individualDetails' => [
                     'published_at' => now(),
+                    'roles' => ['connector'],
                     'region' => 'QC',
                     'locality' => 'Montreal',
                     'pronouns' => ['en' => 'she/Them'],
@@ -244,7 +241,6 @@ class TestDataSeeder extends Seeder
             [
                 'name' => 'Alan Chang',
                 'email' => 'Alan@accessibilityexchange.ca',
-
                 'preferred_contact_person' => 'me',
                 'preferred_contact_method' => 'email',
                 'constituentLanguages' => ['en', 'zh', 'yue'],
@@ -277,9 +273,9 @@ class TestDataSeeder extends Seeder
                     'Buying goods, services, facilities',
                     'Transportation',
                 ],
-                'individualRoles' => ['Community Connector'],
                 'individualDetails' => [
                     'published_at' => now(),
+                    'roles' => ['connector'],
                     'region' => 'BC',
                     'locality' => 'Richmond',
                     'pronouns' => ['en' => 'he/him'],
@@ -308,7 +304,6 @@ class TestDataSeeder extends Seeder
 
         foreach ($individualsForTesting as $individualUser) {
             $page = array_pop($individualUser);
-            $roles = array_pop($individualUser);
             $impacts = array_pop($individualUser);
             $sectors = array_pop($individualUser);
             $livedExperiences = array_pop($individualUser);
@@ -321,10 +316,6 @@ class TestDataSeeder extends Seeder
             $ethnoracialIdentities = array_pop($individualUser);
             $constituentLanguages = array_pop($individualUser);
             $user = User::factory()->create($individualUser);
-            foreach ($roles as $name) {
-                $item = IndividualRole::where('name->en', $name)->first();
-                $user->individual->individualRoles()->attach($item->id);
-            }
             foreach ($impacts as $name) {
                 $item = Impact::where('name->en', $name)->first();
                 $user->individual->impactsOfInterest()->attach($item->id);

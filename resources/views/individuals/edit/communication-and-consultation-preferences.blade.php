@@ -1,4 +1,5 @@
-<form action="{{ localized_route('individuals.update-communication-and-consultation-preferences', $individual) }}" method="POST" enctype="multipart/form-data" novalidate>
+<form action="{{ localized_route('individuals.update-communication-and-consultation-preferences', $individual) }}"
+    method="POST" enctype="multipart/form-data" novalidate>
     @csrf
     @method('PUT')
     <div class="with-sidebar with-sidebar:last">
@@ -15,25 +16,36 @@
                 <button name="save" value="1">{{ __('Save') }}</button>
             </p>
 
-            <div class="stack" x-data="{contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}'}">
+            <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
                 <fieldset>
                     <legend>{{ __('Contact person (required)') }}</legend>
 
-                    <x-hearth-radio-buttons name="preferred_contact_person" :options="[['value' => 'me', 'label' => __('Me')], ['value' => 'support-person', 'label' => __('My support person')]]" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')" x-model="contactPerson" />
+                    <x-hearth-radio-buttons name="preferred_contact_person" :options="[
+                        ['value' => 'me', 'label' => __('Me')],
+                        ['value' => 'support-person', 'label' => __('My support person')],
+                    ]" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
+                        x-model="contactPerson" />
                 </fieldset>
 
                 <fieldset x-show="contactPerson == 'me'">
-                    <legend x-text="contactPerson == 'me' ? '{{ __('My contact information (required)') }}' : '{{ __('My contact information (optional)') }}'">{{ __('My contact information (required)') }}</legend>
-
+                    <legend>{{ __('Contact information') }}</legend>
                     <div class="field @error('email') field-error @enderror">
-                        <x-hearth-label for="email" :value="__('Email')" />
-                        <x-hearth-input type="email" name="email" :value="old('email', !empty($individual->user->email) ? $individual->user->email : $individual->user->email)" />
-                        <x-hearth-hint for="email">{{ __('This is also the email you use to sign in to this account. If you change this, you are also changing your sign in email.') }}</x-hearth-hint>
+                        <x-hearth-label for="email" :value="__('My email (required)')" />
+                        <x-hearth-input name="email" type="email" :value="old(
+                            'email',
+                            !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
+                        )" />
+                        <x-hearth-hint for="email">
+                            {{ __('This is also the email you use to log into this account. If you change this, you are also changing your log in email.') }}
+                        </x-hearth-hint>
                         <x-hearth-error for="email" />
                     </div>
                     <div class="field @error('phone') field-error @enderror">
-                        <x-hearth-label for="phone" :value="__('Phone number')" />
-                        <x-hearth-input type="tel" name="phone" :value="old('phone', $individual->user->phone ?  $individual->user->phone->formatForCountry('CA') : '')" wire:model.lazy="phone" />
+                        <x-hearth-label for="phone" :value="__('My phone number')" />
+                        <x-hearth-input name="phone" type="tel" :value="old(
+                            'phone',
+                            $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
+                        )" wire:model.lazy="phone" />
                         <x-hearth-error for="phone" />
                     </div>
 
@@ -45,21 +57,28 @@
                 </fieldset>
 
                 <fieldset x-show="contactPerson == 'support-person'">
-                    <legend x-text="contactPerson == 'support-person' ? '{{ __('My support person’s contact information (required)') }}' : '{{ __('My support person’s contact information (optional)') }}'">{{ __('My support person’s contact information (optional)') }}</legend>
-                    <div class="field @error("support_person_name") field-error @enderror">
-                        <x-hearth-label for="support_person_name" :value="__('Contact name')" />
-                        <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}</x-hearth-hint>
-                        <x-hearth-input id="support_person_name" name="support_person_name" :value="old('support_person_name', $individual->user->support_person_name)" required hinted />
+                    <legend>{{ __('Contact information') }}</legend>
+                    <div class="field @error('support_person_name') field-error @enderror">
+                        <x-hearth-label for="support_person_name" :value="__('My support person’s name (required)')" />
+                        <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}
+                        </x-hearth-hint>
+                        <x-hearth-input id="support_person_name" name="support_person_name" :value="old('support_person_name', $individual->user->support_person_name)" required
+                            hinted />
                         <x-hearth-error for="support_person_name" field="support_person_name" />
                     </div>
                     <div class="field @error('support_person_email') field-error @enderror">
-                        <x-hearth-label for="support_person_email" :value="__('Email')" />
-                        <x-hearth-input type="email" name="support_person_email" :value="old('support_person_email', $individual->user->support_person_email)" />
+                        <x-hearth-label for="support_person_email" :value="__('My support person’s email (required)')" />
+                        <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
                         <x-hearth-error for="support_person_email" />
                     </div>
                     <div class="field @error('support_person_phone') field-error @enderror">
-                        <x-hearth-label for="support_person_phone" :value="__('Phone number')" />
-                        <x-hearth-input type="tel" name="support_person_phone" :value="old('support_person_phone', $individual->user->support_person_phone ?  $individual->user->support_person_phone->formatForCountry('CA') : '')" />
+                        <x-hearth-label for="support_person_phone" :value="__('My support person’s phone number')" />
+                        <x-hearth-input name="support_person_phone" type="tel" :value="old(
+                            'support_person_phone',
+                            $individual->user->support_person_phone
+                                ? $individual->user->support_person_phone->formatForCountry('CA')
+                                : '',
+                        )" />
                         <x-hearth-error for="support_person_phone" />
                     </div>
 
@@ -71,8 +90,12 @@
                 </fieldset>
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
-                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}</x-hearth-label>
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray(['email' => __('Email'), 'phone' => __('Phone')])->toArray()" :selected="old('preferred_contact_method', $individual->user->preferred_contact_method ?? 'email')"/>
+                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}
+                    </x-hearth-label>
+                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
+                        'email' => __('Email'),
+                        'phone' => __('Phone'),
+                    ])->toArray()" :selected="old('preferred_contact_method', $individual->user->preferred_contact_method ?? 'email')" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
             </div>
@@ -84,7 +107,8 @@
             </fieldset>
 
             <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
+                <button class="secondary" name="save_and_previous"
+                    value="1">{{ __('Save and previous') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>
             </p>
         </div>

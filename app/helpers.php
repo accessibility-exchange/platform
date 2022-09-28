@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
     /**
@@ -34,7 +35,45 @@ if (! function_exists('get_available_languages')) {
         ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
 
         if ($all) {
-            $result = $languages;
+            $result = array_filter(
+                $languages,
+                function ($language) {
+                    return
+                        (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
+                        || ! strpos($language, '_')
+                        || in_array($language, [
+                            'egy',
+                            'grc',
+                            'zbl',
+                            'nwc',
+                            'syc',
+                            'eo',
+                            'jam',
+                            'dum',
+                            'enm',
+                            'frm',
+                            'gmh',
+                            'mga',
+                            'mul',
+                            'mgo',
+                            'zxx',
+                            'ang',
+                            'fro',
+                            'goh',
+                            'sga',
+                            'non',
+                            'peo',
+                            'pro',
+                            'pfl',
+                            'pdc',
+                            'de_CH',
+                            'frc',
+                            'und',
+                            'tlh',
+                        ]);
+                },
+                ARRAY_FILTER_USE_KEY
+            );
         } else {
             $result = [];
             $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
@@ -151,5 +190,31 @@ if (! function_exists('get_regions_from_provinces_and_territories')) {
         }
 
         return $regions;
+    }
+}
+
+if (! function_exists('normalize_url')) {
+    /**
+     * Normalize a URL by adding a scheme if one isn't already present.
+     */
+    function normalize_url(string|null $url, string $scheme = 'https://'): string|null
+    {
+        if (! blank($url)) {
+            $result = is_null(parse_url($url, PHP_URL_SCHEME)) ? $scheme.$url : $url;
+
+            return (filter_var($result, FILTER_VALIDATE_URL)) ? $result : $url;
+        }
+
+        return $url;
+    }
+}
+
+if (! function_exists('context_from_model')) {
+    /**
+     * Get the context version (kebab case) of a model's class name.
+     */
+    function context_from_model(mixed $model): string
+    {
+        return Str::kebab(class_basename($model));
     }
 }

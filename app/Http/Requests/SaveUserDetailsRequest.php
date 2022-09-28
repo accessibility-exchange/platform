@@ -36,4 +36,11 @@ class SaveUserDetailsRequest extends FormRequest
             ],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name' => __('full name'),
+        ];
+    }
 }

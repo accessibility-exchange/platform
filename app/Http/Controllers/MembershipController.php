@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TeamRole;
 use App\Http\Requests\UpdateMembershipRequest;
 use App\Rules\NotLastAdmin;
 use Hearth\Models\Membership;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Spatie\LaravelOptions\Options;
 
 class MembershipController extends Controller
 {
@@ -21,20 +23,13 @@ class MembershipController extends Controller
      */
     public function edit(Membership $membership)
     {
-        $roles = [];
-
-        foreach (config('hearth.organizations.roles') as $role) {
-            $roles[] = [
-                'value' => $role,
-                'label' => __('roles.'.$role),
-            ];
-        }
-
         return view('memberships.edit', [
             'membership' => $membership,
             'user' => $membership->user,
             'membershipable' => $membership->membershipable(),
-            'roles' => $roles,
+            'roles' => Options::forEnum(TeamRole::class)->append(fn (TeamRole $role) => [
+                'hint' => $role->description(),
+            ])->toArray(),
         ]);
     }
 

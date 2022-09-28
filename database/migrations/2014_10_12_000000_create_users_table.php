@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('oriented_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->string('locale')->default('en');
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->string('preferred_contact_method')->default('email');
             $table->string('preferred_notification_method')->default('email');
             $table->schemalessAttributes('notification_settings')->nullable();
+            $table->schemalessAttributes('extra_attributes')->nullable();
         });
     }
 

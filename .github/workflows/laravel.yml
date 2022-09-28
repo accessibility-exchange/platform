@@ -2,9 +2,9 @@ name: Run Laravel tests
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev, staging, production]
   pull_request:
-    branches: [dev, main]
+    branches: [dev, staging, production]
 
 jobs:
   laravel-tests:
@@ -21,26 +21,54 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
       - uses: actions/checkout@v3
+      - uses: technote-space/get-diff-action@v6
+        with:
+          patterns: |
+            composer.json
+            composer.lock
+            **/*.php
       - name: Cache Composer packages
+        if: env.GIT_DIFF
         uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
+      - uses: actions/setup-node@v3
+        if: env.GIT_DIFF
+        with:
+          node-version: "16"
+      - name: Cache node modules
+        if: env.GIT_DIFF
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: env.GIT_DIFF
+        run: npm install
+        env:
+          CI: true
       - name: Create test database
+        if: env.GIT_DIFF
         run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Copy .env
+        if: env.GIT_DIFF
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
+        if: env.GIT_DIFF
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate keys
+        if: env.GIT_DIFF
         run: |
           echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
       - name: Directory Permissions
+        if: env.GIT_DIFF
         run: chmod -R 777 storage bootstrap/cache
       - name: Run tests with Pest
+        if: env.GIT_DIFF
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
@@ -49,7 +77,8 @@ jobs:
           php artisan storage:link
           php artisan test --coverage-clover coverage.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        if: env.GIT_DIFF
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true

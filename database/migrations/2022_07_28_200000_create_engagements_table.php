@@ -16,17 +16,31 @@ return new class extends Migration
         Schema::create('engagements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->json('name');
+            $table->timestamp('published_at')->nullable();
             $table->foreignId('project_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->string('recruitment')->default('automatic');
-            $table->json('goals');
-            $table->json('timeline')->nullable();
-            $table->json('meetings')->nullable();
-            $table->json('reporting')->nullable();
-            $table->json('other_reporting')->nullable();
-            $table->json('contacts')->nullable();
+            $table->json('languages')->nullable();
+            $table->json('name');
+            $table->json('description')->nullable();
+            $table->string('format');
+            $table->integer('ideal_participants')->nullable();
+            $table->integer('minimum_participants')->nullable();
+            $table->string('who')->nullable();
+            $table->string('recruitment')->nullable();
+            $table->json('regions')->nullable();
+            $table->json('localities')->nullable();
+            $table->boolean('paid')->default(1);
+            $table->json('payment')->nullable();
+            $table->date('signup_by_date')->nullable();
+            $table->date('materials_by_date')->nullable();
+            $table->date('complete_by_date')->nullable();
+            $table->date('window_start_date')->nullable();
+            $table->date('window_end_date')->nullable();
+            $table->string('timezone')->nullable();
+            $table->json('weekday_availabilities')->nullable();
+            $table->json('document_languages')->nullable();
+            $table->json('accepted_formats')->nullable();
             $table->bigInteger('individual_connector_id')
                 ->references('id')
                 ->on('individuals')

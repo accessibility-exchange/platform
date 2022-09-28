@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('Account Details') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
@@ -13,9 +13,9 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <h2>{{ __('Change account email') }}</h2>
+    <h2>{{ __('Change login email') }}</h2>
 
-    <p>{{ __('This is the email you use to sign into the website.') }}</p>
+    <p>{{ __('This is the email you use to log into the website.') }}</p>
 
     <form class="stack" action="{{ localized_route('user-profile-information.update') }}" method="POST" novalidate>
         @csrf
@@ -70,54 +70,55 @@
         </button>
     </form>
 
-    @if(Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-    <x-hearth-password-confirmation>
-        <h2>{{ __('hearth::user.two_factor_auth') }}</h2>
+    @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+        <x-hearth-password-confirmation>
+            <h2>{{ __('hearth::user.two_factor_auth') }}</h2>
 
-        <p><em>{{ __('hearth::user.two_factor_auth_intro') }}</em></p>
+            <p><em>{{ __('hearth::user.two_factor_auth_intro') }}</em></p>
 
-        @if ($user->twoFactorAuthEnabled())
-            <p>{{ __('hearth::user.two_factor_auth_enabled') }}</p>
+            @if ($user->twoFactorAuthEnabled())
+                <p>{{ __('hearth::user.two_factor_auth_enabled') }}</p>
 
-            @if (session('status') == 'two-factor-authentication-enabled')
-                <p>{{ __('hearth::user.two_factor_auth_qr_code') }}</p>
-                <div>{!! request()->user()->twoFactorQrCodeSvg() !!}</div>
-            @endif
-            @if (session('status') == 'two-factor-authentication-enabled' || session('status') == 'recovery-codes-generated')
-                <p>{{ __('hearth::user.two_factor_auth_recovery_codes') }}</p>
-                <pre>
+                @if (session('status') == 'two-factor-authentication-enabled')
+                    <p>{{ __('hearth::user.two_factor_auth_qr_code') }}</p>
+                    <div>{!! request()->user()->twoFactorQrCodeSvg() !!}</div>
+                @endif
+                @if (session('status') == 'two-factor-authentication-enabled' || session('status') == 'recovery-codes-generated')
+                    <p>{{ __('hearth::user.two_factor_auth_recovery_codes') }}</p>
+                    <pre>
 @foreach (request()->user()->recoveryCodes() as $code)
 {{ $code }}
-@endforeach</pre>
+@endforeach
+</pre>
+                @endif
+
+                <form action="{{ route('two-factor.regenerate') }}" method="post" @submit.prevent="submitForm">
+                    @csrf
+
+                    <button>
+                        {{ __('hearth::user.action_regenerate_two_factor_auth_recovery_codes') }}
+                    </button>
+                </form>
+
+                <form action="{{ route('two-factor.disable') }}" method="post" @submit.prevent="submitForm">
+                    @csrf
+                    @method('DELETE')
+
+                    <button>
+                        {{ __('hearth::user.action_disable_two_factor_auth') }}
+                    </button>
+                </form>
+            @else
+                <p>{{ __('hearth::user.two_factor_auth_not_enabled') }}</p>
+
+                <form action="{{ route('two-factor.enable') }}" method="post" @submit.prevent="submitForm">
+                    @csrf
+
+                    <button>
+                        {{ __('hearth::user.action_enable_two_factor_auth') }}
+                    </button>
+                </form>
             @endif
-
-            <form action="{{ route('two-factor.regenerate') }}" method="post" @submit.prevent="submitForm">
-                @csrf
-
-                <button>
-                    {{ __('hearth::user.action_regenerate_two_factor_auth_recovery_codes') }}
-                </button>
-            </form>
-
-            <form action="{{ route('two-factor.disable') }}" method="post" @submit.prevent="submitForm">
-                @csrf
-                @method('DELETE')
-
-                <button>
-                    {{ __('hearth::user.action_disable_two_factor_auth') }}
-                </button>
-            </form>
-        @else
-            <p>{{ __('hearth::user.two_factor_auth_not_enabled') }}</p>
-
-            <form action="{{ route('two-factor.enable') }}" method="post" @submit.prevent="submitForm">
-                @csrf
-
-                <button>
-                    {{ __('hearth::user.action_enable_two_factor_auth') }}
-                </button>
-            </form>
-        @endif
-    </x-hearth-password-confirmation>
+        </x-hearth-password-confirmation>
     @endif
 </x-app-layout>

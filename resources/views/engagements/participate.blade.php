@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <x-slot name="title">{{ __('Participate in engagement') }}</x-slot>
     <x-slot name="header">

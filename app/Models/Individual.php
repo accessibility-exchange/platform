@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\IndividualRole;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
@@ -54,6 +59,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'slug',
         'picture_alt',
         'languages',
+        'roles',
         'pronouns',
         'bio',
         'region',
@@ -87,6 +93,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         'published_at' => 'datetime:Y-m-d',
         'picture_alt' => 'array',
         'languages' => 'array',
+        'roles' => 'array',
         'pronouns' => 'array',
         'bio' => 'array',
         'working_languages' => 'array',
@@ -178,7 +185,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ],
             2 => [
                 'edit' => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
-                'show' => $this->isConnector() ? 'individuals.show-constituencies' : 'individuals.show-experiences',
+                'show' => $this->isConnector() ? 'individuals.show' : 'individuals.show-experiences',
             ],
             3 => [
                 'edit' => $this->isConnector() ? 'experiences' : 'interests',
@@ -354,16 +361,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     }
 
     /**
-     * Get the roles belonging to the individual.
-     *
-     * @return BelongsToMany
-     */
-    public function individualRoles(): BelongsToMany
-    {
-        return $this->belongsToMany(IndividualRole::class);
-    }
-
-    /**
      * Has the user added any details to the individual?
      *
      * @return bool
@@ -380,47 +377,66 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
      */
     public function isPublishable(): bool
     {
+        $publishRules = [
+            'bio.*' => 'required',
+            'connection_lived_experience' => 'required',
+            'consulting_services' => [
+                'nullable',
+                Rule::requiredIf(fn () => $this->isConsultant()),
+                Rule::excludeIf(fn () => ! $this->isConsultant()),
+            ],
+            'extra_attributes.has_age_brackets' => 'required',
+            'extra_attributes.has_ethnoracial_identities' => 'required',
+            'extra_attributes.has_gender_and_sexual_identities' => 'required',
+            'extra_attributes.has_indigenous_identities' => 'required',
+            'meeting_types' => 'required',
+            'name' => 'required',
+            'region' => 'required',
+            'roles' => 'required',
+        ];
+
         if ($this->isConnector() || $this->isConsultant()) {
+            try {
+                Validator::validate($this->toArray(), $publishRules);
+            } catch (ValidationException $exception) {
+                return false;
+            }
+
+            if (! $this->livedExperienceConnections()->count()) {
+                return false;
+            }
+
+            if (! $this->areaTypeConnections()->count()) {
+                return false;
+            }
+
+            if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentityConnections()->count()) {
+                return false;
+            }
+
+            if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
+                return false;
+            }
+
             return true;
         }
 
         return false;
     }
 
-    /**
-     * Is the individual a participant?
-     *
-     * @return bool
-     */
     public function isParticipant(): bool
     {
-        $participantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
-
-        return $this->individualRoles->contains($participantRole);
+        return in_array('participant', $this->roles ?? []);
     }
 
-    /**
-     * Is the individual an accessibility consultant?
-     *
-     * @return bool
-     */
     public function isConsultant(): bool
     {
-        $consultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-
-        return $this->individualRoles->contains($consultantRole);
+        return in_array('consultant', $this->roles ?? []);
     }
 
-    /**
-     * Is the individual a Community Connector?
-     *
-     * @return bool
-     */
     public function isConnector(): bool
     {
-        $connectorRole = IndividualRole::where('name->en', 'Community Connector')->first();
-
-        return $this->individualRoles->contains($connectorRole);
+        return in_array('connector', $this->roles ?? []);
     }
 
     public function livedExperienceConnections(): MorphToMany
@@ -500,5 +516,12 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         }
 
         return $this->blocks()->where('user_id', $user->id)->exists();
+    }
+
+    public function displayRoles(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => array_map(fn ($role) => IndividualRole::labels()[$role], $this->roles),
+        );
     }
 }

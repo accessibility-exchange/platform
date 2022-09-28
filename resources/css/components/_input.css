@@ -80,6 +80,7 @@ select {
     padding-inline-end: var(--space-12);
 }
 
+.field--error select,
 select[aria-invalid="true"] {
     background-image: var(
         --select-error-chevron,
@@ -222,7 +223,6 @@ legend {
 /** Hints **/
 .field__hint {
     color: var(--hint-color);
-    font-style: italic;
 }
 
 [type="radio"] ~ .field__hint {
@@ -241,7 +241,6 @@ legend {
     align-items: center;
     display: flex;
     flex-direction: row;
-    font-style: italic;
     font-weight: var(--font-semibold);
     gap: var(--space-2);
     justify-content: flex-start;

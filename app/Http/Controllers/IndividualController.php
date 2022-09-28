@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyIndividualRequest;
@@ -24,7 +25,6 @@ use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\Individual;
-use App\Models\IndividualRole;
 use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Sector;
@@ -54,7 +54,9 @@ class IndividualController extends Controller
 
         return view('individuals.show-role-selection', [
             'individual' => Auth::user()->individual,
-            'roles' => Options::forModels(IndividualRole::class)->toArray(),
+            'roles' => Options::forEnum(IndividualRole::class)->append(fn (IndividualRole $role) => [
+                'hint' => $role->description(),
+            ])->toArray(),
         ]);
     }
 
@@ -66,8 +68,9 @@ class IndividualController extends Controller
 
         return view('individuals.show-role-edit', [
             'individual' => $individual,
-            'roles' => Options::forModels(IndividualRole::class)->toArray(),
-            'selectedRoles' => $individual->individualRoles->pluck('id')->toArray(),
+            'roles' => Options::forEnum(IndividualRole::class)->append(fn (IndividualRole $role) => [
+                'hint' => $role->description(),
+            ])->toArray(),
         ]);
     }
 
@@ -79,13 +82,15 @@ class IndividualController extends Controller
 
         $individual = Auth::user()->individual;
 
-        $individual->individualRoles()->sync($data['roles'] ?? []);
+        $individual->fill($data);
+        $individual->save();
 
         if (! $individual->fresh()->isConsultant() && ! $individual->fresh()->isConnector()) {
             $individual->unpublish(true);
+            flash(__('You have successfully updated your role to Consultation Participant.'), 'success');
+        } else {
+            flash(__('Your roles have been saved.'), 'success');
         }
-
-        flash(__('Your roles have been saved.'), 'success');
 
         return redirect(localized_route('dashboard'));
     }
@@ -160,7 +165,6 @@ class IndividualController extends Controller
         }
 
         $individual->fill($data);
-
         $individual->save();
 
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('about-you'));

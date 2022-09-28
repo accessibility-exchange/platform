@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->nullableMorphs('matchable');
+            $table->json('regions')->nullable();
+            $table->json('locations')->nullable();
+            $table->schemalessAttributes('extra_attributes');
         });
     }
 

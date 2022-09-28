@@ -2,16 +2,13 @@
 
 use App\Models\Impact;
 use App\Models\Individual;
-use App\Models\IndividualRole;
 use App\Models\Organization;
-use App\Models\OrganizationRole;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Carbon\Carbon;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\IndividualRoleSeeder;
-use Database\Seeders\OrganizationRoleSeeder;
+use function Pest\Faker\faker;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -188,16 +185,18 @@ test('projects can be published and unpublished', function () {
 
 test('users can view projects', function () {
     $user = User::factory()->create();
-    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
+    $adminUser = User::factory()->create(['context' => 'regulated-organization', 'phone' => '19024444567']);
     $regulatedOrganization = RegulatedOrganization::factory()->create([
-        'contact_person_name' => $adminUser->contact_person_name,
-        'contact_person_email' => $adminUser->contact_person_email,
+        'contact_person_name' => $adminUser->name,
+        'contact_person_email' => $adminUser->email,
+        'contact_person_phone' => $adminUser->phone,
         'preferred_contact_method' => $adminUser->preferred_contact_method,
     ]);
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
         'contact_person_name' => $regulatedOrganization->contact_person_name,
         'contact_person_email' => $regulatedOrganization->contact_person_email,
+        'contact_person_phone' => $regulatedOrganization->contact_person_phone,
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
@@ -215,6 +214,18 @@ test('users can view projects', function () {
 
     $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
     $response->assertOk();
+});
+
+test('notifications can be routed for projects', function () {
+    $project = Project::factory()->create([
+        'contact_person_name' => faker()->name(),
+        'contact_person_email' => faker()->email(),
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('individuals can express interest in projects', function () {
@@ -297,6 +308,9 @@ test('users with regulated organization admin role can edit projects', function 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'team_languages' => ['en'],
+        'team_trainings' => [
+            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
+        ],
         'contact_person_email' => 'me@here.com',
         'contact_person_name' => 'Jonny Appleseed',
         'preferred_contact_method' => 'email',
@@ -306,6 +320,9 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
 });
 
 test('users without regulated organization admin role cannot edit projects', function () {
@@ -345,6 +362,12 @@ test('users with regulated organization admin role can manage projects', functio
     ]);
 
     $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.manage-estimates-and-agreements', $project));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.suggested-steps', $project));
     $response->assertOk();
 });
 
@@ -434,12 +457,15 @@ test('projects have timeframes', function () {
         'end_date' => null,
     ]);
 
-    expect($org_past_project)->finished()->toBeTrue();
-    expect($org_current_project->finished())->toBeFalse();
-    expect($indeterminate_project->finished())->toBeFalse();
-    expect($org_current_project->started())->toBeTrue();
-    expect($org_future_project->started())->toBeFalse();
-    expect($indeterminate_project)->started()->toBeFalse();
+    expect($org_past_project)->finished->toBeTrue();
+    expect($org_past_project->status)->toEqual('Complete');
+    expect($org_current_project->finished)->toBeFalse();
+    expect($org_current_project->status)->toEqual('In progress');
+    expect($indeterminate_project->finished)->toBeFalse();
+    expect($org_current_project->started)->toBeTrue();
+    expect($org_future_project->started)->toBeFalse();
+    expect($org_future_project->status)->toEqual('Upcoming');
+    expect($indeterminate_project)->started->toBeFalse();
 
     $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
     $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
@@ -517,7 +543,7 @@ test('project retrieves team trainings properly', function () {
         ],
     ]);
 
-    expect($project->team_trainings[0]['date'])->toEqual('April 2022');
+    expect($project->team_trainings[0]['date'])->toEqual('2022-04-01');
 
     $projectWithNullTrainings = Project::factory()->create([
         'team_trainings' => [
@@ -529,15 +555,11 @@ test('project retrieves team trainings properly', function () {
 });
 
 test('registered users can access my projects page', function () {
-    $this->seed(IndividualRoleSeeder::class);
-    $this->seed(OrganizationRoleSeeder::class);
-
-    $individualConsultantRole = IndividualRole::where('name->en', 'Accessibility Consultant')->first();
-    $individualParticipantRole = IndividualRole::where('name->en', 'Consultation Participant')->first();
-
     $individualUser = User::factory()->create();
     $individual = $individualUser->individual;
-    $individual->individualRoles()->sync([$individualParticipantRole->id]);
+    $individual->roles = ['participant'];
+    $individual->save();
+    $individual = $individual->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
@@ -550,8 +572,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertNotFound();
 
-    $individual->individualRoles()->sync([$individualParticipantRole->id, $individualConsultantRole->id]);
-
+    $individual->roles = ['participant', 'consultant'];
+    $individual->save();
     $individualUser = $individualUser->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
@@ -561,8 +583,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertOk();
 
-    $individual->individualRoles()->sync([$individualConsultantRole->id]);
-
+    $individual->roles = ['consultant'];
+    $individual->save();
     $individualUser = $individualUser->fresh();
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
@@ -571,7 +593,7 @@ test('registered users can access my projects page', function () {
     $response->assertSee('Projects I am contracted for');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization = RegulatedOrganization::factory()
+    RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
     $regulatedOrganizationUser = $regulatedOrganizationUser->fresh();
@@ -587,9 +609,6 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'));
     $response->assertNotFound();
-
-    $organizationConsultantRole = OrganizationRole::where('name->en', 'Accessibility Consultant')->first();
-    $organizationParticipantRole = OrganizationRole::where('name->en', 'Consultation Participant')->first();
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -612,7 +631,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertNotFound();
 
-    $organization->organizationRoles()->sync([$organizationConsultantRole->id]);
+    $organization->roles = ['consultant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
@@ -630,7 +650,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
 
-    $organization->organizationRoles()->sync([$organizationConsultantRole->id, $organizationParticipantRole->id]);
+    $organization->roles = ['consultant', 'participant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
@@ -648,7 +669,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
 
-    $organization->organizationRoles()->sync([$organizationParticipantRole->id]);
+    $organization->roles = ['participant'];
+    $organization->save();
     $organizationUser = $organizationUser->fresh();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
@@ -659,7 +681,7 @@ test('registered users can access my projects page', function () {
 
     $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
-    $response->assertNotFound();
+    $response->assertForbidden();
 });
 
 test('guests can not access my projects page', function () {

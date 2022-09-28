@@ -1,14 +1,18 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ __('Accessibility Consultants') }}</x-slot>
     <x-slot name="header">
-        <div class="-mt-12 full bg-magenta-2 py-12">
+        <div class="full -mt-12 bg-magenta-2 py-12">
             <div class="center center:wide">
                 <ol class="breadcrumbs" role="list">
                     <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
-                    @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
-                    <li><a href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a></li>
+                    @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                        <li><a
+                                href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
+                        </li>
                     @elseif(request()->localizedRouteIs('about.organization-accessibility-consultants'))
-                    <li><a href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a></li>
+                        <li><a
+                                href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
+                        </li>
                     @endif
                 </ol>
                 <h1 class="w-1/2">
@@ -19,26 +23,43 @@
     </x-slot>
 
     <div class="stack stack:xl -mb-8">
-        <x-section aria-labelledby="experiences" class="stack:lg">
-            <h2 id="experiences" class="text-center">{!! __('What experiences should I have to be an :role?', ['role' => '<strong>' . __('Accessibility Consultant') . '</strong>']) !!}</h2>
-            <p>TODO.</p>
+        <x-section class="stack:lg" aria-labelledby="experiences">
+            <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant')]) !!}</h2>
+            <x-media-text>
+                <x-slot name="media">
+                    <x-placeholder width="915" height="515" />
+                </x-slot>
+                <div class="stack flex h-full flex-col justify-center">
+                    <p>{{ __('Ideally, an Accessibility Consultant has:') }}
+                    <ul>
+                        <li>{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
+                        <li>{{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </x-media-text>
         </x-section>
 
-        <x-section aria-labelledby="how" class="stack:lg">
+        <x-section class="stack:lg" aria-labelledby="how">
             <div class="align:center">
-                <h2 id="how">{!! __('How does being an :role work?', ['role' => '<strong>' . __('Accessibility Consultant') . '</strong>']) !!}</h2>
+                <h2 id="how">{!! __('How does being an :role work?', ['role' => __('Accessibility Consultant')]) !!}</h2>
             </div>
             <x-media-text>
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Sign up for the website and build your connector profile') }}</h3>
-                    <p>{{ __('Share some information about yourself, including which communities you are connected to, so governments and businesses can get to know you and what you may be able to help them with.') }}</p>
-                    @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
-                        <p><a href="{{ localized_route('about.individual-accessibility-consultants-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a></p>
+                <div class="stack flex h-full flex-col justify-center">
+                    <h3>{{ __('Sign up for the website and build your Accessibility Consultant profile') }}</h3>
+                    <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
+                    </p>
+                    @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                        <p><a
+                                href="{{ localized_route('about.individual-accessibility-consultants-what-we-ask-for') }}">{{ __('What information do we ask for?') }}</a>
+                        </p>
                     @endif
-                    <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a></p>
+                    <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a>
+                    </p>
                 </div>
             </x-media-text>
 
@@ -46,9 +67,10 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack flex flex-col justify-center h-full">
-                    <h3>{{ __('Find projects that are looking for a Community Connector') }}</h3>
-                    <p>{{ __('Access governments and businesses who are looking for a Community Connector to help with a project.') }}</p>
+                <div class="stack flex h-full flex-col justify-center">
+                    <h3>{{ __('Find projects that are looking for an Accessibility Consultant') }}</h3>
+                    <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}
+                    </p>
                 </div>
             </x-media-text>
 
@@ -56,9 +78,10 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack flex flex-col justify-center h-full">
+                <div class="stack flex h-full flex-col justify-center">
                     <h3>{{ __('Work directly with governments and businesses') }}</h3>
-                    <p>{{ __('Coordinate directly with governments and businesses on what help they need and who they’re looking for.') }}</a></p>
+                    <p>{{ __('Coordinate directly with governments and businesses on what they would like you to help with.') }}</a>
+                    </p>
                 </div>
             </x-media-text>
         </x-section>
@@ -69,7 +92,7 @@
             <p>TODO.</p>
         </x-section>
 
-        <x-section class="bg-turquoise-2 align:center mt-16">
+        <x-section class="align:center mt-16 bg-turquoise-2">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -77,9 +100,9 @@
         </x-section>
 
         @guest
-            <x-section aria-labelledby="join" class="full bg-grey-2 mt-16">
+            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
-                    <h2 id="join" class="text-center">{{ __('Join our accessibility community') }}</h2>
+                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>
@@ -87,10 +110,8 @@
                         </div>
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}</p>
-                            @if(request()->localizedRouteIs('about.individual-accessibility-consultants'))
-                                <p><a href="#TODO">{{ __('Find a local community organization to help me sign up') }}</a></p>
-                            @endif
+                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -6,16 +6,18 @@
             <a href="{{ localized_route('projects.edit', ['project' => $project]) }}">{{ __('About the project') }}</a>
         </li>
         <li>
-            <a href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{{ __('Project team') }}</a>
+            <a
+                href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{{ __('Project team') }}</a>
         </li>
     </ol>
 
     @can('update', $project)
-        @if($project->checkStatus('draft'))
+        @if ($project->checkStatus('draft'))
             <div class="stack">
                 <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
-                <button name="publish" value="1" @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
-                <p><em>{{ __('Once you publish your project, others can find it.') }}</em></p>
+                <button name="publish" value="1"
+                    @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
+                <p>{{ __('Once you publish your project, others can find it.') }}</p>
             </div>
         @else
             @can('unpublish', $project)

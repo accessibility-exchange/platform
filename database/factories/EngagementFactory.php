@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EngagementFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name' => ['en' => 'Focus group'],
-            'goals' => ['en' => 'What are we going to do?'],
+            'published_at' => date('Y-m-d h:i:s', time()),
             'project_id' => Project::factory(),
-            'recruitment' => 'automatic',
+            'name' => ['en' => 'Workshop'],
+            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'who' => 'individuals',
+            'format' => 'workshop',
+            'recruitment' => 'open-call',
+            'ideal_participants' => 25,
+            'minimum_participants' => 15,
+            'paid' => true,
         ];
     }
 }

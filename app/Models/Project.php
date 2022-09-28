@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
@@ -66,6 +67,10 @@ class Project extends Model
         'contact_person_vrs',
         'preferred_contact_method',
         'contact_person_response_time',
+        'estimate_requested_at',
+        'estimate_returned_at',
+        'estimate_approved_at',
+        'agreement_received_at',
     ];
 
     protected $casts = [
@@ -91,6 +96,12 @@ class Project extends Model
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
         'contact_person_response_time' => 'array',
+        'estimate_requested_at' => 'datetime:Y-m-d',
+        'estimate_returned_at' => 'datetime:Y-m-d',
+        'estimate_approved_at' => 'datetime:Y-m-d',
+        'agreement_received_at' => 'datetime:Y-m-d',
+        'estimate_or_agreement_updated_at' => 'datetime:Y-m-d',
+        'estimate_or_agreement_status' => 'integer',
     ];
 
     public array $translatable = [
@@ -115,22 +126,44 @@ class Project extends Model
         return 'project';
     }
 
-    public function started(): bool
+    public function singularName(): Attribute
     {
-        if ($this->start_date) {
-            return $this->start_date < Carbon::now();
-        }
-
-        return false;
+        return Attribute::make(
+            get: fn ($value) => __('project'),
+        );
     }
 
-    public function finished(): bool
+    public function routeNotificationForMail(Notification $notification): array
     {
-        if ($this->end_date) {
-            return $this->end_date < Carbon::now();
+        return [$this->contact_person_email => $this->contact_person_name];
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->contact_person_phone;
+    }
+
+    public function getStartedAttribute(): bool
+    {
+        return $this->start_date?->lessThan(Carbon::now()) ?? false;
+    }
+
+    public function getFinishedAttribute(): bool
+    {
+        return $this->end_date?->lessThan(Carbon::now()) ?? false;
+    }
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->checkStatus('draft')) {
+            return __('Draft');
+        } elseif (! $this->started) {
+            return __('Upcoming');
+        } elseif (! $this->finished) {
+            return __('In progress');
         }
 
-        return false;
+        return __('Complete');
     }
 
     public function teamTrainings(): Attribute
@@ -147,7 +180,7 @@ class Project extends Model
 
                     return array_map(function ($training) {
                         $date = new Carbon($training['date']);
-                        $training['date'] = $date->translatedFormat('F Y');
+                        $training['date'] = $date->format('Y-m-d');
 
                         return $training;
                     }, $trainings);

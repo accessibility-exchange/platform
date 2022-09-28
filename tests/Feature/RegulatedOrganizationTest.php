@@ -1,11 +1,14 @@
 <?php
 
+use App\Enums\ProvinceOrTerritory;
+use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
-use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
+use function Pest\Faker\faker;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
 uses(RefreshDatabase::class);
@@ -174,10 +177,18 @@ test('non members can not edit regulated organizations', function () {
 });
 
 test('regulated organizations can be published', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'publish' => true,
@@ -192,10 +203,18 @@ test('regulated organizations can be published', function () {
 });
 
 test('regulated organizations can be unpublished', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'unpublish' => true,
@@ -208,6 +227,22 @@ test('regulated organizations can be unpublished', function () {
 
     $this->assertTrue($regulatedOrganization->checkStatus('draft'));
 });
+
+test('regulated organization isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(SectorSeeder::class);
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'sector') {
+            $regulatedOrganization->sectors()->attach(Sector::first()->id);
+        }
+    }
+
+    expect($regulatedOrganization->isPublishable())->toBe($expected);
+})->with('regulatedOrganizationIsPublishable');
 
 test('users with admin role can update other member roles', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -394,7 +429,7 @@ test('existing members cannot be invited', function () {
             'role' => 'member',
         ]);
 
-    $response->assertSessionHasErrorsIn('inviteMember', ['email']);
+    $response->assertSessionHasErrors(['email']);
     $response->assertRedirect(localized_route('settings.invite-to-invitationable'));
 });
 
@@ -412,7 +447,26 @@ test('invitation can be accepted', function () {
     $response = $this->actingAs($user)->get($acceptUrl);
 
     $this->assertTrue($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertRedirect(localized_route('dashboard'));
+});
+
+test('invitation can be declined', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => $user->email,
+    ]);
+
+    $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($user)->delete($declineUrl);
+
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
+    $this->assertModelMissing($invitation);
+
+    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('invitation cannot be accepted by different user', function () {
@@ -432,8 +486,25 @@ test('invitation cannot be accepted by different user', function () {
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
     $this->assertFalse($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    $response->assertForbidden();
+});
+
+test('invitation can not be declined by a different user', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => faker()->email,
+    ]);
+
+    $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($user)->delete($declineUrl);
+    $response->assertForbidden();
+
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
+    $this->assertModelExists($invitation);
 });
 
 test('users with admin role can remove members', function () {
@@ -622,4 +693,26 @@ test('user can view regulated organization in different languages', function () 
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
     $response->assertSee('Agence du revenue du Canada');
+});
+
+test('regulated organizations have slugs in both languages even if only one is provided', function () {
+    $regulatedOrg = RegulatedOrganization::factory()->create();
+    expect($regulatedOrg->getTranslation('slug', 'fr', false))
+        ->toEqual($regulatedOrg->getTranslation('slug', 'en', false));
+
+    $regulatedOrg = RegulatedOrganization::factory()->create(['name' => ['fr' => 'Santé Canada']]);
+    expect($regulatedOrg->getTranslation('slug', 'en', false))
+        ->toEqual($regulatedOrg->getTranslation('slug', 'fr', false));
+});
+
+test('notifications can be routed for regulated organizations', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'contact_person_name' => faker()->name(),
+        'contact_person_email' => faker()->email(),
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
+    expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
 });

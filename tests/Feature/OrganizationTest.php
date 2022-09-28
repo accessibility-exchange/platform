@@ -1,21 +1,26 @@
 <?php
 
+use App\Enums\ConsultingService;
+use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
+use App\Models\Constituency;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
+use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
-use App\Models\OrganizationRole;
 use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\AreaTypeSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\OrganizationRoleSeeder;
+use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
@@ -29,8 +34,6 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
-    $this->seed(OrganizationRoleSeeder::class);
-
     $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
@@ -58,27 +61,22 @@ test('users can create organizations', function () {
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
-
-    $consultantRole = OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id;
-    $connectorRole = OrganizationRole::firstWhere('name->en', 'Community Connector')->id;
-    $participantRole = OrganizationRole::firstWhere('name->en', 'Consultation Participant')->id;
-
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$consultantRole],
+        'roles' => ['consultant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$connectorRole],
+        'roles' => ['connector'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [$participantRole],
+        'roles' => ['participant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -86,10 +84,10 @@ test('users can create organizations', function () {
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-edit', $organization));
     $response->assertOk();
-    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-'.$participantRole.'" value="'.$participantRole.'" aria-describedby="roles-'.$participantRole.'-hint" checked  />', false);
+    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
 
     $response = $this->actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => [OrganizationRole::firstWhere('name->en', 'Accessibility Consultant')->id],
+        'roles' => ['consultant'],
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
@@ -110,10 +108,31 @@ test('users can create organizations', function () {
 });
 
 test('users with admin role can edit and publish organizations', function () {
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create(['contact_person_name' => faker()->name]);
+        ->create([
+            'contact_person_name' => faker()->name,
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'staff_lived_experience' => 'yes',
+            'preferred_contact_method' => 'email',
+            'about' => 'test about',
+            'region' => 'ON',
+            'locality' => 'Toronto',
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $organization->livedExperiences()->attach(LivedExperience::first()->id);
+    $organization->areaTypes()->attach(AreaType::first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertOk();
@@ -345,6 +364,9 @@ test('users with admin role can edit organization contact information', function
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
 
+    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
+    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+
     expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
     expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
     expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");
@@ -431,6 +453,162 @@ test('non members cannot edit or publish organizations', function () {
 
     expect($organization->checkStatus('published'))->toBeTrue();
 });
+
+test('organization pages can be published', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('published'));
+});
+
+test('organization pages can be unpublished', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+            'published_at' => date('Y-m-d h:i:s', time()),
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'unpublish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('draft'));
+});
+
+test('organization pages cannot be published by other users', function () {
+    $user = User::factory()->create();
+    $organization = Organization::factory()
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $organization = $organization->fresh();
+    $this->assertTrue($organization->checkStatus('draft'));
+});
+
+test('organization isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(AgeBracketSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+    $this->seed(ConstituencySeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(EthnoracialIdentitySeeder::class);
+    $this->seed(IndigenousIdentitySeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $organization = Organization::factory()->create();
+    $organization->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'ageBrackets') {
+            $organization->ageBrackets()->attach(AgeBracket::first()->id);
+        }
+
+        if ($connection === 'areaTypes') {
+            $organization->areaTypes()->attach(AreaType::first()->id);
+        }
+
+        if ($connection === 'ethnoracialIdentities') {
+            $organization->ethnoracialIdentities()->attach(EthnoracialIdentity::first()->id);
+        }
+
+        if ($connection === 'genderIdentities') {
+            $organization->genderIdentities()->attach(GenderIdentity::first()->id);
+        }
+
+        if ($connection === 'indigenousIdentities') {
+            $organization->indigenousIdentities()->attach(IndigenousIdentity::first()->id);
+        }
+
+        if ($connection === 'livedExperiences') {
+            $organization->livedExperiences()->attach(LivedExperience::first()->id);
+        }
+
+        if ($connection === 'trans_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', 'Trans person')->id);
+        }
+
+        if ($connection === '2SLGBTQIA+_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', '2SLGBTQIA+ person')->id);
+        }
+    }
+
+    expect($organization->isPublishable())->toBe($expected);
+})->with('organizationIsPublishable');
 
 test('organizations can be translated', function () {
     $organization = Organization::factory()->create();
@@ -638,7 +816,7 @@ test('existing members cannot be invited', function () {
             'role' => 'member',
         ]);
 
-    $response->assertSessionHasErrorsIn('inviteMember', ['email']);
+    $response->assertSessionHasErrors(['email']);
     $response->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
@@ -656,7 +834,7 @@ test('invitation can be accepted', function () {
     $response = $this->actingAs($user)->get($acceptUrl);
 
     $this->assertTrue($organization->fresh()->hasUserWithEmail($user->email));
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('invitation cannot be accepted by user with existing membership', function () {
@@ -697,8 +875,7 @@ test('invitation cannot be accepted by different user', function () {
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
     $this->assertFalse($organization->fresh()->hasUserWithEmail($user->email));
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    $response->assertForbidden();
 });
 
 test('users with admin role can remove members', function () {
@@ -868,10 +1045,7 @@ test('guests cannot view organizations', function () {
 });
 
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
-    $this->seed(OrganizationRoleSeeder::class);
-
-    $organization = Organization::factory()->create();
-    $organization->organizationRoles()->sync(OrganizationRole::pluck('id'));
+    $organization = Organization::factory()->create(['roles' => ['consultant', 'connector', 'participant']]);
 
     $organization = $organization->fresh();
 
@@ -914,4 +1088,14 @@ test('organizational relationships to projects can be derived from both projects
     expect($organization->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
+});
+
+test('organizations have slugs in both languages even if only one is provided', function () {
+    $organization = Organization::factory()->create();
+    expect($organization->getTranslation('slug', 'fr', false))
+        ->toEqual($organization->getTranslation('slug', 'en', false));
+
+    $organization = Organization::factory()->create(['name' => ['fr' => 'Mon entreprise']]);
+    expect($organization->getTranslation('slug', 'en', false))
+        ->toEqual($organization->getTranslation('slug', 'fr', false));
 });

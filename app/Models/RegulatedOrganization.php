@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
@@ -111,8 +114,10 @@ class RegulatedOrganization extends Model
      */
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
+        return SlugOptions::createWithLocales(['en', 'fr'])
+            ->generateSlugsFrom(function (RegulatedOrganization $model, $locale): string {
+                return $model->getTranslation('name', $locale);
+            })
             ->saveSlugsTo('slug');
     }
 
@@ -131,6 +136,23 @@ class RegulatedOrganization extends Model
         return 'regulatedOrganization';
     }
 
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return [$this->contact_person_email => $this->contact_person_name];
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return $this->contact_person_phone;
+    }
+
+    public function singularName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => __('regulated organization'),
+        );
+    }
+
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'invitationable');
@@ -139,7 +161,7 @@ class RegulatedOrganization extends Model
     protected function serviceRegions(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => get_regions_from_provinces_and_territories(json_decode($attributes['service_areas']) ?? []),
+            get: fn ($value) => get_regions_from_provinces_and_territories($this->service_areas ?? []),
         );
     }
 
@@ -247,6 +269,39 @@ class RegulatedOrganization extends Model
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->region);
+    }
+
+    public function isPublishable(): bool
+    {
+        $publishRules = [
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
+            'accessibility_and_inclusion_links.*.title' => 'required_with:accessibility_and_inclusion_links.*.url',
+            'accessibility_and_inclusion_links.*.url' => 'required_with:accessibility_and_inclusion_links.*.title',
+            'contact_person_email' => 'required_without:contact_person_phone',
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_name' => 'required',
+            'languages' => 'required',
+            'locality' => 'required',
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'preferred_contact_method' => 'required',
+            'region' => 'required',
+            'service_areas' => 'required',
+            'type' => 'required',
+        ];
+
+        try {
+            Validator::validate($this->toArray(), $publishRules);
+        } catch (ValidationException $exception) {
+            return false;
+        }
+
+        if (! $this->sectors()->count()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function blocks(): MorphToMany

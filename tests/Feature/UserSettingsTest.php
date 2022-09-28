@@ -2,7 +2,6 @@
 
 use App\Models\AccessSupport;
 use App\Models\ConsultingMethod;
-use App\Models\IndividualRole;
 use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
@@ -10,7 +9,6 @@ use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\ConsultingMethodSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\IndividualRoleSeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
@@ -64,10 +62,10 @@ test('other users cannot manage access needs', function () {
 
 test('individual users can manage communication and consultation preferences', function () {
     $this->seed(ConsultingMethodSeeder::class);
-    $this->seed(IndividualRoleSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
-    $user->individual->individualRoles()->attach(IndividualRole::where('name->en', 'Consultation Participant')->first()->id);
+    $user->individual->roles = ['participant'];
+    $user->individual->save();
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
 
@@ -347,17 +345,37 @@ test('guests can not edit notification preferences', function () {
     $response->assertRedirect(localized_route('login'));
 });
 
-test('users can edit roles and permissions', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+test('users belonging to an organization or regulated organization can edit roles and permissions', function () {
+    $organizationUserWithoutOrganization = User::factory()->create(['context' => 'organization']);
+
+    $response = $this->actingAs($organizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
+
+    $organizationUserWithOrganization = User::factory()->create(['context' => 'organization']);
+
+    Organization::factory()
+        ->hasAttached($organizationUserWithOrganization, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response = $this->actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertOk();
+
+    $regulatedOrganizationUserWithoutOrganization = User::factory()->create(['context' => 'regulated-organization']);
+
+    $response = $this->actingAs($regulatedOrganizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
+
+    $regulatedOrganizationUserWithOrganization = User::factory()->create(['context' => 'regulated-organization']);
+
+    RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationUserWithOrganization, ['role' => 'admin'])
+        ->create();
+
+    $response = $this->actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
     $response->assertOk();
 });
 
-test('users can invite new members to their organization or regulated organization', function () {
+test('users belonging to an organization or regulated organization can invite new members to their organization or regulated organization', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
@@ -380,7 +398,7 @@ test('users can invite new members to their organization or regulated organizati
 
     $individualUser = User::factory()->create();
     $response = $this->actingAs($individualUser)->get(localized_route('settings.invite-to-invitationable'));
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
 });
 
 test('guests can not edit roles and permissions', function () {
@@ -421,8 +439,8 @@ test('password can be updated', function () {
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
-            'password' => 'new_password',
-            'password_confirmation' => 'new_password',
+            'password' => 'correctHorse-batteryStaple7',
+            'password_confirmation' => 'correctHorse-batteryStaple7',
         ]);
 
     $response->assertSessionHasNoErrors();

@@ -6,10 +6,12 @@
             {{ __('The Accessibility Exchange') }}
         </h1>
 
-        <h2>{{ __('What would you like to do on this website?') }}</h2>
+        <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
     </x-slot>
 
-    <p>{{ __('You can always change this later.') }} <a href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
+    <p><strong>{{ __('You must pick at least one of these roles.') }}</strong>
+        {{ __('You can always change this later.') }} <a
+            href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
 
     <form class="stack" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate>
         <fieldset class="field @error('roles') field--error @enderror">

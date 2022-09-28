@@ -153,19 +153,24 @@ When you see the following text the container is fully deployed.
 2022-08-04 16:45:19,386 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
 ```
 
+### Running tests
+
+The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
+
 ### Development workflow
 
--   This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
+- This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
     All commit messages and pull request titles must follow these standards.
--   The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains refined features
+- The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains features
     that have been prototyped and gone through one or more co-design sessions.
--   Feature refinement must take place in a feature branch forked from the `prototype` branch. Feature refinement branches
-    must be named according to the format `feat/<feature>`. Once a refined feature is ready to merge into `dev`, the
-    merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
--   The [`main`](https://github.com/accessibility-exchange/platform/tree/main) branch contains refined features that
+- Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
+    must be named according to the format `feat/<feature>`.
+- Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+- Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
+- The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined features that
     are considered production-ready.
--   Prereleases must be tagged from the `dev` branch.
--   Releases must be tagged from the `main` branch.
+- Prereleases must be tagged from the `dev` branch.
+- Releases must be tagged from the `production` branch.
 
 ## License
 

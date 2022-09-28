@@ -16,11 +16,14 @@ return new class extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->timestamp('oriented_at')->nullable();
+            $table->timestamp('validated_at')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->json('name');
             $table->json('slug');
             $table->string('type');
             $table->json('languages')->nullable();
+            $table->json('roles')->nullable();
             $table->string('region')->nullable();
             $table->string('locality')->nullable();
             $table->json('about')->nullable();

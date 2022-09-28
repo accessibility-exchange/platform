@@ -46,15 +46,15 @@ test('password can be reset with valid token', function () {
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
         $response = $this->post(localized_route('password.update', ['token' => $notification->token]), [
             'email' => $user->email,
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'password' => 'correctHorse-batteryStaple7',
+            'password_confirmation' => 'correctHorse-batteryStaple7',
         ]);
 
         $response->assertRedirect();
 
         $response->assertSessionHasNoErrors();
 
-        $response->assertSessionHas('status', 'Your password has been reset!');
+        $response->assertSessionHas('status', 'You have successfully reset your password for The Accessibility Exchange.');
 
         return true;
     });

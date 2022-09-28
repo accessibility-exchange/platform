@@ -20,7 +20,7 @@ class IndividualFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),
@@ -28,6 +28,7 @@ class IndividualFactory extends Factory
                 return User::find($attributes['user_id'])->name;
             },
             'region' => $this->faker->provinceAbbr(),
+            'roles' => ['participant'],
             'languages' => ['en', 'fr'],
             'first_language' => function (array $attributes) {
                 return User::find($attributes['user_id'])->locale;

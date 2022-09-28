@@ -1,34 +1,46 @@
-
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ __('Edit engagement') }}</x-slot>
     <x-slot name="header">
+        <ol class="breadcrumbs" role="list">
+            <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+            <li><a
+                    href="{{ localized_route('projects.show', $engagement->project) }}">{{ $engagement->project->name }}</a>
+            </li>
+            <li><a href="{{ localized_route('engagements.show', $engagement) }}">{{ $engagement->name }}</a></li>
+        </ol>
         <h1>
-            {{ __('Edit engagement') }}
+            {{ __('Edit engagement details') }}
         </h1>
+        <p><a
+                href="{{ localized_route('engagements.edit-languages', $engagement) }}">{{ __('Edit page translations') }}</a>
+        </p>
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form id="edit-engagement" action="{{ localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]) }}" method="POST" novalidate>
+    <form class="stack"
+        action="{{ localized_route('engagements.update', ['project' => $project, 'engagement' => $engagement]) }}"
+        method="POST" novalidate>
         @csrf
         @method('put')
 
-        <x-translatable-input name="name" :label="__('Engagement name')" :model="$engagement" />
+        <h2>{{ __('Name') }}</h2>
 
-        <x-translatable-textarea name="goals" :label="__('Goals for engagement')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :model="$engagement" />
 
-        <fieldset>
-            <legend>{{ __('Recruiting participants') }}</legend>
+        <h2>{{ __('Description') }}</h2>
 
-            <x-hearth-hint for="recruitment">{{ __('How do you want to recruit participants for this engagement?') }}</x-hearth-hint>
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :hint="__(
+            'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
+        )" :model="$engagement" />
 
-            <x-hearth-radio-buttons name="recruitment" :options="[
-                ['value' => 'automatic', 'label' => __('With the Accessibility Exchange’s automatic matching system')],
-                ['value' => 'open', 'label' => __('With an open call for participants')],
-            ]" :checked="old('recruitment', $engagement->recruitment) ?? false" hinted />
-        </fieldset>
+        <h2>{{ __('Sign up deadline') }}</h2>
 
-        <button>{{ __('Update engagement') }}</button>
+        <div class="field @error('signup_by_date') field--error @enderror">
+            <livewire:date-picker name="signup_by_date" :label="__('Please respond to your invitation to participate by:')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+        </div>
+
+        <button class="w-1/2">{{ __('Save') }}</button>
     </form>
-</x-app-layout>
+</x-app-wide-layout>

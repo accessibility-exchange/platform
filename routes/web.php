@@ -104,17 +104,48 @@ Route::multilingual('/dashboard', [UserController::class, 'dashboard'])
     ->middleware(['auth', 'onboard'])
     ->name('dashboard');
 
+Route::multilingual('/dashboard/notifications', [UserController::class, 'notifications'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.notifications');
+
+Route::multilingual('/dashboard/notifications/all', [UserController::class, 'allNotifications'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.notifications-all');
+
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
-})
-    ->middleware(['auth'])
-    ->name('people-and-organizations');
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+    'can:viewAny,App\Models\RegulatedOrganization',
+])->name('people-and-organizations');
+
+Route::multilingual('/people-and-organizations/consultants', function () {
+    return 'The Accessibility Consultants page is not yet available.';
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+])->name('people-and-organizations.consultants');
+
+Route::multilingual('/people-and-organizations/connectors', function () {
+    return 'The Community Consultants page is not yet available.';
+})->middleware([
+    'auth',
+    'verified',
+    'can:viewAny,App\Models\Individual',
+    'can:viewAny,App\Models\Organization',
+])->name('people-and-organizations.connectors');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
     ->middleware(['auth'])
     ->name('users.destroy');
 
+require __DIR__.'/admin.php';
 require __DIR__.'/identifiers.php';
 require __DIR__.'/block-list.php';
 require __DIR__.'/individuals.php';

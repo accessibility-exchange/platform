@@ -5,9 +5,11 @@
 
         <!-- Session Status -->
         @if (session('status') == 'verification-link-sent')
-            <x-hearth-alert type="success">
-                {{ __('hearth::auth.verification_sent') }}
-            </x-hearth-alert>
+            <x-live-region>
+                <x-hearth-alert type="success">
+                    {{ __('hearth::auth.verification_sent') }}
+                </x-hearth-alert>
+            </x-live-region>
         @else
             <x-auth-session-status :status="session('status')" />
         @endif
@@ -15,8 +17,8 @@
     <div class="auth-card center">
         <div class="stack">
             <a href="{{ localized_route('welcome') }}" rel="home">
-                <x-tae-logo role="presentation" class="logo" />
-                <x-tae-logo-mono role="presentation" class="logo logo--themeable" />
+                <x-tae-logo class="logo" role="presentation" />
+                <x-tae-logo-mono class="logo logo--themeable" role="presentation" />
                 <span class="visually-hidden">{{ __('app.name') }}</span>
             </a>
             <h1 class="align:center">{{ $title }}</h1>

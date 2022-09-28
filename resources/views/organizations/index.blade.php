@@ -6,26 +6,42 @@
         </h1>
     </x-slot>
 
-   <div class="grid">
+    <div class="grid">
         @forelse($organizations as $organization)
-        <x-card class="community-organization">
-            <x-slot name="title">
-                <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a>
-            </x-slot>
-            <p>
-                <strong>{{ __('Community organization') }}</strong>@if($organization->roles)<br />
-                <strong class="weight:semibold">{{__('Roles') }}:</strong> @foreach($organization->roles as $role){{ $role->name }}@if(!$loop->last), @endif @endforeach @endif
-            </p>
+            <x-card class="community-organization">
+                <x-slot name="title">
+                    <a href="{{ localized_route('organizations.show', $organization) }}">{{ $organization->name }}</a>
+                </x-slot>
+                <p>
+                    <strong>{{ __('Community organization') }}</strong>
+                    @if ($organization->display_roles)
+                        <br />
+                        <strong class="weight:semibold">{{ __('Roles') }}:</strong>
+                        @foreach ($organization->display_roles as $role)
+                            {{ $role }}@if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
+                    @endif
+                </p>
 
-            @if($organization->hasAddedDetails())
-            <p>
-                <strong class="weight:semibold">{{__('Location') }}:</strong> {{ $organization->locality }}, {{ get_region_name($organization->region, ["CA"], locale()) }}@if($organization->representables)<br />
-                <strong class="weight:semibold">{{__('Communities served') }}:</strong> @foreach($organization->representables as $community){{ $community->name }}@if(!$loop->last), @endif @endforeach @endif
-            </p>
-            @endif
-        </x-card>
-        @empty
-        <p>{{ __('organization.none_found') }}</p>
-        @endforelse
-    </div>
-</x-app-wide-layout>
+                @if ($organization->hasAddedDetails())
+                    <p>
+                        <strong class="weight:semibold">{{ __('Location') }}:</strong> {{ $organization->locality }},
+                        {{ get_region_name($organization->region, ['CA'], locale()) }}@if ($organization->representables)
+                            <br />
+                            <strong class="weight:semibold">{{ __('Communities served') }}:</strong>
+                            @foreach ($organization->representables as $community)
+                                {{ $community->name }}@if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                        @endif
+                    </p>
+                @endif
+            </x-card>
+            @empty
+                <p>{{ __('organization.none_found') }}</p>
+            @endforelse
+        </div>
+    </x-app-wide-layout>

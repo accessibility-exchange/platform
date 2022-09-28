@@ -10,14 +10,14 @@ trait HasMultipageEditingAndPublishing
 {
     public function getSingularName(): string
     {
-        return __(Str::kebab(class_basename(get_class($this))).'.singular_name');
+        return __(Str::kebab(class_basename($this)).'.singular_name');
     }
 
     public function publish(): void
     {
         $this->published_at = date('Y-m-d h:i:s', time());
         $this->save();
-        flash(__('Your :model page has been published.', ['model' => $this->getSingularName()]), 'success');
+        flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success');
     }
 
     public function unpublish($silent = false): void

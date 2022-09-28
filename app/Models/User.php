@@ -5,13 +5,16 @@ namespace App\Models;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
@@ -19,9 +22,13 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
+use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use TheIconic\NameParser\Parser as NameParser;
 
+/**
+ * @property Collection $unreadNotifications
+ */
 class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
@@ -29,6 +36,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
+    use SchemalessAttributesTrait;
+    use HasMergedRelationships;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -57,6 +66,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'preferred_contact_person',
         'preferred_notification_method',
         'notification_settings',
+        'extra_attributes',
     ];
 
     protected $hidden = [
@@ -74,13 +84,43 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'vrs' => 'boolean',
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
+    ];
+
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+        'notification_settings',
     ];
 
     protected mixed $cascadeDeletes = [
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => [$this->support_person_email => $this->support_person_name],
+            default => [$this->email => $this->name]
+        };
+    }
+
+    public function routeNotificationForVonage(Notification $notification): string
+    {
+        return match ($this->preferred_contact_person) {
+            'support-person' => $this->support_person_phone,
+            default => $this->phone
+        };
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
+    }
+
+    public function scopeWithNotificationSettings(): Builder
+    {
+        return $this->notification_settings->modelScope();
+    }
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
@@ -97,6 +137,19 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    public function teamInvitation(): Invitation|null
+    {
+        return Invitation::where('email', $this->email)->whereIn('invitationable_type', ['App\Models\Organization', 'App\Models\RegulatedOrganization'])->first() ?? null;
+    }
+
+    public function participantInvitations(): Collection
+    {
+        return Invitation::where([
+            ['email', $this->email],
+            ['role', 'participant'],
+        ])->get();
     }
 
     public function introduction(): string
@@ -125,9 +178,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $methods = [];
 
         if ($this->preferred_contact_person == 'me') {
-            if (! empty($this->email)) {
-                $methods[] = 'email';
-            }
+            $methods[] = 'email';
             if (! empty($this->phone)) {
                 $methods[] = 'phone';
             }
@@ -146,13 +197,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->email :
-                $this->support_person_email,
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->phone->formatForCountry('CA') :
                 $this->support_person_phone->formatForCountry('CA'),
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->email :
+                $this->support_person_email,
         };
 
         if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
@@ -172,30 +222,28 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getPrimaryContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => __('Send an email to :contact_qualifier:contact_person at :email.', [
-                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'email' => '<'.$this->primary_contact_point.'>',
-            ]),
             'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
                 'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
                 'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
                 'phone_number' => $this->primary_contact_point,
             ]),
-            default => null
+            default => __('Send an email to :contact_qualifier:contact_person at :email.', [
+                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
+                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
+                'email' => '<'.$this->primary_contact_point.'>',
+            ])
         };
     }
 
     public function getAlternateContactPointAttribute(): string|null
     {
         $contactPoint = match ($this->preferred_contact_method) {
-            'email' => $this->preferred_contact_person === 'me' ?
-                $this->phone?->formatForCountry('CA') :
-                $this->support_person_phone?->formatForCountry('CA'),
             'phone' => $this->preferred_contact_person === 'me' ?
                 $this->email ?? null :
                 $this->support_person_email ?? null,
-            default => null,
+            default => $this->preferred_contact_person === 'me' ?
+                $this->phone?->formatForCountry('CA') :
+                $this->support_person_phone?->formatForCountry('CA'),
         };
 
         if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
@@ -208,9 +256,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function getAlternateContactMethodAttribute(): string|null
     {
         return match ($this->preferred_contact_method) {
-            'email' => $this->alternate_contact_point ?? null,
             'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
-            default => null
+            default => $this->alternate_contact_point ?? null,
         };
     }
 
@@ -324,13 +371,86 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $notificationable->isNotifying($this);
     }
 
-    /**
-     * Is two-factor authentication enabled for this user?
-     *
-     * @return bool
-     */
+    public function isOnlyAdministratorOfOrganization(): bool
+    {
+        if (count($this->organizations) > 0) {
+            if ($this->organization->administrators()->count() === 1 && $this->isAdministratorOf($this->organization)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isOnlyAdministratorOfRegulatedOrganization(): bool
+    {
+        if (count($this->regulatedOrganizations) > 0) {
+            if ($this->regulatedOrganization->administrators()->count() === 1 && $this->isAdministratorOf($this->regulatedOrganization)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function twoFactorAuthEnabled(): bool
     {
         return ! is_null($this->two_factor_secret);
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->context === 'administrator';
+    }
+
+    public function scopeWhereAdministrator(Builder $query): Builder
+    {
+        return $query->where('context', 'administrator');
+    }
+
+    public function allNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->notifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->notifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->notifications);
+            }
+        } else {
+            return $this->notifications->paginate(20);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
+    }
+
+    public function allUnreadNotifications(): LengthAwarePaginator
+    {
+        $notifications = new Collection();
+
+        if ($this->context === 'organization') {
+            $notifications = $notifications->merge($this->organization->unreadNotifications);
+
+            foreach ($this->organization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } elseif ($this->context === 'regulated-organization') {
+            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications);
+
+            foreach ($this->regulatedOrganization->projects as $project) {
+                $notifications = $notifications->merge($project->unreadNotifications);
+            }
+        } else {
+            return $this->unreadNotifications->paginate(20);
+        }
+
+        return $notifications->sortByDesc('created_at')->paginate(20);
     }
 }

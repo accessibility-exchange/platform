@@ -1,6 +1,6 @@
 <x-app-wide-layout>
     <x-slot name="title">
-        @if($organization->checkStatus('published'))
+        @if ($organization->checkStatus('published'))
             {{ __('Edit your organization page') }}
         @else
             {{ __('Create your organization page') }}
@@ -11,11 +11,11 @@
             <h1>
                 {{ $organization->name }}
             </h1>
-            @if($organization->checkStatus('draft'))
+            @if ($organization->checkStatus('draft'))
                 <span class="badge">{{ __('Draft mode') }}</span>
             @endif
         </div>
-        @if($organization->checkStatus('published'))
+        @if ($organization->checkStatus('published'))
             <p>
                 <a href="{{ localized_route('organizations.show', $organization) }}">{{ __('View page') }}</a>
             </p>
@@ -27,7 +27,7 @@
 
     <x-translation-manager :model="$organization" />
 
-    @if(request()->get('step'))
+    @if (request()->get('step'))
         @include('organizations.edit.' . request()->get('step'))
     @else
         @include('organizations.edit.1')

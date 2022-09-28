@@ -9,7 +9,7 @@ Route::controller(OrganizationController::class)
     ->name('organizations.')
     ->group(function () {
         Route::multilingual('', 'index')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Organization'])
             ->name('index');
 
         Route::multilingual('/type/select', 'showTypeSelection')
@@ -95,6 +95,11 @@ Route::controller(OrganizationController::class)
             ->middleware(['auth', 'verified', 'can:update,organization'])
             ->method('put')
             ->name('update-contact-information');
+
+        Route::multilingual('/{organization}/change-status', 'updatePublicationStatus')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->method('put')
+            ->name('update-publication-status');
 
         Route::multilingual('/{organization}/delete', 'destroy')
             ->middleware(['auth', 'verified', 'can:delete,organization'])

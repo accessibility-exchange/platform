@@ -4,18 +4,46 @@ namespace App\Models;
 
 use Hearth\Models\Invitation as HearthInvitation;
 
+/**
+ * @property ?string $type
+ */
 class Invitation extends HearthInvitation
 {
     protected $table = 'invitations';
 
-    public function accept(): void
+    public function __construct(array $attributes = [])
     {
-        $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+        parent::__construct($attributes);
 
-        $this->invitationable->users()->attach(
-            $invitee,
-            ['role' => $this->role]
-        );
+        $this->mergeFillable(['type']);
+    }
+
+    public function accept(?string $type = null): void
+    {
+        if ($type) {
+            if ($type === 'individual') {
+                $user = User::whereBlind('email', 'email_index', $this->email)->first();
+                $invitee = $user->individual;
+                if ($this->role === 'connector') {
+                    $this->invitationable->connector()->associate($invitee);
+                    $this->invitationable->save();
+                }
+            }
+            if ($type === 'organization') {
+                $invitee = Organization::where('contact_person_email', $this->email)->first();
+                if ($this->role === 'connector') {
+                    $this->invitationable->organizationalConnector()->associate($invitee);
+                    $this->invitationable->save();
+                }
+            }
+        } else {
+            $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+
+            $this->invitationable->users()->attach(
+                $invitee,
+                ['role' => $this->role]
+            );
+        }
 
         $this->delete();
     }

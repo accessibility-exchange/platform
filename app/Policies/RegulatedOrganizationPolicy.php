@@ -11,6 +11,11 @@ class RegulatedOrganizationPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user): null|bool
+    {
+        return $user->isAdministrator() ? true : null;
+    }
+
     public function create(User $user): Response
     {
         return $user->context === 'regulated-organization' && $user->regulatedOrganizations->isEmpty()
@@ -18,14 +23,26 @@ class RegulatedOrganizationPolicy
             : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
     }
 
+    public function viewAny(User $user): Response
+    {
+        return
+             $user->individual || $user->organization || $user->regulated_organization
+                ? Response::allow()
+                : Response::deny();
+    }
+
     public function view(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
-        return $regulatedOrganization->blockedBy($user)
-            ? Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
+        if ($regulatedOrganization->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :regulatedOrganization. If you want to visit this page, you can :unblock and return to this page.', [
                 'regulatedOrganization' => '<strong>'.$regulatedOrganization->getTranslation('name', locale()).'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
-            ]))
-            : Response::allow();
+            ]));
+        }
+
+        return $user->individual || $user->organization || $user->regulated_organization
+            ? Response::allow()
+            : Response::deny();
     }
 
     public function update(User $user, RegulatedOrganization $regulatedOrganization): Response
@@ -37,8 +54,7 @@ class RegulatedOrganizationPolicy
 
     public function publish(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
-        // TODO: Ensure model is ready for publishing first.
-        return $user->isAdministratorOf($regulatedOrganization)
+        return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
             ? Response::allow()
             : Response::deny(__('You cannot publish this regulated organization.'));
     }

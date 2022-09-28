@@ -9,9 +9,9 @@
     <div role="region" aria-labelledby="indigenous-identities" tabindex="0">
         <table>
             <thead>
-            <tr>
-                <th>{{ __('Name') }}</th>
-            </tr>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                </tr>
             </thead>
             @forelse ($indigenousIdentities as $indigenousIdentity)
                 <tr>
@@ -25,5 +25,3 @@
         </table>
     </div>
 </x-app-layout>
-
-

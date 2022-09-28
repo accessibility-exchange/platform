@@ -21,31 +21,18 @@ class UpdateOrganizationRequest extends FormRequest
 
     public function rules(): array
     {
-        $nameRules = [
-            'string',
-            'max:255',
-            UniqueTranslationRule::for('organizations')->ignore($this->organization->id),
-        ];
-
-        $aboutRules = [
-            'string',
-        ];
-
         return [
-            'name.*' => ['nullable'] + $nameRules,
-            'name.en' => [
-                'required_without:name.fr',
-            ] + $nameRules,
-            'name.fr' => [
-                'required_without:name.en',
-            ] + $nameRules,
-            'about.*' => ['nullable'] + $aboutRules,
-            'about.en' => [
-                'required_without:about.fr',
-            ] + $aboutRules,
-            'about.fr' => [
-                'required_without:about.en',
-            ] + $aboutRules,
+            'name.*' => [
+                'nullable',
+                'string',
+                'max:255',
+                UniqueTranslationRule::for('organizations')->ignore($this->organization->id),
+            ],
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'about.*' => 'nullable|string',
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
             'region' => [
                 'required',
                 new Enum(ProvinceOrTerritory::class),
@@ -68,9 +55,17 @@ class UpdateOrganizationRequest extends FormRequest
             'consulting_services.*' => [
                 new Enum(ConsultingService::class),
             ],
-            'social_links.*' => 'nullable|url',
-            'website_link' => 'nullable|url',
+            'social_links.*' => 'nullable|active_url',
+            'website_link' => 'nullable|active_url',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'social_links' => array_map('normalize_url', $this->social_links ?? []),
+            'website_link' => normalize_url($this->website_link),
+        ]);
     }
 
     public function attributes(): array
