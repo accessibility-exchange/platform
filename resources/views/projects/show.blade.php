@@ -43,7 +43,7 @@
                     <a class="ml-auto"
                         href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage this project') }}</a>
                 @endcan
-                @can('publish', $project)
+                @can('update', $project)
                     @if ($project->checkStatus('published'))
                         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST"
                             novalidate>
@@ -56,7 +56,8 @@
                             novalidate>
                             @csrf
                             @method('PUT')
-                            <button class="secondary" name="publish" value="1">{{ __('Publish') }}</button>
+                            <button class="secondary" name="publish" value="1"
+                                @cannot('publish', $project) disabled @endcannot>{{ __('Publish') }}</button>
                         </form>
                     @endif
                     {{-- <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a> --}}
