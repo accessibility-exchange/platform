@@ -2,8 +2,23 @@
     <x-slot name="title">{{ $regulatedOrganization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         <div class="stack">
-            <h1 id="regulated-organization">
+            <h1 class="repel" id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
+                @can('update', $regulatedOrganization)
+                    <form
+                        action="{{ localized_route('regulated-organizations.update-publication-status', $regulatedOrganization) }}"
+                        method="POST" novalidate>
+                        @csrf
+                        @method('PUT')
+
+                        @if ($regulatedOrganization->checkStatus('published'))
+                            <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                        @else
+                            <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
+                                :disabled="!Auth::user()->can('publish', $regulatedOrganization)" />
+                        @endif
+                    </form>
+                @endcan
             </h1>
             <p class="meta">
                 <strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong><br />

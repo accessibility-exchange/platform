@@ -31,6 +31,7 @@ use App\Models\Organization;
 use App\Models\Sector;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\LaravelOptions\Options;
 
@@ -354,6 +355,17 @@ class OrganizationController extends Controller
         $organization->save();
 
         return $organization->handleUpdateRequest($request, 4);
+    }
+
+    public function updatePublicationStatus(Request $request, Organization $organization): RedirectResponse
+    {
+        if ($request->input('unpublish')) {
+            $organization->unpublish();
+        } elseif ($request->input('publish')) {
+            $organization->publish();
+        }
+
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse

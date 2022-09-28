@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\ConsultingService;
+use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
+use App\Models\Constituency;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
+use App\Models\GenderIdentity;
 use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
@@ -12,8 +17,10 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\AreaTypeSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
@@ -101,10 +108,31 @@ test('users can create organizations', function () {
 });
 
 test('users with admin role can edit and publish organizations', function () {
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create(['contact_person_name' => faker()->name]);
+        ->create([
+            'contact_person_name' => faker()->name,
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'staff_lived_experience' => 'yes',
+            'preferred_contact_method' => 'email',
+            'about' => 'test about',
+            'region' => 'ON',
+            'locality' => 'Toronto',
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $organization->livedExperiences()->attach(LivedExperience::first()->id);
+    $organization->areaTypes()->attach(AreaType::first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertOk();
@@ -425,6 +453,162 @@ test('non members cannot edit or publish organizations', function () {
 
     expect($organization->checkStatus('published'))->toBeTrue();
 });
+
+test('organization pages can be published', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('published'));
+});
+
+test('organization pages can be unpublished', function () {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+            'published_at' => date('Y-m-d h:i:s', time()),
+        ]);
+
+    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'unpublish' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization = $organization->fresh();
+
+    $this->assertTrue($organization->checkStatus('draft'));
+});
+
+test('organization pages cannot be published by other users', function () {
+    $user = User::factory()->create();
+    $organization = Organization::factory()
+        ->create([
+            'about' => 'test organization about',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => 'ON',
+            'roles' => [OrganizationRole::AccessibilityConsultant],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => 'yes',
+        ]);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $organization = $organization->fresh();
+    $this->assertTrue($organization->checkStatus('draft'));
+});
+
+test('organization isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(AgeBracketSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+    $this->seed(ConstituencySeeder::class);
+    $this->seed(GenderIdentitySeeder::class);
+    $this->seed(EthnoracialIdentitySeeder::class);
+    $this->seed(IndigenousIdentitySeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $organization = Organization::factory()->create();
+    $organization->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'ageBrackets') {
+            $organization->ageBrackets()->attach(AgeBracket::first()->id);
+        }
+
+        if ($connection === 'areaTypes') {
+            $organization->areaTypes()->attach(AreaType::first()->id);
+        }
+
+        if ($connection === 'ethnoracialIdentities') {
+            $organization->ethnoracialIdentities()->attach(EthnoracialIdentity::first()->id);
+        }
+
+        if ($connection === 'genderIdentities') {
+            $organization->genderIdentities()->attach(GenderIdentity::first()->id);
+        }
+
+        if ($connection === 'indigenousIdentities') {
+            $organization->indigenousIdentities()->attach(IndigenousIdentity::first()->id);
+        }
+
+        if ($connection === 'livedExperiences') {
+            $organization->livedExperiences()->attach(LivedExperience::first()->id);
+        }
+
+        if ($connection === 'trans_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', 'Trans person')->id);
+        }
+
+        if ($connection === '2SLGBTQIA+_identity') {
+            $organization->constituencies()->attach(Constituency::firstWhere('name->en', '2SLGBTQIA+ person')->id);
+        }
+    }
+
+    expect($organization->isPublishable())->toBe($expected);
+})->with('organizationIsPublishable');
 
 test('organizations can be translated', function () {
     $organization = Organization::factory()->create();

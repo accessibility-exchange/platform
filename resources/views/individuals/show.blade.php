@@ -22,7 +22,8 @@
                             @if ($individual->checkStatus('published'))
                                 <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
                             @else
-                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')" />
+                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
+                                    :disabled="!Auth::user()->can('publish', $individual)" />
                             @endif
                         </form>
                     @endcan
