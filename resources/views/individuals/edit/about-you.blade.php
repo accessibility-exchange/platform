@@ -53,7 +53,8 @@
                 <div class="field @error('bio') field--error @enderror">
                     <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$individual" :hint="__(
                         'This can include information about your background, and why you are interested in accessibility.',
-                    )" />
+                    )"
+                        required />
                     <x-hearth-error for="bio" />
                 </div>
 

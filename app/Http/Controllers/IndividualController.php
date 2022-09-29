@@ -293,6 +293,8 @@ class IndividualController extends Controller
 
         if (isset($data['relevant_experiences'])) {
             $data['relevant_experiences'] = array_filter(array_map('array_filter', $data['relevant_experiences']));
+        } else {
+            $individual->relevant_experiences = [];
         }
 
         $individual->fill($data);
