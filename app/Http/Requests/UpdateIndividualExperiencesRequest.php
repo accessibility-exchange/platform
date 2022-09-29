@@ -26,23 +26,22 @@ class UpdateIndividualExperiencesRequest extends FormRequest
         return [
             'lived_experience' => 'nullable|array:'.implode(',', $this->individual->languages),
             'skills_and_strengths' => 'nullable|array:'.implode(',', $this->individual->languages),
-            'relevant_experiences.*.title' => 'nullable|string',
-            'relevant_experiences.*.organization' => 'nullable|required_with:work_and_volunteer_experiences.*.title|string',
-            'relevant_experiences.*.start_year' => 'nullable|required_with:work_and_volunteer_experiences.*.title|digits:4|integer|min:1900|max:'.(date('Y')),
-            'relevant_experiences.*.end_year' => 'nullable|digits:4|integer|min:1900|max:'.(date('Y')),
-            'relevant_experiences.*.current' => 'nullable|boolean',
+            'relevant_experiences.*.title' => 'nullable|required_with:relevant_experiences.*.organization,relevant_experiences.*.start_year,relevant_experiences.*.end_year,relevant_experiences.*.current|string',
+            'relevant_experiences.*.organization' => 'nullable|required_with:relevant_experiences.*.title|string',
+            'relevant_experiences.*.start_year' => 'nullable|required_with:relevant_experiences.*.title|digits:4|integer|min:1900|max:'.(date('Y')),
+            'relevant_experiences.*.end_year' => 'nullable|required_without:relevant_experiences.*.current|prohibits:relevant_experiences.*.current|digits:4|integer|min:1900|max:'.(date('Y')),
+            'relevant_experiences.*.current' => 'nullable|required_without:relevant_experiences.*.end_year|boolean',
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages(): array
+    public function attributes(): array
     {
         return [
-            'work_and_volunteer_experiences.*.start_year.required_with' => __('Please provide the year you started this role.'),
+            'relevant_experiences.*.title' => __('Title of Role'),
+            'relevant_experiences.*.organization' => __('Name of Organization'),
+            'relevant_experiences.*.start_year' => __('Start Year'),
+            'relevant_experiences.*.end_year' => __('End Year'),
+            'relevant_experiences.0.current' => __('I currently work or volunteer here'),
         ];
     }
 }
