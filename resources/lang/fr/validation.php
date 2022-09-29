@@ -106,6 +106,7 @@ return [
     'required_without' => 'Le champ :attribute est obligatoire quand :values n\'est pas présent.',
     'required_without_all' => 'Le champ :attribute est requis quand aucun de :values n\'est présent.',
     'phone' => 'The :attribute is not a valid phone number.',
+    'prohibits' => 'The :attribute field is prohibited when :other is present.',
     'prohibited' => 'Le champ :attribute est interdit.',
     'prohibited_if' => 'Le champ :attribute est interdit quand :other a la valeur :value.',
     'prohibited_unless' => 'Le champ :attribute est interdit à moins que :other est l\'une des valeurs :values.',
