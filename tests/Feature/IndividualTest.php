@@ -242,13 +242,23 @@ test('users can create individual pages', function () {
         'skills_and_strengths' => '',
         'relevant_experiences' => [
             [
-                'title' => '',
-                'organization' => '',
-                'start_year' => '',
+                'title' => 'First job',
+                'organization' => 'First place',
+                'start_year' => '2021',
                 'end_year' => '',
-                'current' => false,
+                'current' => 1,
             ],
         ],
+        'save_and_next' => __('Save and next'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+        'lived_experience' => '',
+        'skills_and_strengths' => '',
+        'relevant_experiences' => [],
         'save_and_next' => __('Save and next'),
     ]);
 
@@ -573,7 +583,7 @@ test('users can edit individual pages', function () {
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
-        'bio' => ['en' => $individual->bio],
+        'bio' => ['en' => 'test bio'],
         'consulting_services' => [
             'planning-consultation',
             'running-consultation',
@@ -596,7 +606,7 @@ test('users can edit individual pages', function () {
 
     $response = $this->actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
         'name' => $draftIndividual->name,
-        'bio' => ['en' => $draftIndividual->bio],
+        'bio' => ['en' => 'draft bio'],
         'consulting_services' => [
             'planning-consultation',
             'running-consultation',

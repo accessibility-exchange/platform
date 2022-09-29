@@ -136,6 +136,7 @@ test('users without regulated organization admin role cannot create projects', f
 });
 
 test('projects can be published and unpublished', function () {
+    $this->seed(ImpactSeeder::class);
     $adminUser = User::factory()->create(['context' => 'regulated-organization']);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -144,7 +145,21 @@ test('projects can be published and unpublished', function () {
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
+        'contact_person_phone' => '4165555555',
+        'contact_person_response_time' => ['en' => '48 hours'],
+        'preferred_contact_method' => 'required',
+        'team_languages' => ['en'],
+        'team_trainings' => [
+            [
+                'date' => date('Y-m-d', time()),
+                'name' => 'test training',
+                'trainer_name' => 'trainer',
+                'trainer_url' => 'http://example.com',
+            ],
+        ],
     ]);
+
+    $project->impacts()->attach(Impact::first()->id);
 
     expect($project->isPublishable())->toBeTrue();
 
@@ -182,6 +197,32 @@ test('projects can be published and unpublished', function () {
     $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertSee('Draft');
 });
+
+test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization') {
+    $this->seed(ImpactSeeder::class);
+
+    $adminUser = User::factory()->create(['context' => $context]);
+    $user = User::factory()->create(['context' => $context]);
+    $orgModel = $context === 'organization' ? Organization::class : RegulatedOrganization::class;
+    $organization = $orgModel::factory()
+        ->hasAttached($adminUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => 'member'])
+        ->create();
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $project = Project::factory()->create([
+        'projectable_id' => $organization->id,
+    ]);
+    $project->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'impacts') {
+            $project->impacts()->attach(Impact::first()->id);
+        }
+    }
+
+    expect($project->isPublishable())->toBe($expected);
+})->with('projectIsPublishable');
 
 test('users can view projects', function () {
     $user = User::factory()->create();
