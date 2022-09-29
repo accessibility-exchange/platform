@@ -230,8 +230,7 @@ class Project extends Model
             return false;
         }
 
-        // TODO: may not be required for all types, see #921
-        if (! $this->impacts()->count()) {
+        if ($this->projectable instanceof RegulatedOrganization && ! $this->impacts()->count()) {
             return false;
         }
 

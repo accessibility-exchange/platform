@@ -31,20 +31,22 @@
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
-                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
+                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions', $project->regions ?? [])" required />
                 <div class="stack" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
             </fieldset>
 
-            <fieldset class="field @error('impacts') field--error @enderror stack">
-                <legend>
-                    {{ __('Please indicate which areas of your organization this project will impact. (required)') }}
-                </legend>
-                <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $project->impacts->pluck('id')->toArray())" />
-                <x-hearth-error for="impacts" />
-            </fieldset>
+            @if ($project->projectable instanceof App\Models\RegulatedOrganization)
+                <fieldset class="field @error('impacts') field--error @enderror stack">
+                    <legend>
+                        {{ __('Please indicate which areas of your organization this project will impact. (required)') }}
+                    </legend>
+                    <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $project->impacts->pluck('id')->toArray())" />
+                    <x-hearth-error for="impacts" />
+                </fieldset>
+            @endif
 
             <x-translatable-textarea name="out_of_scope" :label="__('Please indicate what is out of scope for this project.  (optional)')" :model="$project" />
 

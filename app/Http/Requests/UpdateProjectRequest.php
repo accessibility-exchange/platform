@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Enums\ProvinceOrTerritory;
+use App\Models\RegulatedOrganization;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Validator;
 
 class UpdateProjectRequest extends FormRequest
 {
@@ -37,7 +39,7 @@ class UpdateProjectRequest extends FormRequest
                 'nullable',
                 new Enum(ProvinceOrTerritory::class),
             ],
-            'impacts' => 'required|array',
+            'impacts' => 'array',
             'impacts.*' => 'nullable|exists:impacts,id',
             'out_of_scope' => 'nullable|array',
             'out_of_scope.*' => 'nullable|string',
@@ -69,5 +71,12 @@ class UpdateProjectRequest extends FormRequest
             'impacts' => [],
             'regions' => [],
         ]);
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->sometimes('impacts', 'required', function ($input) {
+            return $this->project->projectable instanceof RegulatedOrganization;
+        });
     }
 }
