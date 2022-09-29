@@ -1,20 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+test('meetings can be created', function () {
+    $this->markTestIncomplete();
+});
 
-use Tests\TestCase;
+test('meetings can be edited', function () {
+    $this->markTestIncomplete();
+});
 
-class MeetingTest extends TestCase
-{
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-}
+test('meetings can be deleted', function () {
+    $this->markTestIncomplete();
+});

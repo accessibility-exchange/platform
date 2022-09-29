@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Traits\HasSchemalessAttributes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -142,12 +141,7 @@ class Engagement extends Model
         );
     }
 
-    public function hasEstimateAndAgreement(): bool
-    {
-        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
-    }
-
-    public function isPublishable(): bool
+    public function hasProvidedRequiredInformation(): bool
     {
         $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];
 
@@ -216,17 +210,14 @@ class Engagement extends Model
             'accepted_formats' => [
                 Rule::requiredIf($this->format === 'interviews'),
             ],
-            'other_accepted_formats' => [
+            'other_accepted_format' => [
                 Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats)),
             ],
-            'other_accepted_format' => [
-                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats),
-            ],
             'other_accepted_format.en' => [
-                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats && ! $this->getTranslation('other_accepted_format', 'fr')),
+                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats) && ! $this->getTranslation('other_accepted_format', 'fr')),
             ],
             'other_accepted_format.fr' => [
-                Rule::requiredIf($this->format === 'interviews' && $this->other_accepted_formats && ! $this->getTranslation('other_accepted_format', 'en')),
+                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats) && ! $this->getTranslation('other_accepted_format', 'en')),
             ],
             'signup_by_date' => 'required',
         ];
@@ -241,16 +232,25 @@ class Engagement extends Model
             return false;
         }
 
+        return true;
+    }
+
+    public function hasEstimateAndAgreement(): bool
+    {
+        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->hasProvidedRequiredInformation()) {
+            return false;
+        }
+
         if (! $this->hasEstimateAndAgreement()) {
             return false;
         }
 
         return true;
-    }
-
-    public function scopeWherePublishable(Builder $query): Builder
-    {
-        return $query->whereNotNull('signup_by_date');
     }
 
     public function displayRecruitment(): Attribute

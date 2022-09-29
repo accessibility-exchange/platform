@@ -15,10 +15,6 @@ Route::controller(MeetingController::class)
             ->middleware(['auth', 'can:update,engagement'])
             ->name('store');
 
-        Route::multilingual('/{meeting}', 'show')
-            ->middleware(['auth', 'can:view,engagement'])
-            ->name('show');
-
         Route::multilingual('/{meeting}/edit', 'edit')
             ->middleware(['auth', 'can:update,meeting'])
             ->name('edit');

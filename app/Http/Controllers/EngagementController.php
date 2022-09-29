@@ -461,14 +461,12 @@ class EngagementController extends Controller
             $data['other_accepted_format'] = null;
         }
 
-        ray($data);
-
         $engagement->fill($data);
         $engagement->save();
 
         flash(__('Your engagement has been updated.'), 'success');
 
-        return redirect(localized_route('engagements.edit', $engagement));
+        return redirect(localized_route('engagements.manage', $engagement));
     }
 
     public function manage(Engagement $engagement)

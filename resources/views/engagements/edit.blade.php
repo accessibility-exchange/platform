@@ -102,7 +102,7 @@
                 </fieldset>
             @endforeach
             <h4>{{ __('Ways to attend') }}</h4>
-            <div x-data="{ meetingTypes: {{ json_encode($engagement->meeting_types ?? []) }} }">
+            <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $engagement->meeting_types ?? [])) }} }">
                 <div class="field">
                     <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
                         :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
