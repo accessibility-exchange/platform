@@ -178,25 +178,25 @@ class Engagement extends Model
                 Rule::requiredIf($this->format === 'interviews'),
             ],
             'street_address' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
             ],
             'locality' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
             ],
             'region' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
             ],
             'postal_code' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
             ],
             'meeting_software' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types ?? [])),
             ],
             'meeting_url' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types ?? [])),
             ],
             'meeting_phone' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('phone', $this->meeting_types)),
+                Rule::requiredIf($this->format === 'interviews' && in_array('phone', $this->meeting_types ?? [])),
             ],
             'materials_by_date' => [
                 Rule::requiredIf(in_array($this->format, ['interviews', 'survey', 'other-async'])),
@@ -209,15 +209,6 @@ class Engagement extends Model
             ],
             'accepted_formats' => [
                 Rule::requiredIf($this->format === 'interviews'),
-            ],
-            'other_accepted_format' => [
-                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats)),
-            ],
-            'other_accepted_format.en' => [
-                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats) && ! $this->getTranslation('other_accepted_format', 'fr')),
-            ],
-            'other_accepted_format.fr' => [
-                Rule::requiredIf($this->format === 'interviews' && empty($this->accepted_formats) && ! $this->getTranslation('other_accepted_format', 'en')),
             ],
             'signup_by_date' => 'required',
         ];

@@ -10,6 +10,7 @@ use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\Invitation;
+use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -581,3 +582,26 @@ test('organization user can decline invitation to an engagement as a connector',
 
     $this->assertModelMissing($invitation);
 });
+
+test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true) {
+    $project = Project::factory()->create();
+
+    // Fill data so that we don't hit a Database Integrity constraint violation during creation
+    $engagement = Engagement::factory()->create(['project_id' => $project->id]);
+    $engagement->fill($data);
+
+    if ($meetings) {
+        $engagement->meetings()->save(Meeting::factory()->create());
+    }
+
+    if ($estimatesAndAgreements) {
+        $project->update([
+            'estimate_requested_at' => now(),
+            'estimate_returned_at' => now(),
+            'estimate_approved_at' => now(),
+            'agreement_received_at' => now(),
+        ]);
+    }
+
+    expect($engagement->isPublishable())->toBe($expected);
+})->with('engagementIsPublishable');

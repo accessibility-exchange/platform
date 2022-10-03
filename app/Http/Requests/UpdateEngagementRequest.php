@@ -191,7 +191,6 @@ class UpdateEngagementRequest extends FormRequest
             'other_accepted_formats' => [
                 'nullable',
                 'boolean',
-                Rule::requiredIf($this->engagement->format === 'interviews' && empty(request('accepted_formats'))),
             ],
             'other_accepted_format' => [
                 'nullable',
