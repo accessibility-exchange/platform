@@ -619,11 +619,11 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1301%3A17738
         'Explore/CommOrgs' => [
             __('Community organizations'),
-            __('Disability and Deaf organizations, and civil societies.'),
+            __('Disability and Deaf organizations, and civil society organizations.'),
             __('Type of community organization'),
             __('Representative organization'),
             __('Support organization'),
-            __('Civil societies'),
+            __('Civil society organizations'),
             __('Read more about these types of organizations'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2221%3A61802
