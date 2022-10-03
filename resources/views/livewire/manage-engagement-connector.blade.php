@@ -56,7 +56,7 @@
                 href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
         </p>
 
-        <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+        <hr class="divider--thick" />
     @endif
 
     <h2>{{ __('Manage Community Connector') }}</h2>
@@ -97,7 +97,7 @@
         @endif
     @endif
 
-    <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+    <hr class="divider--thick" />
 
     <p>
         <a class="cta secondary" href="{{ localized_route('engagements.manage', $engagement) }}">
