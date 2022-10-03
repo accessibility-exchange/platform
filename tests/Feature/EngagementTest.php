@@ -140,7 +140,7 @@ test('guests cannot view engagements', function () {
 test('users with regulated organization admin role can edit engagements', function () {
     $this->seed(DatabaseSeeder::class);
 
-    $user = User::factory()->create();
+    $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
