@@ -105,6 +105,17 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'contact_person_phone' => __('phone number'),
             'about.fr' => __('"About your organization" (French)'),
             'about.en' => __('"About your organization" (English)'),
+            'accessibility_and_inclusion_links.*.title' => __('accessibility and inclusion link title'),
+            'accessibility_and_inclusion_links.*.url' => __('accessibility and inclusion link'),
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.*.required_without' => __("You must enter your organization's name in either English or French."),
+            'accessibility_and_inclusion_links.*.title.required_with' => __('You must enter an accessibility and inclusion link title if you have entered a link.'),
+            'accessibility_and_inclusion_links.*.url.required_with' => __('You must enter an accessibility and inclusion link if you have entered a link title.'),
         ];
     }
 }
