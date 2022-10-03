@@ -5,9 +5,13 @@ use App\Models\Meeting;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\DisabilityTypeSeeder;
 
 test('meetings can be created', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create(['context' => 'regulated-organization']);
+    $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -18,7 +22,7 @@ test('meetings can be created', function () {
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs(User::factory()->create())->get(localized_route('meetings.create', $engagement));
+    $response = $this->actingAs($otherUser)->get(localized_route('meetings.create', $engagement));
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->get(localized_route('meetings.create', $engagement));
@@ -49,6 +53,7 @@ test('meetings can be created', function () {
 
 test('meetings can be edited', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
+    $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -72,7 +77,7 @@ test('meetings can be edited', function () {
         'postal_code' => 'M4W 1E6',
     ]);
 
-    $response = $this->actingAs(User::factory()->create())->get(localized_route('meetings.edit', ['meeting' => $meeting, 'engagement' => $engagement]));
+    $response = $this->actingAs($otherUser)->get(localized_route('meetings.edit', ['meeting' => $meeting, 'engagement' => $engagement]));
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->get(localized_route('meetings.edit', ['meeting' => $meeting, 'engagement' => $engagement]));
@@ -101,7 +106,10 @@ test('meetings can be edited', function () {
 });
 
 test('meetings can be deleted', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create(['context' => 'regulated-organization']);
+    $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -125,7 +133,7 @@ test('meetings can be deleted', function () {
         'postal_code' => 'M4W 1E6',
     ]);
 
-    $response = $this->actingAs(User::factory()->create())->delete(localized_route('meetings.destroy', ['meeting' => $meeting, 'engagement' => $engagement]));
+    $response = $this->actingAs($otherUser)->delete(localized_route('meetings.destroy', ['meeting' => $meeting, 'engagement' => $engagement]));
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->delete(localized_route('meetings.destroy', ['meeting' => $meeting, 'engagement' => $engagement]));
