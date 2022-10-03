@@ -30,8 +30,8 @@
     "devDependencies": {
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
-        "@shufo/prettier-plugin-blade": "^1.6.2",
-        "autoprefixer": "^10.4.8",
+        "@shufo/prettier-plugin-blade": "^1.6.3",
+        "autoprefixer": "^10.4.12",
         "eslint": "^8.24.0",
         "eslint-config-fluid": "^2.0.1",
         "husky": "^8.0.1",
@@ -60,7 +60,7 @@
         "accessible-autocomplete": "^2.0.4",
         "alpinejs": "^3.10.3",
         "axios": "^0.27.2",
-        "luxon": "^3.0.3",
+        "luxon": "^3.0.4",
         "wicg-inert": "^3.1.2"
     }
 }
