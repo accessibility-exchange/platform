@@ -21,7 +21,7 @@ class Timespan extends Component
         $this->display_start = $start->isoFormat('LLLL');
         $this->datetime_start = $start->toIso8601String();
         $this->display_end = $end->isoFormat('LT z');
-        $this->datetime_end = $start->toIso8601String();
+        $this->datetime_end = $end->toIso8601String();
     }
 
     public function render(): View
