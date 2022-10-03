@@ -24,7 +24,7 @@
         <h2>{{ __('Time and date') }}</h2>
 
         <div class="field">
-            <livewire:date-picker name="date" :label="__('Date')" minimumYear="2022" :value="old('date', $meeting->date?->format('Y-m-d'))" />
+            <livewire:date-picker name="date" :label="__('Date')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
         </div>
         <div class="flex gap-6">
             <div class="field @error('start_time') field--error @enderror">
