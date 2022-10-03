@@ -14,7 +14,9 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="stack" action="{{ localized_route('meetings.store', $engagement) }}" method="post" novalidate>
+    <form class="stack"
+        action="{{ $meeting->id ? localized_route('meetings.update', $engagement) : localized_route('meetings.store', $engagement) }}"
+        method="post" novalidate>
         @csrf
 
         <x-translatable-input name="title" :label="__('Title of meeting')" :short-label="__('meeting title')" :model="$meeting" />
