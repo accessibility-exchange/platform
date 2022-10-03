@@ -549,7 +549,7 @@ test('organization user can accept invitation to an engagement as a connector', 
         ['role' => 'admin']
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
 
@@ -595,7 +595,7 @@ test('organization user can decline invitation to an engagement as a connector',
         ['role' => 'admin']
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
 
@@ -644,3 +644,45 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
 
     expect($engagement->isPublishable())->toBe($expected);
 })->with('engagementIsPublishable');
+
+test('engagement participants can be listed by administrator or community connector', function () {
+    $user = User::factory()->create();
+
+    $connectorUser = User::factory()->create();
+    $connectorUser->individual->update(['roles' => ['connector']]);
+    $connectorUser->individual->publish();
+    $individualConnector = $connectorUser->individual->fresh();
+
+    $connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $connectorOrganization->users()->attach(
+        $connectorOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+
+    $this->markTestIncomplete();
+
+    // $engagement->update(['individual_connector_id' => $individualConnector-id]);
+    // $engagement = $engagement->fresh();
+    // TODO: individual connector user should be able to view.
+
+    // $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization-id]);
+    // $engagement = $engagement->fresh();
+    // TODO: organizational connector user should be able to view.
+});
