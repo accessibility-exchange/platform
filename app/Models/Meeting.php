@@ -61,7 +61,7 @@ class Meeting extends Model
 
     public function engagement(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Engagement::class);
     }
 
     public function displayMeetingTypes(): Attribute
