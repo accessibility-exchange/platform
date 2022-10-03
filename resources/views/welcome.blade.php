@@ -84,7 +84,7 @@
                                 <h3><a
                                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil societies (not only disability focused).') }}
+                                <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                                 </p>
                             </div>
                         </x-media-text>

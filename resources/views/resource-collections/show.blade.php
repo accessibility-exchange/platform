@@ -84,16 +84,23 @@
         <div class="stack cards">
             @forelse($resources as $resource)
                 <article class="box card card--resource">
-                    <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ $types->random()->name }}</p>
-                    <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span
-                            aria-hidden="true">&middot;</span> <span
-                            class="visually-hidden">{{ __('Language') }}:</span>
-                        {{ get_language_exonym(Arr::random($languages)) }}</p>
+                    @if ($resource->contentType)
+                        <p><span class="visually-hidden">{{ __('Content type') }}:</span>
+                            {{ $resource->contentType->name }}
+                        </p>
+                    @endif
+                    @if ($resource->formats->count())
+                        <p><span class="visually-hidden">{{ __('Format') }}:</span>
+                            {{ $resource->formats->first()->name }}
+                            <span aria-hidden="true">&middot;</span>
+                        </p>
+                    @endif
                     <h2>
                         <a href="{{ localized_route('resources.show', $resource) }}">{{ $resource->title }}</a>
                     </h2>
                     <p>{{ Str::limit($resource->summary, 140) }} <a
-                            href="{{ localized_route('resources.show', $resource) }}">{!! __('Read more <span class="visually-hidden">of :title</span>', ['title' => $resource->title]) !!}</a></p>
+                            href="{{ localized_route('resources.show', $resource) }}">{!! __('Read more <span class="visually-hidden">of :title</span>', ['title' => $resource->title]) !!}</a>
+                    </p>
                 </article>
             @empty
                 <p>{{ __('resource.none_found') }}</p>

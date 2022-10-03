@@ -245,15 +245,9 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1229%3A13916
         'create new project - 4' => [
             __('Add training'),
-            __('Training'),
-            __('Name of training'),
-            __('Date of training'),
             __('Year'),
             __('Month'),
             __('Day'),
-            __('Training organization or trainer'),
-            __('Name'),
-            __('Website'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3289%3A101404
         'Project page/private/overview' => [
@@ -265,19 +259,13 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A100463
         'Manage project/empty' => [
-            __('My projects'),
             __('Project duration'),
             __('more'),
             __('Cancel project'),
-            __('Manage'),
-            __('Estimates and agreements'),
             __('Suggested steps'),
-            __('Participant selection criteria'),
             __('You have not determined the selection criteria for the people you seek for this project.'),
             __('Create selection criteria'),
-            __('Engagements'),
             __('An engagement involves a group of people participating in one set way (for example, a focus group or survey).'),
-            __('Create engagement'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A100939
         'Manage project/filled' => [
@@ -295,45 +283,17 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2492%3A63667
         'Manage project/completed project' => [
-            __('Complete'),
             __('Warning'),
             __('It looks like your project is complete, based on your project dates. If this is not accurate, please update your project duration dates.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3291%3A103325
         'Manage project/Quotes and agreements' => [
-            __('Estimates'),
             __('You have not requested an estimate before.'),
-            __('New estimate request'),
-            __('Agreements'),
             __('Please sign this agreement and send to :email'),
             __('Download agreement'),
         ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3291%3A103547
-        'Manage project/Quotes and agreements/submit new quote' => [
-            __('This estimate includes:'),
-            __('Is there an engagement not included here?'),
-            __('To include an engagement in a quote request, you must have filled out the engagement invitation.'),
-            __('Send request'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3291%3A103734
-        'Manage project/Quotes and agreements/pending' => [
-            __('You have successfully submitted a quote request.'),
-            __('Pending'),
-            __('You sent this request on :date.'),
-            __('Not received'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3291%3A104158
-        'Manage project/Quotes and agreements/returned' => [
-            __('Returned'),
-            __('This estimate has been sent to :email on :date.'),
-            __('Approve estimate'),
-            __('Contact us'),
-        ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3291%3A104365
         'Manage project/Quotes and agreements/approved' => [
-            __('Approved'),
-            __('Approved on :date.'),
-            __('Received'),
             __('Something changed?'),
             __('If anything about your projects or engagements have changed, please send a new estimate request.'),
         ],
@@ -407,84 +367,25 @@ return [
             __('In a specific province or territory or city or town'),
             __('Province or territory'),
             __('(required)'),
-            __('City or town'),
             __('(optional)'),
             __('Type to select...'),
             __('Add another location'),
             __('Disability and Deaf groups'),
-            __('Is there a specific disability or Deaf group you are interested in engaging?'),
-            __('No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)'),
             __('Yes, I’m interested in a specific disability or Deaf group'),
             __('Other experiences or identities'),
-            __('No, give me a group with intersectional experiences and/or identities'),
-            __('Yes, I’m looking for a group with a specific experience and/or identity (ex. Indigenous, immigrant, 2SLGBTQIA+)'),
             __('Summary'),
             __('Disability or Deaf groups'),
-            __('Other identities'),
-            __('Intersectional'),
-            __('Save'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2602%3A65596
         'Manage project/Participant selection criteria/specific disability' => [
             __('Select specific provinces or territories'),
-            __('Select all'),
-            __('Select none'),
             __('Select specific cities or towns'),
-            __('Yes, I’m interested in a specific disability or Deaf group or groups'),
             __('What specific disability and Deaf group or groups are you interested in engaging?'),
-            __('Is there a group with a specific experience of identity you are interested in engaging?'),
-            __('Types of experiences or identities'),
-            __('Age'),
-            __('Gender and sexual identity'),
-            __('Indigenous'),
-            __('Race and ethnicity'),
-            __('Immigrants and/or refugees'),
-            __('First language'),
-            __('Living in urban, rural, or remote areas'),
-            __('Notice'),
             __('Please note that if you want to reach a specific identity group, you will not be able to use our matching service. You can reach them through an open call project, or go through a Community Connector or community organization.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2612%3A66654
         'Manage engagement/algorithm/create invitation-1' => [
-            __('Publish'),
-            __('Once you publish your page, other users on this website can access your page.'),
             __('Meetings'),
-            __('Add new meeting'),
-            __('Payment'),
-            __('Is this engagement paid or volunteer?'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2612%3A66872
-        'Manage engagement/algorithm/create invitation/new meeting' => [
-            __('Title of meeting'),
-            __(':language translation of meeting title'),
-            __('Time and date'),
-            __('Date'),
-            __('Start time'),
-            __('End time'),
-            __('Time zone'),
-            __('Ways to attend'),
-            __('Street address'),
-            __('Unit, suite, or floor'),
-            __('City'),
-            __('Further directions'),
-            __('Please be specific about where you would like the participants to go to participate in this engagement.'),
-            __('Virtual — video call'),
-            __('Software'),
-            __('Is there another software that you could use?'),
-            __('Yes, I can use another software if it is more accessible to participants'),
-            __('No, I cannot use another software'),
-            __('Link to join'),
-            __('This will only be shared with participants who have accepted the invitation.'),
-            __('Additional information to join'),
-            __('For example, Meeting password, meeting ID This will be shared only with participants who have accepted the invitation.'),
-            __('Virtual — phone call'),
-            __('Phone number to join'),
-            __('Add meeting'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2612%3A67417
-        'Manage engagement/algorithm/create invitation-2' => [
-            __('Edit'),
-            __('Remove'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3003%3A78979
         'Cancel engagement - recruitment' => [
@@ -496,8 +397,6 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2727%3A74124
         'Engagement/algorithm/invitation/accept' => [
-            __('Workshop'),
-            __('Project'),
             __('Run by'),
             __('Change language'),
             __('Address:'),
@@ -531,33 +430,10 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A101223
         'Manage engagement/open call/empty' => [
             __('Cancel engagement'),
-            __('Disability or Deaf group'),
-            __('Edit engagement details'),
-            __('Please complete your engagement details so potential participants can know what they are signing up for.'),
-            __('Not ready to publish'),
-            __('Estimate status'),
-            __('No estimate requested'),
-            __('Agreement status'),
-            __('Manage participants'),
-            __('views'),
-            __('participants confirmed'),
-            __('access needs'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A101333
-        'Manage engagement/open call/filled' => [
-            __('Published on :date.'),
-            __('View'),
-            __('Copy link to share'),
+            __(':count access needs'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2613%3A70683
         'Manage engagement/open call/create invitation' => [
-            __('Survey materials'),
-            __('Dates'),
-            __('Materials are sent to participants by:'),
-            __('Completed materials are due by:'),
-            __('Please indicate the language to be used for this engagement’s documents?'),
-            __('Add language'),
-            __('Sign up deadline'),
             __('Please sign up for this engagement by:'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2723%3A71437
@@ -642,45 +518,6 @@ return [
         'Manage engagement/open call/demographic breakdown __ b' => [
             __('The demographic breakdown of your confirmed participants will show when your sign up deadline has passed. Please come back and check again at that time.'),
         ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=4020%3A97627
-        'Create engagement/interview/who' => [
-            __('What format would you like to use?'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2628%3A68261
-        'Manage engagement/CC/create invitation' => [
-            __('Date range'),
-            __('Interviews can happen between the following dates:'),
-            __('Start date'),
-            __('End date'),
-            __('Ways to participate'),
-            __('Real time interview'),
-            __('Between which times during the day will the interviews take place?'),
-            __('Please select your time zone...'),
-            __('We can offer some time flexibility if it does not match with participants’ schedules.'),
-            __('Which days of the week are available for interviews to be scheduled?'),
-            __('Available'),
-            __('Upon request'),
-            __('Not available'),
-            __('Monday'),
-            __('Tuesday'),
-            __('Wednesday'),
-            __('Thursday'),
-            __('Friday'),
-            __('Saturday'),
-            __('Sunday'),
-            __('Written or recorded responses'),
-            __('Some participants may not be able to meet in real-time. For them,you can send out a list of questions, and participants can respond to them in formats you accept.'),
-            __('Questions are sent to participants by:'),
-            __('Responses are due by:'),
-            __('Accepted formats'),
-            __('Writing'),
-            __('Audio recording'),
-            __('Video recording'),
-            __('Other:'),
-            __(':language translation of other accepted format'),
-            __('Open to other formats suggested by participant'),
-            __('Participants must respond to their invitation by the following date.'),
-        ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2730%3A73293
         'Engagement/private/CC' => [
             __('Interviews will take place between :start - :end'),
@@ -692,48 +529,11 @@ return [
             __('Participants taking part in **real time interviews** will be paid :pay.'),
             __('Participants taking part in **interviewing at their own pace** will be paid :pay.'),
         ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2782%3A74072
-        'Manage engagement/CC/find CC-1' => [
-            __('Find a Community Connector'),
-            __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:'),
-            __('Show that you are looking for a Community Connector'),
-            __('This will show Community Connectors on the browse projects page that you are looking, and that they are welcome to reach out.'),
-            __('I am currently seeking a Community Connector for this engagement'),
-            __('Browse for a Community Connector'),
-            __('Go through our listings of Community Connectors on this website.'),
-            __('Browse Community Connectors'),
-            __('Manage Community Connector'),
-            __('Once you have already hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.'),
-            __('Add Community Connector'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2782%3A74229
-        'Manage engagement/CC/find CC-1 __ b' => [
-            __('Once you have hired a Community Connector, please add their information here.'),
-            __('Please indicate whether your Community Connector is an individual or community organization.'),
-            __('Individual'),
-            __('Please enter the email address of your Community Connector.'),
-            __('Email address'),
-            __('This is the email your invitation will be sent to.'),
-            __('Send invitation'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3612%3A99597
-        'Manage engagement/CC/find CC-1 __ c' => [
-            __('Please make sure your Community Connector is a registered member on this website.'),
-            __('Organization name'),
-        ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2782%3A74401
         'Manage engagement/CC/find CC-1 __ d' => [
-            __('You have successfully invited :name to be added as a Community Connector for this engagement.'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2714%3A70216
-        'CC getting invitation' => [
-            __('Invitations'),
-            __('You have been invited to be a Community Connector in :organization engagement, ":engagement".'),
-            __('Learn more'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3948%3A94318
         'CC accepting invitation' => [
-            __('You have accepted your invitation to be added to this engagement as Community Connector.'),
             __('Start adding participants to this engagement'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3948%3A94591
@@ -776,9 +576,6 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A102887
         'Manage engagement/CO/empty' => [
-            __('Engagement'),
-            __('Other - in person or virtual meetings'),
-            __('Organization selection criteria'),
             __('You currently do not have a Community Organization for this engagement.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2718%3A71173
@@ -822,11 +619,11 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1301%3A17738
         'Explore/CommOrgs' => [
             __('Community organizations'),
-            __('Disability and Deaf organizations, and civil societies.'),
+            __('Disability and Deaf organizations, and civil society organizations.'),
             __('Type of community organization'),
             __('Representative organization'),
             __('Support organization'),
-            __('Civil societies'),
+            __('Civil society organizations'),
             __('Read more about these types of organizations'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2221%3A61802

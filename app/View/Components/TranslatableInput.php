@@ -22,6 +22,13 @@ class TranslatableInput extends Component
     public string $label;
 
     /**
+     * A short label for the input (used to label alternate language fields).
+     *
+     * @var string
+     */
+    public string $shortLabel;
+
+    /**
      * The hint for the input.
      *
      * @var string|null
@@ -47,7 +54,7 @@ class TranslatableInput extends Component
      *
      * @return void
      */
-    public function __construct($name, $label, $hint = null, $model = null)
+    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '')
     {
         $languages = $model->languages ?? config('locales.supported');
 
@@ -58,6 +65,7 @@ class TranslatableInput extends Component
 
         $this->name = $name;
         $this->label = $label;
+        $this->shortLabel = $shortLabel ? $shortLabel : $label;
         $this->hint = $hint;
         $this->languages = $languages;
         $this->model = $model;

@@ -8,27 +8,29 @@ use App\Notifications\AgreementReceived;
 use App\Notifications\EstimateReturned;
 use function Pest\Livewire\livewire;
 
-test('estimates and engagements appear in expected order', function () {
+test('estimates and agreements appear in expected order', function () {
+    $datetime = now();
+
     $estimateRequestedProject = Project::factory()->create([
-        'estimate_requested_at' => now(),
+        'estimate_requested_at' => $datetime,
         'name' => 'Project with estimate requested',
     ]);
     $estimateReturnedProject = Project::factory()->create([
-        'estimate_requested_at' => now(),
-        'estimate_returned_at' => now(),
+        'estimate_requested_at' => $datetime,
+        'estimate_returned_at' => $datetime,
         'name' => 'Project with estimate returned',
     ]);
     $estimateApprovedProject = Project::factory()->create([
-        'estimate_requested_at' => now(),
-        'estimate_returned_at' => now(),
-        'estimate_approved_at' => now(),
+        'estimate_requested_at' => $datetime,
+        'estimate_returned_at' => $datetime,
+        'estimate_approved_at' => $datetime,
         'name' => 'Project with estimate approved',
     ]);
     $agreementReceivedProject = Project::factory()->create([
-        'estimate_requested_at' => now(),
-        'estimate_returned_at' => now(),
-        'estimate_approved_at' => now(),
-        'agreement_received_at' => now(),
+        'estimate_requested_at' => $datetime,
+        'estimate_returned_at' => $datetime,
+        'estimate_approved_at' => $datetime,
+        'agreement_received_at' => $datetime,
         'name' => 'Project with agreement received',
     ]);
 
@@ -79,10 +81,12 @@ test('estimate can be marked as returned', function () {
 test('agreement can be marked as received', function () {
     $administrator = User::factory()->create(['context' => 'administrator']);
 
+    $datetime = now();
+
     $project = Project::factory()->create([
-        'estimate_requested_at' => now(),
-        'estimate_returned_at' => now(),
-        'estimate_approved_at' => now(),
+        'estimate_requested_at' => $datetime,
+        'estimate_returned_at' => $datetime,
+        'estimate_approved_at' => $datetime,
     ]);
 
     $projectManager = User::factory()->create(['context' => 'regulated-organization']);
