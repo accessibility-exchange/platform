@@ -200,7 +200,7 @@ test('users can view projects', function () {
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.index'));
+    $response = $this->actingAs($user)->get(localized_route('projects.all-projects'));
     $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
@@ -253,7 +253,7 @@ test('guests cannot view projects', function () {
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->get(localized_route('projects.index'));
+    $response = $this->get(localized_route('projects.all-projects'));
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('projects.show', $project));

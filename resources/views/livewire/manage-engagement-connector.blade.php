@@ -33,7 +33,7 @@
         <p>{!! __(
             'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
             [
-                'browse' => '<a href="' . localized_route('projects.index') . '">' . __('browse projects') . '</a>',
+                'browse' => '<a href="' . localized_route('projects.all-projects') . '">' . __('browse projects') . '</a>',
             ],
         ) !!}
         </p>
