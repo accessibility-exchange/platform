@@ -15,7 +15,7 @@
     @include('partials.validation-errors')
 
     <form class="stack"
-        action="{{ $meeting->id ? localized_route('meetings.update', $engagement) : localized_route('meetings.store', $engagement) }}"
+        action="{{ $meeting->id ? localized_route('meetings.update', ['meeting' => $meeting, 'engagement' => $engagement]) : localized_route('meetings.store', $engagement) }}"
         method="post" novalidate>
         @csrf
 
