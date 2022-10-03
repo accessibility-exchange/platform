@@ -27,7 +27,7 @@ class ProjectPolicy
     {
         return
             $user->individual || $user->organization || $user->regulated_organization
-            && $project->checkStatus('published') || $user->can('update', $project)
+            && $project->checkStatus('published') || ($user->can('update', $project) && $project->isPublishable())
                 ? Response::allow()
                 : Response::denyAsNotFound();
     }

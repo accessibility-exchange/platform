@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
+use App\Statuses\RegulatedOrganizationStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class RegulatedOrganizationController extends Controller
      */
     public function index(): View
     {
-        return view('regulated-organizations.index', ['regulatedOrganizations' => RegulatedOrganization::orderBy('name')->get()]);
+        return view('regulated-organizations.index', ['regulatedOrganizations' => RegulatedOrganization::status(new RegulatedOrganizationStatus('published'))->orderBy('name')->get()]);
     }
 
     /**

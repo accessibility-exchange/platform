@@ -154,7 +154,7 @@ class EngagementController extends Controller
             ])->toArray(),
             'intersectionalOptions' => Options::forArray([
                 '1' => __('No, give me a group with intersectional experiences and/or identities'),
-                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)', ),
+                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
             ])->toArray(),
             'otherIdentityOptions' => Options::forArray([
                 'age-bracket' => __('Age'),
@@ -199,7 +199,7 @@ class EngagementController extends Controller
             ])->toArray(),
             'intersectionalOptions' => Options::forArray([
                 '1' => __('No, give me a group with intersectional experiences and/or identities'),
-                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)', ),
+                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
             ])->toArray(),
             'otherIdentityOptions' => Options::forArray([
                 'age-bracket' => __('Age'),

@@ -5,6 +5,7 @@ use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\SectorSeeder;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -642,7 +643,7 @@ test('non members can not delete regulated organizations', function () {
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs']]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
     $response->assertOk();
@@ -668,6 +669,8 @@ test('guests can not view regulated organizations', function () {
 });
 
 test('user can view regulated organization in different languages', function () {
+    $this->seed(SectorSeeder::class);
+
     $user = User::factory()->create();
     $admin = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
@@ -676,6 +679,7 @@ test('user can view regulated organization in different languages', function () 
             'fr' => 'Agence du revenue du Canada',
             'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
         ],
+        'about' => ['en' => 'About us.'],
         'languages' => [
             'en',
             'fr',
@@ -683,7 +687,17 @@ test('user can view regulated organization in different languages', function () 
             'fcs',
             'iu',
         ],
+        'locality' => 'Iqaluit',
+        'region' => 'NU',
+        'service_areas' => ['NU'],
+        'type' => 'government',
+        'preferred_contact_method' => 'email',
+        'published_at' => now(),
     ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertSee('Canada Revenue Agency');
