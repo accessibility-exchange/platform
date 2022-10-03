@@ -490,6 +490,22 @@ class EngagementController extends Controller
         ]);
     }
 
+    public function manageParticipants(Engagement $engagement): View
+    {
+        return view('engagements.manage-participants', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function manageAccessNeeds(Engagement $engagement): View
+    {
+        return view('engagements.manage-access-needs', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
     public function participate(Engagement $engagement)
     {
         return view('engagements.participate', [

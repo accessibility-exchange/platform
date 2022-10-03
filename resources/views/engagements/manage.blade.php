@@ -266,7 +266,8 @@
                     </div>
                     <p>
                         {{-- TODO: manage participants --}}
-                        <a class="cta secondary" href="#">
+                        <a class="cta secondary"
+                            href="{{ localized_route('engagements.manage-participants', $engagement) }}">
                             <x-heroicon-o-users /> {{ __('Manage participants') }}
                         </a>
                     </p>
