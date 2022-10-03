@@ -17,6 +17,10 @@ class MeetingRequest extends FormRequest
 
     public function rules(): array
     {
+        $inPerson = MeetingType::InPerson->value;
+        $webConference = MeetingType::WebConference->value;
+        $phone = MeetingType::Phone->value;
+
         return [
             'title.*' => 'nullable|string',
             'title.en' => 'required_without:title.fr',
@@ -32,67 +36,67 @@ class MeetingRequest extends FormRequest
             ],
             'street_address' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($inPerson, $this->input('meeting_types', []))),
                 'string',
             ],
             'unit_suite_floor' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
                 'string',
             ],
             'locality' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($inPerson, $this->input('meeting_types', []))),
                 'string',
             ],
             'region' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($inPerson, $this->input('meeting_types', []))),
                 new Enum(ProvinceOrTerritory::class),
             ],
             'postal_code' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($inPerson, $this->input('meeting_types', []))),
                 'postal_code:CA',
             ],
             'directions' => [
                 'nullable',
-                Rule::excludeIf(! in_array('in_person', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($inPerson, $this->input('meeting_types', []))),
                 'array',
             ],
             'meeting_software' => [
                 'nullable',
-                Rule::excludeIf(! in_array('web_conference', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('web_conference', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($webConference, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($webConference, $this->input('meeting_types', []))),
             ],
             'alternative_meeting_software' => [
                 'nullable',
-                Rule::excludeIf(! in_array('web_conference', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($webConference, $this->input('meeting_types', []))),
                 'boolean',
             ],
             'meeting_url' => [
                 'nullable',
-                Rule::excludeIf(! in_array('web_conference', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('web_conference', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($webConference, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($webConference, $this->input('meeting_types', []))),
             ],
             'additional_video_information' => [
                 'nullable',
-                Rule::excludeIf(! in_array('web_conference', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($webConference, $this->input('meeting_types', []))),
                 'array',
             ],
             'meeting_phone' => [
                 'nullable',
-                Rule::excludeIf(! in_array('phone', $this->input('meeting_types', []))),
-                Rule::requiredIf(in_array('phone', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($phone, $this->input('meeting_types', []))),
+                Rule::requiredIf(in_array($phone, $this->input('meeting_types', []))),
                 'phone:CA',
             ],
             'additional_phone_information' => [
                 'nullable',
-                Rule::excludeIf(! in_array('phone', $this->input('meeting_types', []))),
+                Rule::excludeIf(! in_array($phone, $this->input('meeting_types', []))),
                 'array',
             ],
         ];
