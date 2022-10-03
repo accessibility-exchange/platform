@@ -288,6 +288,45 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 
+    $engagement->update(['format' => 'interviews']);
+
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), array_merge($data, [
+        'window_start_date' => '2022-11-01',
+        'window_end_date' => '2022-11-15',
+        'window_start_time' => '9:00',
+        'window_end_time' => '17:00',
+        'timezone' => 'America/Toronto',
+        'weekday_availabilities' => [
+            'monday' => 'yes',
+            'tuesday' => 'yes',
+            'wednesday' => 'yes',
+            'thursday' => 'yes',
+            'friday' => 'yes',
+            'saturday' => 'no',
+            'sunday' => 'no',
+        ],
+        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'street_address' => '1223 Main Street',
+        'locality' => 'Anytown',
+        'region' => 'ON',
+        'postal_code' => 'M4W 1E6',
+        'meeting_software' => 'WebMeetingApp',
+        'meeting_url' => 'https://example.com/meet',
+        'meeting_phone' => '6476231847',
+        'materials_by_date' => '2022-11-01',
+        'complete_by_date' => '2022-11-15',
+        'accepted_formats' => ['writing', 'audio', 'video'],
+    ]));
+
+    $response->assertSessionHasNoErrors();
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->window_start_time->format('H:i:s'))->toEqual('09:00:00');
+    expect($engagement->window_end_time->format('H:i:s'))->toEqual('17:00:00');
+
     $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
     $response->assertOk();
 
