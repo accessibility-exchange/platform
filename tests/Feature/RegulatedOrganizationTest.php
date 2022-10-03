@@ -709,6 +709,42 @@ test('user can view regulated organization in different languages', function () 
     $response->assertSee('Agence du revenue du Canada');
 });
 
+test('regulated organization cannot be previewed until publishable', function () {
+    $this->seed(SectorSeeder::class);
+
+    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+        'name' => [
+            'en' => 'Canada Revenue Agency',
+            'fr' => 'Agence du revenue du Canada',
+            'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
+        ],
+        'about' => ['en' => 'About us.'],
+        'languages' => [
+            'en',
+            'fr',
+            'ase',
+            'fcs',
+            'iu',
+        ],
+        'region' => 'NU',
+        'service_areas' => ['NU'],
+        'type' => 'government',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
+
+    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertNotFound();
+
+    $regulatedOrganization->update(['locality' => 'Iqaluit']);
+    $regulatedOrganization = $regulatedOrganization->fresh();
+
+    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertOk();
+});
+
 test('regulated organizations have slugs in both languages even if only one is provided', function () {
     $regulatedOrg = RegulatedOrganization::factory()->create();
     expect($regulatedOrg->getTranslation('slug', 'fr', false))
