@@ -685,6 +685,14 @@ test('users can view their own draft individual pages', function () {
         'published_at' => null,
         'consulting_services' => ['analysis'],
         'roles' => ['consultant'],
+        'extra_attributes' => [
+            'has_age_brackets' => true,
+            'has_ethnoracial_identities' => true,
+            'has_gender_and_sexual_identities' => true,
+            'has_indigenous_identities' => true,
+        ],
+        'meeting_types' => ['in_person'],
+        'bio' => ['en' => 'ok'],
     ]);
 
     $response = $this->actingAs($individual->user)->get(localized_route('individuals.show', $individual));

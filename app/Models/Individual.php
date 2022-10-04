@@ -379,16 +379,26 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         $publishRules = [
             'bio.*' => 'required',
-            'connection_lived_experience' => 'required',
+            'connection_lived_experience' => [
+                Rule::requiredIf(fn () => $this->isConnector()),
+            ],
             'consulting_services' => [
                 'nullable',
                 Rule::requiredIf(fn () => $this->isConsultant()),
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
-            'extra_attributes.has_age_brackets' => 'required',
-            'extra_attributes.has_ethnoracial_identities' => 'required',
-            'extra_attributes.has_gender_and_sexual_identities' => 'required',
-            'extra_attributes.has_indigenous_identities' => 'required',
+            'extra_attributes.has_age_brackets' => [
+                Rule::requiredIf(fn () => $this->isConnector()),
+            ],
+            'extra_attributes.has_ethnoracial_identities' => [
+                Rule::requiredIf(fn () => $this->isConnector()),
+            ],
+            'extra_attributes.has_gender_and_sexual_identities' => [
+                Rule::requiredIf(fn () => $this->isConnector()),
+            ],
+            'extra_attributes.has_indigenous_identities' => [
+                Rule::requiredIf(fn () => $this->isConnector()),
+            ],
             'meeting_types' => 'required',
             'name' => 'required',
             'region' => 'required',
@@ -402,20 +412,22 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
                 return false;
             }
 
-            if (! $this->livedExperienceConnections()->count()) {
-                return false;
-            }
+            if ($this->isConnector()) {
+                if (! $this->livedExperienceConnections()->count()) {
+                    return false;
+                }
 
-            if (! $this->areaTypeConnections()->count()) {
-                return false;
-            }
+                if (! $this->areaTypeConnections()->count()) {
+                    return false;
+                }
 
-            if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentityConnections()->count()) {
-                return false;
-            }
+                if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentityConnections()->count()) {
+                    return false;
+                }
 
-            if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
-                return false;
+                if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
+                    return false;
+                }
             }
 
             return true;

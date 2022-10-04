@@ -40,6 +40,12 @@ class RegulatedOrganizationPolicy
             ]));
         }
 
+        if ($regulatedOrganization->checkStatus('draft')) {
+            return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        }
+
         return $user->individual || $user->organization || $user->regulated_organization
             ? Response::allow()
             : Response::deny();
