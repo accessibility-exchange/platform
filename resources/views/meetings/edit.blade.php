@@ -18,6 +18,9 @@
         action="{{ $meeting->id ? localized_route('meetings.update', ['meeting' => $meeting, 'engagement' => $engagement]) : localized_route('meetings.store', $engagement) }}"
         method="post" novalidate>
         @csrf
+        @if ($meeting->id)
+            @method('put')
+        @endif
 
         <x-translatable-input name="title" :label="__('Title of meeting')" :short-label="__('meeting title')" :model="$meeting" />
 
