@@ -40,7 +40,7 @@
         <div class="repel">
             <h2>{{ __('Participants') }}</h2>
             @can('manageParticipants', $engagement)
-                <a class="cta secondary with-icon" href="#">
+                <a class="cta secondary with-icon" href="{{ localized_route('engagements.add-participant', $engagement) }}">
                     <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
                     {{ __('Add participant') }}
                 </a>

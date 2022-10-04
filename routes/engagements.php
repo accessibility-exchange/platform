@@ -95,6 +95,15 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-access-needs');
 
+        Route::multilingual('/{engagement}/manage/add-participant', 'addParticipant')
+            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->name('add-participant');
+
+        Route::multilingual('/{engagement}/manage/invite-participant', 'inviteParticipant')
+            ->method('post')
+            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->name('invite-participant');
+
         Route::multilingual('/{engagement}/participants', 'participate')
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('participate');

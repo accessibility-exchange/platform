@@ -498,6 +498,21 @@ class EngagementController extends Controller
         ]);
     }
 
+    public function addParticipant(Engagement $engagement): View
+    {
+        return view('engagements.add-participant', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function inviteParticipant(Engagement $engagement): RedirectResponse
+    {
+        // TODO: Handle invitation
+
+        return redirect(localized_route('engagements.manage-participants', $engagement));
+    }
+
     public function manageAccessNeeds(Engagement $engagement): View
     {
         return view('engagements.manage-access-needs', [

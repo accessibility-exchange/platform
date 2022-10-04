@@ -703,3 +703,69 @@ test('engagement participants can be listed by administrator or community connec
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
 });
+
+test('engagement participants can be invited by a community connector', function () {
+    $user = User::factory()->create();
+
+    $connectorUser = User::factory()->create();
+    $connectorUser->individual->update(['roles' => ['connector']]);
+    $connectorUser->individual->publish();
+    $individualConnector = $connectorUser->individual->fresh();
+
+    $connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $connectorOrganization->users()->attach(
+        $connectorOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.add-participant', $engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->post(localized_route('engagements.invite-participant', $engagement), [
+        'email' => 'particpant@example.com',
+    ]);
+    $response->assertForbidden();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.add-participant', $engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
+        'email' => 'particpant@example.com',
+    ]);
+    $response->assertForbidden();
+
+    $engagement->update(['individual_connector_id' => $individualConnector->id]);
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.add-participant', $engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($connectorUser)->post(localized_route('engagements.invite-participant', $engagement), [
+        'email' => 'particpant@example.com',
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
+
+    $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.add-participant', $engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
+        'email' => 'particpant@example.com',
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
+});
