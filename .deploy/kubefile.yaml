@@ -7,7 +7,7 @@ deployments:
       - vault: accessibility-app
         path: secrets
   - name: accessibility-db
-    chart: colab/container
+    chart: bitnami/mysql
     class: medium
     secrets:
       - vault: accessibility-db
