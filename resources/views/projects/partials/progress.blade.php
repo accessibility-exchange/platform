@@ -14,7 +14,9 @@
     @can('update', $project)
         @if ($project->checkStatus('draft'))
             <div class="stack">
-                <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                @can('publish', $project)
+                    <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                @endcan
                 <button name="publish" value="1"
                     @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
                 <p>{{ __('Once you publish your project, others can find it.') }}</p>

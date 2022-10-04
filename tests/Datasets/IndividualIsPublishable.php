@@ -31,7 +31,12 @@ dataset('individualIsPublishable', function () {
         ],
         'not publishable when missing connection_lived_experience' => [
             false,
-            array_replace_recursive($baseModel, ['connection_lived_experience' => null]),
+            array_replace_recursive($baseModel, [
+                'connection_lived_experience' => null,
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
+            ]),
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',
@@ -51,6 +56,9 @@ dataset('individualIsPublishable', function () {
                 'extra_attributes' => [
                     'has_age_brackets' => null,
                 ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
             ]),
             [
                 'areaTypeConnections',
@@ -62,6 +70,9 @@ dataset('individualIsPublishable', function () {
             array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_ethnoracial_identities' => null,
+                ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
                 ],
             ]),
             [
@@ -75,6 +86,9 @@ dataset('individualIsPublishable', function () {
                 'extra_attributes' => [
                     'has_gender_and_sexual_identities' => null,
                 ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
             ]),
             [
                 'areaTypeConnections',
@@ -86,6 +100,9 @@ dataset('individualIsPublishable', function () {
             array_replace_recursive($baseModel, [
                 'extra_attributes' => [
                     'has_indigenous_identities' => null,
+                ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
                 ],
             ]),
             [
@@ -131,6 +148,9 @@ dataset('individualIsPublishable', function () {
                 'extra_attributes' => [
                     'has_age_brackets' => 1,
                 ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
             ]),
             [
                 'areaTypeConnections',
@@ -143,6 +163,9 @@ dataset('individualIsPublishable', function () {
                 'extra_attributes' => [
                     'has_indigenous_identities' => 1,
                 ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
             ]),
             [
                 'areaTypeConnections',
@@ -151,15 +174,22 @@ dataset('individualIsPublishable', function () {
         ],
         'not publishable when missing areaTypeConnections' => [
             false,
-            $baseModel,
-
+            array_replace_recursive($baseModel, [
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
+            ]),
             [
                 'livedExperienceConnections',
             ],
         ],
         'not publishable when missing livedExperienceConnections' => [
             false,
-            $baseModel,
+            array_replace_recursive($baseModel, [
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
+            ]),
             [
                 'areaTypeConnections',
             ],
@@ -179,6 +209,9 @@ dataset('individualIsPublishable', function () {
                     'has_age_brackets' => 1,
                     'has_indigenous_identities' => 1,
                 ],
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
             ]),
             [
                 'ageBracketConnections',
@@ -189,15 +222,11 @@ dataset('individualIsPublishable', function () {
         ],
         'publishable without optional connections' => [
             true,
-            $baseModel,
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
-        ],
-        'publishable using connector role' => [
-            true,
-            array_replace_recursive($baseModel, ['roles' => [IndividualRole::CommunityConnector->value]]),
+            array_replace_recursive($baseModel, [
+                'roles' => [
+                    IndividualRole::CommunityConnector->value,
+                ],
+            ]),
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',

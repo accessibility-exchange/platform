@@ -126,7 +126,7 @@ test('users with admin role can edit and publish organizations', function () {
             'preferred_contact_method' => 'email',
             'about' => 'test about',
             'region' => 'ON',
-            'locality' => 'Toronto',
+            'locality' => null,
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
             'roles' => [OrganizationRole::ConsultationParticipant->value],
         ]);
@@ -135,6 +135,15 @@ test('users with admin role can edit and publish organizations', function () {
     $organization->areaTypes()->attach(AreaType::first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
+    $response->assertOk();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
+    $response->assertNotFound();
+
+    $organization->update(['locality' => 'Toronto']);
+    $organization = $organization->fresh();
+
+    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertOk();
 
     UpdateOrganizationRequestFactory::new()->without(['name'])->fake();
@@ -1025,7 +1034,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();

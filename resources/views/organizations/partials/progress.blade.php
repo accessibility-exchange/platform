@@ -24,7 +24,9 @@
     @can('update', $organization)
         @if ($organization->checkStatus('draft'))
             <p class="stack">
-                <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                @can('publish', $organization)
+                    <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                @endcan
                 <button class="secondary" name="publish" value="1"
                     @cannot('publish', $organization) disabled @endcannot>{{ __('Publish page') }}</button>
             </p>

@@ -33,9 +33,9 @@ class IndividualPolicy
         }
 
         if ($model->checkStatus('draft')) {
-            return $user->id !== $model->user_id
-                ? Response::denyAsNotFound()
-                : Response::allow();
+            return $user->id === $model->user_id && $model->isPublishable()
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         return $user->individual || $user->organization || $user->regulated_organization

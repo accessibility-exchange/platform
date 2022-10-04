@@ -29,6 +29,7 @@ use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\Sector;
+use App\Statuses\OrganizationStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class OrganizationController extends Controller
 {
     public function index(): View
     {
-        return view('organizations.index', ['organizations' => Organization::orderBy('name')->get()]);
+        return view('organizations.index', ['organizations' => Organization::status(new OrganizationStatus('published'))->orderBy('name')->get()]);
     }
 
     public function showTypeSelection(): View
