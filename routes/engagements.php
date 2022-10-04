@@ -88,11 +88,11 @@ Route::controller(EngagementController::class)
             ->name('manage');
 
         Route::multilingual('/{engagement}/manage/participants', 'manageParticipants')
-            ->middleware(['auth', 'can:update,engagement'])
+            ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-participants');
 
         Route::multilingual('/{engagement}/manage/access-needs', 'manageAccessNeeds')
-            ->middleware(['auth', 'can:update,engagement'])
+            ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-access-needs');
 
         Route::multilingual('/{engagement}/participants', 'participate')

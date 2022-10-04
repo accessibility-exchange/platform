@@ -676,13 +676,15 @@ test('engagement participants can be listed by administrator or community connec
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertOk();
 
-    $this->markTestIncomplete();
+    $engagement->update(['individual_connector_id' => $individualConnector->id]);
+    $engagement = $engagement->fresh();
 
-    // $engagement->update(['individual_connector_id' => $individualConnector-id]);
-    // $engagement = $engagement->fresh();
-    // TODO: individual connector user should be able to view.
+    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
 
-    // $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization-id]);
-    // $engagement = $engagement->fresh();
-    // TODO: organizational connector user should be able to view.
+    $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
 });
