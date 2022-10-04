@@ -678,6 +678,7 @@ test('engagement participants can be listed by administrator or community connec
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertOk();
+    $response->assertDontSee('Add participant');
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -687,6 +688,7 @@ test('engagement participants can be listed by administrator or community connec
 
     $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertOk();
+    $response->assertSee('Add participant');
 
     $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -696,6 +698,7 @@ test('engagement participants can be listed by administrator or community connec
 
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertOk();
+    $response->assertSee('Add participant');
 
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();

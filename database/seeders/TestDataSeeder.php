@@ -521,9 +521,12 @@ class TestDataSeeder extends Seeder
                 'contact_person_email' => 'mm@accessibilityexchange.ca',
                 'preferred_contact_method' => 'email',
                 'contact_person_response_time' => ['en' => '48 hours'],
+                'estimate_requested_at' => now(),
+                'estimate_returned_at' => now(),
+                'estimate_approved_at' => now(),
+                'agreement_received_at' => now(),
                 'organization' => RegulatedOrganization::where('name->en', 'BlueSky Airlines')->first(),
                 'impact' => Impact::where('name->en', 'Information and communication technologies')->first(),
-
             ],
             [
                 'name' => ['en' => 'Agriculture and Agri-Food Canada (AAFC) Accessibility project'],

@@ -37,6 +37,14 @@
     @show
 
     @section('content')
-        <h2>{{ __('Participants') }}</h2>
+        <div class="repel">
+            <h2>{{ __('Participants') }}</h2>
+            @can('manageParticipants', $engagement)
+                <a class="cta secondary with-icon" href="#">
+                    <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                    {{ __('Add participant') }}
+                </a>
+            @endcan
+        </div>
     @show
 </x-app-wide-tabbed-layout>

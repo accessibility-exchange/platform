@@ -53,7 +53,7 @@ class EngagementPolicy
             return Response::allow();
         }
 
-        if ($engagement->connector?->id === $user->individual?->id) {
+        if ($engagement->connector && $engagement->connector->id === $user->individual?->id) {
             return Response::allow();
         }
 
@@ -66,7 +66,7 @@ class EngagementPolicy
             return Response::allow();
         }
 
-        if ($engagement->connector?->id === $user->individual?->id) {
+        if ($engagement->connector && $engagement->connector->id === $user->individual?->id) {
             return Response::allow();
         }
 
