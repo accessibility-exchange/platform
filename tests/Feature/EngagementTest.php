@@ -673,7 +673,13 @@ test('engagement participants can be listed by administrator or community connec
     $response = $this->actingAs($user)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertForbidden();
 
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertForbidden();
+
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
 
     $engagement->update(['individual_connector_id' => $individualConnector->id]);
@@ -682,9 +688,15 @@ test('engagement participants can be listed by administrator or community connec
     $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement));
     $response->assertOk();
 
+    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+
     $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
     $engagement = $engagement->fresh();
 
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
 });
