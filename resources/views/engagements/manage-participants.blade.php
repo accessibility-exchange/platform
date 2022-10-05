@@ -5,8 +5,12 @@
         <x-slot name="header">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-                <li><a href="{{ localized_route('projects.manage', $project) }}">{{ $project->name }}</a></li>
-                <li><a href="{{ localized_route('engagements.manage', $engagement) }}">{{ $engagement->name }}</a></li>
+                <li><a
+                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                </li>
+                <li><a
+                        href="@can('update', $engagement){{ localized_route('engagements.manage', $engagement) }}@else{{ localized_route('engagements.show', $engagement) }}@endcan">{{ $engagement->name }}</a>
+                </li>
                 @yield('breadcrumbs')
             </ol>
             <h1 id="project">
@@ -46,5 +50,54 @@
                 </a>
             @endcan
         </div>
+
+        <hr class="divider--thick" />
+
+        @if ($invitations->count())
+            <h3 id="pending">{{ __('Pending') }}</h3>
+            <div role="region" aria-labelledby="pending" tabindex="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Email') }}</th>
+                        </tr>
+                    </thead>
+                    @foreach ($invitations as $invitation)
+                        <tr>
+                            <td>{{ __('Not available.') }}</td>
+                            <td>{{ $invitation->email }}</td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+            <hr class="divider--thick" />
+        @endif
+
+        <h3 id="confirmed">{{ __('Confirmed participants') }}</h3>
+        @if ($participants->count())
+            <div role="region" aria-labelledby="pending" tabindex="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ __('Name') }}</th>
+                            <th>{{ __('Email') }}</th>
+                            <th>{{ __('Phone') }}</th>
+                            <th>{{ __('Notes') }}</th>
+                        </tr>
+                    </thead>
+                    @foreach ($participants as $participant)
+                        <tr>
+                            <td>{{ $participant->name }}</td>
+                            <td>{{ $participant->email }}</td>
+                            <td>{{ $participant->phone }}</td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        @else
+            <p>{{ __('No confirmed participants found.') }}</p>
+        @endif
     @show
 </x-app-wide-tabbed-layout>

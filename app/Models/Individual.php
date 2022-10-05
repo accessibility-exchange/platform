@@ -273,7 +273,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         return $this->hasManyDeepFromReverse(
             (new Project())->participants()
-        );
+        )->with('engagements');
     }
 
     public function inProgressParticipatingProjects(): HasManyDeep

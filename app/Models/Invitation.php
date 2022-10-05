@@ -28,6 +28,9 @@ class Invitation extends HearthInvitation
                     $this->invitationable->connector()->associate($invitee);
                     $this->invitationable->save();
                 }
+                if ($this->role === 'participant') {
+                    $this->invitationable->participants()->save($invitee);
+                }
             }
             if ($type === 'organization') {
                 $invitee = Organization::where('contact_person_email', $this->email)->first();
