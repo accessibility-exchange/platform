@@ -10,7 +10,7 @@
                 </li>
                 <li>
                     <a
-                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects I’m contracted for') }}</a>
+                        href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
                 </li>
             @endif
             @if ($user->individual->isParticipant())

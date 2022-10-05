@@ -93,7 +93,7 @@
     box-shadow: var(--card-engagement-shadow);
 }
 
-.card.project + .card.engagement {
+.card.project ~ .card.engagement {
     @apply mt-0 bg-blue-1;
 
     box-shadow: var(--card-shadow), var(--card-engagement-shadow);
@@ -102,13 +102,13 @@
 }
 
 .card.engagement:hover,
-.card.project + .card.engagement:hover {
+.card.project ~ .card.engagement:hover {
     box-shadow: var(--card-shadow-hover), var(--card-engagement-shadow);
 }
 
 .card.engagement:focus-within,
 .card.engagement:has(a:active),
-.card.project + .card.engagement:focus-within,
-.card.project + .card.engagement:has(a:active) {
+.card.project ~ .card.engagement:focus-within,
+.card.project ~ .card.engagement:has(a:active) {
     box-shadow: var(--card-engagement-shadow-focus-within);
 }
