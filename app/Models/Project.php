@@ -437,6 +437,38 @@ class Project extends Model
         return $query;
     }
 
+    public function scopeSectors($query, $sectors)
+    {
+        $method = 'whereHas';
+
+        foreach ($sectors as $sector) {
+            $query->$method('projectable', function (Builder $projectableQuery) use ($sector) {
+                $projectableQuery->whereHas('sectors', function (Builder $sectorQuery) use ($sector) {
+                    $sectorQuery->where('sector_id', $sector);
+                });
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeImpacts($query, $impacts)
+    {
+        $method = 'whereHas';
+
+        foreach ($impacts as $impact) {
+            $query->$method('impacts', function (Builder $impactQuery) use ($impact) {
+                $impactQuery->where('impact_id', $impact);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
     public function scopeRecruitmentMethods($query, $recruitmentMethods)
     {
         $method = 'whereHas';
@@ -459,10 +491,8 @@ class Project extends Model
         foreach ($locations as $location) {
             $query->$method('engagements', function (Builder $engagementQuery) use ($location) {
                 $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($location) {
-                    // First option: province/territory is in 'regions' json
-                    $matchingStrategyQuery->whereJsonContains('regions', $location);
-                    // Second option: province/territory is in 'locations.*.region' json
-                    // ->orWhereJsonContains('locations.%.region', $location);
+                    $matchingStrategyQuery->whereJsonContains('regions', $location)
+                    ->orWhereJsonContains('locations', ['region' => $location]);
                 });
             });
 

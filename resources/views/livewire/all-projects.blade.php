@@ -131,6 +131,32 @@
                 </fieldset>
             </div>
             <div class="filter__options__container">
+                <fieldset class="filter__options field @error('sector') field--error @enderror">
+                    <legend>{{ __('Sectors') }}</legend>
+                    @foreach ($sectorsData as $sector)
+                        <div>
+                            <input type="checkbox" value="{{ $sector['value'] }}"
+                                wire:model="sectors.{{ $sector['value'] }}">
+                            <label>{{ $sector['label'] }}</label>
+                        </div>
+                    @endforeach
+                    <x-hearth-error for="sector" />
+                </fieldset>
+            </div>
+            <div class="filter__options__container">
+                <fieldset class="filter__options field @error('impact') field--error @enderror">
+                    <legend>{{ __('Areas of impact') }}</legend>
+                    @foreach ($impactedAreasData as $impact)
+                        <div>
+                            <input type="checkbox" value="{{ $impact['value'] }}"
+                                wire:model="impacts.{{ $impact['value'] }}">
+                            <label>{{ $impact['label'] }}</label>
+                        </div>
+                    @endforeach
+                    <x-hearth-error for="impact" />
+                </fieldset>
+            </div>
+            <div class="filter__options__container">
                 <fieldset class="filter__options field @error('recruitment') field--error @enderror">
                     <legend>{{ __('Recruitment method') }}</legend>
                     @foreach ($recruitmentMethodsData as $recruitmentMethod)

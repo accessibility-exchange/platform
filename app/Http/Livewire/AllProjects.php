@@ -3,9 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\DisabilityType;
+use App\Models\Impact;
 use App\Models\Project;
+use App\Models\Sector;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -32,6 +35,8 @@ class AllProjects extends Component
     public array $compensations = [];
 
     public array $sectors = [];
+
+    public array $impacts = [];
 
     public array $recruitmentMethods = [];
 
@@ -119,6 +124,30 @@ class AllProjects extends Component
         );
     }
 
+    public function updatedSectors()
+    {
+        if (! is_array($this->sectors)) {
+            return;
+        }
+        $this->sectors = array_filter($this->sectors,
+            function ($sector) {
+                return $sector != false;
+            }
+        );
+    }
+
+    public function updatedImpacts()
+    {
+        if (! is_array($this->impacts)) {
+            return;
+        }
+        $this->impacts = array_filter($this->impacts,
+            function ($impact) {
+                return $impact != false;
+            }
+        );
+    }
+
     public function updatedRecruitmentMethods()
     {
         if (! is_array($this->recruitmentMethods)) {
@@ -149,11 +178,23 @@ class AllProjects extends Component
                     ->when($this->initiators, function ($query, $initiators) {
                         $query->initiators($initiators);
                     })
+                    ->when($this->seekingGroups, function ($query, $seekingGroups) {
+                        $query->seekingGroups($seekingGroups);
+                    })
+                    ->when($this->meetingTypes, function ($query, $meetingTypes) {
+                        $query->meetingTypes($meetingTypes);
+                    })
                     ->when($this->locations, function ($query, $locations) {
                         $query->locations($locations);
                     })
                     ->when($this->compensations, function ($query, $compensations) {
                         $query->compensations($compensations);
+                    })
+                    ->when($this->sectors, function ($query, $sectors) {
+                        $query->sectors($sectors);
+                    })
+                    ->when($this->impacts, function ($query, $impacts) {
+                        $query->impacts($impacts);
                     })
                     ->when($this->recruitmentMethods, function ($query, $recruitmentMethods) {
                         $query->recruitmentMethods($recruitmentMethods);
@@ -175,22 +216,14 @@ class AllProjects extends Component
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
             'seekingGroupsData' => Options::forModels(DisabilityType::class)->toArray(),
-            'meetingTypesData' => [
-                ['value' => 'virtualVideo', 'label' => __('Virtual - video chat')],
-                ['value' => 'virtualPhone', 'label' => __('Virtual - phone call')],
-                ['value' => 'inPerson', 'label' => __('In-person')],
-            ],
+            'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
                 ['value' => 'paid', 'label' => __('Paid')],
                 ['value' => 'volunteer', 'label' => __('Volunteer')],
             ],
-            'sectorsData' => [
-                //enum sector
-            ],
-            'impactedAreasData' => [
-                //enum impact
-            ],
+            'sectorsData' => Options::forModels(Sector::class)->toArray(),
+            'impactedAreasData' => Options::forModels(Impact::class)->toArray(),
             'recruitmentMethodsData' => Options::forEnum(EngagementRecruitment::class)->toArray(),
         ])
             ->layout('layouts.app-wide');
