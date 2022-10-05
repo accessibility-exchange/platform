@@ -434,6 +434,7 @@ class EngagementController extends Controller
         return view('engagements.show-language-edit', [
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'engagement' => $engagement,
+            'project' => $engagement->project,
         ]);
     }
 

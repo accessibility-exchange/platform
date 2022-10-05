@@ -123,6 +123,8 @@ test('users without regulated organization admin role cannot create engagements'
 });
 
 test('users can view engagements', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
 
@@ -442,14 +444,6 @@ test('engagements can reflect parent project’s estimate and agreement status',
     expect($engagement->hasEstimateAndAgreement())->toBeTrue();
 });
 
-test('engagements are only publishable if required fields are completed', function () {
-    $engagement = Engagement::factory()->create();
-
-    expect($engagement->isPublishable())->toBeFalse();
-
-    $this->markTestIncomplete();
-});
-
 test('individual user can accept invitation to an engagement as a connector', function () {
     $this->seed(DisabilityTypeSeeder::class);
 
@@ -733,7 +727,7 @@ test('engagement participants can be invited by a community connector', function
     $response->assertForbidden();
 
     $response = $this->actingAs($user)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'particpant@example.com',
+        'email' => 'particpant1@example.com',
     ]);
     $response->assertForbidden();
 
@@ -741,7 +735,7 @@ test('engagement participants can be invited by a community connector', function
     $response->assertForbidden();
 
     $response = $this->actingAs($regulatedOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'particpant@example.com',
+        'email' => 'participant2@example.com',
     ]);
     $response->assertForbidden();
 
@@ -752,7 +746,7 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'particpant@example.com',
+        'email' => 'participant3@example.com',
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
@@ -764,7 +758,7 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'particpant@example.com',
+        'email' => 'participant4@example.com',
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
