@@ -281,47 +281,6 @@ class Project extends Model
 
     public function scopeStatuses($query, $statuses)
     {
-        // for ($i = 0; $i < sizeof($statuses); $i ++) {
-        //     if ($i === 0) {
-        //         if (array_values($statuses)[$i] === 'upcoming') {
-        //             $query->where('start_date', '>', Carbon::now());
-        //         } elseif (array_values($statuses)[$i] === 'inProgress') {
-        //             $query->where([
-        //                 ['start_date', '<', Carbon::now()],
-        //                 ['end_date', '>', Carbon::now()]]);
-        //         } elseif (array_values($statuses)[$i] === 'completed') {
-        //             $query->where('end_date', '<', Carbon::now());
-        //         }
-        //     } else {
-        //         if (array_values($statuses)[$i] === 'upcoming') {
-        //             $query->orWhere('start_date', '>', Carbon::now());
-        //         } elseif (array_values($statuses)[$i] === 'inProgress') {
-        //             $query->orWhere([
-        //                 ['start_date', '<', Carbon::now()],
-        //                 ['end_date', '>', Carbon::now()]]);
-        //         } elseif (array_values($statuses)[$i] === 'completed') {
-        //             $query->orWhere('end_date', '<', Carbon::now());
-        //         }
-        //     }
-        // }
-
-        // for ($i = 0; $i < sizeof($statuses); $i ++) {
-        //     $method = 'orWhere';
-        //     if ($i === 0) {
-        //         $method = 'where';
-        //     }
-
-        //     if (array_values($statuses)[$i] === 'upcoming') {
-        //         $query->$method('start_date', '>', Carbon::now());
-        //     } elseif (array_values($statuses)[$i] === 'inProgress') {
-        //         $query->$method([
-        //             ['start_date', '<', Carbon::now()],
-        //             ['end_date', '>', Carbon::now()]]);
-        //     } elseif (array_values($statuses)[$i] === 'completed') {
-        //         $query->$method('end_date', '<', Carbon::now());
-        //     }
-        // }
-
         $method = 'where';
 
         foreach ($statuses as $status) {
@@ -334,10 +293,7 @@ class Project extends Model
             } elseif ($status === 'completed') {
                 $query->$method('end_date', '<', Carbon::now());
             }
-
-            do {
-                $method = 'orWhere';
-            } while ($method === 'where');
+            $method = 'orWhere';
         }
 
         return $query;
@@ -345,36 +301,23 @@ class Project extends Model
 
     public function scopeSeekings($query, $seekings)
     {
-        for ($i = 0; $i < count($seekings); $i++) {
-            if ($i === 0) {
-                if (in_array('participants', $seekings, true)) {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'open-call');
-                    });
-                } elseif (in_array('connectors', $seekings, true)) {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->withExtraAttributes('seeking_community_connector', true);
-                    });
-                } elseif (in_array('organizations', $seekings, true)) {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('who', 'organization');
-                    });
-                }
-            } else {
-                if (in_array('participants', $seekings, true)) {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'open-call');
-                    });
-                } elseif (in_array('connectors', $seekings, true)) {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->withExtraAttributes('seeking_community_connector', true);
-                    });
-                } elseif (in_array('organizations', $seekings, true)) {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('who', 'organization')->whereNull('organization_id');
-                    });
-                }
+        $method = 'whereHas';
+
+        foreach ($seekings as $seeking) {
+            if ($seeking === 'participants') {
+                $query->$method('engagements', function (Builder $engagementQuery) {
+                    $engagementQuery->where('recruitment', 'open-call');
+                });
+            } elseif ($seeking === 'connectors') {
+                $query->$method('engagements', function (Builder $engagementQuery) {
+                    $engagementQuery->withExtraAttributes('seeking_community_connector', true);
+                });
+            } elseif ($seeking === 'organizations') {
+                $query->$method('engagements', function (Builder $engagementQuery) {
+                    $engagementQuery->where('who', 'organization');
+                });
             }
+            $method = 'orWhereHas';
         }
 
         return $query;
@@ -382,96 +325,72 @@ class Project extends Model
 
     public function scopeInitiators($query, $initiators)
     {
-        for ($i = 0; $i < count($initiators); $i++) {
-            if ($i === 0) {
-                if (array_values($initiators)[$i] === 'organization') {
-                    $query->where('projectable_type', 'App\Models\Organization');
-                } elseif (array_values($initiators)[$i] === 'regulatedOrganization') {
-                    $query->where('projectable_type', 'App\Models\RegulatedOrganization');
-                }
-            } else {
-                if (array_values($initiators)[$i] === 'organization') {
-                    $query->orWhere('projectable_type', 'App\Models\Organization');
-                } elseif (array_values($initiators)[$i] === 'regulatedOrganization') {
-                    $query->orWhere('projectable_type', 'App\Models\RegulatedOrganization');
-                }
+        $method = 'where';
+
+        foreach ($initiators as $initiator) {
+            if ($initiator === 'organization') {
+                $query->$method('projectable_type', 'App\Models\Organization');
+            } elseif ($initiator === 'regulatedOrganization') {
+                $query->$method('projectable_type', 'App\Models\RegulatedOrganization');
             }
+
+            $method = 'orWhere';
         }
 
         return $query;
     }
 
-    // public function scopeSeekingGroups($query, $seekingGroups)
-    // {
-    //     for ($i = 0; $i < sizeof($seekingGroups); $i ++) {
-    //         if ($i === 0) {
-    //             if (array_values($seekingGroups)[$i] === '') {
-    //                 $query->whereHas('engagements', function (Builder $engagementQuery) {
-    //                     $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) {
-    //                         $matchingStrategyQuery->whereHas('criteria', function (Builder $criteriaQuery) {
-    //                             $criteriaQuery->where(['criteriable_type', 'App\Models\DisabilityType']);
-    //                         })
-    //                     })
-    //                 })
-    //             } elseif (array_values($seekingGroups)[$i] === '') {
-    //             }
-    //         } else {
+    public function scopeSeekingGroups($query, $seekingGroups)
+    {
+        $method = 'whereHas';
 
-    //         }
-    //     }
-    // }
+        foreach ($seekingGroups as $seekingGroup) {
+            $query->$method('engagements', function (Builder $engagementQuery) use ($seekingGroup) {
+                $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($seekingGroup) {
+                    $matchingStrategyQuery->whereHas('criteria', function (Builder $criteriaQuery) use ($seekingGroup) {
+                        $criteriaQuery->where([
+                            ['criteriable_type', 'App\Models\DisabilityType'],
+                            ['criteriable_id', $seekingGroup],
+                        ]);
+                    });
+                });
+            });
 
-    // public function scopeMeetingTypes($query, $meetingTypes)
-    // {
-    //     for ($i = 0; $i < sizeof($meetingTypes); $i ++) {
-    //         if ($i === 0) {
-    //             if (array_values($meetingTypes)[$i] === '') {
-    //                 $query->whereHas('engagements', function (Builder $query) {
-    //                     $query->whereJsonContains($meetingTypes)
+            $method = 'orWhereHas';
+        }
 
-                            // Maybe: wrap all these queries in a whereIn query to make sure you are only querying the right format of engagements
+        return $query;
+    }
 
-                            // Engagement format = 'interviews'
-                            // $query->whereJsonContains('meeting_types', $value)
+    public function scopeMeetingTypes($query, $meetingTypes)
+    {
+        $method = 'whereHas';
 
-                            // Engagement format = 'workshop', 'focus-group', 'other-sync'
-                            // $query->whereHas('meetings', function (Builder $meetingQuery) {
-                            //     $meetingQuery->whereJsonContains('meeting_types', $value);
-                            // });
+        foreach ($meetingTypes as $meetingType) {
+            $query->$method('engagements', function (Builder $engagementQuery) use ($meetingType) {
+                $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
+                ->whereJsonContains('meeting_types', $meetingType)
+                ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
+                    $meetingQuery->whereJsonContains('meeting_types', $meetingType);
+                });
+            });
 
-    //                 })
-    //             } elseif (array_values($meetingTypes)[$i] === '') {
-    //             }
-    //         } else {
+            $method = 'orWhereHas';
+        }
 
-    //         }
-    //     }
-    // }
+        return $query;
+    }
 
     public function scopeCompensations($query, $compensations)
     {
-        for ($i = 0; $i < count($compensations); $i++) {
-            if ($i === 0) {
-                if (array_values($compensations)[$i] === 'paid') {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('paid', true);
-                    });
-                } elseif (array_values($compensations)[$i] === 'volunteer') {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('paid', false);
-                    });
-                }
-            } else {
-                if (array_values($compensations)[$i] === 'paid') {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('paid', true);
-                    });
-                } elseif (array_values($compensations)[$i] === 'volunteer') {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('paid', false);
-                    });
-                }
-            }
+        $method = 'whereHas';
+
+        foreach ($compensations as $compensation) {
+            $query->$method('engagements', function (Builder $engagementQuery) use ($compensation) {
+                $engagementQuery->where('paid', $compensation === 'paid');
+            });
+
+            $method = 'orWhereHas';
         }
 
         return $query;
@@ -479,28 +398,14 @@ class Project extends Model
 
     public function scopeRecruitmentMethods($query, $recruitmentMethods)
     {
-        for ($i = 0; $i < count($recruitmentMethods); $i++) {
-            if ($i === 0) {
-                if (array_values($recruitmentMethods)[$i] === 'open-call') {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'open-call');
-                    });
-                } elseif (array_values($recruitmentMethods)[$i] === 'connector') {
-                    $query->whereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'connector');
-                    });
-                }
-            } else {
-                if (array_values($recruitmentMethods)[$i] === 'open-call') {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'open-call');
-                    });
-                } elseif (array_values($recruitmentMethods)[$i] === 'connector') {
-                    $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                        $engagementQuery->where('recruitment', 'connector');
-                    });
-                }
-            }
+        $method = 'whereHas';
+
+        foreach ($recruitmentMethods as $recruitmentMethod) {
+            $query->$method('engagements', function (Builder $engagementQuery) use ($recruitmentMethod) {
+                $engagementQuery->where('recruitment', $recruitmentMethod);
+            });
+
+            $method = 'orWhereHas';
         }
 
         return $query;
@@ -508,22 +413,19 @@ class Project extends Model
 
     public function scopeLocations($query, $locations)
     {
-        for ($i = 0; $i < count($locations); $i++) {
-            if ($i === 0) {
-                $query->whereHas('engagements', function (Builder $engagementQuery) {
-                    $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) {
-                        // First option: province/territory is in 'regions' json
-                        $matchingStrategyQuery->whereJsonContains(array_values($locations)[$i], 'regions');
-                        // Second option: province/territory is in 'locations.*.region' json
-                        $matchingStrategyQuery->whereJsonContains(array_values($locations)[$i], 'locations.*.region');
-                    });
-                    $engagementQuery->whereIn(array_values($locations)[$i], 'localities');
+        $method = 'whereHas';
+
+        foreach ($locations as $location) {
+            $query->$method('engagements', function (Builder $engagementQuery) use ($location) {
+                $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($location) {
+                    // First option: province/territory is in 'regions' json
+                    $matchingStrategyQuery->whereJsonContains('regions', $location);
+                    // Second option: province/territory is in 'locations.*.region' json
+                    // ->orWhereJsonContains('locations.%.region', $location);
                 });
-            } else {
-                $query->orWhereHas('engagements', function (Builder $engagementQuery) {
-                    $engagementQuery->whereIn(array_values($locations)[$i], 'localities');
-                });
-            }
+            });
+
+            $method = 'orWhereHas';
         }
 
         return $query;
