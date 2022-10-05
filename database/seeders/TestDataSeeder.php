@@ -572,7 +572,6 @@ class TestDataSeeder extends Seeder
                 'contact_person_response_time' => ['en' => '24 hours'],
                 'organization' => RegulatedOrganization::where('name->en', 'Canada Post')->first(),
                 'impact' => Impact::where('name->en', 'Buildings and public spaces')->first(),
-
             ],
         ];
 
@@ -581,6 +580,41 @@ class TestDataSeeder extends Seeder
             $fro = array_pop($project);
             $project = Project::factory()->create(array_merge(['projectable_id' => $fro->id], $project));
             $project->impacts()->attach($impact->id);
+        }
+
+        $engagementsForTesting = [
+            [
+                'name' => ['en' => 'Workshop'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'individuals',
+                'format' => 'workshop',
+                'recruitment' => 'open-call',
+                'ideal_participants' => 25,
+                'minimum_participants' => 15,
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'signup_by_date' => '2022-10-02',
+                'published_at' => now(),
+            ],
+            [
+                'name' => ['en' => 'Focus Group'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'individuals',
+                'format' => 'focus-group',
+                'recruitment' => 'connector',
+                'ideal_participants' => 25,
+                'minimum_participants' => 15,
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'signup_by_date' => '2022-10-02',
+                'published_at' => now(),
+            ],
+        ];
+
+        $project = Project::find(1);
+
+        foreach ($engagementsForTesting as $engagement) {
+            $project->engagements()->create($engagement);
         }
     }
 }
