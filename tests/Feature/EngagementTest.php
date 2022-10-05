@@ -10,6 +10,7 @@ use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
 use App\Models\Invitation;
+use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -139,7 +140,7 @@ test('guests cannot view engagements', function () {
 test('users with regulated organization admin role can edit engagements', function () {
     $this->seed(DatabaseSeeder::class);
 
-    $user = User::factory()->create();
+    $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -287,6 +288,45 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 
+    $engagement->update(['format' => 'interviews']);
+
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), array_merge($data, [
+        'window_start_date' => '2022-11-01',
+        'window_end_date' => '2022-11-15',
+        'window_start_time' => '9:00',
+        'window_end_time' => '17:00',
+        'timezone' => 'America/Toronto',
+        'weekday_availabilities' => [
+            'monday' => 'yes',
+            'tuesday' => 'yes',
+            'wednesday' => 'yes',
+            'thursday' => 'yes',
+            'friday' => 'yes',
+            'saturday' => 'no',
+            'sunday' => 'no',
+        ],
+        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'street_address' => '1223 Main Street',
+        'locality' => 'Anytown',
+        'region' => 'ON',
+        'postal_code' => 'M4W 1E6',
+        'meeting_software' => 'WebMeetingApp',
+        'meeting_url' => 'https://example.com/meet',
+        'meeting_phone' => '6476231847',
+        'materials_by_date' => '2022-11-01',
+        'complete_by_date' => '2022-11-15',
+        'accepted_formats' => ['writing', 'audio', 'video'],
+    ]));
+
+    $response->assertSessionHasNoErrors();
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->window_start_time->format('H:i:s'))->toEqual('09:00:00');
+    expect($engagement->window_end_time->format('H:i:s'))->toEqual('17:00:00');
+
     $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
     $response->assertOk();
 
@@ -407,11 +447,7 @@ test('engagements are only publishable if required fields are completed', functi
 
     expect($engagement->isPublishable())->toBeFalse();
 
-    $engagement->update(['signup_by_date' => now()]);
-
-    $engagement = $engagement->fresh();
-
-    expect($engagement->isPublishable())->toBeTrue();
+    $this->markTestIncomplete();
 });
 
 test('individual user can accept invitation to an engagement as a connector', function () {
@@ -585,3 +621,26 @@ test('organization user can decline invitation to an engagement as a connector',
 
     $this->assertModelMissing($invitation);
 });
+
+test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true) {
+    $project = Project::factory()->create();
+
+    // Fill data so that we don't hit a Database Integrity constraint violation during creation
+    $engagement = Engagement::factory()->create(['project_id' => $project->id]);
+    $engagement->fill($data);
+
+    if ($meetings) {
+        $engagement->meetings()->save(Meeting::factory()->create());
+    }
+
+    if ($estimatesAndAgreements) {
+        $project->update([
+            'estimate_requested_at' => now(),
+            'estimate_returned_at' => now(),
+            'estimate_approved_at' => now(),
+            'agreement_received_at' => now(),
+        ]);
+    }
+
+    expect($engagement->isPublishable())->toBe($expected);
+})->with('engagementIsPublishable');

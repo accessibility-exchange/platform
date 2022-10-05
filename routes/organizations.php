@@ -96,6 +96,11 @@ Route::controller(OrganizationController::class)
             ->method('put')
             ->name('update-contact-information');
 
+        Route::multilingual('/{organization}/change-status', 'updatePublicationStatus')
+            ->middleware(['auth', 'verified', 'can:update,organization'])
+            ->method('put')
+            ->name('update-publication-status');
+
         Route::multilingual('/{organization}/delete', 'destroy')
             ->middleware(['auth', 'verified', 'can:delete,organization'])
             ->method('delete')

@@ -7,5 +7,7 @@
     <x-heading class="h4" :level="$level"><a
             href="{{ localized_route('engagements.show', $model) }}">{{ $model->name }}</a>
     </x-heading>
-    <p><strong>{{ $model->display_format }}</strong></p>
+    @if ($model->format)
+        <p><strong>{{ $model->display_format }}</strong></p>
+    @endif
 </article>

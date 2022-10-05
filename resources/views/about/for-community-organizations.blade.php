@@ -28,7 +28,7 @@
                     </p>
                 </div>
                 <div class="stack">
-                    <h3>{{ __('Other civil societies organizations relevant to people with disabilities, Deaf people, and supporters') }}
+                    <h3>{{ __('Other civil society organizations relevant to people with disabilities, Deaf people, and supporters') }}
                     </h3>
                     <p>{{ __('These organizations have constituencies which include persons with disabilities, Deaf persons, and family members. Disability and Deaf services are not the primary mandate of these organizations. ') }}
                     </p>

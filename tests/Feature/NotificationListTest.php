@@ -80,7 +80,7 @@ test('individual users can add and remove regulated organizations from their not
 
 test('individual users can add and remove organizations from their notification list', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation']]);
+    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertSee('Block');

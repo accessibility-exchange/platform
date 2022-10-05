@@ -266,7 +266,7 @@
             </div>
         </div>
 
-        <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+        <hr class="divider--thick" />
 
         <fieldset class="field stack">
             <legend>

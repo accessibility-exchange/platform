@@ -32,14 +32,25 @@ test('users can create resource collections', function () {
 
 test('users can add resources to their new resource collection on create', function () {
     $user = User::factory()->create();
-    $resource = Resource::factory(5)->create();
+    $resources = Resource::factory(5)->create();
 
     $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
         'user_id' => $user->id,
         'title' => 'unique title',
         'description' => 'This is my resource collection',
+        'resource_ids' => $resources->pluck('id')->toArray(),
     ]);
-    $response->assertSee('resources', $resource);
+
+    $response->assertSessionHasNoErrors();
+
+    $resourceCollection = ResourceCollection::where('title->en', 'unique title')->first();
+
+    expect($resourceCollection->resources->count())->toEqual(5);
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection));
+    foreach ($resources as $resource) {
+        $response->assertSee($resource->title);
+    }
 });
 
 test('users can edit resource collections belonging to them', function () {

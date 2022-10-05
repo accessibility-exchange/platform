@@ -37,6 +37,7 @@ class UpdateIndividualRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
+            'bio.*' => 'required',
             'working_languages' => 'nullable|array',
             'consulting_services' => [
                 'nullable',
@@ -59,5 +60,12 @@ class UpdateIndividualRequest extends FormRequest
             'social_links' => array_map('normalize_url', $this->social_links ?? []),
             'website_link' => normalize_url($this->website_link),
         ]);
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'bio.*' => __('bio'),
+        ];
     }
 }
