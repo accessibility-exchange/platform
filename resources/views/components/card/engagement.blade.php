@@ -1,6 +1,7 @@
 <x-card class="engagement" title-class="h4">
     <x-slot name="title">
-        <a href="{{ localized_route('engagements.show', $model) }}">{{ $model->name }}
+        <a
+            href="@can('update', $model){{ localized_route('engagements.manage', $model) }}@else{{ localized_route('engagements.show', $model) }}@endcan">{{ $model->name }}
             <x-heroicon-m-chevron-right class="absolute bottom-1/2 right-5 h-7 w-7" role="presentation" aria-hidden="true"
                 fill="currentColor" />
         </a>
