@@ -1,7 +1,7 @@
 a {
     border-radius: var(--radius-xs);
     color: var(--link-color);
-    font-weight: var(--font-bold);
+    font-weight: var(--font-semibold);
     position: relative;
 }
 

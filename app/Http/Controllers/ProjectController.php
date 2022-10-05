@@ -120,9 +120,12 @@ class ProjectController extends Controller
             $language = false;
         }
 
+        $engagements = Engagement::status('published')->where('project_id', $project->id)->get();
+
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
+            'engagements' => $engagements,
         ]);
     }
 

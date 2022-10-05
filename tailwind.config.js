@@ -38,6 +38,7 @@ module.exports = {
             "yellow-1": "#ebedbb",
             "red-9": "#691616",
             "red-8": "#922020",
+            "red-6": "#CD2C2D",
             "red-2": "#f6a7a7",
             "red-1": "#f5cdcd"
         },

@@ -74,6 +74,8 @@ h4,
 }
 
 h5 {
+    @apply text-base;
+
     margin-block-end: 0;
     margin-block-start: 0;
 }
