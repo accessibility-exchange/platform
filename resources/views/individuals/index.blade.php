@@ -16,7 +16,7 @@
                     <strong>{{ __('Individual') }}</strong>
                     @if ($individual->display_roles)
                         <br />
-                        <strong class="weight:semibold">{{ __('Role') }}:</strong>
+                        <strong class="font-semibold">{{ __('Role') }}:</strong>
                         @foreach ($individual->display_roles as $role)
                             {{ $role }}@if (!$loop->last)
                                 ,
@@ -25,7 +25,7 @@
                     @endif
                 </p>
                 <p>
-                    <strong class="weight:semibold">{{ __('Location') }}:</strong> {{ $individual->locality }},
+                    <strong class="font-semibold">{{ __('Location') }}:</strong> {{ $individual->locality }},
                     {{ get_region_name($individual->region, ['CA'], locale()) }}
                 </p>
             </x-card>

@@ -33,7 +33,7 @@
                         @endif
                     @endif
 
-                <p><span class="weight:semibold">{{ __('They will not know you have blocked them.') }}</span>
+                <p><span class="font-semibold">{{ __('They will not know you have blocked them.') }}</span>
                 <p>
 
                 <p><strong>{{ __('Are you sure you want to block :blockable?', ['blockable' => $blockable->name]) }}</strong>

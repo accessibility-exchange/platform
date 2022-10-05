@@ -51,14 +51,14 @@
                         @if ($individual->social_links)
                             @foreach ($individual->social_links as $key => $value)
                                 <li>
-                                    <a class="weight:semibold with-icon"
+                                    <a class="with-icon font-semibold"
                                         href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                                 </li>
                             @endforeach
                         @endif
                         @if (!empty($individual->website_link))
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $individual->website_link }}">
+                                <a class="with-icon font-semibold" href="{{ $individual->website_link }}">
                                     <x-heroicon-o-globe-alt class="icon" />
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>

@@ -11,6 +11,11 @@
     <h3>{{ __('Upcoming') }}</h3>
     @forelse ($user->individual->upcomingParticipatingProjects as $project)
         <x-card.project :project="$project" :level="4" />
+        @foreach ($project->engagements as $engagement)
+            @if ($engagement->participants->contains($user->individual))
+                <x-card.engagement :model="$engagement" :level="5" />
+            @endif
+        @endforeach
     @empty
         <p>{{ __('No projects found.') }}</p>
     @endforelse

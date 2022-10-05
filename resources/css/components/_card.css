@@ -8,23 +8,32 @@
     margin-block-start: var(--space-12);
 }
 
+.grid > .card + * {
+    @apply mt-0;
+}
+
 .card a {
+    position: unset;
     text-decoration: none;
 }
 
-.card a::before {
+.card a::after {
+    bottom: 0;
     content: "";
-    display: block;
-    height: 100%;
     left: 0;
     position: absolute;
+    right: 0;
     top: 0;
-    width: 100%;
 }
 
 .card a:focus {
     box-shadow: none;
     outline: 1px solid transparent;
+}
+
+.card a:active {
+    background: inherit;
+    box-shadow: none;
 }
 
 .card.regulated-organization {
@@ -68,6 +77,7 @@
 
 .card.project {
     box-shadow: var(--card-shadow), var(--card-project-shadow);
+    z-index: 1;
 }
 
 .card.project:hover {
@@ -77,4 +87,28 @@
 .card.project:focus-within,
 .card.project:has(a:active) {
     box-shadow: var(--card-project-shadow-focus-within);
+}
+
+.card.engagement {
+    box-shadow: var(--card-engagement-shadow);
+}
+
+.card.project + .card.engagement {
+    @apply mt-0 bg-blue-1;
+
+    box-shadow: var(--card-shadow), var(--card-engagement-shadow);
+    margin-inline-start: var(--gutter);
+    width: calc(100% - calc(2 * var(--gutter)));
+}
+
+.card.engagement:hover,
+.card.project + .card.engagement:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-engagement-shadow);
+}
+
+.card.engagement:focus-within,
+.card.engagement:has(a:active),
+.card.project + .card.engagement:focus-within,
+.card.project + .card.engagement:has(a:active) {
+    box-shadow: var(--card-engagement-shadow-focus-within);
 }

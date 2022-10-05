@@ -51,7 +51,6 @@
 @import "utilities/_align.css";
 @import "utilities/_flex.css";
 @import "utilities/_justify.css";
-@import "utilities/_weight.css";
 @import "utilities/_width.css";
 @import "routes/entities/_show.css";
 @import "routes/projects/_show.css";

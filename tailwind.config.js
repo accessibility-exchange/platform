@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-const {Config} = require("tailwindcss");
+const { Config } = require("tailwindcss");
 
 /**
  * @type {Config} config
@@ -22,6 +22,7 @@ module.exports = {
             "blue-7": "#26296a",
             "blue-6": "#3842aa",
             "blue-5": "#7077CB",
+            "blue-1": "#F5F7FE",
             "green-5": "#00aea9",
             "green-2": "#92e5e3",
             "green-1": "#bfe2e1",
@@ -93,6 +94,23 @@ module.exports = {
             full: "9999px"
         },
         maxWidth: {
+            none: "none",
+            0: "0",
+            xs: "20rem",
+            sm: "24rem",
+            md: "28rem",
+            lg: "32rem",
+            xl: "36rem",
+            "2xl": "42rem",
+            "3xl": "48rem",
+            "4xl": "56rem",
+            "5xl": "64rem",
+            "6xl": "72rem",
+            "7xl": "80rem",
+            full: "100%",
+            min: "min-content",
+            max: "max-content",
+            fit: "fit-content",
             form: "48rem",
             prose: "70ch"
         },
