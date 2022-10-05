@@ -19,6 +19,7 @@ services:
     depends_on:
       - mysql
       - redis
+    restart: always
 
   mysql:
     image: mysql:8.0
@@ -31,6 +32,7 @@ services:
       - ${DB_DIR}:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping"]
+    restart: always
 
   redis:
     image: redis:alpine
@@ -38,3 +40,4 @@ services:
       - ${REDIS_DIR}:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
+    restart: always
