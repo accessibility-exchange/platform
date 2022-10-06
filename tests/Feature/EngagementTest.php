@@ -17,6 +17,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\ParticipantAccepted;
+use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
@@ -779,6 +780,25 @@ test('engagement participants can be invited by a community connector', function
     $response = $this->actingAs($participant1)->delete(route('contractor-invitations.decline', $invitation));
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('dashboard'));
+    $this->assertModelMissing($invitation);
+
+    Notification::assertSentTo(
+        $project, function (ParticipantDeclined $notification, $channels) use ($engagement, $project) {
+            $this->assertStringContainsString('1 person declined their invitation', $notification->toMail($project)->render());
+            $this->assertStringContainsString('1 person declined their invitation', $notification->toVonage($project)->content);
+            expect($notification->toArray($project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+        });
+
+    Notification::assertSentTo(
+        $connectorUser, function (ParticipantDeclined $notification, $channels) use ($engagement, $connectorUser) {
+            $this->assertStringContainsString('1 person declined your invitation', $notification->toMail($connectorUser)->render());
+            $this->assertStringContainsString('1 person declined your invitation', $notification->toVonage($connectorUser)->content);
+            expect($notification->toArray($connectorUser)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+        });
 
     $this->assertModelMissing($invitation);
 
