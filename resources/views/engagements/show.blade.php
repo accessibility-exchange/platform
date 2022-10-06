@@ -50,6 +50,12 @@
             <a class="cta secondary"
                 href="{{ localized_route('engagements.manage', $engagement) }}">{{ __('Manage engagement') }}</a>
         @endcan
+
+        @can('manageParticipants', $engagement)
+            <a class="cta secondary" href="{{ localized_route('engagements.manage-participants', $engagement) }}">
+                <x-heroicon-o-users /> {{ __('Manage participants') }}
+            </a>
+        @endcan
     </x-slot>
 
     <div class="stack mb-12 w-full md:w-2/3">
