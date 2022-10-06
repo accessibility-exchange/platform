@@ -16,6 +16,7 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\ParticipantAccepted;
 use App\Notifications\ParticipantInvited;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
@@ -773,6 +774,14 @@ test('engagement participants can be invited by a community connector', function
             return $notification->invitationable->id === $engagement->id;
         });
 
+    $invitation = $engagement->invitations->where('email', $participant1->email)->first();
+
+    $response = $this->actingAs($participant1)->delete(route('contractor-invitations.decline', $invitation));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    $this->assertModelMissing($invitation);
+
     $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
     $engagement = $engagement->fresh();
 
@@ -793,4 +802,36 @@ test('engagement participants can be invited by a community connector', function
 
             return $notification->invitationable->id === $engagement->id;
         });
+
+    $invitation = $engagement->invitations->where('email', $participant2->email)->first();
+
+    $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
+
+    $response = $this->actingAs($participant2)->get($acceptUrl);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('dashboard'));
+
+    Notification::assertSentTo(
+        $project, function (ParticipantAccepted $notification, $channels) use ($engagement, $project) {
+            $this->assertStringContainsString('1 new person accepted their invitation', $notification->toMail($project)->render());
+            $this->assertStringContainsString('1 new person accepted their invitation', $notification->toVonage($project)->content);
+            expect($notification->toArray($project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+        });
+
+    Notification::assertSentTo(
+        $connectorOrganization, function (ParticipantAccepted $notification, $channels) use ($engagement, $connectorOrganization) {
+            $this->assertStringContainsString('1 new person accepted your invitation', $notification->toMail($connectorOrganization)->render());
+            $this->assertStringContainsString('1 new person accepted your invitation', $notification->toVonage($connectorOrganization)->content);
+            expect($notification->toArray($connectorOrganization)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+        });
+
+    $this->assertModelMissing($invitation);
+
+    $engagement = $engagement->fresh();
+    expect($engagement->participants)->toHaveCount(1);
+    expect($engagement->participants->first()->id)->toEqual($participant2->individual->id);
 });
