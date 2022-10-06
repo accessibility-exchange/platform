@@ -38,7 +38,7 @@ class ParticipantInvited extends PlatformNotification
         return (new VonageMessage)
             ->content(
                 __(
-                    'Your organization has been invited to the engagement ":invitationable" as a participant on The Accessibility Exchange. Sign in to your account at https://accessibilityexchange.ca to continue.',
+                    'You have been invited to the engagement ":invitationable" as a participant on The Accessibility Exchange. Sign in to your account at https://accessibilityexchange.ca to continue.',
                     [
                         'invitationable' => $this->invitationable->getTranslation('name', locale()),
                     ]

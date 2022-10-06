@@ -730,11 +730,11 @@ test('engagement participants can be invited by a community connector', function
         ['role' => 'admin']
     );
 
-    $participants = collect([]);
-    $users = User::factory()->count(2)->create();
-    foreach ($users as $participantUser) {
-        $participantUser->individual->update(['roles' => ['participant']]);
-    }
+    $participant1 = User::factory()->create();
+    $participant1->individual->update(['roles' => ['participant']]);
+
+    $participant2 = User::factory()->create();
+    $participant2->individual->update(['roles' => ['participant']]);
 
     $response = $this->actingAs($user)->get(localized_route('engagements.add-participant', $engagement));
     $response->assertForbidden();
@@ -759,13 +759,16 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => $users[0]->email,
+        'email' => $participant1->email,
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
     Notification::assertSentTo(
-        $users[0], function (ParticipantInvited $notification, $channels) use ($engagement) {
+        $participant1, function (ParticipantInvited $notification, $channels) use ($engagement, $participant1) {
+            $this->assertStringContainsString('You have been invited', $notification->toMail($participant1)->render());
+            $this->assertStringContainsString('You have been invited', $notification->toVonage($participant1)->content);
+
             return $notification->invitationable->id === $engagement->id;
         });
 
@@ -776,13 +779,16 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => $users[1]->email,
+        'email' => $participant2->email,
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
 
     Notification::assertSentTo(
-        $users[1], function (ParticipantInvited $notification, $channels) use ($engagement) {
+        $participant2, function (ParticipantInvited $notification, $channels) use ($engagement, $participant2) {
+            $this->assertStringContainsString('You have been invited', $notification->toMail($participant2)->render());
+            $this->assertStringContainsString('You have been invited', $notification->toVonage($participant2)->content);
+
             return $notification->invitationable->id === $engagement->id;
         });
 });
