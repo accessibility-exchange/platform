@@ -768,6 +768,7 @@ test('engagement participants can be invited by a community connector', function
         $participant1, function (ParticipantInvited $notification, $channels) use ($engagement, $participant1) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($participant1)->render());
             $this->assertStringContainsString('You have been invited', $notification->toVonage($participant1)->content);
+            expect($notification->toArray($participant1)['invitation_id'])->toEqual($notification->invitation->id);
 
             return $notification->invitationable->id === $engagement->id;
         });
@@ -788,6 +789,7 @@ test('engagement participants can be invited by a community connector', function
         $participant2, function (ParticipantInvited $notification, $channels) use ($engagement, $participant2) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($participant2)->render());
             $this->assertStringContainsString('You have been invited', $notification->toVonage($participant2)->content);
+            expect($notification->toArray($participant2)['invitation_id'])->toEqual($notification->invitation->id);
 
             return $notification->invitationable->id === $engagement->id;
         });
