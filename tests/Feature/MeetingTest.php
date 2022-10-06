@@ -78,6 +78,19 @@ test('meetings can be edited', function () {
         'region' => 'ON',
         'postal_code' => 'M4W 1E6',
     ]);
+    $meeting2 = Meeting::factory()->create([
+        'engagement_id' => $engagement->id,
+        'title' => ['en' => 'Meeting 2'],
+        'date' => '2022-12-15',
+        'start_time' => '9:00',
+        'end_time' => '17:00',
+        'timezone' => 'America/Edmonton',
+        'meeting_types' => ['web_conference'],
+        'street_address' => '1223 Main Street',
+        'locality' => 'Anytown',
+        'region' => 'ON',
+        'postal_code' => 'M4W 1E6',
+    ]);
 
     $response = $this->actingAs($otherUser)->get(localized_route('meetings.edit', ['meeting' => $meeting, 'engagement' => $engagement]));
     $response->assertForbidden();
@@ -105,6 +118,9 @@ test('meetings can be edited', function () {
 
     $meeting = $meeting->fresh();
     expect($meeting->meeting_types)->toHaveCount(3);
+    expect($engagement->meeting_dates)->toEqual('November 15–December 15, 2022');
+    expect($engagement->display_meeting_types)->toContain('In person');
+    expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });
 
 test('meetings can be deleted', function () {

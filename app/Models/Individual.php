@@ -361,16 +361,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     }
 
     /**
-     * Has the user added any details to the individual?
-     *
-     * @return bool
-     */
-    public function hasAddedDetails(): bool
-    {
-        return ! empty($this->region);
-    }
-
-    /**
      * Is the individual publishable?
      *
      * @return bool

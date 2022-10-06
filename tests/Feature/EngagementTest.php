@@ -9,6 +9,7 @@ use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
+use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
@@ -328,6 +329,9 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->window_start_time->format('H:i:s'))->toEqual('09:00:00');
     expect($engagement->window_end_time->format('H:i:s'))->toEqual('17:00:00');
+    expect($engagement->display_meeting_types)->toContain('In person');
+    expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
+    expect($engagement->display_meeting_types)->toContain('Virtual – phone call');
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
     $response->assertOk();
@@ -722,6 +726,11 @@ test('engagement participants can be invited by a community connector', function
         $regulatedOrganizationUser,
         ['role' => 'admin']
     );
+
+    $participants = Individual::factory()->create([
+        'roles' => ['participant'],
+        'published_at' => now(),
+    ]);
 
     $response = $this->actingAs($user)->get(localized_route('engagements.add-participant', $engagement));
     $response->assertForbidden();
