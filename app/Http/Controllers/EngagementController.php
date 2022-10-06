@@ -32,9 +32,11 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\ParticipantInvited;
+use App\Statuses\IndividualStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -515,8 +517,12 @@ class EngagementController extends Controller
         ]);
     }
 
-    public function addParticipant(Engagement $engagement): View
+    public function addParticipant(Engagement $engagement): View|Response
     {
+        if ($engagement->participants->count() >= $engagement->ideal_participants) {
+            abort(403, __('You can’t invite any more participants to this engagement as it already has :number confirmed participants.', ['number' => $engagement->participants->count()]));
+        }
+
         return view('engagements.add-participant', [
             'project' => $engagement->project,
             'engagement' => $engagement,
@@ -554,8 +560,8 @@ class EngagementController extends Controller
         $validator->after(function ($validator) use ($user, $engagement) {
             if ($user) {
                 $individual = $user->individual ?? null;
-                if (is_null($individual) || ! $individual->checkStatus('published') || ! $individual->isParticipant()) {
-                    $validator->errors()->add('email', __('The individual on this website with the email address you provided is not a consultation participant.'));
+                if (is_null($individual) || ! $individual->checkStatus(new IndividualStatus('published')) || ! $individual->isParticipant()) {
+                    $validator->errors()->add('email', __('The person with the email address you provided is not a consultation participant.'));
                 }
 
                 if ($individual && $engagement->participants->contains($individual)) {
@@ -563,6 +569,12 @@ class EngagementController extends Controller
                 }
             }
         });
+
+        if ($validator->fails()) {
+            return redirect(localized_route('engagements.add-participant', $engagement))
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $validated = $validator->validated();
 

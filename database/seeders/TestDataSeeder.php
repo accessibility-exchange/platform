@@ -275,7 +275,7 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector'],
+                    'roles' => ['connector', 'participant'],
                     'region' => 'BC',
                     'locality' => 'Richmond',
                     'pronouns' => ['en' => 'he/him'],
