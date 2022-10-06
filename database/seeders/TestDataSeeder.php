@@ -26,7 +26,7 @@ class TestDataSeeder extends Seeder
         $individualsForTesting = [
             [
                 'name' => 'Mostafa Ayhan',
-                'email' => 'ayham@accessibilityexchange.ca',
+                'email' => 'ayhan@accessibilityexchange.ca',
                 'preferred_contact_person' => 'me',
                 'phone' => '4165064567',
                 'preferred_contact_method' => 'email',
@@ -582,6 +582,8 @@ class TestDataSeeder extends Seeder
             $project->impacts()->attach($impact->id);
         }
 
+        $connectorUser = User::whereBlind('email', 'email_index', 'ayhan@accessibilityexchange.ca')->first();
+
         $engagementsForTesting = [
             [
                 'name' => ['en' => 'Workshop'],
@@ -608,6 +610,7 @@ class TestDataSeeder extends Seeder
                 'description' => ['en' => 'This is what we are doing'],
                 'signup_by_date' => '2022-10-02',
                 'published_at' => now(),
+                'individual_connector_id' => $connectorUser->individual->id,
             ],
         ];
 

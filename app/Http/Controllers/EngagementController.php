@@ -32,7 +32,6 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\ParticipantInvited;
-use App\Statuses\IndividualStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -560,7 +559,7 @@ class EngagementController extends Controller
         $validator->after(function ($validator) use ($user, $engagement) {
             if ($user) {
                 $individual = $user->individual ?? null;
-                if (is_null($individual) || ! $individual->checkStatus(new IndividualStatus('published')) || ! $individual->isParticipant()) {
+                if (is_null($individual) || ! $individual->isParticipant()) {
                     $validator->errors()->add('email', __('The person with the email address you provided is not a consultation participant.'));
                 }
 

@@ -29,7 +29,6 @@ class ContractorInvitationController extends Controller
             $notification->delete();
         }
 
-        // TODO: Notify project organizers.
         if ($invitation->type === 'individual') {
             if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantAccepted($invitation->invitationable));
@@ -63,7 +62,6 @@ class ContractorInvitationController extends Controller
             $notification->delete();
         }
 
-        // TODO: Notify project organizers.
         if ($invitation->type === 'individual') {
             if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantDeclined($invitation->invitationable));

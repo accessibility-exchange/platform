@@ -9,7 +9,6 @@ use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
-use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
@@ -17,8 +16,10 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\ParticipantInvited;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
+use Illuminate\Support\Facades\Notification;
 
 test('users with regulated organization admin role can create engagements', function () {
     $this->seed(DatabaseSeeder::class);
@@ -703,6 +704,8 @@ test('engagement participants can be listed by administrator or community connec
 });
 
 test('engagement participants can be invited by a community connector', function () {
+    Notification::fake();
+
     $user = User::factory()->create();
 
     $connectorUser = User::factory()->create();
@@ -727,10 +730,11 @@ test('engagement participants can be invited by a community connector', function
         ['role' => 'admin']
     );
 
-    $participants = Individual::factory()->create([
-        'roles' => ['participant'],
-        'published_at' => now(),
-    ]);
+    $participants = collect([]);
+    $users = User::factory()->count(2)->create();
+    foreach ($users as $participantUser) {
+        $participantUser->individual->update(['roles' => ['participant']]);
+    }
 
     $response = $this->actingAs($user)->get(localized_route('engagements.add-participant', $engagement));
     $response->assertForbidden();
@@ -755,10 +759,15 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'participant3@example.com',
+        'email' => $users[0]->email,
     ]);
+
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
+    Notification::assertSentTo(
+        $users[0], function (ParticipantInvited $notification, $channels) use ($engagement) {
+            return $notification->invitationable->id === $engagement->id;
+        });
 
     $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
     $engagement = $engagement->fresh();
@@ -767,8 +776,13 @@ test('engagement participants can be invited by a community connector', function
     $response->assertOk();
 
     $response = $this->actingAs($connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $engagement), [
-        'email' => 'participant4@example.com',
+        'email' => $users[1]->email,
     ]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.manage-participants', $engagement));
+
+    Notification::assertSentTo(
+        $users[1], function (ParticipantInvited $notification, $channels) use ($engagement) {
+            return $notification->invitationable->id === $engagement->id;
+        });
 });
