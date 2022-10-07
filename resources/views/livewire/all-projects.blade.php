@@ -37,138 +37,170 @@
         @endif
     </div>
 
-    <div class="browser__all__projects__content">
-        <div>
-            <div class="filter__options__container">
+    <div class="with-sidebar with-sidebar:2/3">
+        <div class="filters stack">
+            <h2 class="visually-hidden">{{ __('Filters') }}</h2>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('status') field--error @enderror">
-                    <legend>{{ __('Status') }}</legend>
-                    @foreach ($statusesData as $status)
-                        <div>
-                            <input type="checkbox" value="{{ $status['value'] }}"
-                                wire:model="statuses.{{ $status['value'] }}">
-                            <label>{{ $status['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Status') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($statusesData as $status)
+                            <li>
+                                <x-hearth-input id="status-{{ $status['value'] }}" name="statuses[]" type="checkbox"
+                                    value="{{ $status['value'] }}" wire:model="statuses.{{ $status['value'] }}" />
+                                <label for="status-{{ $status['value'] }}">{{ $status['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="status" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('seeking') field--error @enderror">
-                    <legend>{{ __("Who they're seeking") }}</legend>
-                    @foreach ($seekingsData as $seeking)
-                        <div>
-                            <input type="checkbox" value="{{ $seeking['value'] }}"
-                                wire:model="seekings.{{ $seeking['value'] }}">
-                            <label>{{ $seeking['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __("Who they're seeking") }}</x-slot>
+                    <ul role="list">
+                        @foreach ($seekingsData as $seeking)
+                            <li>
+                                <x-hearth-input id="seeking-{{ $seeking['value'] }}" name="seekings[]" type="checkbox"
+                                    value="{{ $seeking['value'] }}" wire:model="seekings.{{ $seeking['value'] }}" />
+                                <label for="seeking-{{ $seeking['value'] }}">{{ $seeking['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="seeking" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('initiator') field--error @enderror">
-                    <legend>{{ __('Initiated by') }}</legend>
-                    @foreach ($initiatorsData as $initiator)
-                        <div>
-                            <input type="checkbox" value="{{ $initiator['value'] }}"
-                                wire:model="initiators.{{ $initiator['value'] }}">
-                            <label>{{ $initiator['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Initiated by') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($initiatorsData as $initiator)
+                            <li>
+                                <x-hearth-input id="initiator-{{ $initiator['value'] }}" name="initiators[]"
+                                    type="checkbox" value="{{ $initiator['value'] }}"
+                                    wire:model="initiators.{{ $initiator['value'] }}" />
+                                <label for="initiator-{{ $initiator['value'] }}">{{ $initiator['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="initiator" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('seekingGroup') field--error @enderror">
-                    <legend>{{ __('Disability and Deaf groups they are looking for') }}</legend>
-                    @foreach ($seekingGroupsData as $seekingGroup)
-                        <div>
-                            <input type="checkbox" value="{{ $seekingGroup['value'] }}"
-                                wire:model="seekingGroups.{{ $seekingGroup['value'] }}">
-                            <label>{{ $seekingGroup['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Disability and Deaf groups they are looking for') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($seekingGroupsData as $seekingGroup)
+                            <li>
+                                <x-hearth-input id="seekingGroup-{{ $seekingGroup['value'] }}" name="seekingGroups[]"
+                                    type="checkbox" value="{{ $seekingGroup['value'] }}"
+                                    wire:model="seekingGroups.{{ $seekingGroup['value'] }}" />
+                                <label
+                                    for="seekingGroup-{{ $seekingGroup['value'] }}">{{ $seekingGroup['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="seekingGroup" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('meetingType') field--error @enderror">
-                    <legend>{{ __('Virtual or in-person') }}</legend>
-                    @foreach ($meetingTypesData as $meetingType)
-                        <div>
-                            <input type="checkbox" value="{{ $meetingType['value'] }}"
-                                wire:model="meetingTypes.{{ $meetingType['value'] }}">
-                            <label>{{ $meetingType['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Virtual or in-person') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($meetingTypesData as $meetingType)
+                            <li>
+                                <x-hearth-input id="meetingType-{{ $meetingType['value'] }}" name="meetingTypes[]"
+                                    type="checkbox" value="{{ $meetingType['value'] }}"
+                                    wire:model="meetingTypes.{{ $meetingType['value'] }}" />
+                                <label
+                                    for="meetingType-{{ $meetingType['value'] }}">{{ $meetingType['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="meetingType" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('location') field--error @enderror">
-                    <legend>{{ __('Participant location') }}</legend>
-                    @foreach ($locationsData as $location)
-                        <div>
-                            <input type="checkbox" value="{{ $location['value'] }}"
-                                wire:model="locations.{{ $location['value'] }}">
-                            <label>{{ $location['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Participant location') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($locationsData as $location)
+                            <li>
+                                <x-hearth-input id="location-{{ $location['value'] }}" name="locations[]"
+                                    type="checkbox" value="{{ $location['value'] }}"
+                                    wire:model="locations.{{ $location['value'] }}" />
+                                <label for="location-{{ $location['value'] }}">{{ $location['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="location" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('compensation') field--error @enderror">
-                    <legend>{{ __('Compensation') }}</legend>
-                    @foreach ($compensationsData as $compensation)
-                        <div>
-                            <input type="checkbox" value="{{ $compensation['value'] }}"
-                                wire:model="compensations.{{ $compensation['value'] }}">
-                            <label>{{ $compensation['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Compensation') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($compensationsData as $compensation)
+                            <li>
+                                <x-hearth-input id="compensation-{{ $compensation['value'] }}" name="compensations[]"
+                                    type="checkbox" value="{{ $compensation['value'] }}"
+                                    wire:model="compensations.{{ $compensation['value'] }}" />
+                                <label
+                                    for="compensation-{{ $compensation['value'] }}">{{ $compensation['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="compensation" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('sector') field--error @enderror">
-                    <legend>{{ __('Sectors') }}</legend>
-                    @foreach ($sectorsData as $sector)
-                        <div>
-                            <input type="checkbox" value="{{ $sector['value'] }}"
-                                wire:model="sectors.{{ $sector['value'] }}">
-                            <label>{{ $sector['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Sectors') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($sectorsData as $sector)
+                            <li>
+                                <x-hearth-input id="sector-{{ $sector['value'] }}" name="sectors[]" type="checkbox"
+                                    value="{{ $sector['value'] }}" wire:model="sectors.{{ $sector['value'] }}" />
+                                <label for="sector-{{ $sector['value'] }}">{{ $sector['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="sector" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('impact') field--error @enderror">
-                    <legend>{{ __('Areas of impact') }}</legend>
-                    @foreach ($impactedAreasData as $impact)
-                        <div>
-                            <input type="checkbox" value="{{ $impact['value'] }}"
-                                wire:model="impacts.{{ $impact['value'] }}">
-                            <label>{{ $impact['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Areas of impact') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($impactedAreasData as $impact)
+                            <li>
+                                <x-hearth-input id="impact-{{ $impact['value'] }}" name="impacts[]" type="checkbox"
+                                    value="{{ $impact['value'] }}" wire:model="impacts.{{ $impact['value'] }}" />
+                                <label for="impact-{{ $impact['value'] }}">{{ $impact['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="impact" />
                 </fieldset>
-            </div>
-            <div class="filter__options__container">
+            </x-expander>
+            <x-expander :level="3">
                 <fieldset class="filter__options field @error('recruitment') field--error @enderror">
-                    <legend>{{ __('Recruitment method') }}</legend>
-                    @foreach ($recruitmentMethodsData as $recruitmentMethod)
-                        <div>
-                            <input type="checkbox" value="{{ $recruitmentMethod['value'] }}"
-                                wire:model="recruitmentMethods.{{ $recruitmentMethod['value'] }}">
-                            <label>{{ $recruitmentMethod['label'] }}</label>
-                        </div>
-                    @endforeach
+                    <x-slot name="summary">{{ __('Recruitment method') }}</x-slot>
+                    <ul role="list">
+                        @foreach ($recruitmentMethodsData as $recruitmentMethod)
+                            <li>
+                                <x-hearth-input id="recruitmentMethod-{{ $recruitmentMethod['value'] }}"
+                                    name="recruitmentMethods[]" type="checkbox"
+                                    value="{{ $recruitmentMethod['value'] }}"
+                                    wire:model="recruitmentMethods.{{ $recruitmentMethod['value'] }}" />
+                                <label
+                                    for="recruitmentMethod-{{ $recruitmentMethod['value'] }}">{{ $recruitmentMethod['label'] }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
                     <x-hearth-error for="recruitment" />
                 </fieldset>
-            </div>
+            </x-expander>
         </div>
         <div>
             <div role="region" aria-labelledby="browse-all-projects" tabindex="0">

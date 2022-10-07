@@ -194,7 +194,7 @@ class AllProjects extends Component
                         $query->sectors($sectors);
                     })
                     ->when($this->impacts, function ($query, $impacts) {
-                        $query->impacts($impacts);
+                        $query->areasOfImpact($impacts);
                     })
                     ->when($this->recruitmentMethods, function ($query, $recruitmentMethods) {
                         $query->recruitmentMethods($recruitmentMethods);

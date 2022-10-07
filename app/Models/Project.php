@@ -454,7 +454,7 @@ class Project extends Model
         return $query;
     }
 
-    public function scopeImpacts($query, $impacts)
+    public function scopeAreasOfImpact($query, $impacts)
     {
         $method = 'whereHas';
 
