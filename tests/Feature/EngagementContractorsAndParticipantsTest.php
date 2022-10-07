@@ -162,6 +162,17 @@ test('project administrator cannot invite participants', function () {
     $response->assertForbidden();
 });
 
+test('participants cannot be invited if participant list is full', function () {
+    Notification::fake();
+
+    $this->engagement->participants()->save($this->participant);
+    $this->engagement->update(['individual_connector_id' => $this->individualConnector->id, 'ideal_participants' => 1]);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
+    $response->assertForbidden();
+});
+
 test('external user can be invited as participant', function () {
     Notification::fake();
 
