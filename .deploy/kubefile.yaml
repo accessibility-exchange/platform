@@ -18,3 +18,5 @@ deployments:
     secrets:
       - vault: accessibility-cache
         path: auth
+  - name: accessibility-backup
+    chart: colab/backup
