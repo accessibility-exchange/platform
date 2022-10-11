@@ -20,11 +20,11 @@
             <h3>{{ __('About your team') }}</h3>
 
             <div class="field @error('team_size') field--error @enderror stack">
-                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.')" :hint="__('You can provide either an exact number or a range.')" :model="$project" />
+                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.') . ' ' . __('(optional)')" :hint="__('You can provide either an exact number or a range.')" :model="$project" />
             </div>
 
             <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
-                <legend class="h4">
+                <legend>
                     {{ __('Please indicate whether any member of your team has lived/living experiences of disability or being Deaf.') . ' ' . __('(optional)') }}
                 </legend>
                 <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()"
@@ -35,13 +35,16 @@
             </fieldset>
 
             <fieldset class="field stack">
-                <legend class="h4">
-                    {{ __('Please indicate the language or languages people on your team use fluently.') }}</legend>
+                <legend>
+                    {{ __('Please indicate the language or languages people on your team use fluently.') . ' ' . __('(optional)') }}
+                </legend>
                 <livewire:language-picker name="team_languages" :languages="['en']" :availableLanguages="$languages" />
             </fieldset>
 
             <fieldset class="field stack">
-                <legend class="h4">{{ __('Training your team has received') . ' ' . __('(optional)') }}</legend>
+                <legend>
+                    <h3>{{ __('Training your team has received') . ' ' . __('(optional)') }}</h3>
+                </legend>
                 <p class="field__hint">
                     {{ __('Please list any training related to accessibility or inclusion that your team members have received.') }}
                 </p>
@@ -49,7 +52,9 @@
             </fieldset>
 
             <fieldset class="field stack">
-                <legend class="h4">{{ __('Team contact') }}</legend>
+                <legend>
+                    <h3>{{ __('Team contact') }}</h3>
+                </legend>
                 <p class="field__hint">
                     {{ __('Please provide the details for a member of your team whom potential participants may contact to ask questions.') }}
                 </p>

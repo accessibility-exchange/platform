@@ -52,7 +52,7 @@
                 </fieldset>
             @endif
 
-            <x-translatable-textarea name="out_of_scope" :label="__('Please indicate what is out of scope for this project.') . ' ' . __('(optional)')" :model="$project" />
+            <x-translatable-textarea name="out_of_scope" :label="__('Please indicate what is out of scope for this project.') . ' ' . __('(optional)')" :short-label="__('what is out of scope')" :model="$project" />
 
             <h3>{{ __('Project timeframe') }}</h3>
 
@@ -63,12 +63,13 @@
             <h3>{{ __('Project outcome') }}</h3>
 
             <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('other', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Who will be going through the results from this project and writing a report?') }}
+                <legend>
+                    {{ __('Who will be going through the results from this project and writing a report?') . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forArray([
                     'internal' => __('Internal team'),
                     'external' => __('External team'),
-                ])->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" />
+                ])->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
                     <x-hearth-checkbox name="other" :checked="old(
                         'other',
@@ -77,12 +78,13 @@
                     <x-hearth-label for='other'>{{ __('Other') }}</x-hearth-label>
                 </div>
                 <div class="field__subfield stack">
-                    <x-translatable-input name="outcome_analysis_other" :label="__('Other')" :model="$project"
-                        x-show="otherOutcomeAnalysis" />
+                    <x-translatable-input name="outcome_analysis_other" :label="__('Please indicate who will be going through the results')" :short-label="__('who is going through the results')"
+                        :model="$project" x-show="otherOutcomeAnalysis" />
                 </div>
             </fieldset>
 
-            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.') . ' ' . __('(required)')" :hint="__('For example, an accessibility report')" :model="$project" />
+            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.') . ' ' . __('(required)')" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
+                :model="$project" />
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">
                 <legend>{{ __('Please indicate if the reports will be publicly available.') . ' ' . __('(required)') }}

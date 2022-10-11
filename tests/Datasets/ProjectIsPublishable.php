@@ -71,6 +71,10 @@ dataset('projectIsPublishable', function () {
             false,
             array_replace_recursive($baseModel, ['start_date' => null]),
         ],
+        'not publishable when missing outcome_analysis' => [
+            false,
+            array_replace_recursive($baseModel, ['outcome_analysis' => null]),
+        ],
         'not publishable when missing team_languages' => [
             false,
             array_replace_recursive($baseModel, ['team_languages' => null]),

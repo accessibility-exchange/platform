@@ -2,20 +2,20 @@
     @if ($trainings)
         <ul class="stack" role="list">
             @foreach ($trainings as $i => $training)
-                <li class="stack">
-                    <fieldset>
-                        <legend>{{ __('Training') }}</legend>
-                        <div class="field @error("team_trainings.{$i}.name") field-error @enderror">
-                            <x-hearth-label :for="'team_trainings_' . $i . '_name'" :value="__('Name of training')" />
-                            <x-hearth-input :id="'team_trainings_' . $i . '_name'" :name="'team_trainings[' . $i . '][name]'" :value="$training['name'] ?? ''" required />
-                            <x-hearth-error :for="'team_trainings_' . $i . '_name'" :field="'team_trainings.' . $i . '.name'" />
-                        </div>
+                <li class="stack box bg-grey-2">
+                    <h4>{{ __('Training') }}</h4>
+                    <div class="field @error("team_trainings.{$i}.name") field-error @enderror">
+                        <x-hearth-label :for="'team_trainings_' . $i . '_name'" :value="__('Name of training')" />
+                        <x-hearth-input :id="'team_trainings_' . $i . '_name'" :name="'team_trainings[' . $i . '][name]'" :value="$training['name'] ?? ''" required />
+                        <x-hearth-error :for="'team_trainings_' . $i . '_name'" :field="'team_trainings.' . $i . '.name'" />
+                    </div>
 
-                        <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25"
-                            :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
-                    </fieldset>
+                    <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25"
+                        :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
                     <fieldset>
-                        <legend>{{ __('Training organization or trainer') }}</legend>
+                        <legend>
+                            <h4>{{ __('Training organization or trainer') }}</h4>
+                        </legend>
                         <div class="field @error("team_trainings.{$i}.trainer_name") field-error @enderror">
                             <x-hearth-label :for="'team_trainings_' . $i . '_trainer_name'" :value="__('Name')" />
                             <x-hearth-input :id="'team_trainings_' . $i . '_trainer_name'" :name="'team_trainings[' . $i . '][trainer_name]'" :value="$training['trainer_name'] ?? ''" required />
