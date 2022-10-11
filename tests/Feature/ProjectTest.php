@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Criterion;
+use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
-use App\Models\LivedExperience;
 use App\Models\MatchingStrategy;
 use App\Models\Meeting;
 use App\Models\Organization;
@@ -13,8 +13,8 @@ use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 use function Pest\Faker\faker;
 
@@ -838,19 +838,44 @@ test('test project initiators scope', function () {
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
 });
 
-// test('test project seekingGroups scope', function() {
-//     $this->seed(LivedExperienceSeeder::class);
+test('test project seekingGroups scope', function () {
+    $this->seed(DisabilityTypeSeeder::class);
 
-//     $peopleWithDisabilities = LivedExperience::where('name->en', 'People who experience disabilities')->first();
-//     $project = Project::factory()->create();
-//     $engagement = Engagement::factory()->create(['project_id' => $project->id]);
-//     $matchingStrategy = MatchingStrategy::factory()->create(['matchable_type' => 'App\Models\Engagement', 'matchable_id' => $engagement->id]);
-//     //Error thrown line below: Unknown format "float" -- Criterion Factory 'weight' => $this->faker->float(2, 0, 1)
-//     $criterion = Criterion::factory()->create(['matching_strategy_id' => $matchingStrategy->id, 'criteriable_type' => $peopleWithDisabilities]);
-//     dd($criterion);
-//     expect($matchingStrategy->hasCriterion('App\Models\LivedExperience', $peopleWithDisabilities))->toBeTrue();
+    $disabilityTypeDeaf = DisabilityType::where('name->en', 'Deaf')->first();
+    $projectSeekingDeafExperience = Project::factory()->create();
+    $engagementSeekingDeafExperience = Engagement::factory()->create(['project_id' => $projectSeekingDeafExperience->id]);
+    $matchingStrategySeekingDeafExperience = MatchingStrategy::factory()->create([
+        'matchable_type' => 'App\Models\Engagement',
+        'matchable_id' => $engagementSeekingDeafExperience->id,
+    ]);
+    $deafCriterion = Criterion::factory()->create([
+        'matching_strategy_id' => $matchingStrategySeekingDeafExperience->id,
+        'criteriable_type' => 'App\Models\DisabilityType',
+        'criteriable_id' => $disabilityTypeDeaf->id,
+    ]);
 
-// });
+    $disabilityTypeCognitive = DisabilityType::where('name->en', 'Cognitive disabilities')->first();
+    $projectSeekingCognitiveDisabilityExperience = Project::factory()->create();
+    $engagementSeekingCognitiveDisabilityExperience = Engagement::factory()->create(['project_id' => $projectSeekingCognitiveDisabilityExperience->id]);
+    $matchingStrategySeekingCognitiveDisabilityExperience = MatchingStrategy::factory()->create([
+        'matchable_type' => 'App\Models\Engagement',
+        'matchable_id' => $engagementSeekingCognitiveDisabilityExperience->id,
+    ]);
+    $cognitiveDisabilityCriterion = Criterion::factory()->create([
+        'matching_strategy_id' => $matchingStrategySeekingCognitiveDisabilityExperience->id,
+        'criteriable_type' => 'App\Models\DisabilityType',
+        'criteriable_id' => $disabilityTypeCognitive->id,
+    ]);
+
+    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeDeaf->id])->get();
+
+    expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeTrue();
+    expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeFalse();
+
+    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeCognitive->id])->get();
+    expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeTrue();
+    expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeFalse();
+});
 
 test('test project meetingTypes scope', function () {
     $inpersonInterviewProject = Project::factory()->create();
@@ -924,17 +949,17 @@ test('test project sectors scope', function () {
     $telecommunicationRegulatedOrganization->sectors()->save($telecommunicationSector);
     $telecommunicationProject = Project::factory()->create(['projectable_id' => $telecommunicationRegulatedOrganization->id]);
 
-    $sectorQuery = Project::sectors(['1'])->get();
+    $sectorQuery = Project::sectors([$transportationSector->id])->get();
 
     expect($sectorQuery->contains($transportationProject))->toBeTrue();
     expect($sectorQuery->contains($telecommunicationProject))->toBeFalse();
 
-    $sectorQuery = Project::sectors(['3'])->get();
+    $sectorQuery = Project::sectors([$telecommunicationSector->id])->get();
 
     expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
     expect($sectorQuery->contains($transportationProject))->toBeFalse();
 
-    $sectorQuery = Project::sectors(['1', '3'])->get();
+    $sectorQuery = Project::sectors([$transportationSector->id, $telecommunicationSector->id])->get();
 
     expect($sectorQuery->contains($transportationProject))->toBeTrue();
     expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
@@ -950,17 +975,17 @@ test('test project areas of impact scope', function () {
     $communicationImpactProject = Project::factory()->create();
     $communicationImpactProject->impacts()->attach($communicationImpact->id);
 
-    $impactQuery = Project::areasOfImpact(['1'])->get();
+    $impactQuery = Project::areasOfImpact([$employmentImpact->id])->get();
 
     expect($impactQuery->contains($employmentImpactProject))->toBeTrue();
     expect($impactQuery->contains($communicationImpactProject))->toBeFalse();
 
-    $impactQuery = Project::areasOfImpact(['4'])->get();
+    $impactQuery = Project::areasOfImpact([$communicationImpact->id])->get();
 
     expect($impactQuery->contains($communicationImpactProject))->toBeTrue();
     expect($impactQuery->contains($employmentImpactProject))->toBeFalse();
 
-    $impactQuery = Project::areasOfImpact(['1', '4'])->get();
+    $impactQuery = Project::areasOfImpact([$employmentImpact->id, $communicationImpact->id])->get();
 
     expect($impactQuery->contains($employmentImpactProject))->toBeTrue();
     expect($impactQuery->contains($communicationImpactProject))->toBeTrue();
