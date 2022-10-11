@@ -26,8 +26,10 @@
             <h3>{{ __('Project scope') }}</h3>
 
             <x-translatable-textarea name="scope" :label="__(
-                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project. (required)',
-            )" :model="$project" />
+                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
+            ) .
+                ' ' .
+                __('(required)')" :short-label="__('how communities will be impacted')" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>

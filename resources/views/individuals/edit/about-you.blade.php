@@ -83,7 +83,7 @@
                 <legend>{{ __('Social media links') }}</legend>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
-                        <x-hearth-label for="social_links_{{ $key }}" :value="__(':service (optional)', ['service' => Str::studly($key)])" />
+                        <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" />
                         <x-hearth-error for="social_links_{{ $key }}" />

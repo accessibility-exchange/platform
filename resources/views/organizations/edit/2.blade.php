@@ -43,7 +43,7 @@
 
             <fieldset class="field @error('indigenous_identities') field--error @enderror" x-data="{ hasIndigenousIdentities: '{{ old('has_indigenous_identities', $organization->extra_attributes->get('has_indigenous_identities', '')) }}' }">
                 <legend>
-                    {{ __('Does your organization specifically :represent_or_serve_and_support people indigenous to what is now known as Canada? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Does your organization specifically :represent_or_serve_and_support people indigenous to what is now known as Canada?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_indigenous_identities-1" name="has_indigenous_identities" type="radio"
@@ -65,7 +65,7 @@
 
             <fieldset class="field @error('refugees_and_immigrants') field--error @enderror">
                 <legend>
-                    {{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-radio-buttons name="refugees_and_immigrants" :options="Spatie\LaravelOptions\Options::forArray(['1' => __('Yes'), '0' => __('No')])->toArray()" :checked="old(
                     'refugees_and_immigrants',
@@ -77,7 +77,7 @@
                 class="field @error('gender_identities') field--error @enderror @error('trans_people') field--error @enderror @error('twoslgbtqia') field--error @enderror"
                 x-data="{ hasGenderAndSexualIdentities: '{{ old('has_gender_and_sexual_identities', $organization->extra_attributes->get('has_gender_and_sexual_identities', '')) }}' }">
                 <legend>
-                    {{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <x-hearth-input id="has_gender_and_sexual_identities-1" name="has_gender_and_sexual_identities"
@@ -123,7 +123,7 @@
 
             <fieldset class="field @error('age_brackets') field--error @enderror" x-data="{ hasAgeBrackets: '{{ old('has_age_brackets', $organization->extra_attributes->get('has_age_brackets', '')) }}' }">
                 <legend>
-                    {{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_age_brackets-1" name="has_age_brackets" type="radio" value="1"
@@ -142,7 +142,7 @@
 
             <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{ hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', $organization->other_ethnoracial_identity) ? 'true' : 'false' }} }">
                 <legend>
-                    {{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_ethnoracial_identities-1" name="has_ethnoracial_identities" type="radio"
@@ -178,14 +178,14 @@
 
             <fieldset class="field @error('constituent_languages') field--error @enderror">
                 <legend>
-                    {{ __('What specific languages do the people your organization :represents_or_serves_and_supports use? (optional)', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
+                    {{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) . ' ' . __('(optional)') }}
                 </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$organization->constituentLanguages->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
             </fieldset>
 
             <fieldset class="field @error('area_types') field--error @enderror">
                 <legend>
-                    {{ __('Where do the people that you :represent_or_serve_and_support come from? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Where do the people that you :represent_or_serve_and_support come from?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $organization->areaTypes->pluck('id')->toArray())" hinted="area_types-hint"
@@ -199,7 +199,7 @@
 
             <fieldset class="field @error('staff_lived_experience') field--error @enderror">
                 <legend>
-                    {{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support? (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                    {{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-radio-buttons name="staff_lived_experience" :options="$staffHaveLivedExperience" :checked="old('staff_lived_experience', $organization->staff_lived_experience)" />
             </fieldset>
