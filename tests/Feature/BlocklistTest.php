@@ -6,6 +6,10 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 
 test('only individual users can have a block list', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(localized_route('block-list.show'));
@@ -20,6 +24,10 @@ test('only individual users can have a block list', function () {
 });
 
 test('individual users can block and unblock regulated organizations', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
@@ -60,6 +68,10 @@ test('individual users can block and unblock regulated organizations', function 
 });
 
 test('individual users can block and unblock organizations', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create();
     $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
@@ -100,6 +112,10 @@ test('individual users can block and unblock organizations', function () {
 });
 
 test('individual users can block and unblock individuals', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create();
     $individual = Individual::factory()->create(['roles' => ['consultant'], 'consulting_services' => ['analysis']]);
 
@@ -140,6 +156,10 @@ test('individual users can block and unblock individuals', function () {
 });
 
 test('regulated organization member cannot block their regulated organization', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -154,6 +174,10 @@ test('regulated organization member cannot block their regulated organization', 
 });
 
 test('organization member cannot block their organization', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -168,6 +192,10 @@ test('organization member cannot block their organization', function () {
 });
 
 test('individual cannot block their individual profile', function () {
+    if (! config('app.features.blocking')) {
+        $this->markTestSkipped('Blocking is not enabled.');
+    }
+
     $user = User::factory()->create();
     $individual = $user->individual;
     $response = $this->actingAs($user)->from(localized_route('individuals.show', $individual))
