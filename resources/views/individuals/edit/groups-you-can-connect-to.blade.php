@@ -29,7 +29,7 @@
 
             <fieldset class="field @error('lived_experiences') field--error @enderror">
                 <legend>
-                    {{ __('Can you connect to people with disabilities, Deaf persons, and/or their supporters? (required)') }}
+                    {{ __('Can you connect to people with disabilities, Deaf persons, and/or their supporters?') . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-hint for="lived_experiences">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old(
@@ -41,7 +41,9 @@
 
             <fieldset class="field @error('disability_types') field--error @enderror"
                 x-show="livedExperiences.includes(1)" x-data="{ baseDisabilityType: '{{ old('base_disability_type', $individual->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($individual->other_disability_type_connection) && $individual->other_disability_type_connection !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Please select people with disabilities that you can connect to (required)') }}</legend>
+                <legend>
+                    {{ __('Please select people with disabilities that you can connect to') . ' ' . __('(required)') }}
+                </legend>
                 <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $individual->base_disability_type)"
                     x-model="baseDisabilityType" />
                 <div class="field__subfield stack" x-show="baseDisabilityType == 'specific_disabilities'">
@@ -63,14 +65,16 @@
             </fieldset>
 
             <fieldset class="field @error('area_types') field--error @enderror">
-                <legend>{{ __('Where do the people that you can connect to come from? (required)') }} </legend>
+                <legend>{{ __('Where do the people that you can connect to come from?') . ' ' . __('(required)') }}
+                </legend>
                 <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $individual->areaTypeConnections->pluck('id')->toArray())" hinted="area_types-hint"
                     required />
             </fieldset>
 
             <fieldset class="field @error('indigenous_identities') field--error @enderror" x-data="{ hasIndigenousIdentities: '{{ old('has_indigenous_identities', $individual->extra_attributes->get('has_indigenous_identities', '')) }}' }">
-                <legend>{{ __('Can you connect to people Indigenous to what is now known as Canada? (required)') }}
+                <legend>
+                    {{ __('Can you connect to people Indigenous to what is now known as Canada?') . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_indigenous_identities-1" name="has_indigenous_identities" type="radio"
@@ -91,7 +95,7 @@
             </fieldset>
 
             <fieldset class="field @error('refugees_and_immigrants') field--error @enderror">
-                <legend>{{ __('Can you connect to refugees and/or immigrants? (required)') }}</legend>
+                <legend>{{ __('Can you connect to refugees and/or immigrants?') . ' ' . __('(required)') }}</legend>
                 <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$refugeesAndImmigrantsOptions" :checked="old(
                     'refugees_and_immigrants',
                     $individual->extra_attributes->get('has_refugee_and_immigrant_constituency', ''),
@@ -102,7 +106,7 @@
                 class="field @error('gender_identities') field--error @enderror @error('trans_people') field--error @enderror @error('twoslgbtqia') field--error @enderror"
                 x-data="{ hasGenderAndSexualIdentities: '{{ old('has_gender_and_sexual_identities', $individual->extra_attributes->get('has_gender_and_sexual_identities', '')) }}' }">
                 <legend>
-                    {{ __('Can you connect to people who are marginalized based on gender or sexual identity? (required)') }}
+                    {{ __('Can you connect to people who are marginalized based on gender or sexual identity?') . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <x-hearth-input id="has_gender_and_sexual_identities-1" name="has_gender_and_sexual_identities"
@@ -154,7 +158,8 @@
             </fieldset>
 
             <fieldset class="field @error('age_brackets') field--error @enderror" x-data="{ hasAgeBrackets: '{{ old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', '')) }}' }">
-                <legend>{{ __('Can you connect to a specific age bracket or brackets? (required)') }}</legend>
+                <legend>{{ __('Can you connect to a specific age bracket or brackets?') . ' ' . __('(required)') }}
+                </legend>
                 <div class="field">
                     <input id="has_age_brackets-1" name="has_age_brackets" type="radio" value="1"
                         @checked(old('has_age_brackets', $individual->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" />
@@ -171,7 +176,8 @@
             </fieldset>
 
             <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-data="{ hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', '')) }}', otherEthnoracialIdentity: {{ old('other_ethnoracial_identity', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Can you connect to a specific ethnoracial identity or identities? (required)') }}
+                <legend>
+                    {{ __('Can you connect to a specific ethnoracial identity or identities?') . ' ' . __('(required)') }}
                 </legend>
                 <div class="field">
                     <input id="has_ethnoracial_identities-1" name="has_ethnoracial_identities" type="radio"
@@ -206,12 +212,15 @@
             </fieldset>
 
             <fieldset class="field @error('constituent_languages') field--error @enderror">
-                <legend>{{ __('What languages are used by the people you can connect to? (optional)') }}</legend>
+                <legend>{{ __('What languages are used by the people you can connect to?') . ' ' . __('(optional)') }}
+                </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$individual->languageConnections->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
             </fieldset>
 
             <fieldset class="field @error('connection_lived_experience') field--error @enderror">
-                <legend>{{ __('Do you have lived experience of the people you can connect to? (required)') }}</legend>
+                <legend>
+                    {{ __('Do you have lived experience of the people you can connect to?') . ' ' . __('(required)') }}
+                </legend>
                 <x-hearth-radio-buttons name="connection_lived_experience" :options="$communityConnectorHasLivedExperience" :checked="old('connection_lived_experience', $individual->connection_lived_experience)" />
             </fieldset>
 

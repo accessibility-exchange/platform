@@ -26,12 +26,12 @@
             </div>
 
             <div class="field @error('about') field--error @enderror">
-                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization (required)')" :hint="__('This can include your vision and mission, what your organization offers, etc.')"
+                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('This can include your vision and mission, what your organization offers, etc.')"
                     required />
             </div>
 
             <fieldset>
-                <legend>{{ __('Your headquarters location (required)') }}</legend>
+                <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
 
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label for="region" :value="__('Province or territory')" />
@@ -48,7 +48,8 @@
             </fieldset>
 
             <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('What provinces or territories does your organization serve? (required)') }}</legend>
+                <legend>{{ __('What provinces or territories does your organization serve?') . ' ' . __('(required)') }}
+                </legend>
                 <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $organization->service_areas ?? [])" required />
                 <div class="stack" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
@@ -58,21 +59,22 @@
 
             <fieldset>
                 <legend>
-                    <h3>{{ __('What language(s) does your organization work in? (required)') }}</h3>
+                    <h3>{{ __('What language(s) does your organization work in?') . ' ' . __('(required)') }}</h3>
                 </legend>
                 <livewire:language-picker name="working_languages" :languages="$organization->working_languages ?? []" :availableLanguages="$languages" />
             </fieldset>
 
             @if ($organization->isConsultant())
                 <fieldset class="field @error('consulting_services') field--error @enderror">
-                    <legend>{{ __('Which of these areas can you help a regulated organization with? (required)') }}
+                    <legend>
+                        {{ __('Which of these areas can you help a regulated organization with?') . ' ' . __('(required)') }}
                     </legend>
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $organization->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
                 </fieldset>
             @endif
 
-            <h3>{{ __('Social media and website links (optional)') }}</h3>
+            <h3>{{ __('Social media and website links') . ' ' . __('(optional)') }}</h3>
 
             <fieldset class="stack">
                 <legend>
@@ -91,7 +93,7 @@
             <h4>{{ __('Organization website') }}</h4>
 
             <div class="field @error('website_link') field--error @enderror">
-                <x-hearth-label for="website_link" :value="__('Website link (optional)')" />
+                <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $organization->website_link)" />
                 <x-hearth-error for="website_link" />
             </div>

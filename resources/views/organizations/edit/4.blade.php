@@ -19,7 +19,7 @@
             </p>
 
             <div class="field @error('contact_person_name') field-error @enderror">
-                <x-hearth-label for="contact_person_name" :value="__('Name of contact person (required)')" />
+                <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
                 <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
                 </x-hearth-hint>
                 <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $organization->contact_person_name)" required hinted />
@@ -43,7 +43,8 @@
             </div>
 
             <div class="field @error('preferred_contact_method') field-error @enderror">
-                <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}
+                <x-hearth-label for="preferred_contact_method">
+                    {{ __('Preferred contact method') . ' ' . __('(required)') }}
                 </x-hearth-label>
                 <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                     'email' => __('Email'),
