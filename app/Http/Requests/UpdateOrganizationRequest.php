@@ -82,7 +82,7 @@ class UpdateOrganizationRequest extends FormRequest
     {
         return [
             'name.*.required_without' => __("You must enter your organization's name in either English or French."),
-            'about.*.required_without' => __('You must enter “About your organization” in either English or French.'),
+            'about.*.required_without' => __('You must fill out the field “About your organization”.'),
         ];
     }
 }
