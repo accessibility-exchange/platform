@@ -13,7 +13,7 @@ use Database\Seeders\DisabilityTypeSeeder;
 beforeEach(function () {
     $this->seed(DisabilityTypeSeeder::class);
 
-    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => '2022-11-21']);
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
@@ -327,6 +327,23 @@ test('individual participant can accept invitation from individual connector', f
     expect($this->engagement->participants->first()->id)->toEqual($this->participant->id);
 });
 
+test('individual participant can access invitation via notifications', function () {
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $this->engagement->id,
+        'role' => 'participant',
+        'type' => 'individual',
+        'email' => $this->participantUser->email,
+    ]);
+
+    $this->participantUser->notify(new ParticipantInvited($invitation));
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('You have been invited');
+});
+
 test('individual participant can decline invitation from individual connector', function () {
     Notification::fake();
 
@@ -482,4 +499,46 @@ test('individual participant can decline invitation from organizational connecto
 
             return $notification->engagement->id === $this->engagement->id;
         });
+});
+
+test('regulated organization users and community connectors can access accepted invitation notifications', function () {
+    $this->connectorUser->notify(new ParticipantAccepted($this->engagement));
+    $this->connectorOrganization->notify(new ParticipantAccepted($this->engagement));
+    $this->project->notify(new ParticipantAccepted($this->engagement));
+
+    $response = $this->actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 new person accepted your invitation');
+
+    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 new person accepted your invitation');
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 new person accepted their invitation');
+});
+
+test('regulated organization users and community connectors can access declined invitation notification', function () {
+    $this->connectorUser->notify(new ParticipantDeclined($this->engagement));
+    $this->connectorOrganization->notify(new ParticipantDeclined($this->engagement));
+    $this->project->notify(new ParticipantDeclined($this->engagement));
+
+    $response = $this->actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 person declined your invitation');
+
+    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 person declined your invitation');
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 person declined their invitation');
 });
