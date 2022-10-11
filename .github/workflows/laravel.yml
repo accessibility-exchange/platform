@@ -75,7 +75,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          php artisan test --coverage-clover coverage.xml
+          php artisan test --parallel --coverage-clover coverage.xml
       - name: Upload coverage to Codecov
         if: env.GIT_DIFF
         uses: codecov/codecov-action@v3
