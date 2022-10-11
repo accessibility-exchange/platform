@@ -20,7 +20,7 @@
                 @endcan
             </h1>
             <p class="meta">
-                <strong>{{ Str::ucfirst(__('organization.types.' . $organization->type . '.name')) }}</strong><br />
+                <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
                 @foreach ($organization->roles as $role)
                     {{ $role }}@if (!$loop->last)
                         ,
