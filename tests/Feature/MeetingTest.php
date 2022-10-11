@@ -30,6 +30,8 @@ test('meetings can be created', function () {
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->engagements->first();
 
+    expect($engagement->meeting_dates)->toBeNull();
+
     $response = $this->actingAs($otherUser)->get(localized_route('meetings.create', $engagement));
     $response->assertForbidden();
 
@@ -57,6 +59,8 @@ test('meetings can be created', function () {
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertSee('Meeting 1');
     $response->assertSee('Tuesday, November 15, 2022 9:00 AM');
+
+    expect($engagement->fresh()->meeting_dates)->toEqual('November 15, 2022');
 });
 
 test('meetings can be edited', function () {
@@ -98,9 +102,12 @@ test('meetings can be edited', function () {
     $response = $this->actingAs($user)->get(localized_route('meetings.edit', ['meeting' => $meeting, 'engagement' => $engagement]));
     $response->assertOk();
 
+    $meeting = $meeting->fresh();
+    expect($engagement->meeting_dates)->toEqual('November 15–December 15, 2022');
+
     $response = $this->actingAs($user)->put(localized_route('meetings.update', ['meeting' => $meeting, 'engagement' => $engagement]), [
         'title' => ['en' => 'Meeting 1'],
-        'date' => '2022-11-15',
+        'date' => '2022-12-06',
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
@@ -117,8 +124,9 @@ test('meetings can be edited', function () {
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $meeting = $meeting->fresh();
+    $engagement = $engagement->fresh();
     expect($meeting->meeting_types)->toHaveCount(3);
-    expect($engagement->meeting_dates)->toEqual('November 15–December 15, 2022');
+    expect($engagement->meeting_dates)->toEqual('December 6–15, 2022');
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });
