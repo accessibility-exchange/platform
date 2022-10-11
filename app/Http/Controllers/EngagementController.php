@@ -475,9 +475,10 @@ class EngagementController extends Controller
         $engagement->save();
 
         if ($request->input('publish')) {
-            $engagement->update(['published_at' => now()]);
-
-            flash(__('Your engagement has been published.'), 'success');
+            if ($engagement->fresh()->isPublishable()) {
+                $engagement->update(['published_at' => now()]);
+                flash(__('Your engagement has been published.'), 'success');
+            }
         } else {
             flash(__('Your engagement has been updated.'), 'success');
         }

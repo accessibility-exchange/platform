@@ -14,6 +14,7 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
 
@@ -447,10 +448,18 @@ test('engagements can reflect parent project’s estimate and agreement status',
 
 test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true) {
     $project = Project::factory()->create();
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
 
     // Fill data so that we don't hit a Database Integrity constraint violation during creation
-    $engagement = Engagement::factory()->create(['project_id' => $project->id]);
+    $engagement = Engagement::factory()->create(['project_id' => $project->id, 'published_at' => null]);
     $engagement->fill($data);
+    $engagement->save();
+    $engagement = $engagement->fresh();
 
     if ($meetings) {
         $engagement->meetings()->save(Meeting::factory()->create());
@@ -466,6 +475,18 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
     }
 
     expect($engagement->isPublishable())->toBe($expected);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.edit', $engagement));
+    if ($expected) {
+        $response->assertDontSee('disabled >', false);
+    } else {
+        $response->assertSee('disabled >', false);
+    }
+
+    $response = $this->actingAs($regulatedOrganizationUser)->put(localized_route('engagements.update', $engagement), array_merge($data, ['publish' => 1]));
+
+    $engagement = $engagement->fresh();
+    expect($engagement->checkStatus(new EngagementStatus('published')))->toEqual($expected);
 })->with('engagementIsPublishable');
 
 test('engagement participants can be listed by administrator or community connector', function () {
