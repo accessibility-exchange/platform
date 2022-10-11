@@ -69,6 +69,9 @@ test('individual user can accept invitation to an engagement as a connector', fu
 
     expect($this->engagement->connector->id)->toEqual($this->individualConnector->id);
     $this->assertModelMissing($databaseNotification);
+
+    expect($this->individualConnector->connectingEngagements->pluck('id'))->toContain($this->engagement->id);
+    expect($this->individualConnector->connectingEngagementProjects->pluck('id'))->toContain($this->project->id);
 });
 
 test('individual user can decline invitation to an engagement as a connector', function () {
@@ -119,6 +122,9 @@ test('organization user can accept invitation to an engagement as a connector', 
     $this->engagement = $this->engagement->fresh();
 
     expect($this->engagement->organizationalConnector->id)->toEqual($this->connectorOrganization->id);
+
+    expect($this->connectorOrganization->connectingEngagements->pluck('id'))->toContain($this->engagement->id);
+    expect($this->connectorOrganization->connectingEngagementProjects->pluck('id'))->toContain($this->project->id);
 });
 
 test('organization user can decline invitation to an engagement as a connector', function () {
@@ -325,6 +331,7 @@ test('individual participant can accept invitation from individual connector', f
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->participants)->toHaveCount(1);
     expect($this->engagement->participants->first()->id)->toEqual($this->participant->id);
+    expect($this->participant->participatingProjects->pluck('id'))->toContain($this->project->id);
 });
 
 test('individual participant can access invitation via notifications', function () {
