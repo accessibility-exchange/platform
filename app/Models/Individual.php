@@ -300,6 +300,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ->orderBy('start_date');
     }
 
+    /** TODO: add project and engagement-level consultants.
     public function consultingProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'individual_consultant_id');
@@ -317,7 +318,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             (new Engagement())->project()
         );
     }
-
+     **/
     public function connectingEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class, 'individual_connector_id');
