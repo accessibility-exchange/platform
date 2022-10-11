@@ -31,6 +31,7 @@ test('meetings can be created', function () {
     $engagement = $project->engagements->first();
 
     expect($engagement->meeting_dates)->toBeNull();
+    expect($engagement->display_meeting_types)->toBeEmpty();
 
     $response = $this->actingAs($otherUser)->get(localized_route('meetings.create', $engagement));
     $response->assertForbidden();
