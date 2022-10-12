@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
 use App\Enums\OrganizationRole;
+use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
@@ -48,23 +49,10 @@ class OrganizationController extends Controller
         $this->authorize('create', Organization::class);
 
         return view('organizations.show-type-selection', [
-            'types' => [
-                [
-                    'value' => 'representative',
-                    'label' => Str::ucfirst(__('organization.types.representative.name')),
-                    'hint' => __('organization.types.representative.description'),
-                ],
-                [
-                    'value' => 'support',
-                    'label' => Str::ucfirst(__('organization.types.support.name')),
-                    'hint' => __('organization.types.support.description'),
-                ],
-                [
-                    'value' => 'civil-society',
-                    'label' => Str::ucfirst(__('organization.types.civil-society.name')),
-                    'hint' => __('organization.types.civil-society.description'),
-                ],
-            ],
+            'types' => Options::forEnum(OrganizationType::class)->append(fn (OrganizationType $type) => [
+                'label' => OrganizationType::pluralLabels()[$type->value],
+                'hint' => $type->description(),
+            ])->toArray(),
         ]);
     }
 

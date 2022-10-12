@@ -60,7 +60,7 @@
                                 <h3><a
                                         href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                                 </h3>
-                                <p>{{ __('This is for individuals with disabilities or Deaf individuals, their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
+                                <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                                 </p>
                             </div>
                         </x-media-text>
@@ -70,9 +70,9 @@
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
-                                        href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Governments, Businesses, and other Non-Profits') }}</a>
+                                        href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This is for federally regulated organizations under the Accessible Canada Act.') }}
+                                <p>{{ __('This is for federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                                 </p>
                             </div>
                         </x-media-text>

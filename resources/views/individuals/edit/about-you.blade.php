@@ -19,7 +19,7 @@
             </p>
 
             <div class="field @error('name') field--error @enderror">
-                <x-hearth-label for="name" :value="__('Name (required)')" />
+                <x-hearth-label for="name" :value="__('Name') . ' ' . __('(required)')" />
                 <x-hearth-hint for="name">
                     {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
                 </x-hearth-hint>
@@ -31,13 +31,13 @@
                 <legend>{{ __('Where do you live?') }}</legend>
 
                 <div class="field @error('region') field--error @enderror">
-                    <x-hearth-label for="region" :value="__('Province or territory (required)')" />
+                    <x-hearth-label for="region" :value="__('Province or territory') . ' ' . __('(required)')" />
                     <x-hearth-select name="region" :options="$regions" :selected="old('region', $individual->region)" required />
                     <x-hearth-error for="region" />
                 </div>
 
                 <div class="field @error('locality') field--error @enderror">
-                    <x-hearth-label for="locality" :value="__('City or town (optional)')" />
+                    <x-hearth-label for="locality" :value="__('City or town') . ' ' . __('(optional)')" />
                     <x-hearth-input name="locality" type="text"
                         value="{{ old('locality', $individual->locality) }}" />
                     <x-hearth-error for="locality" />
@@ -45,13 +45,13 @@
             </fieldset>
 
             <div class="field @error('pronouns') field--error @enderror">
-                <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns (optional)')" :hint="__('For example: he/him, she/her, they/them.')" />
+                <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :hint="__('For example: he/him, she/her, they/them.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
-                    <x-translatable-textarea name="bio" :label="__('Your bio (required)')" :model="$individual" :hint="__(
+                    <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :model="$individual" :hint="__(
                         'This can include information about your background, and why you are interested in accessibility.',
                     )"
                         required />
@@ -71,7 +71,8 @@
 
             @if ($individual->isConsultant())
                 <fieldset class="field @error('consulting_services') field--error @enderror">
-                    <legend>{{ __('Which of these areas can you help a regulated organization with? (required)') }}
+                    <legend>
+                        {{ __('Which of these areas can you help a regulated organization with?') . ' ' . __('(required)') }}
                     </legend>
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
@@ -82,7 +83,7 @@
                 <legend>{{ __('Social media links') }}</legend>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
-                        <x-hearth-label for="social_links_{{ $key }}" :value="__(':service (optional)', ['service' => Str::studly($key)])" />
+                        <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" />
                         <x-hearth-error for="social_links_{{ $key }}" />
@@ -91,7 +92,7 @@
             </fieldset>
 
             <div class="field @error('website_link') field-error @enderror">
-                <x-hearth-label class="h4" for="website_link" :value="__('Website link (optional)')" />
+                <x-hearth-label class="h4" for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
                 <x-hearth-hint for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}
                 </x-hearth-hint>
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" />

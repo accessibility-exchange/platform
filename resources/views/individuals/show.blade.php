@@ -11,8 +11,11 @@
                 </form>
             @endif
             <div class="stack">
-                <h1 class="repel">
-                    <span id="individual">{{ $individual->name }}</span>
+                <div class="repel">
+                    <h1>
+                        <span id="individual">{{ $individual->name }}</span>
+                    </h1>
+
                     @can('update', $individual)
                         <form action="{{ localized_route('individuals.update-publication-status', $individual) }}"
                             method="POST" novalidate>
@@ -30,7 +33,7 @@
                     @can('block', $individual)
                         <x-block-modal :blockable="$individual" />
                     @endcan
-                </h1>
+                </div>
                 <div class="meta">
                     @if ($individual->pronouns)
                         <p>{{ $individual->pronouns }}</p>

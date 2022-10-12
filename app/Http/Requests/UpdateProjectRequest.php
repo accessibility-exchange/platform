@@ -45,7 +45,7 @@ class UpdateProjectRequest extends FormRequest
             'out_of_scope.*' => 'nullable|string',
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
-            'outcome_analysis' => 'nullable|array',
+            'outcome_analysis' => 'required|array',
             'outcome_analysis.*' => 'string|in:internal,external',
             'outcome_analysis_other' => 'nullable|array',
             'outcome_analysis_other.*' => 'nullable|string',

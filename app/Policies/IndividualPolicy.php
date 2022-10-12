@@ -84,6 +84,10 @@ class IndividualPolicy
 
     public function block(User $user, Individual $individual): Response
     {
+        if (! config('app.features.blocking')) {
+            return Response::deny();
+        }
+
         return $user->individual && $user->individual->id === $individual->id
             ? Response::deny(__('You cannot block yourself.'))
             : Response::allow();

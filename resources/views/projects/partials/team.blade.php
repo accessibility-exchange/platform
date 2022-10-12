@@ -26,7 +26,9 @@
     <h4>{{ __('Accessibility Consultant') }}</h4>
 
     @if ($project->consultant)
-        <p><a href="{{ localized_route('individuals.show', $project->consultant) }}">{{ $project->consultant->name }}</a>
+        <p>
+            <a
+                href="{{ localized_route('individuals.show', $project->consultant) }}">{{ $project->consultant->name }}</a>
         </p>
     @else
         <p>{{ $project->consultant_name }}</p>
@@ -48,15 +50,15 @@
                 <p class="h4">{{ $training['name'] }}</p>
                 <p>
                     <strong>
-                        {{ __('Date') }}<br />
-                        {{ Illuminate\Support\Carbon::parse($training['date'])->translatedFormat('F Y') }}
-                    </strong>
+                        {{ __('Date') }}</strong><br />
+                    {{ Illuminate\Support\Carbon::parse($training['date'])->translatedFormat('F Y') }}
+
                 </p>
                 <p>
                     <strong>
-                        {{ __('Trainer') }}<br />
-                        <a href='{{ $training['trainer_url'] }}' rel='external'>{{ $training['trainer_name'] }}</a>
-                    </strong>
+                        {{ __('Trainer') }}</strong><br />
+                    <a href='{{ $training['trainer_url'] }}' rel='external'>{{ $training['trainer_name'] }}</a>
+
                 </p>
             </li>
         @endforeach
