@@ -1,8 +1,11 @@
 <?php
 
+use App\Enums\ProvinceOrTerritory;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\SectorSeeder;
 use Hearth\Models\Membership;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -175,10 +178,18 @@ test('non members can not edit regulated organizations', function () {
 });
 
 test('regulated organizations can be published', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'publish' => true,
@@ -193,10 +204,18 @@ test('regulated organizations can be published', function () {
 });
 
 test('regulated organizations can be unpublished', function () {
+    $this->seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
-        ->create();
+        ->create([
+            'about' => 'Test about',
+            'locality' => 'Toronto',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+        ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
     $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'unpublish' => true,
@@ -209,6 +228,22 @@ test('regulated organizations can be unpublished', function () {
 
     $this->assertTrue($regulatedOrganization->checkStatus('draft'));
 });
+
+test('regulated organization isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(SectorSeeder::class);
+
+    // fill data so that we don't hit a Database Integrity constraint violation during creation
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization->fill($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'sector') {
+            $regulatedOrganization->sectors()->attach(Sector::first()->id);
+        }
+    }
+
+    expect($regulatedOrganization->isPublishable())->toBe($expected);
+})->with('regulatedOrganizationIsPublishable');
 
 test('users with admin role can update other member roles', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -608,7 +643,7 @@ test('non members can not delete regulated organizations', function () {
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs']]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
     $response->assertOk();
@@ -634,6 +669,8 @@ test('guests can not view regulated organizations', function () {
 });
 
 test('user can view regulated organization in different languages', function () {
+    $this->seed(SectorSeeder::class);
+
     $user = User::factory()->create();
     $admin = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
@@ -642,6 +679,7 @@ test('user can view regulated organization in different languages', function () 
             'fr' => 'Agence du revenue du Canada',
             'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
         ],
+        'about' => ['en' => 'About us.'],
         'languages' => [
             'en',
             'fr',
@@ -649,7 +687,17 @@ test('user can view regulated organization in different languages', function () 
             'fcs',
             'iu',
         ],
+        'locality' => 'Iqaluit',
+        'region' => 'NU',
+        'service_areas' => ['NU'],
+        'type' => 'government',
+        'preferred_contact_method' => 'email',
+        'published_at' => now(),
     ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
+
+    $regulatedOrganization = $regulatedOrganization->fresh();
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertSee('Canada Revenue Agency');
@@ -659,6 +707,42 @@ test('user can view regulated organization in different languages', function () 
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
     $response->assertSee('Agence du revenue du Canada');
+});
+
+test('regulated organization cannot be previewed until publishable', function () {
+    $this->seed(SectorSeeder::class);
+
+    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+        'name' => [
+            'en' => 'Canada Revenue Agency',
+            'fr' => 'Agence du revenue du Canada',
+            'iu' => 'ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ',
+        ],
+        'about' => ['en' => 'About us.'],
+        'languages' => [
+            'en',
+            'fr',
+            'ase',
+            'fcs',
+            'iu',
+        ],
+        'region' => 'NU',
+        'service_areas' => ['NU'],
+        'type' => 'government',
+        'preferred_contact_method' => 'email',
+    ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
+
+    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertNotFound();
+
+    $regulatedOrganization->update(['locality' => 'Iqaluit']);
+    $regulatedOrganization = $regulatedOrganization->fresh();
+
+    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
+    $response->assertOk();
 });
 
 test('regulated organizations have slugs in both languages even if only one is provided', function () {

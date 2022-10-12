@@ -33,9 +33,9 @@ class IndividualPolicy
         }
 
         if ($model->checkStatus('draft')) {
-            return $user->id !== $model->user_id
-                ? Response::denyAsNotFound()
-                : Response::allow();
+            return $user->id === $model->user_id && $model->isPublishable()
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         return $user->individual || $user->organization || $user->regulated_organization
@@ -84,6 +84,10 @@ class IndividualPolicy
 
     public function block(User $user, Individual $individual): Response
     {
+        if (! config('app.features.blocking')) {
+            return Response::deny();
+        }
+
         return $user->individual && $user->individual->id === $individual->id
             ? Response::deny(__('You cannot block yourself.'))
             : Response::allow();

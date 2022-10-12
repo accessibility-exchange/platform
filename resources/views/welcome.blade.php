@@ -60,7 +60,7 @@
                                 <h3><a
                                         href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                                 </h3>
-                                <p>{{ __('This is for individuals with disabilities or Deaf individuals, their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
+                                <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                                 </p>
                             </div>
                         </x-media-text>
@@ -70,9 +70,9 @@
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
-                                        href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Governments, Businesses, and other Non-Profits') }}</a>
+                                        href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This is for federally regulated organizations under the Accessible Canada Act.') }}
+                                <p>{{ __('This is for federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                                 </p>
                             </div>
                         </x-media-text>
@@ -84,7 +84,7 @@
                                 <h3><a
                                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil societies (not only disability focused).') }}
+                                <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                                 </p>
                             </div>
                         </x-media-text>
@@ -101,7 +101,7 @@
                                         {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
                                     </p>
                                     {{-- TODO: add link to glossary definition --}}
-                                    {{-- <p><a class="weight:normal" href="">{{ __('Learn more about disability') }}</a></p> --}}
+                                    {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
                                 </div>
                             </div>
                             <div class="frame">

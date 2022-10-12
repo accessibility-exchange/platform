@@ -2,11 +2,25 @@
     <x-slot name="title">{{ $organization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         <div class="stack">
-            <h1 id="regulated-organization">
+            <h1 class="repel" id="regulated-organization">
                 {{ $organization->getWrittenTranslation('name', $language) }}
+                @can('update', $organization)
+                    <form action="{{ localized_route('organizations.update-publication-status', $organization) }}"
+                        method="POST" novalidate>
+                        @csrf
+                        @method('PUT')
+
+                        @if ($organization->checkStatus('published'))
+                            <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                        @else
+                            <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
+                                :disabled="!Auth::user()->can('publish', $organization)" />
+                        @endif
+                    </form>
+                @endcan
             </h1>
             <p class="meta">
-                <strong>{{ Str::ucfirst(__('organization.types.' . $organization->type . '.name')) }}</strong><br />
+                <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
                 @foreach ($organization->roles as $role)
                     {{ $role }}@if (!$loop->last)
                         ,
@@ -20,7 +34,7 @@
                     @if (($organization->social_links && count($organization->social_links) > 0) || $organization->website_link)
                         @if ($organization->website_link)
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $organization->website_link }}">
+                                <a class="with-icon font-semibold" href="{{ $organization->website_link }}">
                                     <x-heroicon-o-globe-alt class="icon" />
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
@@ -29,7 +43,7 @@
                         @if ($organization->social_links)
                             @foreach ($organization->social_links as $key => $value)
                                 <li>
-                                    <a class="weight:semibold with-icon"
+                                    <a class="with-icon font-semibold"
                                         href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                                 </li>
                             @endforeach

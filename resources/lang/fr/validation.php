@@ -98,7 +98,7 @@ return [
     'password' => 'Le mot de passe est incorrect.',
     'present' => 'Le champ :attribute doit être présent.',
     'regex' => 'Le format du champ :attribute est invalide.',
-    'required' => 'Le champ :attribute est obligatoire.',
+    'required' => 'You must enter your :attribute.',
     'required_if' => 'Le champ :attribute est obligatoire quand la valeur de :other est :value.',
     'required_unless' => 'Le champ :attribute est obligatoire sauf si :other est :values.',
     'required_with' => 'Le champ :attribute est obligatoire quand :values est présent.',
@@ -106,6 +106,7 @@ return [
     'required_without' => 'Le champ :attribute est obligatoire quand :values n\'est pas présent.',
     'required_without_all' => 'Le champ :attribute est requis quand aucun de :values n\'est présent.',
     'phone' => 'The :attribute is not a valid phone number.',
+    'prohibits' => 'The :attribute field is prohibited when :other is present.',
     'prohibited' => 'Le champ :attribute est interdit.',
     'prohibited_if' => 'Le champ :attribute est interdit quand :other a la valeur :value.',
     'prohibited_unless' => 'Le champ :attribute est interdit à moins que :other est l\'une des valeurs :values.',
@@ -171,6 +172,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => __('email address'),
+        'phone' => __('phone number'),
+        'support_person_email' => __('support person’s email address'),
+        'support_person_phone' => __('support person’s phone number'),
+        'contact_person_email' => __('contact person’s email address'),
+        'contact_person_phone' => __('contact person’s phone number'),
+    ],
 
 ];

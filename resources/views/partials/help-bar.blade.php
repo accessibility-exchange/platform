@@ -9,7 +9,7 @@
             <div class="responsive-switcher">
                 <div>
                     <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span
-                        class="weight:semibold">{!! __('Call, Text, or :vrs', [
+                        class="font-semibold">{!! __('Call, Text, or :vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 __('VRS') .
@@ -18,7 +18,7 @@
                 </div>
                 <div>
                     <x-heroicon-o-envelope aria-hidden="true" height="20" width="20" />&nbsp;<span
-                        class="weight:semibold">{{ __('Email') }}:</span>&nbsp;<a
+                        class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
                         href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
                         {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
                     </a>

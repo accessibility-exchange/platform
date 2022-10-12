@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
@@ -179,8 +181,10 @@ class Project extends Model
                     $trainings = array_filter($trainings);
 
                     return array_map(function ($training) {
-                        $date = new Carbon($training['date']);
-                        $training['date'] = $date->format('Y-m-d');
+                        if (isset($training['date'])) {
+                            $date = new Carbon($training['date']);
+                            $training['date'] = $date->format('Y-m-d');
+                        }
 
                         return $training;
                     }, $trainings);
@@ -193,7 +197,45 @@ class Project extends Model
 
     public function isPublishable(): bool
     {
-        return true; // TODO: add appropriate checks.
+        $publishRules = [
+            'contact_person_name' => 'required',
+            'contact_person_email' => 'nullable|required_without:contact_person_phone|required_if:preferred_contact_method,email',
+            'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_response_time' => 'required',
+            'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr',
+            'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en',
+            'end_date' => 'required',
+            'goals.en' => 'required_without:goals.fr',
+            'goals.fr' => 'required_without:goals.en',
+            'languages' => 'required',
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'outcome_analysis' => 'required',
+            'preferred_contact_method' => 'required',
+            'projectable_id' => 'required',
+            'projectable_type' => 'required',
+            'regions' => 'required',
+            'scope.en' => 'required_without:scope.fr',
+            'scope.fr' => 'required_without:scope.en',
+            'start_date' => 'required',
+            'team_languages' => 'required',
+            'team_trainings.*.date' => 'required',
+            'team_trainings.*.name' => 'required',
+            'team_trainings.*.trainer_name' => 'required',
+            'team_trainings.*.trainer_url' => 'required',
+        ];
+
+        try {
+            Validator::validate($this->toArray(), $publishRules);
+        } catch (ValidationException $exception) {
+            return false;
+        }
+
+        if ($this->projectable instanceof RegulatedOrganization && ! $this->impacts()->count()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function timeframe(): string

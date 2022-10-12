@@ -5,8 +5,8 @@
 <h3>{{ __('Type of organization') }}</h3>
 
 <p>
-    <strong>{{ Str::ucfirst(__('organization.types.' . $organization->type . '.name')) }}</strong><br />
-    {{ __('organization.types.' . $organization->type . '.description') }}
+    <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
+    {{ App\Enums\OrganizationType::tryFrom($organization->type)->description() }}
 </p>
 
 <h3>{{ __('Where we operate') }}</h3>

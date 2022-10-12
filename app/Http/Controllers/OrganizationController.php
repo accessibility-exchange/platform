@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
 use App\Enums\OrganizationRole;
+use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
@@ -29,8 +30,10 @@ use App\Models\Language;
 use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\Sector;
+use App\Statuses\OrganizationStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Spatie\LaravelOptions\Options;
 
@@ -38,7 +41,7 @@ class OrganizationController extends Controller
 {
     public function index(): View
     {
-        return view('organizations.index', ['organizations' => Organization::orderBy('name')->get()]);
+        return view('organizations.index', ['organizations' => Organization::status(new OrganizationStatus('published'))->orderBy('name')->get()]);
     }
 
     public function showTypeSelection(): View
@@ -46,23 +49,10 @@ class OrganizationController extends Controller
         $this->authorize('create', Organization::class);
 
         return view('organizations.show-type-selection', [
-            'types' => [
-                [
-                    'value' => 'representative',
-                    'label' => Str::ucfirst(__('organization.types.representative.name')),
-                    'hint' => __('organization.types.representative.description'),
-                ],
-                [
-                    'value' => 'support',
-                    'label' => Str::ucfirst(__('organization.types.support.name')),
-                    'hint' => __('organization.types.support.description'),
-                ],
-                [
-                    'value' => 'civil-society',
-                    'label' => Str::ucfirst(__('organization.types.civil-society.name')),
-                    'hint' => __('organization.types.civil-society.description'),
-                ],
-            ],
+            'types' => Options::forEnum(OrganizationType::class)->append(fn (OrganizationType $type) => [
+                'label' => OrganizationType::pluralLabels()[$type->value],
+                'hint' => $type->description(),
+            ])->toArray(),
         ]);
     }
 
@@ -354,6 +344,17 @@ class OrganizationController extends Controller
         $organization->save();
 
         return $organization->handleUpdateRequest($request, 4);
+    }
+
+    public function updatePublicationStatus(Request $request, Organization $organization): RedirectResponse
+    {
+        if ($request->input('unpublish')) {
+            $organization->unpublish();
+        } elseif ($request->input('publish')) {
+            $organization->publish();
+        }
+
+        return redirect(localized_route('organizations.show', $organization));
     }
 
     public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse

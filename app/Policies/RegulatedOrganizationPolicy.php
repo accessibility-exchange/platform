@@ -40,6 +40,12 @@ class RegulatedOrganizationPolicy
             ]));
         }
 
+        if ($regulatedOrganization->checkStatus('draft')) {
+            return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        }
+
         return $user->individual || $user->organization || $user->regulated_organization
             ? Response::allow()
             : Response::deny();
@@ -54,8 +60,7 @@ class RegulatedOrganizationPolicy
 
     public function publish(User $user, RegulatedOrganization $regulatedOrganization): Response
     {
-        // TODO: Ensure model is ready for publishing first.
-        return $user->isAdministratorOf($regulatedOrganization)
+        return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
             ? Response::allow()
             : Response::deny(__('You cannot publish this regulated organization.'));
     }

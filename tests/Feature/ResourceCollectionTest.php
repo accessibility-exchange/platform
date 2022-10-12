@@ -32,14 +32,25 @@ test('users can create resource collections', function () {
 
 test('users can add resources to their new resource collection on create', function () {
     $user = User::factory()->create();
-    $resource = Resource::factory(5)->create();
+    $resources = Resource::factory(5)->create();
 
     $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
         'user_id' => $user->id,
         'title' => 'unique title',
         'description' => 'This is my resource collection',
+        'resource_ids' => $resources->pluck('id')->toArray(),
     ]);
-    $response->assertSee('resources', $resource);
+
+    $response->assertSessionHasNoErrors();
+
+    $resourceCollection = ResourceCollection::where('title->en', 'unique title')->first();
+
+    expect($resourceCollection->resources->count())->toEqual(5);
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection));
+    foreach ($resources as $resource) {
+        $response->assertSee($resource->title);
+    }
 });
 
 test('users can edit resource collections belonging to them', function () {
@@ -140,7 +151,7 @@ test('create resource collection validation', function () {
         'title' => 'Test resource collection',
     ]);
 
-    $response->assertSessionHasErrors(['description' => 'The description field is required.']);
+    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
 
     $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
         'user_id' => $user->id,
@@ -155,7 +166,7 @@ test('create resource collection validation', function () {
         'description' => 'This is my resource collection',
     ]);
 
-    $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    $response->assertSessionHasErrors(['title' => 'You must enter your title.']);
 
     $lengthyTitle = '';
 
@@ -188,7 +199,7 @@ test('update resource collection validation', function () {
         'title' => $resourceCollection->title,
     ]);
 
-    $response->assertSessionHasErrors(['description' => 'The description field is required.']);
+    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
 
     $response = $this->actingAs($user)->put(localized_route('resource-collections.update', $resourceCollection), [
         'title' => $resourceCollection->title,
@@ -201,7 +212,7 @@ test('update resource collection validation', function () {
         'description' => 'This is my updated resource collection.',
     ]);
 
-    $response->assertSessionHasErrors(['title' => 'The title field is required.']);
+    $response->assertSessionHasErrors(['title' => 'You must enter your title.']);
 
     $lengthyTitle = '';
 

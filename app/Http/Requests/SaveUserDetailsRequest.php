@@ -23,7 +23,7 @@ class SaveUserDetailsRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
@@ -34,6 +34,13 @@ class SaveUserDetailsRequest extends FormRequest
                 'max:255',
                 new UniqueUserEmail(),
             ],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('full name'),
         ];
     }
 }

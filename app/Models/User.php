@@ -6,6 +6,7 @@ use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -95,6 +96,13 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'organizations',
         'regulatedOrganizations',
     ];
+
+    public function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => strtolower($value),
+        );
+    }
 
     public function routeNotificationForMail(Notification $notification): array
     {

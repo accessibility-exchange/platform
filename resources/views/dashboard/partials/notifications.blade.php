@@ -10,7 +10,7 @@
     @forelse($notifications as $notification)
         <x-dynamic-component :component="'notification.' . Str::kebab(class_basename($notification->type))" :notification="$notification" />
     @empty
-        <div class="box">{{ __('At present, you have no unread notifications.') }}</div>
+        <div class="box bg-grey-2">{{ __('At present, you have no unread notifications.') }}</div>
     @endforelse
     <p><a class="with-icon" href="{{ localized_route('dashboard.notifications') }}">{{ __('All notifications') }}
             @if ($notifications->count() > 2)

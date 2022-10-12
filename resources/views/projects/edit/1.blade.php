@@ -21,48 +21,55 @@
 
             <h3>{{ __('Project goals') }}</h3>
 
-            <x-translatable-textarea name="goals" :label="__('Please indicate the goals for this project. (required)')" :model="$project" />
+            <x-translatable-textarea name="goals" :label="__('Please indicate the goals for this project.') . ' ' . __('(required)')" :short-label="__('project goals')" :model="$project" />
 
             <h3>{{ __('Project scope') }}</h3>
 
             <x-translatable-textarea name="scope" :label="__(
-                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project. (required)',
-            )" :model="$project" />
+                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
+            ) .
+                ' ' .
+                __('(required)')" :short-label="__('how communities will be impacted')" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('Please indicate the geographical areas this project will impact. (required)') }}</legend>
-                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions_impacted', $project->regions ?? [])" required />
+                <legend>
+                    {{ __('Please indicate the geographical areas this project will impact.') . ' ' . __('(required)') }}
+                </legend>
+                <x-hearth-checkboxes name="regions" :options="array_filter($regions)" :checked="old('regions', $project->regions ?? [])" required />
                 <div class="stack" x-cloak>
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
             </fieldset>
 
-            <fieldset class="field @error('impacts') field--error @enderror stack">
-                <legend>
-                    {{ __('Please indicate which areas of your organization this project will impact. (required)') }}
-                </legend>
-                <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $project->impacts->pluck('id')->toArray())" />
-                <x-hearth-error for="impacts" />
-            </fieldset>
+            @if ($project->projectable instanceof App\Models\RegulatedOrganization)
+                <fieldset class="field @error('impacts') field--error @enderror stack">
+                    <legend>
+                        {{ __('Please indicate which areas of your organization this project will impact.') . ' ' . __('(required)') }}
+                    </legend>
+                    <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $project->impacts->pluck('id')->toArray())" />
+                    <x-hearth-error for="impacts" />
+                </fieldset>
+            @endif
 
-            <x-translatable-textarea name="out_of_scope" :label="__('Please indicate what is out of scope for this project.  (optional)')" :model="$project" />
+            <x-translatable-textarea name="out_of_scope" :label="__('Please indicate what is out of scope for this project.') . ' ' . __('(optional)')" :short-label="__('what is out of scope')" :model="$project" />
 
             <h3>{{ __('Project timeframe') }}</h3>
 
-            <livewire:date-picker name="start_date" :label="__('Project start date (required)')" minimumYear="2021" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" minimumYear="2021" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? null)" />
 
-            <livewire:date-picker name="end_date" :label="__('Project end date (required)')" minimumYear="2021" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="end_date" :label="__('Project end date') . ' ' . __('(required)')" minimumYear="2021" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? null)" />
 
             <h3>{{ __('Project outcome') }}</h3>
 
             <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('other', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
-                <legend>{{ __('Who will be going through the results from this project and writing a report?') }}
+                <legend>
+                    {{ __('Who will be going through the results from this project and writing a report?') . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forArray([
                     'internal' => __('Internal team'),
                     'external' => __('External team'),
-                ])->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" />
+                ])->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
                     <x-hearth-checkbox name="other" :checked="old(
                         'other',
@@ -71,15 +78,17 @@
                     <x-hearth-label for='other'>{{ __('Other') }}</x-hearth-label>
                 </div>
                 <div class="field__subfield stack">
-                    <x-translatable-input name="outcome_analysis_other" :label="__('Other')" :model="$project"
-                        x-show="otherOutcomeAnalysis" />
+                    <x-translatable-input name="outcome_analysis_other" :label="__('Please indicate who will be going through the results')" :short-label="__('who is going through the results')"
+                        :model="$project" x-show="otherOutcomeAnalysis" />
                 </div>
             </fieldset>
 
-            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project. (required)')" :hint="__('For example, an accessibility report')" :model="$project" />
+            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.') . ' ' . __('(required)')" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
+                :model="$project" />
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">
-                <legend>{{ __('Please indicate if the reports will be publicly available. (required)') }}</legend>
+                <legend>{{ __('Please indicate if the reports will be publicly available.') . ' ' . __('(required)') }}
+                </legend>
                 <x-hearth-hint for="public_outcomes">
                     {{ __('This can mean either on this website, or on your organization’s website.') }}
                 </x-hearth-hint>

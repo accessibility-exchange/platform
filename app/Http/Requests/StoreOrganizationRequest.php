@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OrganizationType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreOrganizationRequest extends FormRequest
 {
@@ -14,18 +16,19 @@ class StoreOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:representative,support,civil-society',
-            'name.*' => 'nullable|string|max:255|unique_translation:organizations',
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
+            'type' => ['required', new Enum(OrganizationType::class)],
+            'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:organizations',
+            'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:organizations',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.en.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
-            'name.fr.unique_translation' => __('A :type with this name already exists.', ['type' => __('organization.types.'.$this->type.'.name')]),
+            'name.en.unique_translation' => __("An organization with this name already exists on our website. Please contact your colleagues to get an invitation. If this isn't your organization, please use a different name."),
+            'name.fr.unique_translation' => __("An organization with this name already exists on our website. Please contact your colleagues to get an invitation. If this isn't your organization, please use a different name."),
+            'name.en.required_without' => __("You must enter your organization's name in either English or French."),
+            'name.fr.required_without' => __("You must enter your organization's name in either English or French."),
         ];
     }
 }

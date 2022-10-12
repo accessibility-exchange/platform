@@ -45,7 +45,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'has_indigenous_identities' => 'required|boolean',
             'indigenous_identities' => 'nullable|array|required_if:has_indigenous_identities,true|exclude_if:has_indigenous_identities,false',
             'indigenous_identities.*' => 'exists:indigenous_identities,id',
-            'refugees_and_immigrants' => 'sometimes|boolean',
+            'refugees_and_immigrants' => 'required|boolean',
             'has_gender_and_sexual_identities' => 'required|boolean',
             'gender_and_sexual_identities' => 'nullable|array|min:1|required_if:has_gender_and_sexual_identities,true|exclude_if:has_gender_and_sexual_identities,false',
             'gender_and_sexual_identities.*' => 'string|in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',

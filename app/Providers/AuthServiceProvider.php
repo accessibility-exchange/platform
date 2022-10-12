@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Engagement;
 use App\Models\Individual;
+use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -12,6 +13,7 @@ use App\Models\ResourceCollection;
 use App\Models\User;
 use App\Policies\EngagementPolicy;
 use App\Policies\IndividualPolicy;
+use App\Policies\MeetingPolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\RegulatedOrganizationPolicy;
@@ -35,6 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         RegulatedOrganization::class => RegulatedOrganizationPolicy::class,
         ResourceCollection::class => ResourceCollectionPolicy::class,
         Individual::class => IndividualPolicy::class,
+        Meeting::class => MeetingPolicy::class,
         Project::class => ProjectPolicy::class,
         Organization::class => OrganizationPolicy::class,
         Resource::class => ResourcePolicy::class,
@@ -54,7 +57,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('block', function (User $user) {
-            return $user->context === 'individual'
+            return config('app.features.blocking') && $user->context === 'individual'
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });

@@ -3,7 +3,8 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a>
+            <li><a
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
             </li>
         </ol>
         <p class="mt-8 text-2xl"><strong>{{ __('Engagement') }}</strong></p>
@@ -74,10 +75,10 @@
         <x-manage-columns class="col-start-2 col-end-4">
             @if ($engagement->checkStatus('draft'))
                 <x-manage-section
-                    title="{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
+                    title="{{ !$engagement->hasProvidedRequiredInformation() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
                     @if (!$engagement->hasEstimateAndAgreement())
                         <p>
-                            @if (!$engagement->isPublishable())
+                            @if (!$engagement->hasProvidedRequiredInformation())
                                 {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
                             @else
                                 {!! Str::inlineMarkdown(
@@ -142,10 +143,49 @@
                 </x-manage-section>
             @endif
 
+            @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+                <x-manage-section :title="__('Engagement meetings')">
+                    @forelse($engagement->meetings as $meeting)
+                        <article class="flex flex-col gap-4 md:flex-row md:justify-between">
+                            <div>
+                                <h4>{{ $meeting->title }}</h4>
+                                <x-timespan :start="$meeting->start" :end="$meeting->end" />
+                                <p>{{ implode(', ', $meeting->display_meeting_types) }}</p>
+                            </div>
+
+                            <div class="stack w-full md:w-1/3">
+                                <a class="cta secondary with-icon"
+                                    href="{{ localized_route('meetings.edit', ['engagement' => $engagement, 'meeting' => $meeting]) }}">
+                                    <x-heroicon-o-pencil role="presentation" aria-hidden="true" /> {{ __('Edit') }}
+                                </a>
+                                <form
+                                    action="{{ localized_route('meetings.destroy', ['engagement' => $engagement, 'meeting' => $meeting]) }}"
+                                    method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="cta secondary destructive with-icon">
+                                        <x-heroicon-s-trash role="presentation" aria-hidden="true" />
+                                        {{ __('Remove') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </article>
+                    @empty
+                        <p>{{ __('No meetings found.') }}</p>
+                    @endforelse
+                    <p>
+                        <a class="cta secondary with-icon"
+                            href="{{ localized_route('meetings.create', $engagement) }}">
+                            <x-heroicon-o-plus-circle />
+                            {{ __('Add new meeting') }}
+                        </a>
+                    </p>
+                </x-manage-section>
+            @endif
+
             <x-manage-section :title="__('Estimates and agreements')">
                 <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                     <div class="space-y-2">
-
                         <p class="font-bold">{{ __('Estimate status') }}</p>
                         <p>
                             @if ($project->checkStatus('estimateApproved'))
@@ -227,7 +267,8 @@
                     </div>
                     <p>
                         {{-- TODO: manage participants --}}
-                        <a class="cta secondary" href="#">
+                        <a class="cta secondary"
+                            href="{{ localized_route('engagements.manage-participants', $engagement) }}">
                             <x-heroicon-o-users /> {{ __('Manage participants') }}
                         </a>
                     </p>

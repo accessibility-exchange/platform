@@ -23,7 +23,7 @@
 <h3>{{ __('Types of meetings offered') }}</h3>
 
 <ul>
-    @foreach ($individual->meeting_types as $meeting_type)
+    @foreach ($individual->meeting_types ?? [] as $meeting_type)
         <li>{{ App\Enums\MeetingType::from($meeting_type)->labels()[$meeting_type] }}</li>
     @endforeach
 </ul>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\CommunityConnectorHasLivedExperience;
+use App\Enums\MeetingType;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
@@ -9,6 +11,7 @@ use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
 use App\Models\Impact;
+use App\Models\IndigenousIdentity;
 use App\Models\Individual;
 use App\Models\LivedExperience;
 use App\Models\Project;
@@ -86,6 +89,8 @@ test('individuals can edit their roles', function () {
 });
 
 test('users can create individual pages', function () {
+    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);
 
@@ -105,8 +110,21 @@ test('users can create individual pages', function () {
     $user = Auth::user();
     $individual = $user->individual;
 
-    $individual->roles = ['consultant'];
+    $individual->fill([
+        'roles' => ['consultant'],
+        'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
+        'extra_attributes' => [
+            'has_age_brackets' => 0,
+            'has_ethnoracial_identities' => 0,
+            'has_gender_and_sexual_identities' => 0,
+            'has_indigenous_identities' => 0,
+        ],
+        'meeting_types' => [MeetingType::InPerson->value],
+    ]);
     $individual->save();
+
+    $individual->livedExperienceConnections()->attach(LivedExperience::first()->id);
+    $individual->areaTypeConnections()->attach(AreaType::first()->id);
 
     expect($individual)->toBeInstanceOf(Individual::class);
 
@@ -224,13 +242,23 @@ test('users can create individual pages', function () {
         'skills_and_strengths' => '',
         'relevant_experiences' => [
             [
-                'title' => '',
-                'organization' => '',
-                'start_year' => '',
+                'title' => 'First job',
+                'organization' => 'First place',
+                'start_year' => '2021',
                 'end_year' => '',
-                'current' => false,
+                'current' => 1,
             ],
         ],
+        'save_and_next' => __('Save and next'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+        'lived_experience' => '',
+        'skills_and_strengths' => '',
+        'relevant_experiences' => [],
         'save_and_next' => __('Save and next'),
     ]);
 
@@ -555,7 +583,7 @@ test('users can edit individual pages', function () {
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
-        'bio' => ['en' => $individual->bio],
+        'bio' => ['en' => 'test bio'],
         'consulting_services' => [
             'planning-consultation',
             'running-consultation',
@@ -578,7 +606,7 @@ test('users can edit individual pages', function () {
 
     $response = $this->actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
         'name' => $draftIndividual->name,
-        'bio' => ['en' => $draftIndividual->bio],
+        'bio' => ['en' => 'draft bio'],
         'consulting_services' => [
             'planning-consultation',
             'running-consultation',
@@ -657,6 +685,14 @@ test('users can view their own draft individual pages', function () {
         'published_at' => null,
         'consulting_services' => ['analysis'],
         'roles' => ['consultant'],
+        'extra_attributes' => [
+            'has_age_brackets' => true,
+            'has_ethnoracial_identities' => true,
+            'has_gender_and_sexual_identities' => true,
+            'has_indigenous_identities' => true,
+        ],
+        'meeting_types' => ['in_person'],
+        'bio' => ['en' => 'ok'],
     ]);
 
     $response = $this->actingAs($individual->user)->get(localized_route('individuals.show', $individual));
@@ -755,6 +791,52 @@ test('individual pages can be unpublished', function () {
 
     $this->assertTrue($individual->checkStatus('draft'));
 });
+
+test('individual pages cannot be published by other users', function () {
+    $user = User::factory()->create();
+    $individual = Individual::factory()->create([
+        'roles' => ['consultant'],
+        'published_at' => null,
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-publication-status', $individual), [
+        'publish' => true,
+    ]);
+
+    $response->assertForbidden();
+
+    $individual = $individual->fresh();
+    $this->assertTrue($individual->checkStatus('draft'));
+});
+
+test('individual test isPublishable()', function ($expected, $data, $connections = []) {
+    $this->seed(AgeBracketSeeder::class);
+    $this->seed(AreaTypeSeeder::class);
+    $this->seed(IndigenousIdentitySeeder::class);
+    $this->seed(LivedExperienceSeeder::class);
+
+    $individual = Individual::factory()->create($data);
+
+    foreach ($connections as $connection) {
+        if ($connection === 'livedExperienceConnections') {
+            $individual->livedExperienceConnections()->attach(LivedExperience::first()->id);
+        }
+
+        if ($connection === 'areaTypeConnections') {
+            $individual->areaTypeConnections()->attach(AreaType::first()->id);
+        }
+
+        if ($connection === 'indigenousIdentityConnections') {
+            $individual->indigenousIdentityConnections()->attach(IndigenousIdentity::first()->id);
+        }
+
+        if ($connection === 'ageBracketConnections') {
+            $individual->ageBracketConnections()->attach(AgeBracket::first()->id);
+        }
+    }
+
+    expect($individual->isPublishable())->toBe($expected);
+})->with('individualIsPublishable');
 
 test('draft individuals do not appear on individual index', function () {
     $user = User::factory()->create();

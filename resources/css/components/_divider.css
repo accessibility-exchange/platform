@@ -5,3 +5,9 @@ hr.divider {
 hr.divider--medium {
     border-block-start: var(--border-2) solid var(--divider-color);
 }
+
+hr.divider--thick {
+    border-block-start-color: var(--divider-color);
+
+    @apply mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid;
+}

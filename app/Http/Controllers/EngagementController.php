@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AcceptedFormat;
+use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\TimeZone;
+use App\Enums\Weekday;
 use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -12,6 +17,7 @@ use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
+use App\Mail\ContractorInvitation;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
@@ -24,13 +30,22 @@ use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
-use App\Models\User;
+use App\Notifications\ParticipantInvited;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Spatie\LaravelOptions\Options;
 
 class EngagementController extends Controller
 {
+    use RetrievesUserByNormalizedEmail;
+
     public function showLanguageSelection(Project $project): View
     {
         return view('engagements.show-language-selection', [
@@ -154,7 +169,7 @@ class EngagementController extends Controller
             ])->toArray(),
             'intersectionalOptions' => Options::forArray([
                 '1' => __('No, give me a group with intersectional experiences and/or identities'),
-                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)', ),
+                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
             ])->toArray(),
             'otherIdentityOptions' => Options::forArray([
                 'age-bracket' => __('Age'),
@@ -199,7 +214,7 @@ class EngagementController extends Controller
             ])->toArray(),
             'intersectionalOptions' => Options::forArray([
                 '1' => __('No, give me a group with intersectional experiences and/or identities'),
-                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)', ),
+                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
             ])->toArray(),
             'otherIdentityOptions' => Options::forArray([
                 'age-bracket' => __('Age'),
@@ -407,6 +422,13 @@ class EngagementController extends Controller
         return view('engagements.edit', [
             'project' => $engagement->project,
             'engagement' => $engagement,
+            'timezones' => Options::forEnum(TimeZone::class)->nullable(__('Please select your time zone…'))->toArray(),
+            'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
+            'weekdays' => Options::forEnum(Weekday::class)->toArray(),
+            'weekdayAvailabilities' => Options::forEnum(Availability::class)->toArray(),
+            'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'formats' => Options::forEnum(AcceptedFormat::class)->toArray(),
         ]);
     }
 
@@ -415,6 +437,7 @@ class EngagementController extends Controller
         return view('engagements.show-language-edit', [
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'engagement' => $engagement,
+            'project' => $engagement->project,
         ]);
     }
 
@@ -430,10 +453,37 @@ class EngagementController extends Controller
 
     public function update(UpdateEngagementRequest $request, Engagement $engagement)
     {
-        $engagement->fill($request->validated());
+        $data = $request->validated();
+
+        if (isset($data['window_start_time'])) {
+            $window_start_time = Carbon::createFromTimeString($data['window_start_time'])->toTimeString();
+            $data['window_start_time'] = $window_start_time;
+        }
+
+        if (isset($data['window_end_time'])) {
+            $window_end_time = Carbon::createFromTimeString($data['window_end_time'])->toTimeString();
+            $data['window_end_time'] = $window_end_time;
+        }
+
+        if (! isset($data['accepted_formats'])) {
+            $data['accepted_formats'] = [];
+        }
+
+        if (! isset($data['other_accepted_formats'])) {
+            $data['other_accepted_format'] = null;
+        }
+
+        $engagement->fill($data);
         $engagement->save();
 
-        flash(__('Your engagement has been updated.'), 'success');
+        if ($request->input('publish')) {
+            if ($engagement->fresh()->isPublishable()) {
+                $engagement->update(['published_at' => now()]);
+                flash(__('Your engagement has been published.'), 'success');
+            }
+        } else {
+            flash(__('Your engagement has been updated.'), 'success');
+        }
 
         return redirect(localized_route('engagements.manage', $engagement));
     }
@@ -444,7 +494,7 @@ class EngagementController extends Controller
         $connectorInvitee = null;
         if ($connectorInvitation) {
             if ($connectorInvitation->type === 'individual') {
-                $individual = User::whereBlind('email', 'email_index', $connectorInvitation->email)->first()->individual ?? null;
+                $individual = $this->retrieveUserByEmail($connectorInvitation->email)?->individual;
                 $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
             } elseif ($connectorInvitation->type === 'organization') {
                 $connectorInvitee = Organization::where('contact_person_email', $connectorInvitation->email)->first() ?? null;
@@ -456,6 +506,103 @@ class EngagementController extends Controller
             'project' => $engagement->project,
             'connectorInvitation' => $connectorInvitation,
             'connectorInvitee' => $connectorInvitee,
+        ]);
+    }
+
+    public function manageParticipants(Engagement $engagement): View
+    {
+        return view('engagements.manage-participants', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'invitations' => $engagement->invitations->where('role', 'participant'),
+            'participants' => $engagement->participants,
+        ]);
+    }
+
+    public function addParticipant(Engagement $engagement): View|Response
+    {
+        if ($engagement->participants->count() >= $engagement->ideal_participants) {
+            abort(403, __('You can’t invite any more participants to this engagement as it already has :number confirmed participants.', ['number' => $engagement->participants->count()]));
+        }
+
+        return view('engagements.add-participant', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function inviteParticipant(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $user = null;
+
+        if ($request->input('email')) {
+            $user = $this->retrieveUserByEmail($request->input('email'));
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('invitations')->where(function ($query) use ($engagement) {
+                        return $query->where([
+                            ['invitationable_type', 'App\Models\Engagement'],
+                            ['invitationable_id', $engagement->id],
+                        ]);
+                    }),
+                ],
+            ],
+            [
+                'email.required' => __('You must enter an email address.'),
+                'email.unique' => __('This individual has already been invited to your engagement.'),
+            ]
+        );
+
+        $validator->after(function ($validator) use ($user, $engagement) {
+            if ($user) {
+                $individual = $user->individual ?? null;
+                if (is_null($individual) || ! $individual->isParticipant()) {
+                    $validator->errors()->add('email', __('The person with the email address you provided is not a consultation participant.'));
+                }
+
+                if ($individual && $engagement->participants->contains($individual)) {
+                    $validator->errors()->add('email', __('The individual with the email address you provided is already participating in this engagement.'));
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect(localized_route('engagements.add-participant', $engagement))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        $validated['type'] = 'individual';
+        $validated['role'] = 'participant';
+
+        $invitation = $engagement->invitations()->create($validated);
+
+        if ($user) {
+            $user->notify(new ParticipantInvited($invitation));
+        } else {
+            Mail::to($invitation->email)->send(new ContractorInvitation($invitation));
+        }
+
+        flash(__('invitation.create_invitation_succeeded'), 'success');
+
+        return redirect(localized_route('engagements.manage-participants', $engagement));
+    }
+
+    public function manageAccessNeeds(Engagement $engagement): View
+    {
+        return view('engagements.manage-access-needs', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'invitations' => collect([]),
+            'participants' => collect([]),
         ]);
     }
 

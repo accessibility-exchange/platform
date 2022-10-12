@@ -1,36 +1,220 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $engagement->name }}</x-slot>
     <x-slot name="header">
+        <ol class="breadcrumbs" role="list">
+            <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+            <li>
+                <a
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+            </li>
+        </ol>
         <h1 id="engagement">
             {{ $engagement->name }}
         </h1>
-        <p>{!! __('Engagement as part of :project', [
-            'project' => '<a href="' . localized_route('projects.show', $project) . '">' . $project->name . '</a>',
-        ]) !!}</p>
-        @can('update', $project)
-            <a class="button"
-                href="{{ localized_route('engagements.manage', $engagement) }}">{{ __('Engagement dashboard') }}</a>
+        @if ($engagement->format)
+            <p class="h4">{{ $engagement->display_format }}</p>
+        @endif
+
+        <dl class="flex flex-col gap-6 md:flex-row md:items-start md:gap-16">
+            <div>
+                <dt>{{ __('project.singular_name_titlecase') }}</dt>
+                <dd><a
+                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                </dd>
+            </div>
+            <div>
+                <dt>{{ __('Run by') }}</dt>
+                <dd><a
+                        href="{{ localized_route($project->projectable->getRoutePrefix() . '.show', $project->projectable) }}">{{ $project->projectable->name }}</a>
+                </dd>
+            </div>
+            <div>
+                <dt>{{ __('Recruitment') }}</dt>
+                <dd>
+                    {{ $engagement->display_recruitment }}
+                    @if (($engagement->recruitment === 'connector' && $engagement->connector) || $engagement->organizationalConnector)
+                        <br />
+                        @if ($engagement->connector)
+                            <a
+                                href="{{ localized_route('individuals.show', $engagement->connector) }}">{{ $engagement->connector->name }}</a>
+                        @elseif($engagement->organizationalConnector)
+                            <a
+                                href="{{ localized_route('organizations.show', $engagement->connector) }}">{{ $engagement->organizationalConnector->name }}</a>
+                        @endif
+                    @endif
+                </dd>
+            </div>
+        </dl>
+
+        @can('update', $engagement)
+            <a class="cta secondary"
+                href="{{ localized_route('engagements.manage', $engagement) }}">{{ __('Manage engagement') }}</a>
+        @endcan
+
+        @can('manageParticipants', $engagement)
+            <a class="cta secondary" href="{{ localized_route('engagements.manage-participants', $engagement) }}">
+                <x-heroicon-o-users /> {{ __('Manage participants') }}
+            </a>
         @endcan
     </x-slot>
 
-    <div class="has-nav-secondary">
-        <nav class="secondary" aria-labelledby="engagement">
-            <ul role="list">
-                <x-nav-link :href="localized_route('engagements.show', $engagement)" :active="request()->localizedRouteIs('engagements.show')">{{ __('Engagement overview') }}</x-nav-link>
+    <div class="stack mb-12 w-full md:w-2/3">
+        <h2>{{ __('Description') }}</h2>
+
+        {!! Str::markdown($engagement->description) !!}
+
+        <hr class="divider--thick" />
+
+        <h2>{{ __('Who we’re looking for') }}</h2>
+
+        <h3>{{ __('Location') }}</h3>
+
+        {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+
+        <h3>{{ __('Disability or Deaf group') }}</h3>
+
+        {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+
+        <h3>{{ __('Other identities') }}</h3>
+
+        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+
+        <hr class="divider--thick" />
+
+        {{-- TODO: Variations --}}
+
+        @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+            <h2>{{ __('Meetings') }}</h2>
+            <div class="space-y-6">
+                @forelse($engagement->meetings as $meeting)
+                    <article class="box stack">
+                        <h3>{{ $meeting->title }}</h3>
+                        <h4>{{ __('Date') }}</h4>
+                        <x-timespan :start="$meeting->start" :end="$meeting->end" />
+                        <h4>{{ __('Ways to attend') }}</h4>
+                        @foreach ($meeting->meeting_types as $type)
+                            <h5>{{ App\Enums\MeetingType::labels()[$type] }}</h5>
+                            @include('engagements.partials.details-' . $type, ['meeting' => $meeting])
+                        @endforeach
+                    </article>
+                @empty
+                    <p>{{ __('No meetings found.') }}</p>
+                @endforelse
+            </div>
+        @endif
+
+        @if ($engagement->format === 'interviews')
+            <h2>{{ __('Date range') }}</h2>
+            <p>{{ __('Interviews will take place between :start and :end.', ['start' => $engagement->window_start_date->isoFormat('LL'), 'end' => $engagement->window_end_date->isoFormat('LL')]) }}
+            </p>
+            <hr class="divider--thick" />
+            <h2>{{ __('Ways to participate') }}</h2>
+            <h3>{{ __('Real time interview') }}</h3>
+            <p>{{ __('Attend an interview in real time.') }}</p>
+            <h4>{{ __('Days of the week interviews will be happening') }}</h4>
+            <ul class="space-y-4" role="list">
+                @foreach (\App\Enums\Weekday::labels() as $key => $day)
+                    <li class="flex items-center">
+                        @switch($engagement->weekday_availabilities[$key])
+                            @case('no')
+                                <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5 text-red-6" role="presentation" />
+                                <span><span class="font-semibold">{{ $day }}</span> —
+                                    {{ __('not available') }}</span>
+                            @break
+
+                            @case('upon-request')
+                                <x-heroicon-s-question-mark-circle class="icon mr-2 h-5 w-5 text-yellow-3"
+                                    role="presentation" /> <span><span class="font-semibold">{{ $day }}</span> —
+                                    {{ __('upon request') }}</span>
+                            @break
+
+                            @default
+                                <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5 text-green-5" role="presentation" />
+                                <span><span class="font-semibold">{{ $day }}</span> — {{ __('available') }}</span>
+                        @endswitch
+                    </li>
+                @endforeach
             </ul>
-        </nav>
+            <h4>{{ __('Times during the day interviews will be happening') }}</h4>
+            <h5>{{ __('Start time') }}</h5>
+            <p>{{ $engagement->window_start_time->isoFormat('LT') }}</p>
+            <h5>{{ __('End time') }}</h5>
+            <p>{{ $engagement->window_end_time->isoFormat('LT') }}</p>
+            <h5>{{ __('Time zone') }}</h5>
+            <p>{{ Illuminate\Support\Carbon::now($engagement->timezone)->isoFormat('z') }}</p>
+            <h4>{{ __('Ways to attend') }}</h4>
+            @foreach ($engagement->meeting_types as $type)
+                <h5>{{ App\Enums\MeetingType::labels()[$type] }}</h5>
+                @include('engagements.partials.details-' . $type, ['meeting' => $engagement])
+            @endforeach
+            <h3>{{ __('Interview at your own pace') }}</h3>
+            <p>{{ __('The :projectable sends out a list of questions, and you can can respond to them at your own pace.', ['projectable' => $project->projectable->getSingularName()]) }}
+            </p>
+            <h4>{{ __('Dates') }}</h4>
+            <h5>{{ __('Questions are sent to participants by:') }}</h5>
+            <p>{{ $engagement->materials_by_date->isoFormat('LL') }}</p>
+            <h5>{{ __('Responses are due by:') }}</h5>
+            <p>{{ $engagement->complete_by_date->isoFormat('LL') }}</p>
+            <h4>{{ __('Accepted formats') }}</h4>
+            <ul class="divide-y-graphite-6 divide-y divide-x-0 divide-solid" role="list">
+                @foreach ($engagement->accepted_formats as $format)
+                    <li class="py-4">{{ \App\Enums\AcceptedFormat::labels()[$format] }}</li>
+                @endforeach
+                @if ($engagement->other_accepted_format)
+                    <li class="py-4">{{ $engagement->other_accepted_format }}</li>
+                @endif
+            </ul>
+        @endif
 
-        <div class="flow">
-            @if (request()->localizedRouteIs('engagements.show'))
-                <h2>{{ __('Overview') }}</h2>
-                @can('update', $project)
-                    <p><a class="button"
-                            href="{{ localized_route('engagements.edit', $engagement) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('overview') . '</span>']) !!}</a>
-                    </p>
-                @endcan
-                @include('engagements.partials.overview', ['level' => 3])
+        @if (in_array($engagement->format, ['survey', 'other-async']))
+            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Engagement materials') }}</h2>
+            <h3>{{ __('Dates') }}</h3>
+            <h4>{{ __('Documents will be sent to participants by:') }}</h4>
+            <p>{{ $engagement->materials_by_date->isoFormat('LL') }}</p>
+            <h4>{{ __('Completed documents are due by:') }}</h4>
+            <p>{{ $engagement->complete_by_date->isoFormat('LL') }}</p>
+            <h3>{{ __('Languages') }}</h3>
+            <p>{{ __('Materials will be provided in the following languages:') }}</p>
+            <ul class="divide-y-graphite-6 divide-y divide-x-0 divide-solid" role="list">
+                @foreach ($engagement->document_languages as $code)
+                    <li class="py-4">{{ get_language_exonym($code) }}</li>
+                @endforeach
+            </ul>
+        @endif
+
+        <hr class="divider--thick" />
+
+        <h2>{{ __('Payment') }}</h2>
+
+        <p class="mb-12">
+            @if ($engagement->paid)
+                {!! Str::inlinemarkdown(__('This engagement is a **paid** opportunity.')) !!}
+            @else
+                {!! Str::inlineMarkdown(__('This engagement is a **volunteer** opportunity.')) !!}
             @endif
-        </div>
-    </div>
+        </p>
 
+        <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
+            <p>
+                <strong>{{ __('Do you have questions about how the engagement works?') }}</strong><br />
+                {{ __('Contact :contact_person_name from :projectable at:', ['contact_person_name' => $project->contact_person_name, 'projectable' => $project->projectable->name]) }}
+            </p>
+            <div class="flex flex-col">
+                @if ($project->contact_person_email)
+                    <div class="with-icon">
+                        <x-heroicon-o-envelope class="icon h-5 w-5" role="presentation" />
+                        <span><strong>{{ __('Email:') }}</strong> <a
+                                href="mailto:{{ $project->contact_person_email }}">{{ $project->contact_person_email }}</a></span>
+                    </div>
+                @endif
+                @if ($project->contact_person_phone)
+                    <div class="with-icon">
+                        <x-heroicon-o-phone class="icon h-5 w-5" role="presentation" />
+                        <span><strong>{{ __('Phone:') }}</strong>
+                            {{ $project->contact_person_phone->formatForCountry('CA') }}</span>
+                    </div>
+                @endif
+            </div>
+        </x-hearth-alert>
+    </div>
 </x-app-wide-layout>

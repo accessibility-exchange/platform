@@ -41,12 +41,27 @@
                     </span>
                 </p>
                 <h4>{{ __('New estimate request') }}</h4>
-                @include('projects.partials.included-engagements')
-                <x-hearth-alert class="bg-grey-1" x-show="true" :dismissable="false" :title="__('Missing an engagement?')">
-                    <p>{{ __('To include an engagement in a quote request, you must have filled out the engagement invitation.') }}
-                    </p>
-                </x-hearth-alert>
-                <livewire:estimate-requester :model="$project" />
+                @if ($project->isPublishable() && $engagements->count())
+                    @include('projects.partials.included-engagements')
+                    <x-hearth-alert class="bg-grey-1" x-show="true" :dismissable="false" :title="__('Missing an engagement?')">
+                        <p>{{ __('To include an engagement in a quote request, you must have filled out the engagement details (and meeting information for workshops and focus groups).') }}
+                        </p>
+                    </x-hearth-alert>
+                    <livewire:estimate-requester :model="$project" />
+                @else
+                    @if (!$project->isPublishable())
+                        <x-hearth-alert type="warning" x-show="true" :dismissable="false" :title="__('No engagements found')">
+                            <p>{{ __('To request an estimate, you must have created your project’s page.') }}
+                            </p>
+                        </x-hearth-alert>
+                    @endif
+                    @if (!$engagements->count())
+                        <x-hearth-alert type="warning" x-show="true" :dismissable="false" :title="__('No engagements found')">
+                            <p>{{ __('To request an estimate, you must have filled out your project’s engagement details (and meeting information for workshops and focus groups).') }}
+                            </p>
+                        </x-hearth-alert>
+                    @endif
+                @endif
             @endif
         </div>
         <div class="stack w-full md:w-1/2">

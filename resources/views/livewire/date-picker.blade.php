@@ -1,4 +1,4 @@
-<fieldset id="{{ $name }}">
+<fieldset class="field @error($name) field--error @enderror" id="{{ $name }}">
     <legend>
         {{ $label ?? __('forms.label_date') }}
     </legend>

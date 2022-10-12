@@ -153,6 +153,7 @@ require __DIR__.'/defined-terms.php';
 require __DIR__.'/organizations.php';
 require __DIR__.'/regulated-organizations.php';
 require __DIR__.'/projects.php';
+require __DIR__.'/meetings.php';
 require __DIR__.'/notification-list.php';
 require __DIR__.'/engagements.php';
 require __DIR__.'/resources.php';

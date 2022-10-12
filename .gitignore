@@ -19,3 +19,4 @@ yarn-error.log
 _ide_helper*
 /public/build/assets/
 /public/build/manifest.json
+.env.local-dev

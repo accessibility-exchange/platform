@@ -21,7 +21,7 @@
 
         <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
             <fieldset>
-                <legend>{{ __('Contact person (required)') }}</legend>
+                <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
 
                 <x-hearth-radio-buttons name="preferred_contact_person" :options="[
                     ['value' => 'me', 'label' => __('Me')],
@@ -33,7 +33,7 @@
             <fieldset x-show="contactPerson == 'me'">
                 <legend>{{ __('Contact information') }}</legend>
                 <div class="field @error('email') field-error @enderror">
-                    <x-hearth-label for="email" :value="__('My email (required)')" />
+                    <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
                     <x-hearth-input name="email" type="email" :value="old('email', $individual->user->email)" />
                     <x-hearth-hint for="email">
                         {{ __('This is also the email you use to sign in to this account. If you change this, you are also changing your sign in email.') }}
@@ -41,7 +41,7 @@
                     <x-hearth-error for="email" />
                 </div>
                 <div class="field @error('phone') field-error @enderror">
-                    <x-hearth-label for="phone" :value="__('My phone number (required)')" />
+                    <x-hearth-label for="phone" :value="__('My phone number') . ' ' . __('(required)')" />
                     <x-hearth-input name="phone" type="tel" :value="old(
                         'phone',
                         $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
@@ -59,7 +59,7 @@
             <fieldset x-show="contactPerson == 'support-person'">
                 <legend>{{ __('Contact information') }}</legend>
                 <div class="field @error('support_person_name') field-error @enderror">
-                    <x-hearth-label for="support_person_name" :value="__('My support person’s name (required)')" />
+                    <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
                     <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}
                     </x-hearth-hint>
                     <x-hearth-input id="support_person_name" name="support_person_name" :value="old('support_person_name', $individual->user->support_person_name)" required
@@ -67,7 +67,7 @@
                     <x-hearth-error for="support_person_name" field="support_person_name" />
                 </div>
                 <div class="field @error('support_person_email') field-error @enderror">
-                    <x-hearth-label for="support_person_email" :value="__('My support person’s email (required)')" />
+                    <x-hearth-label for="support_person_email" :value="__('My support person’s email') . ' ' . __('(required)')" />
                     <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
                     <x-hearth-error for="support_person_email" />
                 </div>
@@ -90,7 +90,8 @@
             </fieldset>
 
             <div class="field @error('preferred_contact_method') field-error @enderror">
-                <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}
+                <x-hearth-label for="preferred_contact_method">
+                    {{ __('Preferred contact method') . ' ' . __('(required)') }}
                 </x-hearth-label>
                 <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                     'email' => __('Email'),
@@ -105,7 +106,8 @@
                 <h2>{{ __('Consultations') }}</h2>
 
                 <fieldset class="field @error('consulting_methods') field--error @enderror">
-                    <legend>{{ __('Please indicate the types of consultations you are willing to do. (required)') }}
+                    <legend>
+                        {{ __('Please indicate the types of consultations you are willing to do.') . ' ' . __('(required)') }}
                     </legend>
                     <x-hearth-checkboxes name="consulting_methods" :options="$consultingMethods" :checked="old('consulting_methods', $selectedConsultingMethods)"
                         x-model.number="consultingMethods" />
@@ -115,7 +117,8 @@
                 <fieldset class="field @error('meeting_types') field--error @enderror"
                     x-show="consultingMethods.includes({{ $interviews }}) || consultingMethods.includes({{ $focusGroups }}) || consultingMethods.includes({{ $workshops }})"
                     x-cloak>
-                    <legend>{{ __('Please indicate the types of meetings you are willing to attend. (required)') }}
+                    <legend>
+                        {{ __('Please indicate the types of meetings you are willing to attend.') . ' ' . __('(required)') }}
                     </legend>
                     <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :checked="old('meeting_types', $individual->meeting_types ?? [])" />
                     <x-hearth-error for="meeting_types" />

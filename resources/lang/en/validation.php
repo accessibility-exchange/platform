@@ -98,7 +98,7 @@ return [
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => 'You must enter your :attribute.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -106,6 +106,7 @@ return [
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
     'phone' => 'The :attribute is not a valid phone number.',
+    'prohibits' => 'The :attribute field is prohibited when :other is present.',
     'prohibited' => 'The :attribute field is prohibited.',
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
@@ -171,6 +172,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => __('email address'),
+        'phone' => __('phone number'),
+        'support_person_email' => __('support person’s email address'),
+        'support_person_phone' => __('support person’s phone number'),
+        'contact_person_email' => __('contact person’s email address'),
+        'contact_person_phone' => __('contact person’s phone number'),
+    ],
 
 ];

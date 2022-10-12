@@ -73,6 +73,16 @@ class UpdateOrganizationRequest extends FormRequest
         return [
             'about.fr' => __('"About your organization" (French)'),
             'about.en' => __('"About your organization" (English)'),
+            'locality' => __('city or town'),
+            'region' => __('province or territory'),
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.*.required_without' => __('You must enter your organization name.'),
+            'about.*.required_without' => __('You must fill out the field “About your organization”.'),
         ];
     }
 }

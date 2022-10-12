@@ -4,7 +4,7 @@
             <x-hearth-alert type="error" :title="__('hearth::forms.errors_found')">
                 <p>{{ __('hearth::forms.errors_found_message') }}</p>
                 <ul>
-                    @foreach ($bag->all() as $error)
+                    @foreach ($bag->unique() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>

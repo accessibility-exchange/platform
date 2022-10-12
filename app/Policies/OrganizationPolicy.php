@@ -40,6 +40,12 @@ class OrganizationPolicy
             ]));
         }
 
+        if ($organization->checkStatus('draft')) {
+            return $user->isAdministratorOf($organization) && $organization->isPublishable()
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        }
+
         return $user->individual || $user->organization || $user->regulated_organization
             ? Response::allow()
             : Response::deny();

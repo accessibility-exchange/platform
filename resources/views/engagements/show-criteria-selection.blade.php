@@ -3,7 +3,9 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></li>
+            <li><a
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+            </li>
         </ol>
         <p class="h4">{{ $surtitle }}</p>
         <h1 class="mt-0">
@@ -95,7 +97,7 @@
                     <fieldset class="field @error('disability_types') field--error @enderror" x-cloak
                         x-show="crossDisability == 0">
                         <legend>
-                            {{ __('What specific disability and Deaf group or groups are you interested in engaging? (required)') }}
+                            {{ __('What specific disability and Deaf group or groups are you interested in engaging?') . ' ' . __('(required)') }}
                         </legend>
                         <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old(
                             'disability_types',
@@ -266,7 +268,7 @@
             </div>
         </div>
 
-        <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+        <hr class="divider--thick" />
 
         <fieldset class="field stack">
             <legend>
@@ -280,20 +282,20 @@
             <div class="field @error('ideal_participants') field--error @enderror">
                 <x-hearth-label for="ideal_participants">{{ __('Ideal number of participants') }}</x-hearth-label>
                 <x-hearth-hint for="ideal_participants">
-                    {{ __('This is the ideal number of participants you would like to have for this engagement.') }}
+                    {{ __('This is the ideal number of participants you would like to have for this engagement. The least you can select is 10 participants.') }}
                 </x-hearth-hint>
                 <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)"
-                    min="1" hinted required />
+                    min="10" hinted required />
                 <x-hearth-error for="ideal_participants" />
             </div>
 
             <div class="field @error('minimum_participants') field--error @enderror">
                 <x-hearth-label for="minimum_participants">{{ __('Minimum number of participants') }}</x-hearth-label>
                 <x-hearth-hint for="minimum_participants">
-                    {{ __('The least number of participants you can have to go forward with your engagement.') }}
+                    {{ __('The least number of participants you can have to go forward with your engagement. The least you can select is 10 participants.') }}
                 </x-hearth-hint>
                 <x-hearth-input class="w-24" name="minimum_participants" type="number" :value="old('minimum_participants', $engagement->minimum_participants)"
-                    min="1" hinted required />
+                    min="10" hinted required />
                 <x-hearth-error for="minimum_participants" />
             </div>
         </fieldset>

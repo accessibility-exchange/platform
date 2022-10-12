@@ -11,8 +11,11 @@
                 </form>
             @endif
             <div class="stack">
-                <h1 class="repel">
-                    <span id="individual">{{ $individual->name }}</span>
+                <div class="repel">
+                    <h1>
+                        <span id="individual">{{ $individual->name }}</span>
+                    </h1>
+
                     @can('update', $individual)
                         <form action="{{ localized_route('individuals.update-publication-status', $individual) }}"
                             method="POST" novalidate>
@@ -22,14 +25,15 @@
                             @if ($individual->checkStatus('published'))
                                 <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
                             @else
-                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')" />
+                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
+                                    :disabled="!Auth::user()->can('publish', $individual)" />
                             @endif
                         </form>
                     @endcan
                     @can('block', $individual)
                         <x-block-modal :blockable="$individual" />
                     @endcan
-                </h1>
+                </div>
                 <div class="meta">
                     @if ($individual->pronouns)
                         <p>{{ $individual->pronouns }}</p>
@@ -50,14 +54,14 @@
                         @if ($individual->social_links)
                             @foreach ($individual->social_links as $key => $value)
                                 <li>
-                                    <a class="weight:semibold with-icon"
+                                    <a class="with-icon font-semibold"
                                         href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                                 </li>
                             @endforeach
                         @endif
                         @if (!empty($individual->website_link))
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $individual->website_link }}">
+                                <a class="with-icon font-semibold" href="{{ $individual->website_link }}">
                                     <x-heroicon-o-globe-alt class="icon" />
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>

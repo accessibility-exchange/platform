@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Makeable\QueryKit\QueryKit;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
@@ -231,6 +234,7 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    /** TODO: add project and engagement-level consultants.
     public function consultingProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'organizational_consultant_id');
@@ -248,7 +252,7 @@ class Organization extends Model
             (new Engagement())->project()
         );
     }
-
+     **/
     public function connectingEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class, 'organizational_connector_id');
@@ -298,13 +302,70 @@ class Organization extends Model
 
     public function isPublishable(): bool
     {
-        return ! is_null($this->languages)
-            && ! is_null($this->working_languages)
-            && ! is_null($this->locality)
-            && ! is_null($this->region)
-            && ! is_null($this->about)
-            && ! is_null($this->service_areas)
-            && ! is_null($this->contact_person_name);
+        $publishRules = [
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
+            'consulting_services' => [
+                Rule::requiredIf(fn () => $this->isConsultant()),
+                Rule::excludeIf(fn () => ! $this->isConsultant()),
+            ],
+            'contact_person_name' => 'required',
+            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'extra_attributes.has_age_brackets' => 'required',
+            'extra_attributes.has_ethnoracial_identities' => 'required',
+            'extra_attributes.has_gender_and_sexual_identities' => 'required',
+            'extra_attributes.has_refugee_and_immigrant_constituency' => 'required',
+            'extra_attributes.has_indigenous_identities' => 'required',
+            'languages' => 'required',
+            'locality' => 'required',
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
+            'preferred_contact_method' => 'required',
+            'region' => 'required',
+            'roles' => 'required',
+            'service_areas' => 'required',
+            'staff_lived_experience' => 'required',
+            'type' => 'required',
+            'working_languages' => 'required',
+        ];
+
+        try {
+            Validator::validate($this->toArray(), $publishRules);
+        } catch (ValidationException $exception) {
+            return false;
+        }
+
+        if (! $this->livedExperiences()->count()) {
+            return false;
+        }
+
+        if (! $this->areaTypes()->count()) {
+            return false;
+        }
+
+        if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBrackets()->count()) {
+            return false;
+        }
+
+        if ($this->extra_attributes['has_ethnoracial_identities'] && ! $this->ethnoracialIdentities()->count()) {
+            return false;
+        }
+
+        if (
+            $this->extra_attributes['has_gender_and_sexual_identities'] &&
+            ! $this->genderIdentities()->count() &&
+            ! $this->constituencies->contains(Constituency::firstWhere('name->en', 'Trans person')) &&
+            ! $this->constituencies->contains(Constituency::firstWhere('name->en', '2SLGBTQIA+ person'))
+        ) {
+            return false;
+        }
+
+        if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
+            return false;
+        }
+
+        return true;
     }
 
     public function blocks(): MorphToMany

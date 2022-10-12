@@ -62,7 +62,7 @@
             @endif
     @endif
     </fieldset>
-    <hr class="mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid border-t-blue-7" />
+    <hr class="divider--thick" />
     <div class="flex flex-row gap-6">
         <a class="cta secondary" href="{{ localized_route('engagements.manage-connector', $engagement) }}">
             <x-heroicon-o-arrow-left role="presentation" aria-hidden="true" /> {{ __('Cancel') }}

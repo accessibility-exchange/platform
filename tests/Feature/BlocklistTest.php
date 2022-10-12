@@ -4,6 +4,11 @@ use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
+
+beforeEach(function () {
+    Config::set('app.features.blocking', true);
+});
 
 test('only individual users can have a block list', function () {
     $user = User::factory()->create();
@@ -21,8 +26,7 @@ test('only individual users can have a block list', function () {
 
 test('individual users can block and unblock regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation']]);
-    $regulatedOrganization->publish();
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertSee('Block');
@@ -62,7 +66,7 @@ test('individual users can block and unblock regulated organizations', function 
 
 test('individual users can block and unblock organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation']]);
+    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertSee('Block');
