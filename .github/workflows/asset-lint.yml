@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: technote-space/get-diff-action@v6
+        id: git-diff
         with:
           patterns: |
             package.json
@@ -20,20 +21,20 @@ jobs:
             **/*.css
             **/*.js"
       - uses: actions/setup-node@v3
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         with:
           node-version: "16"
       - name: Cache node modules
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         run: npm install
         env:
           CI: true
       - name: Lint files
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         run: npm run lint
