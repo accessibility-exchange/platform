@@ -122,6 +122,7 @@ dataset('regulatedOrganizationIsPublishable', function () {
             true,
             array_replace_recursive($baseModel, [
                 'contact_person_phone' => null,
+                'preferred_contact_method' => 'email',
             ]),
             ['sector'],
         ],
@@ -129,6 +130,7 @@ dataset('regulatedOrganizationIsPublishable', function () {
             true,
             array_replace_recursive($baseModel, [
                 'contact_person_email' => null,
+                'preferred_contact_method' => 'phone',
             ]),
             ['sector'],
         ],

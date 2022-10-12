@@ -20,12 +20,14 @@
         @method('put')
 
         <fieldset class="field @error('sectors') field--error @enderror">
-            <legend>{{ __('What types of Regulated Organizations are you interested in? (optional)') }}</legend>
+            <legend>{{ __('What types of Regulated Organizations are you interested in?') . ' ' . __('(optional)') }}
+            </legend>
             <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
         </fieldset>
 
         <fieldset class="field @error('impacts') field--error @enderror">
-            <legend>{{ __('What areas would you most like to impact within a Regulated Organization? (optional)') }}
+            <legend>
+                {{ __('What areas would you most like to impact within a Regulated Organization?') . ' ' . __('(optional)') }}
             </legend>
             <x-hearth-hint for="impacts">
                 {{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}

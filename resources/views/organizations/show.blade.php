@@ -20,7 +20,7 @@
                 @endcan
             </h1>
             <p class="meta">
-                <strong>{{ Str::ucfirst(__('organization.types.' . $organization->type . '.name')) }}</strong><br />
+                <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
                 @foreach ($organization->roles as $role)
                     {{ $role }}@if (!$loop->last)
                         ,
@@ -34,7 +34,7 @@
                     @if (($organization->social_links && count($organization->social_links) > 0) || $organization->website_link)
                         @if ($organization->website_link)
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $organization->website_link }}">
+                                <a class="with-icon font-semibold" href="{{ $organization->website_link }}">
                                     <x-heroicon-o-globe-alt class="icon" />
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
@@ -43,7 +43,7 @@
                         @if ($organization->social_links)
                             @foreach ($organization->social_links as $key => $value)
                                 <li>
-                                    <a class="weight:semibold with-icon"
+                                    <a class="with-icon font-semibold"
                                         href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                                 </li>
                             @endforeach

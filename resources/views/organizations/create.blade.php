@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="title">
-        {{ __('Create new :type', ['type' => __('organization.types.' . $type . '.name')]) }}
+        {{ __('Create new :type', ['type' => App\Enums\OrganizationType::labels()[$type]]) }}
     </x-slot>
     <x-slot name="header">
-        <h1>{{ __('Create new :type', ['type' => __('organization.types.' . $type . '.name')]) }}</h1>
+        <h1>{{ __('Create new :type', ['type' => App\Enums\OrganizationType::labels()[$type]]) }}</h1>
     </x-slot>
 
     <form class="stack" action="{{ localized_route('organizations.store') }}" method="post" novalidate>
@@ -32,14 +32,14 @@
     @foreach (['en', 'fr'] as $locale)
         @error('name.' . $locale)
             @if ($message ===
-                __('A :type with this name already exists.', ['type' => __('organization.types.' . $type . '.name')]))
+                __('A :type with this name already exists.', ['type' => App\Enums\OrganizationType::labels()[$type]]))
                 <div class="stack">
                     @php
                         $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first();
                     @endphp
                     <x-live-region>
                         <x-hearth-alert type="error">
-                            {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => __('organization.types.' . $type . '.name'), 'name' => old('name.' . $locale)]) }}
+                            {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => App\Enums\OrganizationType::labels()[$type], 'name' => old('name.' . $locale)]) }}
                         </x-hearth-alert>
                     </x-live-region>
                     <x-card.organization level="3" :model="$organization" />

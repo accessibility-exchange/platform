@@ -104,9 +104,12 @@ class ProjectController extends Controller
             $language = false;
         }
 
+        $engagements = Engagement::status('published')->where('project_id', $project->id)->get();
+
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
+            'engagements' => $engagements,
         ]);
     }
 
@@ -207,8 +210,6 @@ class ProjectController extends Controller
 
     public function manageEstimatesAndAgreements(Project $project): View
     {
-        // TODO: Restrict access to publishable projects with at least one publishable engagement.
-
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
             'engagements' => $project->engagements->filter(fn ($engagement) => $engagement->hasProvidedRequiredInformation()),

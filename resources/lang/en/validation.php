@@ -172,6 +172,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => __('email address'),
+        'phone' => __('phone number'),
+        'support_person_email' => __('support person’s email address'),
+        'support_person_phone' => __('support person’s phone number'),
+        'contact_person_email' => __('contact person’s email address'),
+        'contact_person_phone' => __('contact person’s phone number'),
+    ],
 
 ];

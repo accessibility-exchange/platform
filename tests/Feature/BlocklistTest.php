@@ -4,6 +4,11 @@ use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Illuminate\Support\Facades\Config;
+
+beforeEach(function () {
+    Config::set('app.features.blocking', true);
+});
 
 test('only individual users can have a block list', function () {
     $user = User::factory()->create();

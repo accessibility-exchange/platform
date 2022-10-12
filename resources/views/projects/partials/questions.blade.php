@@ -5,7 +5,7 @@
             'name' => $project->contact_person_name,
             'email' => $project->contact_person_email,
             'extra' => $project->contact_person_phone
-                ? __('or phone :phone', ['phone' => $project->contact_person_phone->formatForCountry('CA')])
+                ? __(' or phone :phone', ['phone' => $project->contact_person_phone->formatForCountry('CA')])
                 : '',
         ]),
     ) !!}

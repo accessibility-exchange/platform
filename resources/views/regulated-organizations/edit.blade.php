@@ -57,7 +57,7 @@
                 </div>
 
                 <fieldset>
-                    <legend>{{ __('Your headquarters location (required)') }}</legend>
+                    <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
 
                     <div class="field">
                         <x-hearth-label for="locality" :value="__('forms.label_locality')" />
@@ -70,7 +70,7 @@
                 </fieldset>
 
                 <fieldset x-data="enhancedCheckboxes()">
-                    <legend>{{ __('Where are your organization’s service areas? (required)') }}</legend>
+                    <legend>{{ __('Where are your organization’s service areas?') . ' ' . __('(required)') }}</legend>
                     <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
                     <div class="stack" x-cloak>
                         <button class="secondary" type="button"
@@ -81,20 +81,20 @@
                 </fieldset>
 
                 <fieldset class="field @error('sectors') field--error @enderror">
-                    <legend>{{ __('What type of regulated organization are you? (required)') }}</legend>
+                    <legend>{{ __('What type of regulated organization are you?') . ' ' . __('(required)') }}</legend>
 
                     <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $regulatedOrganization->sectors->pluck('id')->toArray() ?? [])" />
                     <x-hearth-error for="sectors" />
                 </fieldset>
 
                 <div class="field @error('about') field--error @enderror">
-                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization (required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
+                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
                         required />
                 </div>
 
                 <fieldset class="stack">
                     <legend>
-                        <h2>{{ __('Accessibility and inclusion links (optional)') }}</h2>
+                        <h2>{{ __('Accessibility and inclusion links') . ' ' . __('(optional)') }}</h2>
                     </legend>
                     <p class="field__hint">
                         {{ __('Please include any links that describes the accessibility and inclusion initiatives your regulated entity has. This can include reports, case studies, and more.') }}
@@ -102,7 +102,7 @@
                     <livewire:web-links name="accessibility_and_inclusion_links" :links="$regulatedOrganization->accessibility_and_inclusion_links ?? []" />
                 </fieldset>
 
-                <h2>{{ __('Social media and website links (optional)') }}</h2>
+                <h2>{{ __('Social media and website links') . ' ' . __('(optional)') }}</h2>
 
                 <fieldset class="stack">
                     <legend>
@@ -110,7 +110,7 @@
                     </legend>
                     @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                         <div class="field @error('social_links.' . $key) field--error @enderror">
-                            <x-hearth-label for="social_links_{{ $key }}" :value="__(':service (optional)', ['service' => Str::studly($key)])" />
+                            <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                             <x-hearth-input id="social_links_{{ $key }}"
                                 name="social_links[{{ $key }}]" :value="old(
                                     'social_links.' . $key,
@@ -124,14 +124,14 @@
                 <h3>{{ __('Organization website') }}</h3>
 
                 <div class="field">
-                    <x-hearth-label for="website_link" :value="__('Website link (optional)')" />
+                    <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
                     <x-hearth-input name="website_link" type="url" :value="old('website_link', $regulatedOrganization->website_link)" />
                 </div>
 
                 <h3>{{ __('Contact information') }}</h3>
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    <x-hearth-label for="contact_person_name" :value="__('Name of contact person (required)')" />
+                    <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
                     <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
                     </x-hearth-hint>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $regulatedOrganization->contact_person_name)" required
@@ -159,7 +159,8 @@
                 </div>
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
-                    <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method (required)') }}
+                    <x-hearth-label for="preferred_contact_method">
+                        {{ __('Preferred contact method') . ' ' . __('(required)') }}
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                         'email' => __('Email'),

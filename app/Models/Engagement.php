@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
 use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -33,6 +35,7 @@ class Engagement extends Model
 
     protected $fillable = [
         'project_id',
+        'published_at',
         'languages',
         'name',
         'format',
@@ -138,6 +141,46 @@ class Engagement extends Model
     {
         return Attribute::make(
             get: fn ($value) => EngagementFormat::labels()[$this->format],
+        );
+    }
+
+    public function meetingDates(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                if (! $this->meetings->count()) {
+                    return null;
+                }
+
+                $meetings = $this->meetings->sortBy('date');
+                $start = $meetings->first()->date;
+                $end = $meetings->pop()->date;
+
+                if ($start->isoFormat('LL') === $end->isoFormat('LL')) {
+                    return $start->isoFormat('LL');
+                }
+
+                if ($start->format('MM') === $end->format('MM')) {
+                    return $start->isoFormat('MMMM D').'–'.$end->isoFormat('D, YYYY');
+                }
+
+                return $start->isoFormat('MMMM D').'–'.$end->isoFormat('LL');
+            }
+        );
+    }
+
+    public function displayMeetingTypes(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->format === 'interviews') {
+                    return Arr::map($this->meeting_types, fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
+                } elseif ($this->meetings->count()) {
+                    return Arr::map($this->meetings->pluck('meeting_types')->flatten()->unique()->toArray(), fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
+                } else {
+                    return [];
+                }
+            }
         );
     }
 

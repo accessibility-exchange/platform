@@ -38,7 +38,7 @@
 
             <div class="field @error('preferred_notification_method') field--error @enderror">
                 <x-hearth-label for="preferred_notification_method">
-                    {{ __('Preferred notification method (required)') }}</x-hearth-label>
+                    {{ __('Preferred notification method') . ' ' . __('(required)') }}</x-hearth-label>
                 @if (!in_array('phone', $user->organization->contact_methods))
                     <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
                 @elseif(!in_array('email', $user->organization->contact_methods))

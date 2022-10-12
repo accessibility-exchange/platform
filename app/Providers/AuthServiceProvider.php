@@ -57,7 +57,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('block', function (User $user) {
-            return $user->context === 'individual'
+            return config('app.features.blocking') && $user->context === 'individual'
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });

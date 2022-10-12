@@ -76,8 +76,8 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'social_links.*' => 'nullable|active_url',
             'website_link' => 'nullable|active_url',
             'contact_person_name' => 'required|string',
-            'contact_person_email' => 'nullable|email|required_without:contact_person_phone',
-            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_email' => 'nullable|email|required_without:contact_person_phone|required_if:preferred_contact_method,email',
+            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
         ];
@@ -113,9 +113,10 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.*.required_without' => __("You must enter your organization's name in either English or French."),
-            'accessibility_and_inclusion_links.*.title.required_with' => __('You must enter an accessibility and inclusion link title if you have entered a link.'),
-            'accessibility_and_inclusion_links.*.url.required_with' => __('You must enter an accessibility and inclusion link if you have entered a link title.'),
+            'name.*.required_without' => __('You must enter your organization name.'),
+            'accessibility_and_inclusion_links.*.title.required_with' => __('Since a website link under “Accessibility and Inclusion links” has been entered, you must also enter a website title.'),
+            'accessibility_and_inclusion_links.*.url.required_with' => __('Since a website title under “Accessibility and Inclusion links” has been entered, you must also enter a website link.'),
+            'accessibility_and_inclusion_links.*.url.active_url' => __('Please enter a valid website link under “Accessibility and Inclusion links”.'),
         ];
     }
 }

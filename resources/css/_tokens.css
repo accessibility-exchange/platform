@@ -1,4 +1,4 @@
-/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-09-20.
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-10-11.
     Tokens location: ./tailwind.config.js */
 :root {
     --color-black: #000;
@@ -15,6 +15,7 @@
     --color-blue-7: #26296a;
     --color-blue-6: #3842aa;
     --color-blue-5: #7077cb;
+    --color-blue-1: #f5f7fe;
     --color-green-5: #00aea9;
     --color-green-2: #92e5e3;
     --color-green-1: #bfe2e1;
@@ -30,6 +31,7 @@
     --color-yellow-1: #ebedbb;
     --color-red-9: #691616;
     --color-red-8: #922020;
+    --color-red-6: #cd2c2d;
     --color-red-2: #f6a7a7;
     --color-red-1: #f5cdcd;
     --space-0: 0;
@@ -110,6 +112,23 @@
     --font-bold: 700;
     --font-extrabold: 800;
     --font-black: 900;
+    --max-w-0: 0;
+    --max-w-none: none;
+    --max-w-xs: 20rem;
+    --max-w-sm: 24rem;
+    --max-w-md: 28rem;
+    --max-w-lg: 32rem;
+    --max-w-xl: 36rem;
+    --max-w-2xl: 42rem;
+    --max-w-3xl: 48rem;
+    --max-w-4xl: 56rem;
+    --max-w-5xl: 64rem;
+    --max-w-6xl: 72rem;
+    --max-w-7xl: 80rem;
+    --max-w-full: 100%;
+    --max-w-min: min-content;
+    --max-w-max: max-content;
+    --max-w-fit: fit-content;
     --max-w-form: 48rem;
     --max-w-prose: 70ch;
 }

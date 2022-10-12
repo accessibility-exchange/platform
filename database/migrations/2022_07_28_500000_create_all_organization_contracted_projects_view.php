@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::createOrReplaceMergeViewWithoutDuplicates(
             'all_organization_contracted_projects',
             [
+                /** TODO: add project and engagement-level consultants.
                 (new Organization)->consultingProjects(),
                 (new Organization)->consultingEngagementProjects(),
+                 **/
                 (new Organization)->connectingEngagementProjects(),
             ]
         );

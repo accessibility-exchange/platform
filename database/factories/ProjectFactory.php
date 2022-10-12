@@ -34,6 +34,7 @@ class ProjectFactory extends Factory
             'regions' => ['AB'],
             'start_date' => $start,
             'end_date' => $end,
+            'outcome_analysis' => ['internal'],
             'contact_person_email' => $this->faker->email,
             'contact_person_name' => $this->faker->name,
             'published_at' => date('Y-m-d h:i:s', time()),

@@ -82,10 +82,6 @@ class AccessSupportSeeder extends Seeder
                 'in_person' => true,
             ],
             [
-                'name' => __('Accessible, gender neutral single-stall washroom'),
-                'in_person' => true,
-            ],
-            [
                 'name' => __('Bring my service or therapy animal'),
                 'in_person' => true,
             ],

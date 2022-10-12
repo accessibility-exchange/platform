@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\MeetingType;
 use App\Models\ConsultingMethod;
+use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -11,6 +12,8 @@ use Illuminate\Validation\Validator;
 
 class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
+    use ConditionallyRequireContactMethods;
+
     public function authorize(): bool
     {
         return $this->user()->context == 'individual';
@@ -48,15 +51,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function withValidator(Validator $validator)
     {
-        $validator->sometimes('preferred_contact_method', 'in:email', function ($input) {
-            return $input->preferred_contact_person == 'me' && ! is_null($input->email) && is_null($input->phone) ||
-                $input->preferred_contact_person == 'support-person' && ! is_null($input->support_person_email) && is_null($input->support_person_phone);
-        });
-
-        $validator->sometimes('preferred_contact_method', 'in:phone', function ($input) {
-            return  $input->preferred_contact_person == 'me' && is_null($input->email) && ! is_null($input->phone) ||
-                $input->preferred_contact_person == 'support-person' && is_null($input->support_person_email) && ! is_null($input->support_person_phone);
-        });
+        $this->conditionallyRequireContactMethods($validator);
 
         $validator->sometimes('meeting_types', 'required', function ($input) {
             $interviews = ConsultingMethod::where('name->en', 'Interviews')->first()->id;
@@ -73,16 +68,6 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [],
             'meeting_types' => [],
         ]);
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'email' => __('email address'),
-            'phone' => __('phone number'),
-            'contact_person_email' => __('email address'),
-            'contact_person_phone' => __('phone number'),
-        ];
     }
 
     public function messages(): array

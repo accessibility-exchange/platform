@@ -234,6 +234,7 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    /** TODO: add project and engagement-level consultants.
     public function consultingProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'organizational_consultant_id');
@@ -251,7 +252,7 @@ class Organization extends Model
             (new Engagement())->project()
         );
     }
-
+     **/
     public function connectingEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class, 'organizational_connector_id');
@@ -308,9 +309,9 @@ class Organization extends Model
                 Rule::requiredIf(fn () => $this->isConsultant()),
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
-            'contact_person_email' => 'nullable|required_without:contact_person_phone',
             'contact_person_name' => 'required',
-            'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'extra_attributes.has_age_brackets' => 'required',
             'extra_attributes.has_ethnoracial_identities' => 'required',
             'extra_attributes.has_gender_and_sexual_identities' => 'required',

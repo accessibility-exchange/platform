@@ -347,6 +347,11 @@ test('administrative user can be retrieved via query scope', function () {
     expect(User::whereAdministrator()->get())->toHaveCount(1);
 });
 
+test('user email with mixed case is saved as lower case', function () {
+    $user = User::factory()->create(['email' => 'John.Smith@example.com']);
+    expect($user->email)->toEqual('john.smith@example.com');
+});
+
 test('user’s notifications can be merged from all available sources', function () {
     $this->markTestIncomplete();
 });

@@ -245,4 +245,18 @@ return [
         'regulated-organization',
         'regulated-organization-employee',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Features
+    |--------------------------------------------------------------------------
+    |
+    | These are features which can be enabled or disabled. Right now, this
+    | capability is primarily a way to disable parts of a feature that is not
+    | fully implemented.
+    |
+    */
+    'features' => [
+        'blocking' => false,
+    ],
 ];

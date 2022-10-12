@@ -36,7 +36,7 @@
                         $regulatedOrganization->website_link)
                         @if ($regulatedOrganization->website_link)
                             <li>
-                                <a class="weight:semibold with-icon" href="{{ $regulatedOrganization->website_link }}">
+                                <a class="with-icon font-semibold" href="{{ $regulatedOrganization->website_link }}">
                                     <x-heroicon-o-globe-alt class="icon" />
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
@@ -45,7 +45,7 @@
                         @if ($regulatedOrganization->social_links)
                             @foreach ($regulatedOrganization->social_links as $key => $value)
                                 <li>
-                                    <a class="weight:semibold with-icon"
+                                    <a class="with-icon font-semibold"
                                         href="{{ $value }}">@svg('forkawesome-' . str_replace('_', '', $key), 'icon'){{ Str::studly($key) }}</a>
                                 </li>
                             @endforeach

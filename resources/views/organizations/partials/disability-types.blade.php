@@ -1,7 +1,7 @@
 <fieldset class="field @error('disability_types') field--error @enderror" x-show="livedExperiences.includes(1)"
-    x-data="{ baseDisabilityType: '{{ old('base_disability_type', $organization->disabilityTypes->contains($crossDisability) ? '1' : null) }}', otherDisability: {{ old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '' ? 'true' : 'false') }} }">
+    x-data="{ baseDisabilityType: '{{ old('base_disability_type', $organization->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '' ? 'true' : 'false') }} }">
     <legend>
-        {{ __('Please select people with disabilities that you specifically :represent_or_serve_and_support (required)', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+        {{ __('Please select people with disabilities that you specifically :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
     </legend>
     <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $organization->disabilityTypes->contains($crossDisability) ? '1' : null)"
         x-model="baseDisabilityType" />

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class EncryptedUserProvider extends EloquentUserProvider
 {
@@ -27,7 +28,7 @@ class EncryptedUserProvider extends EloquentUserProvider
 
         foreach ($credentials as $key => $value) {
             if ($key === 'email') {
-                $query->whereBlind('email', 'email_index', $value);
+                $query->whereBlind('email', 'email_index', Str::lower($value));
             } elseif (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
             } elseif ($value instanceof \Closure) {
