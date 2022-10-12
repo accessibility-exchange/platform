@@ -198,9 +198,9 @@ class Project extends Model
     public function isPublishable(): bool
     {
         $publishRules = [
-            'contact_person_email' => 'required_without:contact_person_phone',
             'contact_person_name' => 'required',
-            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email',
+            'contact_person_email' => 'nullable|required_without:contact_person_phone|required_if:preferred_contact_method,email',
+            'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_response_time' => 'required',
             'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr',
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en',

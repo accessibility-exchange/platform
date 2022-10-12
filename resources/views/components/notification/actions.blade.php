@@ -1,5 +1,5 @@
 @props(['notification'])
-<div class="actions flex gap-5">
+<div class="actions flex gap-3">
     {{ $slot ?? '' }}
 
     @if (!$notification->read_at)

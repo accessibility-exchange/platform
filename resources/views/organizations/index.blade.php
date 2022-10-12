@@ -16,7 +16,7 @@
                     <strong>{{ __('Community organization') }}</strong>
                     @if ($organization->display_roles)
                         <br />
-                        <strong class="weight:semibold">{{ __('Roles') }}:</strong>
+                        <strong class="font-semibold">{{ __('Roles') }}:</strong>
                         @foreach ($organization->display_roles as $role)
                             {{ $role }}@if (!$loop->last)
                                 ,
@@ -27,10 +27,10 @@
 
                 @if ($organization->hasAddedDetails())
                     <p>
-                        <strong class="weight:semibold">{{ __('Location') }}:</strong> {{ $organization->locality }},
+                        <strong class="font-semibold">{{ __('Location') }}:</strong> {{ $organization->locality }},
                         {{ get_region_name($organization->region, ['CA'], locale()) }}@if ($organization->representables)
                             <br />
-                            <strong class="weight:semibold">{{ __('Communities served') }}:</strong>
+                            <strong class="font-semibold">{{ __('Communities served') }}:</strong>
                             @foreach ($organization->representables as $community)
                                 {{ $community->name }}@if (!$loop->last)
                                     ,

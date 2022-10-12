@@ -205,20 +205,7 @@
                 class="field @error('accepted_formats') field--error @enderror @error('other_accepted_formats') field--error @enderror @error('other_accepted_format') field--error @enderror stack"
                 x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !empty($engagement->other_accepted_format)) ? 1 : 'null' }} }">
                 <legend>{{ __('Accepted formats') }}</legend>
-                <x-hearth-checkboxes name="accepted_formats" :options="[
-                    [
-                        'value' => 'writing',
-                        'label' => __('Writing'),
-                    ],
-                    [
-                        'value' => 'audio',
-                        'label' => __('Audio recording'),
-                    ],
-                    [
-                        'value' => 'video',
-                        'label' => __('Video recording'),
-                    ],
-                ]" :checked="old('accepted_formats', $engagement->accepted_formats ?? [])" required />
+                <x-hearth-checkboxes name="accepted_formats" :options="$formats" :checked="old('accepted_formats', $engagement->accepted_formats ?? [])" required />
                 <x-hearth-error for="accepted_formats" />
                 <div class="field">
                     <x-hearth-checkbox name="other_accepted_formats" :checked="old('other_accepted_formats', !empty($engagement->other_accepted_format))"
@@ -279,11 +266,13 @@
 
         <div class="flex gap-4">
             <button>{{ __('Save') }}</button>
-            <button class="secondary" name="publish"
-                @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
-                    ({{ __('not available yet') }})
-                @endif
-            </button>
+            @if ($engagement->checkStatus('draft'))
+                <button class="secondary" name="publish" value="1"
+                    @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
+                        ({{ __('not available yet') }})
+                    @endif
+                </button>
+            @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())
             {!! Str::markdown(

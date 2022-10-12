@@ -273,7 +273,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     {
         return $this->hasManyDeepFromReverse(
             (new Project())->participants()
-        );
+        )->with('engagements');
     }
 
     public function inProgressParticipatingProjects(): HasManyDeep
@@ -300,6 +300,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ->orderBy('start_date');
     }
 
+    /** TODO: add project and engagement-level consultants.
     public function consultingProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'individual_consultant_id');
@@ -317,7 +318,7 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             (new Engagement())->project()
         );
     }
-
+     **/
     public function connectingEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class, 'individual_connector_id');
@@ -358,16 +359,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return $this->contractedProjects()
             ->whereDate('start_date', '>', Carbon::now())
             ->orderBy('start_date');
-    }
-
-    /**
-     * Has the user added any details to the individual?
-     *
-     * @return bool
-     */
-    public function hasAddedDetails(): bool
-    {
-        return ! empty($this->region);
     }
 
     /**

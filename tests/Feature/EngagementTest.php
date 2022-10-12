@@ -9,13 +9,12 @@ use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
 use App\Models\IndigenousIdentity;
-use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use App\Notifications\IndividualContractorInvited;
+use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DisabilityTypeSeeder;
 
@@ -123,6 +122,8 @@ test('users without regulated organization admin role cannot create engagements'
 });
 
 test('users can view engagements', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
 
@@ -326,6 +327,9 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->window_start_time->format('H:i:s'))->toEqual('09:00:00');
     expect($engagement->window_end_time->format('H:i:s'))->toEqual('17:00:00');
+    expect($engagement->display_meeting_types)->toContain('In person');
+    expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
+    expect($engagement->display_meeting_types)->toContain('Virtual – phone call');
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
     $response->assertOk();
@@ -442,192 +446,20 @@ test('engagements can reflect parent project’s estimate and agreement status',
     expect($engagement->hasEstimateAndAgreement())->toBeTrue();
 });
 
-test('engagements are only publishable if required fields are completed', function () {
-    $engagement = Engagement::factory()->create();
-
-    expect($engagement->isPublishable())->toBeFalse();
-
-    $this->markTestIncomplete();
-});
-
-test('individual user can accept invitation to an engagement as a connector', function () {
-    $this->seed(DisabilityTypeSeeder::class);
-
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => 'admin']
-    );
-
-    $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector']]);
-    $user->individual->publish();
-    $individual = $user->individual->fresh();
-
-    $invitation = Invitation::factory()->create([
-        'invitationable_type' => 'App\Models\Engagement',
-        'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'individual',
-        'email' => $individual->user->email,
-    ]);
-
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage', $engagement));
-    $response->assertOk();
-    $response->assertSee($individual->name);
-
-    $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
-    $individual->user->notify(new IndividualContractorInvited($invitation));
-
-    $databaseNotification = $individual->user->notifications->first();
-
-    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
-    $response->assertForbidden();
-
-    $response = $this->actingAs($individual->user)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-
-    $engagement = $engagement->fresh();
-
-    expect($engagement->connector->id)->toEqual($individual->id);
-    $this->assertModelMissing($databaseNotification);
-});
-
-test('individual user can decline invitation to an engagement as a connector', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => 'admin']
-    );
-
-    $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector']]);
-    $user->individual->publish();
-    $individual = $user->individual->fresh();
-
-    $invitation = Invitation::factory()->create([
-        'invitationable_type' => 'App\Models\Engagement',
-        'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'individual',
-        'email' => $individual->user->email,
-    ]);
-
-    $individual->user->notify(new IndividualContractorInvited($invitation));
-    $databaseNotification = $individual->user->notifications->first();
-
-    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($individual->user)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-
-    $this->assertModelMissing($invitation);
-    $this->assertModelMissing($databaseNotification);
-});
-
-test('organization user can accept invitation to an engagement as a connector', function () {
-    $this->seed(DisabilityTypeSeeder::class);
-
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => 'admin']
-    );
-
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
-
-    $organizationUser = User::factory()->create(['context' => 'organization']);
-
-    $organization->users()->attach(
-        $organizationUser,
-        ['role' => 'admin']
-    );
-
-    $invitation = Invitation::factory()->create([
-        'invitationable_type' => 'App\Models\Engagement',
-        'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'organization',
-        'email' => $organization->contact_person_email,
-    ]);
-
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage', $engagement));
-    $response->assertOk();
-    $response->assertSee($organization->name);
-
-    $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
-
-    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
-    $response->assertForbidden();
-
-    $response = $this->actingAs($organizationUser)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-
-    $engagement = $engagement->fresh();
-
-    expect($engagement->organizationalConnector->id)->toEqual($organization->id);
-});
-
-test('organization user can decline invitation to an engagement as a connector', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => 'admin']
-    );
-
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
-
-    $organizationUser = User::factory()->create(['context' => 'organization']);
-
-    $organization->users()->attach(
-        $organizationUser,
-        ['role' => 'admin']
-    );
-
-    $invitation = Invitation::factory()->create([
-        'invitationable_type' => 'App\Models\Engagement',
-        'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'organization',
-        'email' => $organization->contact_person_email,
-    ]);
-
-    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($organizationUser)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-
-    $this->assertModelMissing($invitation);
-});
-
 test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true) {
     $project = Project::factory()->create();
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
 
     // Fill data so that we don't hit a Database Integrity constraint violation during creation
-    $engagement = Engagement::factory()->create(['project_id' => $project->id]);
+    $engagement = Engagement::factory()->create(['project_id' => $project->id, 'published_at' => null]);
     $engagement->fill($data);
+    $engagement->save();
+    $engagement = $engagement->fresh();
 
     if ($meetings) {
         $engagement->meetings()->save(Meeting::factory()->create());
@@ -643,4 +475,75 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
     }
 
     expect($engagement->isPublishable())->toBe($expected);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.edit', $engagement));
+    if ($expected) {
+        $response->assertDontSee('disabled >', false);
+    } else {
+        $response->assertSee('disabled >', false);
+    }
+
+    $response = $this->actingAs($regulatedOrganizationUser)->put(localized_route('engagements.update', $engagement), array_merge($data, ['publish' => 1]));
+
+    $engagement = $engagement->fresh();
+    expect($engagement->checkStatus(new EngagementStatus('published')))->toEqual($expected);
 })->with('engagementIsPublishable');
+
+test('engagement participants can be listed by administrator or community connector', function () {
+    $user = User::factory()->create();
+
+    $connectorUser = User::factory()->create();
+    $connectorUser->individual->update(['roles' => ['connector']]);
+    $connectorUser->individual->publish();
+    $individualConnector = $connectorUser->individual->fresh();
+
+    $connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $connectorOrganization->users()->attach(
+        $connectorOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($user)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+    $response->assertDontSee('Add participant');
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+
+    $engagement->update(['individual_connector_id' => $individualConnector->id]);
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+    $response->assertSee('Add participant');
+
+    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+
+    $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
+    $engagement = $engagement->fresh();
+
+    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+    $response->assertSee('Add participant');
+
+    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+});

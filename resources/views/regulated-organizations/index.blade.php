@@ -15,7 +15,7 @@
                 </x-slot>
                 <p>
                     <strong>{{ __('Federally regulated organization') }}</strong><br />
-                    <strong class="weight:semibold">{{ __('Sector') }}:</strong>
+                    <strong class="font-semibold">{{ __('Sector') }}:</strong>
                     @foreach ($regulatedOrganization->sectors as $sector)
                         {{ $sector->name }}@if (!$loop->last)
                             ,

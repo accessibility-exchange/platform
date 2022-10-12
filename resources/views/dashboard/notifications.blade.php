@@ -38,7 +38,7 @@
         </nav>
     @show
 
-    <div class="mx-auto flex max-w-prose flex-col gap-6">
+    <div class="mx-auto max-w-2xl space-y-6">
         @forelse($notifications as $notification)
             <x-dynamic-component :component="'notification.' . Str::kebab(class_basename($notification->type))" :notification="$notification" />
         @empty

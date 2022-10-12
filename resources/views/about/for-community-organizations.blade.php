@@ -5,7 +5,7 @@
             <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessbility Exchange') }}</a></li>
         </ol>
         <h1>
-            <span class="weight:normal">{{ __('How this works for') }}</span><br />
+            <span class="font-medium">{{ __('How this works for') }}</span><br />
             {{ __('Community Organizations') }}
         </h1>
     </x-slot>
