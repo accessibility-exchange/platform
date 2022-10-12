@@ -348,7 +348,7 @@ test('test impacts property change', function () {
     ]);
     $employmentImpactProject->impacts()->attach($employmentImpact->id);
 
-    $communicationImpact = Impact::where('name->en', 'Communication')->first();
+    $communicationImpact = Impact::where('name->en', 'Communication, other than information and communication technologies')->first();
     $communicationImpactProjectName = 'Communication Imapct Project';
     $communicationImpactProject = Project::factory()->create([
         'name->en' => $communicationImpactProjectName,
