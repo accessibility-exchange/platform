@@ -32,6 +32,14 @@ test('users can authenticate using the login screen', function () {
     $response->assertRedirect(localized_route('dashboard'));
 });
 
+test('users can sign out', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(localized_route('logout'));
+
+    $this->assertGuest();
+});
+
 test('users can quickly exit', function () {
     $user = User::factory()->create();
 
