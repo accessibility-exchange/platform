@@ -9,7 +9,6 @@ use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
-use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Project;
@@ -223,8 +222,6 @@ class ProjectController extends Controller
 
     public function manageEstimatesAndAgreements(Project $project): View
     {
-        // TODO: Restrict access to publishable projects with at least one publishable engagement.
-
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
             'engagements' => $project->engagements->filter(fn ($engagement) => $engagement->hasProvidedRequiredInformation()),
