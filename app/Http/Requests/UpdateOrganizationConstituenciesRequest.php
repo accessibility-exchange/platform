@@ -32,7 +32,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                     return
                         in_array(1, request('lived_experiences') ?? [])
                         && request('base_disability_type') === 'specific_disabilities'
-                        && ! request('other_disability_type');
+                        && ! request('other_disability');
                 }),
                 'exclude_if:base_disability_type,cross_disability',
             ],
