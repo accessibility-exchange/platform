@@ -1,8 +1,6 @@
 <p><strong>{{ __('This estimate includes the following engagements:') }}</strong></p>
 <ul>
-    @forelse($engagements as $engagement)
+    @foreach ($engagements as $engagement)
         <li>{{ $engagement->name }}</li>
-    @empty
-        <li>{{ __('None found.') }}</li>
-    @endforelse
+    @endforeach
 </ul>
