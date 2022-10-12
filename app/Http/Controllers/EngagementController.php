@@ -30,8 +30,8 @@ use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
-use App\Models\User;
 use App\Notifications\ParticipantInvited;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +44,8 @@ use Spatie\LaravelOptions\Options;
 
 class EngagementController extends Controller
 {
+    use RetrievesUserByNormalizedEmail;
+
     public function showLanguageSelection(Project $project): View
     {
         return view('engagements.show-language-selection', [
@@ -492,7 +494,7 @@ class EngagementController extends Controller
         $connectorInvitee = null;
         if ($connectorInvitation) {
             if ($connectorInvitation->type === 'individual') {
-                $individual = User::whereBlind('email', 'email_index', $connectorInvitation->email)->first()->individual ?? null;
+                $individual = $this->retrieveUserByEmail($connectorInvitation->email)?->individual;
                 $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
             } elseif ($connectorInvitation->type === 'organization') {
                 $connectorInvitee = Organization::where('contact_person_email', $connectorInvitation->email)->first() ?? null;
@@ -534,7 +536,7 @@ class EngagementController extends Controller
         $user = null;
 
         if ($request->input('email')) {
-            $user = User::whereBlind('email', 'email_index', $request->input('email'))->first() ?? null;
+            $user = $this->retrieveUserByEmail($request->input('email'));
         }
 
         $validator = Validator::make(
@@ -586,7 +588,7 @@ class EngagementController extends Controller
         if ($user) {
             $user->notify(new ParticipantInvited($invitation));
         } else {
-            Mail::to($validated['email'])->send(new ContractorInvitation($invitation));
+            Mail::to($invitation->email)->send(new ContractorInvitation($invitation));
         }
 
         flash(__('invitation.create_invitation_succeeded'), 'success');

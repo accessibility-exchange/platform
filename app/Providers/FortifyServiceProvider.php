@@ -12,7 +12,7 @@ use App\Http\Responses\LoginResponse;
 use App\Http\Responses\PasswordResetResponse;
 use App\Http\Responses\RegisterResponse;
 use App\Http\Responses\TwoFactorLoginResponse;
-use App\Models\User;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +31,8 @@ use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
+    use RetrievesUserByNormalizedEmail;
+
     /**
      * Register any application services.
      *
@@ -51,7 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot()
     {
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::whereBlind('email', 'email_index', $request->email)->first();
+            $user = $this->retrieveUserByEmail($request->email);
 
             if ($user &&
                 Hash::check($request->password, $user->password)) {

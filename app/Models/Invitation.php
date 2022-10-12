@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Hearth\Models\Invitation as HearthInvitation;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * @property ?string $type
  */
 class Invitation extends HearthInvitation
 {
+    use RetrievesUserByNormalizedEmail;
+
     protected $table = 'invitations';
 
     public function __construct(array $attributes = [])
@@ -18,11 +22,18 @@ class Invitation extends HearthInvitation
         $this->mergeFillable(['type']);
     }
 
+    public function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => strtolower($value),
+        );
+    }
+
     public function accept(?string $type = null): void
     {
         if ($type) {
             if ($type === 'individual') {
-                $user = User::whereBlind('email', 'email_index', $this->email)->first();
+                $user = $this->retrieveUserByEmail($this->email);
                 $invitee = $user->individual;
                 if ($this->role === 'connector') {
                     $this->invitationable->connector()->associate($invitee);
@@ -40,7 +51,7 @@ class Invitation extends HearthInvitation
                 }
             }
         } else {
-            $invitee = User::whereBlind('email', 'email_index', $this->email)->first();
+            $invitee = $this->retrieveUserByEmail($this->email);
 
             $this->invitationable->users()->attach(
                 $invitee,
