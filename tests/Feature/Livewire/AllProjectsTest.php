@@ -7,6 +7,7 @@ use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\MatchingStrategy;
 use App\Models\Meeting;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
@@ -120,35 +121,39 @@ test('test seekings property change', function () {
     $allProjects->assertSee($projectSeekingOrganizationsName);
 });
 
-// test('test initiators property change', function() {
-//     $communityOrganizationProjectName = 'Community Organization Project';
-//     $communityOrganizationProject = Project::factory()->create([
-//         'name->en' => $communityOrganizationProjectName,
-//         'projectable_type' => 'App\Models\Organization'
-//     ]);
+test('test initiators property change', function () {
+    $communityOrganization = Organization::factory()->create();
+    $communityOrganizationProjectName = 'Community Organization Project';
+    $communityOrganizationProject = Project::factory()->create([
+        'projectable_id' => $communityOrganization->id,
+        'name->en' => $communityOrganizationProjectName,
+        'projectable_type' => 'App\Models\Organization',
+    ]);
 
-//     $regulatedOrganizationProjectName = 'Regulated Organization Project';
-//     $regulatedOrganizationProject = Project::factory()->create([
-//         'name->en' => $regulatedOrganizationProjectName,
-//         'projectable_type' => 'App\Models\RegulatedOrganization'
-//     ]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganizationProjectName = 'Regulated Organization Project';
+    $regulatedOrganizationProject = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+        'name->en' => $regulatedOrganizationProjectName,
+        'projectable_type' => 'App\Models\RegulatedOrganization',
+    ]);
 
-//     $allProjects = $this->livewire(AllProjects::class, ['initiators' => []]);
-//     $allProjects->assetSee($communityOrganizationProjectName);
-//     $allProjects->assetSee($regulatedOrganizationProjectName);
+    $allProjects = $this->livewire(AllProjects::class, ['initiators' => []]);
+    $allProjects->assertSee($communityOrganizationProjectName);
+    $allProjects->assertSee($regulatedOrganizationProjectName);
 
-//     $allProjects->set('initiators', ['organization']);
-//     $allProjects->assetSee($communityOrganizationProjectName);
-//     $allProjects->assetDontSee($regulatedOrganizationProjectName);
+    $allProjects->set('initiators', ['organization']);
+    $allProjects->assertSee($communityOrganizationProjectName);
+    $allProjects->assertDontSee($regulatedOrganizationProjectName);
 
-//     $allProjects->set('initiators', ['regulated-organization']);
-//     $allProjects->assetDontSee($communityOrganizationProjectName);
-//     $allProjects->assetSee($regulatedOrganizationProjectName);
+    $allProjects->set('initiators', ['regulatedOrganization']);
+    $allProjects->assertDontSee($communityOrganizationProjectName);
+    $allProjects->assertSee($regulatedOrganizationProjectName);
 
-//     $allProjects->set('initiators', ['organization', 'regulated-organization']);
-//     $allProjects->assetSee($communityOrganizationProjectName);
-//     $allProjects->assetSee($regulatedOrganizationProjectName);
-// });
+    $allProjects->set('initiators', ['organization', 'regulatedOrganization']);
+    $allProjects->assertSee($communityOrganizationProjectName);
+    $allProjects->assertSee($regulatedOrganizationProjectName);
+});
 
 test('test seekingGroups property change', function () {
     $this->seed(DisabilityTypeSeeder::class);
@@ -403,14 +408,23 @@ test('test locations property change', function () {
         'name->en' => $regionSpecificProjectName,
     ]);
     $regionSpecificEngagement = Engagement::factory()->create(['project_id' => $regionSpecificProject->id]);
-    $regionSpecificMatchingStrategy = MatchingStrategy::factory()->create(['matchable_id' => $regionSpecificEngagement->id, 'regions' => ['AB']]);
+    $regionSpecificMatchingStrategy = $regionSpecificEngagement->matchingStrategy;
+    $regionSpecificMatchingStrategy->update([
+        'regions' => ['AB'],
+    ]);
 
     $locationSpecificProjectName = 'Location Specific Project';
     $locationSpecificProject = Project::factory()->create([
         'name->en' => $locationSpecificProjectName,
     ]);
     $locationSpecificEngagement = Engagement::factory()->create(['project_id' => $locationSpecificProject->id]);
-    $locationSpecificMatchingStrategy = MatchingStrategy::factory()->create(['matchable_id' => $locationSpecificEngagement->id, 'locations' => ['region' => ['AB', 'ON']]]);
+    $locationSpecificMatchingStrategy = $locationSpecificEngagement->matchingStrategy;
+    $locationSpecificMatchingStrategy->update([
+        'locations' => [
+            ['region' => 'AB', 'locality' => 'Edmonton'],
+            ['region' => 'ON', 'locality' => 'Toronto'],
+        ],
+    ]);
 
     $allProjects = $this->livewire(AllProjects::class, ['locations' => []]);
     $allProjects->assertSee($regionSpecificProjectName);
