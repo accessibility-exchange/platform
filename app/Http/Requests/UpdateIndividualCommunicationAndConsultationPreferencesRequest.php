@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\MeetingType;
+use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -10,6 +11,8 @@ use Illuminate\Validation\Validator;
 
 class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
+    use ConditionallyRequireContactMethods;
+
     public function authorize(): bool
     {
         return $this->user()->can('update', $this->individual);
@@ -47,25 +50,7 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
 
     public function withValidator(Validator $validator)
     {
-        $validator->sometimes('preferred_contact_method', 'in:email', function ($input) {
-            return $input->preferred_contact_person == 'me' && ! is_null($input->email) && is_null($input->phone) ||
-                $input->preferred_contact_person == 'support-person' && ! is_null($input->support_person_email) && is_null($input->support_person_phone);
-        });
-
-        $validator->sometimes('preferred_contact_method', 'in:phone', function ($input) {
-            return  $input->preferred_contact_person == 'me' && is_null($input->email) && ! is_null($input->phone) ||
-                $input->preferred_contact_person == 'support-person' && is_null($input->support_person_email) && ! is_null($input->support_person_phone);
-        });
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'email' => __('email address'),
-            'phone' => __('phone number'),
-            'support_person_email' => __('email address'),
-            'support_person_phone' => __('phone number'),
-        ];
+        $this->conditionallyRequireContactMethods($validator);
     }
 
     /**
