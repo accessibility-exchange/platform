@@ -58,6 +58,16 @@
     --theme-button-borderless-background-hover: black;
     --theme-button-borderless-color-focus: var(--color-grey-2);
     --theme-button-borderless-color-active: var(--color-grey-1);
+    --theme-cta-secondary-border: var(--theme-button-secondary-border);
+    --theme-cta-secondary-background: var(--theme-button-secondary-background);
+    --theme-cta-secondary-color: var(--theme-button-secondary-color);
+    --theme-cta-secondary-outline: var(--theme-button-primary-outline);
+    --theme-cta-secondary-background-hover: var(--theme-button-primary-background-hover);
+    --theme-cta-secondary-border-hover: var(--theme-button-primary-border-hover);
+    --theme-cta-secondary-color-hover: var(--theme-button-primary-color-hover);
+    --theme-cta-secondary-color-active: var(--theme-button-primary-color-active);
+    --theme-cta-secondary-background-active: var(--theme-button-primary-background-active);
+    --theme-cta-secondary-border-active: var(--theme-button-primary-border-active);
     --theme-tag-background: var(--color-graphite-8);
     --theme-tag-border: var(--color-grey-2);
     --theme-tag-color: var(--color-grey-2);

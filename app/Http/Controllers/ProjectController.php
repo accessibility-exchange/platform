@@ -9,6 +9,7 @@ use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
+use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Project;
@@ -119,9 +120,12 @@ class ProjectController extends Controller
             $language = false;
         }
 
+        $engagements = Engagement::status('published')->where('project_id', $project->id)->get();
+
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
+            'engagements' => $engagements,
         ]);
     }
 

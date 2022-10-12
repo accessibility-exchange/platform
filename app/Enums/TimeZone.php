@@ -9,6 +9,7 @@ enum TimeZone: string
     case Mountain = 'America/Edmonton';
     case CentralStandard = 'America/Regina';
     case Central = 'America/Winnipeg';
+    case Eastern = 'America/Toronto';
     case Atlantic = 'America/Halifax';
     case Newfoundland = 'America/St_Johns';
 
@@ -20,6 +21,7 @@ enum TimeZone: string
             'America/Edmonton' => __('Mountain Standard or Daylight Time'),
             'America/Regina' => __('Central Standard Time**'),
             'America/Winnipeg' => __('Central Standard or Daylight Time'),
+            'America/Toronto' => __('Eastern Standard or Daylight Time'),
             'America/Halifax' => __('Atlantic Standard or Daylight Time'),
             'America/St_Johns' => __('Newfoundland Standard or Daylight Time'),
         ];

@@ -3,7 +3,8 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a>
+            <li><a
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
             </li>
         </ol>
         <p class="mt-8 text-2xl"><strong>{{ __('Engagement') }}</strong></p>
@@ -266,7 +267,8 @@
                     </div>
                     <p>
                         {{-- TODO: manage participants --}}
-                        <a class="cta secondary" href="#">
+                        <a class="cta secondary"
+                            href="{{ localized_route('engagements.manage-participants', $engagement) }}">
                             <x-heroicon-o-users /> {{ __('Manage participants') }}
                         </a>
                     </p>

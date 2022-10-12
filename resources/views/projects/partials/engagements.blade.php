@@ -1,6 +1,6 @@
-@if (count($project->engagements) > 0)
+@if ($engagements->count())
     <div class="grid">
-        @foreach ($project->engagements as $engagement)
+        @foreach ($engagements as $engagement)
             <x-card.engagement :model="$engagement" :level="3" />
         @endforeach
     </div>

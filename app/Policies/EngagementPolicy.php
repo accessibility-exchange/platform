@@ -43,6 +43,36 @@ class EngagementPolicy
                 : Response::deny();
     }
 
+    public function viewParticipants(User $user, Engagement $engagement): Response
+    {
+        if ($user->isAdministratorOf($engagement->project->projectable)) {
+            return Response::allow();
+        }
+
+        if ($engagement->organizationalConnector && $user->isAdministratorOf($engagement->organizationalConnector)) {
+            return Response::allow();
+        }
+
+        if ($engagement->connector && $engagement->connector->id === $user->individual?->id) {
+            return Response::allow();
+        }
+
+        return Response::deny();
+    }
+
+    public function manageParticipants(User $user, Engagement $engagement): Response
+    {
+        if ($engagement->organizationalConnector && $user->isAdministratorOf($engagement->organizationalConnector)) {
+            return Response::allow();
+        }
+
+        if ($engagement->connector && $engagement->connector->id === $user->individual?->id) {
+            return Response::allow();
+        }
+
+        return Response::deny();
+    }
+
     public function participate(User $user, Engagement $engagement): Response
     {
         return $engagement->confirmedParticipants->contains($user->individual)

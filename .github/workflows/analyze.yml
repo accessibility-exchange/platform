@@ -16,23 +16,24 @@ jobs:
           php-version: "8.1"
       - uses: actions/checkout@v3
       - uses: technote-space/get-diff-action@v6
+        id: git-diff
         with:
           patterns: |
             composer.json
             composer.lock
             **/*.php
       - name: Cache Composer packages
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
       - name: Install dependencies
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate key
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         run: echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
       - name: Perform static analysis
-        if: env.GIT_DIFF
+        if: steps.git-diff.outputs.diff
         run: composer analyze

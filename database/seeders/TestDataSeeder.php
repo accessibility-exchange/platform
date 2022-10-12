@@ -26,7 +26,7 @@ class TestDataSeeder extends Seeder
         $individualsForTesting = [
             [
                 'name' => 'Mostafa Ayhan',
-                'email' => 'ayham@accessibilityexchange.ca',
+                'email' => 'ayhan@accessibilityexchange.ca',
                 'preferred_contact_person' => 'me',
                 'phone' => '4165064567',
                 'preferred_contact_method' => 'email',
@@ -275,7 +275,7 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector'],
+                    'roles' => ['connector', 'participant'],
                     'region' => 'BC',
                     'locality' => 'Richmond',
                     'pronouns' => ['en' => 'he/him'],
@@ -521,9 +521,12 @@ class TestDataSeeder extends Seeder
                 'contact_person_email' => 'mm@accessibilityexchange.ca',
                 'preferred_contact_method' => 'email',
                 'contact_person_response_time' => ['en' => '48 hours'],
+                'estimate_requested_at' => now(),
+                'estimate_returned_at' => now(),
+                'estimate_approved_at' => now(),
+                'agreement_received_at' => now(),
                 'organization' => RegulatedOrganization::where('name->en', 'BlueSky Airlines')->first(),
                 'impact' => Impact::where('name->en', 'Information and communication technologies')->first(),
-
             ],
             [
                 'name' => ['en' => 'Agriculture and Agri-Food Canada (AAFC) Accessibility project'],
@@ -569,7 +572,6 @@ class TestDataSeeder extends Seeder
                 'contact_person_response_time' => ['en' => '24 hours'],
                 'organization' => RegulatedOrganization::where('name->en', 'Canada Post')->first(),
                 'impact' => Impact::where('name->en', 'Buildings and public spaces')->first(),
-
             ],
         ];
 
@@ -578,6 +580,44 @@ class TestDataSeeder extends Seeder
             $fro = array_pop($project);
             $project = Project::factory()->create(array_merge(['projectable_id' => $fro->id], $project));
             $project->impacts()->attach($impact->id);
+        }
+
+        $connectorUser = User::whereBlind('email', 'email_index', 'ayhan@accessibilityexchange.ca')->first();
+
+        $engagementsForTesting = [
+            [
+                'name' => ['en' => 'Workshop'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'individuals',
+                'format' => 'workshop',
+                'recruitment' => 'open-call',
+                'ideal_participants' => 25,
+                'minimum_participants' => 15,
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'signup_by_date' => '2022-10-02',
+                'published_at' => now(),
+            ],
+            [
+                'name' => ['en' => 'Focus Group'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'individuals',
+                'format' => 'focus-group',
+                'recruitment' => 'connector',
+                'ideal_participants' => 25,
+                'minimum_participants' => 15,
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'signup_by_date' => '2022-10-02',
+                'published_at' => now(),
+                'individual_connector_id' => $connectorUser->individual->id,
+            ],
+        ];
+
+        $project = Project::find(1);
+
+        foreach ($engagementsForTesting as $engagement) {
+            $project->engagements()->create($engagement);
         }
     }
 }

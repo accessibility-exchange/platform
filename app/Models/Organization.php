@@ -234,6 +234,7 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    /** TODO: add project and engagement-level consultants.
     public function consultingProjects(): HasMany
     {
         return $this->hasMany(Project::class, 'organizational_consultant_id');
@@ -251,7 +252,7 @@ class Organization extends Model
             (new Engagement())->project()
         );
     }
-
+     **/
     public function connectingEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class, 'organizational_connector_id');

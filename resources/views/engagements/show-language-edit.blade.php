@@ -4,9 +4,11 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             <li><a
-                    href="{{ localized_route('projects.show', $engagement->project) }}">{{ $engagement->project->name }}</a>
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
             </li>
-            <li><a href="{{ localized_route('engagements.show', $engagement) }}">{{ $engagement->name }}</a></li>
+            <li><a
+                    href="@can('update', $engagement){{ localized_route('engagements.manage', $engagement) }}@else{{ localized_route('engagements.show', $engagement) }}@endcan">{{ $engagement->name }}</a>
+            </li>
         </ol>
         <p class="h4">{{ $engagement->name }}</p>
         <h1 class="mt-0">

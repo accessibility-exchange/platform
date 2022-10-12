@@ -6,6 +6,10 @@
     margin-block-start: var(--space);
 }
 
+.stack > h5 + p {
+    @apply mt-0;
+}
+
 .stack\:lg {
     --space: 2em;
 }

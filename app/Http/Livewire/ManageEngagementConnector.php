@@ -7,7 +7,7 @@ use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Project;
-use App\Models\User;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Route;
@@ -15,7 +15,7 @@ use Livewire\Component;
 
 class ManageEngagementConnector extends Component
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests, RetrievesUserByNormalizedEmail;
 
     public Engagement $engagement;
 
@@ -43,7 +43,7 @@ class ManageEngagementConnector extends Component
         $this->invitation = $this->engagement->invitations->where('role', 'connector')->first() ?? null;
         if ($this->invitation) {
             if ($this->invitation->type === 'individual') {
-                $individual = User::whereBlind('email', 'email_index', $this->invitation->email)->first()->individual ?? null;
+                $individual = $this->retrieveUserByEmail($this->invitation->email)?->individual;
                 $this->invitee = $individual && $individual->checkStatus('published') ? $individual : null;
             } elseif ($this->invitation->type === 'organization') {
                 $this->invitee = Organization::where('contact_person_email', $this->invitation->email)->first() ?? null;

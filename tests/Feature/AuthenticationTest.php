@@ -16,7 +16,19 @@ test('users can authenticate using the login screen', function () {
         'password' => 'password',
     ]);
 
-    $this->assertAuthenticated();
+    $this->assertAuthenticatedAs($user);
+    $response->assertRedirect(localized_route('dashboard'));
+
+    Auth::logout();
+
+    $mixedCaseEmailUser = User::factory()->create(['email' => 'John.Smith@example.com']);
+
+    $response = $this->post(localized_route('login-store'), [
+        'email' => 'John.Smith@example.com',
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticatedAs($mixedCaseEmailUser);
     $response->assertRedirect(localized_route('dashboard'));
 });
 
