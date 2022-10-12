@@ -3,7 +3,9 @@
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></li>
+            <li><a
+                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+            </li>
         </ol>
         <p class="h4">{{ $surtitle }}</p>
         <h1 class="mt-0">
@@ -95,7 +97,7 @@
                     <fieldset class="field @error('disability_types') field--error @enderror" x-cloak
                         x-show="crossDisability == 0">
                         <legend>
-                            {{ __('What specific disability and Deaf group or groups are you interested in engaging? (required)') }}
+                            {{ __('What specific disability and Deaf group or groups are you interested in engaging?') . ' ' . __('(required)') }}
                         </legend>
                         <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old(
                             'disability_types',

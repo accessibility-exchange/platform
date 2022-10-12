@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\AcceptedFormat;
 use App\Enums\Availability;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
@@ -186,7 +187,7 @@ class UpdateEngagementRequest extends FormRequest
             ],
             'accepted_formats.*' => [
                 'nullable',
-                'in:writing,audio,video',
+                new Enum(AcceptedFormat::class),
             ],
             'other_accepted_formats' => [
                 'nullable',

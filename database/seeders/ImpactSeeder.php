@@ -18,7 +18,7 @@ class ImpactSeeder extends Seeder
             __('Employment'),
             __('Buildings and public spaces'),
             __('Information and communication technologies'),
-            __('Communication'),
+            __('Communication, other than information and communication technologies'),
             __('Buying goods, services, facilities'),
             __('Programs and services'),
             __('Transportation'),

@@ -13,27 +13,26 @@
                         <li>{{ __('access their projects or engagements') }}</li>
                     @endif
                 </ul>
-                <p> {{ __('They will not know you have blocked them.') }}
 
-                    @if (Auth::user()->individual)
-                        @if (Auth::user()->individual->isConsultant() ||
-                            Auth::user()->individual->isConnector() ||
-                            Auth::user()->individual->isParticipant())
-                            <p>{{ __('They will not be able to:') }}</p>
+                @if (Auth::user()->individual)
+                    @if (Auth::user()->individual->isConsultant() ||
+                        Auth::user()->individual->isConnector() ||
+                        Auth::user()->individual->isParticipant())
+                        <p>{{ __('They will not be able to:') }}</p>
 
-                            <ul>
-                                @if (Auth::user()->individual->isConsultant() || Auth::user()->individual->isConnector())
-                                    <li>{{ __('access your page') }}</li>
-                                    <li>{{ __('see you in search results') }}</li>
-                                @endif
-                                @if (Auth::user()->individual->isParticipant())
-                                    <li>{{ __('match you to their projects or engagements') }}</li>
-                                @endif
-                            </ul>
-                        @endif
+                        <ul>
+                            @if (Auth::user()->individual->isConsultant() || Auth::user()->individual->isConnector())
+                                <li>{{ __('access your page') }}</li>
+                                <li>{{ __('see you in search results') }}</li>
+                            @endif
+                            @if (Auth::user()->individual->isParticipant())
+                                <li>{{ __('match you to their projects or engagements') }}</li>
+                            @endif
+                        </ul>
                     @endif
+                @endif
 
-                <p><span class="weight:semibold">{{ __('They will not know you have blocked them.') }}</span>
+                <p><span class="font-semibold">{{ __('They will not know you have blocked them.') }}</span>
                 <p>
 
                 <p><strong>{{ __('Are you sure you want to block :blockable?', ['blockable' => $blockable->name]) }}</strong>

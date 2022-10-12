@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OrganizationType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreOrganizationTypeRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class StoreOrganizationTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:representative,support,civil-society',
+            'type' => ['required', new Enum(OrganizationType::class)],
         ];
     }
 

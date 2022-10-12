@@ -99,7 +99,7 @@ test('individual users can manage communication and consultation preferences', f
         'consulting_methods' => [ConsultingMethod::where('name->en', 'Interviews')->first()->id],
     ]);
 
-    $response->assertSessionHasErrors(['support_person_name', 'preferred_contact_method', 'meeting_types']);
+    $response->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',

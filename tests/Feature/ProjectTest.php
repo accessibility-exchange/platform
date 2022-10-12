@@ -323,6 +323,7 @@ test('users with regulated organization admin role can edit projects', function 
         'impacts' => [Impact::first()->id],
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
+        'outcome_analysis' => $project->outcome_analysis,
         'save' => __('Save'),
     ]);
 
@@ -340,6 +341,7 @@ test('users with regulated organization admin role can edit projects', function 
         'impacts' => [Impact::first()->id],
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
+        'outcome_analysis' => $project->outcome_analysis,
         'save_and_next' => __('Save and next'),
     ]);
 

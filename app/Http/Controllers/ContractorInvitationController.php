@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Engagement;
 use App\Models\Invitation;
+use App\Notifications\ParticipantAccepted;
+use App\Notifications\ParticipantDeclined;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
@@ -24,6 +27,14 @@ class ContractorInvitationController extends Controller
 
         foreach ($notifications as $notification) {
             $notification->delete();
+        }
+
+        if ($invitation->type === 'individual') {
+            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+                $invitation->invitationable->project->notify(new ParticipantAccepted($invitation->invitationable));
+                $invitation->invitationable->connector?->user->notify(new ParticipantAccepted($invitation->invitationable));
+                $invitation->invitationable->organizationalConnector?->notify(new ParticipantAccepted($invitation->invitationable));
+            }
         }
 
         flash(
@@ -49,6 +60,14 @@ class ContractorInvitationController extends Controller
 
         foreach ($notifications as $notification) {
             $notification->delete();
+        }
+
+        if ($invitation->type === 'individual') {
+            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+                $invitation->invitationable->project->notify(new ParticipantDeclined($invitation->invitationable));
+                $invitation->invitationable->connector?->user->notify(new ParticipantDeclined($invitation->invitationable));
+                $invitation->invitationable->organizationalConnector?->notify(new ParticipantDeclined($invitation->invitationable));
+            }
         }
 
         flash(

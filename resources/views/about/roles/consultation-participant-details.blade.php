@@ -85,7 +85,7 @@
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
                     <p>{{ __('This will help you get paid in the way that you want.') }}</p>
                 </x-expander>
-                <x-expander :summary="__('Areas of interest (optional)')" level="3">
+                <x-expander :summary="__('Areas of interest') . ' ' . __('(optional)')" level="3">
                     <p>{{ __('The Accessible Canada Act has outlined seven main areas that governments and businesses have to make accessible. If you would like, you may indicate which areas are of interest to you. You do not have to answer this question as it is optional. ') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>

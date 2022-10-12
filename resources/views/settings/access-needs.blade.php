@@ -128,6 +128,8 @@
             <legend>
                 <h2>{{ __('For in-person meetings') }}</h2>
             </legend>
+            <p>{{ __('All organizations have been asked to provide gender-neutral and accessible washrooms by default.') }}
+            </p>
             @foreach ($inPersonAccessSupports as $option)
                 <div class="field">
                     <x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"

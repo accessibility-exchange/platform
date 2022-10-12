@@ -4,7 +4,7 @@
     </x-slot>
     <p>
         <strong>{{ __('Project by :projectable', ['projectable' => $project->projectable->name]) }}</strong><br />
-        <span class="weight:semibold">{{ __('Sector:') }}</span>
+        <span class="font-semibold">{{ __('Sector:') }}</span>
         {{ implode(', ',$project->projectable->sectors()->pluck('name')->toArray()) }}
     </p>
     <p>

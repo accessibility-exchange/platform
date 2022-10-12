@@ -6,9 +6,9 @@ use App\Mail\ContractorInvitation;
 use App\Models\Engagement;
 use App\Models\Organization;
 use App\Models\Project;
-use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Route;
@@ -20,7 +20,7 @@ use Spatie\LaravelOptions\Options;
 
 class AddEngagementConnector extends Component
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests, RetrievesUserByNormalizedEmail;
 
     public Engagement $engagement;
 
@@ -69,7 +69,7 @@ class AddEngagementConnector extends Component
         $user = null;
 
         if ($this->who === 'individual') {
-            $user = User::whereBlind('email', 'email_index', $this->email)->first() ?? null;
+            $user = $this->retrieveUserByEmail($this->email);
             $validated = $this->withValidator(function (Validator $validator) use ($user) {
                 $validator->after(function ($validator) use ($user) {
                     if ($user) {
