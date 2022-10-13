@@ -45,7 +45,7 @@
             $impacts ||
             $recruitmentMethods)
             <p class="h4">
-                {{ __(':count projects match your apllied filters', ['count' => $projects->total()]) }}
+                {{ __(':count projects match your applied filters', ['count' => $projects->total()]) }}
             </p>
         @endif
     </div>
