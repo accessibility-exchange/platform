@@ -73,10 +73,25 @@ class EngagementPolicy
         return Response::deny();
     }
 
+    public function join(User $user, Engagement $engagement): Response
+    {
+        return $engagement->recruitment === 'open-call'
+            && $user->individual?->isParticipant()
+            && ! $engagement->confirmedParticipants->contains($user->individual)
+                ? Response::allow()
+                : Response::deny();
+    }
+
     public function participate(User $user, Engagement $engagement): Response
     {
         return $engagement->confirmedParticipants->contains($user->individual)
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::deny();
+    }
+
+    public function leave(User $user, Engagement $engagement): Response
+    {
+        // TODO
+        return Response::allow();
     }
 }

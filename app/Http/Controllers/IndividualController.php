@@ -377,30 +377,4 @@ class IndividualController extends Controller
 
         return redirect(localized_route('dashboard'));
     }
-
-    public function expressInterest(Request $request, Individual $individual): RedirectResponse
-    {
-        $request->validate([
-            'project_id' => 'required|integer',
-        ]);
-
-        $individual->projectsOfInterest()->attach($request->input('project_id'));
-
-        flash(__('You have expressed your interest in this project.'), 'success');
-
-        return redirect()->back();
-    }
-
-    public function removeInterest(Request $request, Individual $individual): RedirectResponse
-    {
-        $request->validate([
-            'project_id' => 'required|integer',
-        ]);
-
-        $individual->projectsOfInterest()->detach($request->input('project_id'));
-
-        flash(__('You have removed your expression of interest in this project.'), 'success');
-
-        return redirect()->back();
-    }
 }

@@ -37,6 +37,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -596,6 +597,69 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.manage-participants', $engagement));
     }
 
+    public function signUp(Engagement $engagement): View
+    {
+        return view('engagements.sign-up', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function join(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $request->validate([
+            'engagement_id' => 'required|exists:engagements,id',
+        ]);
+
+        Auth::user()->individual->engagements()->attach($request->input('engagement_id'), ['status' => 'confirmed']);
+
+        // TODO: Notify
+
+        flash(__('You have successfully signed up for this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.confirm-access-needs', $engagement));
+    }
+
+    public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
+    {
+        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+            return redirect(localized_route('engagements.show', $engagement));
+        }
+
+        return view('engagements.confirm-access-needs', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function storeAccessNeedsPermission(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $request->validate([
+            'share_access_needs' => 'required|boolean',
+        ]);
+
+        $engagement->participants()->syncWithoutDetaching([1 => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
+
+        flash(__('Your preference for sharing your access needs has been saved.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
+    public function leave(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $request->validate([
+            'engagement_id' => 'required|exists:engagements,id',
+        ]);
+
+        Auth::user()->individual->engagements()->detach($request->input('engagement_id'));
+
+        flash(__('You have successfully left this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
     public function manageAccessNeeds(Engagement $engagement): View
     {
         return view('engagements.manage-access-needs', [
@@ -603,14 +667,6 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => collect([]),
             'participants' => collect([]),
-        ]);
-    }
-
-    public function participate(Engagement $engagement)
-    {
-        return view('engagements.participate', [
-            'project' => $engagement->project,
-            'engagement' => $engagement,
         ]);
     }
 }
