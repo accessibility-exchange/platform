@@ -9,7 +9,6 @@ use App\Models\DisabilityType;
 use App\Models\Impact;
 use App\Models\Project;
 use App\Models\Sector;
-use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
@@ -18,7 +17,7 @@ class AllProjects extends Component
 {
     use WithPagination;
 
-    public string $query = '';
+    public string $searchQuery = '';
 
     public array $statuses = [];
 
@@ -40,135 +39,85 @@ class AllProjects extends Component
 
     public array $recruitmentMethods = [];
 
-    public function updatedStatuses()
+    public function updatedStatuses($status)
     {
-        if (! is_array($this->statuses)) {
-            return;
-        }
-        $this->statuses = array_filter($this->statuses,
-            function ($status) {
-                return $status != false;
-            }
-        );
+        $this->statuses = $this->filterItems($this->statuses);
     }
 
     public function updatedSeekings()
     {
-        if (! is_array($this->seekings)) {
-            return;
-        }
-        $this->seekings = array_filter($this->seekings,
-            function ($seeking) {
-                return $seeking != false;
-            }
-        );
+        $this->seekings = $this->filterItems($this->seekings);
     }
 
     public function updatedInitiators()
     {
-        if (! is_array($this->initiators)) {
-            return;
-        }
-        $this->initiators = array_filter($this->initiators,
-            function ($initiator) {
-                return $initiator != false;
-            }
-        );
+        $this->initiators = $this->filterItems($this->initiators);
     }
 
     public function updatedSeekingGroups()
     {
-        if (! is_array($this->seekingGroups)) {
-            return;
-        }
-        $this->seekingGroups = array_filter($this->seekingGroups,
-            function ($seekingGroup) {
-                return $seekingGroup != false;
-            }
-        );
+        $this->seekingGroups = $this->filterItems($this->seekingGroups);
     }
 
     public function updatedMeetingTypes()
     {
-        if (! is_array($this->meetingTypes)) {
-            return;
-        }
-        $this->meetingTypes = array_filter($this->meetingTypes,
-            function ($meetingType) {
-                return $meetingType != false;
-            }
-        );
+        $this->meetingTypes = $this->filterItems($this->meetingTypes);
     }
 
     public function updatedLocations()
     {
-        if (! is_array($this->locations)) {
-            return;
-        }
-        $this->locations = array_filter($this->locations,
-            function ($location) {
-                return $location != false;
-            }
-        );
+        $this->locations = $this->filterItems($this->locations);
     }
 
     public function updatedCompensations()
     {
-        if (! is_array($this->compensations)) {
-            return;
-        }
-        $this->compensations = array_filter($this->compensations,
-            function ($compensation) {
-                return $compensation != false;
-            }
-        );
+        $this->compensations = $this->filterItems($this->compensations);
     }
 
     public function updatedSectors()
     {
-        if (! is_array($this->sectors)) {
-            return;
-        }
-        $this->sectors = array_filter($this->sectors,
-            function ($sector) {
-                return $sector != false;
-            }
-        );
+        $this->sectors = $this->filterItems($this->sectors);
     }
 
     public function updatedImpacts()
     {
-        if (! is_array($this->impacts)) {
-            return;
-        }
-        $this->impacts = array_filter($this->impacts,
-            function ($impact) {
-                return $impact != false;
-            }
-        );
+        $this->impacts = $this->filterItems($this->impacts);
     }
 
     public function updatedRecruitmentMethods()
     {
-        if (! is_array($this->recruitmentMethods)) {
-            return;
-        }
-        $this->recruitmentMethods = array_filter($this->recruitmentMethods,
-            function ($recruitmentMethod) {
-                return $recruitmentMethod != false;
-            }
-        );
+        $this->recruitmentMethods = $this->filterItems($this->recruitmentMethods);
+    }
+
+    public function filterItems(array $items)
+    {
+        return array_filter($items, function ($item) {
+            return $item != false;
+        });
+    }
+
+    public function selectNone()
+    {
+        $this->statuses = [];
+        $this->seekings = [];
+        $this->seekingGroups = [];
+        $this->initiators = [];
+        $this->meetingTypes = [];
+        $this->locations = [];
+        $this->compensations = [];
+        $this->sectors = [];
+        $this->impacts = [];
+        $this->recruitmentMethods = [];
     }
 
     public function render()
     {
         return view('livewire.all-projects', [
             'projects' => Project::status('published')
-                    ->where(
-                        function (Builder $query) {
-                            $query->where('name->en', 'like', '%'.$this->query.'%')
-                                ->orWhere('name->fr', 'like', '%'.$this->query.'%');
-                        })
+                    ->when($this->searchQuery, function ($query, $searchQuery) {
+                        $query->where('name->en', 'like', '%'.$searchQuery.'%')
+                            ->orWhere('name->fr', 'like', '%'.$searchQuery.'%');
+                    })
                     ->when($this->statuses, function ($query, $statuses) {
                         $query->statuses($statuses);
                     })

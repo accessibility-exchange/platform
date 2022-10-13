@@ -22,22 +22,35 @@
     </div>
 
     <form class="stack" wire:submit.prevent="search">
-        <x-hearth-label for="query" :value="__('Search')" />
+        <x-hearth-label for="searchQuery" :value="__('Search')" />
         <div class="repel">
-            <x-hearth-input name="query" type="search" wire:model.defer="query" wire:search="search" />
+            <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
         </div>
     </form>
 
     <div role="alert">
-        @if ($query)
+        @if ($searchQuery)
             <p class="h4">
-                {{ __(':count results for “:query”', ['count' => $projects->total(), 'query' => $query]) }}
+                {{ __(':count results for “:searchQuery', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) }}
+            </p>
+        @elseif ($statuses ||
+            $seekings ||
+            $seekingGroups ||
+            $initiators ||
+            $meetingTypes ||
+            $locations ||
+            $compensations ||
+            $sectors ||
+            $impacts ||
+            $recruitmentMethods)
+            <p class="h4">
+                {{ __(':count projects match your apllied filters', ['count' => $projects->total()]) }}
             </p>
         @endif
     </div>
 
-    <div class="with-sidebar with-sidebar:2/3">
+    <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters stack">
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <x-expander :level="3">
@@ -201,6 +214,7 @@
                     <x-hearth-error for="recruitment" />
                 </fieldset>
             </x-expander>
+            <button class="secondary" type="button" wire:click="selectNone()">{{ __('Select none') }}</button>
         </div>
         <div>
             <div role="region" aria-labelledby="browse-all-projects" tabindex="0">

@@ -16,6 +16,19 @@ use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 
+test('test searchQuery property change', function () {
+    $sampleProjectName = 'Sample Project';
+    Project::factory()->create(['name->en' => $sampleProjectName]);
+    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => '']);
+    $allProjects->assertSee($sampleProjectName);
+
+    $allProjects->set('searchQuery', 'Test');
+    $allProjects->assertDontSee($sampleProjectName);
+
+    $allProjects->set('searchQuery', 'Sample');
+    $allProjects->assertSee($sampleProjectName);
+});
+
 test('test statuses property change', function () {
     $upComingProjectName = 'Upcoming Project';
     $inProgressProjectName = 'In progress Project';
@@ -441,4 +454,29 @@ test('test locations property change', function () {
     $allProjects->set('locations', ['AB', 'ON']);
     $allProjects->assertSee($regionSpecificProjectName);
     $allProjects->assertSee($locationSpecificProjectName);
+});
+
+test('test selectNone', function () {
+    $upComingProjectName = 'Upcoming Project';
+    $upComingProject = Project::factory()->create([
+        'name->en' => $upComingProjectName,
+        'start_date' => Carbon::now()->addDays(5),
+    ]);
+    $connectorEngagement = Engagement::factory()->create(['project_id' => $upComingProject->id, 'recruitment' => 'connector']);
+
+    $openCallProjectName = 'Open Call Project';
+    $openCallProject = Project::factory()->create([
+        'name->en' => $openCallProjectName,
+        'start_date' => Carbon::now()->subDays(5),
+        'end_date' => Carbon::now()->addDays(5),
+    ]);
+    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => 'open-call']);
+
+    $allProjects = $this->livewire(AllProjects::class, ['statuses' => ['upcoming'], 'recruitmentMethods' => ['connector']]);
+    $allProjects->assertSee($upComingProjectName);
+    $allProjects->assertDontSee($openCallProjectName);
+
+    $allProjects->call('selectNone');
+    $allProjects->assertSee($upComingProjectName);
+    $allProjects->assertSee($openCallProjectName);
 });
