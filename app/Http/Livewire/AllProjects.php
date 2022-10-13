@@ -156,15 +156,16 @@ class AllProjects extends Component
                 ['value' => 'completed', 'label' => __('Completed')],
             ],
             'seekingsData' => [
-                ['value' => 'participants', 'label' => __('Seeking Individual Consultation Participatns')],
+                ['value' => 'participants', 'label' => __('Seeking Individual Consultation Participants')],
                 ['value' => 'connectors', 'label' => __('Seeking Community Connectors')],
-                ['value' => 'organizations', 'label' => __('Seeking Community Organizations to Consult with')],
+                ['value' => 'organizations', 'label' => __('Seeking Community Organizations to consult with')],
             ],
             'initiatorsData' => [
                 ['value' => 'organization', 'label' => __('Community organization')],
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
-            'seekingGroupsData' => Options::forModels(DisabilityType::class)->toArray(),
+            'seekingGroupsData' => Options::forModels(DisabilityType::query()->where(
+                'name->en', '!=', 'Cross-disability'))->toArray(),
             'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
