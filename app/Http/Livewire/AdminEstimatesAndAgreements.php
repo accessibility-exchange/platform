@@ -15,23 +15,21 @@ class AdminEstimatesAndAgreements extends Component
 {
     use WithPagination;
 
-    public string $query = '';
+    public string $searchQuery = '';
 
     public function render()
     {
         return view('livewire.admin-estimates-and-agreements', [
-            'projects' => $this->query
-                ? Project::whereNotNull('estimate_requested_at')
-                    ->whereHasMorph(
-                        'projectable',
-                        [Organization::class, RegulatedOrganization::class],
-                        function (Builder $query) {
-                            $query->where('name->en', 'like', '%'.$this->query.'%')
-                                ->orWhere('name->fr', 'like', '%'.$this->query.'%');
-                        })
-                    ->orderBy('estimate_or_agreement_updated_at', 'desc')
-                    ->paginate(20)
-                : Project::whereNotNull('estimate_requested_at')
+            'projects' => Project::whereNotNull('estimate_requested_at')
+                    ->when($this->searchQuery, function ($query, $searchQuery) {
+                        $query->whereHasMorph(
+                            'projectable',
+                            [Organization::class, RegulatedOrganization::class],
+                            function (Builder $projectableQuery) use ($searchQuery) {
+                                $projectableQuery->where('name->en', 'like', '%'.$searchQuery.'%')
+                                    ->orWhere('name->fr', 'like', '%'.$searchQuery.'%');
+                            });
+                    })
                     ->orderBy('estimate_or_agreement_updated_at', 'desc')
                     ->paginate(20),
         ])
