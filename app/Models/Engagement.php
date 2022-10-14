@@ -306,12 +306,12 @@ class Engagement extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Individual::class)->withPivot('status');
+        return $this->belongsToMany(Individual::class)->withPivot('status', 'share_access_needs');
     }
 
     public function confirmedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Individual::class)->wherePivot('status', 'confirmed');
+        return $this->belongsToMany(Individual::class)->withPivot('share_access_needs')->wherePivot('status', 'confirmed');
     }
 
     public function organizationalParticipants(): BelongsToMany

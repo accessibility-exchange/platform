@@ -607,6 +607,12 @@ test('individual can sign up to open call engagement', function () {
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->confirmedParticipants->pluck('id'))->toContain($this->participant->id);
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.confirm-access-needs', $this->engagement))->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => 1]);
+    $response->assertSessionHasNoErrors();
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->participants->first()->pivot->share_access_needs)->toBeTruthy();
 });
 
 test('individual cannot leave an open call engagement if the signup by date has passed', function () {
