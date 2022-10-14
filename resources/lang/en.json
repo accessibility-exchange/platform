@@ -41,8 +41,9 @@
     ":count more unread": ":count more unread",
     ":count participants confirmed": ":count participants confirmed",
     ":count projects": ":count projects",
-    ":count projects match your apllied filters": ":count projects match your apllied filters",
+    ":count projects match your applied filters": ":count projects match your applied filters",
     ":count results for": ":count results for",
+    ":count results for \":searchQuery\".": ":count results for \":searchQuery\".",
     ":count results for “:searchQuery": ":count results for “:searchQuery",
     ":count results for “:search” found": ":count results for “:search” found",
     ":engagement has been changed to :date at :time. They are meeting :location.": ":engagement has been changed to :date at :time. They are meeting :location.",
@@ -1482,9 +1483,9 @@
     "Seeking community connector": "Seeking community connector",
     "Seeking Community Connector": "Seeking Community Connector",
     "Seeking Community Connectors": "Seeking Community Connectors",
-    "Seeking Community Organizations to Consult with": "Seeking Community Organizations to Consult with",
+    "Seeking Community Organizations to consult with": "Seeking Community Organizations to consult with",
     "Seeking Consultation Participants": "Seeking Consultation Participants",
-    "Seeking Individual Consultation Participatns": "Seeking Individual Consultation Participatns",
+    "Seeking Individual Consultation Participants": "Seeking Individual Consultation Participants",
     "Seeking participants": "Seeking participants",
     "see you in search results": "see you in search results",
     "Select a criteria…": "Select a criteria…",
@@ -2185,5 +2186,7 @@
     "Zoom ID:": "Zoom ID:",
     "Zoom password:": "Zoom password:",
     "[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).",
-    "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url)."
+    "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).",
+    "{1} :count project matches your applied filters": "{1} :count project matches your applied filters",
+    "{1} :count result for \":searchQuery\".": "{1} :count result for \":searchQuery\"."
 }
