@@ -1,0 +1,11 @@
+.filters {
+    margin-block-start: var(--space-6);
+}
+
+.filters .expander .ul {
+    margin-block-end: var(--space-4);
+}
+
+.search-and-filter-results {
+    min-height: var(--space-9);
+}

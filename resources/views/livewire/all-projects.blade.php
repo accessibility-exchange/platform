@@ -17,10 +17,15 @@
         </div>
     </form>
 
-    <div class="search" role="alert">
+    <div class="search search-and-filter-results" role="alert">
         @if ($searchQuery)
             <p class="h4">
-                {{ __(':count results for ":searchQuery".', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) }}
+                {{ trans_choice(
+                    __('{1} :count result for ":searchQuery".', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) .
+                        '|' .
+                        __(':count results for ":searchQuery".', ['count' => $projects->total(), 'searchQuery' => $searchQuery]),
+                    $projects->total(),
+                ) }}
             </p>
         @elseif ($statuses ||
             $seekings ||
@@ -33,7 +38,12 @@
             $impacts ||
             $recruitmentMethods)
             <p class="h4">
-                {{ __(':count projects match your applied filters', ['count' => $projects->total()]) }}
+                {{ trans_choice(
+                    __('{1} :count project matches your applied filters', ['count' => $projects->total()]) .
+                        '|' .
+                        __(':count projects match your applied filters', ['count' => $projects->total()]),
+                    $projects->total(),
+                ) }}
             </p>
         @endif
     </div>
@@ -44,7 +54,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <x-slot name="summary">{{ __('Status') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($statusesData as $status)
                             <li>
                                 <x-hearth-input id="status-{{ $status['value'] }}" name="statuses[]" type="checkbox"
@@ -59,7 +69,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('seeking') field--error @enderror">
                     <x-slot name="summary">{{ __("Who they're seeking") }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($seekingsData as $seeking)
                             <li>
                                 <x-hearth-input id="seeking-{{ $seeking['value'] }}" name="seekings[]" type="checkbox"
@@ -74,7 +84,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('initiator') field--error @enderror">
                     <x-slot name="summary">{{ __('Initiated by') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($initiatorsData as $initiator)
                             <li>
                                 <x-hearth-input id="initiator-{{ $initiator['value'] }}" name="initiators[]"
@@ -90,7 +100,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('seekingGroup') field--error @enderror">
                     <x-slot name="summary">{{ __('Disability and Deaf groups they are looking for') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($seekingGroupsData as $seekingGroup)
                             <li>
                                 <x-hearth-input id="seekingGroup-{{ $seekingGroup['value'] }}" name="seekingGroups[]"
@@ -107,7 +117,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('meetingType') field--error @enderror">
                     <x-slot name="summary">{{ __('Virtual or in-person') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($meetingTypesData as $meetingType)
                             <li>
                                 <x-hearth-input id="meetingType-{{ $meetingType['value'] }}" name="meetingTypes[]"
@@ -124,7 +134,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('location') field--error @enderror">
                     <x-slot name="summary">{{ __('Participant location') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($locationsData as $location)
                             <li>
                                 <x-hearth-input id="location-{{ $location['value'] }}" name="locations[]"
@@ -140,7 +150,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('compensation') field--error @enderror">
                     <x-slot name="summary">{{ __('Compensation') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($compensationsData as $compensation)
                             <li>
                                 <x-hearth-input id="compensation-{{ $compensation['value'] }}" name="compensations[]"
@@ -157,7 +167,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('sector') field--error @enderror">
                     <x-slot name="summary">{{ __('Sectors') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($sectorsData as $sector)
                             <li>
                                 <x-hearth-input id="sector-{{ $sector['value'] }}" name="sectors[]" type="checkbox"
@@ -172,7 +182,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('impact') field--error @enderror">
                     <x-slot name="summary">{{ __('Areas of impact') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($impactedAreasData as $impact)
                             <li>
                                 <x-hearth-input id="impact-{{ $impact['value'] }}" name="impacts[]" type="checkbox"
@@ -187,7 +197,7 @@
             <x-expander :level="3">
                 <fieldset class="filter__options field @error('recruitment') field--error @enderror">
                     <x-slot name="summary">{{ __('Recruitment method') }}</x-slot>
-                    <ul class="mb-4" role="list">
+                    <ul role="list">
                         @foreach ($recruitmentMethodsData as $recruitmentMethod)
                             <li>
                                 <x-hearth-input id="recruitmentMethod-{{ $recruitmentMethod['value'] }}"

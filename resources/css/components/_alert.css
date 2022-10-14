@@ -1,8 +1,4 @@
 /* This file contains all styles related to the alert component. */
-[role="alert"] {
-    min-height: var(--space-9);
-}
-
 .alert {
     background: var(--alert-background);
     border: var(--border) solid var(--alert-border);
