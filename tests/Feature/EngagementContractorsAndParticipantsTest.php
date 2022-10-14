@@ -610,6 +610,7 @@ test('individual can sign up to open call engagement', function () {
 
     $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.confirm-access-needs', $this->engagement))->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => 1]);
     $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->participants->first()->pivot->share_access_needs)->toBeTruthy();
