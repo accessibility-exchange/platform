@@ -25,7 +25,7 @@
         ) !!}
 
         <ul class="my-8 space-y-6" role="list">
-            @forelse(Auth::user()->individual->accessSupports as $support)
+            @forelse(Auth::user()->individual->accessSupports->where('anonymizable', true) as $support)
                 <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">{{ $support->name }}</li>
             @empty
                 <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
@@ -33,31 +33,31 @@
             @endforelse
         </ul>
 
-        <div class="box stack bg-grey-2">
-            <h2>{{ __('What we need your permission to share') }}</h2>
-            <p>{{ __('In order for :projectable to meet the following access needs, they will need to know who requested them. Do you give us permission to share that it was you who requested the following access needs?', ['projectable' => $project->projectable->name]) }}
-            </p>
-            <ul class="my-8 space-y-6" role="list">
-                @forelse(Auth::user()->individual->accessSupports->where('anonymizable', false) as $support)
-                    <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">{{ $support->name }}
-                    </li>
-                @empty
-                    <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
-                        {{ __('No access needs found.') }}</li>
-                @endforelse
-            </ul>
-            <form class="mt-12 flex flex-row gap-6"
-                action="{{ localized_route('engagements.store-access-needs-permissions', $engagement) }}"
-                method="post">
-                @csrf
-                <button class="secondary" name="share_access_needs" value="1">
-                    <x-heroicon-s-check class="h-5 w-5" aria-hidden="true" /> {{ __('Yes') }}
-                </button>
-                <button class="secondary" name="share_access_needs" value="0">
-                    <x-heroicon-s-x-mark class="h-5 w-5" aria-hidden="true" /> {{ __('No') }}
-                </button>
-            </form>
-        </div>
+        @if (Auth::user()->individual->accessSupports->where('anonymizable', false)->count())
+            <div class="box stack bg-grey-2">
+                <h2>{{ __('What we need your permission to share') }}</h2>
+                <p>{{ __('In order for :projectable to meet the following access needs, they will need to know who requested them. Do you give us permission to share that it was you who requested the following access needs?', ['projectable' => $project->projectable->name]) }}
+                </p>
+                <ul class="my-8 space-y-6" role="list">
+                    @foreach (Auth::user()->individual->accessSupports->where('anonymizable', false) as $support)
+                        <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
+                            {{ $support->name }}
+                        </li>
+                    @endforeach
+                </ul>
+                <form class="mt-12 flex flex-row gap-6"
+                    action="{{ localized_route('engagements.store-access-needs-permissions', $engagement) }}"
+                    method="post">
+                    @csrf
+                    <button class="secondary" name="share_access_needs" value="1">
+                        <x-heroicon-s-check class="h-5 w-5" aria-hidden="true" /> {{ __('Yes') }}
+                    </button>
+                    <button class="secondary" name="share_access_needs" value="0">
+                        <x-heroicon-s-x-mark class="h-5 w-5" aria-hidden="true" /> {{ __('No') }}
+                    </button>
+                </form>
+            </div>
+        @endif
 
         {!! Str::markdown(
             __('Please [update your access needs](:access_needs) if they have changed.', [

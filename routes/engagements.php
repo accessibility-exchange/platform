@@ -96,12 +96,12 @@ Route::controller(EngagementController::class)
             ->name('manage-access-needs');
 
         Route::multilingual('/{engagement}/manage/add-participant', 'addParticipant')
-            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('add-participant');
 
         Route::multilingual('/{engagement}/manage/invite-participant', 'inviteParticipant')
             ->method('post')
-            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('invite-participant');
 
         Route::multilingual('/{engagement}/sign-up', 'signUp')
@@ -122,7 +122,11 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('store-access-needs-permissions');
 
-        Route::multilingual('/{engagement}/leave', 'leave')
+        Route::multilingual('/{engagement}/leave', 'confirmLeave')
+            ->middleware(['auth', 'can:participate,engagement'])
+            ->name('confirm-leave');
+
+        Route::multilingual('/{engagement}/exit', 'leave')
             ->method('post')
             ->middleware(['auth', 'can:leave,engagement'])
             ->name('leave');

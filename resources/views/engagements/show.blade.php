@@ -54,7 +54,10 @@
             @endcan
 
             @can('participate', $engagement)
-                {{-- TODO: Leave engagement --}}
+                <a class="cta secondary" href="{{ localized_route('engagements.confirm-leave', $engagement) }}">
+                    <x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5" aria-hidden="true" />
+                    {{ __('Leave engagement') }}
+                </a>
             @endcan
         </div>
 

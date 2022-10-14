@@ -162,6 +162,7 @@ class AccessSupportSeeder extends Seeder
                 'in_person' => $support['in_person'] ?? false,
                 'virtual' => $support['virtual'] ?? false,
                 'documents' => $support['documents'] ?? false,
+                'anonymizable' => $support['anonymizable'] ?? false,
             ]);
         }
     }

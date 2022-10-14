@@ -169,9 +169,7 @@ test('project administrator cannot invite participants', function () {
 });
 
 test('participants cannot be invited if participant list is full', function () {
-    Notification::fake();
-
-    $this->engagement->participants()->save($this->participant);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id, 'ideal_participants' => 1]);
     $this->engagement = $this->engagement->fresh();
 

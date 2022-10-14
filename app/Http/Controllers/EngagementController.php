@@ -522,10 +522,6 @@ class EngagementController extends Controller
 
     public function addParticipant(Engagement $engagement): View|Response
     {
-        if ($engagement->participants->count() >= $engagement->ideal_participants) {
-            abort(403, __('You can’t invite any more participants to this engagement as it already has :number confirmed participants.', ['number' => $engagement->participants->count()]));
-        }
-
         return view('engagements.add-participant', [
             'project' => $engagement->project,
             'engagement' => $engagement,
@@ -623,9 +619,9 @@ class EngagementController extends Controller
 
     public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
     {
-        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
-            return redirect(localized_route('engagements.show', $engagement));
-        }
+//        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+//            return redirect(localized_route('engagements.show', $engagement));
+//        }
 
         return view('engagements.confirm-access-needs', [
             'project' => $engagement->project,
@@ -634,7 +630,7 @@ class EngagementController extends Controller
         ]);
     }
 
-    public function storeAccessNeedsPermission(Request $request, Engagement $engagement): RedirectResponse
+    public function storeAccessNeedsPermissions(Request $request, Engagement $engagement): RedirectResponse
     {
         $request->validate([
             'share_access_needs' => 'required|boolean',
@@ -647,13 +643,17 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.show', $engagement));
     }
 
+    public function confirmLeave(Engagement $engagement): View
+    {
+        return view('engagements.leave', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
     public function leave(Request $request, Engagement $engagement): RedirectResponse
     {
-        $request->validate([
-            'engagement_id' => 'required|exists:engagements,id',
-        ]);
-
-        Auth::user()->individual->engagements()->detach($request->input('engagement_id'));
+        Auth::user()->individual->engagements()->detach($engagement->id);
 
         flash(__('You have successfully left this engagement.'), 'success');
 
