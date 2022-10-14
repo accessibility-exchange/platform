@@ -627,6 +627,15 @@ test('individual can sign up to open call engagement', function () {
     expect($this->engagement->participants->first()->pivot->share_access_needs)->toBeTruthy();
 });
 
+test('regulated users can access notifications of participants signing up for their engagements', function () {
+    $this->project->notify(new ParticipantJoined($this->engagement));
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 new person signed up');
+});
+
 test('individual cannot leave an open call engagement if the signup by date has passed', function () {
     $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
@@ -664,6 +673,15 @@ test('individual can leave an open call engagement', function () {
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->confirmedParticipants)->toHaveCount(0);
+});
+
+test('regulated users can access notifications of participants leaving their engagements', function () {
+    $this->project->notify(new ParticipantLeft($this->engagement));
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 participant left');
 });
 
 test('individual cannot leave an engagement which uses a community connector', function () {
