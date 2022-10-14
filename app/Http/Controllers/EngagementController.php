@@ -31,6 +31,8 @@ use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\ParticipantJoined;
+use App\Notifications\ParticipantLeft;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -610,7 +612,7 @@ class EngagementController extends Controller
 
         Auth::user()->individual->engagements()->attach($request->input('engagement_id'), ['status' => 'confirmed']);
 
-        // TODO: Notify
+        $engagement->project->notify(new ParticipantJoined($engagement));
 
         flash(__('You have successfully signed up for this engagement.'), 'success');
 
@@ -619,9 +621,9 @@ class EngagementController extends Controller
 
     public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
     {
-//        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
-//            return redirect(localized_route('engagements.show', $engagement));
-//        }
+        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+            return redirect(localized_route('engagements.show', $engagement));
+        }
 
         return view('engagements.confirm-access-needs', [
             'project' => $engagement->project,
@@ -654,6 +656,8 @@ class EngagementController extends Controller
     public function leave(Request $request, Engagement $engagement): RedirectResponse
     {
         Auth::user()->individual->engagements()->detach($engagement->id);
+
+        $engagement->project->notify(new ParticipantLeft($engagement));
 
         flash(__('You have successfully left this engagement.'), 'success');
 
