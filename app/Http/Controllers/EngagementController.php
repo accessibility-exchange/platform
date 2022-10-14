@@ -606,11 +606,7 @@ class EngagementController extends Controller
 
     public function join(Request $request, Engagement $engagement): RedirectResponse
     {
-        $request->validate([
-            'engagement_id' => 'required|exists:engagements,id',
-        ]);
-
-        Auth::user()->individual->engagements()->attach($request->input('engagement_id'), ['status' => 'confirmed']);
+        Auth::user()->individual->engagements()->attach($engagement->id, ['status' => 'confirmed']);
 
         $engagement->project->notify(new ParticipantJoined($engagement));
 

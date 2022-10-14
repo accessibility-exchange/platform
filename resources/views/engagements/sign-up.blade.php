@@ -28,7 +28,6 @@
 
         <form class="mt-12" action="{{ localized_route('engagements.join', $engagement) }}" method="post">
             @csrf
-            <x-hearth-input name="engagement_id" type="hidden" :value="$engagement->id" />
             <button>{{ __('Confirm and sign up') }}</button>
         </form>
     </div>

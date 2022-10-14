@@ -9,11 +9,12 @@ use App\Notifications\ParticipantAccepted;
 use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
 use Database\Seeders\DisabilityTypeSeeder;
+use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     $this->seed(DisabilityTypeSeeder::class);
 
-    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => '2022-11-21']);
+    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
@@ -257,7 +258,7 @@ test('individual user cannot be invited if they have an outstanding invitation',
 });
 
 test('individual user cannot be invited if they are already a participant', function () {
-    $this->engagement->participants()->save($this->participant);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
@@ -546,4 +547,102 @@ test('regulated organization users and community connectors can access declined 
     $response->assertOk();
 
     $response->assertSee('1 person declined their invitation');
+});
+
+test('individual without participant role cannot sign up to an engagement', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->connectorUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement unless the recruitment method is open call', function () {
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement if the signup by date has passed', function () {
+    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement if participant list is full', function () {
+    $existingParticipant = User::factory()->create()->individual;
+    $this->engagement->update(['recruitment' => 'open-call', 'ideal_participants' => 1]);
+    $this->engagement->participants()->save($existingParticipant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual can sign up to open call engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->confirmedParticipants->pluck('id'))->toContain($this->participant->id);
+});
+
+test('individual cannot leave an open call engagement if the signup by date has passed', function () {
+    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('please contact us');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual can leave an open call engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('Are you sure you want to leave this engagement?');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+});
+
+test('individual cannot leave an engagement which uses a community connector', function () {
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('please contact the Community Connector');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertForbidden();
 });

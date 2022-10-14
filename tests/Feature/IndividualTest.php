@@ -908,7 +908,7 @@ test('individual relationships to projects can be derived from both projects and
 
     $participatingEngagement = Engagement::factory()->create();
 
-    $participatingEngagement->participants()->attach($individual->id);
+    $participatingEngagement->participants()->attach($individual->id, ['status' => 'confirmed']);
 
     $participatingEngagement = $participatingEngagement->fresh();
 
