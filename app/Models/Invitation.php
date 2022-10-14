@@ -40,7 +40,7 @@ class Invitation extends HearthInvitation
                     $this->invitationable->save();
                 }
                 if ($this->role === 'participant') {
-                    $this->invitationable->participants()->save($invitee);
+                    $this->invitationable->participants()->save($invitee, ['status' => 'confirmed']);
                 }
             }
             if ($type === 'organization') {

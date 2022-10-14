@@ -72,16 +72,6 @@ Route::controller(IndividualController::class)->prefix('individuals')
             ->method('put')
             ->name('update-publication-status');
 
-        Route::multilingual('/{individual}/express-interest', 'expressInterest')
-            ->method('post')
-            ->middleware(['auth', 'can:manage,individual'])
-            ->name('express-interest');
-
-        Route::multilingual('/{individual}/remove-interest', 'removeInterest')
-            ->method('post')
-            ->middleware(['auth', 'can:manage,individual'])
-            ->name('remove-interest');
-
         Route::multilingual('/{individual}/delete', 'destroy')
             ->middleware(['auth', 'can:delete,individual'])
             ->method('delete')

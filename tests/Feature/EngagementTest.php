@@ -413,19 +413,6 @@ test('users without regulated organization admin role cannot manage engagements'
     $response->assertForbidden();
 });
 
-test('engagement participants can participate in engagements', function () {
-    $user = User::factory()->create();
-    $participant = $user->individual;
-    $engagement = Engagement::factory()->create();
-    $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
-
-    $this->assertTrue($engagement->participants->isNotEmpty());
-    $this->assertTrue($engagement->confirmedParticipants->isNotEmpty());
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.participate', $engagement));
-    $response->assertOk();
-});
-
 test('engagements can reflect parent project’s estimate and agreement status', function () {
     $engagement = Engagement::factory()->create();
 
