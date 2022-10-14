@@ -606,7 +606,7 @@ class EngagementController extends Controller
 
     public function join(Request $request, Engagement $engagement): RedirectResponse
     {
-        Auth::user()->individual->engagements()->attach($engagement->id, ['status' => 'confirmed']);
+        $engagement->participants()->save(Auth::user()->individual, ['status' => 'confirmed']);
 
         $engagement->project->notify(new ParticipantJoined($engagement));
 
@@ -634,7 +634,7 @@ class EngagementController extends Controller
             'share_access_needs' => 'required|boolean',
         ]);
 
-        $engagement->participants()->syncWithoutDetaching([1 => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
+        $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
 
         flash(__('Your preference for sharing your access needs has been saved.'), 'success');
 
