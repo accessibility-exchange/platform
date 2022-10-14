@@ -8,6 +8,8 @@ use App\Notifications\IndividualContractorInvited;
 use App\Notifications\ParticipantAccepted;
 use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\ParticipantJoined;
+use App\Notifications\ParticipantLeft;
 use Database\Seeders\DisabilityTypeSeeder;
 use Illuminate\Support\Carbon;
 
@@ -605,6 +607,15 @@ test('individual can sign up to open call engagement', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 
+    Notification::assertSentTo(
+        $this->project, function (ParticipantJoined $notification, $channels) {
+            $this->assertStringContainsString('1 new person signed up', $notification->toMail($this->project)->render());
+            $this->assertStringContainsString('1 new person signed up', $notification->toVonage($this->project)->content);
+            expect($notification->toArray($this->project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->confirmedParticipants->pluck('id'))->toContain($this->participant->id);
 
@@ -641,6 +652,18 @@ test('individual can leave an open call engagement', function () {
     $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->project, function (ParticipantLeft $notification, $channels) {
+            $this->assertStringContainsString('1 participant left', $notification->toMail($this->project)->render());
+            $this->assertStringContainsString('1 participant left', $notification->toVonage($this->project)->content);
+            expect($notification->toArray($this->project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->confirmedParticipants)->toHaveCount(0);
 });
 
 test('individual cannot leave an engagement which uses a community connector', function () {
