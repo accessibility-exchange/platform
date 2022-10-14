@@ -43,13 +43,6 @@ class IndividualPolicy
             : Response::deny();
     }
 
-    public function manage(User $user, Individual $individual): Response
-    {
-        return $user->id === $individual->user_id
-            ? Response::allow()
-            : Response::deny(__('You cannot edit this individual page.'));
-    }
-
     public function update(User $user, Individual $individual): Response
     {
         if ($user->id !== $individual->user_id) {

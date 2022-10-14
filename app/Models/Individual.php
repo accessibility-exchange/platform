@@ -259,11 +259,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
         return $this->belongsToMany(AccessSupport::class);
     }
 
-    public function projectsOfInterest(): BelongsToMany
-    {
-        return $this->belongsToMany(Project::class, 'projects_of_interest');
-    }
-
     public function engagements(): BelongsToMany
     {
         return $this->belongsToMany(Engagement::class);
