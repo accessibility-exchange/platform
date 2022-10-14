@@ -51,7 +51,8 @@
             <p>
                 <strong>{{ __('Email') }}:</strong>
                 {{ settings('email', 'support@accessibilityexchange.ca') }}<br />
-                <strong>{{ __('Phone') }}:</strong> {{ phone(settings('phone'))->formatForCountry('CA') }}<br />
+                <strong>{{ __('Phone') }}:</strong>
+                {{ phone(settings('phone', '+1-888-867-0053'))->formatForCountry('CA') }}<br />
                 <strong>{{ __('Hours') }}:</strong> {{ '9:00am to 5:00pm Eastern Time' }}
             </p>
             <hr class="divider--thick" />
