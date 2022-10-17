@@ -31,12 +31,15 @@ use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\ParticipantJoined;
+use App\Notifications\ParticipantLeft;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -521,10 +524,6 @@ class EngagementController extends Controller
 
     public function addParticipant(Engagement $engagement): View|Response
     {
-        if ($engagement->participants->count() >= $engagement->ideal_participants) {
-            abort(403, __('You can’t invite any more participants to this engagement as it already has :number confirmed participants.', ['number' => $engagement->participants->count()]));
-        }
-
         return view('engagements.add-participant', [
             'project' => $engagement->project,
             'engagement' => $engagement,
@@ -596,6 +595,71 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.manage-participants', $engagement));
     }
 
+    public function signUp(Engagement $engagement): View
+    {
+        return view('engagements.sign-up', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function join(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $engagement->participants()->save(Auth::user()->individual, ['status' => 'confirmed']);
+
+        $engagement->project->notify(new ParticipantJoined($engagement));
+
+        flash(__('You have successfully signed up for this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.confirm-access-needs', $engagement));
+    }
+
+    public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
+    {
+        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+            return redirect(localized_route('engagements.show', $engagement));
+        }
+
+        return view('engagements.confirm-access-needs', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function storeAccessNeedsPermissions(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $request->validate([
+            'share_access_needs' => 'required|boolean',
+        ]);
+
+        $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
+
+        flash(__('Your preference for sharing your access needs has been saved.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
+    public function confirmLeave(Engagement $engagement): View
+    {
+        return view('engagements.leave', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function leave(Request $request, Engagement $engagement): RedirectResponse
+    {
+        Auth::user()->individual->engagements()->detach($engagement->id);
+
+        $engagement->project->notify(new ParticipantLeft($engagement));
+
+        flash(__('You have successfully left this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
     public function manageAccessNeeds(Engagement $engagement): View
     {
         return view('engagements.manage-access-needs', [
@@ -603,14 +667,6 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => collect([]),
             'participants' => collect([]),
-        ]);
-    }
-
-    public function participate(Engagement $engagement)
-    {
-        return view('engagements.participate', [
-            'project' => $engagement->project,
-            'engagement' => $engagement,
         ]);
     }
 }

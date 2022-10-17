@@ -269,25 +269,6 @@ test('notifications can be routed for projects', function () {
     expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
-test('individuals can express interest in projects', function () {
-    $user = User::factory()->create();
-    $individual = Individual::factory()->create([
-        'user_id' => $user->id,
-    ]);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $project = Project::factory()->create([
-        'projectable_id' => $regulatedOrganization->id,
-    ]);
-
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.express-interest', $individual), ['project_id' => $project->id]);
-    $response->assertSee('You have expressed your interest in this project.');
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.remove-interest', $individual), ['project_id' => $project->id]);
-    $response->assertSee('You have removed your expression of interest in this project.');
-    $response->assertOk();
-});
-
 test('guests cannot view projects', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $project = Project::factory()->create([

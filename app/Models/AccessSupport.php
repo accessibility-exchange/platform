@@ -17,6 +17,7 @@ class AccessSupport extends Model implements Selectable
         'in_person',
         'virtual',
         'documents',
+        'share_access_needs',
     ];
 
     protected $casts = [
@@ -25,6 +26,7 @@ class AccessSupport extends Model implements Selectable
         'in_person' => 'boolean',
         'virtual' => 'boolean',
         'documents' => 'boolean',
+        'share_access_needs' => 'boolean',
     ];
 
     public array $translatable = [

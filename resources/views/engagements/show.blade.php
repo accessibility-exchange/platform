@@ -15,36 +15,51 @@
             <p class="h4">{{ $engagement->display_format }}</p>
         @endif
 
-        <dl class="flex flex-col gap-6 md:flex-row md:items-start md:gap-16">
-            <div>
-                <dt>{{ __('project.singular_name_titlecase') }}</dt>
-                <dd><a
-                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
-                </dd>
-            </div>
-            <div>
-                <dt>{{ __('Run by') }}</dt>
-                <dd><a
-                        href="{{ localized_route($project->projectable->getRoutePrefix() . '.show', $project->projectable) }}">{{ $project->projectable->name }}</a>
-                </dd>
-            </div>
-            <div>
-                <dt>{{ __('Recruitment') }}</dt>
-                <dd>
-                    {{ $engagement->display_recruitment }}
-                    @if (($engagement->recruitment === 'connector' && $engagement->connector) || $engagement->organizationalConnector)
-                        <br />
-                        @if ($engagement->connector)
-                            <a
-                                href="{{ localized_route('individuals.show', $engagement->connector) }}">{{ $engagement->connector->name }}</a>
-                        @elseif($engagement->organizationalConnector)
-                            <a
-                                href="{{ localized_route('organizations.show', $engagement->connector) }}">{{ $engagement->organizationalConnector->name }}</a>
+        <div class="flex flex-col gap-6 md:flex-row md:items-start md:gap-16">
+            <dl class="flex flex-col gap-6 md:flex-row md:items-start md:gap-16">
+                <div>
+                    <dt>{{ __('project.singular_name_titlecase') }}</dt>
+                    <dd><a
+                            href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                    </dd>
+                </div>
+                <div>
+                    <dt>{{ __('Run by') }}</dt>
+                    <dd><a
+                            href="{{ localized_route($project->projectable->getRoutePrefix() . '.show', $project->projectable) }}">{{ $project->projectable->name }}</a>
+                    </dd>
+                </div>
+                <div>
+                    <dt>{{ __('Recruitment') }}</dt>
+                    <dd>
+                        {{ $engagement->display_recruitment }}
+                        @if (($engagement->recruitment === 'connector' && $engagement->connector) || $engagement->organizationalConnector)
+                            <br />
+                            @if ($engagement->connector)
+                                <a
+                                    href="{{ localized_route('individuals.show', $engagement->connector) }}">{{ $engagement->connector->name }}</a>
+                            @elseif($engagement->organizationalConnector)
+                                <a
+                                    href="{{ localized_route('organizations.show', $engagement->connector) }}">{{ $engagement->organizationalConnector->name }}</a>
+                            @endif
                         @endif
-                    @endif
-                </dd>
-            </div>
-        </dl>
+                    </dd>
+                </div>
+            </dl>
+
+            @can('join', $engagement)
+                <a class="cta" href="{{ localized_route('engagements.sign-up', $engagement) }}">
+                    <x-heroicon-o-clipboard-document-check class="h-5 w-5" aria-hidden="true" /> {{ __('Sign up') }}
+                </a>
+            @endcan
+
+            @can('participate', $engagement)
+                <a class="cta secondary" href="{{ localized_route('engagements.confirm-leave', $engagement) }}">
+                    <x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5" aria-hidden="true" />
+                    {{ __('Leave engagement') }}
+                </a>
+            @endcan
+        </div>
 
         @can('update', $engagement)
             <a class="cta secondary"
