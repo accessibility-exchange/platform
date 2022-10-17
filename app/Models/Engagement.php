@@ -280,7 +280,7 @@ class Engagement extends Model
             return false;
         }
 
-        if (! $this->hasEstimateAndAgreement()) {
+        if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
             return false;
         }
 

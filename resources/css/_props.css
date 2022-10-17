@@ -91,6 +91,41 @@
     --button-secondary-color-active: var(--theme-button-secondary-color-active, var(--color-blue-6));
     --button-secondary-background-active: var(--theme-button-secondary-background-active, white);
     --button-secondary-border-active: var(--theme-button-secondary-border-active, var(--color-blue-6));
+    --button-destructive-border: var(--theme-button-destructive-border, var(--color-red-8));
+    --button-destructive-background: var(--theme-button-destructive-background, var(--color-red-8));
+    --button-destructive-color: var(--theme-button-destructive-color, var(--color-white));
+    --button-destructive-background-hover: var(--theme-button-destructive-background-hover, var(--color-red-9));
+    --button-destructive-border-hover: var(--theme-button-destructive-border-hover, var(--color-red-9));
+    --button-destructive-color-hover: var(--theme-button-destructive-color-hover, var(--color-white));
+    --button-destructive-outline: var(--theme-button-destructive-outline, var(--color-red-8));
+    --button-destructive-color-active: var(--theme-button-destructive-color-active, var(--color-white));
+    --button-destructive-background-active: var(--theme-button-destructive-background-active, var(--color-red-8));
+    --button-destructive-border-active: var(--theme-button-destructive-border-active, var(--color-red-8));
+    --button-destructive-secondary-border: var(--theme-button-destructive-secondary-border, var(--color-red-8));
+    --button-destructive-secondary-background: var(--theme-button-destructive-secondary-background, white);
+    --button-destructive-secondary-color: var(--theme-button-destructive-secondary-color, var(--color-red-8));
+    --button-destructive-secondary-background-hover: var(--theme-button-destructive-secondary-background-hover, white);
+    --button-destructive-secondary-border-hover: var(
+        --theme-button-destructive-secondary-border-hover,
+        var(--color-red-9)
+    );
+    --button-destructive-secondary-color-hover: var(
+        --theme-button-destructive-secondary-color-hover,
+        var(--color-red-9)
+    );
+    --button-destructive-secondary-outline: var(--theme-button-destructive-secondary-outline, var(--color-red-8));
+    --button-destructive-secondary-color-active: var(
+        --theme-button-destructive-secondary-color-active,
+        var(--color-red-8)
+    );
+    --button-destructive-secondary-background-active: var(
+        --theme-button-destructive-secondary-background-active,
+        white
+    );
+    --button-destructive-secondary-border-active: var(
+        --theme-button-destructive-secondary-border-active,
+        var(--color-red-8)
+    );
     --button-borderless-outline: var(--theme-button-borderless-outline, var(--color-blue-6));
     --button-borderless-color-hover: var(--theme-button-borderless-color-hover, var(--color-blue-7));
     --button-borderless-background-hover: var(--theme-button-borderless-background-hover, var(--color-grey-2));
