@@ -13,7 +13,6 @@ use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Project;
-use App\Statuses\ProjectStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -23,21 +22,6 @@ use Spatie\LaravelOptions\Options;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return View
-     */
-    public function index(): View
-    {
-        return view('projects.index', [
-            'projects' => Project::status(new ProjectStatus('published'))
-                ->with('regulatedOrganization')
-                ->orderBy('name')
-                ->get(),
-        ]);
-    }
-
     public function showContextSelection(): View
     {
         $projectable = Auth::user()->projectable();

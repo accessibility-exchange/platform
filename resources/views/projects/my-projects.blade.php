@@ -5,7 +5,8 @@
             <h1 id="projects" itemprop="name">
                 {{ __('Projects') }}
             </h1>
-            <a class="cta secondary" href="{{ localized_route('projects.index') }}">{{ __('Browse all projects') }}</a>
+            <a class="cta secondary"
+                href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
         </div>
     </x-slot>
     @if (($user->context === 'organization' &&
@@ -83,7 +84,7 @@
             <h2>{{ __('Browse all projects') }}</h2>
             <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
             <p class="mt-8"><a class="cta"
-                    href="{{ localized_route('projects.index') }}">{{ __('Browse all projects') }}</a></p>
+                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></p>
         </div>
     </div>
 </x-app-wide-tabbed-layout>
