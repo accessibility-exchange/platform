@@ -58,7 +58,7 @@
                     @foreach ($statusesData as $status)
                         <div class="field">
                             <x-hearth-input id="status-{{ $status['value'] }}" name="statuses[]" type="checkbox"
-                                value="{{ $status['value'] }}" wire:model="statuses.{{ $status['value'] }}" />
+                                value="{{ $status['value'] }}" wire:model="statuses" />
                             <label for="status-{{ $status['value'] }}">{{ $status['label'] }}</label>
                         </div>
                     @endforeach
@@ -72,7 +72,7 @@
                     @foreach ($seekingsData as $seeking)
                         <div class="field">
                             <x-hearth-input id="seeking-{{ $seeking['value'] }}" name="seekings[]" type="checkbox"
-                                value="{{ $seeking['value'] }}" wire:model="seekings.{{ $seeking['value'] }}" />
+                                value="{{ $seeking['value'] }}" wire:model="seekings" />
                             <label for="seeking-{{ $seeking['value'] }}">{{ $seeking['label'] }}</label>
                         </div>
                     @endforeach
@@ -86,8 +86,7 @@
                     @foreach ($initiatorsData as $initiator)
                         <div class="field">
                             <x-hearth-input id="initiator-{{ $initiator['value'] }}" name="initiators[]"
-                                type="checkbox" value="{{ $initiator['value'] }}"
-                                wire:model="initiators.{{ $initiator['value'] }}" />
+                                type="checkbox" value="{{ $initiator['value'] }}" wire:model="initiators" />
                             <label for="initiator-{{ $initiator['value'] }}">{{ $initiator['label'] }}</label>
                         </div>
                     @endforeach
@@ -102,8 +101,7 @@
                     @foreach ($seekingGroupsData as $seekingGroup)
                         <div class="field">
                             <x-hearth-input id="seekingGroup-{{ $seekingGroup['value'] }}" name="seekingGroups[]"
-                                type="checkbox" value="{{ $seekingGroup['value'] }}"
-                                wire:model="seekingGroups.{{ $seekingGroup['value'] }}" />
+                                type="checkbox" value="{{ $seekingGroup['value'] }}" wire:model="seekingGroups" />
                             <label
                                 for="seekingGroup-{{ $seekingGroup['value'] }}">{{ $seekingGroup['label'] }}</label>
                         </div>
@@ -118,8 +116,7 @@
                     @foreach ($meetingTypesData as $meetingType)
                         <div class="field">
                             <x-hearth-input id="meetingType-{{ $meetingType['value'] }}" name="meetingTypes[]"
-                                type="checkbox" value="{{ $meetingType['value'] }}"
-                                wire:model="meetingTypes.{{ $meetingType['value'] }}" />
+                                type="checkbox" value="{{ $meetingType['value'] }}" wire:model="meetingTypes" />
                             <label for="meetingType-{{ $meetingType['value'] }}">{{ $meetingType['label'] }}</label>
                         </div>
                     @endforeach
@@ -133,7 +130,7 @@
                     @foreach ($locationsData as $location)
                         <div class="field">
                             <x-hearth-input id="location-{{ $location['value'] }}" name="locations[]" type="checkbox"
-                                value="{{ $location['value'] }}" wire:model="locations.{{ $location['value'] }}" />
+                                value="{{ $location['value'] }}" wire:model="locations" />
                             <label for="location-{{ $location['value'] }}">{{ $location['label'] }}</label>
                         </div>
                     @endforeach
@@ -147,8 +144,7 @@
                     @foreach ($compensationsData as $compensation)
                         <div class="field">
                             <x-hearth-input id="compensation-{{ $compensation['value'] }}" name="compensations[]"
-                                type="checkbox" value="{{ $compensation['value'] }}"
-                                wire:model="compensations.{{ $compensation['value'] }}" />
+                                type="checkbox" value="{{ $compensation['value'] }}" wire:model="compensations" />
                             <label
                                 for="compensation-{{ $compensation['value'] }}">{{ $compensation['label'] }}</label>
                         </div>
@@ -163,7 +159,7 @@
                     @foreach ($sectorsData as $sector)
                         <div class="field">
                             <x-hearth-input id="sector-{{ $sector['value'] }}" name="sectors[]" type="checkbox"
-                                value="{{ $sector['value'] }}" wire:model="sectors.{{ $sector['value'] }}" />
+                                value="{{ $sector['value'] }}" wire:model="sectors" />
                             <label for="sector-{{ $sector['value'] }}">{{ $sector['label'] }}</label>
                         </div>
                     @endforeach
@@ -177,7 +173,7 @@
                     @foreach ($impactedAreasData as $impact)
                         <div class="field">
                             <x-hearth-input id="impact-{{ $impact['value'] }}" name="impacts[]" type="checkbox"
-                                value="{{ $impact['value'] }}" wire:model="impacts.{{ $impact['value'] }}" />
+                                value="{{ $impact['value'] }}" wire:model="impacts" />
                             <label for="impact-{{ $impact['value'] }}">{{ $impact['label'] }}</label>
                         </div>
                     @endforeach
@@ -192,8 +188,7 @@
                         <div class="field">
                             <x-hearth-input id="recruitmentMethod-{{ $recruitmentMethod['value'] }}"
                                 name="recruitmentMethods[]" type="checkbox"
-                                value="{{ $recruitmentMethod['value'] }}"
-                                wire:model="recruitmentMethods.{{ $recruitmentMethod['value'] }}" />
+                                value="{{ $recruitmentMethod['value'] }}" wire:model="recruitmentMethods" />
                             <label
                                 for="recruitmentMethod-{{ $recruitmentMethod['value'] }}">{{ $recruitmentMethod['label'] }}</label>
                         </div>
