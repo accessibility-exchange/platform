@@ -9,7 +9,7 @@
 </x-slot>
 
 <div>
-    <form class="stack" wire:submit.prevent="search">
+    <form class="space-y-2" wire:submit.prevent="search">
         <x-hearth-label for="searchQuery" :value="__('Search')" />
         <div class="repel">
             <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
