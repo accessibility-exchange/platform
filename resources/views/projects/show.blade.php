@@ -6,7 +6,7 @@
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             @else
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects') }}</a></li>
-                <li><a href="{{ localized_route('projects.index') }}">{{ __('Browse all projects') }}</a></li>
+                <li><a href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></li>
             @endcan
         </ol>
         <h1 id="project">{{ $project->name }}</h1>

@@ -27,7 +27,7 @@ class CriterionFactory extends Factory
             'matching_strategy_id' => MatchingStrategy::factory(),
             'criteriable_type' => $criteriable,
             'criteriable_id' => $criteriable::pluck('id')->first(),
-            'weight' => $this->faker->float(2, 0, 1),
+            'weight' => $this->faker->randomFloat(2, 0, 1),
         ];
     }
 }
