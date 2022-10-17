@@ -10,10 +10,6 @@ fieldset > legend + * {
     margin-block-start: var(--space-5);
 }
 
-form .repel:not([class*="my-"]):last-child {
-    margin-block-start: var(--space-12);
-}
-
 form.disabled {
     opacity: 0.5;
     pointer-events: none;

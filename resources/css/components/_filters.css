@@ -2,10 +2,16 @@
     margin-block-start: var(--space-6);
 }
 
-.filters .expander .ul {
-    margin-block-end: var(--space-4);
+.filters .expander > .stack {
+    margin-block-end: var(--space-6);
+    margin-block-start: var(--space-1);
+}
+
+.filters fieldset legend + .field {
+    margin-block-start: 0;
 }
 
 .search-and-filter-results {
+    margin-block: var(--space-6);
     min-height: var(--space-9);
 }
