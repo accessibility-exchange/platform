@@ -9,7 +9,7 @@
             <div class="responsive-switcher">
                 <div>
                     <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span
-                        class="font-semibold">{!! __('Call, Text, or :vrs', [
+                        class="font-semibold">{!! __('Call or :vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 __('VRS') .
