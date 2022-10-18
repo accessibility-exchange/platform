@@ -99,8 +99,8 @@
     --button-destructive-color-hover: var(--theme-button-destructive-color-hover, var(--color-white));
     --button-destructive-outline: var(--theme-button-destructive-outline, var(--color-red-8));
     --button-destructive-color-active: var(--theme-button-destructive-color-active, var(--color-white));
-    --button-destructive-background-active: var(--theme-button-destructive-background-active, var(--color-red-8));
-    --button-destructive-border-active: var(--theme-button-destructive-border-active, var(--color-red-8));
+    --button-destructive-background-active: var(--theme-button-destructive-background-active, var(--color-red-7));
+    --button-destructive-border-active: var(--theme-button-destructive-border-active, var(--color-red-7));
     --button-destructive-secondary-border: var(--theme-button-destructive-secondary-border, var(--color-red-8));
     --button-destructive-secondary-background: var(--theme-button-destructive-secondary-background, white);
     --button-destructive-secondary-color: var(--theme-button-destructive-secondary-color, var(--color-red-8));
@@ -116,7 +116,7 @@
     --button-destructive-secondary-outline: var(--theme-button-destructive-secondary-outline, var(--color-red-8));
     --button-destructive-secondary-color-active: var(
         --theme-button-destructive-secondary-color-active,
-        var(--color-red-8)
+        var(--color-red-7)
     );
     --button-destructive-secondary-background-active: var(
         --theme-button-destructive-secondary-background-active,
@@ -124,7 +124,7 @@
     );
     --button-destructive-secondary-border-active: var(
         --theme-button-destructive-secondary-border-active,
-        var(--color-red-8)
+        var(--color-red-7)
     );
     --button-borderless-outline: var(--theme-button-borderless-outline, var(--color-blue-6));
     --button-borderless-color-hover: var(--theme-button-borderless-color-hover, var(--color-blue-7));
@@ -200,7 +200,9 @@
     --definition-shadow: var(--theme-definition-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
+    --card-background-hover: var(--theme-card-background-hover, var(--color-grey-1));
     --card-shadow: var(--theme-card-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
+    --card-inset-shadow-hover: var(--theme-card-inset-shadow-hover, 0 0 0 1px var(--color-grey-3));
     --card-shadow-hover: var(--theme-card-shadow-hover, 0 0 0.625rem rgb(0 0 0 / 40%));
     --card-regulated-organization-shadow: var(
         --theme-card-regulated-organization-shadow,

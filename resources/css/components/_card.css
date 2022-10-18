@@ -113,16 +113,38 @@
     box-shadow: var(--card-engagement-shadow-focus-within);
 }
 
-.manage-section .card.organization,
-.manage-section .card.individual {
+.manage-section .card.organization {
     @apply -mx-6;
 
     box-shadow: var(--card-organization-shadow);
 }
 
-.manage-section .card.organization:hover,
+.manage-section .card.individual {
+    @apply -mx-6;
+
+    box-shadow: var(--card-individual-shadow);
+}
+
+.manage-section .card.organization:hover {
+    background: var(--card-background-hover);
+    box-shadow: var(--card-organization-shadow), var(--card-inset-shadow-hover);
+}
+
 .manage-section .card.individual:hover {
+    background: var(--card-background-hover);
+    box-shadow: var(--card-individual-shadow), var(--card-inset-shadow-hover);
+}
+
+.manage-section .card.organization:focus-within,
+.manage-section .card.organization:has(a:active) {
+    background: inherit;
     box-shadow: var(--card-organization-shadow-focus-within);
+}
+
+.manage-section .card.individual:focus-within,
+.manage-section .card.individual:has(a:active) {
+    background: inherit;
+    box-shadow: var(--card-individual-shadow-focus-within);
 }
 
 .manage-section .card.organization + footer {
