@@ -773,13 +773,21 @@ test('organization can be added to organizational engagement', function () {
 test('organization can access notification of being added to organizational engagement', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
-    $this->markTestIncomplete();
+
+    $this->participantOrganization->notify(new OrganizationAddedToEngagement($this->engagement));
+
+    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('Your organization has been added');
 });
 
 test('organization cannot be removed from organizational engagement without attached organization', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
-    $this->markTestIncomplete();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
+    $response->assertForbidden();
 });
 
 test('organization can be removed from organizational engagement', function () {
@@ -810,5 +818,11 @@ test('organization can be removed from organizational engagement', function () {
 test('organization can access notification of being removed from organizational engagement', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
-    $this->markTestIncomplete();
+
+    $this->participantOrganization->notify(new OrganizationRemovedFromEngagement($this->engagement));
+
+    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('Your organization has been removed from');
 });
