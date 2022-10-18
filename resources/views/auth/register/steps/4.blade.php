@@ -26,6 +26,31 @@
         <x-hearth-error for="password" />
     </div>
 
+    <div class="stack">
+        <div class="field @error('accepted_terms_of_service') field--error @enderror">
+            <x-hearth-checkbox name="accepted_terms_of_service" required />
+            <label for="accepted_terms_of_service">
+                {{ __('I agree with the ') }}
+                <a href="{{ localized_route('about.terms-of-service') }}">
+                    {{ __('terms of service') }}
+                </a>
+                {{ __('for using The Accessibility Exchange') }}
+            </label>
+            <x-hearth-error for="accepted_terms_of_service" />
+        </div>
+        <div class="field @error('accepted_privacy_policy') field--error @enderror">
+            <x-hearth-checkbox name="accepted_privacy_policy" required />
+            <label for="accepted_privacy_policy">
+                {{ __('I agree with the ') }}
+                <a href="{{ localized_route('about.privacy-policy') }}">
+                    {{ __('privacy policy') }}
+                </a>
+                {{ __('for using The Accessibility Exchange') }}
+            </label>
+            <x-hearth-error for="accepted_privacy_policy" />
+        </div>
+    </div>
+
     <p class="repel">
         <a class="cta secondary" href="{{ localized_route('register', ['step' => 3]) }}">{{ __('Back') }}</a>
 
