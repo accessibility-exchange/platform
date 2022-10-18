@@ -30,7 +30,7 @@
         <div class="field @error('accepted_terms_of_service') field--error @enderror">
             <x-hearth-checkbox name="accepted_terms_of_service" required />
             <label for="accepted_terms_of_service">
-                {{ __('I agree with the ') }}
+                {{ __('I agree to the ') }}
                 <a href="{{ localized_route('about.terms-of-service') }}">
                     {{ __('terms of service') }}
                 </a>
@@ -41,7 +41,7 @@
         <div class="field @error('accepted_privacy_policy') field--error @enderror">
             <x-hearth-checkbox name="accepted_privacy_policy" required />
             <label for="accepted_privacy_policy">
-                {{ __('I agree with the ') }}
+                {{ __('I agree to the ') }}
                 <a href="{{ localized_route('about.privacy-policy') }}">
                     {{ __('privacy policy') }}
                 </a>
