@@ -30,6 +30,8 @@ use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Notifications\OrganizationAddedToEngagement;
+use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantInvited;
 use App\Notifications\ParticipantJoined;
 use App\Notifications\ParticipantLeft;
@@ -532,7 +534,9 @@ class EngagementController extends Controller
 
         $engagement->save();
 
-        // TODO: Notify organization.
+        $organization = Organization::find($validated['organization_id']);
+
+        $organization->notify(new OrganizationAddedToEngagement($engagement));
 
         flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success');
 
@@ -547,7 +551,7 @@ class EngagementController extends Controller
 
         $engagement->save();
 
-        // TODO: Notify organization.
+        $organization->notify(new OrganizationRemovedFromEngagement($engagement));
 
         flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success');
 
