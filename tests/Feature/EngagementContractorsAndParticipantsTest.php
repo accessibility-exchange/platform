@@ -5,6 +5,8 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\OrganizationAddedToEngagement;
+use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantAccepted;
 use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
@@ -41,6 +43,13 @@ beforeEach(function () {
     $this->participantUser = User::factory()->create();
     $this->participantUser->individual->update(['roles' => ['participant']]);
     $this->participant = $this->participantUser->individual->fresh();
+
+    $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->participantOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->participantOrganization->users()->attach(
+        $this->participantOrganizationUser,
+        ['role' => 'admin']
+    );
 });
 
 test('individual user can accept invitation to an engagement as a connector', function () {
@@ -699,4 +708,107 @@ test('individual cannot leave an engagement which uses a community connector', f
 
     $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
     $response->assertForbidden();
+});
+
+test('organization cannot be added to individual engagement', function () {
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertForbidden();
+});
+
+test('organization without participant role cannot be added to organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->connectorOrganization->id,
+    ]);
+    $response->assertSessionHasErrors('organization_id');
+});
+
+test('organization cannot be added to organizational engagement with attached organization', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->organization()->associate($this->participantOrganization->id);
+    $this->engagement->save();
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertForbidden();
+});
+
+test('organization can be added to organizational engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->participantOrganization, function (OrganizationAddedToEngagement $notification, $channels) {
+            $this->assertStringContainsString('Your organization has been added', $notification->toMail($this->participantOrganization)->render());
+            $this->assertStringContainsString('Your organization has been added', $notification->toVonage($this->participantOrganization)->content);
+            expect($notification->toArray($this->participantOrganization)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->organization->id)->toEqual($this->participantOrganization->id);
+});
+
+test('organization can access notification of being added to organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+    $this->markTestIncomplete();
+});
+
+test('organization cannot be removed from organizational engagement without attached organization', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+    $this->markTestIncomplete();
+});
+
+test('organization can be removed from organizational engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->organization()->associate($this->participantOrganization->id);
+    $this->engagement->save();
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->participantOrganization, function (OrganizationRemovedFromEngagement $notification, $channels) {
+            $this->assertStringContainsString('Your organization has been removed', $notification->toMail($this->participantOrganization)->render());
+            $this->assertStringContainsString('Your organization has been removed', $notification->toVonage($this->participantOrganization)->content);
+            expect($notification->toArray($this->participantOrganization)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->organization)->toBeNull();
+});
+
+test('organization can access notification of being removed from organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+    $this->markTestIncomplete();
 });

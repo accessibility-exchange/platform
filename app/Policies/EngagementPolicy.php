@@ -82,6 +82,27 @@ class EngagementPolicy
             : Response::deny();
     }
 
+    public function manageOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization'
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function addOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && ! $engagement->organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function removeOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && $engagement->organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
     public function join(User $user, Engagement $engagement): Response
     {
         return $engagement->recruitment === 'open-call'

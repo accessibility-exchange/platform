@@ -526,21 +526,44 @@ class EngagementController extends Controller
 
     public function addOrganization(Request $request, Engagement $engagement): RedirectResponse
     {
-        $validated = $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
-        ]);
+        $organization = Organization::find($request->input('organization_id'));
+
+        $validator = Validator::make(
+            $request->all(), [
+                'organization_id' => 'required|exists:organizations,id',
+            ],
+            [],
+            [
+                'organization_id' => __('organization.singular_name'),
+            ]
+        );
+
+        $validator->after(function ($validator) use ($organization) {
+            ray($organization->roles);
+            if (! $organization || ! $organization->isParticipant()) {
+                $validator->errors()->add(
+                    'organization_id', __('The organization you have added does not participate in engagements.')
+                );
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect(localized_route('engagements.manage-organization', $engagement))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
 
         $engagement->organization()->associate($validated['organization_id']);
 
         $engagement->save();
 
-        $organization = Organization::find($validated['organization_id']);
-
         $organization->notify(new OrganizationAddedToEngagement($engagement));
 
         flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success');
 
-        return redirect(localized_route('engagements.manage', $engagement));
+        return redirect(localized_route('engagements.manage-organization', $engagement));
     }
 
     public function removeOrganization(Request $request, Engagement $engagement): RedirectResponse
@@ -555,7 +578,7 @@ class EngagementController extends Controller
 
         flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success');
 
-        return redirect(localized_route('engagements.manage', $engagement));
+        return redirect(localized_route('engagements.manage-organization', $engagement));
     }
 
     public function manageParticipants(Engagement $engagement): View

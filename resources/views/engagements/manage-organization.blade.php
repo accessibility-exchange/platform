@@ -29,6 +29,7 @@
             <div class="field @error('organization_id') field--error @enderror">
                 <x-hearth-label for="organization_id">{{ __('Community Organization') }}</x-hearth-label>
                 <x-hearth-select name="organization_id" :options="$organizations" :selected="$engagement->organization?->id" />
+                <x-hearth-error for="organization_id" />
             </div>
 
             <hr class="divider--thick" />
