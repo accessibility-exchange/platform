@@ -11,12 +11,13 @@
     align-items: center;
     background-color: transparent;
     border: 0;
+    box-shadow: none;
     color: var(--expander-color);
     display: flex;
     font-size: inherit;
     font-weight: var(--font-semibold);
-    height: var(--space-16);
     justify-content: space-between;
+    min-height: var(--space-16);
     padding-block: 0;
     padding-inline: var(--space-2);
     position: relative;

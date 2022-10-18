@@ -62,6 +62,7 @@ class Engagement extends Model
         'organizational_connector_id',
         'individual_consultant_id',
         'organizational_consultant_id',
+        'organization_id',
         'extra_attributes',
         'window_start_time',
         'window_end_time',
@@ -253,6 +254,12 @@ class Engagement extends Model
             'accepted_formats' => [
                 Rule::requiredIf($this->format === 'interviews'),
             ],
+            'ideal_participants' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
+            'minimum_participants' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
             'signup_by_date' => 'required',
         ];
 
@@ -314,14 +321,9 @@ class Engagement extends Model
         return $this->belongsToMany(Individual::class)->withPivot('share_access_needs')->wherePivot('status', 'confirmed');
     }
 
-    public function organizationalParticipants(): BelongsToMany
+    public function organization(): BelongsTo
     {
-        return $this->belongsToMany(Organization::class)->withPivot('status');
-    }
-
-    public function confirmedOrganizationalParticipants(): BelongsToMany
-    {
-        return $this->belongsToMany(Organization::class)->wherePivot('status', 'confirmed');
+        return $this->belongsTo(Organization::class);
     }
 
     public function consultant(): BelongsTo

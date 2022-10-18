@@ -1080,11 +1080,9 @@ test('organizational relationships to projects can be derived from both projects
 
     $participatingEngagement = Engagement::factory()->create();
 
-    $participatingEngagement->organizationalParticipants()->attach($organization->id, ['status' => 'confirmed']);
+    $participatingEngagement->update(['organization_id' => $organization->id]);
 
     $participatingEngagement = $participatingEngagement->fresh();
-
-    expect($participatingEngagement->confirmedOrganizationalParticipants->pluck('id'))->toContain($organization->id);
 
     $participatingEngagementProject = $participatingEngagement->project;
 

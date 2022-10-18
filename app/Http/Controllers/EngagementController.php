@@ -33,6 +33,7 @@ use App\Models\Project;
 use App\Notifications\ParticipantInvited;
 use App\Notifications\ParticipantJoined;
 use App\Notifications\ParticipantLeft;
+use App\Statuses\OrganizationStatus;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -90,7 +91,7 @@ class EngagementController extends Controller
         flash(__('Your engagement has been created.'), 'success');
 
         $redirect = match ($engagement->who) {
-            'organization' => localized_route('engagements.manage', $engagement),
+            'organization' => localized_route('engagements.show-criteria-selection', $engagement),
             default => localized_route('engagements.show-format-selection', $engagement),
         };
 
@@ -146,7 +147,7 @@ class EngagementController extends Controller
         return view('engagements.show-criteria-selection', [
             'title' => __('Create engagement'),
             'surtitle' => __('Create engagement'),
-            'heading' => __('Confirm your participant selection criteria'),
+            'heading' => $engagement->who === 'individuals' ? __('Confirm your participant selection criteria') : __('Confirm your organization selection criteria'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
@@ -191,7 +192,7 @@ class EngagementController extends Controller
         return view('engagements.show-criteria-selection', [
             'title' => __('Manage engagement'),
             'surtitle' => __('Manage engagement'),
-            'heading' => __('Edit your participant selection criteria'),
+            'heading' => $engagement->who === 'individuals' ? __('Edit your participant selection criteria') : __('Edit your organization selection criteria'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
@@ -510,6 +511,47 @@ class EngagementController extends Controller
             'connectorInvitation' => $connectorInvitation,
             'connectorInvitee' => $connectorInvitee,
         ]);
+    }
+
+    public function manageOrganization(Engagement $engagement): View
+    {
+        return view('engagements.manage-organization', [
+            'engagement' => $engagement,
+            'project' => $engagement->project,
+            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'participant')->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
+        ]);
+    }
+
+    public function addOrganization(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $validated = $request->validate([
+            'organization_id' => 'required|exists:organizations,id',
+        ]);
+
+        $engagement->organization()->associate($validated['organization_id']);
+
+        $engagement->save();
+
+        // TODO: Notify organization.
+
+        flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success');
+
+        return redirect(localized_route('engagements.manage-organization', $engagement->fresh()));
+    }
+
+    public function removeOrganization(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $organization = $engagement->organization;
+
+        $engagement->organization()->dissociate();
+
+        $engagement->save();
+
+        // TODO: Notify organization.
+
+        flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success');
+
+        return redirect(localized_route('engagements.manage-organization', $engagement));
     }
 
     public function manageParticipants(Engagement $engagement): View

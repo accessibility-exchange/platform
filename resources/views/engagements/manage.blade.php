@@ -183,45 +183,65 @@
                 </x-manage-section>
             @endif
 
-            <x-manage-section :title="__('Estimates and agreements')">
-                <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
-                    <div class="space-y-2">
-                        <p class="font-bold">{{ __('Estimate status') }}</p>
-                        <p>
-                            @if ($project->checkStatus('estimateApproved'))
-                                <span class="badge badge--status badge--go">
-                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
-                                    {{ __('Estimate approved') }}
-                                </span>
-                            @elseif ($project->checkStatus('estimateRequested'))
-                                <span class="badge badge--status badge--progress">
-                                    <x-heroicon-o-arrow-path class="icon mr-2 h-5 w-5" />
-                                    {{ __('Estimate requested') }}
-                                </span>
-                            @else
-                                <span class="badge badge--status">
-                                    {{ __('No estimate requested') }}
-                                </span>
-                            @endif
-                        </p>
-                    </div>
-                    <div class="space-y-2">
+            @if ($engagement->who === 'individuals')
+                <x-manage-section :title="__('Estimates and agreements')">
+                    <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
+                        <div class="space-y-2">
+                            <p class="font-bold">{{ __('Estimate status') }}</p>
+                            <p>
+                                @if ($project->checkStatus('estimateApproved'))
+                                    <span class="badge badge--status badge--go">
+                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
+                                        {{ __('Estimate approved') }}
+                                    </span>
+                                @elseif ($project->checkStatus('estimateRequested'))
+                                    <span class="badge badge--status badge--progress">
+                                        <x-heroicon-o-arrow-path class="icon mr-2 h-5 w-5" />
+                                        {{ __('Estimate requested') }}
+                                    </span>
+                                @else
+                                    <span class="badge badge--status">
+                                        {{ __('No estimate requested') }}
+                                    </span>
+                                @endif
+                            </p>
+                        </div>
+                        <div class="space-y-2">
 
-                        <p class="font-bold">{{ __('Agreement status') }}</p>
-                        <p>
-                            @if ($project->checkStatus('agreementReceived'))
-                                <span class="badge badge--status badge--go">
-                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Received') }}
-                                </span>
-                            @else
-                                <span class="badge badge--status">
-                                    {{ __('Not received') }}
-                                </span>
-                            @endif
-                        </p>
+                            <p class="font-bold">{{ __('Agreement status') }}</p>
+                            <p>
+                                @if ($project->checkStatus('agreementReceived'))
+                                    <span class="badge badge--status badge--go">
+                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Received') }}
+                                    </span>
+                                @else
+                                    <span class="badge badge--status">
+                                        {{ __('Not received') }}
+                                    </span>
+                                @endif
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </x-manage-section>
+                </x-manage-section>
+            @endif
+
+            @if ($engagement->who === 'organization')
+                <x-manage-section :title="__('Community organization')">
+                    @if ($engagement->organization)
+                        <x-card.engagement :model="$engagement->organization" />
+                    @else
+                        <div class="box stack bg-grey-2">
+                            <p>{{ __('You currently do not have a Community Organization for this engagement.') }}</p>
+                            <p>
+                                <a class="cta secondary"
+                                    href="{{ localized_route('engagements.manage-organization', $engagement) }}">
+                                    <x-heroicon-o-wrench /> {{ __('Manage') }}
+                                </a>
+                            </p>
+                        </div>
+                    @endif
+                </x-manage-section>
+            @endif
 
             @if ($engagement->recruitment === 'connector')
                 <x-manage-section :title="__('Community Connector')">

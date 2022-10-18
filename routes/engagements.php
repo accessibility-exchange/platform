@@ -87,6 +87,20 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:update,engagement'])
             ->name('manage');
 
+        Route::multilingual('/{engagement}/manage/organization', 'manageOrganization')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('manage-organization');
+
+        Route::multilingual('/{engagement}/manage/organization/add', 'addOrganization')
+            ->method('post')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('add-organization');
+
+        Route::multilingual('/{engagement}/manage/organization/remove', 'removeOrganization')
+            ->method('post')
+            ->middleware(['auth', 'can:update,engagement'])
+            ->name('remove-organization');
+
         Route::multilingual('/{engagement}/manage/participants', 'manageParticipants')
             ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-participants');

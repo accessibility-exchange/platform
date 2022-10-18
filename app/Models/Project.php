@@ -269,7 +269,10 @@ class Project extends Model
 
     public function organizationalParticipants(): HasManyDeep
     {
-        return $this->hasManyDeep(Organization::class, [Engagement::class, 'engagement_organization']);
+        return $this->hasManyDeepFromRelations(
+            $this->engagements(),
+            (new Engagement())->organization()
+        );
     }
 
     public function consultant(): BelongsTo

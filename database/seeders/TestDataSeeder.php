@@ -612,6 +612,14 @@ class TestDataSeeder extends Seeder
                 'published_at' => now(),
                 'individual_connector_id' => $connectorUser->individual->id,
             ],
+            [
+                'name' => ['en' => 'Expert Analysis'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'organization',
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'published_at' => now(),
+            ],
         ];
 
         $project = Project::find(1);
