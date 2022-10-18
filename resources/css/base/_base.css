@@ -18,3 +18,7 @@ main {
 main > .center {
     --gutter: var(--space-4);
 }
+
+ul {
+    margin-block: 0;
+}

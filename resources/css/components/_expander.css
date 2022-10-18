@@ -62,11 +62,3 @@
 .expander .title button svg {
     width: 1.5em;
 }
-
-.expander .title button .indicator {
-    transition: transform 0.2s ease-in-out;
-}
-
-.expander .title button[aria-expanded="true"] .indicator {
-    transform: rotate(-180deg);
-}
