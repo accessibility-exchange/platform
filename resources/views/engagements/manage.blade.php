@@ -228,7 +228,13 @@
             @if ($engagement->who === 'organization')
                 <x-manage-section :title="__('Community organization')">
                     @if ($engagement->organization)
-                        <x-card.engagement :model="$engagement->organization" />
+                        <x-card.organization level="4" :model="$engagement->organization" />
+                        <footer class="-mx-6 border-x-0 border-t border-b-0 border-solid border-grey-3 px-6 pt-5">
+                            <a class="cta secondary"
+                                href="{{ localized_route('engagements.manage-organization', $engagement) }}">
+                                <x-heroicon-o-wrench /> {{ __('Manage') }}
+                            </a>
+                        </footer>
                     @else
                         <div class="box stack bg-grey-2">
                             <p>{{ __('You currently do not have a Community Organization for this engagement.') }}</p>
@@ -253,13 +259,13 @@
                     @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
                         @if ($connectorInvitation->type === 'individual')
                             @if ($connectorInvitee)
-                                <x-card.individual level="3" :model="$connectorInvitee" />
+                                <x-card.individual level="4" :model="$connectorInvitee" />
                             @else
                                 <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
                                 </p>
                             @endif
                         @elseif($connectorInvitation->type === 'organization')
-                            <x-card.organization level="3" :model="$connectorInvitee" />
+                            <x-card.organization level="4" :model="$connectorInvitee" />
                         @endif
                     @endif
                     @if ($engagement->hasEstimateAndAgreement())

@@ -3,3 +3,11 @@
 
     background: var(--box-background);
 }
+
+.manage-section:has(footer) {
+    padding-block-end: 0;
+}
+
+.manage-section footer {
+    padding-block-end: var(--space-6);
+}

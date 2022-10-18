@@ -3,10 +3,21 @@
     'model' => null,
 ])
 
-<article class="box card organization">
-    <div class="stack">
-        <x-heading class="h4 mt-0" :level="$level"><a
-                href="{{ localized_route('organizations.show', $model) }}">{{ $model->name }}</a></x-heading>
-        <p>{{ __('Organization') }}</p>
-    </div>
-</article>
+<x-card class="organization" title-class="h4">
+    <x-slot name="title"><a href="{{ localized_route('organizations.show', $model) }}">{{ $model->name }}</a></x-slot>
+    <p>
+        <strong>{{ App\Enums\OrganizationType::labels()[$model->type] }}</strong>
+        @if ($model->display_roles)
+            <br />
+            @foreach ($model->display_roles as $role)
+                <span class="font-semibold">{{ $role }}</span>
+                @if (!$loop->last)
+                    <br />
+                @endif
+            @endforeach
+        @endif
+    </p>
+
+    <p><span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
+        {{ \App\Enums\ProvinceOrTerritory::labels()[$model->region] }}</p>
+</x-card>
