@@ -31,7 +31,7 @@ beforeEach(function () {
     $this->connectorUser->individual->publish();
     $this->individualConnector = $this->connectorUser->individual->fresh();
 
-    $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
     $this->connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
