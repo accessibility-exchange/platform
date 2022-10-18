@@ -70,6 +70,18 @@ dataset('engagementIsPublishable', function () {
             true,
             true,
         ],
+        'publishable without estimates and agreements when organization' => [
+            true,
+            array_replace_recursive($baseModel, [
+                'format' => null,
+                'recruitment' => null,
+                'who' => 'organization',
+                'ideal_participants' => null,
+                'min_participants' => null,
+            ]),
+            false,
+            false,
+        ],
         'not publishable when workshop and missing meeting' => [
             false,
             $baseModel,

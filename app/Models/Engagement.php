@@ -260,7 +260,9 @@ class Engagement extends Model
             'minimum_participants' => [
                 Rule::requiredIf($this->who === 'individuals'),
             ],
-            'signup_by_date' => 'required',
+            'signup_by_date' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
         ];
 
         try {
