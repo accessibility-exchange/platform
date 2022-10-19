@@ -92,9 +92,54 @@
                     @foreach ($participants as $participant)
                         <tr>
                             <td>{{ $participant->name }}</td>
-                            <td>{{ $participant->email }}</td>
-                            <td>{{ $participant->phone }}</td>
-                            <td></td>
+                            <td>
+                                <p @class([
+                                    'font-semibold' => $participant->user->preferred_contact_method === 'email',
+                                ])>
+                                    {{ $participant->user->preferred_contact_person === 'me' ? $participant->user->email ?? __('Not provided') : $participant->user->support_person_email ?? __('Not provided') }}
+                                    @if ($participant->user->preferred_contact_person === 'support-person')
+                                        <br />
+                                        ({{ __('Support person, :name', ['name' => $participant->user->support_person_name]) }})
+                                    @endif
+                                </p>
+                                @if ($participant->user->preferred_contact_method === 'email')
+                                    <p class="flex items-center gap-1 text-green-7">
+                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                        {{ __('Preferred contact method') }}
+                                    </p>
+                                @endif
+                            </td>
+                            <td>
+                                <p @class([
+                                    'font-semibold' => $participant->user->preferred_contact_method === 'phone',
+                                ])>
+                                    {{ $participant->user->preferred_contact_person === 'me' ? $participant->user->phone?->formatForCountry('CA') ?? __('Not provided') : $participant->user->support_person_phone?->formatForCountry('CA') ?? __('Not provided') }}
+                                    @if ($participant->user->preferred_contact_person === 'support-person')
+                                        <br />
+                                        ({{ __('Support person, :name', ['name' => $participant->user->support_person_name]) }}
+                                        )
+                                    @endif
+                                </p>
+                                @if ($participant->user->preferred_contact_method === 'phone')
+                                    <p class="flex items-center gap-1 text-green-7">
+                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                        {{ __('Preferred contact method') }}
+                                    </p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($participant->accessSupports->contains($printVersion))
+                                    <p>{{ __('Needs printed version to be sent to:') }}</p>
+                                    <address>
+                                        {{ $participant->street_address }}<br />
+                                        @if ($participant->unit_apartment_suite)
+                                            {{ $participant->unit_apartment_suite }}<br />
+                                        @endif
+                                        {{ $participant->locality }}, {{ $participant->region }}
+                                        {{ $participant->postal_code }}
+                                    </address>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </table>
