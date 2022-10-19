@@ -1,7 +1,7 @@
 <x-app-wide-tabbed-layout>
     <x-slot name="title">{{ __('Projects') }}</x-slot>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-4">
             <h1 id="projects" itemprop="name">
                 {{ __('Projects') }}
             </h1>
@@ -84,7 +84,8 @@
             <h2>{{ __('Browse all projects') }}</h2>
             <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
             <p class="mt-8"><a class="cta"
-                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></p>
+                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+            </p>
         </div>
     </div>
 </x-app-wide-tabbed-layout>
