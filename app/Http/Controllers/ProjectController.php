@@ -9,7 +9,6 @@ use App\Http\Requests\StoreProjectLanguagesRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
-use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Project;
@@ -98,18 +97,18 @@ class ProjectController extends Controller
      */
     public function show(Project $project): View
     {
+        $user = Auth::user();
+
         $language = request()->query('language');
 
         if (! in_array($language, $project->languages)) {
             $language = false;
         }
 
-        $engagements = Engagement::status('published')->where('project_id', $project->id)->get();
-
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
-            'engagements' => $engagements,
+            'engagements' => $user->can('manage', $project) ? $project->allEngagements : $project->engagements,
         ]);
     }
 
@@ -212,7 +211,7 @@ class ProjectController extends Controller
     {
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
-            'engagements' => $project->engagements->filter(fn ($engagement) => $engagement->hasProvidedRequiredInformation()),
+            'engagements' => $project->allEngagements->filter(fn ($engagement) => $engagement->hasProvidedRequiredInformation()),
         ]);
     }
 

@@ -353,6 +353,9 @@ class SettingsController extends Controller
 
         Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
 
+        $projectNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Projects that are looking for someone with my lived experience'), 'of-interest' => __('Projects by organizations that I have saved on my notification list')] : ['of-interest' => __('Projects by organizations that I have saved on my notification list')];
+        $engagementNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Engagements that are looking for someone with my lived experience'),  'of-interest' => __('Engagements by organizations that I have saved on my notification list')] : ['of-interest' => __('Engagements by organizations that I have saved on my notification list')];
+
         return view('settings.notifications', [
             'user' => $user,
             'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
@@ -360,6 +363,8 @@ class SettingsController extends Controller
             'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),
             'notificationChannels' => Options::forEnum(NotificationChannel::class)->toArray(),
             'organizationNotificationChannels' => Options::forEnum(OrganizationNotificationChannel::class)->toArray(),
+            'projectNotificationTypes' => Options::forArray($projectNotificationTypes)->toArray(),
+            'engagementNotificationTypes' => Options::forArray($engagementNotificationTypes)->toArray(),
         ]);
     }
 

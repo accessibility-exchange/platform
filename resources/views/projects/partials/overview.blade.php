@@ -2,6 +2,19 @@
 
 @markdown{{ $project->getWrittenTranslation('goals', $language) }}@endmarkdown
 
+<h3>{{ __('Engagements') }}</h3>
+
+@if (!$engagements->isEmpty())
+    <div class="grid">
+        @foreach ($engagements as $engagement)
+            <x-card.engagement :model="$engagement" :level="5" />
+        @endforeach
+    </div>
+@else
+    <p>{{ __('No upcoming engagements.') }}</p>
+@endif
+<p><a href="{{ localized_route('projects.show-engagements', $project) }}">{{ __('Go to all engagements') }}</a></p>
+
 <h3>{{ __('Project impact') }}</h3>
 
 <h4>{{ __('How the disability and Deaf communities will be impacted by the outcomes of this project') }}</h4>
@@ -61,19 +74,5 @@
 @else
     <p>{{ __('No, project reports will not be publicly available.') }}</p>
 @endif
-
-<h3>{{ __('Engagements') }}</h3>
-
-<h4>{{ __('Upcoming engagements') }}</h4>
-@if (!$project->engagements->isEmpty())
-    <div class="grid">
-        @foreach ($project->engagements as $engagement)
-            <x-card.engagement :model="$engagement" :level="5" />
-        @endforeach
-    </div>
-@else
-    <p>{{ __('No upcoming engagements.') }}</p>
-@endif
-<p><a href="{{ localized_route('projects.show-engagements', $project) }}">{{ __('Go to all engagements') }}</a></p>
 
 @include('projects.partials.questions')

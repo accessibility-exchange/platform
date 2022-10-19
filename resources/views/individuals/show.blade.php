@@ -2,14 +2,6 @@
     <x-slot name="title">{{ $individual->name }}</x-slot>
     <x-slot name="header">
         <div class="with-sidebar">
-            @if ($individual->getMedia('picture')->first())
-                <img class="float:left" src="{{ $individual->getMedia('picture')->first()->getUrl('thumb') }}"
-                    alt="{{ $individual->picture_alt }}" />
-            @else
-                <form action="">
-                    {{-- {{ __('Add your photo') }} --}}
-                </form>
-            @endif
             <div class="stack">
                 <div class="repel">
                     <h1>
