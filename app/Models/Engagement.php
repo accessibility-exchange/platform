@@ -175,7 +175,7 @@ class Engagement extends Model
         return Attribute::make(
             get: function () {
                 if ($this->format === 'interviews') {
-                    return Arr::map($this->meeting_types, fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
+                    return Arr::map($this->meeting_types ?? [], fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
                 } elseif ($this->meetings->count()) {
                     return Arr::map($this->meetings->pluck('meeting_types')->flatten()->unique()->toArray(), fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
                 } else {

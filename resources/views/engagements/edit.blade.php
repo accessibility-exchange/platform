@@ -24,10 +24,12 @@
     <form class="stack" action="{{ localized_route('engagements.update', $engagement) }}" method="POST" novalidate>
         @csrf
         @method('put')
+        <hr class="divider--thick">
 
         <h2>{{ __('Name') }}</h2>
 
         <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" />
+        <hr class="divider--thick">
 
         <h2>{{ __('Description') }}</h2>
 
@@ -37,18 +39,19 @@
             :model="$engagement" />
 
         @if ($engagement->format === 'interviews')
+            <hr class="divider--thick">
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
             <livewire:date-picker name="window_start_date" :label="__('Start date')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
             <livewire:date-picker name="window_end_date" :label="__('End date')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
 
+            <hr class="divider--thick">
             <h2>{{ __('Ways to participate') }}</h2>
             <h3>{{ __('Real time interview') }}</h3>
             <h4>{{ __('Scheduling') }}</h4>
             <fieldset class="field stack">
                 <legend>
-                    <h5 class="h4">{{ __('Between which times during the day will the interviews take place?') }}
-                    </h5>
+                    {{ __('Between which times during the day will the interviews take place?') }}
                 </legend>
                 <div class="flex gap-6">
                     <div class="field @error('window_start_time') field--error @enderror">
@@ -81,12 +84,12 @@
                     </x-hearth-label>
                 </div>
             </fieldset>
-            <h5 class="h4">
-                {{ __('Which days of the week are available for interviews to be scheduled?') }}</h5>
-            @foreach ($weekdays as $weekday)
-                <fieldset class="field @error('weekday_availabilities.' . $weekday['value']) field--error @enderror">
-                    <legend class="text-base font-bold">{{ $weekday['label'] }}</legend>
-                    <div class="flex flex-col gap-2 md:flex-row md:gap-4">
+            <h5 class="mt-12">{{ __('Which days of the week are available for interviews to be scheduled?') }}</h5>
+            <div class="space-y-8">
+                @foreach ($weekdays as $weekday)
+                    <fieldset
+                        class="field @error('weekday_availabilities.' . $weekday['value']) field--error @enderror">
+                        <legend class="font-semibold">{{ $weekday['label'] }}</legend>
                         @foreach ($weekdayAvailabilities as $weekdayAvailability)
                             <div class="field">
                                 <x-hearth-radio-button :name="'weekday_availabilities[' . $weekday['value'] . ']'" :id="$weekday['value'] . '-' . $weekdayAvailability['value']" :value="$weekdayAvailability['value']"
@@ -94,14 +97,15 @@
                                         'weekday_availabilities.' . $weekday['value'],
                                         $engagement->weekday_availabilities[$weekday['value']] ?? '',
                                     ) === $weekdayAvailability['value']" />
-                                <x-hearth-label :for="$weekday['value'] . '-' . $weekdayAvailability['value']">{{ $weekdayAvailability['label'] }}</x-hearth-label>
+                                <x-hearth-label class="font-normal" :for="$weekday['value'] . '-' . $weekdayAvailability['value']">
+                                    {{ $weekdayAvailability['label'] }}</x-hearth-label>
                             </div>
                         @endforeach
-                    </div>
-                    <x-hearth-error :for="'weekday_availabilities.' . $weekday['value']" />
-                </fieldset>
-            @endforeach
-            <h4>{{ __('Ways to attend') }}</h4>
+                        <x-hearth-error :for="'weekday_availabilities.' . $weekday['value']" />
+                    </fieldset>
+                @endforeach
+            </div>
+            <h4 class="mt-12">{{ __('Ways to attend') }}</h4>
             <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $engagement->meeting_types ?? [])) }} }">
                 <div class="field">
                     <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
@@ -195,6 +199,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="divider--thick">
             <h3>{{ __('Written or recorded responses') }}</h3>
             <p>{{ __('Some participants may not be able to meet in real-time. For them, you can send out a list of questions, and participants can respond to them in formats you accept.') }}
             </p>
@@ -231,11 +236,16 @@
         @endif
 
         @if (in_array($engagement->format, ['survey', 'other-async']))
+            <hr class="divider--thick">
             <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}</h2>
+            <h3>{{ __('Date') }}</h3>
             <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
             <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
-            <fieldset>
-                <legend>{{ __('Languages') }}</legend>
+            <hr class="divider">
+            <fieldset class="field @error('document_languages') field--error @enderror">
+                <legend>
+                    <h3>{{ __('Languages') }}</h3>
+                </legend>
                 <x-hearth-hint for="document_languages">
                     {{ __('Please indicate the languages to be used for this engagement’s documents.') }}
                 </x-hearth-hint>
@@ -244,10 +254,12 @@
                     !empty($engagement->document_languages) ? $engagement->document_languages : [],
                 )" :availableLanguages="$languages"
                     hinted="document_languages-hint" />
+                <x-hearth-error for="document_languages" />
             </fieldset>
         @endif
 
         @if (class_basename($engagement->project->projectable) === 'Organization')
+            <hr class="divider--thick">
             <h2>{{ __('Payment') }}</h2>
             <div class="field @error('paid') field--error @enderror">
                 <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
@@ -257,14 +269,16 @@
         @endif
 
         @if ($engagement->who === 'individuals')
+            <hr class="divider--thick">
             <h2>{{ __('Sign up deadline') }}</h2>
 
             <div class="field @error('signup_by_date') field--error @enderror">
                 <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
-                    ? __('Participants must sign up for this engagement by the following date.')
-                    : __('Participants must respond to their invitation by the following date.')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+                    ? __('Participants must sign up for this engagement by the following date:')
+                    : __('Participants must respond to their invitation by the following date:')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
             </div>
         @endif
+        <hr class="divider--thick">
 
         <div class="flex gap-4">
             <button>{{ __('Save') }}</button>
