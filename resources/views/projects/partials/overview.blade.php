@@ -65,9 +65,9 @@
 <h3>{{ __('Engagements') }}</h3>
 
 <h4>{{ __('Upcoming engagements') }}</h4>
-@if (!$project->engagements->isEmpty())
+@if (!$engagements->isEmpty())
     <div class="grid">
-        @foreach ($project->engagements as $engagement)
+        @foreach ($engagements as $engagement)
             <x-card.engagement :model="$engagement" :level="5" />
         @endforeach
     </div>
