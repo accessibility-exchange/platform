@@ -23,6 +23,7 @@
     --theme-cta-border-active: white;
     --theme-badge-background: var(--color-graphite-7);
     --theme-badge-color: white;
+    --theme-badge-color-alt: black;
     --theme-divider-color: var(--color-grey-2);
     --theme-alert-background: var(--color-graphite-7);
     --theme-alert-color: var(--color-grey-1);

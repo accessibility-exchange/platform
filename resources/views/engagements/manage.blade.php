@@ -76,20 +76,51 @@
             @if ($engagement->checkStatus('draft'))
                 <x-manage-section
                     title="{{ !$engagement->hasProvidedRequiredInformation() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
-                    @if (!$engagement->hasEstimateAndAgreement())
-                        <p>
-                            @if (!$engagement->hasProvidedRequiredInformation())
-                                {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
-                            @else
-                                {!! Str::inlineMarkdown(
-                                    __(
-                                        'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
-                                        [
-                                            'get_estimate' => localized_route('projects.manage', $project),
-                                        ],
-                                    ),
-                                ) !!}
-                            @endif
+                    @if ($engagement->who === 'individuals')
+                        @if (!$engagement->hasEstimateAndAgreement())
+                            <p>
+                                @if (!$engagement->hasProvidedRequiredInformation())
+                                    {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
+                                @else
+                                    {!! Str::inlineMarkdown(
+                                        __(
+                                            'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
+                                            [
+                                                'get_estimate' => localized_route('projects.manage', $project),
+                                            ],
+                                        ),
+                                    ) !!}
+                                @endif
+                            </p>
+                            <p>
+                                <a class="with-icon"
+                                    href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
+                                    <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                                </a>
+                            </p>
+                            <p>
+                                <span class="badge badge--status badge--stop">
+                                    <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" />
+                                    {{ __('Not ready to publish') }}
+                                </span>
+                            </p>
+                        @elseif($engagement->hasEstimateAndAgreement())
+                            <p>{{ __('Please review and publish your engagement details.') }}</p>
+                            <p>
+                                <a class="with-icon"
+                                    href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
+                                    <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                                </a>
+                            </p>
+                            <p>
+                                <span class="badge badge--status badge--go">
+                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
+                                    {{ __('Ready to publish') }}
+                                </span>
+                            </p>
+                        @endif
+                    @else
+                        <p>{{ $engagement->hasProvidedRequiredInformation() ? __('Please review and publish your engagement details.') : __('Please complete your engagement details.') }}
                         </p>
                         <p>
                             <a class="with-icon"
@@ -98,21 +129,18 @@
                             </a>
                         </p>
                         <p>
-                            <span class="badge badge--status badge--stop">
-                                <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" /> {{ __('Not ready to publish') }}
-                            </span>
-                        </p>
-                    @elseif($engagement->hasEstimateAndAgreement())
-                        <p>{{ __('Please review and publish your engagement details.') }}</p>
-                        <p>
-                            <a class="with-icon"
-                                href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
-                                <x-heroicon-m-chevron-right class="icon h-6 w-6" />
-                            </a>
-                        </p>
-                        <p>
-                            <span class="badge badge--status badge--go">
-                                <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Ready to publish') }}
+                            <span @class([
+                                'badge badge--status',
+                                'badge--stop' => !$engagement->hasProvidedRequiredInformation(),
+                                'badge--go' => $engagement->hasProvidedRequiredInformation(),
+                            ])>
+                                @if (!$engagement->hasProvidedRequiredInformation())
+                                    <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
+                                        aria-hidden="true" /> {{ __('Not ready to publish') }}
+                                @else
+                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" role="presentation"
+                                        aria-hidden="true" /> {{ __('Ready to publish') }}
+                                @endif
                             </span>
                         </p>
                     @endif

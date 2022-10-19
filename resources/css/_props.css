@@ -49,6 +49,7 @@
     --cta-dark-border-active: var(--theme-dark-border-active, white);
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
     --badge-color: var(--theme-badge-color, black);
+    --badge-color-alt: var(--theme-badge-color-alt, var(--badge-color));
     --badge-border: var(--theme-badge-border, var(--badge-background));
     --divider-color: var(--theme-divider-color, var(--color-graphite-6));
     --alert-background: var(--theme-alert-background, var(--color-grey-2));

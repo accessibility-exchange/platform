@@ -30,11 +30,11 @@
 
     <p class="flex gap-2">
         @if ($model->recruitment === 'open-call')
-            <span class="badge border-0 bg-lavender-2">{{ __('Seeking participants') }}</span>
+            <span class="badge badge--status badge--lavender">{{ __('Seeking participants') }}</span>
         @endif
         @if ($model->seeking_community_connector)
-            <span class="badge border-0 bg-yellow-2">{{ __('Seeking community connector') }}</span>
+            <span class="badge badge--status badge--yellow">{{ __('Seeking community connector') }}</span>
         @endif
-        <span @class(['badge', 'bg-turquoise-1 border-0' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
+        <span @class(['badge badge--status', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
     </p>
 </x-card>
