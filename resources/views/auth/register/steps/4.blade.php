@@ -34,7 +34,7 @@
                 <a href="{{ localized_route('about.terms-of-service') }}" target="_blank">
                     {{ __('terms of service') }}
                     <x-heroicon-o-arrow-top-right-on-square class="h-5 w-5" role="presentation" aria-hidden="true" />
-                    <span class="visually-hidden"> {{ __('Opens in new tab') }} </span>
+                    <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
             </label>
@@ -47,7 +47,7 @@
                 <a href="{{ localized_route('about.privacy-policy') }}" target="_blank">
                     {{ __('privacy policy') }}
                     <x-heroicon-o-arrow-top-right-on-square class="h-5 w-5" role="presentation" aria-hidden="true" />
-                    <span class="visually-hidden"> {{ __('Opens in new tab') }} </span>
+                    <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
             </label>
