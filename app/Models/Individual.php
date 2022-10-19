@@ -25,9 +25,6 @@ use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -37,7 +34,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use TheIconic\NameParser\Parser as NameParser;
 
-class Individual extends Model implements CipherSweetEncrypted, HasMedia
+class Individual extends Model implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
     use HasFactory;
@@ -48,7 +45,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
     use HasSlug;
     use HasStatus;
     use HasTranslations;
-    use InteractsWithMedia;
     use Notifiable;
     use HasRelationships;
 
@@ -128,24 +124,6 @@ class Individual extends Model implements CipherSweetEncrypted, HasMedia
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addField('region')
             ->addBlindIndex('region', new BlindIndex('region_index'));
-    }
-
-    /**
-     * Register media collections for the model.
-     */
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('picture')->singleFile();
-    }
-
-    /**
-     * Register media conversions for the model.
-     */
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-                ->width(200)
-                ->height(200);
     }
 
     public function getSlugOptions(): SlugOptions
