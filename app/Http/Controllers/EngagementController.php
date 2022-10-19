@@ -368,13 +368,15 @@ class EngagementController extends Controller
                 $languages = [];
 
                 foreach ($matchingStrategyData['first_languages'] as $code) {
-                    $languages[] = Language::firstOrCreate([
-                        'code' => $code,
-                        'name' => [
-                            'en' => get_language_exonym($code, 'en'),
-                            'fr' => get_language_exonym($code, 'fr'),
+                    $languages[] = Language::firstOrCreate(
+                        ['code' => $code],
+                        [
+                            'name' => [
+                                'en' => get_language_exonym($code, 'en'),
+                                'fr' => get_language_exonym($code, 'fr'),
+                            ],
                         ],
-                    ])->id;
+                    )->id;
                 }
 
                 $matchingStrategy->syncMutuallyExclusiveCriteria(
