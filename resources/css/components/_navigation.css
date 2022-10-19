@@ -117,6 +117,7 @@ button.nav-button {
     background: inherit;
     border: 0;
     border-radius: var(--radius-sm);
+    box-shadow: none;
     color: currentcolor;
     gap: var(--space-2);
     height: calc(var(--space-12) - var(--space-1));

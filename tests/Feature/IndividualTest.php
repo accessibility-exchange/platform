@@ -103,6 +103,8 @@ test('users can create individual pages', function () {
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
     ]);
 
     $this->assertAuthenticated();

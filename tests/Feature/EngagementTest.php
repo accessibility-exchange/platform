@@ -100,8 +100,10 @@ test('users with regulated organization admin role can create engagements', func
         'languages' => ['en', 'fr', 'ase', 'fcs'],
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
+    $communityOrganizationEngagement = Engagement::where('name->en', $data['name']['en'])->first();
+
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', Engagement::where('name->en', $data['name'])->first()));
+    $response->assertRedirect(localized_route('engagements.show-criteria-selection', $communityOrganizationEngagement));
 });
 
 test('users without regulated organization admin role cannot create engagements', function () {

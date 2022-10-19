@@ -1080,11 +1080,9 @@ test('organizational relationships to projects can be derived from both projects
 
     $participatingEngagement = Engagement::factory()->create();
 
-    $participatingEngagement->organizationalParticipants()->attach($organization->id, ['status' => 'confirmed']);
-
+    $participatingEngagement->organization()->associate($organization);
+    $participatingEngagement->save();
     $participatingEngagement = $participatingEngagement->fresh();
-
-    expect($participatingEngagement->confirmedOrganizationalParticipants->pluck('id'))->toContain($organization->id);
 
     $participatingEngagementProject = $participatingEngagement->project;
 
@@ -1097,6 +1095,10 @@ test('organizational relationships to projects can be derived from both projects
     expect($organization->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
+
+    expect($participatingEngagementProject->organizationalParticipants->pluck('id')->toArray())
+        ->toHaveCount(1)
+        ->toContain($organization->id);
 });
 
 test('organizations have slugs in both languages even if only one is provided', function () {
