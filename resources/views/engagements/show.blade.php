@@ -43,7 +43,7 @@
                                         href="{{ localized_route('individuals.show', $engagement->connector) }}">{{ $engagement->connector->name }}</a>
                                 @elseif($engagement->organizationalConnector)
                                     <a
-                                        href="{{ localized_route('organizations.show', $engagement->connector) }}">{{ $engagement->organizationalConnector->name }}</a>
+                                        href="{{ localized_route('organizations.show', $engagement->organizationalConnector) }}">{{ $engagement->organizationalConnector->name }}</a>
                                 @endif
                             @endif
                         </dd>
