@@ -353,23 +353,8 @@ class SettingsController extends Controller
 
         Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
 
-        $projectNotificationTypes = config('lived-experience-notifications')
-            ? [
-                'lived-experience' => __('Projects that are looking for someone with my lived experience'),
-                'of-interest' => __('Projects by organizations that I have saved on my notification list'),
-            ]
-            : [
-                'of-interest' => __('Projects by organizations that I have saved on my notification list'),
-            ];
-
-        $engagementNotificationTypes = config('lived-experience-notifications')
-            ? [
-                'lived-experience' => __('Engagements that are looking for someone with my lived experience'),
-                'of-interest' => __('Engagements by organizations that I have saved on my notification list'),
-            ]
-            : [
-                'of-interest' => __('Engagements by organizations that I have saved on my notification list'),
-            ];
+        $projectNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Projects that are looking for someone with my lived experience'), 'of-interest' => __('Projects by organizations that I have saved on my notification list')] : ['of-interest' => __('Projects by organizations that I have saved on my notification list')];
+        $engagementNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Engagements that are looking for someone with my lived experience'),  'of-interest' => __('Engagements by organizations that I have saved on my notification list')] : ['of-interest' => __('Engagements by organizations that I have saved on my notification list')];
 
         return view('settings.notifications', [
             'user' => $user,
