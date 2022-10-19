@@ -8,6 +8,10 @@
     display: inline-flex;
 }
 
+a.with-icon {
+    text-decoration: none;
+}
+
 .with-icon .icon {
     margin-inline-end: var(--space-1);
 }
