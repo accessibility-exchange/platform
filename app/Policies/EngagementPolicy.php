@@ -19,8 +19,8 @@ class EngagementPolicy
     public function view(User $user, Engagement $engagement): Response
     {
         return
-            $user->individual || $user->organization || $user->regulated_organization
-            && $engagement->checkStatus('published') || $user->can('update', $engagement)
+            ($user->individual || $user->organization || $user->regulated_organization)
+            && ($engagement->checkStatus('published') || ($user->can('update', $engagement) && $engagement->isPublishable()))
                 ? Response::allow()
                 : Response::denyAsNotFound();
     }
