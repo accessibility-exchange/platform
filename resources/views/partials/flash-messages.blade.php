@@ -1,7 +1,7 @@
 <x-live-region>
     @if (flash()->message)
         <x-hearth-alert :type="flash()->class">
-            <p>{{ flash()->message }}
+            {!! Str::markdown(flash()->message) !!}
         </x-hearth-alert>
     @endif
 
