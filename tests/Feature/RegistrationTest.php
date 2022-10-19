@@ -72,6 +72,8 @@ test('new users can register', function () {
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
     ]);
 
     $this->assertAuthenticated();
@@ -125,6 +127,8 @@ test('users can register via invitation to (regulated) organization', function (
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
     ]);
 
     $this->assertAuthenticated();
@@ -189,6 +193,8 @@ test('users can register via invitation to engagement', function () {
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
     ]);
 
     $this->assertAuthenticated();

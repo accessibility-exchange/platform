@@ -28,6 +28,8 @@ class CreateNewUser implements CreatesNewUsers
         $input['name'] = session('name');
         $input['email'] = session('email');
         $input['context'] = session('context');
+        $input['accepted_privacy_policy'] = array_key_exists('accepted_privacy_policy', $input);
+        $input['accepted_terms_of_service'] = array_key_exists('accepted_terms_of_service', $input);
 
         if (session('roles') || session('invitation')) {
             $input['extra_attributes'] = [];
@@ -61,9 +63,12 @@ class CreateNewUser implements CreatesNewUsers
                 'extra_attributes' => 'nullable|array',
                 'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
                 'signed_language' => 'nullable|string|in:ase,fcs',
+                'accepted_privacy_policy' => 'accepted',
+                'accepted_terms_of_service' => 'accepted',
             ],
             [
-
+                'accepted_privacy_policy.accepted' => __('You must agree to the privacy policy.'),
+                'accepted_terms_of_service.accepted' => __('You must agree to the terms of service.'),
             ]
         )->validate();
 
@@ -84,6 +89,8 @@ class CreateNewUser implements CreatesNewUsers
             'locale' => $input['locale'],
             'signed_language' => $input['signed_language'],
             'extra_attributes' => $input['extra_attributes'] ?? null,
+            'accepted_privacy_policy_at' => now(),
+            'accepted_terms_of_service_at' => now(),
         ]);
     }
 }
