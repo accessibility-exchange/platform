@@ -131,7 +131,7 @@ test('registered organization can be invited to be an engagement’s community c
         ['role' => 'admin']
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
 

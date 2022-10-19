@@ -32,7 +32,7 @@
                         <p><a
                                 href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">{{ settings()->get('email', 'support@accessibilityexchange.ca') }}</a>
                         </p>
-                        <h3>{!! __('Call, Text, or :vrs', [
+                        <h3>{!! __('Call or :vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 __('VRS') .

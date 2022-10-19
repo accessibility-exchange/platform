@@ -203,10 +203,16 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    public function participatingEngagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class);
+    }
+
     public function participatingProjects(): HasManyDeep
     {
-        return $this->hasManyDeepFromReverse(
-            (new Project())->organizationalParticipants()
+        return $this->hasManyDeepFromRelations(
+            $this->participatingEngagements(),
+            (new Engagement())->project()
         );
     }
 

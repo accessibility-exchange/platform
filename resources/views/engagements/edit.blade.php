@@ -256,13 +256,15 @@
             </div>
         @endif
 
-        <h2>{{ __('Sign up deadline') }}</h2>
+        @if ($engagement->who === 'individuals')
+            <h2>{{ __('Sign up deadline') }}</h2>
 
-        <div class="field @error('signup_by_date') field--error @enderror">
-            <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
-                ? __('Participants must sign up for this engagement by the following date.')
-                : __('Participants must respond to their invitation by the following date.')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
-        </div>
+            <div class="field @error('signup_by_date') field--error @enderror">
+                <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
+                    ? __('Participants must sign up for this engagement by the following date.')
+                    : __('Participants must respond to their invitation by the following date.')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+            </div>
+        @endif
 
         <div class="flex gap-4">
             <button>{{ __('Save') }}</button>

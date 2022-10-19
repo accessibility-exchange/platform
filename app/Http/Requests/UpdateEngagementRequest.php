@@ -218,7 +218,12 @@ class UpdateEngagementRequest extends FormRequest
                 'nullable',
                 'boolean',
             ],
-            'signup_by_date' => 'required|date',
+            'signup_by_date' => [
+                'nullable',
+                Rule::requiredIf($this->engagement->who === 'individuals'),
+                Rule::excludeIf($this->engagement->who === 'organization'),
+                'date',
+            ],
         ];
     }
 

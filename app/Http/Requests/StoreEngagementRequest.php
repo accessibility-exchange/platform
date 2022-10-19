@@ -30,6 +30,7 @@ class StoreEngagementRequest extends FormRequest
         return [
             'name.*.unique_translation' => __('An engagement with this name already exists.'),
             'name.*.required_without' => __('An engagement name must be provided in at least one language.'),
+            'who.required' => __('You must indicate who you want to engage.'),
         ];
     }
 }
