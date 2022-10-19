@@ -486,7 +486,7 @@ class EngagementController extends Controller
         if ($request->input('publish')) {
             if ($engagement->fresh()->isPublishable()) {
                 $engagement->update(['published_at' => now()]);
-                flash(__('Your engagement has been published.'), 'success');
+                flash(__('Your engagement has been published. [Visit engagement](:url)', ['url' => localized_route('engagements.show', $engagement)]), 'success');
             }
         } else {
             flash(__('Your engagement has been updated.'), 'success');
