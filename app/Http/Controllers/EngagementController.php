@@ -18,6 +18,7 @@ use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Mail\ContractorInvitation;
+use App\Models\AccessSupport;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
@@ -588,6 +589,7 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => $engagement->invitations->where('role', 'participant'),
             'participants' => $engagement->participants,
+            'printVersion' => AccessSupport::where('name->en', 'Printed version of engagement documents')->first(),
         ]);
     }
 
