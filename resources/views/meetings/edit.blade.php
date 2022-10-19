@@ -31,30 +31,33 @@
         <div class="field">
             <livewire:date-picker name="date" :label="__('Date')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
         </div>
-        <div class="flex gap-6">
-            <div class="field @error('start_time') field--error @enderror">
-                <x-hearth-label for="start_time">{{ __('Start time') }}</x-hearth-label>
-                <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted />
-                <x-hearth-hint for="start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
-                <x-hearth-error for="start_time" />
+        <fieldset class="mt-12">
+            <legend>{{ __('Time') }}</legend>
+            <div class="flex gap-6">
+                <div class="field @error('start_time') field--error @enderror">
+                    <x-hearth-label for="start_time">{{ __('Start time') }}</x-hearth-label>
+                    <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted />
+                    <x-hearth-hint for="start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
+                    <x-hearth-error for="start_time" />
+                </div>
+                <div class="field @error('end_time') field--error @enderror">
+                    <x-hearth-label for="end_time">{{ __('End time') }}</x-hearth-label>
+                    <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted />
+                    <x-hearth-hint for="end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
+                    <x-hearth-error for="end_time" />
+                </div>
             </div>
-            <div class="field @error('end_time') field--error @enderror">
-                <x-hearth-label for="end_time">{{ __('End time') }}</x-hearth-label>
-                <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted />
-                <x-hearth-hint for="end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
-                <x-hearth-error for="end_time" />
+            <div class="field @error('timezone') field--error @enderror mt-6">
+                <x-hearth-label for="timezone">{{ __('Time zone') }}</x-hearth-label>
+                <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
+                <div class="field__hint" id="timezone-hint">
+                    <p>{{ __('*Yukon and parts of British Columbia observe Mountain Standard Time all year.') }}
+                    </p>
+                    <p>{{ __('**Saskatchewan observes Central Standard Time all year.') }}</p>
+                </div>
+                <x-hearth-error for="timezone" />
             </div>
-        </div>
-        <div class="field @error('timezone') field--error @enderror">
-            <x-hearth-label for="timezone">{{ __('Time zone') }}</x-hearth-label>
-            <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
-            <div class="field__hint" id="timezone-hint">
-                <p>{{ __('*Yukon and parts of British Columbia observe Mountain Standard Time all year.') }}
-                </p>
-                <p>{{ __('**Saskatchewan observes Central Standard Time all year.') }}</p>
-            </div>
-            <x-hearth-error for="timezone" />
-        </div>
+        </fieldset>
 
         <hr class="divider--thick" />
 

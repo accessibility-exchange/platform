@@ -67,14 +67,14 @@
                 <x-manage-section :title="__('Engagement')">
                     <p>{{ __('An engagement involves a group of people participating in one set way (for example, a focus group or survey).') }}
                     </p>
-                    @if ($project->engagements->count())
+                    @if ($project->allEngagements->count())
                         <a class="cta secondary"
                             href="{{ localized_route('engagements.show-language-selection', $project) }}">
                             <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
                             {{ __('Create engagement') }}
                         </a>
                     @endif
-                    @forelse($project->engagements as $engagement)
+                    @forelse($project->allEngagements as $engagement)
                         <x-card.engagement :model="$engagement" :level="4" />
                     @empty
                         <div class="box stack bg-grey-2">

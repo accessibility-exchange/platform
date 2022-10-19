@@ -166,16 +166,7 @@
                 x-show="notifyOfProjects.length > 0" x-cloak>
                 <legend>{{ __('Please indicate which type of projects you would like to notified about.') }}</legend>
                 <x-hearth-hint for="project_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="notification_settings[projects][types]" :options="[
-                    [
-                        'value' => 'lived-experience',
-                        'label' => __('Projects that are looking for someone with my lived experience'),
-                    ],
-                    [
-                        'value' => 'of-interest',
-                        'label' => __('Projects by organizations that I have saved on my notification list'),
-                    ],
-                ]" :checked="old(
+                <x-hearth-checkboxes name="notification_settings[projects][types]" :options="$projectNotificationTypes" :checked="old(
                     'notification_settings.projects.types',
                     $user->notification_settings->get('projects.types', []),
                 )"
@@ -188,16 +179,7 @@
                 <legend>{{ __('Please indicate which type of engagements you would like to be notified about.') }}
                 </legend>
                 <x-hearth-hint for="engagements">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="notification_settings[projects][engagements]" :options="[
-                    [
-                        'value' => 'lived-experience',
-                        'label' => __('Engagements that are looking for someone with my lived experience'),
-                    ],
-                    [
-                        'value' => 'of-interest',
-                        'label' => __('Engagements by organizations that I have saved on my notification list'),
-                    ],
-                ]"
+                <x-hearth-checkboxes name="notification_settings[projects][engagements]" :options="$engagementNotificationTypes"
                     :checked="old(
                         'notification_settings.projects.engagements',
                         $user->notification_settings->get('projects.engagements', []),
