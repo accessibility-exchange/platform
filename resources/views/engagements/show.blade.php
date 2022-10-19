@@ -77,6 +77,8 @@
         @endcan
     </x-slot>
 
+    <hr class="divider">
+
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Description') }}</h2>
 
