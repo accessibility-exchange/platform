@@ -357,10 +357,15 @@ class TestDataSeeder extends Seeder
                 $user->individual->ethnoracialIdentityConnections()->attach($item->id);
             }
             foreach ($constituentLanguages as $code) {
-                $language = Language::firstOrCreate([
-                    'code' => $code,
-                    'name' => ['en' => get_language_exonym($code, 'en'), 'fr' => get_language_exonym($code, 'fr')],
-                ]);
+                $language = Language::firstOrCreate(
+                    ['code' => $code],
+                    [
+                        'name' => [
+                            'en' => get_language_exonym($code, 'en'),
+                            'fr' => get_language_exonym($code, 'fr'),
+                        ],
+                    ],
+                );
                 $user->individual->languageConnections()->attach($language->id);
             }
             $user->individual->update($page);
