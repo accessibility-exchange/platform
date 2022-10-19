@@ -65,7 +65,7 @@
                     <p>{!! __('You have no active projects right now. :action', [
                         'action' =>
                             '<strong><a href="' .
-                            localized_route('projects.create') .
+                            localized_route('projects.show-language-selection') .
                             '">' .
                             __('Create your first project.') .
                             '</a></strong>',
