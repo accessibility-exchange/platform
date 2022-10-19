@@ -304,7 +304,7 @@
                             </a>
                         </p>
                     @else
-                        <x-hearth-alert>
+                        <x-hearth-alert x-show="true" :dismissable="false">
                             {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
                         </x-hearth-alert>
                     @endif

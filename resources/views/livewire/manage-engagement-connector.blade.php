@@ -42,7 +42,7 @@
             <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
                 wire:click="updateStatus" />
             <x-hearth-label for="seeking_community_connector">
-                {{ __('I am currently seeing an Community Connector for this engagement') }}</x-hearth-label>
+                {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
         </div>
 
         <hr class="border-t-1 mt-16 mb-12 border-x-0 border-b-0 border-solid border-t-blue-7" />

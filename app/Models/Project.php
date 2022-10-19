@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Statuses\EngagementStatus;
 use App\Traits\HasContactPerson;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -259,6 +260,11 @@ class Project extends Model
     }
 
     public function engagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class)->status(new EngagementStatus('published'));
+    }
+
+    public function allEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class);
     }
