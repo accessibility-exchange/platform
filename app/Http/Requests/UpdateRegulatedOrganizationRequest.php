@@ -99,10 +99,12 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $validator->errors()->add(
-                'contact_person_phone:required_if:contact_person_vrs,true',
-                __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.')
-            );
+            if ($this->contact_person_vrs) {
+                $validator->errors()->add(
+                    'contact_person_phone:required_if:contact_person_vrs,true',
+                    __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.')
+                );
+            }
         });
     }
 
