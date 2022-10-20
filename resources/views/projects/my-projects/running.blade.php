@@ -1,4 +1,4 @@
-<div class="flex items-center justify-between">
+<div class="flex flex-wrap items-center justify-between gap-4">
     <h2>{{ __('Projects I am running') }}</h2>
     @if (!$projectable->draftProjects->isEmpty() ||
         !$projectable->inProgressProjects->isEmpty() ||

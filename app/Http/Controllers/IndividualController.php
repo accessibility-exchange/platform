@@ -257,13 +257,15 @@ class IndividualController extends Controller
         if (isset($data['constituent_languages'])) {
             $languages = [];
             foreach ($data['constituent_languages'] as $code) {
-                $language = Language::firstOrCreate([
-                    'code' => $code,
-                    'name' => [
-                        'en' => get_language_exonym($code, 'en'),
-                        'fr' => get_language_exonym($code, 'fr'),
+                $language = Language::firstOrCreate(
+                    ['code' => $code],
+                    [
+                        'name' => [
+                            'en' => get_language_exonym($code, 'en'),
+                            'fr' => get_language_exonym($code, 'fr'),
+                        ],
                     ],
-                ]);
+                );
                 $languages[] = $language->id;
             }
             $individual->languageConnections()->sync($languages);

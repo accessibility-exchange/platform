@@ -18,6 +18,7 @@ use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Mail\ContractorInvitation;
+use App\Models\AccessSupport;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
@@ -368,13 +369,15 @@ class EngagementController extends Controller
                 $languages = [];
 
                 foreach ($matchingStrategyData['first_languages'] as $code) {
-                    $languages[] = Language::firstOrCreate([
-                        'code' => $code,
-                        'name' => [
-                            'en' => get_language_exonym($code, 'en'),
-                            'fr' => get_language_exonym($code, 'fr'),
+                    $languages[] = Language::firstOrCreate(
+                        ['code' => $code],
+                        [
+                            'name' => [
+                                'en' => get_language_exonym($code, 'en'),
+                                'fr' => get_language_exonym($code, 'fr'),
+                            ],
                         ],
-                    ])->id;
+                    )->id;
                 }
 
                 $matchingStrategy->syncMutuallyExclusiveCriteria(
@@ -588,6 +591,7 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => $engagement->invitations->where('role', 'participant'),
             'participants' => $engagement->participants,
+            'printVersion' => AccessSupport::where('name->en', 'Printed version of engagement documents')->first(),
         ]);
     }
 

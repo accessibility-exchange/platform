@@ -133,7 +133,6 @@ class UpdateAccessNeedsRequest extends FormRequest
 
         foreach ([
             'street_address',
-            'unit_apartment_suite',
             'locality',
             'region',
             'postal_code',

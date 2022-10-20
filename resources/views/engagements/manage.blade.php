@@ -105,7 +105,11 @@
                                 </span>
                             </p>
                         @elseif($engagement->hasEstimateAndAgreement())
-                            <p>{{ __('Please review and publish your engagement details.') }}</p>
+                            @if (!$engagement->hasProvidedRequiredInformation())
+                                {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
+                            @else
+                                <p>{{ __('Please review and publish your engagement details.') }}</p>
+                            @endif
                             <p>
                                 <a class="with-icon"
                                     href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
@@ -113,9 +117,18 @@
                                 </a>
                             </p>
                             <p>
-                                <span class="badge badge--status badge--go">
-                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
-                                    {{ __('Ready to publish') }}
+                                <span @class([
+                                    'badge badge--status',
+                                    'badge--stop' => !$engagement->hasProvidedRequiredInformation(),
+                                    'badge--go' => $engagement->hasProvidedRequiredInformation(),
+                                ])>
+                                    @if (!$engagement->hasProvidedRequiredInformation())
+                                        <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
+                                            aria-hidden="true" /> {{ __('Not ready to publish') }}
+                                    @else
+                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" role="presentation"
+                                            aria-hidden="true" /> {{ __('Ready to publish') }}
+                                    @endif
                                 </span>
                             </p>
                         @endif
@@ -200,6 +213,10 @@
                         </article>
                     @empty
                         <p>{{ __('No meetings found.') }}</p>
+
+                        <x-hearth-alert x-show="true" :dismissable="false">
+                            {{ __('You won’t be able to publish your engagement until you’ve added meetings.') }}
+                        </x-hearth-alert>
                     @endforelse
                     <p>
                         <a class="cta secondary with-icon"
