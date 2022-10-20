@@ -1,0 +1,54 @@
+<x-slot name="title">
+    {{ __('Manage users') }}
+</x-slot>
+
+<x-slot name="header">
+    <h1 id="manage-users">
+        {{ __('Manage users') }}
+    </h1>
+</x-slot>
+
+<div class="space-y-12">
+    <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
+        @clear-flash-message.window="visible = false"
+        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
+        <div x-show="visible" x-transition:leave.duration.500ms>
+            @if (session()->has('message'))
+                <x-hearth-alert type="success">
+                    {!! Str::markdown(session('message')) !!}
+                </x-hearth-alert>
+            @endif
+        </div>
+    </div>
+
+    <form class="stack" wire:submit.prevent="search">
+        <x-hearth-label for="searchQuery" :value="__('Search by organization name')" />
+        <div class="repel">
+            <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
+            <button>{{ __('Search') }}</button>
+        </div>
+    </form>
+
+    <div role="alert">
+        @if ($searchQuery)
+            <p class="h4">
+                {{ __(':count results for “:searchQuery', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) }}
+            </p>
+        @endif
+    </div>
+
+    <div role="region" aria-labelledby="manage-users" tabindex="0">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ __('Name') }}</th>
+                    <th>{{ __('User type') }}</th>
+                    <th>{{ __('Status') }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    {{ $accounts->onEachSide(2)->links('vendor.livewire.tailwind') }}
+</div>
