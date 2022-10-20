@@ -326,7 +326,7 @@
     /* Engagement card */
     --card-engagement-shadow: var(--theme-card-engagement-shadow, 0 -0.1875rem 0 0 var(--color-blue-6) inset);
     --card-engagement-shadow-focus-within: var(
-        --theme-card-project-shadow-focus-within,
+        --theme-card-engagement-shadow-focus-within,
         0 0 0 0.1875rem var(--color-blue-6) inset
     );
     --card-inset-engagement-shadow-hover: var(
@@ -341,4 +341,7 @@
     /* Resource card */
 
     /* Resource collection card */
+
+    /* Manage page sections */
+    --manage-section-shadow: var(--theme-manage-section-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
 }

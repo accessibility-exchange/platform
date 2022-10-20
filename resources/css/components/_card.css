@@ -12,7 +12,8 @@
     @apply mt-0;
 }
 
-.card a {
+.card a,
+.card a:visited {
     color: var(--card-link-color);
     position: unset;
     text-decoration: none;
@@ -25,6 +26,10 @@
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.card a:hover {
+    color: var(--card-link-color);
 }
 
 .card a:focus {
@@ -49,6 +54,10 @@
     box-shadow: var(--card-shadow), var(--card-individual-shadow-focus-within);
 }
 
+.card.individual:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-individual-shadow-focus-within);
+}
+
 .card.organization {
     box-shadow: var(--card-shadow), var(--card-organization-shadow);
 }
@@ -61,6 +70,10 @@
     box-shadow: var(--card-shadow), var(--card-organization-shadow-focus-within);
 }
 
+.card.organization:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-organization-shadow-focus-within);
+}
+
 .card.regulated-organization {
     box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow);
 }
@@ -70,6 +83,10 @@
 }
 
 .card.regulated-organization:focus-within {
+    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow-focus-within);
+}
+
+.card.regulated-organization:has(a:active) {
     box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow-focus-within);
 }
 
@@ -86,6 +103,10 @@
     box-shadow: var(--card-shadow), var(--card-project-shadow-focus-within);
 }
 
+.card.project:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-project-shadow-focus-within);
+}
+
 .card.engagement {
     box-shadow: var(--card-shadow), var(--card-engagement-shadow);
 }
@@ -97,6 +118,11 @@
 
 .card.engagement:focus-within,
 .card.project ~ .card.engagement:focus-within {
+    box-shadow: var(--card-shadow), var(--card-engagement-shadow-focus-within);
+}
+
+.card.engagement:has(a:active),
+.card.project ~ .card.engagement:has(a:active) {
     box-shadow: var(--card-shadow), var(--card-engagement-shadow-focus-within);
 }
 
@@ -128,6 +154,10 @@
     box-shadow: var(--card-individual-shadow-focus-within), var(--card-inset-individual-shadow-focus-within);
 }
 
+.manage-section .card.individual:has(a:active) {
+    box-shadow: var(--card-individual-shadow-focus-within), var(--card-inset-individual-shadow-focus-within);
+}
+
 .manage-section .card.organization {
     box-shadow: var(--card-organization-shadow);
 }
@@ -140,6 +170,10 @@
     box-shadow: var(--card-organization-shadow-focus-within), var(--card-inset-organization-shadow-focus-within);
 }
 
+.manage-section .card.organization:has(a:active) {
+    box-shadow: var(--card-organization-shadow-focus-within), var(--card-inset-organization-shadow-focus-within);
+}
+
 .manage-section .card.engagement {
     box-shadow: var(--card-engagement-shadow);
 }
@@ -149,5 +183,9 @@
 }
 
 .manage-section .card.engagement:focus-within {
+    box-shadow: var(--card-engagement-shadow-focus-within), var(--card-inset-engagement-shadow-focus-within);
+}
+
+.manage-section .card.engagement:has(a:active) {
     box-shadow: var(--card-engagement-shadow-focus-within), var(--card-inset-engagement-shadow-focus-within);
 }
