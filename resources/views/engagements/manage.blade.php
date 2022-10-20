@@ -99,7 +99,7 @@
                                 </a>
                             </p>
                             <p>
-                                <span class="badge badge--status badge--stop">
+                                <span class="badge badge--stop">
                                     <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" />
                                     {{ __('Not ready to publish') }}
                                 </span>
@@ -235,12 +235,12 @@
                             <p class="font-bold">{{ __('Estimate status') }}</p>
                             <p>
                                 @if ($project->checkStatus('estimateApproved'))
-                                    <span class="badge badge--status badge--go">
+                                    <span class="badge badge--go">
                                         <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
                                         {{ __('Estimate approved') }}
                                     </span>
                                 @elseif ($project->checkStatus('estimateRequested'))
-                                    <span class="badge badge--status badge--progress">
+                                    <span class="badge badge--progress">
                                         <x-heroicon-o-arrow-path class="icon mr-2 h-5 w-5" />
                                         {{ __('Estimate requested') }}
                                     </span>
@@ -256,7 +256,7 @@
                             <p class="font-bold">{{ __('Agreement status') }}</p>
                             <p>
                                 @if ($project->checkStatus('agreementReceived'))
-                                    <span class="badge badge--status badge--go">
+                                    <span class="badge badge--go">
                                         <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Received') }}
                                     </span>
                                 @else
