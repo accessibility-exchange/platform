@@ -8,15 +8,15 @@ use Illuminate\View\Component;
 
 class Project extends Component
 {
-    public ProjectModel $project;
+    public ProjectModel $model;
 
     public int $level;
 
     public bool $showRegulatedOrganization;
 
-    public function __construct(ProjectModel $project, int $level = 3, bool $showRegulatedOrganization = true)
+    public function __construct(ProjectModel $model, int $level = 3, bool $showRegulatedOrganization = true)
     {
-        $this->project = $project;
+        $this->model = $model;
         $this->level = (int) $level;
         $this->showRegulatedOrganization = $showRegulatedOrganization;
     }
@@ -24,7 +24,7 @@ class Project extends Component
     public function render(): View
     {
         return view('components.card.project', [
-            'project' => $this->project,
+            'model' => $this->model,
             'level' => $this->level,
             'showRegulatedOrganization' => $this->showRegulatedOrganization,
         ]);

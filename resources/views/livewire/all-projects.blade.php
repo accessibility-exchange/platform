@@ -204,7 +204,7 @@
             <div role="region" aria-labelledby="browse-all-projects" tabindex="0">
                 <div class="projects stack">
                     @forelse($projects as $project)
-                        <x-card.project :project="$project" :level="2" />
+                        <x-card.project :model="$project" :level="2" />
                     @empty
                         <p>{{ __('No projects found.') }}</p>
                     @endforelse

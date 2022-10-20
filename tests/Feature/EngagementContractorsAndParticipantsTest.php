@@ -29,7 +29,7 @@ beforeEach(function () {
     );
 
     $this->connectorUser = User::factory()->create();
-    $this->connectorUser->individual->update(['roles' => ['connector']]);
+    $this->connectorUser->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $this->connectorUser->individual->publish();
     $this->individualConnector = $this->connectorUser->individual->fresh();
 
@@ -41,7 +41,7 @@ beforeEach(function () {
     );
 
     $this->participantUser = User::factory()->create();
-    $this->participantUser->individual->update(['roles' => ['participant']]);
+    $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $this->participant = $this->participantUser->individual->fresh();
 
     $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);

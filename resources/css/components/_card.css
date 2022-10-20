@@ -12,7 +12,9 @@
     @apply mt-0;
 }
 
-.card a {
+.card a,
+.card a:visited {
+    color: var(--card-link-color);
     position: unset;
     text-decoration: none;
 }
@@ -26,6 +28,10 @@
     top: 0;
 }
 
+.card a:hover {
+    color: var(--card-link-color);
+}
+
 .card a:focus {
     box-shadow: none;
     outline: 1px solid transparent;
@@ -36,17 +42,20 @@
     box-shadow: none;
 }
 
-.card.regulated-organization {
-    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow);
+.card.individual {
+    box-shadow: var(--card-shadow), var(--card-individual-shadow);
 }
 
-.card.regulated-organization:hover {
-    box-shadow: var(--card-shadow-hover), var(--card-regulated-organization-shadow);
+.card.individual:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-individual-shadow);
 }
 
-.card.regulated-organization:focus-within,
-.card.regulated-organization:has(a:active) {
-    box-shadow: var(--card-regulated-organization-shadow-focus-within);
+.card.individual:focus-within {
+    box-shadow: var(--card-shadow), var(--card-individual-shadow-focus-within);
+}
+
+.card.individual:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-individual-shadow-focus-within);
 }
 
 .card.organization {
@@ -57,22 +66,28 @@
     box-shadow: var(--card-shadow-hover), var(--card-organization-shadow);
 }
 
-.card.organization:focus-within,
+.card.organization:focus-within {
+    box-shadow: var(--card-shadow), var(--card-organization-shadow-focus-within);
+}
+
 .card.organization:has(a:active) {
-    box-shadow: var(--card-organization-shadow-focus-within);
+    box-shadow: var(--card-shadow), var(--card-organization-shadow-focus-within);
 }
 
-.card.individual {
-    box-shadow: var(--card-shadow), var(--card-individual-shadow);
+.card.regulated-organization {
+    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow);
 }
 
-.card.individual:hover {
-    box-shadow: var(--card-shadow-hover), var(--card-individual-shadow);
+.card.regulated-organization:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-regulated-organization-shadow);
 }
 
-.card.individual:focus-within,
-.card.individual:has(a:active) {
-    box-shadow: var(--card-individual-shadow-focus-within);
+.card.regulated-organization:focus-within {
+    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow-focus-within);
+}
+
+.card.regulated-organization:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-regulated-organization-shadow-focus-within);
 }
 
 .card.project {
@@ -84,21 +99,16 @@
     box-shadow: var(--card-shadow-hover), var(--card-project-shadow);
 }
 
-.card.project:focus-within,
+.card.project:focus-within {
+    box-shadow: var(--card-shadow), var(--card-project-shadow-focus-within);
+}
+
 .card.project:has(a:active) {
-    box-shadow: var(--card-project-shadow-focus-within);
+    box-shadow: var(--card-shadow), var(--card-project-shadow-focus-within);
 }
 
 .card.engagement {
-    box-shadow: var(--card-engagement-shadow);
-}
-
-.card.project ~ .card.engagement {
-    @apply mt-0 bg-blue-1;
-
     box-shadow: var(--card-shadow), var(--card-engagement-shadow);
-    margin-inline-start: var(--gutter);
-    width: calc(100% - calc(2 * var(--gutter)));
 }
 
 .card.engagement:hover,
@@ -107,46 +117,75 @@
 }
 
 .card.engagement:focus-within,
-.card.engagement:has(a:active),
-.card.project ~ .card.engagement:focus-within,
-.card.project ~ .card.engagement:has(a:active) {
-    box-shadow: var(--card-engagement-shadow-focus-within);
+.card.project ~ .card.engagement:focus-within {
+    box-shadow: var(--card-shadow), var(--card-engagement-shadow-focus-within);
 }
 
-.manage-section .card.organization {
+.card.engagement:has(a:active),
+.card.project ~ .card.engagement:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-engagement-shadow-focus-within);
+}
+
+.card.project ~ .card.engagement {
+    margin-block-start: 0;
+    margin-inline-start: var(--gutter);
+    width: calc(100% - calc(2 * var(--gutter)));
+}
+
+.manage-section .card {
+    @apply -mx-6;
+}
+
+.manage-section .card:hover {
     @apply -mx-6;
 
-    box-shadow: var(--card-organization-shadow);
+    background: var(--card-inset-background);
 }
 
 .manage-section .card.individual {
-    @apply -mx-6;
-
     box-shadow: var(--card-individual-shadow);
 }
 
-.manage-section .card.organization:hover {
-    background: var(--card-background-hover);
-    box-shadow: var(--card-organization-shadow), var(--card-inset-shadow-hover);
-}
-
 .manage-section .card.individual:hover {
-    background: var(--card-background-hover);
-    box-shadow: var(--card-individual-shadow), var(--card-inset-shadow-hover);
+    box-shadow: var(--card-inset-shadow-hover), var(--card-inset-individual-shadow-hover);
 }
 
-.manage-section .card.organization:focus-within,
-.manage-section .card.organization:has(a:active) {
-    background: inherit;
-    box-shadow: var(--card-organization-shadow-focus-within);
+.manage-section .card.individual:focus-within {
+    box-shadow: var(--card-individual-shadow-focus-within), var(--card-inset-individual-shadow-focus-within);
 }
 
-.manage-section .card.individual:focus-within,
 .manage-section .card.individual:has(a:active) {
-    background: inherit;
-    box-shadow: var(--card-individual-shadow-focus-within);
+    box-shadow: var(--card-individual-shadow-focus-within), var(--card-inset-individual-shadow-focus-within);
 }
 
-.manage-section .card.organization + footer {
-    margin-block-start: 0;
+.manage-section .card.organization {
+    box-shadow: var(--card-organization-shadow);
+}
+
+.manage-section .card.organization:hover {
+    box-shadow: var(--card-inset-shadow-hover), var(--card-inset-organization-shadow-hover);
+}
+
+.manage-section .card.organization:focus-within {
+    box-shadow: var(--card-organization-shadow-focus-within), var(--card-inset-organization-shadow-focus-within);
+}
+
+.manage-section .card.organization:has(a:active) {
+    box-shadow: var(--card-organization-shadow-focus-within), var(--card-inset-organization-shadow-focus-within);
+}
+
+.manage-section .card.engagement {
+    box-shadow: var(--card-engagement-shadow);
+}
+
+.manage-section .card.engagement:hover {
+    box-shadow: var(--card-inset-shadow-hover), var(--card-inset-engagement-shadow-hover);
+}
+
+.manage-section .card.engagement:focus-within {
+    box-shadow: var(--card-engagement-shadow-focus-within), var(--card-inset-engagement-shadow-focus-within);
+}
+
+.manage-section .card.engagement:has(a:active) {
+    box-shadow: var(--card-engagement-shadow-focus-within), var(--card-inset-engagement-shadow-focus-within);
 }

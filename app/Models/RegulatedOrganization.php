@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasContactPerson;
+use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
@@ -30,6 +31,7 @@ class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use HasContactPerson;
+    use HasDisplayRegion;
     use HasFactory;
     use HasMultipageEditingAndPublishing;
     use HasStatus;

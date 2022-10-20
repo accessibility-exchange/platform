@@ -57,7 +57,7 @@
                 <h2>{{ __('My active projects') }}</h2>
                 @if (count($memberable->projects) > 0)
                     @foreach ($memberable->projects as $project)
-                        <x-card.project :project="$project" />
+                        <x-card.project :model="$project" />
                     @endforeach
                     <p><a href="{{ localized_route('projects.my-projects') }}">{{ __('Show all my projects') }}</a>
                     </p>
