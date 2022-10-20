@@ -8,7 +8,13 @@
         <span class="font-semibold">{{ __('Sector:') }}</span>
         {{ implode(', ',$model->projectable->sectors()->pluck('name')->toArray()) }}
     </p>
-    <p>
+    <p class="flex flex-wrap gap-3">
         <span class="badge">{{ $model->status }}</span>
+        @if ($model->allEngagements->filter(fn($engagement) => $engagement->extra_attributes->get('seeking_community_connector') == true)->count())
+            <span class="badge badge--yellow">{{ __('Seeking Community Connector') }}</span>
+        @endif
+        @if ($model->allEngagements->filter(fn($engagement) => $engagement->recruitment === 'open-call')->count())
+            <span class="badge badge--lavender">{{ __('Seeking Participants') }}</span>
+        @endif
     </p>
 </x-card>
