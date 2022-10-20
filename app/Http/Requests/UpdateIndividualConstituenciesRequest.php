@@ -79,13 +79,11 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
         request()->mergeIfMissing([
             'lived_experiences' => [],
             'disability_types' => [],
-            'other_disability' => 0,
             'area_types' => [],
             'indigenous_identities' => [],
             'gender_and_sexual_identities' => [],
             'age_brackets' => [],
             'ethnoracial_identities' => [],
-            'other_ethnoracial' => 0,
         ]);
     }
 

@@ -196,7 +196,7 @@
                 class="field @error('has_ethnoracial_identities') field--error @enderror @error('ethnoracial_identities') field--error @enderror"
                 x-data="{
                     hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', '')) }}',
-                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '' ? 'true' : 'false') }}
+                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '') ? 'true' : 'false' }}
                 }">
                 <legend>
                     {{ __('Can you connect to a specific ethnoracial identity or identities?') . ' ' . __('(required)') }}

@@ -156,12 +156,7 @@
                 class="field @error('has_ethnoracial_identities') field--error @enderror @error('ethnoracial_identities') field--error @enderror"
                 x-data="{
                     hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}',
-                    otherEthnoracialIdentity: {{ old(
-                        'other_ethnoracial',
-                        !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '',
-                    )
-                        ? 'true'
-                        : 'false' }}
+                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '') ? 'true' : 'false' }}
                 }">
                 <legend>
                     {{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
