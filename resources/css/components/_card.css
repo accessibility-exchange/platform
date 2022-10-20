@@ -136,6 +136,10 @@
     @apply -mx-6;
 }
 
+.manage-section .card:not([hidden]) + .card:not([hidden]) {
+    @apply mt-0;
+}
+
 .manage-section .card:hover {
     @apply -mx-6;
 
