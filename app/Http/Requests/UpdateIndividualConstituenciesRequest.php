@@ -48,7 +48,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'has_indigenous_identities' => 'required|boolean',
             'indigenous_identities' => 'nullable|array|required_if:has_indigenous_identities,true|exclude_if:has_indigenous_identities,false',
             'indigenous_identities.*' => 'exists:indigenous_identities,id',
-            'refugees_and_immigrants' => 'sometimes|boolean',
+            'refugees_and_immigrants' => 'required|boolean',
             'has_gender_and_sexual_identities' => 'required|boolean',
             'gender_and_sexual_identities' => 'nullable|array|min:1|required_if:has_gender_and_sexual_identities,true|exclude_if:has_gender_and_sexual_identities,false',
             'gender_and_sexual_identities.*' => 'string|in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',
@@ -87,5 +87,46 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'ethnoracial_identities' => [],
             'other_ethnoracial' => 0,
         ]);
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->sometimes('other_disability_type_connection.en', 'required_without:other_disability_type_connection.fr', function ($input) {
+            return $input->other_disability;
+        });
+
+        $validator->sometimes('other_disability_type_connection.fr', 'required_without:other_disability_type_connection.en', function ($input) {
+            return $input->other_disability;
+        });
+
+        $validator->sometimes('other_ethnoracial_identity_connection.en', 'required_without:other_ethnoracial_identity_connection.fr', function ($input) {
+            return $input->other_ethnoracial;
+        });
+
+        $validator->sometimes('other_ethnoracial_identity_connection.fr', 'required_without:other_ethnoracial_identity_connection.en', function ($input) {
+            return $input->other_ethnoracial;
+        });
+    }
+
+    public function messages(): array
+    {
+        return [
+            'lived_experiences.required' => __('You must select at least one option for “Can you connect to people with disabilities, Deaf persons, and/or their supporters?”'),
+            'base_disability_type.required' => __('You must select one option for “Please select people with disabilities that you can connect to”.'),
+            'disability_types.required' => __('You must select which specific disability or disabilities you can connect to.'),
+            'area_types.required' => __('You must select at least one option for “Where do the people that you can connect to come from?”'),
+            'has_indigenous_identities.required' => __('You must select one option for “Can you connect to people who are First Nations, Inuit, or Métis?”'),
+            'indigenous_identities.required_if' => __('You must select at least one Indigenous group you can connect to.'),
+            'refugees_and_immigrants' => __('You must select one option for “Can you connect to refugees and/or immigrants?”'),
+            'has_gender_and_sexual_identities.required' => __('You must select one option for “Can you connect to people who are marginalized based on gender or sexual identity?”'),
+            'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group you can connect to.'),
+            'has_age_brackets.required' => __('You must select one option for “Can you connect to a specific age group or groups?”'),
+            'age_brackets.required_if' => __('You must select at least one age group you can connect to.'),
+            'has_ethnoracial_identities.required' => __('You must select one option for “Can you connect to people with a specific ethno-racial identity or identities?”'),
+            'ethnoracial_identities.required_if' => __('You must select at least one ethno-racial identity you can connect to.'),
+            'connection_lived_experience.required' => __('You must select one option for “Do you have lived experience of the people you can connect to?”'),
+            'other_disability_type_connection.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
+            'other_ethnoracial_identity_connection.*.required_without' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),
+        ];
     }
 }
