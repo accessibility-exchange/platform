@@ -3,7 +3,7 @@
         <h2>{{ __('Quick Links') }}</h2>
         <ul class="link-list" role="list">
             <li>
-                <a href="{{ localized_route('admin.manage-users') }}">{{ __('Manage users') }}</a>
+                <a href="{{ localized_route('admin.manage-accounts') }}">{{ __('Manage accounts') }}</a>
             </li>
             <li>
                 <a
