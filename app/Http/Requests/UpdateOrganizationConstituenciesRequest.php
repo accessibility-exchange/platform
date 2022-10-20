@@ -40,8 +40,6 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'other_disability' => 'nullable|boolean',
             'other_disability_type' => 'nullable|array||exclude_if:base_disability_type,cross_disability|exclude_unless:other_disability,true',
             'other_disability_type.*' => 'nullable|string|max:255',
-            'area_types' => 'required|array|min:1',
-            'area_types.*' => 'exists:area_types,id',
             'has_indigenous_identities' => 'required|boolean',
             'indigenous_identities' => 'nullable|array|required_if:has_indigenous_identities,true|exclude_if:has_indigenous_identities,false',
             'indigenous_identities.*' => 'exists:indigenous_identities,id',
@@ -67,6 +65,8 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'other_ethnoracial_identity.*' => 'nullable|string|max:255',
             'constituent_languages' => 'nullable|array',
             'constituent_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
+            'area_types' => 'required|array|min:1',
+            'area_types.*' => 'exists:area_types,id',
             'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer',
         ];
     }
@@ -87,16 +87,35 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
         $validator->sometimes('other_disability_type.fr', 'required_without:other_disability_type.en', function ($input) {
             return $input->other_disability;
         });
+
+        $validator->sometimes('other_ethnoracial_identity.en', 'required_without:other_disability_type.fr', function ($input) {
+            return $input->other_ethnoracial;
+        });
+
+        $validator->sometimes('other_ethnoracial_identity.fr', 'required_without:other_disability_type.en', function ($input) {
+            return $input->other_ethnoracial;
+        });
     }
 
     public function messages(): array
     {
         return [
-            'disability_types.required' => __('You must select at least one disability type.'),
-            'indigenous_identities.required_if' => __('You must select at least one Indigenous identity.'),
-            'gender_identities.required' => __('You must select at least one gender or sexual identity.'),
-            'trans_people.required' => __('You must select at least one gender or sexual identity.'),
-            'twoslgbtqia.required' => __('You must select at least one gender or sexual identity.'),
+            'lived_experiences.required' => __('You must select at least one option for "Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters?"', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'base_disability_type.required' => __('You must select one option for “Please select people with disabilities that you specifically :represent_or_serve_and_support”.', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'disability_types.required' => __('You must select which specific disability groups your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'area_types.required' => __('You must select at least one option for “Where do the people that you :represent_or_serve_and_support come from?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'has_indigenous_identities.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'indigenous_identities.required_if' => __('You must select at least one Indigenous group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'refugees_and_immigrants' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'has_gender_and_sexual_identities.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'has_age_brackets.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific age bracket or brackets?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'age_brackets.required_if' => __('You must select at least one age group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'has_ethnoracial_identities.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'ethnoracial_identities.required' => __('You must select at least one ethno-racial identity your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'staff_lived_experience.required' => __('You must select one option for “Do you have staff who have lived experience of the people you :represent_or_serve_and_support?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'other_disability_type.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
+            'other_ethnoracial_identity.*.required_without' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),
         ];
     }
 }
