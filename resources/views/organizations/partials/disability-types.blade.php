@@ -1,5 +1,6 @@
-<fieldset class="field @error('disability_types') field--error @enderror" x-show="livedExperiences.includes(1)"
-    x-data="{ baseDisabilityType: '{{ old('base_disability_type', $organization->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '' ? 'true' : 'false') }} }">
+<fieldset
+    class="field @error('base_disability_type') field--error @enderror @error('disability_types') field--error @enderror"
+    x-show="livedExperiences.includes(1)" x-data="{ baseDisabilityType: '{{ old('base_disability_type', $organization->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($organization->other_disability_type) && $organization->other_disability_type !== '' ? 'true' : 'false') }} }">
     <legend>
         {{ __('Please select people with disabilities that you specifically :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
     </legend>
@@ -20,4 +21,6 @@
                 x-show="otherDisability" />
         </div>
     </div>
+    <x-hearth-error for="base_disability_type" />
+    <x-hearth-error for="disability_types" />
 </fieldset>
