@@ -3,9 +3,14 @@
     'model' => null,
 ])
 
-<article class="box card stack regulated-organization">
-    <x-heading class="h4" :level="$level"><a
-            href="{{ localized_route('regulated-organizations.show', $model) }}">{{ $model->name }}</a>
-    </x-heading>
-    <p>{{ __('Federally regulated organization') }}</p>
-</article>
+<x-card class="regulated-organization" title-class="h4">
+    <x-slot name="title"><a href="{{ localized_route('regulated-organizations.show', $model) }}">{{ $model->name }}</a>
+    </x-slot>
+    <p><strong>{{ __('Federally regulated organization') }}</strong></p>
+    <p>
+        <span class="font-semibold">{{ __('Sector:') }}</span>
+        {{ implode(', ',$model->sectors()->pluck('name')->toArray()) }}<br />
+        <span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
+        {{ $model->display_region }}
+    </p>
+</x-card>

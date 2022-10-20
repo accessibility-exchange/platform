@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\IndividualRole;
+use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
@@ -37,6 +38,7 @@ use TheIconic\NameParser\Parser as NameParser;
 class Individual extends Model implements CipherSweetEncrypted
 {
     use UsesCipherSweet;
+    use HasDisplayRegion;
     use HasFactory;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;

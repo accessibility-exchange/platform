@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrganizationRole;
 use App\Traits\HasContactPerson;
+use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
@@ -38,6 +39,7 @@ class Organization extends Model
 {
     use CascadesDeletes;
     use HasContactPerson;
+    use HasDisplayRegion;
     use HasFactory;
     use HasSchemalessAttributes;
     use HasMembers;
