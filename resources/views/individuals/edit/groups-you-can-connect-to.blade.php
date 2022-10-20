@@ -196,7 +196,7 @@
                 class="field @error('has_ethnoracial_identities') field--error @enderror @error('ethnoracial_identities') field--error @enderror"
                 x-data="{
                     hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $individual->extra_attributes->get('has_ethnoracial_identities', '')) }}',
-                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '' ? 'true' : 'false') }}
+                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($individual->other_ethnoracial_identity_connection) && $individual->other_ethnoracial_identity_connection !== '') ? 'true' : 'false' }}
                 }">
                 <legend>
                     {{ __('Can you connect to a specific ethnoracial identity or identities?') . ' ' . __('(required)') }}
@@ -240,6 +240,7 @@
                 <legend>{{ __('What languages are used by the people you can connect to?') . ' ' . __('(optional)') }}
                 </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$individual->languageConnections->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+                <x-hearth-error for="constituent_languages" />
             </fieldset>
 
             <fieldset class="field @error('connection_lived_experience') field--error @enderror">

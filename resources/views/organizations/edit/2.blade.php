@@ -156,12 +156,7 @@
                 class="field @error('has_ethnoracial_identities') field--error @enderror @error('ethnoracial_identities') field--error @enderror"
                 x-data="{
                     hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}',
-                    otherEthnoracialIdentity: {{ old(
-                        'other_ethnoracial',
-                        !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '',
-                    )
-                        ? 'true'
-                        : 'false' }}
+                    otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '') ? 'true' : 'false' }}
                 }">
                 <legend>
                     {{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) . ' ' . __('(required)') }}
@@ -205,6 +200,7 @@
                     {{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) . ' ' . __('(optional)') }}
                 </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$organization->constituentLanguages->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+                <x-hearth-error for="constituent_languages" />
             </fieldset>
 
             <fieldset class="field @error('area_types') field--error @enderror">
