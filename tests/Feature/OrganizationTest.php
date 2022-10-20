@@ -361,6 +361,16 @@ test('users with admin role can edit organization contact information', function
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'preferred_contact_method' => 'email',
+        'contact_person_vrs' => true,
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
         'save' => 1,
