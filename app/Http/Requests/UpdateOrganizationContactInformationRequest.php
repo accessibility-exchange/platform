@@ -16,10 +16,20 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
         return [
             'contact_person_name' => 'required|string',
             'contact_person_email' => 'nullable|email|required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'nullable|phone:CA|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $validator->errors()->add(
+                'contact_person_phone:required_if:contact_person_vrs,true',
+                __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.')
+            );
+        });
     }
 
     public function attributes(): array
