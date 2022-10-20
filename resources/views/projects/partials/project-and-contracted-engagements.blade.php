@@ -1,4 +1,4 @@
-<x-card.project :project="$project" :level="4" />
+<x-card.project :model="$project" :level="4" />
 @foreach ($project->engagements as $engagement)
     @if (($engagement->individual_connector_id && $engagement->individual_connector_id === $user->individual?->id) ||
         ($engagement->organizational_connector_id && $engagement->organizational_connector_id === $user->organization?->id))

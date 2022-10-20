@@ -19,5 +19,5 @@
     </p>
 
     <p><span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
-        {{ \App\Enums\ProvinceOrTerritory::labels()[$model->region] }}</p>
+        {{ $model->display_region }}</p>
 </x-card>
