@@ -122,6 +122,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'age_brackets.required_if' => __('You must select at least one age group you can connect to.'),
             'has_ethnoracial_identities.required' => __('You must select one option for “Can you connect to people with a specific ethno-racial identity or identities?”'),
             'ethnoracial_identities.required_if' => __('You must select at least one ethno-racial identity you can connect to.'),
+            'constituent_languages.*.in' => __('You must select a language.'),
             'connection_lived_experience.required' => __('You must select one option for “Do you have lived experience of the people you can connect to?”'),
             'other_disability_type_connection.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
             'other_ethnoracial_identity_connection.*.required_without' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),

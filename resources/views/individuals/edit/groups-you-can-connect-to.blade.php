@@ -240,6 +240,7 @@
                 <legend>{{ __('What languages are used by the people you can connect to?') . ' ' . __('(optional)') }}
                 </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$individual->languageConnections->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+                <x-hearth-error for="constituent_languages" />
             </fieldset>
 
             <fieldset class="field @error('connection_lived_experience') field--error @enderror">

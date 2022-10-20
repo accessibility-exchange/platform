@@ -200,6 +200,7 @@
                     {{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) . ' ' . __('(optional)') }}
                 </legend>
                 <livewire:language-picker name="constituent_languages" :languages="$organization->constituentLanguages->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+                <x-hearth-error for="constituent_languages" />
             </fieldset>
 
             <fieldset class="field @error('area_types') field--error @enderror">
