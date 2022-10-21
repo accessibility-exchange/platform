@@ -22,7 +22,7 @@
         @method('put')
 
         <fieldset class="field @error('recruitment') field--error @enderror">
-            <legend>{{ __('Please select a recruitment method:') }}</legend>
+            <legend>{{ __('Please select a recruitment method') . ' ' . __('(required)') }}</legend>
             <x-hearth-radio-buttons name="recruitment" :options="$recruitments" :checked="old('recruitment', $engagement->recruitment)" />
             <x-hearth-error for="recruitment" />
         </fieldset>

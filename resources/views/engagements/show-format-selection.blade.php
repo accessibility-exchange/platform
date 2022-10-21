@@ -21,7 +21,7 @@
         @method('put')
 
         <fieldset class="field @error('format') field--error @enderror">
-            <legend>{{ __('What format would you like to use?') }}</legend>
+            <legend>{{ __('What format would you like to use?') . ' ' . __('(required)') }}</legend>
             <x-hearth-radio-buttons name="format" :options="$formats" :checked="old('format', '')" />
             <x-hearth-error for="format" />
         </fieldset>

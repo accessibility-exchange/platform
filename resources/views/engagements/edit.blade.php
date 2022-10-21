@@ -28,12 +28,12 @@
 
         <h2>{{ __('Name') }}</h2>
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
         <hr class="divider--thick">
 
         <h2>{{ __('Description') }}</h2>
 
-        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.') . ' ' . __('(required)')" :short-label="__('engagement description')" :hint="__(
             'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
         )"
             :model="$engagement" />
@@ -237,14 +237,15 @@
 
         @if (in_array($engagement->format, ['survey', 'other-async']))
             <hr class="divider--thick">
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}</h2>
+            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') . ' ' . __('(required)') : __('Materials') . ' ' . __('(required)') }}
+            </h2>
             <h3>{{ __('Date') }}</h3>
             <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
             <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <hr class="divider">
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
-                    <h3>{{ __('Languages') }}</h3>
+                    <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
                 </legend>
                 <x-hearth-hint for="document_languages">
                     {{ __('Please indicate the languages to be used for this engagement’s documents.') }}
@@ -274,8 +275,12 @@
 
             <div class="field @error('signup_by_date') field--error @enderror">
                 <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
-                    ? __('Participants must sign up for this engagement by the following date:')
-                    : __('Participants must respond to their invitation by the following date:')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+                    ? __('Participants must sign up for this engagement by the following date') .
+                        ' ' .
+                        __('(required):')
+                    : __('Participants must respond to their invitation by the following date') .
+                        ' ' .
+                        __('(required):')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
             </div>
         @endif
         <hr class="divider--thick">
