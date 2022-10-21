@@ -25,7 +25,7 @@
                 </nav>
             </div>
             <div class="switcher grow:2">
-                <div class="stack">
+                <div class="stack" id="contact" tabindex="-1">
                     <h2>{{ __('Contact') }}</h2>
                     <address class="stack">
                         <h3>{{ __('Email') }}</h3>
