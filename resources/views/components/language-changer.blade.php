@@ -1,5 +1,5 @@
 @props([
-    'modelName' => $model->getTable() === 'individuals' ? 'bio' : 'name',
+    'testValue' => $model instanceof App\Models\Individual ? 'bio' : 'name',
 ])
 
 @if (count($model->languages) > 1)
@@ -10,7 +10,7 @@
                 @foreach ($model->languages as $code)
                     @if (in_array($code, config('locales.supported')))
                         {{-- Make sure at least the model name is translated to avoid 404 errors. --}}
-                        @if ($model->isTranslatableAttribute($modelName) || !empty($model->getTranslation($modelName, $code, false)))
+                        @if ($model->isTranslatableAttribute($testValue) || !empty($model->getTranslation($testValue, $code, false)))
                             <li class="ml-2"><a
                                     href="{{ localized_route($model->getRoutePrefix() . '.show', $model, $code) }}">{{ get_language_exonym($code) }}</a>
                             </li>
