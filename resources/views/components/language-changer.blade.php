@@ -1,5 +1,5 @@
 @props([
-    'modelName' => 'name',
+    'modelName' => $model->getTable() === 'individuals' ? 'bio' : 'name',
 ])
 
 @if (count($model->languages) > 1)
