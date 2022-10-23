@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'singular_name' => 'organization',
+    'singular_name' => 'organisation',
     'index_title' => 'Organisations',
     'create_title' => 'Créer une organisation',
     'label_name' => 'Nom de l\'organisation',
@@ -12,8 +12,8 @@ return [
     'member_name' => 'Nom',
     'member_status' => 'Statut',
     'member_role' => 'Rôle',
-    'member_active' => 'Actif',
-    'action_add_member' => 'Ajouter un membre',
+    'member_active' => 'Actif/Active',
+    'action_add_member' => 'Ajouter un ou une membre',
     'delete_title' => 'Supprimer l\'organisation',
     'delete_intro' => 'Votre organisation sera supprimée et ne pourra pas être récupérée. Si vous souhaitez toujours supprimer votre organisation, veuillez entrer votre mot de passe actuel pour continuer.',
     'action_delete' => 'Supprimer l\'organisation',
@@ -27,12 +27,12 @@ return [
     'label_user_role' => 'Rôle',
     'action_update_user_role' => 'Mettre à jour le rôle',
     'action_cancel_user_role_update' => 'Annuler',
-    'action_remove_member' => 'Enlever',
-    'action_remove_member_with_name' => 'Enlever :user de :organization',
+    'action_remove_member' => 'Retirer',
+    'action_remove_member_with_name' => 'Retirer :user de :organization',
     'error_new_administrator_required_before_user_deletion' => 'Vous devez assigner un nouvel administrateur à votre organisation, :organisation, avant de supprimer votre compte.',
     'area_types' => [
-        'urban' => 'Urban areas',
-        'rural' => 'Rural areas',
-        'remote' => 'Remote areas',
+        'urban' => 'Zones urbaines',
+        'rural' => 'Zones rurales',
+        'remote' => 'Zones éloignées',
     ],
 ];
