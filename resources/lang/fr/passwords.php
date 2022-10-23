@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => 'You have successfully reset your password for The Accessibility Exchange.',
-    'sent' => 'We have emailed you a password reset link for The Accessibility Exchange. Please check your email.',
+    'reset' => 'Vous avez réinitialisé avec succès votre mot de passe pour le site Connecteur pour l\'accessibilité.',
+    'sent' => 'Nous vous avons envoyé par courriel un lien de réinitialisation du mot de passe pour le site Connecteur pour l\'accessibilité. Veuillez vérifier votre courriel.',
     'throttled' => 'Veuillez patienter avant de réessayer.',
     'token' => 'Ce jeton de réinitialisation du mot de passe n\'est pas valide.',
-    'user' => "We can't find an account with that email address.",
+    'user' => "Nous ne pouvons pas trouver de compte associé à cette adresse courriel.",
 
 ];
