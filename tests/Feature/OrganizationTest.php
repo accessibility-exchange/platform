@@ -1043,7 +1043,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
