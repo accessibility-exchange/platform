@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateProjectTeamRequest extends FormRequest
 {
@@ -18,11 +17,6 @@ class UpdateProjectTeamRequest extends FormRequest
             'team_size' => 'nullable|array',
             'team_size.*' => 'nullable|string',
             'team_has_disability_or_deaf_lived_experience' => 'nullable|boolean',
-            'team_languages' => 'required|array|min:1',
-            'team_languages.*' => [
-                'nullable',
-                Rule::in(array_keys(get_available_languages(true))),
-            ],
             'team_trainings' => 'nullable|array',
             'team_trainings.*.name' => 'required|string',
             'team_trainings.*.date' => 'required|date',

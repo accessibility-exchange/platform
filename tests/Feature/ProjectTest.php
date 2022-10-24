@@ -156,7 +156,6 @@ test('projects can be published and unpublished', function () {
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
         'preferred_contact_method' => 'required',
-        'team_languages' => ['en'],
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -339,7 +338,6 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
-        'team_languages' => ['en'],
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
         ],
@@ -355,7 +353,6 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
-        'team_languages' => ['en'],
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
         ],
