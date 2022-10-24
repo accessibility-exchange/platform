@@ -277,10 +277,12 @@
                 <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
                     ? __('Participants must sign up for this engagement by the following date') .
                         ' ' .
-                        __('(required):')
+                        __('(required)') .
+                        ':'
                     : __('Participants must respond to their invitation by the following date') .
                         ' ' .
-                        __('(required):')" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+                        __('(required)') .
+                        ':'" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
             </div>
         @endif
         <hr class="divider--thick">
