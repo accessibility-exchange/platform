@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'singular_name' => 'project',
-    'singular_name_titlecase' => 'Project',
+    'singular_name' => 'projet',
+    'singular_name_titlecase' => 'Projet',
     'statuses' => [
-        'upcoming' => 'Upcoming',
-        'current' => 'In progress',
-        'completed' => 'Completed',
-        'cancelled' => 'Cancelled',
-        'seeking-participants' => 'Seeking participants',
-        'has-community-connector' => 'Has Community Connector',
+        'upcoming' => 'À venir',
+        'current' => 'En cours',
+        'completed' => 'Terminé',
+        'cancelled' => 'Annulé',
+        'seeking-participants' => 'En cours de recrutement de personnes participantes',
+        'has-community-connector' => 'A une personne facilitatrice communautaire',
     ],
 ];

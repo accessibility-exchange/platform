@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'singular_name' => 'regulated organization',
+    'singular_name' => 'organisation sous réglementation fédérale',
     'types' => [
-        'business' => 'business',
-        'government' => 'government organization',
-        'public-sector' => 'public sector organization',
+        'business' => 'entreprise',
+        'government' => 'organisation gouvernementale',
+        'public-sector' => 'organisation du secteur public',
     ],
 ];

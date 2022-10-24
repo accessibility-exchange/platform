@@ -2,5 +2,5 @@
 
 return [
     'name' => 'Connecteur pour l’accessibilité',
-    'description' => 'Accessibilité en Action soutient les processus par lesquels les personnes handicapées ont le pouvoir de s’assurer que les politiques, les programmes et les services des entités sous réglementation fédérale leur sont accessibles et respectent leurs droits fondamentaux.',
+    'description' => 'Le Connecteur pour l\'accessibilité vise à soutenir les personnes en situation de handicap et les personnes sourdes et à s\'assurer que les politiques, les programmes et les services des entités sous réglementation fédérale sont accessibles et respectent les droits fondamentaux de ces personnes.',
 ];
