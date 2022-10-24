@@ -14,7 +14,6 @@ use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
-use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AreaTypeSeeder;
@@ -1068,18 +1067,6 @@ test('organizational relationships to projects can be derived from both projects
 
     $organization = $organization->fresh();
 
-    $consultingProject = Project::factory()->create([
-        'organizational_consultant_id' => $organization->id,
-    ]);
-
-    $consultingEngagement = Engagement::factory()->create([
-        'organizational_consultant_id' => $organization->id,
-    ]);
-
-    expect($consultingEngagement->organizationalConsultant->id)->toEqual($organization->id);
-
-    $consultingEngagementProject = $consultingEngagement->project;
-
     $connectingEngagement = Engagement::factory()->create([
         'organizational_connector_id' => $organization->id,
     ]);
@@ -1097,10 +1084,8 @@ test('organizational relationships to projects can be derived from both projects
     $participatingEngagementProject = $participatingEngagement->project;
 
     expect($organization->contractedProjects->pluck('id')->toArray())
-        ->toHaveCount(3)
-        ->toContain($connectingEngagementProject->id)
-        ->toContain($consultingEngagementProject->id)
-        ->toContain($consultingProject->id);
+        ->toHaveCount(1)
+        ->toContain($connectingEngagementProject->id);
 
     expect($organization->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)

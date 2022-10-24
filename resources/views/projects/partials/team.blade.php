@@ -12,16 +12,6 @@
     <p>{{ $project->teamExperience() }}</p>
 @endif
 
-@if ($project->team_languages)
-    <h4>{{ __('Languages used') }}</h4>
-
-    <ul>
-        @foreach ($project->team_languages as $language)
-            <li>{{ get_language_exonym($language) }}</li>
-        @endforeach
-    </ul>
-@endif
-
 @if ($project->has_consultant)
     <h4>{{ __('Accessibility Consultant') }}</h4>
 
