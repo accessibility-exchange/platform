@@ -36,13 +36,6 @@
 
             <fieldset class="field stack">
                 <legend>
-                    {{ __('Please indicate the language or languages people on your team use fluently.') . ' ' . __('(optional)') }}
-                </legend>
-                <livewire:language-picker name="team_languages" :languages="['en']" :availableLanguages="$languages" />
-            </fieldset>
-
-            <fieldset class="field stack">
-                <legend>
                     <h3>{{ __('Training your team has received') . ' ' . __('(optional)') }}</h3>
                 </legend>
                 <p class="field__hint">
