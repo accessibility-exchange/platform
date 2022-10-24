@@ -281,7 +281,8 @@
                 </x-hearth-hint>
 
                 <div class="field @error('ideal_participants') field--error @enderror">
-                    <x-hearth-label for="ideal_participants">{{ __('Ideal number of participants') }}</x-hearth-label>
+                    <x-hearth-label for="ideal_participants">
+                        {{ __('Ideal number of participants') . ' ' . __('(required)') }}</x-hearth-label>
                     <x-hearth-hint for="ideal_participants">
                         {{ __('This is the ideal number of participants you would like to have for this engagement. The least you can select is 10 participants.') }}
                     </x-hearth-hint>
@@ -291,7 +292,8 @@
                 </div>
 
                 <div class="field @error('minimum_participants') field--error @enderror">
-                    <x-hearth-label for="minimum_participants">{{ __('Minimum number of participants') }}
+                    <x-hearth-label for="minimum_participants">
+                        {{ __('Minimum number of participants') . ' ' . __('(required)') }}
                     </x-hearth-label>
                     <x-hearth-hint for="minimum_participants">
                         {{ __('The least number of participants you can have to go forward with your engagement. The least you can select is 10 participants.') }}
