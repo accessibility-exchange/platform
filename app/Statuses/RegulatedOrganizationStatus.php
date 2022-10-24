@@ -27,4 +27,9 @@ class RegulatedOrganizationStatus extends \Makeable\EloquentStatus\Status
 
         return $query->whereNotNull('validated_at');
     }
+
+    public function suspended($query)
+    {
+        return $query->whereNotNull('suspended_at');
+    }
 }

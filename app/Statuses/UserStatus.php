@@ -13,4 +13,9 @@ class UserStatus extends \Makeable\EloquentStatus\Status
     {
         return $query->whereNotNull('oriented_at');
     }
+
+    public function suspended($query)
+    {
+        return $query->whereNotNull('suspended_at');
+    }
 }

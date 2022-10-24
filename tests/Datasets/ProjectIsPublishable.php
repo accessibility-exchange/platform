@@ -120,7 +120,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'regulated-organization',
+            'organization',
             [
                 'oriented_at' => null,
                 'validated_at' => null,
