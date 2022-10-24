@@ -76,7 +76,7 @@
                     <td>
                         @if ($account instanceof App\Models\Individual)
                             @if ($account->user->checkStatus('suspended'))
-                                {{ __('Suspended') }}
+                                <span class="font-semibold text-red-8">{{ __('Suspended') }}</span>
                             @else
                                 @if ($account->user->checkStatus('pending'))
                                     {{ __('Pending approval') }}
@@ -86,7 +86,7 @@
                             @endif
                         @else
                             @if ($account->checkStatus('suspended'))
-                                {{ __('Suspended') }}
+                                <span class="font-semibold text-red-8">{{ __('Suspended') }}</span>
                             @else
                                 @if ($account->checkStatus('pending'))
                                     {{ __('Pending approval') }}
@@ -99,13 +99,29 @@
                     <td>
                         @if ($account instanceof App\Models\Individual)
                             @if ($account->user->checkStatus('pending'))
-                                <button
+                                <button class="secondary"
                                     wire:click="approveIndividualAccount({{ $account->id }})">{{ __('Approve') }}</button>
+                            @else
+                                @if (!$account->user->checkStatus('suspended'))
+                                    <button class="secondary destructive"
+                                        wire:click="suspendIndividualAccount({{ $account->id }})">{{ __('Suspend') }}</button>
+                                @else
+                                    <button class="secondary"
+                                        wire:click="unsuspendIndividualAccount({{ $account->id }})">{{ __('Unsuspend') }}</button>
+                                @endif
                             @endif
                         @else
                             @if ($account->checkStatus('pending'))
-                                <button
+                                <button class="secondary"
                                     wire:click="approveAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Approve') }}</button>
+                            @else
+                                @if (!$account->checkStatus('suspended'))
+                                    <button class="secondary destructive"
+                                        wire:click="suspendAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Suspend') }}</button>
+                                @else
+                                    <button class="secondary"
+                                        wire:click="unsuspendAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Unsuspend') }}</button>
+                                @endif
                             @endif
                         @endif
                     </td>
