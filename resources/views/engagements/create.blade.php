@@ -24,10 +24,10 @@
 
         <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" />
 
         <fieldset class="field @error('who') field--error @enderror">
-            <legend>{{ __('Who do you want to engage?') }}</legend>
+            <legend>{{ __('Who do you want to engage?') . ' ' . __('(required)') }}</legend>
             <div class="field">
                 <x-hearth-radio-button id="who-individuals" name="who" value="individuals" :checked="old('who') === 'individuals'" />
                 <x-hearth-label for="who-individuals">{!! Str::inlineMarkdown(__('**Individuals** with lived experience of being disabled or Deaf')) !!}</x-hearth-label>
