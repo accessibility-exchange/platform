@@ -76,7 +76,7 @@
                     <td>
                         @if ($account instanceof App\Models\Individual)
                             @if ($account->user->checkStatus('pending'))
-                                {{ __('Pending') }}
+                                {{ __('Pending approval') }}
                             @elseif($account->user->checkStatus('approved'))
                                 {{ __('Approved') }}
                                 {{--                            @elseif($account->user->checkStatus('suspended')) --}}
@@ -84,7 +84,7 @@
                             @endif
                         @else
                             @if ($account->checkStatus('pending'))
-                                {{ __('Pending') }}
+                                {{ __('Pending approval') }}
                             @elseif($account->checkStatus('approved'))
                                 {{ __('Approved') }}
                                 {{--                            @elseif($account->checkStatus('suspended')) --}}
