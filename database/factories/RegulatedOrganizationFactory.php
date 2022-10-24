@@ -27,6 +27,8 @@ class RegulatedOrganizationFactory extends Factory
             'languages' => ['en', 'fr', 'ase', 'fcs'],
             'contact_person_email' => $this->faker->email,
             'contact_person_name' => $this->faker->name,
+            'oriented_at' => now(),
+            'validated_at' => now(),
         ];
     }
 }

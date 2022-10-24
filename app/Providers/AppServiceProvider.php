@@ -16,6 +16,7 @@ use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
+use App\Statuses\UserStatus;
 use Composer\InstalledVersions;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -57,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
         StatusManager::bind(Organization::class, OrganizationStatus::class);
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
+        StatusManager::bind(User::class, UserStatus::class);
         Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
         Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);

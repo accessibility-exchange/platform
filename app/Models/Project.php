@@ -234,6 +234,10 @@ class Project extends Model
             return false;
         }
 
+        if (! $this->projectable->checkStatus('approved')) {
+            return false;
+        }
+
         return true;
     }
 

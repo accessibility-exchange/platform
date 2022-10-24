@@ -542,7 +542,6 @@ class EngagementController extends Controller
         );
 
         $validator->after(function ($validator) use ($organization) {
-            ray($organization->roles);
             if (! $organization || ! $organization->isParticipant()) {
                 $validator->errors()->add(
                     'organization_id', __('The organization you have added does not participate in engagements.')

@@ -60,6 +60,8 @@ class Organization extends Model
 
     protected $fillable = [
         'published_at',
+        'oriented_at',
+        'validated_at',
         'name',
         'type',
         'languages',
@@ -87,6 +89,8 @@ class Organization extends Model
 
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
+        'oriented_at' => 'datetime',
+        'validated_at' => 'datetime',
         'name' => 'array',
         'languages' => 'array',
         'roles' => 'array',
@@ -341,6 +345,10 @@ class Organization extends Model
         try {
             Validator::validate($this->toArray(), $publishRules);
         } catch (ValidationException $exception) {
+            return false;
+        }
+
+        if (! $this->checkStatus('approved')) {
             return false;
         }
 

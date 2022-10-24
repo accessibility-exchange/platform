@@ -18,6 +18,7 @@ dataset('individualIsPublishable', function () {
         ],
         'meeting_types' => [MeetingType::InPerson->value],
         'roles' => [IndividualRole::AccessibilityConsultant->value],
+        'region' => 'NS',
     ];
 
     return [

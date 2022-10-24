@@ -49,7 +49,7 @@
                 </tr>
             </thead>
             @foreach ($accounts as $account)
-                <tr>
+                <tr wire:key="{{ $account->getRoutePlaceholder() }}-{{ $account->id }}">
                     <td>
                         @if ($account->isPublishable())
                             <a
@@ -74,12 +74,36 @@
                         @endif
                     </td>
                     <td>
-                        {{-- TODO: Actually get this state from somewhere --}}
-                        {{ __('Pending') }}
+                        @if ($account instanceof App\Models\Individual)
+                            @if ($account->user->checkStatus('pending'))
+                                {{ __('Pending') }}
+                            @elseif($account->user->checkStatus('approved'))
+                                {{ __('Approved') }}
+                                {{--                            @elseif($account->user->checkStatus('suspended')) --}}
+                                {{--                                {{ __('Suspended') }} --}}
+                            @endif
+                        @else
+                            @if ($account->checkStatus('pending'))
+                                {{ __('Pending') }}
+                            @elseif($account->checkStatus('approved'))
+                                {{ __('Approved') }}
+                                {{--                            @elseif($account->checkStatus('suspended')) --}}
+                                {{--                                {{ __('Suspended') }} --}}
+                            @endif
+                        @endif
                     </td>
                     <td>
-                        {{-- TODO: Actions --}}
-                        <button>{{ __('Approve') }}</button>
+                        @if ($account instanceof App\Models\Individual)
+                            @if ($account->user->checkStatus('pending'))
+                                <button
+                                    wire:click="approveIndividual({{ $account->id }})">{{ __('Approve') }}</button>
+                            @endif
+                        @else
+                            @if ($account->checkStatus('pending'))
+                                <button
+                                    wire:click="approveOrganization({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Approve') }}</button>
+                            @endif
+                        @endif
                     </td>
                 </tr>
             @endforeach

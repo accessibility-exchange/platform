@@ -17,6 +17,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
@@ -34,6 +35,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasStatus;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
@@ -70,6 +72,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'extra_attributes',
         'accepted_terms_of_service_at',
         'accepted_privacy_policy_at',
+        'oriented_at',
     ];
 
     protected $hidden = [
@@ -83,6 +86,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'email_verified_at' => 'datetime',
         'accepted_terms_of_service_at' => 'datetime',
         'accepted_privacy_policy_at' => 'datetime',
+        'oriented_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',

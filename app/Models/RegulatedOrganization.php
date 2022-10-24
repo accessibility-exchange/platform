@@ -54,6 +54,8 @@ class RegulatedOrganization extends Model
      */
     protected $fillable = [
         'published_at',
+        'oriented_at',
+        'validated_at',
         'name',
         'type',
         'languages',
@@ -80,6 +82,8 @@ class RegulatedOrganization extends Model
      */
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
+        'oriented_at' => 'datetime',
+        'validated_at' => 'datetime',
         'name' => 'array',
         'languages' => 'array',
         'about' => 'array',
@@ -300,6 +304,10 @@ class RegulatedOrganization extends Model
         }
 
         if (! $this->sectors()->count()) {
+            return false;
+        }
+
+        if (! $this->checkStatus('approved')) {
             return false;
         }
 

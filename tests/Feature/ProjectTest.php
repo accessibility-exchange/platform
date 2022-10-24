@@ -218,8 +218,10 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 
     // fill data so that we don't hit a Database Integrity constraint violation during creation
     $project = Project::factory()->create([
+        'projectable_type' => $orgModel,
         'projectable_id' => $organization->id,
     ]);
+    $project = $project->fresh();
     $project->fill($data);
 
     foreach ($connections as $connection) {

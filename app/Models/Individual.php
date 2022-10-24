@@ -378,6 +378,10 @@ class Individual extends Model implements CipherSweetEncrypted
                 return false;
             }
 
+            if (! $this->user->checkStatus('approved')) {
+                return false;
+            }
+
             if ($this->isConnector()) {
                 if (! $this->livedExperienceConnections()->count()) {
                     return false;

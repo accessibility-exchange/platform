@@ -23,6 +23,7 @@ use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\EthnoracialIdentitySeeder;
 use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\IndigenousIdentitySeeder;
 use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 
@@ -109,6 +110,9 @@ test('users can create individual pages', function () {
     $this->assertAuthenticated();
 
     $user = Auth::user();
+    $user->update(['oriented_at' => now()]);
+
+    $user = $user->fresh();
     $individual = $user->individual;
 
     $individual->fill([
@@ -816,7 +820,10 @@ test('individual test isPublishable()', function ($expected, $data, $connections
     $this->seed(IndigenousIdentitySeeder::class);
     $this->seed(LivedExperienceSeeder::class);
 
-    $individual = Individual::factory()->create($data);
+    $individualUser = User::factory()->create();
+    $individual = $individualUser->individual;
+    $individual->update($data);
+    $individual = $individual->fresh();
 
     foreach ($connections as $connection) {
         if ($connection === 'livedExperienceConnections') {

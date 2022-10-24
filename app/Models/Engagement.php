@@ -275,6 +275,10 @@ class Engagement extends Model
             return false;
         }
 
+        if (! $this->project->projectable->checkStatus('approved')) {
+            return false;
+        }
+
         return true;
     }
 
