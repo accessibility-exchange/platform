@@ -22,43 +22,46 @@
             @method('put')
         @endif
 
-        <x-translatable-input name="title" :label="__('Title of meeting')" :short-label="__('meeting title')" :model="$meeting" />
+        <x-translatable-input name="title" :label="__('Title of meeting') . ' ' . __('(required)')" :short-label="__('meeting title')" :model="$meeting" />
 
         <hr class="divider--thick" />
 
         <h2>{{ __('Time and date') }}</h2>
 
         <div class="field">
-            <livewire:date-picker name="date" :label="__('Date')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
+            <livewire:date-picker name="date" :label="__('Date') . ' ' . __('(required)')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
         </div>
-        <div class="flex gap-6">
-            <div class="field @error('start_time') field--error @enderror">
-                <x-hearth-label for="start_time">{{ __('Start time') }}</x-hearth-label>
-                <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted />
-                <x-hearth-hint for="start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
-                <x-hearth-error for="start_time" />
+        <fieldset class="mt-12">
+            <legend>{{ __('Time') . ' ' . __('(required)') }}</legend>
+            <div class="flex gap-6">
+                <div class="field @error('start_time') field--error @enderror">
+                    <x-hearth-label for="start_time">{{ __('Start time') }}</x-hearth-label>
+                    <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted />
+                    <x-hearth-hint for="start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
+                    <x-hearth-error for="start_time" />
+                </div>
+                <div class="field @error('end_time') field--error @enderror">
+                    <x-hearth-label for="end_time">{{ __('End time') }}</x-hearth-label>
+                    <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted />
+                    <x-hearth-hint for="end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
+                    <x-hearth-error for="end_time" />
+                </div>
             </div>
-            <div class="field @error('end_time') field--error @enderror">
-                <x-hearth-label for="end_time">{{ __('End time') }}</x-hearth-label>
-                <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted />
-                <x-hearth-hint for="end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
-                <x-hearth-error for="end_time" />
+            <div class="field @error('timezone') field--error @enderror mt-6">
+                <x-hearth-label for="timezone">{{ __('Time zone') . ' ' . __('(required)') }}</x-hearth-label>
+                <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
+                <div class="field__hint" id="timezone-hint">
+                    <p>{{ __('*Yukon and parts of British Columbia observe Mountain Standard Time all year.') }}
+                    </p>
+                    <p>{{ __('**Saskatchewan observes Central Standard Time all year.') }}</p>
+                </div>
+                <x-hearth-error for="timezone" />
             </div>
-        </div>
-        <div class="field @error('timezone') field--error @enderror">
-            <x-hearth-label for="timezone">{{ __('Time zone') }}</x-hearth-label>
-            <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
-            <div class="field__hint" id="timezone-hint">
-                <p>{{ __('*Yukon and parts of British Columbia observe Mountain Standard Time all year.') }}
-                </p>
-                <p>{{ __('**Saskatchewan observes Central Standard Time all year.') }}</p>
-            </div>
-            <x-hearth-error for="timezone" />
-        </div>
+        </fieldset>
 
         <hr class="divider--thick" />
 
-        <h2>{{ __('Ways to attend') }}</h2>
+        <h2>{{ __('Ways to attend') . ' ' . __('(required)') }}</h2>
         <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $meeting->meeting_types ?? [])) }} }">
             <div class="field @error('meeting_types') field--error @enderror">
                 <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
@@ -66,7 +69,8 @@
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
                 <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('in_person')">
                     <div class="field @error('street_address') field--error @enderror">
-                        <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
+                        <x-hearth-label for="street_address">{{ __('Street address') . ' ' . __('(required)') }}
+                        </x-hearth-label>
                         <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $meeting->street_address)" required />
                         <x-hearth-error for="street_address" />
                     </div>
@@ -76,17 +80,20 @@
                         <x-hearth-error for="unit_suite_floor" />
                     </div>
                     <div class="field @error('locality') field--error @enderror">
-                        <x-hearth-label for="locality">{{ __('City or town') }}</x-hearth-label>
+                        <x-hearth-label for="locality">{{ __('City or town') . ' ' . __('(required)') }}
+                        </x-hearth-label>
                         <x-hearth-input class="w-full" name="locality" :value="old('locality', $meeting->locality)" required />
                         <x-hearth-error for="locality" />
                     </div>
                     <div class="field @error('region') field--error @enderror">
-                        <x-hearth-label for="region">{{ __('Province or territory') }}</x-hearth-label>
+                        <x-hearth-label for="region">{{ __('Province or territory') . ' ' . __('(required)') }}
+                        </x-hearth-label>
                         <x-hearth-select name="region" :options="$regions" :selected="old('region', $meeting->region)" required />
                         <x-hearth-error for="region" />
                     </div>
                     <div class="field @error('postal_code') field--error @enderror">
-                        <x-hearth-label for="postal_code">{{ __('Postal code') }}</x-hearth-label>
+                        <x-hearth-label for="postal_code">{{ __('Postal code') . ' ' . __('(required)') }}
+                        </x-hearth-label>
                         <x-hearth-input class="w-full" name="postal_code" :value="old('postal_code', $meeting->postal_code)" required />
                         <x-hearth-error for="postal_code" />
                     </div>
@@ -104,7 +111,8 @@
                 </x-hearth-label>
                 <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('web_conference')">
                     <div class="field @error('meeting_software') field--error @enderror">
-                        <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
+                        <x-hearth-label for="meeting_software">{{ __('Software') . ' ' . __('(required)') }}
+                        </x-hearth-label>
                         <x-hearth-hint for="meeting_software">
                             {{ __('E.g. Microsoft Teams, Webex, Zoom.') }}
                         </x-hearth-hint>
@@ -118,7 +126,7 @@
                         </x-hearth-label>
                     </div>
                     <div class="field @error('meeting_url') field-error @enderror">
-                        <x-hearth-label for="meeting_url" :value="__('Link to join')" />
+                        <x-hearth-label for="meeting_url" :value="__('Link to join') . ' ' . __('(required)')" />
                         <x-hearth-hint for="meeting_url">
                             {{ __('This will only be shared with participants who have accepted the invitation.') }}
                         </x-hearth-hint>
@@ -137,7 +145,7 @@
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
                 <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('phone')">
                     <div class="field @error('meeting_phone') field-error @enderror">
-                        <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
+                        <x-hearth-label for="meeting_phone" :value="__('Phone number to join') . ' ' . __('(required)')" />
                         <x-hearth-hint for="meeting_phone">
                             {{ __('This will only be shared with participants who have accepted the invitation.') }}
                         </x-hearth-hint>

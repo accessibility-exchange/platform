@@ -28,7 +28,7 @@ test('meetings can be created', function () {
     $otherUser = User::where('context', 'individual')->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
-    $engagement = $project->engagements->first();
+    $engagement = $project->allEngagements->first();
 
     expect($engagement->meeting_dates)->toBeNull();
     expect($engagement->display_meeting_types)->toBeEmpty();
@@ -69,7 +69,7 @@ test('meetings can be edited', function () {
     $otherUser = User::where('context', 'individual')->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
-    $engagement = $project->engagements->first();
+    $engagement = $project->allEngagements->first();
     $meeting = Meeting::factory()->create([
         'engagement_id' => $engagement->id,
         'title' => ['en' => 'Meeting 1'],
@@ -139,7 +139,7 @@ test('meetings can be deleted', function () {
     $otherUser = User::where('context', 'individual')->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
-    $engagement = $project->engagements->first();
+    $engagement = $project->allEngagements->first();
     $meeting = Meeting::factory()->create([
         'engagement_id' => $engagement->id,
         'title' => ['en' => 'Meeting 1'],

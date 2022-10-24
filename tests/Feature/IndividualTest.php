@@ -14,7 +14,6 @@ use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\Individual;
 use App\Models\LivedExperience;
-use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AgeBracketSeeder;
@@ -103,6 +102,8 @@ test('users can create individual pages', function () {
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
     ]);
 
     $this->assertAuthenticated();
@@ -886,18 +887,6 @@ test('individual relationships to projects can be derived from both projects and
 
     $individual = $individual->fresh();
 
-    $consultingProject = Project::factory()->create([
-        'individual_consultant_id' => $individual->id,
-    ]);
-
-    $consultingEngagement = Engagement::factory()->create([
-        'individual_consultant_id' => $individual->id,
-    ]);
-
-    expect($consultingEngagement->consultant->id)->toEqual($individual->id);
-
-    $consultingEngagementProject = $consultingEngagement->project;
-
     $connectingEngagement = Engagement::factory()->create([
         'individual_connector_id' => $individual->id,
     ]);
@@ -908,17 +897,15 @@ test('individual relationships to projects can be derived from both projects and
 
     $participatingEngagement = Engagement::factory()->create();
 
-    $participatingEngagement->participants()->attach($individual->id);
+    $participatingEngagement->participants()->attach($individual->id, ['status' => 'confirmed']);
 
     $participatingEngagement = $participatingEngagement->fresh();
 
     $participatingEngagementProject = $participatingEngagement->project;
 
     expect($individual->contractedProjects->pluck('id')->toArray())
-        ->toHaveCount(3)
-        ->toContain($connectingEngagementProject->id)
-        ->toContain($consultingEngagementProject->id)
-        ->toContain($consultingProject->id);
+        ->toHaveCount(1)
+        ->toContain($connectingEngagementProject->id);
 
     expect($individual->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)

@@ -59,7 +59,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     $individualUser = User::factory()->create();
     $individual = $individualUser->individual;
-    $individual->update(['roles' => ['consultant']]);
+    $individual->update(['roles' => ['consultant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $individual->publish();
 
     $individual = $individual->fresh();
@@ -131,7 +131,7 @@ test('registered organization can be invited to be an engagement’s community c
         ['role' => 'admin']
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
 

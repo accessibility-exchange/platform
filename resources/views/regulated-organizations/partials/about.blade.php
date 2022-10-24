@@ -5,7 +5,7 @@
 <h3>{{ __('Service areas') }}</h3>
 
 <ul class="tags" role="list">
-    @foreach ($regulatedOrganization->service_regions as $region)
+    @foreach ($regulatedOrganization->display_service_areas as $region)
         <li class="tag">{{ $region }}</li>
     @endforeach
 </ul>

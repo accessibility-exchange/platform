@@ -44,7 +44,7 @@ test('connector invitations can be cancelled', function () {
     );
 
     $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector']]);
+    $user->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $user->individual->publish();
     $individual = $user->individual->fresh();
 
@@ -80,7 +80,7 @@ test('individual connector can be removed', function () {
     );
 
     $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector']]);
+    $user->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $user->individual->publish();
     $individual = $user->individual->fresh();
 
@@ -108,7 +108,7 @@ test('organizational connector can be removed', function () {
         ['role' => 'admin']
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
 
     $engagement->organizationalConnector()->associate($organization);
 

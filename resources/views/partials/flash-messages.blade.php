@@ -1,7 +1,7 @@
 <x-live-region>
     @if (flash()->message)
         <x-hearth-alert :type="flash()->class">
-            <p>{{ flash()->message }}
+            {!! Str::markdown(flash()->message) !!}
         </x-hearth-alert>
     @endif
 
@@ -37,7 +37,7 @@
 
     @auth
         @unless(Auth::user()->hasVerifiedEmail())
-            <x-hearth-alert type="notice" x-show="true">
+            <x-hearth-alert type="notice" x-show="true" :dismissable="false">
                 <p>{{ __('hearth::auth.verification_intro') }}</p>
                 <form method="POST" action="{{ route('verification.send') }}">
                     @csrf

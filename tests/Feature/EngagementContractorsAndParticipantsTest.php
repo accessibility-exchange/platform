@@ -5,15 +5,20 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\OrganizationAddedToEngagement;
+use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantAccepted;
 use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\ParticipantJoined;
+use App\Notifications\ParticipantLeft;
 use Database\Seeders\DisabilityTypeSeeder;
+use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     $this->seed(DisabilityTypeSeeder::class);
 
-    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => '2022-11-21']);
+    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
@@ -24,11 +29,11 @@ beforeEach(function () {
     );
 
     $this->connectorUser = User::factory()->create();
-    $this->connectorUser->individual->update(['roles' => ['connector']]);
+    $this->connectorUser->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $this->connectorUser->individual->publish();
     $this->individualConnector = $this->connectorUser->individual->fresh();
 
-    $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
     $this->connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
@@ -36,8 +41,15 @@ beforeEach(function () {
     );
 
     $this->participantUser = User::factory()->create();
-    $this->participantUser->individual->update(['roles' => ['participant']]);
+    $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $this->participant = $this->participantUser->individual->fresh();
+
+    $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->participantOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->participantOrganization->users()->attach(
+        $this->participantOrganizationUser,
+        ['role' => 'admin']
+    );
 });
 
 test('individual user can accept invitation to an engagement as a connector', function () {
@@ -169,9 +181,7 @@ test('project administrator cannot invite participants', function () {
 });
 
 test('participants cannot be invited if participant list is full', function () {
-    Notification::fake();
-
-    $this->engagement->participants()->save($this->participant);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id, 'ideal_participants' => 1]);
     $this->engagement = $this->engagement->fresh();
 
@@ -259,7 +269,7 @@ test('individual user cannot be invited if they have an outstanding invitation',
 });
 
 test('individual user cannot be invited if they are already a participant', function () {
-    $this->engagement->participants()->save($this->participant);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
@@ -548,4 +558,271 @@ test('regulated organization users and community connectors can access declined 
     $response->assertOk();
 
     $response->assertSee('1 person declined their invitation');
+});
+
+test('individual without participant role cannot sign up to an engagement', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->connectorUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement unless the recruitment method is open call', function () {
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement if the signup by date has passed', function () {
+    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual participant cannot sign up to an engagement if participant list is full', function () {
+    $existingParticipant = User::factory()->create()->individual;
+    $this->engagement->update(['recruitment' => 'open-call', 'ideal_participants' => 1]);
+    $this->engagement->participants()->save($existingParticipant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual can sign up to open call engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->project, function (ParticipantJoined $notification, $channels) {
+            $this->assertStringContainsString('1 new person signed up', $notification->toMail($this->project)->render());
+            $this->assertStringContainsString('1 new person signed up', $notification->toVonage($this->project)->content);
+            expect($notification->toArray($this->project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->confirmedParticipants->pluck('id'))->toContain($this->participant->id);
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->get(localized_route('engagements.confirm-access-needs', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.show', $this->engagement))->get(localized_route('engagements.confirm-access-needs', $this->engagement));
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.confirm-access-needs', $this->engagement))->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => 1]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->participants->first()->pivot->share_access_needs)->toBeTruthy();
+});
+
+test('regulated users can access notifications of participants signing up for their engagements', function () {
+    $this->project->notify(new ParticipantJoined($this->engagement));
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 new person signed up');
+});
+
+test('individual cannot leave an open call engagement if the signup by date has passed', function () {
+    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('please contact us');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('individual can leave an open call engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('Are you sure you want to leave this engagement?');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->project, function (ParticipantLeft $notification, $channels) {
+            $this->assertStringContainsString('1 participant left', $notification->toMail($this->project)->render());
+            $this->assertStringContainsString('1 participant left', $notification->toVonage($this->project)->content);
+            expect($notification->toArray($this->project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->confirmedParticipants)->toHaveCount(0);
+});
+
+test('regulated users can access notifications of participants leaving their engagements', function () {
+    $this->project->notify(new ParticipantLeft($this->engagement));
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('1 participant left');
+});
+
+test('individual cannot leave an engagement which uses a community connector', function () {
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
+    $response->assertSee('please contact the Community Connector');
+
+    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('organization cannot be added to individual engagement', function () {
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertForbidden();
+});
+
+test('organization without participant role cannot be added to organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->connectorOrganization->id,
+    ]);
+    $response->assertSessionHasErrors('organization_id');
+});
+
+test('organization cannot be added to organizational engagement with attached organization', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->organization()->associate($this->participantOrganization->id);
+    $this->engagement->save();
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertForbidden();
+});
+
+test('organization can be added to organizational engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+        'organization_id' => $this->participantOrganization->id,
+    ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->participantOrganization, function (OrganizationAddedToEngagement $notification, $channels) {
+            $this->assertStringContainsString('Your organization has been added', $notification->toMail($this->participantOrganization)->render());
+            $this->assertStringContainsString('Your organization has been added', $notification->toVonage($this->participantOrganization)->content);
+            expect($notification->toArray($this->participantOrganization)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->organization->id)->toEqual($this->participantOrganization->id);
+});
+
+test('organization can access notification of being added to organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $this->participantOrganization->notify(new OrganizationAddedToEngagement($this->engagement));
+
+    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('Your organization has been added');
+});
+
+test('organization cannot be removed from organizational engagement without attached organization', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
+    $response->assertForbidden();
+});
+
+test('organization can be removed from organizational engagement', function () {
+    Notification::fake();
+
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->organization()->associate($this->participantOrganization->id);
+    $this->engagement->save();
+    $this->engagement = $this->engagement->fresh();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+
+    Notification::assertSentTo(
+        $this->participantOrganization, function (OrganizationRemovedFromEngagement $notification, $channels) {
+            $this->assertStringContainsString('Your organization has been removed', $notification->toMail($this->participantOrganization)->render());
+            $this->assertStringContainsString('Your organization has been removed', $notification->toVonage($this->participantOrganization)->content);
+            expect($notification->toArray($this->participantOrganization)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    $this->engagement = $this->engagement->fresh();
+    expect($this->engagement->organization)->toBeNull();
+});
+
+test('organization can access notification of being removed from organizational engagement', function () {
+    $this->engagement->update(['who' => 'organization']);
+    $this->engagement = $this->engagement->fresh();
+
+    $this->participantOrganization->notify(new OrganizationRemovedFromEngagement($this->engagement));
+
+    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response->assertOk();
+
+    $response->assertSee('Your organization has been removed from');
 });

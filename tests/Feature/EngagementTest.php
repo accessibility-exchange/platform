@@ -100,8 +100,10 @@ test('users with regulated organization admin role can create engagements', func
         'languages' => ['en', 'fr', 'ase', 'fcs'],
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
+    $communityOrganizationEngagement = Engagement::where('name->en', $data['name']['en'])->first();
+
     $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', Engagement::where('name->en', $data['name'])->first()));
+    $response->assertRedirect(localized_route('engagements.show-criteria-selection', $communityOrganizationEngagement));
 });
 
 test('users without regulated organization admin role cannot create engagements', function () {
@@ -411,19 +413,6 @@ test('users without regulated organization admin role cannot manage engagements'
 
     $response = $this->actingAs($other_user)->get(localized_route('engagements.manage', $engagement));
     $response->assertForbidden();
-});
-
-test('engagement participants can participate in engagements', function () {
-    $user = User::factory()->create();
-    $participant = $user->individual;
-    $engagement = Engagement::factory()->create();
-    $engagement->participants()->attach($participant->id, ['status' => 'confirmed']);
-
-    $this->assertTrue($engagement->participants->isNotEmpty());
-    $this->assertTrue($engagement->confirmedParticipants->isNotEmpty());
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.participate', $engagement));
-    $response->assertOk();
 });
 
 test('engagements can reflect parent project’s estimate and agreement status', function () {

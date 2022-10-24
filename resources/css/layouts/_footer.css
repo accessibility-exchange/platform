@@ -1,74 +1,74 @@
-footer {
+[role="contentinfo"] {
     background: var(--footer-background);
     color: var(--footer-color);
     margin-block-start: auto;
 }
 
-footer h2,
-footer h3 {
+[role="contentinfo"] h2,
+[role="contentinfo"] h3 {
     color: var(--footer-heading-color);
 }
 
-footer h2 {
+[role="contentinfo"] h2 {
     font-size: var(--text-lg);
     font-size: var(--text-fluid-lg);
 }
 
-footer h3 {
+[role="contentinfo"] h3 {
     font-size: var(--text-base);
     font-weight: var(--font-semibold);
 }
 
-footer a,
-footer .brand {
+[role="contentinfo"] a,
+[role="contentinfo"] .brand {
     color: inherit;
     font-weight: var(--font-semibold);
 }
 
-footer .brand {
+[role="contentinfo"] .brand {
     margin-block: 0;
 }
 
-footer .center {
+[role="contentinfo"] .center {
     padding-block: var(--space-16);
     padding-inline: var(--space-4);
 }
 
-footer nav .stack {
+[role="contentinfo"] nav .stack {
     --space: var(--space-1);
 }
 
-footer .grow\:2 {
+[role="contentinfo"] .grow\:2 {
     flex-grow: 2;
 }
 
-footer .switcher {
+[role="contentinfo"] .switcher {
     --gap: var(--space-6);
 }
 
-footer > .switcher > .switcher {
+[role="contentinfo"] > .switcher > .switcher {
     --threshold: calc(var(--max-w-prose) / 2);
 }
 
 @media (min-width: 48rem) {
-    footer h2 {
+    [role="contentinfo"] h2 {
         font-size: var(--text-xl);
         font-size: var(--text-fluid-lg);
     }
 
-    footer h3 {
+    [role="contentinfo"] h3 {
         font-size: var(--text-base);
     }
 }
 
 @media (min-width: 75rem) {
-    footer h2 {
+    [role="contentinfo"] h2 {
         font-size: var(--text-2xl);
         font-size: var(--text-fluid-lg);
         font-weight: var(--font-normal);
     }
 
-    footer h3 {
+    [role="contentinfo"] h3 {
         font-size: var(--text-base);
     }
 }

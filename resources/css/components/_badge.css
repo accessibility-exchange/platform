@@ -1,24 +1,54 @@
 .badge {
+    align-items: center;
     background: var(--badge-background);
     border: var(--border) solid var(--badge-border);
     border-radius: var(--radius-xl);
     color: var(--badge-color);
+    display: inline-flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
     font-weight: var(--font-normal);
-    padding: var(--space-2);
-}
-
-.badge--status {
-    align-items: center;
-    border: 0;
-    display: inline-flex;
+    min-height: calc(var(--space-10) - var(--space-1));
+    padding-inline: var(--space-2);
 }
 
 .badge--stop {
-    @apply bg-red-1;
+    --badge-background: var(--color-red-1);
+    --badge-border: var(--badge-background);
+
+    color: var(--badge-color-alt);
 }
 
 .badge--go {
-    @apply bg-green-1;
+    --badge-background: var(--color-green-1);
+
+    color: var(--badge-color-alt);
+}
+
+.badge--yellow {
+    --badge-background: var(--color-yellow-2);
+    --badge-border: var(--badge-background);
+
+    color: var(--badge-color-alt);
+}
+
+.badge--turquoise {
+    --badge-background: var(--color-turquoise-1);
+    --badge-border: var(--badge-background);
+
+    color: var(--badge-color-alt);
+}
+
+.badge--lavender {
+    --badge-background: var(--color-lavender-2);
+    --badge-border: var(--badge-background);
+
+    color: var(--badge-color-alt);
+}
+
+.badge--magenta {
+    --badge-background: var(--color-magenta-2);
+    --badge-border: var(--badge-background);
+
+    color: var(--badge-color-alt);
 }

@@ -68,6 +68,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'preferred_notification_method',
         'notification_settings',
         'extra_attributes',
+        'accepted_terms_of_service_at',
+        'accepted_privacy_policy_at',
     ];
 
     protected $hidden = [
@@ -79,6 +81,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'accepted_terms_of_service_at' => 'datetime',
+        'accepted_privacy_policy_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',

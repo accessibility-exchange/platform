@@ -5,7 +5,6 @@ dataset('projectIsPublishable', function () {
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
         'preferred_contact_method' => 'required',
-        'team_languages' => ['en'],
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -74,10 +73,6 @@ dataset('projectIsPublishable', function () {
         'not publishable when missing outcome_analysis' => [
             false,
             array_replace_recursive($baseModel, ['outcome_analysis' => null]),
-        ],
-        'not publishable when missing team_languages' => [
-            false,
-            array_replace_recursive($baseModel, ['team_languages' => null]),
         ],
         'not publishable when missing team_trainings.*.date' => [
             false,

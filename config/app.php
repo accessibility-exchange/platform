@@ -258,5 +258,6 @@ return [
     */
     'features' => [
         'blocking' => false,
+        'lived-experience-notifications' => false,
     ],
 ];

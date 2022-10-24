@@ -357,10 +357,15 @@ class TestDataSeeder extends Seeder
                 $user->individual->ethnoracialIdentityConnections()->attach($item->id);
             }
             foreach ($constituentLanguages as $code) {
-                $language = Language::firstOrCreate([
-                    'code' => $code,
-                    'name' => ['en' => get_language_exonym($code, 'en'), 'fr' => get_language_exonym($code, 'fr')],
-                ]);
+                $language = Language::firstOrCreate(
+                    ['code' => $code],
+                    [
+                        'name' => [
+                            'en' => get_language_exonym($code, 'en'),
+                            'fr' => get_language_exonym($code, 'fr'),
+                        ],
+                    ],
+                );
                 $user->individual->languageConnections()->attach($language->id);
             }
             $user->individual->update($page);
@@ -516,7 +521,6 @@ class TestDataSeeder extends Seeder
                 'public_outcomes' => true,
                 'team_size' => ['en' => '5'],
                 'team_has_disability_or_deaf_lived_experience' => false,
-                'team_languages' => ['en', 'fr', 'zh', 'it', 'tl'],
                 'contact_person_name' => 'Mario Miller',
                 'contact_person_email' => 'mm@accessibilityexchange.ca',
                 'preferred_contact_method' => 'email',
@@ -542,7 +546,6 @@ class TestDataSeeder extends Seeder
                 'public_outcomes' => true,
                 'team_size' => ['en' => '3'],
                 'team_has_disability_or_deaf_lived_experience' => false,
-                'team_languages' => ['en', 'fr', 'es'],
                 'contact_person_name' => 'Cecilia Leyva',
                 'contact_person_email' => 'cl@accessibilityexchange.ca',
                 'preferred_contact_method' => 'email',
@@ -565,7 +568,6 @@ class TestDataSeeder extends Seeder
                 'public_outcomes' => true,
                 'team_size' => ['en' => '10'],
                 'team_has_disability_or_deaf_lived_experience' => true,
-                'team_languages' => ['en', 'fr', 'ase'],
                 'contact_person_name' => 'Ian Thompson',
                 'contact_person_email' => 'it@accessibilityexchange.ca',
                 'preferred_contact_method' => 'email',
@@ -611,6 +613,14 @@ class TestDataSeeder extends Seeder
                 'signup_by_date' => '2022-10-02',
                 'published_at' => now(),
                 'individual_connector_id' => $connectorUser->individual->id,
+            ],
+            [
+                'name' => ['en' => 'Expert Analysis'],
+                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'who' => 'organization',
+                'paid' => true,
+                'description' => ['en' => 'This is what we are doing'],
+                'published_at' => now(),
             ],
         ];
 

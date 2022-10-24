@@ -14,7 +14,6 @@ use App\Models\Impact;
 use App\Models\IndigenousIdentity;
 use App\Models\LivedExperience;
 use App\Models\Organization;
-use App\Models\Project;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\AreaTypeSeeder;
@@ -357,6 +356,16 @@ test('users with admin role can edit organization contact information', function
     $response->assertOk();
 
     $name = faker()->name;
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'preferred_contact_method' => 'email',
+        'contact_person_vrs' => true,
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
@@ -1034,7 +1043,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now()]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();
@@ -1058,18 +1067,6 @@ test('organizational relationships to projects can be derived from both projects
 
     $organization = $organization->fresh();
 
-    $consultingProject = Project::factory()->create([
-        'organizational_consultant_id' => $organization->id,
-    ]);
-
-    $consultingEngagement = Engagement::factory()->create([
-        'organizational_consultant_id' => $organization->id,
-    ]);
-
-    expect($consultingEngagement->organizationalConsultant->id)->toEqual($organization->id);
-
-    $consultingEngagementProject = $consultingEngagement->project;
-
     $connectingEngagement = Engagement::factory()->create([
         'organizational_connector_id' => $organization->id,
     ]);
@@ -1080,23 +1077,23 @@ test('organizational relationships to projects can be derived from both projects
 
     $participatingEngagement = Engagement::factory()->create();
 
-    $participatingEngagement->organizationalParticipants()->attach($organization->id, ['status' => 'confirmed']);
-
+    $participatingEngagement->organization()->associate($organization);
+    $participatingEngagement->save();
     $participatingEngagement = $participatingEngagement->fresh();
-
-    expect($participatingEngagement->confirmedOrganizationalParticipants->pluck('id'))->toContain($organization->id);
 
     $participatingEngagementProject = $participatingEngagement->project;
 
     expect($organization->contractedProjects->pluck('id')->toArray())
-        ->toHaveCount(3)
-        ->toContain($connectingEngagementProject->id)
-        ->toContain($consultingEngagementProject->id)
-        ->toContain($consultingProject->id);
+        ->toHaveCount(1)
+        ->toContain($connectingEngagementProject->id);
 
     expect($organization->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
+
+    expect($participatingEngagementProject->organizationalParticipants->pluck('id')->toArray())
+        ->toHaveCount(1)
+        ->toContain($organization->id);
 });
 
 test('organizations have slugs in both languages even if only one is provided', function () {

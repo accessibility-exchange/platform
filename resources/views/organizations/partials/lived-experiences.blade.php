@@ -5,4 +5,5 @@
     <x-hearth-hint for="lived_experiences">{{ __('Please check all that apply.') }}</x-hearth-hint>
     <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old('lived_experiences', $organization->livedExperiences->pluck('id')->toArray() ?? [])" hinted="lived_experiences-hint"
         required x-model.number="livedExperiences" />
+    <x-hearth-error for="lived_experiences" />
 </fieldset>

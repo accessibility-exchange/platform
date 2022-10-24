@@ -1,0 +1,14 @@
+.manage-section {
+    @apply space-y-6 rounded px-6 py-8;
+
+    background: var(--box-background);
+    box-shadow: var(--manage-section-shadow);
+}
+
+.manage-section:has(footer) {
+    padding-block-end: 0;
+}
+
+.manage-section footer {
+    padding-block-end: var(--space-6);
+}

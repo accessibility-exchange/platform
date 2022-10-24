@@ -1,13 +1,21 @@
 <?php
 
+use App\Models\Criterion;
+use App\Models\DisabilityType;
+use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\MatchingStrategy;
+use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\SectorSeeder;
 use function Pest\Faker\faker;
 
 test('users with organization or regulated organization admin role can create projects', function () {
@@ -148,7 +156,6 @@ test('projects can be published and unpublished', function () {
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
         'preferred_contact_method' => 'required',
-        'team_languages' => ['en'],
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -241,7 +248,7 @@ test('users can view projects', function () {
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.index'));
+    $response = $this->actingAs($user)->get(localized_route('projects.all-projects'));
     $response->assertOk();
 
     $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
@@ -269,32 +276,13 @@ test('notifications can be routed for projects', function () {
     expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
-test('individuals can express interest in projects', function () {
-    $user = User::factory()->create();
-    $individual = Individual::factory()->create([
-        'user_id' => $user->id,
-    ]);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
-    $project = Project::factory()->create([
-        'projectable_id' => $regulatedOrganization->id,
-    ]);
-
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.express-interest', $individual), ['project_id' => $project->id]);
-    $response->assertSee('You have expressed your interest in this project.');
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->followingRedirects()->from(localized_route('projects.show', $project))->post(localized_route('individuals.remove-interest', $individual), ['project_id' => $project->id]);
-    $response->assertSee('You have removed your expression of interest in this project.');
-    $response->assertOk();
-});
-
 test('guests cannot view projects', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->get(localized_route('projects.index'));
+    $response = $this->get(localized_route('projects.all-projects'));
     $response->assertRedirect(localized_route('login'));
 
     $response = $this->get(localized_route('projects.show', $project));
@@ -350,7 +338,21 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
-        'team_languages' => ['en'],
+        'team_trainings' => [
+            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
+        ],
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_vrs' => true,
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
         ],
@@ -730,4 +732,315 @@ test('registered users can access my projects page', function () {
 test('guests can not access my projects page', function () {
     $response = $this->get(localized_route('projects.my-projects'));
     $response->assertRedirect(localized_route('login'));
+});
+
+test('test project statuses scope', function () {
+    $upcomingProject = Project::factory()->create([
+        'start_date' => Carbon::now()->addDays(5),
+    ]);
+
+    $inProgressProject = Project::factory()->create([
+        'start_date' => Carbon::now()->subDays(5),
+        'end_date' => Carbon::now()->addDays(5),
+    ]);
+
+    $completedProject = Project::factory()->create([
+        'end_date' => Carbon::now()->subDays(5),
+    ]);
+
+    $statusQuery = Project::statuses(['upcoming'])->get();
+
+    expect($statusQuery->contains($upcomingProject))->toBeTrue();
+    expect($statusQuery->contains($inProgressProject))->toBeFalse();
+    expect($statusQuery->contains($completedProject))->toBeFalse();
+
+    $statusQuery = Project::statuses(['inProgress'])->get();
+
+    expect($statusQuery->contains($inProgressProject))->toBeTrue();
+    expect($statusQuery->contains($upcomingProject))->toBeFalse();
+    expect($statusQuery->contains($completedProject))->toBeFalse();
+
+    $statusQuery = Project::statuses(['completed'])->get();
+
+    expect($statusQuery->contains($completedProject))->toBeTrue();
+    expect($statusQuery->contains($inProgressProject))->toBeFalse();
+    expect($statusQuery->contains($upcomingProject))->toBeFalse();
+
+    $statusQuery = Project::statuses(['upcoming', 'inProgress', 'completed'])->get();
+
+    expect($statusQuery->contains($upcomingProject))->toBeTrue();
+    expect($statusQuery->contains($inProgressProject))->toBeTrue();
+    expect($statusQuery->contains($completedProject))->toBeTrue();
+});
+
+test('test project seekings scope', function () {
+    $projectSeekingParticipants = Project::factory()->create();
+
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call', 'project_id' => $projectSeekingParticipants->id]);
+
+    $projectSeekingConnectors = Project::factory()->create();
+
+    $connectorEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'project_id' => $projectSeekingConnectors->id, 'extra_attributes' => ['seeking_community_connector' => true]]);
+
+    $projectSeekingOrganizations = Project::factory()->create();
+
+    $organizationEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
+
+    $seekingQuery = Project::seekings(['participants'])->get();
+
+    expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
+    expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
+    expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
+
+    $seekingQuery = Project::seekings(['connectors'])->get();
+
+    expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
+    expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
+    expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
+
+    $seekingQuery = Project::seekings(['organizations'])->get();
+
+    expect($seekingQuery->contains($projectSeekingOrganizations))->toBeTrue();
+    expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
+    expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
+
+    $seekingQuery = Project::seekings(['participants', 'connectors', 'organizations'])->get();
+
+    expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
+    expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
+    expect($seekingQuery->contains($projectSeekingOrganizations))->toBeTrue();
+});
+
+test('test project initiators scope', function () {
+    $communityOrganizationProject = Project::factory()
+        ->create(['projectable_type' => 'App\Models\Organization']);
+
+    $regulatedOrganizationProject = Project::factory()
+        ->create(['projectable_type' => 'App\Models\RegulatedOrganization']);
+
+    $initiatorQuery = Project::initiators(['organization'])->get();
+
+    expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
+    expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeFalse();
+
+    $initiatorQuery = Project::initiators(['regulatedOrganization'])->get();
+
+    expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
+    expect($initiatorQuery->contains($communityOrganizationProject))->toBeFalse();
+
+    $initiatorQuery = Project::initiators(['regulatedOrganization', 'organization'])->get();
+
+    expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
+    expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
+});
+
+test('test project seekingGroups scope', function () {
+    $this->seed(DisabilityTypeSeeder::class);
+
+    $disabilityTypeDeaf = DisabilityType::where('name->en', 'Deaf')->first();
+    $projectSeekingDeafExperience = Project::factory()->create();
+    $engagementSeekingDeafExperience = Engagement::factory()->create(['project_id' => $projectSeekingDeafExperience->id]);
+    $matchingStrategySeekingDeafExperience = MatchingStrategy::factory()->create([
+        'matchable_type' => 'App\Models\Engagement',
+        'matchable_id' => $engagementSeekingDeafExperience->id,
+    ]);
+    $deafCriterion = Criterion::factory()->create([
+        'matching_strategy_id' => $matchingStrategySeekingDeafExperience->id,
+        'criteriable_type' => 'App\Models\DisabilityType',
+        'criteriable_id' => $disabilityTypeDeaf->id,
+    ]);
+
+    $disabilityTypeCognitive = DisabilityType::where('name->en', 'Cognitive disabilities')->first();
+    $projectSeekingCognitiveDisabilityExperience = Project::factory()->create();
+    $engagementSeekingCognitiveDisabilityExperience = Engagement::factory()->create(['project_id' => $projectSeekingCognitiveDisabilityExperience->id]);
+    $matchingStrategySeekingCognitiveDisabilityExperience = MatchingStrategy::factory()->create([
+        'matchable_type' => 'App\Models\Engagement',
+        'matchable_id' => $engagementSeekingCognitiveDisabilityExperience->id,
+    ]);
+    $cognitiveDisabilityCriterion = Criterion::factory()->create([
+        'matching_strategy_id' => $matchingStrategySeekingCognitiveDisabilityExperience->id,
+        'criteriable_type' => 'App\Models\DisabilityType',
+        'criteriable_id' => $disabilityTypeCognitive->id,
+    ]);
+
+    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeDeaf->id])->get();
+
+    expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeTrue();
+    expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeFalse();
+
+    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeCognitive->id])->get();
+    expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeTrue();
+    expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeFalse();
+});
+
+test('test project meetingTypes scope', function () {
+    $inpersonInterviewProject = Project::factory()->create();
+    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => 'interviews'], 'meeting_types' => 'in_person']);
+
+    $virtualWorkshopProject = Project::factory()->create();
+    $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => 'workshop'], 'meeting_types' => null]);
+    $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => 'web_conference']);
+
+    $phoneFocusGroupProject = Project::factory()->create();
+    $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => 'focus-group'], 'meeting_types' => null]);
+    $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => 'phone']);
+
+    $meetingTypeQuery = Project::meetingTypes(['in_person'])->get();
+
+    expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
+    expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
+
+    $meetingTypeQuery = Project::meetingTypes(['web_conference'])->get();
+
+    expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();
+    expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
+    expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
+
+    $meetingTypeQuery = Project::meetingTypes(['phone'])->get();
+
+    expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
+    expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
+
+    $meetingTypeQuery = Project::meetingTypes(['in_person', 'web_conference', 'phone'])->get();
+
+    expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();
+    expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeTrue();
+});
+
+test('test project compensations scope', function () {
+    $paidProject = Project::factory()->create();
+    $paidEngagement = Engagement::factory()->create(['project_id' => $paidProject->id, 'paid' => true]);
+
+    $volunteerProject = Project::factory()->create();
+    $volunteerEngagement = Engagement::factory()->create(['project_id' => $volunteerProject->id, 'paid' => false]);
+
+    $compensationQuery = Project::compensations(['paid'])->get();
+
+    expect($compensationQuery->contains($paidProject))->toBeTrue();
+    expect($compensationQuery->contains($volunteerProject))->toBeFalse();
+
+    $compensationQuery = Project::compensations(['volunteer'])->get();
+
+    expect($compensationQuery->contains($volunteerProject))->toBeTrue();
+    expect($compensationQuery->contains($paidProject))->toBeFalse();
+
+    $compensationQuery = Project::compensations(['volunteer', 'paid'])->get();
+
+    expect($compensationQuery->contains('id', $volunteerProject->id))->toBeTrue();
+    expect($compensationQuery->contains('id', $paidProject->id))->toBeTrue();
+});
+
+test('test project sectors scope', function () {
+    $this->seed(SectorSeeder::class);
+    $transportationSector = Sector::where('name->en', 'Transportation')->first();
+    $transportationRegulatedOrganization = RegulatedOrganization::factory()->create();
+    $transportationRegulatedOrganization->sectors()->save($transportationSector);
+    $transportationProject = Project::factory()->create(['projectable_id' => $transportationRegulatedOrganization->id]);
+
+    $telecommunicationSector = Sector::where('name->en', 'Telecommunications')->first();
+    $telecommunicationRegulatedOrganization = RegulatedOrganization::factory()->create();
+    $telecommunicationRegulatedOrganization->sectors()->save($telecommunicationSector);
+    $telecommunicationProject = Project::factory()->create(['projectable_id' => $telecommunicationRegulatedOrganization->id]);
+
+    $sectorQuery = Project::sectors([$transportationSector->id])->get();
+
+    expect($sectorQuery->contains($transportationProject))->toBeTrue();
+    expect($sectorQuery->contains($telecommunicationProject))->toBeFalse();
+
+    $sectorQuery = Project::sectors([$telecommunicationSector->id])->get();
+
+    expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
+    expect($sectorQuery->contains($transportationProject))->toBeFalse();
+
+    $sectorQuery = Project::sectors([$transportationSector->id, $telecommunicationSector->id])->get();
+
+    expect($sectorQuery->contains($transportationProject))->toBeTrue();
+    expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
+});
+
+test('test project areas of impact scope', function () {
+    $this->seed(ImpactSeeder::class);
+    $employmentImpact = Impact::where('name->en', 'Employment')->first();
+    $employmentImpactProject = Project::factory()->create();
+    $employmentImpactProject->impacts()->attach($employmentImpact->id);
+
+    $communicationImpact = Impact::where('name->en', 'Communication, other than information and communication technologies')->first();
+    $communicationImpactProject = Project::factory()->create();
+    $communicationImpactProject->impacts()->attach($communicationImpact->id);
+
+    $impactQuery = Project::areasOfImpact([$employmentImpact->id])->get();
+
+    expect($impactQuery->contains($employmentImpactProject))->toBeTrue();
+    expect($impactQuery->contains($communicationImpactProject))->toBeFalse();
+
+    $impactQuery = Project::areasOfImpact([$communicationImpact->id])->get();
+
+    expect($impactQuery->contains($communicationImpactProject))->toBeTrue();
+    expect($impactQuery->contains($employmentImpactProject))->toBeFalse();
+
+    $impactQuery = Project::areasOfImpact([$employmentImpact->id, $communicationImpact->id])->get();
+
+    expect($impactQuery->contains($employmentImpactProject))->toBeTrue();
+    expect($impactQuery->contains($communicationImpactProject))->toBeTrue();
+});
+
+test('test project recruitment methods scope', function () {
+    $openCallProject = Project::factory()->create();
+    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => 'open-call']);
+
+    $connectorProject = Project::factory()->create();
+    $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => 'connector']);
+
+    $recruitmentMethodQuery = Project::recruitmentMethods(['open-call'])->get();
+
+    expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($connectorProject))->toBeFalse();
+
+    $recruitmentMethodQuery = Project::recruitmentMethods(['connector'])->get();
+
+    expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($openCallProject))->toBeFalse();
+
+    $recruitmentMethodQuery = Project::recruitmentMethods(['connector', 'open-call'])->get();
+
+    expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();
+});
+
+test('test locations scope', function () {
+    $regionSpecificProject = Project::factory()->create();
+    $regionSpecificEngagement = Engagement::factory()->create(['project_id' => $regionSpecificProject->id]);
+    $regionSpecificMatchingStrategy = $regionSpecificEngagement->matchingStrategy;
+    $regionSpecificMatchingStrategy->update([
+        'regions' => ['AB'],
+    ]);
+
+    $locationSpecificProject = Project::factory()->create();
+    $locationSpecificEngagement = Engagement::factory()->create(['project_id' => $locationSpecificProject->id]);
+    $locationSpecificMatchingStrategy = $locationSpecificEngagement->matchingStrategy;
+
+    $locationSpecificMatchingStrategy->update([
+        'locations' => [
+            ['region' => 'AB', 'locality' => 'Edmonton'],
+            ['region' => 'ON', 'locality' => 'Toronto'],
+        ],
+    ]);
+
+    $locationQuery = Project::locations(['AB'])->get();
+
+    expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
+    expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
+
+    $locationQuery = Project::locations(['ON'])->get();
+
+    expect($locationQuery->contains($regionSpecificProject))->toBeFalse();
+    expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
+
+    $locationQuery = Project::locations(['AB', 'ON'])->get();
+
+    expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
+    expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 });

@@ -62,6 +62,7 @@ class Engagement extends Model
         'organizational_connector_id',
         'individual_consultant_id',
         'organizational_consultant_id',
+        'organization_id',
         'extra_attributes',
         'window_start_time',
         'window_end_time',
@@ -174,7 +175,7 @@ class Engagement extends Model
         return Attribute::make(
             get: function () {
                 if ($this->format === 'interviews') {
-                    return Arr::map($this->meeting_types, fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
+                    return Arr::map($this->meeting_types ?? [], fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
                 } elseif ($this->meetings->count()) {
                     return Arr::map($this->meetings->pluck('meeting_types')->flatten()->unique()->toArray(), fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
                 } else {
@@ -253,7 +254,15 @@ class Engagement extends Model
             'accepted_formats' => [
                 Rule::requiredIf($this->format === 'interviews'),
             ],
-            'signup_by_date' => 'required',
+            'ideal_participants' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
+            'minimum_participants' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
+            'signup_by_date' => [
+                Rule::requiredIf($this->who === 'individuals'),
+            ],
         ];
 
         try {
@@ -280,7 +289,7 @@ class Engagement extends Model
             return false;
         }
 
-        if (! $this->hasEstimateAndAgreement()) {
+        if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
             return false;
         }
 
@@ -306,22 +315,17 @@ class Engagement extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Individual::class)->withPivot('status');
+        return $this->belongsToMany(Individual::class)->withPivot('status', 'share_access_needs');
     }
 
     public function confirmedParticipants(): BelongsToMany
     {
-        return $this->belongsToMany(Individual::class)->wherePivot('status', 'confirmed');
+        return $this->belongsToMany(Individual::class)->withPivot('share_access_needs')->wherePivot('status', 'confirmed');
     }
 
-    public function organizationalParticipants(): BelongsToMany
+    public function organization(): BelongsTo
     {
-        return $this->belongsToMany(Organization::class)->withPivot('status');
-    }
-
-    public function confirmedOrganizationalParticipants(): BelongsToMany
-    {
-        return $this->belongsToMany(Organization::class)->wherePivot('status', 'confirmed');
+        return $this->belongsTo(Organization::class);
     }
 
     public function consultant(): BelongsTo

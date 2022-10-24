@@ -11,12 +11,13 @@
     align-items: center;
     background-color: transparent;
     border: 0;
+    box-shadow: none;
     color: var(--expander-color);
     display: flex;
     font-size: inherit;
     font-weight: var(--font-semibold);
-    height: var(--space-16);
     justify-content: space-between;
+    min-height: var(--space-16);
     padding-block: 0;
     padding-inline: var(--space-2);
     position: relative;
@@ -60,12 +61,4 @@
 
 .expander .title button svg {
     width: 1.5em;
-}
-
-.expander .title button .indicator {
-    transition: transform 0.2s ease-in-out;
-}
-
-.expander .title button[aria-expanded="true"] .indicator {
-    transform: rotate(-180deg);
 }

@@ -23,6 +23,7 @@ module.exports = {
             "blue-6": "#3842aa",
             "blue-5": "#7077CB",
             "blue-1": "#F5F7FE",
+            "green-7": "#097571",
             "green-5": "#00aea9",
             "green-2": "#92e5e3",
             "green-1": "#bfe2e1",
@@ -38,6 +39,7 @@ module.exports = {
             "yellow-1": "#ebedbb",
             "red-9": "#691616",
             "red-8": "#922020",
+            "red-7": "#B34D4D",
             "red-6": "#CD2C2D",
             "red-2": "#f6a7a7",
             "red-1": "#f5cdcd"
@@ -85,7 +87,7 @@ module.exports = {
         borderRadius: {
             none: "0",
             xs: "0.0625rem",
-            sm: "0.125rem",
+            sm: "0.1875rem",
             DEFAULT: "0.25rem",
             md: "0.375rem",
             lg: "0.5rem",

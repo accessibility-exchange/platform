@@ -6,7 +6,7 @@
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             @else
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects') }}</a></li>
-                <li><a href="{{ localized_route('projects.index') }}">{{ __('Browse all projects') }}</a></li>
+                <li><a href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></li>
             @endcan
         </ol>
         <h1 id="project">{{ $project->name }}</h1>
@@ -22,23 +22,6 @@
             <p>{!! $project->timeframe() !!}</p>
             <div class="repel">
                 <span class="badge">{{ $project->status }}</span>
-                @if (Auth::user()->individual)
-                    @if (!Auth::user()->individual->projectsOfInterest->contains($project->id))
-                        <form action="{{ localized_route('individuals.express-interest', Auth::user()->individual) }}"
-                            method="post">
-                            @csrf
-                            <x-hearth-input name="project_id" type="hidden" :value="$project->id" />
-                            <button>{{ __('I’m interested in participating') }}</button>
-                        </form>
-                    @else
-                        <form action="{{ localized_route('individuals.remove-interest', Auth::user()->individual) }}"
-                            method="post">
-                            @csrf
-                            <x-hearth-input name="project_id" type="hidden" :value="$project->id" />
-                            <button type="submit">{{ __('I’m not interested in participating') }}</button>
-                        </form>
-                    @endif
-                @endif
                 @can('manage', $project)
                     <a class="ml-auto"
                         href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage this project') }}</a>

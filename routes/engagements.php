@@ -87,6 +87,20 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:update,engagement'])
             ->name('manage');
 
+        Route::multilingual('/{engagement}/manage/organization', 'manageOrganization')
+            ->middleware(['auth', 'can:manageOrganization,engagement'])
+            ->name('manage-organization');
+
+        Route::multilingual('/{engagement}/manage/organization/add', 'addOrganization')
+            ->method('post')
+            ->middleware(['auth', 'can:addOrganization,engagement'])
+            ->name('add-organization');
+
+        Route::multilingual('/{engagement}/manage/organization/remove', 'removeOrganization')
+            ->method('post')
+            ->middleware(['auth', 'can:removeOrganization,engagement'])
+            ->name('remove-organization');
+
         Route::multilingual('/{engagement}/manage/participants', 'manageParticipants')
             ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-participants');
@@ -96,17 +110,40 @@ Route::controller(EngagementController::class)
             ->name('manage-access-needs');
 
         Route::multilingual('/{engagement}/manage/add-participant', 'addParticipant')
-            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('add-participant');
 
         Route::multilingual('/{engagement}/manage/invite-participant', 'inviteParticipant')
             ->method('post')
-            ->middleware(['auth', 'can:manageParticipants,engagement'])
+            ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('invite-participant');
 
-        Route::multilingual('/{engagement}/participants', 'participate')
+        Route::multilingual('/{engagement}/sign-up', 'signUp')
+            ->middleware(['auth', 'can:join,engagement'])
+            ->name('sign-up');
+
+        Route::multilingual('/{engagement}/join', 'join')
+            ->method('post')
+            ->middleware(['auth', 'can:join,engagement'])
+            ->name('join');
+
+        Route::multilingual('/{engagement}/confirm-access-needs', 'confirmAccessNeeds')
             ->middleware(['auth', 'can:participate,engagement'])
-            ->name('participate');
+            ->name('confirm-access-needs');
+
+        Route::multilingual('/{engagement}/store-access-needs-permissions', 'storeAccessNeedsPermissions')
+            ->method('post')
+            ->middleware(['auth', 'can:participate,engagement'])
+            ->name('store-access-needs-permissions');
+
+        Route::multilingual('/{engagement}/leave', 'confirmLeave')
+            ->middleware(['auth', 'can:participate,engagement'])
+            ->name('confirm-leave');
+
+        Route::multilingual('/{engagement}/exit', 'leave')
+            ->method('post')
+            ->middleware(['auth', 'can:leave,engagement'])
+            ->name('leave');
     });
 
 Route::multilingual('/engagements/{engagement}/connector/manage', [ManageEngagementConnector::class, '__invoke'])

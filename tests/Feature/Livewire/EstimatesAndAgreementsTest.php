@@ -129,7 +129,7 @@ test('projects can be searched by organization name', function () {
     livewire(AdminEstimatesAndAgreements::class)
         ->assertSee(localized_route('projects.show', $project))
         ->assertSee(localized_route('projects.show', $otherProject))
-        ->set('query', 'Umbrella')
+        ->set('searchQuery', 'Umbrella')
         ->call('search')
         ->assertSee(localized_route('projects.show', $project))
         ->assertDontSee(localized_route('projects.show', $otherProject))

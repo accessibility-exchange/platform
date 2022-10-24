@@ -1,22 +1,28 @@
 :root {
-    /* Element colours */
+    /* Text and backgrounds */
     --h1-color: var(--theme-h1-color, black);
     --heading-color: var(--theme-heading-color, var(--color-graphite-8));
     --body-background: var(--theme-body-background, var(--color-grey-1));
     --guest-body-background: var(--theme-guest-body-background, var(--color-grey-2));
     --body-color: var(--theme-body-color, var(--color-graphite-7));
+
+    /* Link */
     --link-color: var(--theme-link-color, var(--color-blue-6));
     --link-color-hover: var(--theme-link-color-hover, var(--color-blue-7));
     --link-color-visited: var(--theme-link-color-visited, var(--color-blue-8));
     --link-outline-focus: var(--theme-link-outline-focus, var(--color-blue-6));
     --link-color-active: var(--theme-link-color-hover, var(--color-blue-7));
     --link-background-active: var(--theme-link-background-active, var(--color-grey-2));
+
+    /* Link on dark backgrounds */
     --link-dark-color: var(--theme-link-dark-color, var(--color-white));
     --link-dark-color-hover: var(--theme-link-dark-color-hover, var(--color-turquoise-1));
     --link-dark-color-visited: var(--theme-link-dark-color-visited, var(--color-turquoise-1));
     --link-dark-outline-focus: var(--theme-link-dark-outline-focus, var(--color-turquoise-1));
     --link-dark-color-active: var(--theme-link-dark-color-hover, var(--color-turquoise-1));
     --link-dark-background-active: var(--theme-link-dark-background-active, var(--color-graphite-6));
+
+    /* Call to action */
     --cta-background: var(--theme-cta-background, var(--color-blue-7));
     --cta-color: var(--theme-cta-color, white);
     --cta-border: var(--theme-cta-border, transparent);
@@ -27,6 +33,8 @@
     --cta-color-active: var(--theme-cta-color-active, white);
     --cta-background-active: var(--theme-cta-background-active, var(--color-blue-6));
     --cta-border-active: var(--theme-cta-border-active, var(--color-blue-6));
+
+    /* Secondary call to action */
     --cta-secondary-border: var(--theme-cta-secondary-border, var(--color-blue-7));
     --cta-secondary-background: var(--theme-cta-secondary-background, white);
     --cta-secondary-color: var(--theme-cta-secondary-color, var(--color-blue-7));
@@ -37,6 +45,8 @@
     --cta-secondary-color-active: var(--theme-cta-secondary-color-active, var(--color-blue-6));
     --cta-secondary-background-active: var(--theme-cta-secondary-background-active, white);
     --cta-secondary-border-active: var(--theme-cta-secondary-border-active, var(--color-blue-6));
+
+    /* Call to action on dark backgrounds */
     --cta-dark-background: var(--theme-cta-dark-background, var(--color-grey-2));
     --cta-dark-border: var(--theme-cta-dark-border, var(--color-grey-2));
     --cta-dark-color: var(--theme-cta-dark-color, var(--color-blue-7));
@@ -47,10 +57,17 @@
     --cta-dark-color-active: var(--theme-dark-color-active, var(--color-blue-7));
     --cta-dark-background-active: var(--theme-dark-background-active, white);
     --cta-dark-border-active: var(--theme-dark-border-active, white);
+
+    /* Badge */
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
     --badge-color: var(--theme-badge-color, black);
+    --badge-color-alt: var(--theme-badge-color-alt, var(--badge-color));
     --badge-border: var(--theme-badge-border, var(--badge-background));
+
+    /* Divider */
     --divider-color: var(--theme-divider-color, var(--color-graphite-6));
+
+    /* Alert */
     --alert-background: var(--theme-alert-background, var(--color-grey-2));
     --alert-border: var(--theme-alert-border, var(--alert-background));
     --alert-color: var(--theme-alert-color, var(--color-graphite-8));
@@ -63,14 +80,24 @@
     --alert-background-success: var(--theme-alert-background-success, var(--color-green-1));
     --alert-border-success: var(--theme-alert-border-success, var(--alert-background-success));
     --alert-color-success: var(--theme-alert-color-success, var(--color-graphite-8));
+
+    /* Hint */
     --hint-color: var(--theme-hint-color, var(--color-graphite-7));
+
+    /* Input */
     --input-border: var(--theme-input-border, var(--color-graphite-7));
     --input-color: var(--theme-input-color, var(--color-graphite-7));
     --input-error-border: var(--theme-input-error-border, var(--color-red-8));
     --input-error-color: var(--theme-input-error-color, var(--color-red-8));
+
+    /* Checkbox */
     --checkbox-checked-background: var(--theme-checkbox-checked-background, var(--color-blue-7));
+
+    /* Radio button */
     --radio-checked-background: var(--theme-radio-checked-background, var(--color-blue-7));
     --radio-checked-border: var(--theme-radio-checked-border, var(--color-graphite-7));
+
+    /* Primary button */
     --button-primary-border: var(--theme-button-primary-border, var(--color-blue-7));
     --button-primary-background: var(--theme-button-primary-background, var(--color-blue-7));
     --button-primary-color: var(--theme-button-primary-color, white);
@@ -81,6 +108,8 @@
     --button-primary-color-active: var(--theme-button-primary-color-active, white);
     --button-primary-background-active: var(--theme-button-primary-background-active, var(--color-blue-6));
     --button-primary-border-active: var(--theme-button-primary-border-active, var(--color-blue-6));
+
+    /* Secondary button */
     --button-secondary-border: var(--theme-button-secondary-border, var(--color-blue-7));
     --button-secondary-background: var(--theme-button-secondary-background, white);
     --button-secondary-color: var(--theme-button-secondary-color, var(--color-blue-7));
@@ -91,11 +120,54 @@
     --button-secondary-color-active: var(--theme-button-secondary-color-active, var(--color-blue-6));
     --button-secondary-background-active: var(--theme-button-secondary-background-active, white);
     --button-secondary-border-active: var(--theme-button-secondary-border-active, var(--color-blue-6));
+
+    /* Destructive button */
+    --button-destructive-border: var(--theme-button-destructive-border, var(--color-red-8));
+    --button-destructive-background: var(--theme-button-destructive-background, var(--color-red-8));
+    --button-destructive-color: var(--theme-button-destructive-color, var(--color-white));
+    --button-destructive-background-hover: var(--theme-button-destructive-background-hover, var(--color-red-9));
+    --button-destructive-border-hover: var(--theme-button-destructive-border-hover, var(--color-red-9));
+    --button-destructive-color-hover: var(--theme-button-destructive-color-hover, var(--color-white));
+    --button-destructive-outline: var(--theme-button-destructive-outline, var(--color-red-8));
+    --button-destructive-color-active: var(--theme-button-destructive-color-active, var(--color-white));
+    --button-destructive-background-active: var(--theme-button-destructive-background-active, var(--color-red-7));
+    --button-destructive-border-active: var(--theme-button-destructive-border-active, var(--color-red-7));
+
+    /* Destructive secondary button */
+    --button-destructive-secondary-border: var(--theme-button-destructive-secondary-border, var(--color-red-8));
+    --button-destructive-secondary-background: var(--theme-button-destructive-secondary-background, white);
+    --button-destructive-secondary-color: var(--theme-button-destructive-secondary-color, var(--color-red-8));
+    --button-destructive-secondary-background-hover: var(--theme-button-destructive-secondary-background-hover, white);
+    --button-destructive-secondary-border-hover: var(
+        --theme-button-destructive-secondary-border-hover,
+        var(--color-red-9)
+    );
+    --button-destructive-secondary-color-hover: var(
+        --theme-button-destructive-secondary-color-hover,
+        var(--color-red-9)
+    );
+    --button-destructive-secondary-outline: var(--theme-button-destructive-secondary-outline, var(--color-red-8));
+    --button-destructive-secondary-color-active: var(
+        --theme-button-destructive-secondary-color-active,
+        var(--color-red-7)
+    );
+    --button-destructive-secondary-background-active: var(
+        --theme-button-destructive-secondary-background-active,
+        white
+    );
+    --button-destructive-secondary-border-active: var(
+        --theme-button-destructive-secondary-border-active,
+        var(--color-red-7)
+    );
+
+    /* Borderless button */
     --button-borderless-outline: var(--theme-button-borderless-outline, var(--color-blue-6));
     --button-borderless-color-hover: var(--theme-button-borderless-color-hover, var(--color-blue-7));
     --button-borderless-background-hover: var(--theme-button-borderless-background-hover, var(--color-grey-2));
     --button-borderless-color-focus: var(--theme-button-borderless-color-focus, var(--color-blue-6));
     --button-borderless-color-active: var(--theme-button-borderless-color-active, var(--color-blue-8));
+
+    /* Primary button on dark backgrounds */
     --button-dark-primary-background: var(--theme-button-dark-primary-background, var(--color-grey-2));
     --button-dark-primary-border: var(--theme-button-dark-primary-border, var(--color-grey-2));
     --button-dark-primary-color: var(--theme-button-dark-primary-color, var(--color-blue-7));
@@ -106,21 +178,35 @@
     --button-dark-primary-color-active: var(--theme-button-dark-primary-color-active, var(--color-blue-7));
     --button-dark-primary-background-active: var(--theme-button-dark-primary-background-active, white);
     --button-dark-primary-border-active: var(--theme-button-dark-primary-border-active, white);
+
+    /* Tag */
     --tag-background: var(--theme-tag-background, white);
     --tag-border: var(--theme-tag-border, var(--color-graphite-6));
     --tag-color: var(--theme-tag-color, var(--color-graphite-6));
+
+    /* Tag link */
     --tag-link-background: var(--theme-tag-link-background, white);
     --tag-link-border: var(--theme-tag-link-border, var(--color-blue-6));
     --tag-link-color: var(--theme-tag-link-color, var(--color-blue-6));
+
+    /* Tag button */
     --tag-button-background: var(--theme-tag-button-background, var(--color-blue-6));
     --tag-button-border: var(--theme-tag-button-border, var(--color-blue-6));
     --tag-button-color: var(--theme-tag-button-color, white);
+
+    /* Help bar */
     --help-bar-border: var(--theme-help-bar-border, transparent);
     --help-bar-background: var(--theme-help-bar-background, var(--color-blue-7));
     --help-bar-color: var(--theme-help-bar-color, var(--color-grey-2));
+
+    /* Banner */
     --banner-border: var(--theme-banner-border, var(--color-grey-3));
     --banner-shadow: var(--theme-banner-shadow, 0 0 10px 0 rgb(0 0 0 / 15%));
+
+    /* Brand */
     --brand-color: var(--theme-brand-color, var(--link-color));
+
+    /* Navigation */
     --nav-background-mobile: var(--theme-nav-background-mobile, var(--color-blue-7));
     --nav-background-hover-mobile: var(--theme-nav-background-hover-mobile, var(--color-blue-8));
     --nav-background-focus-mobile: var(--theme-nav-background-focus-mobile, var(--color-blue-8));
@@ -142,6 +228,10 @@
     --nav-child-background-focus: var(--theme-nav-child-background-focus, var(--color-grey-1));
     --nav-child-background-active: var(--theme-nav-child-background-active, var(--color-grey-2));
     --nav-current-color: var(--theme-nav-current-color, var(--color-lavender-3));
+
+    /* Tabbed navigation */
+
+    /* Pagination */
     --pagination-color: var(--theme-pagination-color, var(--color-graphite-7));
     --pagination-background-hover: var(--theme-pagination-background-hover, var(--color-lavender-2));
     --pagination-color-hover: var(--theme-pagination-color-hover, var(--color-black));
@@ -150,61 +240,108 @@
     --pagination-color-active: var(--theme-pagination-color-active, var(--color-blue-7));
     --pagination-current-color: var(--theme-pagination-current-color, var(--color-grey-2));
     --pagination-current-background: var(--theme-pagination-current-background, var(--color-blue-7));
+
+    /* Expander */
     --expander-color: var(--theme-expander-color, var(--color-blue-6));
     --expander-border: var(--theme-expander-border, var(--color-blue-6));
     --expander-color-focus: var(--theme-expander-color-focus, var(--color-blue-7));
     --expander-background-active: var(--theme-expander-background-active, var(--color-grey-2));
     --expander-color-active: var(--theme-expander-color-active, var(--color-blue-7));
     --expander-border-active: var(--theme-expander-border-active, var(--color-blue-6));
+
+    /* Footer */
     --footer-background: var(--theme-footer-background, var(--color-blue-7));
     --footer-color: var(--theme-footer-color, var(--color-white));
     --footer-heading-color: var(--theme-footer-heading-color, var(--color-grey-2));
+
+    /* Defined term */
     --defined-term-color: var(--theme-defined-term-color, var(--color-blue-6));
     --definition-background: var(--theme-definition-background, var(--color-grey-2));
     --definition-color: var(--theme-definition-color, var(--color-black));
     --definition-shadow: var(--theme-definition-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
+
+    /* Box */
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
+
+    /* Card */
+    --card-link-color: var(--theme-card-link-color, var(--color-black));
+    --card-background-hover: var(--theme-card-background-hover, var(--color-grey-1));
     --card-shadow: var(--theme-card-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
     --card-shadow-hover: var(--theme-card-shadow-hover, 0 0 0.625rem rgb(0 0 0 / 40%));
+    --card-inset-background: var(--theme-card-inset-background, var(--color-grey-1));
+    --card-inset-shadow-hover: var(--theme-card-inset-shadow-hover, 0 0 0 1px var(--color-grey-3));
+
+    /* Regulated organization card */
     --card-regulated-organization-shadow: var(
         --theme-card-regulated-organization-shadow,
         0 0.375rem 0 0 var(--color-turquoise-5) inset
     );
     --card-regulated-organization-shadow-focus-within: var(
         --theme-card-regulated-organization-shadow-focus-within,
-        0 0 0.625rem rgb(0 185 214 / 50%),
         0 0 0 0.1875rem var(--color-turquoise-5) inset,
         0 0.375rem 0 0 var(--color-turquoise-5) inset
     );
-    --card-community-organization-shadow: var(
-        --theme-card-community-organization-shadow,
-        0 0.375rem 0 0 var(--color-magenta-3) inset
-    );
-    --card-community-organization-shadow-focus-within: var(
-        --theme-card-community-organization-shadow-focus-within,
-        0 0 0.625rem rgb(255 160 206 / 50%),
+
+    /* Organization card */
+    --card-organization-shadow: var(--theme-card-organization-shadow, 0 0.375rem 0 0 var(--color-magenta-3) inset);
+    --card-organization-shadow-focus-within: var(
+        --theme-card-organization-shadow-focus-within,
         0 0 0 0.1875rem var(--color-magenta-3) inset,
         0 0.375rem 0 0 var(--color-magenta-3) inset
     );
+    --card-inset-organization-shadow-hover: var(
+        --theme-card-inset-organization-shadow-hover,
+        0 0.375rem 0 0 var(--color-magenta-2) inset
+    );
+    --card-inset-organization-shadow-focus-within: var(
+        --theme-card-inset-organization-shadow-focus-within,
+        0 0 0.625rem rgb(255 160 206 / 50%)
+    );
+
+    /* Individual cards */
     --card-individual-shadow: var(--theme-card-individual-shadow, 0 0.375rem 0 0 var(--color-lavender-3) inset);
     --card-individual-shadow-focus-within: var(
         --theme-card-individual-shadow-focus-within,
-        0 0 0.625rem rgb(202 182 217 / 50%),
         0 0 0 0.1875rem var(--color-lavender-3) inset,
         0 0.375rem 0 0 var(--color-lavender-3) inset
     );
+    --card-inset-individual-shadow-hover: var(
+        --theme-card-inset-individual-shadow-hover,
+        0 0.375rem 0 0 var(--color-lavender-2) inset
+    );
+    --card-inset-individual-shadow-focus-within: var(
+        --theme-card-inset-individual-shadow-focus-within,
+        0 0 0.625rem rgb(202 182 217 / 50%)
+    );
+
+    /* Project card */
     --card-project-shadow: var(--theme-card-project-shadow, 0 0.375rem 0 0 var(--color-blue-6) inset);
     --card-project-shadow-focus-within: var(
         --theme-card-project-shadow-focus-within,
-        0 0 0.625rem rgb(202 182 217 / 50%),
         0 0 0 0.1875rem var(--color-blue-6) inset,
         0 0.375rem 0 0 var(--color-blue-6) inset
     );
+
+    /* Engagement card */
     --card-engagement-shadow: var(--theme-card-engagement-shadow, 0 -0.1875rem 0 0 var(--color-blue-6) inset);
     --card-engagement-shadow-focus-within: var(
-        --theme-card-project-shadow-focus-within,
-        0 0 0.625rem rgb(0 0 0 / 40%),
+        --theme-card-engagement-shadow-focus-within,
         0 0 0 0.1875rem var(--color-blue-6) inset
     );
+    --card-inset-engagement-shadow-hover: var(
+        --theme-card-inset-engagement-shadow-hover,
+        0 -0.1875rem 0 0 var(--color-blue-5) inset
+    );
+    --card-inset-engagement-shadow-focus-within: var(
+        --theme-card-inset-engagement-shadow-focus-within,
+        0 0 0.625rem rgb(112 119 203 / 50%)
+    );
+
+    /* Resource card */
+
+    /* Resource collection card */
+
+    /* Manage page sections */
+    --manage-section-shadow: var(--theme-manage-section-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
 }

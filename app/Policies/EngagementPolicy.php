@@ -19,8 +19,8 @@ class EngagementPolicy
     public function view(User $user, Engagement $engagement): Response
     {
         return
-            $user->individual || $user->organization || $user->regulated_organization
-            && $engagement->checkStatus('published') || $user->can('update', $engagement)
+            ($user->individual || $user->organization || $user->regulated_organization)
+            && ($engagement->checkStatus('published') || ($user->can('update', $engagement) && $engagement->isPublishable()))
                 ? Response::allow()
                 : Response::denyAsNotFound();
     }
@@ -73,10 +73,60 @@ class EngagementPolicy
         return Response::deny();
     }
 
+    public function addParticipants(User $user, Engagement $engagement): Response
+    {
+        $attachedOrInvitedParticipants = $engagement->invitations->where('role', 'participant')->count() + $engagement->confirmedParticipants->count();
+
+        return $user->can('manageParticipants', $engagement) && $attachedOrInvitedParticipants < $engagement->ideal_participants
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function manageOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization'
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function addOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && ! $engagement->organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function removeOrganization(User $user, Engagement $engagement): Response
+    {
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && $engagement->organization
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function join(User $user, Engagement $engagement): Response
+    {
+        return $engagement->recruitment === 'open-call'
+            && $user->individual?->isParticipant()
+            && $engagement->signup_by_date > now()
+            && ! $engagement->confirmedParticipants->contains($user->individual)
+            && $engagement->confirmedParticipants->count() < $engagement->ideal_participants
+                ? Response::allow()
+                : Response::deny();
+    }
+
     public function participate(User $user, Engagement $engagement): Response
     {
         return $engagement->confirmedParticipants->contains($user->individual)
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::deny();
+    }
+
+    public function leave(User $user, Engagement $engagement): Response
+    {
+        return $engagement->recruitment === 'open-call'
+            && $engagement->confirmedParticipants->contains($user->individual)
+            && $engagement->signup_by_date > now()
+            ? Response::allow()
+            : Response::deny();
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Traits\HasContactPerson;
+use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
@@ -18,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -38,6 +41,7 @@ class Organization extends Model
 {
     use CascadesDeletes;
     use HasContactPerson;
+    use HasDisplayRegion;
     use HasFactory;
     use HasSchemalessAttributes;
     use HasMembers;
@@ -158,10 +162,10 @@ class Organization extends Model
         return $this->morphMany(Invitation::class, 'invitationable');
     }
 
-    protected function serviceRegions(): Attribute
+    protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => get_regions_from_provinces_and_territories($this->service_areas ?? []),
+            get: fn ($value) => Arr::map($this->service_areas, fn ($region) => ProvinceOrTerritory::labels()[$region]),
         );
     }
 
@@ -203,10 +207,16 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    public function participatingEngagements(): HasMany
+    {
+        return $this->hasMany(Engagement::class);
+    }
+
     public function participatingProjects(): HasManyDeep
     {
-        return $this->hasManyDeepFromReverse(
-            (new Project())->organizationalParticipants()
+        return $this->hasManyDeepFromRelations(
+            $this->participatingEngagements(),
+            (new Engagement())->project()
         );
     }
 

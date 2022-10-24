@@ -18,6 +18,7 @@ use App\Http\Requests\UpdateEngagementLanguagesRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Mail\ContractorInvitation;
+use App\Models\AccessSupport;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
@@ -30,13 +31,19 @@ use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Notifications\OrganizationAddedToEngagement;
+use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\ParticipantJoined;
+use App\Notifications\ParticipantLeft;
+use App\Statuses\OrganizationStatus;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -87,7 +94,7 @@ class EngagementController extends Controller
         flash(__('Your engagement has been created.'), 'success');
 
         $redirect = match ($engagement->who) {
-            'organization' => localized_route('engagements.manage', $engagement),
+            'organization' => localized_route('engagements.show-criteria-selection', $engagement),
             default => localized_route('engagements.show-format-selection', $engagement),
         };
 
@@ -143,7 +150,7 @@ class EngagementController extends Controller
         return view('engagements.show-criteria-selection', [
             'title' => __('Create engagement'),
             'surtitle' => __('Create engagement'),
-            'heading' => __('Confirm your participant selection criteria'),
+            'heading' => $engagement->who === 'individuals' ? __('Confirm your participant selection criteria') : __('Confirm your organization selection criteria'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
@@ -188,7 +195,7 @@ class EngagementController extends Controller
         return view('engagements.show-criteria-selection', [
             'title' => __('Manage engagement'),
             'surtitle' => __('Manage engagement'),
-            'heading' => __('Edit your participant selection criteria'),
+            'heading' => $engagement->who === 'individuals' ? __('Edit your participant selection criteria') : __('Edit your organization selection criteria'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
@@ -362,13 +369,15 @@ class EngagementController extends Controller
                 $languages = [];
 
                 foreach ($matchingStrategyData['first_languages'] as $code) {
-                    $languages[] = Language::firstOrCreate([
-                        'code' => $code,
-                        'name' => [
-                            'en' => get_language_exonym($code, 'en'),
-                            'fr' => get_language_exonym($code, 'fr'),
+                    $languages[] = Language::firstOrCreate(
+                        ['code' => $code],
+                        [
+                            'name' => [
+                                'en' => get_language_exonym($code, 'en'),
+                                'fr' => get_language_exonym($code, 'fr'),
+                            ],
                         ],
-                    ])->id;
+                    )->id;
                 }
 
                 $matchingStrategy->syncMutuallyExclusiveCriteria(
@@ -479,7 +488,7 @@ class EngagementController extends Controller
         if ($request->input('publish')) {
             if ($engagement->fresh()->isPublishable()) {
                 $engagement->update(['published_at' => now()]);
-                flash(__('Your engagement has been published.'), 'success');
+                flash(__('Your engagement has been published. [Visit engagement](:url)', ['url' => localized_route('engagements.show', $engagement)]), 'success');
             }
         } else {
             flash(__('Your engagement has been updated.'), 'success');
@@ -509,6 +518,72 @@ class EngagementController extends Controller
         ]);
     }
 
+    public function manageOrganization(Engagement $engagement): View
+    {
+        return view('engagements.manage-organization', [
+            'engagement' => $engagement,
+            'project' => $engagement->project,
+            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'participant')->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
+        ]);
+    }
+
+    public function addOrganization(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $organization = Organization::find($request->input('organization_id'));
+
+        $validator = Validator::make(
+            $request->all(), [
+                'organization_id' => 'required|exists:organizations,id',
+            ],
+            [],
+            [
+                'organization_id' => __('organization.singular_name'),
+            ]
+        );
+
+        $validator->after(function ($validator) use ($organization) {
+            ray($organization->roles);
+            if (! $organization || ! $organization->isParticipant()) {
+                $validator->errors()->add(
+                    'organization_id', __('The organization you have added does not participate in engagements.')
+                );
+            }
+        });
+
+        if ($validator->fails()) {
+            return redirect(localized_route('engagements.manage-organization', $engagement))
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        $engagement->organization()->associate($validated['organization_id']);
+
+        $engagement->save();
+
+        $organization->notify(new OrganizationAddedToEngagement($engagement));
+
+        flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success');
+
+        return redirect(localized_route('engagements.manage-organization', $engagement));
+    }
+
+    public function removeOrganization(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $organization = $engagement->organization;
+
+        $engagement->organization()->dissociate();
+
+        $engagement->save();
+
+        $organization->notify(new OrganizationRemovedFromEngagement($engagement));
+
+        flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success');
+
+        return redirect(localized_route('engagements.manage-organization', $engagement));
+    }
+
     public function manageParticipants(Engagement $engagement): View
     {
         return view('engagements.manage-participants', [
@@ -516,15 +591,12 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => $engagement->invitations->where('role', 'participant'),
             'participants' => $engagement->participants,
+            'printVersion' => AccessSupport::where('name->en', 'Printed version of engagement documents')->first(),
         ]);
     }
 
     public function addParticipant(Engagement $engagement): View|Response
     {
-        if ($engagement->participants->count() >= $engagement->ideal_participants) {
-            abort(403, __('You can’t invite any more participants to this engagement as it already has :number confirmed participants.', ['number' => $engagement->participants->count()]));
-        }
-
         return view('engagements.add-participant', [
             'project' => $engagement->project,
             'engagement' => $engagement,
@@ -596,6 +668,71 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.manage-participants', $engagement));
     }
 
+    public function signUp(Engagement $engagement): View
+    {
+        return view('engagements.sign-up', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function join(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $engagement->participants()->save(Auth::user()->individual, ['status' => 'confirmed']);
+
+        $engagement->project->notify(new ParticipantJoined($engagement));
+
+        flash(__('You have successfully signed up for this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.confirm-access-needs', $engagement));
+    }
+
+    public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
+    {
+        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+            return redirect(localized_route('engagements.show', $engagement));
+        }
+
+        return view('engagements.confirm-access-needs', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
+    public function storeAccessNeedsPermissions(Request $request, Engagement $engagement): RedirectResponse
+    {
+        $request->validate([
+            'share_access_needs' => 'required|boolean',
+        ]);
+
+        $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
+
+        flash(__('Your preference for sharing your access needs has been saved.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
+    public function confirmLeave(Engagement $engagement): View
+    {
+        return view('engagements.leave', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+        ]);
+    }
+
+    public function leave(Request $request, Engagement $engagement): RedirectResponse
+    {
+        Auth::user()->individual->engagements()->detach($engagement->id);
+
+        $engagement->project->notify(new ParticipantLeft($engagement));
+
+        flash(__('You have successfully left this engagement.'), 'success');
+
+        return redirect(localized_route('engagements.show', $engagement));
+    }
+
     public function manageAccessNeeds(Engagement $engagement): View
     {
         return view('engagements.manage-access-needs', [
@@ -603,14 +740,6 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'invitations' => collect([]),
             'participants' => collect([]),
-        ]);
-    }
-
-    public function participate(Engagement $engagement)
-    {
-        return view('engagements.participate', [
-            'project' => $engagement->project,
-            'engagement' => $engagement,
         ]);
     }
 }
