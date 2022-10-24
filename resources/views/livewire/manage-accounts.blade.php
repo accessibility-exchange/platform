@@ -100,12 +100,12 @@
                         @if ($account instanceof App\Models\Individual)
                             @if ($account->user->checkStatus('pending'))
                                 <button
-                                    wire:click="approveIndividual({{ $account->id }})">{{ __('Approve') }}</button>
+                                    wire:click="approveIndividualAccount({{ $account->id }})">{{ __('Approve') }}</button>
                             @endif
                         @else
                             @if ($account->checkStatus('pending'))
                                 <button
-                                    wire:click="approveOrganization({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Approve') }}</button>
+                                    wire:click="approveAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Approve') }}</button>
                             @endif
                         @endif
                     </td>

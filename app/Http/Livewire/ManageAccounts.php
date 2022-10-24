@@ -31,7 +31,7 @@ class ManageAccounts extends Component
             ->layout('layouts.app-wide');
     }
 
-    public function approveIndividual(int $id)
+    public function approveIndividualAccount(int $id)
     {
         $individual = Individual::find($id);
         $individual->user->update(['oriented_at' => now()]);
@@ -47,7 +47,7 @@ class ManageAccounts extends Component
         $this->dispatchBrowserEvent('remove-flash-message');
     }
 
-    public function approveOrganization(int $id, string $class)
+    public function approveAccount(int $id, string $class)
     {
         $classname = "App\\Models\\{$class}";
         $model = $classname::find($id);

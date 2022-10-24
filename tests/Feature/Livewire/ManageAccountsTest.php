@@ -33,6 +33,18 @@ test('accounts appear with pending status before approval', function () {
         ]);
 });
 
+test('accounts can be approved', function () {
+    livewire(ManageAccounts::class)
+        ->call('approveAccount', $this->organization->id, 'Organization')
+        ->call('approveAccount', $this->regulatedOrganization->id, 'RegulatedOrganization')
+        ->call('approveIndividualAccount', $this->individual->id)
+        ->assertSeeInOrder([
+            'Approved',
+            'Approved',
+            'Approved',
+        ]);
+});
+
 test('accounts appear with suspended status when suspended', function () {
     foreach ([
         $this->organization,
