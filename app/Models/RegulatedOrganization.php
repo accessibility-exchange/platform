@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProvinceOrTerritory;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
@@ -164,10 +166,10 @@ class RegulatedOrganization extends Model
         return $this->morphMany(Invitation::class, 'invitationable');
     }
 
-    protected function serviceRegions(): Attribute
+    protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => get_regions_from_provinces_and_territories($this->service_areas ?? []),
+            get: fn ($value) => Arr::map($this->service_areas, fn ($region) => ProvinceOrTerritory::labels()[$region]),
         );
     }
 

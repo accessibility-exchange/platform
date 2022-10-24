@@ -13,6 +13,7 @@ class OrganizationFactory extends Factory
             'type' => $this->faker->randomElement(['representative', 'support', 'civil-society']),
             'languages' => ['en', 'fr', 'ase', 'fcs'],
             'roles' => [],
+            'service_areas' => ['NS'],
             'working_languages' => ['en', 'fr'],
             'contact_person_email' => $this->faker->email(),
             'oriented_at' => now(),
