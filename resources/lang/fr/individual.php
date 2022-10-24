@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'singular_name' => 'individual',
+    'singular_name' => 'individu',
     'edit-steps' => [
-        'about-you' => 'About you',
-        'groups-you-can-connect-to' => 'Groups you can connect to',
-        'experiences' => 'Experiences',
-        'interests' => 'Interests',
-        'communication-and-consultation-preferences' => 'Communication and meeting preferences',
+        'about-you' => 'À propos de vous',
+        'groups-you-can-connect-to' => 'Groupes auprès desquels vous pouvez agir comme intermédiaire',
+        'experiences' => 'Expériences',
+        'interests' => 'Intérêts',
+        'communication-and-consultation-preferences' => 'Préférences relatives aux communications et aux réunions',
     ],
 ];

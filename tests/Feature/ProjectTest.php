@@ -156,7 +156,6 @@ test('projects can be published and unpublished', function () {
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
         'preferred_contact_method' => 'required',
-        'team_languages' => ['en'],
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -339,7 +338,21 @@ test('users with regulated organization admin role can edit projects', function 
 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
-        'team_languages' => ['en'],
+        'team_trainings' => [
+            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
+        ],
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_vrs' => true,
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
         ],

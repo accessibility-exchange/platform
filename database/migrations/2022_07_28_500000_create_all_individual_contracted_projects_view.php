@@ -16,10 +16,6 @@ return new class extends Migration
         Schema::createOrReplaceMergeViewWithoutDuplicates(
             'all_individual_contracted_projects',
             [
-                /** TODO: add project and engagement-level consultants.
-                (new Individual)->consultingProjects(),
-                (new Individual)->consultingEngagementProjects(),
-                 **/
                 (new Individual)->connectingEngagementProjects(),
             ]
         );

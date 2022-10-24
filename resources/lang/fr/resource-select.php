@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'action_button' => 'Action button',
-    'add_resource' => 'Add resource',
-    'available_resources' => 'Available resources',
-    'remove_resource' => 'Remove resource',
-    'resource_link' => 'Resource link (Opens in a new tab)',
-    'resource_preview' => 'Resource preview',
-    'resource_title' => 'Resource title',
-    'selected_resources' => 'Selected resources',
+    'action_button' => 'Bouton d\'action',
+    'add_resource' => 'Ajouter la ressource',
+    'available_resources' => 'Ressources disponibles',
+    'remove_resource' => 'Supprimer la ressource',
+    'resource_link' => 'Lien vers la ressource (s\'ouvre dans un nouvel onglet)',
+    'resource_preview' => 'Aperçu de la ressource',
+    'resource_title' => 'Titre de la ressource',
+    'selected_resources' => 'Ressources sélectionnées',
 ];
