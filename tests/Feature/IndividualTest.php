@@ -814,13 +814,15 @@ test('individual pages cannot be published by other users', function () {
     $this->assertTrue($individual->checkStatus('draft'));
 });
 
-test('individual test isPublishable()', function ($expected, $data, $connections = []) {
+test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
     $this->seed(AgeBracketSeeder::class);
     $this->seed(AreaTypeSeeder::class);
     $this->seed(IndigenousIdentitySeeder::class);
     $this->seed(LivedExperienceSeeder::class);
 
     $individualUser = User::factory()->create();
+    $individualUser->update($userData);
+    $individualUser = $individualUser->fresh();
     $individual = $individualUser->individual;
     $individual->update($data);
     $individual = $individual->fresh();

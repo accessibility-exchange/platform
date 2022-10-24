@@ -6,6 +6,10 @@ use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 
 dataset('individualIsPublishable', function () {
+    $baseUser = [
+        'oriented_at' => now(),
+    ];
+
     $baseModel = [
         'bio' => 'test bio',
         'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
@@ -21,14 +25,16 @@ dataset('individualIsPublishable', function () {
         'region' => 'NS',
     ];
 
+    $baseConnections = [
+        'areaTypeConnections',
+        'livedExperienceConnections',
+    ];
+
     return [
         'not publishable when missing bio' => [
             false,
             array_replace_recursive($baseModel, ['bio' => null]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
         ],
         'not publishable when missing connection_lived_experience' => [
             false,
@@ -38,18 +44,13 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing consulting_services' => [
             false,
             array_replace_recursive($baseModel, ['consulting_services' => null]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
         ],
         'not publishable when missing has_age_brackets' => [
             false,
@@ -61,10 +62,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing has_ethnoracial_identities' => [
             false,
@@ -76,10 +75,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing has_gender_and_sexual_identities' => [
             false,
@@ -91,10 +88,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing has_indigenous_identities' => [
             false,
@@ -106,14 +101,13 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing meeting_types' => [
             false,
             array_replace_recursive($baseModel, ['meeting_types' => null]),
+            $baseUser,
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',
@@ -122,6 +116,7 @@ dataset('individualIsPublishable', function () {
         'not publishable when missing name' => [
             false,
             array_replace_recursive($baseModel, ['name' => null]),
+            $baseUser,
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',
@@ -130,6 +125,7 @@ dataset('individualIsPublishable', function () {
         'not publishable when missing region' => [
             false,
             array_replace_recursive($baseModel, ['region' => null]),
+            $baseUser,
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',
@@ -138,6 +134,7 @@ dataset('individualIsPublishable', function () {
         'not publishable when missing roles' => [
             false,
             array_replace_recursive($baseModel, ['roles' => null]),
+            $baseUser,
             [
                 'areaTypeConnections',
                 'livedExperienceConnections',
@@ -153,10 +150,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing indigenousIdentityConnections' => [
             false,
@@ -168,10 +163,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
         'not publishable when missing areaTypeConnections' => [
             false,
@@ -180,6 +173,7 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
+            $baseUser,
             [
                 'livedExperienceConnections',
             ],
@@ -191,6 +185,7 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
+            $baseUser,
             [
                 'areaTypeConnections',
             ],
@@ -198,10 +193,12 @@ dataset('individualIsPublishable', function () {
         'not publishable using participant role' => [
             false,
             array_replace_recursive($baseModel, ['roles' => [IndividualRole::ConsultationParticipant->value]]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+        ],
+        'not publishable if user approval is pending' => [
+            false,
+            $baseModel,
+            array_replace_recursive($baseUser, ['oriented_at' => null]),
         ],
         'publishable with all expected values' => [
             true,
@@ -214,6 +211,7 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
+            $baseUser,
             [
                 'ageBracketConnections',
                 'areaTypeConnections',
@@ -228,10 +226,8 @@ dataset('individualIsPublishable', function () {
                     IndividualRole::CommunityConnector->value,
                 ],
             ]),
-            [
-                'areaTypeConnections',
-                'livedExperienceConnections',
-            ],
+            $baseUser,
+            $baseConnections,
         ],
     ];
 });
