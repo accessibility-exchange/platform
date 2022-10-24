@@ -116,6 +116,26 @@ dataset('projectIsPublishable', function () {
             true,
             $baseModel,
         ],
+        'not publishable when organization is pending approval' => [
+            false,
+            $baseModel,
+            [],
+            'regulated-organization',
+            [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ],
+        ],
+        'not publishable when regulated organization is pending approval' => [
+            false,
+            $baseModel,
+            [],
+            'regulated-organization',
+            [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ],
+        ],
         'publishable with impacts as a Regulated Organization' => [
             true,
             $baseModel,

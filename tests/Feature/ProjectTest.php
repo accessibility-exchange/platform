@@ -205,7 +205,7 @@ test('projects can be published and unpublished', function () {
     $response->assertSee('Draft');
 });
 
-test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization') {
+test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
     $this->seed(ImpactSeeder::class);
 
     $adminUser = User::factory()->create(['context' => $context]);
@@ -215,6 +215,8 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
         ->hasAttached($adminUser, ['role' => 'admin'])
         ->hasAttached($user, ['role' => 'member'])
         ->create();
+    $organization->update($projectableData);
+    $organization = $organization->fresh();
 
     // fill data so that we don't hit a Database Integrity constraint violation during creation
     $project = Project::factory()->create([

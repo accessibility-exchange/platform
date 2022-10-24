@@ -82,6 +82,16 @@ dataset('engagementIsPublishable', function () {
             false,
             false,
         ],
+        'not publishable when projectable organization is not approved' => [
+            false,
+            $baseModel,
+            true,
+            true,
+            [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ],
+        ],
         'not publishable when workshop and missing meeting' => [
             false,
             $baseModel,
