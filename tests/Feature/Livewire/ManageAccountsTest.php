@@ -32,3 +32,22 @@ test('accounts appear with pending status before approval', function () {
             'Pending approval',
         ]);
 });
+
+test('accounts appear with suspended status when suspended', function () {
+    foreach ([
+        $this->organization,
+        $this->regulatedOrganization,
+        $this->individualUser,
+    ] as $model) {
+        $model->update([
+            'suspended_at' => now(),
+        ]);
+    }
+
+    livewire(ManageAccounts::class)
+        ->assertSeeInOrder([
+            'Suspended',
+            'Suspended',
+            'Suspended',
+        ]);
+});

@@ -75,20 +75,24 @@
                     </td>
                     <td>
                         @if ($account instanceof App\Models\Individual)
-                            @if ($account->user->checkStatus('pending'))
-                                {{ __('Pending approval') }}
-                            @elseif($account->user->checkStatus('approved'))
-                                {{ __('Approved') }}
-                                {{--                            @elseif($account->user->checkStatus('suspended')) --}}
-                                {{--                                {{ __('Suspended') }} --}}
+                            @if ($account->user->checkStatus('suspended'))
+                                {{ __('Suspended') }}
+                            @else
+                                @if ($account->user->checkStatus('pending'))
+                                    {{ __('Pending approval') }}
+                                @elseif($account->user->checkStatus('approved'))
+                                    {{ __('Approved') }}
+                                @endif
                             @endif
                         @else
-                            @if ($account->checkStatus('pending'))
-                                {{ __('Pending approval') }}
-                            @elseif($account->checkStatus('approved'))
-                                {{ __('Approved') }}
-                                {{--                            @elseif($account->checkStatus('suspended')) --}}
-                                {{--                                {{ __('Suspended') }} --}}
+                            @if ($account->checkStatus('suspended'))
+                                {{ __('Suspended') }}
+                            @else
+                                @if ($account->checkStatus('pending'))
+                                    {{ __('Pending approval') }}
+                                @elseif($account->checkStatus('approved'))
+                                    {{ __('Approved') }}
+                                @endif
                             @endif
                         @endif
                     </td>
