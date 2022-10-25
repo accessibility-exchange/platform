@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProvinceOrTerritory;
+use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -119,9 +120,11 @@ class RegulatedOrganization extends Model
         'about',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrganizationNotSuspendedScope);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(['en', 'fr'])

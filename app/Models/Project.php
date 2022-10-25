@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
 use App\Traits\HasContactPerson;
 use App\Traits\HasMultimodalTranslations;
@@ -117,6 +118,11 @@ class Project extends Model
         'contact_person_response_time',
         'team_size',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ProjectableNotSuspendedScope);
+    }
 
     public function getRoutePrefix(): string
     {

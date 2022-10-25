@@ -23,6 +23,7 @@ class AdminEstimatesAndAgreements extends Component
     {
         return view('livewire.admin-estimates-and-agreements', [
             'projects' => Project::whereNotNull('estimate_requested_at')
+                    ->with('projectable')
                     ->when($this->searchQuery, function ($query, $searchQuery) {
                         $query->whereHasMorph(
                             'projectable',

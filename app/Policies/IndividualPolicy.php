@@ -14,7 +14,7 @@ class IndividualPolicy
     public function viewAny(User $user): Response
     {
         return
-             $user->individual || $user->organization || $user->regulated_organization
+             $user->context === 'administrator' || $user->individual || $user->organization || $user->regulated_organization
             ? Response::allow()
             : Response::deny();
     }

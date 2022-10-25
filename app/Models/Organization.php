@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -121,6 +122,11 @@ class Organization extends Model
         'other_disability_type',
         'other_ethnoracial_identity',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrganizationNotSuspendedScope);
+    }
 
     public function getSlugOptions(): SlugOptions
     {
