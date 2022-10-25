@@ -7,23 +7,23 @@ use App\Models\User;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
+    $this->organizationUser = User::factory()->create(['context' => 'organization']);
     $this->organization = Organization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
+        'contact_person_email' => $this->organizationUser->email,
     ]);
-
-    $this->organizationUser = User::factory()->create(['context' => 'organization']);
     $this->organization->users()->attach(
         $this->organizationUser,
         ['role' => 'admin']
     );
 
+    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->regulatedOrganization = RegulatedOrganization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
+        'contact_person_email' => $this->regulatedOrganizationUser->email,
     ]);
-
-    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
         ['role' => 'admin']

@@ -103,7 +103,7 @@ class ManageAccounts extends Component
     public function suspendAccount(int $id, string $class)
     {
         $classname = "App\\Models\\{$class}";
-        $model = $classname::select('id', 'name')->with('users')->find($id);
+        $model = $classname::with('users')->find($id);
         $model->update(['suspended_at' => now()]);
 
         foreach ($model->users as $user) {
@@ -140,7 +140,7 @@ class ManageAccounts extends Component
     public function unsuspendAccount(int $id, string $class)
     {
         $classname = "App\\Models\\{$class}";
-        $model = $classname::select('id', 'name')->with('users')->find($id);
+        $model = $classname::with('users')->find($id);
         $model->update(['suspended_at' => null]);
 
         foreach ($model->users as $user) {
