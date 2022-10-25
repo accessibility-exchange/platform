@@ -16,42 +16,22 @@ class ResourceCollectionPolicy
         return $user->isAdministrator() ? true : null;
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return bool
-     */
     public function create(User $user): bool
     {
         return true;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  User  $user
-     * @param  ResourceCollection  $resourceCollection
-     * @return Response
-     */
     public function update(User $user, ResourceCollection $resourceCollection): Response
     {
         return $user->id === $resourceCollection->user_id
             ? Response::allow()
-            : Response::deny('You cannot edit this resource collection.');
+            : Response::deny(__('You cannot edit this resource collection.'));
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  User  $user
-     * @param  ResourceCollection  $resourceCollection
-     * @return Response
-     */
     public function delete(User $user, ResourceCollection $resourceCollection): Response
     {
         return $user->id === $resourceCollection->user_id
             ? Response::allow()
-            : Response::deny('You cannot delete this resource collection.');
+            : Response::deny(__('You cannot delete this resource collection.'));
     }
 }
