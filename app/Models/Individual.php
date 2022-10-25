@@ -122,6 +122,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         $encryptedRow
             ->addField('name')
+            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addField('region')

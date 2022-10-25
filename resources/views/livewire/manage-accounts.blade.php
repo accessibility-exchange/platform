@@ -22,7 +22,7 @@
     </div>
 
     <form class="stack" wire:submit.prevent="search">
-        <x-hearth-label for="searchQuery" :value="__('Search by organization name')" />
+        <x-hearth-label for="searchQuery" :value="__('Search by account name')" />
         <div class="repel">
             <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
@@ -32,7 +32,7 @@
     <div role="alert">
         @if ($searchQuery)
             <p class="h4">
-                {{ __(':count results for “:searchQuery', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) }}
+                {{ __(':count results for “:searchQuery”.', ['count' => $accounts->total(), 'searchQuery' => $searchQuery]) }}
             </p>
         @endif
     </div>

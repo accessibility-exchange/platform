@@ -15,11 +15,27 @@ class ManageAccounts extends Component
 
     public string $searchQuery = '';
 
+    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+
     public function render()
     {
-        $individuals = new Collection(Individual::all());
-        $organizations = new Collection(Organization::all());
-        $regulatedOrganizations = new Collection(RegulatedOrganization::all());
+        $individuals = new Collection(
+            $this->searchQuery ?
+                Individual::whereBlind('name', 'name_index', $this->searchQuery)->get() :
+                Individual::all()
+        );
+        $organizations = new Collection(
+            $this->searchQuery ?
+                Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                Organization::all()
+        );
+        $regulatedOrganizations = new Collection(
+            $this->searchQuery ?
+                RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                RegulatedOrganization::all()
+        );
 
         $accounts = $individuals
             ->merge($organizations)
