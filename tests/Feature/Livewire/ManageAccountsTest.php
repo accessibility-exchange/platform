@@ -26,6 +26,18 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
+    $this->organizationalParticipantUser = User::factory()->create(['context' => 'organization']);
+    $this->organizationalParticipant = Organization::factory()->create([
+        'oriented_at' => null,
+        'validated_at' => null,
+        'contact_person_email' => $this->organizationalParticipantUser->email,
+        'roles' => ['participant'],
+    ]);
+    $this->organizationalParticipant->users()->attach(
+        $this->organizationalParticipantUser,
+        ['role' => 'admin']
+    );
+
     $this->regulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->secondaryRegulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->regulatedOrganization = RegulatedOrganization::factory()->create([
@@ -47,6 +59,16 @@ beforeEach(function () {
     ]);
 
     $this->individual = $this->individualUser->individual;
+    $this->individual->update(['roles' => ['connector', 'participant']]);
+    $this->individual = $this->individual->fresh();
+
+    $this->individualParticipantUser = User::factory()->create([
+        'oriented_at' => null,
+    ]);
+
+    $this->individualParticipant = $this->individualParticipantUser->individual;
+    $this->individualParticipant->update(['roles' => ['participant']]);
+    $this->individualParticipant = $this->individualParticipant->fresh();
 });
 
 test('accounts appear with pending status before approval', function () {
@@ -63,8 +85,10 @@ test('accounts can be approved', function () {
 
     livewire(ManageAccounts::class)
         ->call('approveAccount', $this->organization->id, 'Organization')
+        ->call('approveAccount', $this->organizationalParticipant->id, 'Organization')
         ->call('approveAccount', $this->regulatedOrganization->id, 'RegulatedOrganization')
         ->call('approveIndividualAccount', $this->individual->id)
+        ->call('approveIndividualAccount', $this->individualParticipant->id)
         ->assertSeeInOrder([
             'Approved',
             'Approved',
@@ -74,10 +98,17 @@ test('accounts can be approved', function () {
     Notification::assertSentTo(
         $this->individualUser, function (AccountApproved $notification, $channels) {
             $this->assertStringContainsString('Your account has been approved', $notification->toMail($this->individual)->render());
-            $this->assertStringContainsString('Your account on the Accessibility Exchange has been approved', $notification->toVonage($this->individual)->content);
+            $this->assertStringContainsString('You are now able to publish your page and sign up for projects', $notification->toVonage($this->individual)->content);
             expect($notification->toArray($this->individualUser)['title'])->toEqual('Your account has been approved');
 
             return $notification->account->id === $this->individual->id;
+        });
+
+    Notification::assertSentTo(
+        $this->individualParticipantUser, function (AccountApproved $notification, $channels) {
+            $this->assertStringContainsString('You are now able to sign up for projects.', $notification->toMail($this->individualParticipant)->render());
+
+            return $notification->account->id === $this->individualParticipant->id;
         });
 
     Notification::assertSentTo(
@@ -87,6 +118,13 @@ test('accounts can be approved', function () {
             expect($notification->toArray($this->organization)['title'])->toEqual('Your account has been approved');
 
             return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertSentTo(
+        $this->organizationalParticipant, function (AccountApproved $notification, $channels) {
+            $this->assertStringContainsString('You are now able to publish your page and take part in consultations', $notification->toMail($this->organizationalParticipant)->render());
+
+            return $notification->account->id === $this->organizationalParticipant->id;
         });
 
     Notification::assertSentTo(
