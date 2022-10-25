@@ -56,7 +56,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['oriented_at' => now()]);
 
-        $individual->notify(new AccountApproved($individual));
+        $individual->user->notify(new AccountApproved($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -89,7 +89,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['suspended_at' => now()]);
 
-        $individual->notify(new AccountSuspended($individual));
+        $individual->user->notify(new AccountSuspended($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -126,7 +126,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['suspended_at' => null]);
 
-        $individual->notify(new AccountUnsuspended($individual));
+        $individual->user->notify(new AccountUnsuspended($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
