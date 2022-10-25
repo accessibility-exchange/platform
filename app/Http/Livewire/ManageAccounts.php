@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
+use App\Notifications\AccountApproved;
+use App\Notifications\AccountSuspended;
+use App\Notifications\AccountUnsuspended;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -53,7 +56,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['oriented_at' => now()]);
 
-        // TODO: Notifications
+        $individual->notify(new AccountApproved($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -70,7 +73,7 @@ class ManageAccounts extends Component
         $model = $classname::find($id);
         $model->update(['oriented_at' => now(), 'validated_at' => now()]);
 
-        // TODO: Notifications
+        $model->notify(new AccountApproved($model));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -86,7 +89,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['suspended_at' => now()]);
 
-        // TODO: Notifications
+        $individual->notify(new AccountSuspended($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -107,7 +110,7 @@ class ManageAccounts extends Component
             $user->update(['suspended_at' => now()]);
         }
 
-        // TODO: Notifications
+        $model->notify(new AccountSuspended($model));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -123,7 +126,7 @@ class ManageAccounts extends Component
         $individual = Individual::find($id);
         $individual->user->update(['suspended_at' => null]);
 
-        // TODO: Notifications
+        $individual->notify(new AccountUnsuspended($individual));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
@@ -144,7 +147,7 @@ class ManageAccounts extends Component
             $user->update(['suspended_at' => null]);
         }
 
-        // TODO: Notifications
+        $model->notify(new AccountUnsuspended($model));
 
         $this->dispatchBrowserEvent('clear-flash-message');
 
