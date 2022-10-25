@@ -151,3 +151,28 @@ test('accounts can be unsuspended', function () {
     expect($this->organizationUser->checkStatus('suspended'))->toBeFalse();
     expect($this->regulatedOrganizationUser->checkStatus('suspended'))->toBeFalse();
 });
+
+test('accounts can be searched', function () {
+    livewire(ManageAccounts::class)
+        ->assertSee($this->individual->name)
+        ->assertSee($this->organization->name)
+        ->assertSee($this->regulatedOrganization->name)
+        ->set('searchQuery', $this->individual->name)
+            ->call('search')
+            ->assertSee($this->individual->name)
+            ->assertDontSee($this->organization->name)
+            ->assertDontSee($this->regulatedOrganization->name)
+            ->assertSee('1 result')
+        ->set('searchQuery', $this->organization->name)
+            ->call('search')
+            ->assertDontSee($this->individual->name)
+            ->assertSee($this->organization->name)
+            ->assertDontSee($this->regulatedOrganization->name)
+            ->assertSee('1 result')
+        ->set('searchQuery', $this->regulatedOrganization->name)
+            ->call('search')
+            ->assertDontSee($this->individual->name)
+            ->assertDontSee($this->organization->name)
+            ->assertSee($this->regulatedOrganization->name)
+            ->assertSee('1 result');
+});
