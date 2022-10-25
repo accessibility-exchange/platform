@@ -4,10 +4,14 @@ use App\Http\Livewire\ManageAccounts;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Notifications\AccountApproved;
+use App\Notifications\AccountSuspended;
+use App\Notifications\AccountUnsuspended;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
     $this->organizationUser = User::factory()->create(['context' => 'organization']);
+    $this->secondaryOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->organization = Organization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
@@ -17,8 +21,13 @@ beforeEach(function () {
         $this->organizationUser,
         ['role' => 'admin']
     );
+    $this->organization->users()->attach(
+        $this->secondaryOrganizationUser,
+        ['role' => 'admin']
+    );
 
     $this->regulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->secondaryRegulatedOrganizationUser = User::factory()->create(['context' => 'organization']);
     $this->regulatedOrganization = RegulatedOrganization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
@@ -26,6 +35,10 @@ beforeEach(function () {
     ]);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+    $this->regulatedOrganization->users()->attach(
+        $this->secondaryRegulatedOrganizationUser,
         ['role' => 'admin']
     );
 
@@ -46,6 +59,8 @@ test('accounts appear with pending status before approval', function () {
 });
 
 test('accounts can be approved', function () {
+    Notification::fake();
+
     livewire(ManageAccounts::class)
         ->call('approveAccount', $this->organization->id, 'Organization')
         ->call('approveAccount', $this->regulatedOrganization->id, 'RegulatedOrganization')
@@ -55,9 +70,38 @@ test('accounts can be approved', function () {
             'Approved',
             'Approved',
         ]);
+
+    Notification::assertSentTo(
+        $this->individualUser, function (AccountApproved $notification, $channels) {
+            $this->assertStringContainsString('Your account has been approved', $notification->toMail($this->individual)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been approved', $notification->toVonage($this->individual)->content);
+            expect($notification->toArray($this->individualUser)['title'])->toEqual('Your account has been approved');
+
+            return $notification->account->id === $this->individual->id;
+        });
+
+    Notification::assertSentTo(
+        $this->organization, function (AccountApproved $notification, $channels) {
+            $this->assertStringContainsString('Your account has been approved', $notification->toMail($this->organization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been approved', $notification->toVonage($this->organization)->content);
+            expect($notification->toArray($this->organization)['title'])->toEqual('Your account has been approved');
+
+            return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertSentTo(
+        $this->regulatedOrganization, function (AccountApproved $notification, $channels) {
+            $this->assertStringContainsString('Your account has been approved', $notification->toMail($this->regulatedOrganization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been approved', $notification->toVonage($this->regulatedOrganization)->content);
+            expect($notification->toArray($this->regulatedOrganization)['title'])->toEqual('Your account has been approved');
+
+            return $notification->account->id === $this->regulatedOrganization->id;
+        });
 });
 
 test('accounts can be suspended', function () {
+    Notification::fake();
+
     livewire(ManageAccounts::class)
         ->call('suspendAccount', $this->organization->id, 'Organization')
         ->call('suspendAccount', $this->regulatedOrganization->id, 'RegulatedOrganization')
@@ -67,6 +111,55 @@ test('accounts can be suspended', function () {
             'Suspended',
             'Suspended',
         ]);
+
+    Notification::assertSentTo(
+        $this->individualUser, function (AccountSuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account has been suspended', $notification->toMail($this->individual)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been suspended', $notification->toVonage($this->individual)->content);
+            expect($notification->toArray($this->individualUser)['title'])->toEqual('Your account has been suspended');
+
+            return $notification->account->id === $this->individual->id;
+        });
+
+    Notification::assertSentTo(
+        $this->organization, function (AccountSuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account has been suspended', $notification->toMail($this->organization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been suspended', $notification->toVonage($this->organization)->content);
+            expect($notification->toArray($this->organization)['title'])->toEqual('Your account has been suspended');
+
+            return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertNotSentTo($this->organizationUser, AccountSuspended::class);
+
+    Notification::assertSentTo(
+        $this->secondaryOrganizationUser, function (AccountSuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account has been suspended', $notification->toMail($this->organization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been suspended', $notification->toVonage($this->organization)->content);
+            expect($notification->toArray($this->organization)['title'])->toEqual('Your account has been suspended');
+
+            return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertNotSentTo($this->regulatedOrganizationUser, AccountSuspended::class);
+
+    Notification::assertSentTo(
+        $this->secondaryRegulatedOrganizationUser, function (AccountSuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account has been suspended', $notification->toMail($this->regulatedOrganization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been suspended', $notification->toVonage($this->regulatedOrganization)->content);
+            expect($notification->toArray($this->regulatedOrganization)['title'])->toEqual('Your account has been suspended');
+
+            return $notification->account->id === $this->regulatedOrganization->id;
+        });
+
+    Notification::assertSentTo(
+        $this->regulatedOrganization, function (AccountSuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account has been suspended', $notification->toMail($this->regulatedOrganization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange has been suspended', $notification->toVonage($this->regulatedOrganization)->content);
+            expect($notification->toArray($this->regulatedOrganization)['title'])->toEqual('Your account has been suspended');
+
+            return $notification->account->id === $this->regulatedOrganization->id;
+        });
 
     $this->organizationUser = $this->organizationUser->fresh();
     $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();
@@ -95,6 +188,8 @@ test('accounts appear with suspended status when suspended', function () {
 });
 
 test('accounts can be unsuspended', function () {
+    Notification::fake();
+
     foreach ([
         $this->organization,
         $this->regulatedOrganization,
@@ -144,6 +239,55 @@ test('accounts can be unsuspended', function () {
             'Approved',
             'Approved',
         ]);
+
+    Notification::assertSentTo(
+        $this->individualUser, function (AccountUnsuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account is no longer suspended', $notification->toMail($this->individual)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange is no longer suspended', $notification->toVonage($this->individual)->content);
+            expect($notification->toArray($this->individualUser)['title'])->toEqual('Your account suspension has been lifted');
+
+            return $notification->account->id === $this->individual->id;
+        });
+
+    Notification::assertSentTo(
+        $this->organization, function (AccountUnsuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account is no longer suspended', $notification->toMail($this->organization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange is no longer suspended', $notification->toVonage($this->organization)->content);
+            expect($notification->toArray($this->organization)['title'])->toEqual('Your account suspension has been lifted');
+
+            return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertNotSentTo($this->organizationUser, AccountUnsuspended::class);
+
+    Notification::assertSentTo(
+        $this->secondaryOrganizationUser, function (AccountUnsuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account is no longer suspended', $notification->toMail($this->organization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange is no longer suspended', $notification->toVonage($this->organization)->content);
+            expect($notification->toArray($this->organization)['title'])->toEqual('Your account suspension has been lifted');
+
+            return $notification->account->id === $this->organization->id;
+        });
+
+    Notification::assertSentTo(
+        $this->regulatedOrganization, function (AccountUnsuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account is no longer suspended', $notification->toMail($this->regulatedOrganization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange is no longer suspended', $notification->toVonage($this->regulatedOrganization)->content);
+            expect($notification->toArray($this->regulatedOrganization)['title'])->toEqual('Your account suspension has been lifted');
+
+            return $notification->account->id === $this->regulatedOrganization->id;
+        });
+
+    Notification::assertNotSentTo($this->regulatedOrganizationUser, AccountUnsuspended::class);
+
+    Notification::assertSentTo(
+        $this->secondaryRegulatedOrganizationUser, function (AccountUnsuspended $notification, $channels) {
+            $this->assertStringContainsString('Your account is no longer suspended', $notification->toMail($this->regulatedOrganization)->render());
+            $this->assertStringContainsString('Your account on the Accessibility Exchange is no longer suspended', $notification->toVonage($this->regulatedOrganization)->content);
+            expect($notification->toArray($this->regulatedOrganization)['title'])->toEqual('Your account suspension has been lifted');
+
+            return $notification->account->id === $this->regulatedOrganization->id;
+        });
 
     $this->organizationUser = $this->organizationUser->fresh();
     $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();

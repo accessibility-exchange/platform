@@ -27,7 +27,7 @@ class AccountSuspended extends PlatformNotification
     {
         return (new VonageMessage)
             ->content(
-                __('Your account has been suspended.').' '.$this->getCapabilities($this->account).' '.__('Please contact us at :email or :phone if you need further assistance.',
+                __('Your account on the Accessibility Exchange has been suspended.').' '.$this->getCapabilities($this->account).' '.__('Please contact us at :email or :phone if you need further assistance.',
                     [
                         'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
                         'phone' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA'),

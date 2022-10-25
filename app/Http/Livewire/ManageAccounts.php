@@ -108,6 +108,9 @@ class ManageAccounts extends Component
 
         foreach ($model->users as $user) {
             $user->update(['suspended_at' => now()]);
+            if ($user->email !== $model->contact_person_email) {
+                $user->notify(new AccountSuspended($model));
+            }
         }
 
         $model->notify(new AccountSuspended($model));
@@ -145,6 +148,9 @@ class ManageAccounts extends Component
 
         foreach ($model->users as $user) {
             $user->update(['suspended_at' => null]);
+            if ($user->email !== $model->contact_person_email) {
+                $user->notify(new AccountUnsuspended($model));
+            }
         }
 
         $model->notify(new AccountUnsuspended($model));
