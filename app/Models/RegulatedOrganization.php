@@ -284,7 +284,7 @@ class RegulatedOrganization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(bool $ignoreSuspension = false): bool
+    public function isPublishable(): bool
     {
         $publishRules = [
             'about.en' => 'required_without:about.fr',

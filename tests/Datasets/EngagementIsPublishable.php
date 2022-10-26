@@ -44,7 +44,7 @@ dataset('engagementIsPublishable', function () {
     ]);
 
     $surveyModel = array_merge($baseModel, [
-        'format' => 'interviews',
+        'format' => 'survey',
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
         'document_languages' => ['en', 'fr'],
@@ -280,21 +280,21 @@ dataset('engagementIsPublishable', function () {
         'not publishable when survey and missing materials by date' => [
             false,
             array_replace_recursive($surveyModel, ['materials_by_date' => null]),
-            true,
+            false,
             true,
         ],
 
         'not publishable when survey and missing complete by date' => [
             false,
             array_replace_recursive($surveyModel, ['complete_by_date' => null]),
-            true,
+            false,
             true,
         ],
 
         'not publishable when survey and missing document languages' => [
             false,
             array_replace_recursive($surveyModel, ['document_languages' => null]),
-            true,
+            false,
             true,
         ],
 

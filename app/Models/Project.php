@@ -201,7 +201,7 @@ class Project extends Model
         );
     }
 
-    public function isPublishable(bool $ignoreSuspension = false): bool
+    public function isPublishable(): bool
     {
         $publishRules = [
             'contact_person_name' => 'required',

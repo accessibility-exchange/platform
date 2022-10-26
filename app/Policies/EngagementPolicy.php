@@ -26,8 +26,10 @@ class EngagementPolicy
 
     public function view(User $user, Engagement $engagement): Response
     {
-        if ($user->isSuspended() && $user->isAdministratorOf($engagement->project->projectable) && $engagement->isPublishable()) {
-            return Response::allow();
+        if ($user->isSuspended() && $engagement->isPublishable()) {
+            return $user->isAdministratorOf($engagement->project->projectable) || $user->isAdministrator()
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         if ($user->isAdministrator() && $engagement->isPublishable()) {

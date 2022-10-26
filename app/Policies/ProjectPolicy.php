@@ -37,8 +37,10 @@ class ProjectPolicy
 
     public function view(User $user, Project $project): Response
     {
-        if ($user->isSuspended() && $user->isAdministratorOf($project->projectable) && $project->isPublishable()) {
-            return Response::allow();
+        if ($user->isSuspended() && $project->isPublishable()) {
+            return $user->isAdministratorOf($project->projectable) || $user->isAdministrator()
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         if ($user->isAdministrator() && $project->isPublishable()) {

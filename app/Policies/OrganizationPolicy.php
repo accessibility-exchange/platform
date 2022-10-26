@@ -58,8 +58,10 @@ class OrganizationPolicy
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isSuspended() && ($user->isAdministratorOf($organization) || $user->isAdministrator()) && $organization->isPublishable()) {
-            return Response::allow();
+        if ($user->isSuspended() && $organization->isPublishable()) {
+            return $user->isAdministratorOf($organization) || $user->isAdministrator()
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         return $user->individual || $user->organization || $user->regulated_organization

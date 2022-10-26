@@ -293,7 +293,7 @@ class Engagement extends Model
         return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
     }
 
-    public function isPublishable(bool $ignoreSuspension = false): bool
+    public function isPublishable(): bool
     {
         if (! $this->hasProvidedRequiredInformation()) {
             return false;

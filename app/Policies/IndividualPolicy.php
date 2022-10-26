@@ -51,8 +51,10 @@ class IndividualPolicy
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isSuspended() && $user->id === $model->user_id && $model->isPublishable()) {
-            return Response::allow();
+        if ($user->isSuspended() && $model->isPublishable()) {
+            return $user->id === $model->user_id
+                ? Response::allow()
+                : Response::denyAsNotFound();
         }
 
         return $user->isAdministrator() || $user->individual || $user->organization || $user->regulated_organization
