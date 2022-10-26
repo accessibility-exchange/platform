@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\IndividualRole;
-use App\Models\Scopes\UserNotSuspendedScope;
+use App\Models\Scopes\IndividualUserNotSuspendedScope;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -121,7 +121,7 @@ class Individual extends Model implements CipherSweetEncrypted
 
     protected static function booted()
     {
-        static::addGlobalScope(new UserNotSuspendedScope);
+        static::addGlobalScope(new IndividualUserNotSuspendedScope);
     }
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void

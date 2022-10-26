@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class UserNotSuspendedScope implements Scope
+class IndividualUserNotSuspendedScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
         if (auth()->hasUser() && ! auth()->user()->isAdministrator()) {
             $builder->whereHas('user', function ($userBuilder) {
-                $userBuilder->whereNull('suspended_at');
+                $userBuilder
+                    ->where('id', auth()->user()->id)
+                    ->orWhereNull('suspended_at');
             });
         }
     }

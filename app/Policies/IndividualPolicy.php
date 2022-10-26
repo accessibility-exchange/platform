@@ -11,6 +11,15 @@ class IndividualPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, string $ability): null|Response
+    {
+        if ($user->isSuspended() && $ability !== 'view') {
+            return Response::deny(__('This page is not available because your account has been suspended.'));
+        }
+
+        return null;
+    }
+
     public function viewAny(User $user): Response
     {
         return
@@ -36,6 +45,10 @@ class IndividualPolicy
             return $user->id === $model->user_id && $model->isPublishable()
                 ? Response::allow()
                 : Response::denyAsNotFound();
+        }
+
+        if ($user->isSuspended() && $user->id === $model->user_id && $model->isPublishable()) {
+            return Response::allow();
         }
 
         return $user->individual || $user->organization || $user->regulated_organization

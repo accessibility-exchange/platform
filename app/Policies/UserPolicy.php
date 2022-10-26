@@ -10,6 +10,13 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, string $ability): null|Response
+    {
+        if ($user->isSuspended()) {
+            return Response::deny(__('This page is not available because your account has been suspended.'));
+        }
+    }
+
     public function selectRole(User $user): Response
     {
         return ! is_null($user->individual)
