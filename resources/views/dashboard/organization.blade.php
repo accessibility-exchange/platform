@@ -1,89 +1,35 @@
-<div class="columns">
-    <div class="column stack">
-        <div class="stack">
-            <h2>{{ __('Getting started') }}</h2>
-            @if ($memberable && !$memberable->hasAddedDetails())
-                <x-expander level="3">
-                    <x-slot name="summary">{{ __('Create your organization page') }}</x-slot>
-                    <div class="stack">
-                        <p>{{ __('Share more about your organization so that individuals can get to know you.') }}</p>
-                        <p><a class="button"
-                                href="{{ localized_route('organizations.show-language-selection', $memberable) }}">{{ __('Create your page') }}</a>
-                        </p>
-                    </div>
-                </x-expander>
-            @elseif($memberable)
-                <x-expander level="3">
-                    <x-slot name="summary">{{ __('Create a project page') }}</x-slot>
-                    <div class="stack">
-                        <p>{{ __('Create a new project page so that individuals can begin to express their interest in working with you.') }}
-                        </p>
-                        <p><a class="button"
-                                href="{{ $memberable->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create project page') }}</a>
-                        </p>
-                    </div>
-                </x-expander>
-            @endif
-        </div>
-
-        @if ($memberable?->hasAddedDetails())
-            <div class="stack">
-                <h2>{{ __('My organization page') }}</h2>
-                <p>
-                    <a href="{{ localized_route('organizations.show', $memberable) }}"><strong>{{ __('Visit my organization page') }}</strong><br />
+<div class="with-sidebar">
+    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+        <h2>{{ __('Quick Links') }}</h2>
+        <ul class="link-list" role="list">
+            @can('view', $memberable)
+                <li>
+                    <a
+                        href="{{ $memberable->checkStatus('draft') && $user->can('edit', $memberable) ? localized_route('organizations.edit', $memberable) : localized_route('organizations.show', $memberable) }}">{{ __('My organization’s page') }}</a>
+                </li>
+            @endcan
+            @can('viewAny', App\Models\Project::class)
+                @if ($memberable->isConnector() || $memberable->isConsultant())
+                    <li>
+                        <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
+                    </li>
+                @endif
+                @if ($memberable->isParticipant())
+                    <li>
                         <a
-                            href="{{ localized_route('organizations.edit', $memberable) }}">{{ __('Edit my organization page') }}</a>
-                </p>
-            </div>
-
-            @if ($memberable)
-                <div class="column stack">
-                    @include('dashboard.partials.notifications', [
-                        'notifications' => $user->allUnreadNotifications(),
-                    ])
-                </div>
-            @endif
-
-            <div class="stack">
-                <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
-            </div>
-        @endif
-
+                            href="{{ !$memberable->isConnector() && !$memberable->isConsultant() ? localized_route('projects.my-projects') : localized_route('projects.my-participating-projects') }}">{{ __('Projects I’m participating in') }}</a>
+                    </li>
+                @endif
+                <li>
+                    <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
+                </li>
+            @endcan
+        </ul>
     </div>
 
-    <div class="column stack">
-        @if ($memberable?->hasAddedDetails())
-            <div class="stack">
-                <h2>{{ __('My active projects') }}</h2>
-                @if (count($memberable->projects) > 0)
-                    @foreach ($memberable->projects as $project)
-                        <x-card.project :model="$project" />
-                    @endforeach
-                    <p><a href="{{ localized_route('projects.my-projects') }}">{{ __('Show all my projects') }}</a>
-                    </p>
-                @else
-                    <p>{!! __('You have no active projects right now. :action', [
-                        'action' =>
-                            '<strong><a href="' .
-                            localized_route('projects.show-language-selection') .
-                            '">' .
-                            __('Create your first project.') .
-                            '</a></strong>',
-                    ]) !!}</p>
-                @endif
-            </div>
-        @else
-            @if ($memberable)
-                <div class="column stack">
-                    @include('dashboard.partials.notifications', [
-                        'notifications' => $user->allUnreadNotifications(),
-                    ])
-                </div>
-            @endif
-
-            <div class="stack">
-                <h2>{{ __('Upcoming meetings') }} <span class="badge">0</span></h2>
-            </div>
-        @endif
+    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+        @include('dashboard.partials.notifications', [
+            'notifications' => $user->allUnreadNotifications(),
+        ])
     </div>
 </div>

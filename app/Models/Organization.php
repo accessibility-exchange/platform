@@ -322,7 +322,7 @@ class Organization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(): bool
+    public function isPublishable(bool $ignoreSuspension = false): bool
     {
         $publishRules = [
             'about.en' => 'required_without:about.fr',

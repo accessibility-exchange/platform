@@ -348,7 +348,7 @@ class Individual extends Model implements CipherSweetEncrypted
      *
      * @return bool
      */
-    public function isPublishable(): bool
+    public function isPublishable(bool $ignoreSuspension = false): bool
     {
         $publishRules = [
             'bio.*' => 'required',

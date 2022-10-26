@@ -13,7 +13,9 @@ class IndividualUserNotSuspendedScope implements Scope
         if (auth()->hasUser() && ! auth()->user()->isAdministrator()) {
             $builder->whereHas('user', function ($userBuilder) {
                 $userBuilder
+                    // Individual should be shown/included in query results if it belongs to the current user
                     ->where('id', auth()->user()->id)
+                    // Individual should be shown/included in query results if it belongs to a user who is not suspended
                     ->orWhereNull('suspended_at');
             });
         }

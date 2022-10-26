@@ -103,6 +103,8 @@
     --theme-banner-background: var(--color-graphite-7);
     --theme-banner-border: var(--color-graphite-6);
     --theme-banner-shadow: 0 0 10px rgb(0 0 0 / 50%);
+    --theme-banner-error-background: var(--color-red-2);
+    --theme-banner-error-color: var(--color-black);
     --theme-brand-color: white;
     --theme-nav-background-mobile: var(--color-graphite-8);
     --theme-nav-background-hover-mobile: var(--color-graphite-7);

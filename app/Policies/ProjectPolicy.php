@@ -11,9 +11,17 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user): null|bool
+    public function before(User $user, string $ability): null|Response
     {
-        return $user->isAdministrator() ? true : null;
+        if ($user->isAdministrator() && $ability === 'viewAny') {
+            return Response::allow();
+        }
+
+        if ($user->isSuspended() && $ability !== 'view') {
+            return Response::deny(__('This page is not available because your account has been suspended.'));
+        }
+
+        return null;
     }
 
     public function viewAny(User $user): Response
@@ -25,6 +33,14 @@ class ProjectPolicy
 
     public function view(User $user, Project $project): Response
     {
+        if ($user->isSuspended() && $user->isAdministratorOf($project->projectable) && $project->isPublishable()) {
+            return Response::allow();
+        }
+
+        if ($user->isAdministrator() && $project->isPublishable()) {
+            return Response::allow();
+        }
+
         return
             $user->individual || $user->organization || $user->regulated_organization
             && $project->checkStatus('published') || ($user->can('update', $project) && $project->isPublishable())

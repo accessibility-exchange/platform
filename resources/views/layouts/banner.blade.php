@@ -14,10 +14,9 @@
         </div>
     </div>
     @env('dev')
-    <div
-        class="flex h-auto w-full items-center border-x-0 border-t-2 border-b-0 border-solid border-t-graphite-5 bg-yellow-3 p-4">
+    <div class="banner banner--warning">
         <div class="center center:wide">
-            <p class="flex flex-wrap items-center justify-center text-xl">
+            <p>
                 <x-heroicon-s-exclamation-circle class="mr-2 h-6 w-6" /> <span><strong>CAUTION!</strong> This website is
                     under
                     active development. The database is reset nightly, and data you enter will not be preserved.</span>
@@ -25,4 +24,18 @@
         </div>
     </div>
     @endenv
+    @if (auth()->hasUser() &&
+        auth()->user()->isSuspended())
+        <div class="banner banner--error">
+            <div class="center center:wide">
+                <p>
+                    <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" /> <span>{!! Str::inlineMarkdown(
+                        __('Your account has been suspended. Please [contact](:url) us if you need further assistance.', [
+                            'url' => '#contact',
+                        ]),
+                    ) !!}</span>
+                </p>
+            </div>
+        </div>
+    @endif
 </header>

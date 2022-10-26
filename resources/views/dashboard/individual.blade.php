@@ -5,20 +5,22 @@
             @if ($user->individual->isConnector() || $user->individual->isConsultant())
                 <li>
                     <a
-                        href="{{ $user->individual->checkStatus('draft') ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">Public
-                        page</a>
+                        href="{{ $user->individual->checkStatus('draft') && $user->can('edit', $user->individual) ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">{{ __('Public page') }}</a>
                 </li>
-                <li>
-                    <a
-                        href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
-                </li>
+                @can('viewAny', App\Models\Project::class)
+                    <li>
+                        <a
+                            href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
+                    </li>
+                @endcan
             @endif
-            @if ($user->individual->isParticipant())
-                <li>
-                    <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m participating in') }}</a>
-                </li>
-            @endif
-
+            @can('viewAny', App\Models\Project::class)
+                @if ($user->individual->isParticipant())
+                    <li>
+                        <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m participating in') }}</a>
+                    </li>
+                @endif
+            @endcan
         </ul>
     </div>
 

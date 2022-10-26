@@ -1,0 +1,22 @@
+.banner {
+    @apply flex h-auto w-full items-center p-4;
+}
+
+.banner p {
+    @apply flex flex-wrap items-center justify-center text-xl;
+}
+
+.banner a,
+.banner a:visited {
+    color: inherit;
+}
+
+.banner--error {
+    background-color: var(--banner-error-background);
+    color: var(--banner-error-color);
+}
+
+.banner--warning {
+    background-color: var(--banner-warning-background);
+    color: var(--banner-warning-color);
+}

@@ -13,7 +13,7 @@ class RegulatedOrganizationPolicy
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isAdministrator() && $ability === 'view') {
+        if ($user->isAdministrator() && $ability === 'viewAny') {
             return Response::allow();
         }
 
@@ -49,12 +49,12 @@ class RegulatedOrganizationPolicy
         }
 
         if ($regulatedOrganization->checkStatus('draft')) {
-            return $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()
+            return ($user->isAdministratorOf($regulatedOrganization) || $user->isAdministrator()) && $regulatedOrganization->isPublishable()
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isSuspended() && $user->isAdministratorOf($regulatedOrganization) && $regulatedOrganization->isPublishable()) {
+        if ($user->isSuspended() && ($user->isAdministratorOf($regulatedOrganization) || $user->isAdministrator()) && $regulatedOrganization->isPublishable()) {
             return Response::allow();
         }
 

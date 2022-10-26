@@ -11,13 +11,25 @@ class EngagementPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user): null|bool
+    public function before(User $user, string $ability): null|Response
     {
-        return $user->isAdministrator() ? true : null;
+        if ($user->isSuspended() && $ability !== 'view') {
+            return Response::deny(__('This page is not available because your account has been suspended.'));
+        }
+
+        return null;
     }
 
     public function view(User $user, Engagement $engagement): Response
     {
+        if ($user->isSuspended() && $user->isAdministratorOf($engagement->project->projectable) && $engagement->isPublishable()) {
+            return Response::allow();
+        }
+
+        if ($user->isAdministrator() && $engagement->isPublishable()) {
+            return Response::allow();
+        }
+
         return
             ($user->individual || $user->organization || $user->regulated_organization)
             && ($engagement->checkStatus('published') || ($user->can('update', $engagement) && $engagement->isPublishable()))

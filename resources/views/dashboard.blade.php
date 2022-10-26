@@ -25,16 +25,24 @@
             {{ __('My dashboard') }}
         </h1>
         @if ($user->individual)
-            <p><strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}. <a
-                    href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit roles') }}</a></p>
+            <p>
+                <strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}
+                <a class="cta secondary ml-2" href="{{ localized_route('individuals.show-role-edit') }}">
+                    <x-heroicon-o-pencil class="mr-1 h-5 w-5" role="presentation" aria-hidden="true" />
+                    {{ __('Edit roles') }}
+                </a>
+            </p>
         @endif
 
         @if ($user->organization)
-            <p><strong>{{ __('Roles:') }}</strong>
+            <p>
+                <strong>{{ __('Roles:') }}</strong>
                 {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}
-                .
-                <a
-                    href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">{{ __('Edit roles') }}</a>
+                <a class="cta secondary ml-2"
+                    href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
+                    <x-heroicon-o-pencil class="mr-1 h-5 w-5" role="presentation" aria-hidden="true" />
+                    {{ __('Edit roles') }}
+                </a>
             </p>
         @endif
     </x-slot>
