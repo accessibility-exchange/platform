@@ -1,9 +1,9 @@
-<div class="with-sidebar">
+<div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
         @if ($user->individual->isConnector() || $user->individual->isConsultant())
             <li>
                 <a
-                    href="{{ $user->individual->checkStatus('draft') && $user->can('edit', $user->individual) ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">{{ __('Public page') }}</a>
+                    href="{{ $user->individual->checkStatus('draft') ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">{{ __('Public page') }}</a>
             </li>
             @can('viewAny', App\Models\Project::class)
                 <li>

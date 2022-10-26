@@ -46,7 +46,7 @@ class IndividualPolicy
         }
 
         if ($model->checkStatus('draft')) {
-            return $user->id === $model->user_id && $model->isPublishable()
+            return ($user->id === $model->user_id || $user->isAdministrator()) && $model->isPublishable()
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
@@ -55,7 +55,7 @@ class IndividualPolicy
             return Response::allow();
         }
 
-        return $user->individual || $user->organization || $user->regulated_organization
+        return $user->isAdministrator() || $user->individual || $user->organization || $user->regulated_organization
             ? Response::allow()
             : Response::deny();
     }

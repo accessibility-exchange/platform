@@ -1,4 +1,4 @@
-<div class="with-sidebar">
+<div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
         @can('view', $memberable)
             <li>
