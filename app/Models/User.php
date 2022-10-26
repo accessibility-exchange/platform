@@ -416,6 +416,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return ! is_null($this->two_factor_secret);
     }
 
+    public function isSuspended(): bool
+    {
+        return ! is_null($this->suspended_at);
+    }
+
     public function isAdministrator(): bool
     {
         return $this->context === 'administrator';
