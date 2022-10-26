@@ -11,9 +11,17 @@ class OrganizationPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user): null|bool
+    public function before(User $user, string $ability): null|Response
     {
-        return $user->isAdministrator() ? true : null;
+        if ($user->isAdministrator() && $ability === 'view') {
+            return Response::allow();
+        }
+
+        if ($user->isSuspended() && $ability !== 'view') {
+            return Response::deny(__('This page is not available because your account has been suspended.'));
+        }
+
+        return null;
     }
 
     public function viewAny(User $user): Response
@@ -44,6 +52,10 @@ class OrganizationPolicy
             return $user->isAdministratorOf($organization) && $organization->isPublishable()
                 ? Response::allow()
                 : Response::denyAsNotFound();
+        }
+
+        if ($user->isSuspended() && $user->isAdministratorOf($organization) && $organization->isPublishable()) {
+            return Response::allow();
         }
 
         return $user->individual || $user->organization || $user->regulated_organization

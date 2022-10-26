@@ -11,7 +11,11 @@ class OrganizationNotSuspendedScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         if (auth()->hasUser() && ! auth()->user()->isAdministrator()) {
-            $builder->whereNull('suspended_at');
+            $builder
+                ->whereHas('users', function (Builder $userQuery) {
+                    $userQuery->where('user_id', auth()->user()->id);
+                })
+                ->orWhereNull('suspended_at');
         }
     }
 }
