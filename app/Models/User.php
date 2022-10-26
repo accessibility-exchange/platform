@@ -459,15 +459,15 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $notifications = new Collection();
 
         if ($this->context === 'organization') {
-            $notifications = $notifications->merge($this->organization->unreadNotifications);
+            $notifications = $notifications->merge($this->organization?->unreadNotifications ?? []);
 
-            foreach ($this->organization->projects as $project) {
+            foreach ($this->organization?->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } elseif ($this->context === 'regulated-organization') {
-            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications);
+            $notifications = $notifications->merge($this->regulatedOrganization?->unreadNotifications ?? []);
 
-            foreach ($this->regulatedOrganization->projects as $project) {
+            foreach ($this->regulatedOrganization?->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } else {
