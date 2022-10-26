@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Str;
 
 class OrganizationPolicy
 {
@@ -18,7 +19,10 @@ class OrganizationPolicy
         }
 
         if ($user->isSuspended() && $ability !== 'view') {
-            return Response::deny(__('This page is not available because your account has been suspended.'));
+            return Response::deny(Str::markdown(
+                __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
+                .contact_information()
+            ));
         }
 
         return null;
