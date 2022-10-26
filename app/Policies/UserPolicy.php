@@ -15,6 +15,8 @@ class UserPolicy
         if ($user->isSuspended()) {
             return Response::deny(__('This page is not available because your account has been suspended.'));
         }
+
+        return null;
     }
 
     public function selectRole(User $user): Response
