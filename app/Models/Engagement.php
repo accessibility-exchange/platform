@@ -191,7 +191,7 @@ class Engagement extends Model
         );
     }
 
-    public function hasProvidedRequiredInformation(): bool
+    public function isPreviewable(): bool
     {
         $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];
 
@@ -281,10 +281,6 @@ class Engagement extends Model
             return false;
         }
 
-        if (! $this->project->projectable->checkStatus('approved')) {
-            return false;
-        }
-
         return true;
     }
 
@@ -295,11 +291,15 @@ class Engagement extends Model
 
     public function isPublishable(): bool
     {
-        if (! $this->hasProvidedRequiredInformation()) {
+        if (! $this->isPreviewable()) {
             return false;
         }
 
         if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
+            return false;
+        }
+
+        if (! $this->project->projectable->checkStatus('approved')) {
             return false;
         }
 

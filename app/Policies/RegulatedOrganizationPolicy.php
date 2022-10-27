@@ -26,7 +26,7 @@ class RegulatedOrganizationPolicy
         return null;
     }
 
-    public function viewAny(User $user): Response
+    public function viewAny(User $user): bool
     {
         return $this->canViewPublishedContent($user);
     }
@@ -52,7 +52,7 @@ class RegulatedOrganizationPolicy
             return Response::denyAsNotFound();
         }
 
-        // Suspended individual users can view or preview their own regulated organizations.
+        // Suspended users can view or preview their own regulated organizations.
         if ($user->isSuspended() && $regulatedOrganization->isPreviewable()) {
             return $user->isAdministratorOf($regulatedOrganization) || $user->isAdministrator()
                 ? Response::allow()

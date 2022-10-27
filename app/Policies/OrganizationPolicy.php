@@ -52,7 +52,7 @@ class OrganizationPolicy
             return Response::denyAsNotFound();
         }
 
-        // Suspended individual users can view or preview their own organizations.
+        // Suspended users can view or preview their own organizations.
         if ($user->isSuspended() && $organization->isPreviewable()) {
             return $user->isMemberOf($organization)
                 ? Response::allow()

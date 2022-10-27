@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Engagement;
 use App\Models\User;
+use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class EngagementPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewPublishedContent;
 
     public function before(User $user, string $ability): null|Response
     {
@@ -26,21 +28,36 @@ class EngagementPolicy
 
     public function view(User $user, Engagement $engagement): Response
     {
+        // User can't view engagement by organization or regulated organization which they have blocked.
+        if ($engagement->project->projectable->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
+                'organization' => '<strong>'.$engagement->project->projectable->getTranslation('name', locale()).'</strong>',
+                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
+            ]));
+        }
+
+        // Previewable drafts can be viewed by their team members or platform administrators.
+        if ($engagement->checkStatus('draft')) {
+            if ($engagement->isPreviewable()) {
+                return $user->isMemberOf($engagement->project->projectable) || $user->isAdministrator()
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+            }
+
+            return Response::denyAsNotFound();
+        }
+
+        // Suspended users can view or preview their own engagements.
         if ($user->isSuspended() && $engagement->isPublishable()) {
-            return $user->isAdministratorOf($engagement->project->projectable) || $user->isAdministrator()
+            return $user->isAdministratorOf($engagement->project->projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isAdministrator() && $engagement->isPublishable()) {
-            return Response::allow();
-        }
-
-        return
-            ($user->individual || $user->organization || $user->regulated_organization)
-            && ($engagement->checkStatus('published') || ($user->can('update', $engagement) && $engagement->isPublishable()))
-                ? Response::allow()
-                : Response::denyAsNotFound();
+        // Catch-all rule for published project pages.
+        return $this->canViewPublishedContent($user)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     public function update(User $user, Engagement $engagement): Response

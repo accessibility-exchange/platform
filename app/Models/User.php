@@ -327,7 +327,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->regulatedOrganizations->first();
     }
 
-    public function projectable(): Organization|RegulatedOrganization|null
+    public function getProjectableAttribute(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
             return $this->organization;
@@ -342,8 +342,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 
     public function projects(): Collection
     {
-        if ($this->projectable()->projects->isNotEmpty()) {
-            return $this->projectable()->projects;
+        if ($this->projectable->projects->isNotEmpty()) {
+            return $this->projectable->projects;
         }
 
         return new Collection([]);

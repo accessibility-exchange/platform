@@ -201,9 +201,9 @@ class Project extends Model
         );
     }
 
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'contact_person_name' => 'required',
             'contact_person_email' => 'nullable|required_without:contact_person_phone|required_if:preferred_contact_method,email',
             'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
@@ -231,12 +231,21 @@ class Project extends Model
         ];
 
         try {
-            Validator::validate($this->toArray(), $publishRules);
+            Validator::validate($this->toArray(), $rules);
         } catch (ValidationException $exception) {
             return false;
         }
 
         if ($this->projectable instanceof RegulatedOrganization && ! $this->impacts()->count()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->isPreviewable()) {
             return false;
         }
 

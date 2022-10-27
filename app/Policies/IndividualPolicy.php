@@ -58,7 +58,7 @@ class IndividualPolicy
             return Response::denyAsNotFound();
         }
 
-        // Suspended individual users can view or preview their own individual pages.
+        // Suspended users can view or preview their own individual pages.
         if ($user->isSuspended() && $individual->isPreviewable()) {
             return $user->id === $individual->user_id
                 ? Response::allow()

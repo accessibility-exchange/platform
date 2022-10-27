@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Str;
@@ -11,13 +12,10 @@ use Illuminate\Support\Str;
 class ProjectPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewPublishedContent;
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isAdministrator() && $ability === 'viewAny') {
-            return Response::allow();
-        }
-
         if ($user->isSuspended() && $ability !== 'view') {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
@@ -28,35 +26,48 @@ class ProjectPolicy
         return null;
     }
 
-    public function viewAny(User $user): Response
+    public function viewAny(User $user): bool
     {
-        return $user->individual || $user->organization || $user->regulated_organization
-            ? Response::allow()
-            : Response::deny();
+        return $this->canViewPublishedContent($user);
     }
 
     public function view(User $user, Project $project): Response
     {
-        if ($user->isSuspended() && $project->isPublishable()) {
-            return $user->isAdministratorOf($project->projectable) || $user->isAdministrator()
+        // User can't view project by organization or regulated organization which they have blocked.
+        if ($project->projectable->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
+                'organization' => '<strong>'.$project->projectable->getTranslation('name', locale()).'</strong>',
+                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
+            ]));
+        }
+
+        // Previewable drafts can be viewed by their team members or platform administrators.
+        if ($project->checkStatus('draft')) {
+            if ($project->isPreviewable()) {
+                return $user->isMemberOf($project->projectable) || $user->isAdministrator()
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+            }
+
+            return Response::denyAsNotFound();
+        }
+
+        // Suspended users can view or preview their own projects.
+        if ($user->isSuspended() && $project->isPreviewable()) {
+            return $user->isMemberOf($project->projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isAdministrator() && $project->isPublishable()) {
-            return Response::allow();
-        }
-
-        return
-            $user->individual || $user->organization || $user->regulated_organization
-            && $project->checkStatus('published') || ($user->can('update', $project) && $project->isPublishable())
-                ? Response::allow()
-                : Response::denyAsNotFound();
+        // Catch-all rule for published project pages.
+        return $this->canViewPublishedContent($user)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     public function create(User $user): bool
     {
-        return ! is_null($user->projectable()) && $user->isAdministratorOf($user->projectable());
+        return $user->projectable && $user->isAdministratorOf($user->projectable);
     }
 
     public function update(User $user, Project $project): bool
