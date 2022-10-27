@@ -1,6 +1,20 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ $regulatedOrganization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
+        @if (auth()->hasUser() &&
+            auth()->user()->isAdministrator() &&
+            $regulatedOrganization->checkStatus('suspended'))
+            @push('banners')
+                <div class="banner banner--error">
+                    <div class="center center:wide">
+                        <p>
+                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            <span>{{ __('This account has been suspended.') }}</span>
+                        </p>
+                    </div>
+                </div>
+            @endpush
+        @endif
         <div class="stack">
             <h1 class="repel" id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
