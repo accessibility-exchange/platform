@@ -61,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
                     'required',
                     'string',
                     new Enum(UserContext::class),
-                    Rule::notIn([UserContext::Administrator]),
+                    Rule::notIn([UserContext::Administrator->value]),
                 ],
                 'extra_attributes' => 'nullable|array',
                 'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],

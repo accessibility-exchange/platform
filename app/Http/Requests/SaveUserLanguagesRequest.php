@@ -21,7 +21,7 @@ class SaveUserLanguagesRequest extends FormRequest
                 'nullable',
                 'string',
                 new Enum(UserContext::class),
-                Rule::notIn([UserContext::Administrator]),
+                Rule::notIn([UserContext::Administrator->value]),
             ],
             'role' => [
                 'nullable',

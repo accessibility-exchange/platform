@@ -21,7 +21,7 @@ class SaveUserContextRequest extends FormRequest
                 'required',
                 'string',
                 new Enum(UserContext::class),
-                Rule::notIn([UserContext::Administrator]),
+                Rule::notIn([UserContext::Administrator->value]),
             ],
         ];
     }
