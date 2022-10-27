@@ -85,6 +85,8 @@ test('individuals can edit their roles', function () {
 
     $individual = $individual->fresh();
 
+    expect($individual->isPreviewAble())->toBeFalse();
+    expect($individual->isPublishable())->toBeFalse();
     expect($individual->checkStatus('published'))->toBeFalse();
 });
 
