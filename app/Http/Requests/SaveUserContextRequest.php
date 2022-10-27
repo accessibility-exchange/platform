@@ -2,42 +2,30 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserContext;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class SaveUserContextRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             'context' => [
                 'required',
                 'string',
-                Rule::in(config('app.contexts')),
+                new Enum(UserContext::class),
+                Rule::notIn([UserContext::Administrator->value]),
             ],
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
     public function messages(): array
     {
         return [

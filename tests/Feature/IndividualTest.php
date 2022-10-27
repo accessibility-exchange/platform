@@ -23,6 +23,7 @@ use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\EthnoracialIdentitySeeder;
 use Database\Seeders\GenderIdentitySeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\IndigenousIdentitySeeder;
 use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 
@@ -84,6 +85,8 @@ test('individuals can edit their roles', function () {
 
     $individual = $individual->fresh();
 
+    expect($individual->isPreviewAble())->toBeFalse();
+    expect($individual->isPublishable())->toBeFalse();
     expect($individual->checkStatus('published'))->toBeFalse();
 });
 
@@ -109,6 +112,9 @@ test('users can create individual pages', function () {
     $this->assertAuthenticated();
 
     $user = Auth::user();
+    $user->update(['oriented_at' => now()]);
+
+    $user = $user->fresh();
     $individual = $user->individual;
 
     $individual->fill([
@@ -810,13 +816,18 @@ test('individual pages cannot be published by other users', function () {
     $this->assertTrue($individual->checkStatus('draft'));
 });
 
-test('individual test isPublishable()', function ($expected, $data, $connections = []) {
+test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
     $this->seed(AgeBracketSeeder::class);
     $this->seed(AreaTypeSeeder::class);
     $this->seed(IndigenousIdentitySeeder::class);
     $this->seed(LivedExperienceSeeder::class);
 
-    $individual = Individual::factory()->create($data);
+    $individualUser = User::factory()->create();
+    $individualUser->update($userData);
+    $individualUser = $individualUser->fresh();
+    $individual = $individualUser->individual;
+    $individual->update($data);
+    $individual = $individual->fresh();
 
     foreach ($connections as $connection) {
         if ($connection === 'livedExperienceConnections') {

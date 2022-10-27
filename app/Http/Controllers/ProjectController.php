@@ -23,7 +23,7 @@ class ProjectController extends Controller
 {
     public function showContextSelection(): View
     {
-        $projectable = Auth::user()->projectable();
+        $projectable = Auth::user()->projectable;
 
         return view('projects.show-context-selection', [
             'projectable' => $projectable,
@@ -65,7 +65,7 @@ class ProjectController extends Controller
     public function create(): View
     {
         return view('projects.create', [
-            'projectable' => Auth::user()->projectable(),
+            'projectable' => Auth::user()->projectable,
         ]);
     }
 
@@ -211,7 +211,7 @@ class ProjectController extends Controller
     {
         return view('projects.manage-estimates-and-agreements', [
             'project' => $project,
-            'engagements' => $project->allEngagements->filter(fn ($engagement) => $engagement->hasProvidedRequiredInformation()),
+            'engagements' => $project->allEngagements->filter(fn ($engagement) => $engagement->isPreviewable()),
         ]);
     }
 

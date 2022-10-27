@@ -111,6 +111,14 @@ dataset('regulatedOrganizationIsPublishable', function () {
             $baseModel,
             ['sector'],
         ],
+        'not publishable when pending approval' => [
+            false,
+            array_replace_recursive($baseModel, [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ]),
+            ['sector'],
+        ],
         'publishable without accessibility_and_inclusion_links' => [
             true,
             array_replace_recursive($baseModel, [

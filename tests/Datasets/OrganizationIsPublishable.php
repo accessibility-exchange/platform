@@ -274,6 +274,17 @@ dataset('organizationIsPublishable', function () {
                 'areaTypes',
             ],
         ],
+        'not publishable when pending approval' => [
+            false,
+            array_replace_recursive($baseModel, [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ]),
+            [
+                'areaTypes',
+                'livedExperiences',
+            ],
+        ],
         'publishable with all expected values' => [
             true,
             array_replace_recursive($baseModel, [

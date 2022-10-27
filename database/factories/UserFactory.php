@@ -38,6 +38,7 @@ class UserFactory extends Factory
             'preferred_notification_method' => 'email',
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
+            'oriented_at' => now(),
         ];
     }
 }

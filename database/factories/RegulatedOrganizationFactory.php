@@ -28,6 +28,8 @@ class RegulatedOrganizationFactory extends Factory
             'service_areas' => ['NS'],
             'contact_person_email' => $this->faker->email,
             'contact_person_name' => $this->faker->name,
+            'oriented_at' => now(),
+            'validated_at' => now(),
         ];
     }
 }

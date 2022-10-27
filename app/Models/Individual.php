@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\IndividualRole;
+use App\Models\Scopes\IndividualUserNotSuspendedScope;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -118,10 +119,16 @@ class Individual extends Model implements CipherSweetEncrypted
         'other_access_need',
     ];
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new IndividualUserNotSuspendedScope);
+    }
+
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
         $encryptedRow
             ->addField('name')
+            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addField('region')
@@ -336,14 +343,9 @@ class Individual extends Model implements CipherSweetEncrypted
             ->orderBy('start_date');
     }
 
-    /**
-     * Is the individual publishable?
-     *
-     * @return bool
-     */
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'bio.*' => 'required',
             'connection_lived_experience' => [
                 Rule::requiredIf(fn () => $this->isConnector()),
@@ -373,7 +375,7 @@ class Individual extends Model implements CipherSweetEncrypted
 
         if ($this->isConnector() || $this->isConsultant()) {
             try {
-                Validator::validate($this->toArray(), $publishRules);
+                Validator::validate($this->toArray(), $rules);
             } catch (ValidationException $exception) {
                 return false;
             }
@@ -394,6 +396,23 @@ class Individual extends Model implements CipherSweetEncrypted
                 if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isPublishable(): bool
+    {
+        if ($this->isConnector() || $this->isConsultant()) {
+            if (! $this->isPreviewable()) {
+                return false;
+            }
+
+            if (! $this->user->checkStatus('approved')) {
+                return false;
             }
 
             return true;

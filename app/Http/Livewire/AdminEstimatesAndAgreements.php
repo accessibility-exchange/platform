@@ -17,10 +17,13 @@ class AdminEstimatesAndAgreements extends Component
 
     public string $searchQuery = '';
 
+    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+
     public function render()
     {
         return view('livewire.admin-estimates-and-agreements', [
             'projects' => Project::whereNotNull('estimate_requested_at')
+                    ->with('projectable')
                     ->when($this->searchQuery, function ($query, $searchQuery) {
                         $query->whereHasMorph(
                             'projectable',

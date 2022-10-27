@@ -140,9 +140,7 @@ test('users can register via invitation to (regulated) organization', function (
 
     expect($user->teamInvitation()->id)->toEqual($invitation->id);
 
-    $user->finished_introduction = 1;
-    $user->save();
-
+    $user->update(['finished_introduction' => 1]);
     $user = $user->fresh();
 
     $response = $this->actingAs($user)->get(localized_route('dashboard'));

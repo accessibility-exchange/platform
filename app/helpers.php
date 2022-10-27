@@ -179,3 +179,20 @@ if (! function_exists('context_from_model')) {
         return Str::kebab(class_basename($model));
     }
 }
+
+if (! function_exists('contact_information')) {
+    function contact_information(): string
+    {
+        $email = settings()->get('email', 'support@accessibilityexchange.ca');
+        $phone = phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA');
+
+        return Str::markdown(
+            '**'
+            .__('Email').':** ['.$email.'](mailto:'.$email.')  '
+            ."\n"
+            .'**'.__('Call or :vrs', [
+                'vrs' => '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">'.__('VRS').'</a>',
+            ]).':** '.$phone
+        );
+    }
+}

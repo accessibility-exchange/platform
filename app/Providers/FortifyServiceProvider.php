@@ -7,6 +7,7 @@ use App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\UserContext;
 use App\Http\Responses\FailedTwoFactorLoginResponse;
 use App\Http\Responses\LoginResponse;
 use App\Http\Responses\PasswordResetResponse;
@@ -28,6 +29,7 @@ use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
+use Spatie\LaravelOptions\Options;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -75,7 +77,20 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(fn () => view('auth.login'));
-        Fortify::registerView(fn () => view('auth.register'));
+        Fortify::registerView(function () {
+            return view('auth.register', [
+                'signLanguages' => Options::forArray([
+                    'ase' => get_language_exonym('ase', 'fr'),
+                    'fcs' => get_language_exonym('fcs', 'fr'),
+                ])
+                    ->nullable(__('Choose a sign language…'))
+                    ->toArray(),
+                'contexts' => Options::forEnum(UserContext::class)
+                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::Employee)
+                    ->append(fn (UserContext $context) => ['hint' => $context->description()])
+                    ->toArray(),
+            ]);
+        });
         Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
         Fortify::resetPasswordView(fn () => view('auth.reset-password'));
         Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));

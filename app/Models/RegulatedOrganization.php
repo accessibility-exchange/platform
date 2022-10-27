@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProvinceOrTerritory;
+use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -56,6 +57,9 @@ class RegulatedOrganization extends Model
      */
     protected $fillable = [
         'published_at',
+        'oriented_at',
+        'validated_at',
+        'suspended_at',
         'name',
         'type',
         'languages',
@@ -82,6 +86,9 @@ class RegulatedOrganization extends Model
      */
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
+        'oriented_at' => 'datetime',
+        'validated_at' => 'datetime',
+        'suspended_at' => 'datetime',
         'name' => 'array',
         'languages' => 'array',
         'about' => 'array',
@@ -113,9 +120,11 @@ class RegulatedOrganization extends Model
         'about',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrganizationNotSuspendedScope);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(['en', 'fr'])
@@ -275,9 +284,9 @@ class RegulatedOrganization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'about.en' => 'required_without:about.fr',
             'about.fr' => 'required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'required_with:accessibility_and_inclusion_links.*.url',
@@ -296,12 +305,25 @@ class RegulatedOrganization extends Model
         ];
 
         try {
-            Validator::validate($this->toArray(), $publishRules);
+            Validator::validate($this->toArray(), $rules);
         } catch (ValidationException $exception) {
             return false;
         }
 
         if (! $this->sectors()->count()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->isPreviewable()) {
+            return false;
+        }
+
+        if (! $this->checkStatus('approved')) {
             return false;
         }
 

@@ -4,7 +4,7 @@ dataset('projectIsPublishable', function () {
     $baseModel = [
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
-        'preferred_contact_method' => 'required',
+        'preferred_contact_method' => 'email',
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -115,6 +115,26 @@ dataset('projectIsPublishable', function () {
         'publishable with all expected values' => [
             true,
             $baseModel,
+        ],
+        'not publishable when organization is pending approval' => [
+            false,
+            $baseModel,
+            [],
+            'organization',
+            [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ],
+        ],
+        'not publishable when regulated organization is pending approval' => [
+            false,
+            $baseModel,
+            [],
+            'regulated-organization',
+            [
+                'oriented_at' => null,
+                'validated_at' => null,
+            ],
         ],
         'publishable with impacts as a Regulated Organization' => [
             true,

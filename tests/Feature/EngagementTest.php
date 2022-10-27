@@ -435,9 +435,11 @@ test('engagements can reflect parent project’s estimate and agreement status',
     expect($engagement->hasEstimateAndAgreement())->toBeTrue();
 });
 
-test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true) {
+test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true, $projectableData = []) {
     $project = Project::factory()->create();
     $regulatedOrganization = $project->projectable;
+    $regulatedOrganization->update($projectableData);
+    $regulatedOrganization = $regulatedOrganization->fresh();
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,

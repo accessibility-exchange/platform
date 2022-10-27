@@ -5,10 +5,23 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Str;
 
 class UserPolicy
 {
     use HandlesAuthorization;
+
+    public function before(User $user, string $ability): null|Response
+    {
+        if ($user->checkStatus('suspended')) {
+            return Response::deny(Str::markdown(
+                __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
+                .contact_information()
+            ));
+        }
+
+        return null;
+    }
 
     public function selectRole(User $user): Response
     {

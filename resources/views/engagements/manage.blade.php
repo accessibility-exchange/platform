@@ -75,11 +75,11 @@
         <x-manage-columns class="col-start-2 col-end-4">
             @if ($engagement->checkStatus('draft'))
                 <x-manage-section
-                    title="{{ !$engagement->hasProvidedRequiredInformation() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
+                    title="{{ !$engagement->isPreviewable() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
                     @if ($engagement->who === 'individuals')
                         @if (!$engagement->hasEstimateAndAgreement())
                             <p>
-                                @if (!$engagement->hasProvidedRequiredInformation())
+                                @if (!$engagement->isPreviewable())
                                     {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
                                 @else
                                     {!! Str::inlineMarkdown(
@@ -105,7 +105,7 @@
                                 </span>
                             </p>
                         @elseif($engagement->hasEstimateAndAgreement())
-                            @if (!$engagement->hasProvidedRequiredInformation())
+                            @if (!$engagement->isPreviewable())
                                 {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
                             @else
                                 <p>{{ __('Please review and publish your engagement details.') }}</p>
@@ -119,10 +119,10 @@
                             <p>
                                 <span @class([
                                     'badge badge--status',
-                                    'badge--stop' => !$engagement->hasProvidedRequiredInformation(),
-                                    'badge--go' => $engagement->hasProvidedRequiredInformation(),
+                                    'badge--stop' => !$engagement->isPreviewable(),
+                                    'badge--go' => $engagement->isPreviewable(),
                                 ])>
-                                    @if (!$engagement->hasProvidedRequiredInformation())
+                                    @if (!$engagement->isPreviewable())
                                         <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
                                             aria-hidden="true" /> {{ __('Not ready to publish') }}
                                     @else
@@ -133,7 +133,7 @@
                             </p>
                         @endif
                     @else
-                        <p>{{ $engagement->hasProvidedRequiredInformation() ? __('Please review and publish your engagement details.') : __('Please complete your engagement details.') }}
+                        <p>{{ $engagement->isPreviewable() ? __('Please review and publish your engagement details.') : __('Please complete your engagement details.') }}
                         </p>
                         <p>
                             <a class="with-icon"
@@ -144,10 +144,10 @@
                         <p>
                             <span @class([
                                 'badge badge--status',
-                                'badge--stop' => !$engagement->hasProvidedRequiredInformation(),
-                                'badge--go' => $engagement->hasProvidedRequiredInformation(),
+                                'badge--stop' => !$engagement->isPreviewable(),
+                                'badge--go' => $engagement->isPreviewable(),
                             ])>
-                                @if (!$engagement->hasProvidedRequiredInformation())
+                                @if (!$engagement->isPreviewable())
                                     <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
                                         aria-hidden="true" /> {{ __('Not ready to publish') }}
                                 @else

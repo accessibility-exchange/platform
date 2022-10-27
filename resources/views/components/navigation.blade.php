@@ -14,7 +14,9 @@
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewAny', 'App\Models\Project'))
                 <li>
-                    <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                    <x-nav-link :href="Auth::user()->isAdministrator()
+                        ? localized_route('projects.all-projects')
+                        : localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                         {{ __('Projects') }}
                     </x-nav-link>
                 </li>

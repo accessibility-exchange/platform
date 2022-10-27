@@ -360,6 +360,12 @@ test('users belonging to an organization or regulated organization can edit role
     $response = $this->actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
     $response->assertOk();
 
+    $organizationUserWithOrganization->update(['suspended_at' => now()]);
+    $organizationUserWithOrganization = $organizationUserWithOrganization->fresh();
+
+    $response = $this->actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
+
     $regulatedOrganizationUserWithoutOrganization = User::factory()->create(['context' => 'regulated-organization']);
 
     $response = $this->actingAs($regulatedOrganizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
@@ -373,6 +379,12 @@ test('users belonging to an organization or regulated organization can edit role
 
     $response = $this->actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
     $response->assertOk();
+
+    $regulatedOrganizationUserWithOrganization->update(['suspended_at' => now()]);
+    $regulatedOrganizationUserWithOrganization = $regulatedOrganizationUserWithOrganization->fresh();
+
+    $response = $this->actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
+    $response->assertForbidden();
 });
 
 test('users belonging to an organization or regulated organization can invite new members to their organization or regulated organization', function () {

@@ -64,6 +64,12 @@
     --badge-color-alt: var(--theme-badge-color-alt, var(--badge-color));
     --badge-border: var(--theme-badge-border, var(--badge-background));
 
+    /* Banner */
+    --banner-error-background: var(--theme-banner-error-background, var(--color-red-7));
+    --banner-error-color: var(--theme-banner-error-color, var(--color-white));
+    --banner-warning-background: var(--theme-banner-warning-background, var(--color-yellow-3));
+    --banner-warning-color: var(--theme-banner-warning-color, var(--color-black));
+
     /* Divider */
     --divider-color: var(--theme-divider-color, var(--color-graphite-6));
 
