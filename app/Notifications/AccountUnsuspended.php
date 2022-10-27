@@ -51,6 +51,6 @@ class AccountUnsuspended extends PlatformNotification
             return __('You will be able to edit your information and browse projects and people on this site again.');
         }
 
-        return __('You will be able to edit your information, publish your page, and browse projects and people on this site again.');
+        return __('You will be able to edit your information and browse projects and people on this site again. Your page will no longer be hidden to other users of the website.');
     }
 }

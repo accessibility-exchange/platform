@@ -51,6 +51,6 @@ class AccountSuspended extends PlatformNotification
             return __('You will not be able to edit any information in your account.');
         }
 
-        return __('You will not be able to edit any information in your account. If you published your page already, it has been unpublished.');
+        return __('You will not be able to edit any information in your account. Your page will no longer be shown to other users of this website.');
     }
 }
