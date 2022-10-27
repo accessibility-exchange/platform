@@ -201,7 +201,7 @@ test('suspended users can view their own models', function () {
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.show', $this->project));
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.show', $this->engagement));
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
 });
