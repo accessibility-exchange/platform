@@ -10,8 +10,12 @@
                         <x-hearth-error :for="'team_trainings_' . $i . '_name'" :field="'team_trainings.' . $i . '.name'" />
                     </div>
 
-                    <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25"
-                        :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
+                    <div class="field @error("team_trainings.{$i}.date") field-error @enderror">
+                        <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25"
+                            :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
+                        <x-hearth-error :for="'team_trainings_' . $i . '_date'" :field="'team_trainings.' . $i . '.date'" />
+                    </div>
+
                     <fieldset>
                         <legend>
                             <h4>{{ __('Training organization or trainer') }}</h4>
