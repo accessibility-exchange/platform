@@ -284,9 +284,9 @@ class RegulatedOrganization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'about.en' => 'required_without:about.fr',
             'about.fr' => 'required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'required_with:accessibility_and_inclusion_links.*.url',
@@ -305,12 +305,21 @@ class RegulatedOrganization extends Model
         ];
 
         try {
-            Validator::validate($this->toArray(), $publishRules);
+            Validator::validate($this->toArray(), $rules);
         } catch (ValidationException $exception) {
             return false;
         }
 
         if (! $this->sectors()->count()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->isPreviewable()) {
             return false;
         }
 

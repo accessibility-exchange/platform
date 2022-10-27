@@ -31,13 +31,6 @@ class OrganizationPolicy
         return $this->canViewPublishedContent($user);
     }
 
-    public function create(User $user): Response
-    {
-        return $user->context === 'organization' && $user->organizations->isEmpty()
-            ? Response::allow()
-            : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
-    }
-
     public function view(User $user, Organization $organization): Response
     {
         // User can't view organization which they have blocked.
@@ -66,10 +59,17 @@ class OrganizationPolicy
                 : Response::denyAsNotFound();
         }
 
-        // Catch-all rule for published individual pages.
+        // Catch-all rule for published organization pages.
         return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::deny();
+    }
+
+    public function create(User $user): Response
+    {
+        return $user->context === 'organization' && $user->organizations->isEmpty()
+            ? Response::allow()
+            : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
     }
 
     public function update(User $user, Organization $organization): Response
