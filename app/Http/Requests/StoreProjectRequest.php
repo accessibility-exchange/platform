@@ -14,7 +14,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->user()->projectable());
+        return $this->user()->can('update', $this->user()->projectable);
     }
 
     /**

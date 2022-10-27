@@ -17,6 +17,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
@@ -34,6 +35,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasStatus;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
@@ -70,6 +72,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'extra_attributes',
         'accepted_terms_of_service_at',
         'accepted_privacy_policy_at',
+        'oriented_at',
+        'suspended_at',
     ];
 
     protected $hidden = [
@@ -83,6 +87,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         'email_verified_at' => 'datetime',
         'accepted_terms_of_service_at' => 'datetime',
         'accepted_privacy_policy_at' => 'datetime',
+        'oriented_at' => 'datetime',
+        'suspended_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',
@@ -321,7 +327,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->regulatedOrganizations->first();
     }
 
-    public function projectable(): Organization|RegulatedOrganization|null
+    public function getProjectableAttribute(): Organization|RegulatedOrganization|null
     {
         if ($this->context === 'organization') {
             return $this->organization;
@@ -336,8 +342,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 
     public function projects(): Collection
     {
-        if ($this->projectable()->projects->isNotEmpty()) {
-            return $this->projectable()->projects;
+        if ($this->projectable->projects->isNotEmpty()) {
+            return $this->projectable->projects;
         }
 
         return new Collection([]);
@@ -448,15 +454,15 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $notifications = new Collection();
 
         if ($this->context === 'organization') {
-            $notifications = $notifications->merge($this->organization->unreadNotifications);
+            $notifications = $notifications->merge($this->organization?->unreadNotifications ?? []);
 
-            foreach ($this->organization->projects as $project) {
+            foreach ($this->organization?->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } elseif ($this->context === 'regulated-organization') {
-            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications);
+            $notifications = $notifications->merge($this->regulatedOrganization?->unreadNotifications ?? []);
 
-            foreach ($this->regulatedOrganization->projects as $project) {
+            foreach ($this->regulatedOrganization?->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } else {

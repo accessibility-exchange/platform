@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Enums\UserContext;
 use App\Models\User;
 use App\Rules\UniqueUserEmail;
 use Illuminate\Support\Facades\Cookie;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -58,7 +60,8 @@ class CreateNewUser implements CreatesNewUsers
                 'context' => [
                     'required',
                     'string',
-                    Rule::in(config('app.contexts')),
+                    new Enum(UserContext::class),
+                    Rule::notIn([UserContext::Administrator->value]),
                 ],
                 'extra_attributes' => 'nullable|array',
                 'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],

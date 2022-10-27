@@ -36,12 +36,7 @@
             <x-hearth-hint for="signed_language">
                 {{ __('If you use Sign Language, you can select which Sign Language you use. When content is available in the Sign Language you select, the content will appear as a video.') }}
             </x-hearth-hint>
-            <x-hearth-select name="signed_language" :options="Spatie\LaravelOptions\Options::forArray([
-                'ase' => __('American Sign Language (ASL)'),
-                'fcs' => 'Langue des signes québécoise (LSQ)',
-            ])
-                ->nullable(__('Choose a sign language…'))
-                ->toArray()" :selected="old('signed_language', '')"
+            <x-hearth-select name="signed_language" :options="$signLanguages" :selected="old('signed_language', '')"
                 hinted="languages-hint signed_language-hint" />
             <x-hearth-error for="signed_language" />
         </div>

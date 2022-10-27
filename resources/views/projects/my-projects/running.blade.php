@@ -5,7 +5,7 @@
         !$projectable->upcomingProjects->isEmpty() ||
         !$projectable->completedProjects->isEmpty())
         <a class="cta"
-            href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create new project') }}</a>
+            href="{{ $user->projectable->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create new project') }}</a>
     @endif
 </div>
 
@@ -16,7 +16,7 @@
     <div class="box stack bg-grey-2">
         <p>{{ __('It seems as though you have not created any projects yet.') }}</p>
         <p><a class="cta"
-                href="{{ $user->projectable()->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create new project') }}</a>
+                href="{{ $user->projectable->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create new project') }}</a>
         </p>
     </div>
 @endif

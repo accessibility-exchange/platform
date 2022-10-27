@@ -2,8 +2,8 @@
     background-color: var(--box-background);
     border: 0 solid;
     color: var(--box-color);
-    outline: var(--border-thin) solid transparent;
-    outline-offset: calc(var(--border-thin) * -1);
-    padding-block: var(--space-6) var(--space-8);
+    outline: var(--border) solid transparent;
+    outline-offset: calc(var(--border) * -1);
+    padding-block: var(--space-6);
     padding-inline: var(--space-8);
 }

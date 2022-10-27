@@ -39,6 +39,8 @@ class AllProjects extends Component
 
     public array $recruitmentMethods = [];
 
+    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+
     public function selectNone()
     {
         $this->statuses = [];

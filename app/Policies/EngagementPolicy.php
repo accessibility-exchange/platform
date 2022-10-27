@@ -4,25 +4,54 @@ namespace App\Policies;
 
 use App\Models\Engagement;
 use App\Models\User;
+use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Str;
 
 class EngagementPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewPublishedContent;
 
-    public function before(User $user): null|bool
+    public function before(User $user, string $ability): null|Response
     {
-        return $user->isAdministrator() ? true : null;
+        if ($user->checkStatus('suspended') && $ability !== 'view') {
+            return Response::deny(Str::markdown(
+                __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
+                .contact_information()
+            ));
+        }
+
+        return null;
     }
 
     public function view(User $user, Engagement $engagement): Response
     {
-        return
-            ($user->individual || $user->organization || $user->regulated_organization)
-            && ($engagement->checkStatus('published') || ($user->can('update', $engagement) && $engagement->isPublishable()))
+        // User can't view engagement by organization or regulated organization which they have blocked.
+        if ($engagement->project->projectable->blockedBy($user)) {
+            return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
+                'organization' => '<strong>'.$engagement->project->projectable->getTranslation('name', locale()).'</strong>',
+                'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
+            ]));
+        }
+
+        // Drafts cannot be viewed.
+        if ($engagement->checkStatus('draft')) {
+            return Response::denyAsNotFound();
+        }
+
+        // Suspended users can view their own engagements.
+        if ($user->checkStatus('suspended')) {
+            return $user->isAdministratorOf($engagement->project->projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
+        }
+
+        // Catch-all rule for published engagement pages.
+        return $this->canViewPublishedContent($user)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     public function update(User $user, Engagement $engagement): Response

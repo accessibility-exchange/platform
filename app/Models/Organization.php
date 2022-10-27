@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -62,6 +63,9 @@ class Organization extends Model
 
     protected $fillable = [
         'published_at',
+        'oriented_at',
+        'validated_at',
+        'suspended_at',
         'name',
         'type',
         'languages',
@@ -89,6 +93,9 @@ class Organization extends Model
 
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
+        'oriented_at' => 'datetime',
+        'validated_at' => 'datetime',
+        'suspended_at' => 'datetime',
         'name' => 'array',
         'languages' => 'array',
         'roles' => 'array',
@@ -115,6 +122,11 @@ class Organization extends Model
         'other_disability_type',
         'other_ethnoracial_identity',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new OrganizationNotSuspendedScope);
+    }
 
     public function getSlugOptions(): SlugOptions
     {
@@ -310,9 +322,9 @@ class Organization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'about.en' => 'required_without:about.fr',
             'about.fr' => 'required_without:about.en',
             'consulting_services' => [
@@ -341,7 +353,7 @@ class Organization extends Model
         ];
 
         try {
-            Validator::validate($this->toArray(), $publishRules);
+            Validator::validate($this->toArray(), $rules);
         } catch (ValidationException $exception) {
             return false;
         }
@@ -372,6 +384,19 @@ class Organization extends Model
         }
 
         if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->isPreviewable()) {
+            return false;
+        }
+
+        if (! $this->checkStatus('approved')) {
             return false;
         }
 

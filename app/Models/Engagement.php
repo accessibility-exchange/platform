@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
+use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
 use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -126,6 +127,11 @@ class Engagement extends Model
         'other_accepted_format',
     ];
 
+    protected static function booted()
+    {
+        static::addGlobalScope(new EngagementProjectableNotSuspendedScope);
+    }
+
     public function singularName(): Attribute
     {
         return Attribute::make(
@@ -185,7 +191,7 @@ class Engagement extends Model
         );
     }
 
-    public function hasProvidedRequiredInformation(): bool
+    public function isPreviewable(): bool
     {
         $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];
 
@@ -285,11 +291,15 @@ class Engagement extends Model
 
     public function isPublishable(): bool
     {
-        if (! $this->hasProvidedRequiredInformation()) {
+        if (! $this->isPreviewable()) {
             return false;
         }
 
         if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
+            return false;
+        }
+
+        if (! $this->project->projectable->checkStatus('approved')) {
             return false;
         }
 
