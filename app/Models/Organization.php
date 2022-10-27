@@ -322,9 +322,9 @@ class Organization extends Model
         return ! is_null($this->region);
     }
 
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'about.en' => 'required_without:about.fr',
             'about.fr' => 'required_without:about.en',
             'consulting_services' => [
@@ -353,12 +353,8 @@ class Organization extends Model
         ];
 
         try {
-            Validator::validate($this->toArray(), $publishRules);
+            Validator::validate($this->toArray(), $rules);
         } catch (ValidationException $exception) {
-            return false;
-        }
-
-        if (! $this->checkStatus('approved')) {
             return false;
         }
 
@@ -388,6 +384,19 @@ class Organization extends Model
         }
 
         if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isPublishable(): bool
+    {
+        if (! $this->isPreviewable()) {
+            return false;
+        }
+
+        if (! $this->checkStatus('approved')) {
             return false;
         }
 

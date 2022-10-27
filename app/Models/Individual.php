@@ -343,14 +343,9 @@ class Individual extends Model implements CipherSweetEncrypted
             ->orderBy('start_date');
     }
 
-    /**
-     * Is the individual publishable?
-     *
-     * @return bool
-     */
-    public function isPublishable(): bool
+    public function isPreviewable(): bool
     {
-        $publishRules = [
+        $rules = [
             'bio.*' => 'required',
             'connection_lived_experience' => [
                 Rule::requiredIf(fn () => $this->isConnector()),
@@ -380,12 +375,8 @@ class Individual extends Model implements CipherSweetEncrypted
 
         if ($this->isConnector() || $this->isConsultant()) {
             try {
-                Validator::validate($this->toArray(), $publishRules);
+                Validator::validate($this->toArray(), $rules);
             } catch (ValidationException $exception) {
-                return false;
-            }
-
-            if (! $this->user->checkStatus('approved')) {
                 return false;
             }
 
@@ -405,6 +396,23 @@ class Individual extends Model implements CipherSweetEncrypted
                 if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isPublishable(): bool
+    {
+        if ($this->isConnector() || $this->isConsultant()) {
+            if (! $this->isPreviewable()) {
+                return false;
+            }
+
+            if (! $this->user->checkStatus('approved')) {
+                return false;
             }
 
             return true;

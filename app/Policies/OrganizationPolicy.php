@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Organization;
 use App\Models\User;
+use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Str;
@@ -11,13 +12,10 @@ use Illuminate\Support\Str;
 class OrganizationPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewPublishedContent;
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isAdministrator() && $ability === 'viewAny') {
-            return Response::allow();
-        }
-
         if ($user->isSuspended() && $ability !== 'view') {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
@@ -28,12 +26,9 @@ class OrganizationPolicy
         return null;
     }
 
-    public function viewAny(User $user): Response
+    public function viewAny(User $user): bool
     {
-        return
-             $user->individual || $user->organization || $user->regulated_organization
-                ? Response::allow()
-                : Response::deny();
+        return $this->canViewPublishedContent($user);
     }
 
     public function create(User $user): Response
@@ -45,6 +40,7 @@ class OrganizationPolicy
 
     public function view(User $user, Organization $organization): Response
     {
+        // User can't view organization which they have blocked.
         if ($organization->blockedBy($user)) {
             return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
                 'organization' => '<strong>'.$organization->getTranslation('name', locale()).'</strong>',
@@ -52,19 +48,26 @@ class OrganizationPolicy
             ]));
         }
 
+        // Previewable drafts can be viewed by their team members or platform administrators.
         if ($organization->checkStatus('draft')) {
-            return ($user->isAdministratorOf($organization) || $user->isAdministrator()) && $organization->isPublishable()
+            if ($organization->isPreviewable()) {
+                return $user->isMemberOf($organization) || $user->isAdministrator()
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+            }
+
+            return Response::denyAsNotFound();
+        }
+
+        // Suspended individual users can view or preview their own organizations.
+        if ($user->isSuspended() && $organization->isPreviewable()) {
+            return $user->isMemberOf($organization)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isSuspended() && $organization->isPublishable()) {
-            return $user->isAdministratorOf($organization) || $user->isAdministrator()
-                ? Response::allow()
-                : Response::denyAsNotFound();
-        }
-
-        return $user->individual || $user->organization || $user->regulated_organization
+        // Catch-all rule for published individual pages.
+        return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::deny();
     }

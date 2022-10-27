@@ -4,13 +4,14 @@ namespace App\Policies;
 
 use App\Models\Individual;
 use App\Models\User;
+use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Str;
 
 class IndividualPolicy
 {
-    use HandlesAuthorization;
+    use UserCanViewPublishedContent, HandlesAuthorization;
 
     public function before(User $user, string $ability): null|Response
     {
@@ -26,38 +27,46 @@ class IndividualPolicy
 
     public function viewAny(User $user): Response
     {
-        return
-             $user->isAdministrator() || $user->individual || $user->organization || $user->regulated_organization
+        return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::deny();
     }
 
-    public function view(User $user, Individual $model): Response
+    public function view(User $user, Individual $individual): Response
     {
-        if (! $model->isConsultant() && ! $model->isConnector()) {
+        // Participants don't have published pages.
+        if (! $individual->isConsultant() && ! $individual->isConnector()) {
             return Response::denyAsNotFound();
         }
 
-        if ($model->blockedBy($user)) {
+        // User can't view individual who they have blocked.
+        if ($individual->blockedBy($user)) {
             return Response::deny(__('You’ve blocked :individual. If you want to visit this page, you can :unblock and return to this page.', [
-                'individual' => '<strong>'.$model->name.'</strong>',
+                'individual' => '<strong>'.$individual->name.'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
             ]));
         }
 
-        if ($model->checkStatus('draft')) {
-            return ($user->id === $model->user_id || $user->isAdministrator()) && $model->isPublishable()
+        // Previewable drafts can be viewed by their owners or platform administrators.
+        if ($individual->checkStatus('draft')) {
+            if ($individual->isPreviewable()) {
+                return $user->id === $individual->user_id || $user->isAdministrator()
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+            }
+
+            return Response::denyAsNotFound();
+        }
+
+        // Suspended individual users can view or preview their own individual pages.
+        if ($user->isSuspended() && $individual->isPreviewable()) {
+            return $user->id === $individual->user_id
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        if ($user->isSuspended() && $model->isPublishable()) {
-            return $user->id === $model->user_id
-                ? Response::allow()
-                : Response::denyAsNotFound();
-        }
-
-        return $user->isAdministrator() || $user->individual || $user->organization || $user->regulated_organization
+        // Catch-all rule for published individual pages.
+        return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::deny();
     }
