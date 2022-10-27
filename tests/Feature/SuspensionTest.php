@@ -177,7 +177,7 @@ test('suspended user cannot access others’ models', function () {
     $response->assertForbidden();
 });
 
-test('suspended users can access their own models', function () {
+test('suspended users can view their own models', function () {
     $this->consultantUser->update(['suspended_at' => now()]);
     $this->consultantUser = $this->consultantUser->fresh();
     $this->organizationUser->update(['suspended_at' => now()]);
@@ -196,4 +196,36 @@ test('suspended users can access their own models', function () {
     $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization));
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.show', $this->project));
+    $response->assertOk();
+    $response->assertSee('Your account has been suspended');
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.show', $this->project));
+    $response->assertOk();
+    $response->assertSee('Your account has been suspended');
+});
+
+test('suspended users cannot edit their own models', function () {
+    $this->consultantUser->update(['suspended_at' => now()]);
+    $this->consultantUser = $this->consultantUser->fresh();
+    $this->organizationUser->update(['suspended_at' => now()]);
+    $this->organizationUser = $this->organizationUser->fresh();
+    $this->regulatedOrganizationUser->update(['suspended_at' => now()]);
+    $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();
+
+    $response = $this->actingAs($this->consultantUser)->get(localized_route('individuals.edit', $this->consultant));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->organizationUser)->get(localized_route('organizations.edit', $this->organization));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.edit', $this->regulatedOrganization));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.manage', $this->project));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement));
+    $response->assertForbidden();
 });
