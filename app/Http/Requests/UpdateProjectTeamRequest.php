@@ -33,6 +33,16 @@ class UpdateProjectTeamRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'team_trainings.*.name' => __('training name'),
+            'team_trainings.*.date' => __('training date'),
+            'team_trainings.*.trainer_name' => __('training organization or trainer name'),
+            'team_trainings.*.trainer_url' => __('training organization or trainer website address'),
+        ];
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {

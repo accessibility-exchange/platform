@@ -9,12 +9,15 @@ test('get available languages', function () {
     $languages = get_available_languages();
 
     expect($languages)->toHaveCount(4)->toHaveKey('ase');
-    expect(array_values($languages)['0'])->toEqual('American Sign Language');
+    expect(array_values($languages)['0'])->toEqual('English');
     expect(array_values($languages)['3'])->toEqual('Quebec Sign Language');
 });
 
 test('get all available languages', function () {
     $languages = get_available_languages(true);
+
+    expect(array_shift($languages))->toEqual('English');
+    expect(array_shift($languages))->toEqual('French');
 
     expect($languages)->toHaveKey('es');
     expect(isset($languages['en_CA']))->toBeFalse();
