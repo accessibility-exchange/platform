@@ -36,25 +36,19 @@ class EngagementPolicy
             ]));
         }
 
-        // Previewable drafts can be viewed by their team members or platform administrators.
+        // Drafts cannot be viewed.
         if ($engagement->checkStatus('draft')) {
-            if ($engagement->isPreviewable()) {
-                return $user->isMemberOf($engagement->project->projectable) || $user->isAdministrator()
-                    ? Response::allow()
-                    : Response::denyAsNotFound();
-            }
-
             return Response::denyAsNotFound();
         }
 
-        // Suspended users can view or preview their own engagements.
-        if ($user->checkStatus('suspended') && $engagement->isPublishable()) {
+        // Suspended users can view their own engagements.
+        if ($user->checkStatus('suspended')) {
             return $user->isAdministratorOf($engagement->project->projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
 
-        // Catch-all rule for published project pages.
+        // Catch-all rule for published engagement pages.
         return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::denyAsNotFound();
