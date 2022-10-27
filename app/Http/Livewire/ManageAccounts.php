@@ -5,9 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
-use App\Notifications\AccountApproved;
-use App\Notifications\AccountSuspended;
-use App\Notifications\AccountUnsuspended;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,6 +14,8 @@ class ManageAccounts extends Component
     use WithPagination;
 
     public string $searchQuery = '';
+
+    protected $listeners = ['flashMessage' => 'flash'];
 
     protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
 
@@ -51,116 +50,11 @@ class ManageAccounts extends Component
             ->layout('layouts.app-wide');
     }
 
-    public function approveIndividualAccount(int $id)
+    public function flash(string $message)
     {
-        $individual = Individual::find($id);
-        $individual->user->update(['oriented_at' => now()]);
-
-        $individual->user->notify(new AccountApproved($individual));
-
         $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __(':account has been approved.', ['account' => $individual->name]));
-
+        session()->flash('message', $message);
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
-    }
-
-    public function approveAccount(int $id, string $class)
-    {
-        $classname = "App\\Models\\{$class}";
-        $model = $classname::find($id);
-        $model->update(['oriented_at' => now(), 'validated_at' => now()]);
-
-        $model->notify(new AccountApproved($model));
-
-        $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __(':organization has been approved.', ['organization' => $model->getTranslation('name', locale())]));
-
-        $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
-    }
-
-    public function suspendIndividualAccount(int $id)
-    {
-        $individual = Individual::find($id);
-        $individual->user->update(['suspended_at' => now()]);
-
-        $individual->user->notify(new AccountSuspended($individual));
-
-        $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __(':account has been suspended.', ['account' => $individual->name]));
-
-        $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
-    }
-
-    public function suspendAccount(int $id, string $class)
-    {
-        $classname = "App\\Models\\{$class}";
-        $model = $classname::with('users')->find($id);
-        $model->update(['suspended_at' => now()]);
-
-        foreach ($model->users as $user) {
-            $user->update(['suspended_at' => now()]);
-            if ($user->email !== $model->contact_person_email) {
-                $user->notify(new AccountSuspended($model));
-            }
-        }
-
-        $model->notify(new AccountSuspended($model));
-
-        $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __(':organization and its users have been suspended.', ['organization' => $model->getTranslation('name', locale())]));
-
-        $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
-    }
-
-    public function unsuspendIndividualAccount(int $id)
-    {
-        $individual = Individual::find($id);
-        $individual->user->update(['suspended_at' => null]);
-
-        $individual->user->notify(new AccountUnsuspended($individual));
-
-        $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __('The suspension of :account has been lifted.', ['account' => $individual->name]));
-
-        $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
-    }
-
-    public function unsuspendAccount(int $id, string $class)
-    {
-        $classname = "App\\Models\\{$class}";
-        $model = $classname::with('users')->find($id);
-        $model->update(['suspended_at' => null]);
-
-        foreach ($model->users as $user) {
-            $user->update(['suspended_at' => null]);
-            if ($user->email !== $model->contact_person_email) {
-                $user->notify(new AccountUnsuspended($model));
-            }
-        }
-
-        $model->notify(new AccountUnsuspended($model));
-
-        $this->dispatchBrowserEvent('clear-flash-message');
-
-        session()->flash('message', __('The suspension of :organization and its users has been lifted.', ['organization' => $model->getTranslation('name', locale())]));
-
-        $this->dispatchBrowserEvent('add-flash-message');
-
         $this->dispatchBrowserEvent('remove-flash-message');
     }
 

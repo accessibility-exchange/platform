@@ -49,83 +49,12 @@
                 </tr>
             </thead>
             @foreach ($accounts as $account)
-                <tr wire:key="{{ $account->getRoutePlaceholder() }}-{{ $account->id }}">
-                    <td>
-                        @if ($account->isPublishable())
-                            <a
-                                href="{{ localized_route($account->getRoutePrefix() . '.show', $account) }}"><strong>{{ $account->name }}</strong></a>
-                        @else
-                            <strong>{{ $account->name }}</strong>
-                        @endif
-                        <br />
-                        <a
-                            href="mailto:{{ $account->contact_person_email ?? $account->user->email }}">{{ $account->contact_person_email ?? $account->user->email }}</a>
-                    </td>
-                    <td>
-                        {{ Str::ucfirst(__(Str::kebab(class_basename($account)) . '.singular_name')) }}
-                    </td>
-                    <td>
-                        @if ($account->checkStatus('draft') && !$account->isPublishable())
-                            {{ __('Draft') }}
-                        @elseif($account->checkStatus('draft') && $account->isPublishable())
-                            {{ __('Ready to publish') }}
-                        @elseif($account->checkStatus('published'))
-                            {{ __('Published') }}
-                        @endif
-                    </td>
-                    <td>
-                        @if ($account instanceof App\Models\Individual)
-                            @if ($account->user->checkStatus('suspended'))
-                                <span class="font-semibold text-red-8">{{ __('Suspended') }}</span>
-                            @else
-                                @if ($account->user->checkStatus('pending'))
-                                    {{ __('Pending approval') }}
-                                @elseif($account->user->checkStatus('approved'))
-                                    {{ __('Approved') }}
-                                @endif
-                            @endif
-                        @else
-                            @if ($account->checkStatus('suspended'))
-                                <span class="font-semibold text-red-8">{{ __('Suspended') }}</span>
-                            @else
-                                @if ($account->checkStatus('pending'))
-                                    {{ __('Pending approval') }}
-                                @elseif($account->checkStatus('approved'))
-                                    {{ __('Approved') }}
-                                @endif
-                            @endif
-                        @endif
-                    </td>
-                    <td>
-                        @if ($account instanceof App\Models\Individual)
-                            @if ($account->user->checkStatus('pending'))
-                                <button class="secondary"
-                                    wire:click="approveIndividualAccount({{ $account->id }})">{{ __('Approve') }}</button>
-                            @else
-                                @if (!$account->user->checkStatus('suspended'))
-                                    <button class="secondary destructive"
-                                        wire:click="suspendIndividualAccount({{ $account->id }})">{{ __('Suspend') }}</button>
-                                @else
-                                    <button class="secondary"
-                                        wire:click="unsuspendIndividualAccount({{ $account->id }})">{{ __('Unsuspend') }}</button>
-                                @endif
-                            @endif
-                        @else
-                            @if ($account->checkStatus('pending'))
-                                <button class="secondary"
-                                    wire:click="approveAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Approve') }}</button>
-                            @else
-                                @if (!$account->checkStatus('suspended'))
-                                    <button class="secondary destructive"
-                                        wire:click="suspendAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Suspend') }}</button>
-                                @else
-                                    <button class="secondary"
-                                        wire:click="unsuspendAccount({{ $account->id }}, '{{ class_basename($account) }}')">{{ __('Unsuspend') }}</button>
-                                @endif
-                            @endif
-                        @endif
-                    </td>
-                </tr>
+                @if ($account instanceof App\Models\Individual)
+                    <livewire:manage-individual-account wire:key="individual-{{ $account->id }}" :user="$account->user" />
+                @else
+                    <livewire:manage-organizational-account
+                        wire:key="{{ $account->getRoutePrefix() }}-{{ $account->id }}" :account="$account" />
+                @endif
             @endforeach
         </table>
     </div>
