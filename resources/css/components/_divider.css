@@ -1,10 +1,12 @@
 hr.divider {
-    @apply mt-12 mb-8;
+    @apply mt-12 mb-8 border-b-0;
 
     border-block-start: var(--border) solid var(--divider-color);
 }
 
 hr.divider--medium {
+    @apply mt-12 mb-8 border-b-0;
+
     border-block-start: var(--border-2) solid var(--divider-color);
 }
 
