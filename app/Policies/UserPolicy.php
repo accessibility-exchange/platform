@@ -13,7 +13,7 @@ class UserPolicy
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isSuspended()) {
+        if ($user->checkStatus('suspended')) {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
                 .contact_information()

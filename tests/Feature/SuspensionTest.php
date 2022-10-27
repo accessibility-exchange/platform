@@ -143,7 +143,7 @@ beforeEach(function () {
     ];
 });
 
-test('suspended user cannot access models', function () {
+test('suspended user cannot access others’ models', function () {
     expect($this->consultant->checkStatus('published'))->toBeTrue();
     $response = $this->actingAs($this->suspendedUser)->get(localized_route('individuals.show', $this->consultant));
     $response->assertNotFound();
@@ -163,4 +163,37 @@ test('suspended user cannot access models', function () {
     expect($this->engagement->checkStatus('published'))->toBeTrue();
     $response = $this->actingAs($this->suspendedUser)->get(localized_route('engagements.show', $this->engagement));
     $response->assertNotFound();
+
+    $response = $this->actingAs($this->suspendedUser)->get(localized_route('individuals.index'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->suspendedUser)->get(localized_route('organizations.index'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.index'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($this->suspendedUser)->get(localized_route('projects.all-projects'));
+    $response->assertForbidden();
+});
+
+test('suspended users can access their own models', function () {
+    $this->consultantUser->update(['suspended_at' => now()]);
+    $this->consultantUser = $this->consultantUser->fresh();
+    $this->organizationUser->update(['suspended_at' => now()]);
+    $this->organizationUser = $this->organizationUser->fresh();
+    $this->regulatedOrganizationUser->update(['suspended_at' => now()]);
+    $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();
+
+    $response = $this->actingAs($this->consultantUser)->get(localized_route('individuals.show', $this->consultant));
+    $response->assertOk();
+    $response->assertSee('Your account has been suspended');
+
+    $response = $this->actingAs($this->organizationUser)->get(localized_route('organizations.show', $this->organization));
+    $response->assertOk();
+    $response->assertSee('Your account has been suspended');
+
+    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization));
+    $response->assertOk();
+    $response->assertSee('Your account has been suspended');
 });

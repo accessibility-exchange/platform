@@ -15,7 +15,7 @@ class IndividualPolicy
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isSuspended() && $ability !== 'view') {
+        if ($user->checkStatus('suspended') && $ability !== 'view') {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
                 .contact_information()
@@ -59,7 +59,7 @@ class IndividualPolicy
         }
 
         // Suspended users can view or preview their own individual pages.
-        if ($user->isSuspended() && $individual->isPreviewable()) {
+        if ($user->checkStatus('suspended') && $individual->isPreviewable()) {
             return $user->id === $individual->user_id
                 ? Response::allow()
                 : Response::denyAsNotFound();

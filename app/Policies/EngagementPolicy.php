@@ -16,7 +16,7 @@ class EngagementPolicy
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isSuspended() && $ability !== 'view') {
+        if ($user->checkStatus('suspended') && $ability !== 'view') {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
                 .contact_information()
@@ -48,7 +48,7 @@ class EngagementPolicy
         }
 
         // Suspended users can view or preview their own engagements.
-        if ($user->isSuspended() && $engagement->isPublishable()) {
+        if ($user->checkStatus('suspended') && $engagement->isPublishable()) {
             return $user->isAdministratorOf($engagement->project->projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();

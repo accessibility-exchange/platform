@@ -16,7 +16,7 @@ class RegulatedOrganizationPolicy
 
     public function before(User $user, string $ability): null|Response
     {
-        if ($user->isSuspended() && $ability !== 'view') {
+        if ($user->checkStatus('suspended') && $ability !== 'view') {
             return Response::deny(Str::markdown(
                 __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
                 .contact_information()
@@ -53,7 +53,7 @@ class RegulatedOrganizationPolicy
         }
 
         // Suspended users can view or preview their own regulated organizations.
-        if ($user->isSuspended() && $regulatedOrganization->isPreviewable()) {
+        if ($user->checkStatus('suspended') && $regulatedOrganization->isPreviewable()) {
             return $user->isAdministratorOf($regulatedOrganization) || $user->isAdministrator()
                 ? Response::allow()
                 : Response::denyAsNotFound();
