@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
@@ -82,12 +83,26 @@ if (! function_exists('get_available_languages')) {
             }
         }
 
-        if (! $signed) {
-            unset($result['ase']);
-            unset($result['fcs']);
-        }
-
         asort($result);
+
+        $en = $result['en'];
+        unset($result['en']);
+        $fr = $result['fr'];
+        unset($result['fr']);
+        $ase = $result['ase'];
+        unset($result['ase']);
+        $fcs = $result['fcs'];
+        unset($result['fcs']);
+
+        if ($signed) {
+            foreach (['fcs', 'ase', 'fr', 'en'] as $code) {
+                $result = Arr::prepend($result, $$code, $code);
+            }
+        } else {
+            foreach (['fr', 'en'] as $code) {
+                $result = Arr::prepend($result, $$code, $code);
+            }
+        }
 
         return $result;
     }
