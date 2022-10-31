@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="frame">
-                            <x-placeholder class="text-blue-6" />
+                            <x-placeholder />
                         </div>
                     </section>
 
@@ -54,7 +54,7 @@
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
@@ -66,7 +66,7 @@
                         </x-media-text>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
@@ -78,7 +78,7 @@
                         </x-media-text>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
@@ -90,7 +90,7 @@
                         </x-media-text>
                     </section>
 
-                    <section class="dark full bg-blue-7" aria-labelledby="disability">
+                    <section class="dark full" aria-labelledby="disability">
                         <div class="center center:wide stack stack:xl">
                             <div class="with-sidebar with-sidebar:2/3">
                                 <div>
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="frame">
-                                <x-placeholder class="text-blue-6" />
+                                <x-placeholder />
                             </div>
                         </div>
                     </section>
@@ -117,7 +117,7 @@
                     </section>
 
                     @guest
-                        <section class="full bg-grey-2" aria-labelledby="join">
+                        <section class="full accent" aria-labelledby="join">
                             <div class="center center:wide stack stack:xl align:center">
                                 <h2 id="join">{{ __('Join our accessibility community') }}</h2>
                                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>

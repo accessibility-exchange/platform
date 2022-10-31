@@ -1,16 +1,33 @@
 /* This file contains everything related to the dark theme. */
 [data-theme="dark"] {
+    /* Text and backgrounds */
     --theme-h1-color: white;
     --theme-heading-color: var(--color-grey-1);
     --theme-body-background: var(--color-graphite-8);
     --theme-guest-body-background: var(--color-graphite-6);
+    --theme-home-body-background: var(--color-graphite-8);
+    --theme-home-dark-background: var(--color-graphite-6);
+    --theme-home-accent-background: var(--color-graphite-7);
     --theme-body-color: var(--color-grey-2);
+    --theme-home-dark-color: var(--color-grey-2);
+
+    /* Link */
     --theme-link-color: var(--color-turquoise-1);
     --theme-link-color-hover: var(--color-turquoise-2);
     --theme-link-color-visited: var(--color-turquoise-2);
     --theme-link-outline-focus: var(--color-turquoise-1);
     --theme-link-color-active: var(--color-turquoise-1);
     --theme-link-background-active: var(--color-graphite-6);
+
+    /* Link on dark backgrounds */
+    --theme-link-dark-color: var(--theme-link-color);
+    --theme-link-dark-color-hover: var(--theme-link--color-hover);
+    --theme-link-dark-color-visited: var(--theme-link--color-visited);
+    --theme-link-dark-outline-focus: var(--theme-link--outline-focus);
+    --theme-link-dark-color-active: var(--theme-link--color-hover);
+    --theme-link-dark-background-active: var(--theme-link--background-active);
+
+    /* Call to action */
     --theme-cta-background: var(--color-grey-2);
     --theme-cta-border: var(--color-grey-2);
     --theme-cta-color: var(--color-blue-7);
@@ -21,64 +38,8 @@
     --theme-cta-color-active: var(--color-blue-7);
     --theme-cta-background-active: white;
     --theme-cta-border-active: white;
-    --theme-badge-background: var(--color-graphite-7);
-    --theme-badge-color: white;
-    --theme-badge-color-alt: black;
-    --theme-divider-color: var(--color-grey-2);
-    --theme-alert-background: var(--color-graphite-7);
-    --theme-alert-color: var(--color-grey-1);
-    --theme-alert-background-error: var(--color-red-2);
-    --theme-alert-color-error: var(--color-graphite-8);
-    --theme-alert-background-warning: var(--color-yellow-2);
-    --theme-alert-color-warning: var(--color-graphite-8);
-    --theme-alert-background-success: var(--color-green-2);
-    --theme-alert-color-success: var(--color-graphite-8);
-    --theme-input-border: var(--color-grey-2);
-    --theme-input-color: var(--color-grey-2);
-    --theme-input-error-border: var(--color-red-2);
-    --theme-input-error-color: var(--color-red-2);
-    --theme-checkbox-checked-background: var(--color-grey-2);
-    --theme-radio-checked-background: var(--color-grey-2);
-    --theme-radio-checked-border: var(--color-grey-2);
-    --theme-hint-color: var(--color-grey-2);
-    --theme-button-primary-background: var(--color-grey-2);
-    --theme-button-primary-border: var(--color-grey-2);
-    --theme-button-primary-color: var(--color-blue-7);
-    --theme-button-primary-outline: var(--color-grey-2);
-    --theme-button-primary-background-hover: var(--color-grey-1);
-    --theme-button-primary-border-hover: var(--color-grey-1);
-    --theme-button-primary-color-hover: var(--color-blue-8);
-    --theme-button-primary-color-active: var(--color-blue-7);
-    --theme-button-primary-background-active: white;
-    --theme-button-primary-border-active: white;
-    --theme-button-secondary-background: var(--color-graphite-7);
-    --theme-button-secondary-border: var(--color-grey-1);
-    --theme-button-secondary-color: var(--color-grey-1);
-    --theme-button-destructive-background: var(--color-red-2);
-    --theme-button-destructive-border: var(--color-red-2);
-    --theme-button-destructive-color: var(--color-graphite-8);
-    --theme-button-destructive-outline: var(--color-red-2);
-    --theme-button-destructive-background-hover: var(--color-red-1);
-    --theme-button-destructive-border-hover: var(--color-red-1);
-    --theme-button-destructive-color-hover: var(--color-graphite-8);
-    --theme-button-destructive-color-active: var(--color-graphite-8);
-    --theme-button-destructive-background-active: var(--color-red-1);
-    --theme-button-destructive-border-active: var(--color-red-1);
-    --theme-button-destructive-secondary-border: var(--color-red-2);
-    --theme-button-destructive-secondary-background: var(--color-graphite-7);
-    --theme-button-destructive-secondary-color: var(--color-red-2);
-    --theme-button-destructive-secondary-background-hover: var(--color-graphite-7);
-    --theme-button-destructive-secondary-border-hover: var(--color-red-1);
-    --theme-button-destructive-secondary-color-hover: var(--color-red-1);
-    --theme-button-destructive-secondary-outline: var(--color-red-1);
-    --theme-button-destructive-secondary-color-active: var(--color-white);
-    --theme-button-destructive-secondary-background-active: var(--color-graphite-7);
-    --theme-button-destructive-secondary-border-active: var(--color-white);
-    --theme-button-borderless-outline: var(--color-grey-2);
-    --theme-button-borderless-color-hover: var(--color-grey-2);
-    --theme-button-borderless-background-hover: black;
-    --theme-button-borderless-color-focus: var(--color-grey-2);
-    --theme-button-borderless-color-active: var(--color-grey-1);
+
+    /* Secondary call to action */
     --theme-cta-secondary-border: var(--theme-button-secondary-border);
     --theme-cta-secondary-background: var(--theme-button-secondary-background);
     --theme-cta-secondary-color: var(--theme-button-secondary-color);
@@ -89,23 +50,133 @@
     --theme-cta-secondary-color-active: var(--theme-button-primary-color-active);
     --theme-cta-secondary-background-active: var(--theme-button-primary-background-active);
     --theme-cta-secondary-border-active: var(--theme-button-primary-border-active);
-    --theme-tag-background: var(--color-graphite-8);
-    --theme-tag-border: var(--color-grey-2);
-    --theme-tag-color: var(--color-grey-2);
-    --theme-tag-link-background: var(--color-graphite-8);
-    --theme-tag-link-border: var(--color-turquoise-2);
-    --theme-tag-link-color: var(--color-turquoise-2);
-    --theme-tag-button-background: var(--color-turquoise-2);
-    --theme-tag-button-border: var(--color-turquoise-2);
-    --theme-tag-button-color: var(--color-graphite-8);
-    --theme-help-bar-background: var(--color-graphite-6);
-    --theme-help-bar-border: transparent;
+
+    /* Call to action on dark backgrounds */
+    --theme-cta-dark-background: var(--theme-cta-background);
+    --theme-cta-dark-border: var(--theme-cta-border);
+    --theme-cta-dark-color: var(--theme-cta-color);
+    --theme-cta-dark-outline: var(--theme-cta-outline);
+    --theme-cta-dark-background-hover: var(--theme-cta-background-hover);
+    --theme-cta-dark-border-hover: var(--theme-cta-border-hover);
+    --theme-cta-dark-color-hover: var(--theme-cta-color-hover);
+    --theme-cta-dark-color-active: var(--theme-cta-color-active);
+    --theme-cta-dark-background-active: var(--theme-cta-background-active);
+    --theme-cta-dark-border-active: var(--theme-cta-border-active);
+
+    /* Badge */
+    --theme-badge-background: var(--color-graphite-7);
+    --theme-badge-color: white;
+    --theme-badge-color-alt: black;
+
+    /* Banner */
     --theme-banner-background: var(--color-graphite-7);
     --theme-banner-border: var(--color-graphite-6);
     --theme-banner-shadow: 0 0 10px rgb(0 0 0 / 50%);
     --theme-banner-error-background: var(--color-red-2);
     --theme-banner-error-color: var(--color-black);
+
+    /* Divider */
+    --theme-divider-color: var(--color-grey-2);
+
+    /* Alert */
+    --theme-alert-background: var(--color-graphite-7);
+    --theme-alert-color: var(--color-grey-1);
+    --theme-alert-background-error: var(--color-red-2);
+    --theme-alert-color-error: var(--color-graphite-8);
+    --theme-alert-background-warning: var(--color-yellow-2);
+    --theme-alert-color-warning: var(--color-graphite-8);
+    --theme-alert-background-success: var(--color-green-2);
+    --theme-alert-color-success: var(--color-graphite-8);
+
+    /* Hint */
+    --theme-hint-color: var(--color-grey-2);
+
+    /* Input */
+    --theme-input-border: var(--color-grey-2);
+    --theme-input-color: var(--color-grey-2);
+    --theme-input-error-border: var(--color-red-2);
+    --theme-input-error-color: var(--color-red-2);
+
+    /* Checkbox */
+    --theme-checkbox-checked-background: var(--color-grey-2);
+
+    /* Radio button */
+    --theme-radio-checked-background: var(--color-grey-2);
+    --theme-radio-checked-border: var(--color-grey-2);
+
+    /* Primary button */
+    --theme-button-primary-background: var(--color-grey-2);
+    --theme-button-primary-border: var(--color-grey-2);
+    --theme-button-primary-color: var(--color-blue-7);
+    --theme-button-primary-outline: var(--color-grey-2);
+    --theme-button-primary-background-hover: var(--color-grey-1);
+    --theme-button-primary-border-hover: var(--color-grey-1);
+    --theme-button-primary-color-hover: var(--color-blue-8);
+    --theme-button-primary-color-active: var(--color-blue-7);
+    --theme-button-primary-background-active: white;
+    --theme-button-primary-border-active: white;
+
+    /* Secondary button */
+    --theme-button-secondary-background: var(--color-graphite-7);
+    --theme-button-secondary-border: var(--color-grey-1);
+    --theme-button-secondary-color: var(--color-grey-1);
+
+    /* Destructive button */
+    --theme-button-destructive-background: var(--color-red-2);
+    --theme-button-destructive-border: var(--color-red-2);
+    --theme-button-destructive-color: var(--color-graphite-8);
+    --theme-button-destructive-outline: var(--color-red-2);
+    --theme-button-destructive-background-hover: var(--color-red-1);
+    --theme-button-destructive-border-hover: var(--color-red-1);
+    --theme-button-destructive-color-hover: var(--color-graphite-8);
+    --theme-button-destructive-color-active: var(--color-graphite-8);
+    --theme-button-destructive-background-active: var(--color-red-1);
+    --theme-button-destructive-border-active: var(--color-red-1);
+
+    /* Destructive secondary button */
+    --theme-button-destructive-secondary-border: var(--color-red-2);
+    --theme-button-destructive-secondary-background: var(--color-graphite-7);
+    --theme-button-destructive-secondary-color: var(--color-red-2);
+    --theme-button-destructive-secondary-background-hover: var(--color-graphite-7);
+    --theme-button-destructive-secondary-border-hover: var(--color-red-1);
+    --theme-button-destructive-secondary-color-hover: var(--color-red-1);
+    --theme-button-destructive-secondary-outline: var(--color-red-1);
+    --theme-button-destructive-secondary-color-active: var(--color-white);
+    --theme-button-destructive-secondary-background-active: var(--color-graphite-7);
+    --theme-button-destructive-secondary-border-active: var(--color-white);
+
+    /* Borderless button */
+    --theme-button-borderless-outline: var(--color-grey-2);
+    --theme-button-borderless-color-hover: var(--color-grey-2);
+    --theme-button-borderless-background-hover: black;
+    --theme-button-borderless-color-focus: var(--color-grey-2);
+    --theme-button-borderless-color-active: var(--color-grey-1);
+
+    /* Primary button on dark backgrounds */
+
+    /* Tag */
+    --theme-tag-background: var(--color-graphite-8);
+    --theme-tag-border: var(--color-grey-2);
+    --theme-tag-color: var(--color-grey-2);
+
+    /* Tag link */
+    --theme-tag-link-background: var(--color-graphite-8);
+    --theme-tag-link-border: var(--color-turquoise-2);
+    --theme-tag-link-color: var(--color-turquoise-2);
+
+    /* Tag button */
+    --theme-tag-button-background: var(--color-turquoise-2);
+    --theme-tag-button-border: var(--color-turquoise-2);
+    --theme-tag-button-color: var(--color-graphite-8);
+
+    /* Help bar */
+    --theme-help-bar-background: var(--color-graphite-6);
+    --theme-help-bar-border: transparent;
+
+    /* Brand */
     --theme-brand-color: white;
+
+    /* Navigation */
     --theme-nav-background-mobile: var(--color-graphite-8);
     --theme-nav-background-hover-mobile: var(--color-graphite-7);
     --theme-nav-background-focus-mobile: var(--color-graphite-7);
@@ -126,6 +197,10 @@
     --theme-nav-child-background-focus: var(--color-graphite-7);
     --theme-nav-child-background-active: var(--color-graphite-6);
     --theme-nav-current-color: var(--color-lavender-2);
+
+    /* Tabbed navigation */
+
+    /* Pagination */
     --theme-pagination-color: var(--color-grey-2);
     --theme-pagination-background-hover: var(--color-blue-6);
     --theme-pagination-color-hover: var(--color-grey-2);
@@ -134,40 +209,67 @@
     --theme-pagination-color-active: var(--color-grey-2);
     --theme-pagination-current-color: var(--color-blue-7);
     --theme-pagination-current-background: var(--color-grey-2);
+
+    /* Expander */
     --theme-expander-color: var(--color-turquoise-1);
     --theme-expander-border: var(--color-turquoise-1);
     --theme-expander-color-focus: var(--color-turquoise-1);
     --theme-expander-background-active: var(--color-graphite-6);
     --theme-expander-color-active: var(--color-turquoise-1);
     --theme-expander-border-active: var(--color-turquoise-1);
+
+    /* Footer */
     --theme-footer-background: var(--color-graphite-6);
     --theme-footer-color: var(--color-grey-2);
     --theme-footer-heading-color: var(--color-grey-2);
+
+    /* Defined term */
     --theme-defined-term-color: var(--color-turquoise-1);
     --theme-definition-background: var(--color-white);
     --theme-definition-color: var(--color-black);
     --theme-definition-shadow: 0 0 0.625rem rgb(0 0 0 / 50%);
+
+    /* Box */
     --theme-box-color: var(--color-white);
     --theme-box-background: var(--color-graphite-7);
+
+    /* Card */
     --theme-card-link-color: var(--color-grey-1);
     --theme-card-shadow: 0 0 0.625rem rgb(0 0 0 / 40%);
     --theme-card-shadow-hover: 0 0 0.625rem rgb(0 0 0 / 90%);
     --theme-card-inset-background: var(--color-graphite-6);
     --theme-card-inset-shadow-hover: 0 0 0 1px var(--color-graphite-5) inset;
+
+    /* Regulated organization card */
     --theme-card-regulated-organization-shadow: 0 0.375rem 0 0 var(--color-turquoise-2) inset;
     --theme-card-regulated-organization-shadow-focus-within: 0 0 0.625rem rgb(125 226 244 / 50%),
         0 0 0 0.1875rem var(--color-turquoise-2) inset, 0 0.375rem 0 0 var(--color-turquoise-2) inset;
+
+    /* Organization card */
     --theme-card-organization-shadow: 0 0.375rem 0 0 var(--color-magenta-2) inset;
     --theme-card-organization-shadow-focus-within: 0 0 0.625rem rgb(255 160 206 / 50%),
         0 0 0 0.1875rem var(--color-magenta-2) inset, 0 0.375rem 0 0 var(--color-magenta-2) inset;
+
+    /* Individual cards */
     --theme-card-individual-shadow: 0 0.375rem 0 0 var(--color-lavender-2) inset;
     --theme-card-individual-shadow-focus-within: 0 0 0.625rem rgb(202 182 217 / 50%),
         0 0 0 0.1875rem var(--color-lavender-2) inset, 0 0.375rem 0 0 var(--color-lavender-2) inset;
+
+    /* Project card */
     --theme-card-project-shadow-focus-within: 0 0 0.625rem rgb(202 182 217 / 50%),
         0 0 0 0.1875rem var(--color-turquoise-2) inset, 0 0.375rem 0 0 var(--color-turquoise-2) inset;
+
+    /* Engagement card */
     --theme-card-engagement-shadow-focus-within: 0 0 0.625rem rgb(202 182 217 / 50%),
         0 0 0 0.1875rem var(--color-turquoise-2) inset, 0 0.375rem 0 0 var(--color-turquoise-2) inset;
     --theme-card-inset-engagement-shadow-hover: 0 -0.1875rem 0 0 var(--color-blue-5) inset;
+
+    /* Resource card */
+
+    /* Resource collection card */
+
+    /* Manage page sections */
+
     --select-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23EAEDF3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --select-error-chevron: url('data:image/svg+xml;utf-8,<svg width="14" height="13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 6 6 6 6-6" stroke="%23f6a7a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
     --checkbox-checkmark: url('data:image/svg+xml;utf-8,<svg width="14" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.402 5.364 10 13 1" stroke="%232b2e38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
