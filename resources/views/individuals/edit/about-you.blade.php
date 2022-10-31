@@ -82,7 +82,7 @@
             <fieldset>
                 <legend>{{ __('Social media links') }}</legend>
                 <p class="field__hint">
-                    {{ __('Website links must be in the format “http://www.example.com”, or “example.com”.') }}
+                    {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </p>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
