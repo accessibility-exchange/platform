@@ -2,7 +2,7 @@
     @click.away="open = false" @close.stop="open = false">
     <button class="nav-button" @click="open = ! open" x-bind:aria-expanded="open.toString()">
         {{ $trigger }}
-        <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
+        @svg('heroicon-o-chevron-down', 'indicator')
     </button>
 
     <ul role="list" @click="open = false">

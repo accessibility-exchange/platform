@@ -70,7 +70,7 @@
                     @if ($project->allEngagements->count())
                         <a class="cta secondary"
                             href="{{ localized_route('engagements.show-language-selection', $project) }}">
-                            <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                            @svg('heroicon-o-plus-circle')
                             {{ __('Create engagement') }}
                         </a>
                     @endif
@@ -82,7 +82,7 @@
                             <p>
                                 <a class="cta secondary"
                                     href="{{ localized_route('engagements.show-language-selection', $project) }}">
-                                    <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                                    @svg('heroicon-o-plus-circle')
                                     {{ __('Create engagement') }}
                                 </a>
                         </div>

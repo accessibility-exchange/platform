@@ -25,7 +25,7 @@
                     <div class="flex items-center gap-6">
                         <livewire:estimate-approver :model="$project" />
                         <a href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">{{ __('Contact us') }}
-                            <x-heroicon-s-chevron-right class="h-5 w-5" role="presentation" aria-hidden="true" />
+                            @svg('heroicon-s-chevron-right')
                         </a>
                     </div>
                 @else

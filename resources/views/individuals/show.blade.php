@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-no-symbol', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -68,7 +68,7 @@
                         @if (!empty($individual->website_link))
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $individual->website_link }}">
-                                    <x-heroicon-o-globe-alt class="icon" />
+                                    @svg('heroicon-o-globe-alt')
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
                             </li>

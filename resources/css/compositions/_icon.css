@@ -1,6 +1,17 @@
 .icon {
-    height: 1em;
-    width: 1em;
+    @apply w-5 h-5;
+}
+
+.icon--lg {
+    @apply w-6 h-6;
+}
+
+.icon--xl {
+    @apply h-7 w-7;
+}
+
+.icon--2xl {
+    @apply h-12 w-12;
 }
 
 .with-icon {

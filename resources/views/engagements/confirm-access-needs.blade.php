@@ -50,10 +50,10 @@
                     method="post">
                     @csrf
                     <button class="secondary" name="share_access_needs" value="1">
-                        <x-heroicon-s-check class="h-5 w-5" aria-hidden="true" /> {{ __('Yes') }}
+                        @svg('heroicon-s-check') {{ __('Yes') }}
                     </button>
                     <button class="secondary" name="share_access_needs" value="0">
-                        <x-heroicon-s-x-mark class="h-5 w-5" aria-hidden="true" /> {{ __('No') }}
+                        @svg('heroicon-s-x-mark') {{ __('No') }}
                     </button>
                 </form>
             </div>

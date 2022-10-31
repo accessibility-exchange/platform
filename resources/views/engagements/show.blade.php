@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-no-symbol', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -67,13 +67,13 @@
 
             @can('join', $engagement)
                 <a class="cta" href="{{ localized_route('engagements.sign-up', $engagement) }}">
-                    <x-heroicon-o-clipboard-document-check class="h-5 w-5" aria-hidden="true" /> {{ __('Sign up') }}
+                    @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
                 </a>
             @endcan
 
             @can('participate', $engagement)
                 <a class="cta secondary" href="{{ localized_route('engagements.confirm-leave', $engagement) }}">
-                    <x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5" aria-hidden="true" />
+                    @svg('heroicon-o-arrow-right-on-rectangle')
                     {{ __('Leave engagement') }}
                 </a>
             @endcan
@@ -86,7 +86,7 @@
 
         @can('manageParticipants', $engagement)
             <a class="cta secondary" href="{{ localized_route('engagements.manage-participants', $engagement) }}">
-                <x-heroicon-o-users /> {{ __('Manage participants') }}
+                @svg('heroicon-o-users') {{ __('Manage participants') }}
             </a>
         @endcan
     </x-slot>
@@ -152,19 +152,18 @@
                     <li class="flex items-center">
                         @switch($engagement->weekday_availabilities[$key])
                             @case('no')
-                                <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5 text-red-6" role="presentation" />
+                                @svg('heroicon-s-x-circle', 'mr-2 text-red-6')
                                 <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('not available') }}</span>
                             @break
 
                             @case('upon-request')
-                                <x-heroicon-s-question-mark-circle class="icon mr-2 h-5 w-5 text-yellow-3"
-                                    role="presentation" /> <span><span class="font-semibold">{{ $day }}</span> —
+                                @svg('heroicon-s-question-mark-circle', 'mr-2 text-yellow-3') <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('upon request') }}</span>
                             @break
 
                             @default
-                                <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5 text-green-5" role="presentation" />
+                                @svg('heroicon-s-check-circle', 'mr-2 text-green-5')
                                 <span><span class="font-semibold">{{ $day }}</span> — {{ __('available') }}</span>
                         @endswitch
                     </li>
@@ -247,14 +246,14 @@
             <div class="flex flex-col">
                 @if ($project->contact_person_email)
                     <div class="with-icon">
-                        <x-heroicon-o-envelope class="icon h-5 w-5" role="presentation" />
+                        @svg('heroicon-o-envelope')
                         <span><strong>{{ __('Email:') }}</strong> <a
                                 href="mailto:{{ $project->contact_person_email }}">{{ $project->contact_person_email }}</a></span>
                     </div>
                 @endif
                 @if ($project->contact_person_phone)
                     <div class="with-icon">
-                        <x-heroicon-o-phone class="icon h-5 w-5" role="presentation" />
+                        @svg('heroicon-o-phone')
                         <span><strong>{{ __('Phone:') }}</strong>
                             {{ $project->contact_person_phone->formatForCountry('CA') }}</span>
                     </div>

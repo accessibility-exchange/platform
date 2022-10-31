@@ -12,7 +12,7 @@
             {{ __('Edit engagement details') }}
         </h1>
         <p><a class="with-icon" href="{{ localized_route('engagements.edit-languages', $engagement) }}">
-                <x-heroicon-o-pencil class="mr-2 h-5 w-5" role="presentation" aria-hidden="true" />
+                @svg('heroicon-o-pencil', 'mr-1')
                 {{ __('Edit page translations') }}
             </a>
         </p>

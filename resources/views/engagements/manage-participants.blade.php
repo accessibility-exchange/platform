@@ -47,7 +47,7 @@
                 @if ($participants->count() < $engagement->ideal_participants)
                     <a class="cta secondary with-icon"
                         href="{{ localized_route('engagements.add-participant', $engagement) }}">
-                        <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                        @svg('heroicon-o-plus-circle')
                         {{ __('Add participant') }}
                     </a>
                 @endif
@@ -104,7 +104,7 @@
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'email')
                                     <p class="flex items-center gap-1 text-green-7">
-                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                        @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif
@@ -122,7 +122,7 @@
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'phone')
                                     <p class="flex items-center gap-1 text-green-7">
-                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                        @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif

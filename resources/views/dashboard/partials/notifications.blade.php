@@ -1,6 +1,7 @@
 <div class="stack">
     <div class="flex items-center gap-5">
-        <x-heroicon-o-bell class="h-12 w-12 text-magenta-3" role="presentation" aria-hidden="true" />
+        @svg('heroicon-o-bell', 'icon--2xl text-magenta-3')
+
         <h2 class="mt-0">{{ __('Notifications') }}</h2>
         @if ($notifications->count())
             <span
@@ -16,6 +17,6 @@
             @if ($notifications->count() > 2)
                 ({{ __(':count more unread', ['count' => $notifications->count() - 2]) }})
             @endif
-            <x-heroicon-s-chevron-right class="h-5 w-5" role="presentation" aria-hidden="true" />
+            @svg('heroicon-s-chevron-right')
         </a></p>
 </div>

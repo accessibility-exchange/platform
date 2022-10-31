@@ -4,11 +4,11 @@
             <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
                 @keyup.escape.window="open = false">
                 {{ __('Get help') }}
-                <x-heroicon-o-chevron-down class="indicator" aria-hidden="true" />
+                @svg('heroicon-o-chevron-down', 'indicator')
             </button>
             <div class="responsive-switcher">
                 <div>
-                    <x-heroicon-o-phone aria-hidden="true" height="20" width="20" />&nbsp;<span
+                    @svg('heroicon-o-phone')&nbsp;<span
                         class="font-semibold">{!! __('Call or :vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
@@ -17,8 +17,7 @@
                         ]) !!}:</span>&nbsp;{{ phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
-                    <x-heroicon-o-envelope aria-hidden="true" height="20" width="20" />&nbsp;<span
-                        class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
+                    @svg('heroicon-o-envelope')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
                         href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
                         {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
                     </a>

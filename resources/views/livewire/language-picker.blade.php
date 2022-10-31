@@ -13,7 +13,7 @@
     </ul>
     @if ($this->canAddMoreLanguages())
         <button class="secondary" type="button" wire:click="addLanguage">
-            <x-heroicon-o-plus-circle class="h-6 w-6" />
+            @svg('heroicon-o-plus-circle', 'icon--lg')
             {{ count($languages) ? __('Add another language') : __('Add a language') }}
         </button>
     @endif

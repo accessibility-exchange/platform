@@ -5,8 +5,8 @@
         <div class="center max-w-prose">
             <div class="stack text-center">
                 <div class="mx-auto w-1/2">
-                    <x-tae-logo class="logo" role="presentation" />
-                    <x-tae-logo-mono class="logo logo--themeable" role="presentation" />
+                    @svg('tae-logo', ['class' => 'logo'])
+                    @svg('tae-logo-mono', ['class' => 'logo logo--themeable'])
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </div>
 
