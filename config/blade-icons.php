@@ -11,7 +11,6 @@ return [
     'attributes' => [
         'role' => 'presentation',
         'aria-hidden' => 'true',
-        'fill' => 'currentColor',
     ],
     'components' => [
         'disabled' => true,
