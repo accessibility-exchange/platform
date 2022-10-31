@@ -51,7 +51,8 @@
                     </p>
                     <p><strong>{{ implode(', ', $individual->display_roles) }}</strong>
                         @can('update', $individual)
-                            <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>
+                            <a href="{{ localized_route('individuals.show-role-edit') }}">@svg('heroicon-o-pencil', 'mr-1')
+                                {{ __('Edit') }}</a>
                         @endcan
                     </p>
                 </div>
@@ -109,28 +110,32 @@
             @if (request()->localizedRouteIs('individuals.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', $individual) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', $individual) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.about')
             @elseif(request()->localizedRouteIs('individuals.show-experiences'))
                 <h2 class="repel">{{ __('Experiences') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.experiences')
             @elseif(request()->localizedRouteIs('individuals.show-interests'))
                 <h2 class="repel">{{ __('Interests') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 4 : 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 4 : 3]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.interests')
             @elseif(request()->localizedRouteIs('individuals.show-communication-and-consultation-preferences'))
                 <h2 class="repel">{{ __('Communication and consultation preferences') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 5 : 4]) }}">{!! __('Edit :section', [
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 5 : 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', [
                                 'section' => '<span class="visually-hidden">' . __('Communication and consultation preferences') . '</span>',
                             ]) !!}</a>
                     @endcan

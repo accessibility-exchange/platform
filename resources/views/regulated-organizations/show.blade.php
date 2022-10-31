@@ -113,7 +113,8 @@
             @if (request()->localizedRouteIs('regulated-organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)
                         <a class="cta secondary"
-                            href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('regulated-organizations.partials.about')

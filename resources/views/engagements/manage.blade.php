@@ -161,7 +161,7 @@
                     </p>
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                         <a class="cta secondary" href="{{ localized_route('engagements.edit', $engagement) }}">
-                            @svg('heroicon-o-pencil') {{ __('Edit') }} <span
+                            @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span
                                 class="sr-only">{{ $engagement->name }}</span>
                         </a>
                         <a href="{{ localized_route('engagements.show', $engagement) }}">{{ __('View') }}
@@ -193,7 +193,7 @@
                             <div class="stack w-full md:w-1/3">
                                 <a class="cta secondary with-icon"
                                     href="{{ localized_route('meetings.edit', ['engagement' => $engagement, 'meeting' => $meeting]) }}">
-                                    @svg('heroicon-o-pencil') {{ __('Edit') }}
+                                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }}
                                 </a>
                                 <form
                                     action="{{ localized_route('meetings.destroy', ['engagement' => $engagement, 'meeting' => $meeting]) }}"

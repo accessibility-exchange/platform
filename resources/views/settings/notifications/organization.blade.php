@@ -33,7 +33,8 @@
             </ul>
 
             <p><a
-                    href="{{ localized_route('organizations.edit', ['organization' => $user->organization, 'step' => 4]) }}">{{ __('Edit your organization’s contact information') }}</a>
+                    href="{{ localized_route('organizations.edit', ['organization' => $user->organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                    {{ __('Edit your organization’s contact information') }}</a>
             </p>
 
             <div class="field @error('preferred_notification_method') field--error @enderror">

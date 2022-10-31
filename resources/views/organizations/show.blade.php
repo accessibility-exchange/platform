@@ -122,7 +122,8 @@
             @if (request()->localizedRouteIs('organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', $organization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', $organization) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.about')
@@ -131,7 +132,8 @@
                     {{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
                     @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">{!! __('Edit :section', [
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', [
                                 'section' =>
                                     '<span class="visually-hidden">' .
                                     __('Communities we :represent_or_serve_and_support', [
@@ -146,7 +148,8 @@
             @elseif(request()->localizedRouteIs('organizations.show-interests'))
                 <h2 class="repel">{{ __('Interests') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.interests')
@@ -160,7 +163,8 @@
             @elseif(request()->localizedRouteIs('organizations.show-contact-information'))
                 <h2 class="repel">{{ __('Contact information') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.contact-information')

@@ -99,15 +99,16 @@
         <div class="stack">
             @if (request()->localizedRouteIs('projects.show'))
                 <h2 class="repel">{{ __('Project overview') }} @can('update', $project)
-                        <a class="cta secondary"
-                            href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project overview') . '</span>']) !!}</a>
+                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project overview') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('projects.partials.overview')
             @elseif(request()->localizedRouteIs('projects.show-team'))
                 <h2 class="repel">{{ __('Project team') }} @can('update', $project)
                         <a class="cta secondary"
-                            href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project team') . '</span>']) !!}</a>
+                            href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project team') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('projects.partials.team')

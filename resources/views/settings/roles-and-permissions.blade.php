@@ -77,7 +77,8 @@
                     <td>
                         <a class="cta secondary"
                             href="{{ localized_route('memberships.edit', $member->membership->id) }}"
-                            aria-label="{{ __('Edit :user’s role', ['user' => $member->name]) }}">{{ __('Edit') }}</a>
+                            aria-label="{{ __('Edit :user’s role', ['user' => $member->name]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {{ __('Edit') }}</a>
                     </td>
                     <td>
                         <x-remove-member-modal :member="$member" :membershipable="$membershipable" :user="$user" />

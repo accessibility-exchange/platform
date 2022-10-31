@@ -32,7 +32,7 @@
             <div class="stack" x-show="!editing">
                 {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    @svg('heroicon-o-pencil') {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
                 </button>
             </div>
 
@@ -75,7 +75,7 @@
             <div class="stack" x-show="!editing">
                 {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    @svg('heroicon-o-pencil') {{ __('Edit') }} <span
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span
                         class="sr-only">{{ __('Disability or Deaf group') }}</span>
                 </button>
             </div>
@@ -118,7 +118,7 @@
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">{!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    @svg('heroicon-o-pencil') {{ __('Edit') }} <span class="sr-only">{{ __('Other identities') }}</span>
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Other identities') }}</span>
                 </button>
             </div>
 
