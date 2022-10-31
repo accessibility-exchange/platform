@@ -77,7 +77,7 @@ class UpdateIndividualRequest extends FormRequest
     public function messages()
     {
         return [
-            'social_links.*.active_url' => __('You must enter valid url.'),
+            'social_links.*.active_url' => __('You must enter a valid website address.'),
         ];
     }
 }
