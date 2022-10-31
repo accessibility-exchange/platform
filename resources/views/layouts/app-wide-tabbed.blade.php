@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" data-theme="{{ Cookie::get('theme', 'light') }}"
+<html class="no-js" data-theme="{{ Cookie::get('theme', 'system') }}"
     lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>

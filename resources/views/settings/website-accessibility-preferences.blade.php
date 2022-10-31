@@ -34,7 +34,15 @@
                     return {
                         theme: '{{ old('theme', $user->theme) }}',
                         preview() {
-                            document.documentElement.dataset.theme = this.theme;
+                            if (this.theme === 'system') {
+                                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                                    document.documentElement.dataset.theme = 'dark';
+                                } else {
+                                    document.documentElement.dataset.theme = 'light';
+                                }
+                            } else {
+                                document.documentElement.dataset.theme = this.theme;
+                            }
                         }
                     }
                 }
