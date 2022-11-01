@@ -81,12 +81,16 @@
 
             <fieldset>
                 <legend>{{ __('Social media links') }}</legend>
+                <p class="field__hint">
+                    {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                </p>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" />
-                        <x-hearth-error for="social_links_{{ $key }}" />
+                        <x-hearth-error for="social_links_{{ $key }}"
+                            field="social_links.{{ $key }}" />
                     </div>
                 @endforeach
             </fieldset>
