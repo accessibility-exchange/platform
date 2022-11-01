@@ -684,7 +684,6 @@ return [
             __('Authored by :author'),
             __('Added on :date'),
             __('Change resource format and language'),
-            __('Currently showing: :format - :language'),
             __('Table of contents'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2838%3A76528
