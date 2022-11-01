@@ -42,8 +42,8 @@
             <hr class="divider--thick">
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <livewire:date-picker name="window_start_date" :label="__('Start date')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="window_end_date" :label="__('End date')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
 
             <hr class="divider--thick">
             <h2>{{ __('Ways to participate') }}</h2>
@@ -237,11 +237,11 @@
 
         @if (in_array($engagement->format, ['survey', 'other-async']))
             <hr class="divider--thick">
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') . ' ' . __('(required)') : __('Materials') . ' ' . __('(required)') }}
+            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}
             </h2>
             <h3>{{ __('Date') }}</h3>
-            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
+            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <hr class="divider">
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>

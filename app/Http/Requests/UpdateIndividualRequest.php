@@ -68,4 +68,16 @@ class UpdateIndividualRequest extends FormRequest
             'bio.*' => __('bio'),
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'social_links.*.active_url' => __('You must enter a valid website address.'),
+        ];
+    }
 }

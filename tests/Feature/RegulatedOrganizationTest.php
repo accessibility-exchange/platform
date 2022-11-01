@@ -93,7 +93,7 @@ test('users with admin role can edit regulated organizations', function () {
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'contact_person_vrs' => true,
     ]);
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
