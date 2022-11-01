@@ -59,7 +59,7 @@
                             <li>{{ __('using the matching service to match the regulated organization with a group of people who meet the criteria.') }}
                             </li>
                         @endif
-                        <li>{{ __('conneting to a Community Connector to help recruit Consultation Participants.') }}
+                        <li>{{ __('connecting to a Community Connector to help recruit Consultation Participants.') }}
                         </li>
                     </ul>
                     </p>
