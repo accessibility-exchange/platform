@@ -28,7 +28,7 @@
         ]
     },
     "devDependencies": {
-        "@commitlint/cli": "^17.1.2",
+        "@commitlint/cli": "^17.2.0",
         "@commitlint/config-conventional": "^17.1.0",
         "@shufo/prettier-plugin-blade": "^1.6.3",
         "autoprefixer": "^10.4.12",
