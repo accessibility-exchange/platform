@@ -1003,30 +1003,7 @@ return [
         ],
     ],
     'Platform admin' => [
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3715%3A94295
-        'Platform admin/projects' => [
-            __('Admin toolbar'),
-            __('Manage users'),
-            __('Search by name or organization name...'),
-            __('User type'),
-            __('Pending approval'),
-            __('Blocked'),
-            __('Approve'),
-            __('Don’t approve'),
-            __('Showing :current of :total'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=4581%3A107478
-        'Platform admin/projects __ b' => [
-            __('Search by organization name...'),
-            __('Status updated'),
-            __('Estimate requested'),
-            __('Estimate returned Agreement received'),
-            __('Estimate returned Agreement pending'),
-            __('Estimate approved Agreement received'),
-            __('Estimate approved Agreement pending'),
-            __('Mark estimate as returned'),
-            __('Mark agreement as received'),
-        ],
+
         // https://docs.google.com/spreadsheets/d/1KzK9oeyQNGx5zVR_f0aCJ5mBkJ8KNtE-9jRZEp4Fbpk/edit#gid=1670408139
         'Notifications' => [
             __('You have been invited as a Consultation Participant'),
