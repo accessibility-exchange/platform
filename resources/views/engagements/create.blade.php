@@ -24,7 +24,7 @@
 
         <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :shortLabel="__('engagement name')" />
 
         <fieldset class="field @error('who') field--error @enderror">
             <legend>{{ __('Who do you want to engage?') . ' ' . __('(required)') }}</legend>

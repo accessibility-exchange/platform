@@ -17,7 +17,7 @@
         </div>
 
         <div class="field__subfield stack">
-            <x-translatable-input name="other_disability_type" :label="__('Disability type')" :model="$organization"
+            <x-translatable-input name="other_disability_type" :label="__('Disability type')" :model="$organization" :shortLabel="__('disability type')"
                 x-show="otherDisability" />
         </div>
     </div>

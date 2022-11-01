@@ -183,7 +183,7 @@
                     </div>
                     <div class="field__subfield stack">
                         <x-translatable-input name="other_ethnoracial_identity" :label="__('Ethnoracial identity')" :model="$organization"
-                            x-show="otherEthnoracialIdentity" />
+                            :shortLabel="__('ethnoracial identity')" x-show="otherEthnoracialIdentity" />
                     </div>
                 </div>
                 <div class="field">
