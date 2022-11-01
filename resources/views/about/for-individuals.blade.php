@@ -10,8 +10,8 @@
         </h1>
     </x-slot>
 
-    <div class="stack stack:xl -mb-8">
-        <x-placeholder class="text-blue-6" />
+    <div class="-mb-8 space-y-16">
+        <x-placeholder />
 
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="align:center">
@@ -21,7 +21,7 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-lavender-3" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-lavender-3 pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
@@ -35,7 +35,7 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-magenta-2" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-magenta-2 pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
@@ -49,7 +49,7 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-yellow-3" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-yellow-3 pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
@@ -62,7 +62,7 @@
             </x-media-text>
         </x-section>
 
-        <x-section class="align:center mt-16 bg-turquoise-2">
+        <x-section class="align:center accent--color">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -70,7 +70,7 @@
         </x-section>
 
         @guest
-            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
+            <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
                     <div class="grid">

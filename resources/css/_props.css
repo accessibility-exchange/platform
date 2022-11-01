@@ -5,10 +5,12 @@
     --body-background: var(--theme-body-background, var(--color-grey-1));
     --guest-body-background: var(--theme-guest-body-background, var(--color-grey-2));
     --home-body-background: var(--theme-home-body-background, var(--white));
-    --home-dark-background: var(--theme-home-dark-background, var(--color-blue-7));
-    --home-accent-background: var(--theme-home-accent-background, var(--color-grey-2));
     --body-color: var(--theme-body-color, var(--color-graphite-7));
-    --home-dark-color: var(--theme-home-dark-color, var(--color-white));
+    --content-dark-background: var(--theme-content-dark-background, var(--color-blue-7));
+    --content-dark-color: var(--theme-content-dark-color, var(--color-white));
+    --content-accent-background: var(--theme-content-accent-background, var(--color-grey-2));
+    --content-accent-color-background: var(--theme-content-accent-color-background, var(--color-turquoise-2));
+    --content-accent-color-color: var(--theme-content-accent-color-color, var(--color-graphite-7));
 
     /* Link */
     --link-color: var(--theme-link-color, var(--color-blue-6));

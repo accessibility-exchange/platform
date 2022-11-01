@@ -6,10 +6,12 @@
     --theme-body-background: var(--color-graphite-8);
     --theme-guest-body-background: var(--color-graphite-6);
     --theme-home-body-background: var(--color-graphite-8);
-    --theme-home-dark-background: var(--color-graphite-6);
-    --theme-home-accent-background: var(--color-graphite-7);
     --theme-body-color: var(--color-grey-2);
-    --theme-home-dark-color: var(--color-grey-2);
+    --theme-content-dark-background: var(--color-graphite-6);
+    --theme-content-dark-color: var(--color-grey-2);
+    --theme-content-accent-background: var(--color-graphite-7);
+    --theme-content-accent-color-background: var(--color-turquoise-2);
+    --theme-content-accent-color-color: var(--color-black);
 
     /* Link */
     --theme-link-color: var(--color-turquoise-1);

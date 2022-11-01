@@ -13,14 +13,14 @@
 }
 
 .welcome .dark {
-    --heading-color: --home-dark-color;
+    --heading-color: --content-dark-color;
 
-    background-color: var(--home-dark-background);
-    color: var(--home-dark-color);
+    background-color: var(--content-dark-background);
+    color: var(--content-dark-color);
 }
 
-.welcome .accent {
-    background-color: var(--home-accent-background);
+.content .accent {
+    background-color: var(--content-accent-background);
 }
 
 .welcome main header h1,
@@ -51,4 +51,11 @@
     left: calc(50% - 50vw);
     position: relative;
     width: 100vw;
+}
+
+.content .accent--color {
+    --heading-color: var(--content-accent-color-color);
+
+    background-color: var(--content-accent-color-background);
+    color: var(--content-accent-color-color);
 }

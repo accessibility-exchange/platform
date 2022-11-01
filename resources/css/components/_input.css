@@ -225,7 +225,3 @@ legend {
     justify-content: flex-start;
     margin-block-start: var(--space-1);
 }
-
-.field__error svg {
-    height: var(--space-4);
-}
