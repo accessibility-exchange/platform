@@ -4,7 +4,7 @@
         <div class="full header--regulated-organization -mt-12 py-12">
             <div class="center center:wide stack">
                 <ol class="breadcrumbs" role="list">
-                    <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+                    <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessbility Exchange') }}</a></li>
                     @if (request()->localizedRouteIs('about.regulated-organization-get-input'))
                         <li><a
                                 href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for Regulated Organizations') }}</a>
