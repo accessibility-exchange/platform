@@ -62,7 +62,7 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
     {
         return [
             'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
-            'phone.required_if' => __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.'),
+            'phone.required_if' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.'),
             'support_person_phone.required_if' => __('Since the checkbox for your support person requiring VRS for phone calls is checked, you must enter a phone number.'),
         ];
     }

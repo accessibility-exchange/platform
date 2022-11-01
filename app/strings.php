@@ -870,7 +870,6 @@ return [
             __('Selected translations'),
             __('Add translation'),
             __('Translation'),
-            __('Pick a language...'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1725%3A47435
         'Consultant Community Connector / create profile - 6' => [
