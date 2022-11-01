@@ -368,7 +368,6 @@ return [
             __('Province or territory'),
             __('(required)'),
             __('(optional)'),
-            __('Type to select...'),
             __('Add another location'),
             __('Disability and Deaf groups'),
             __('Yes, I’m interested in a specific disability or Deaf group'),
