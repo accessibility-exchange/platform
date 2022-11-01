@@ -11,6 +11,18 @@
     --content-accent-background: var(--theme-content-accent-background, var(--color-grey-2));
     --content-accent-color-background: var(--theme-content-accent-color-background, var(--color-turquoise-2));
     --content-accent-color-color: var(--theme-content-accent-color-color, var(--color-graphite-7));
+    --participants-background: var(--theme-participants-background, var(--color-lavender-3));
+    --participants-color: var(--theme-participants-color, var(--color-black));
+    --participants-border: var(--theme-participants-border, transparent);
+    --consultants-background: var(--theme-consultants-background, var(--color-magenta-2));
+    --consultants-color: var(--theme-consultants-color, var(--color-black));
+    --consultants-border: var(--theme-consultants-border, transparent);
+    --connectors-background: var(--theme-connectors-background, var(--color-yellow-3));
+    --connectors-color: var(--theme-connectors-color, var(--color-black));
+    --connectors-border: var(--theme-connectors-border, transparent);
+    --regulated-organizations-background: var(--theme-regulated-organizations-background, var(--color-turquoise-2));
+    --regulated-organizations-color: var(--theme-regulated-organizations-color, var(--color-black));
+    --regulated-organizations-border: var(--theme-regulated-organizations-border, transparent);
 
     /* Link */
     --link-color: var(--theme-link-color, var(--color-blue-6));

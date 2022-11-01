@@ -59,3 +59,51 @@
     background-color: var(--content-accent-color-background);
     color: var(--content-accent-color-color);
 }
+
+.header--participants {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--participants-color);
+    --link-color-visited: var(--participants-color);
+    --h1-color: var(--participants-color);
+
+    background-color: var(--participants-background);
+    border-color: var(--participants-border);
+    color: var(--participants-color);
+}
+
+.header--consultants {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--consultants-color);
+    --link-color-visited: var(--consultants-color);
+    --h1-color: var(--consultants-color);
+
+    background-color: var(--consultants-background);
+    border-color: var(--consultants-border);
+    color: var(--consultants-color);
+}
+
+.header--connectors {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--connectors-color);
+    --link-color-visited: var(--connectors-color);
+    --h1-color: var(--connectors-color);
+
+    background-color: var(--connectors-background);
+    border-color: var(--connectors-border);
+    color: var(--connectors-color);
+}
+
+.header--regulated-organization {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--regulated-organizations-color);
+    --link-color-visited: var(--regulated-organizations-color);
+    --h1-color: var(--regulated-organizations-color);
+
+    background-color: var(--regulated-organizations-background);
+    border-color: var(--regulated-organizations-border);
+    color: var(--regulated-organizations-color);
+}

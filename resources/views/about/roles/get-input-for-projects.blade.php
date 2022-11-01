@@ -1,7 +1,7 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ __('Get input for your projects') }}</x-slot>
     <x-slot name="header">
-        <div class="full -mt-12 bg-turquoise-2 py-12">
+        <div class="full header--regulated-organization -mt-12 py-12">
             <div class="center center:wide stack">
                 <ol class="breadcrumbs" role="list">
                     <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
@@ -29,14 +29,14 @@
         </div>
     </x-slot>
 
-    <div class="stack stack:xl -mb-8">
+    <div class="-mb-8 space-y-16">
         <x-section class="stack:lg" aria-labelledby="how">
             <div class="center text-center">
                 <h2 id="how">{!! __('How does getting input for your projects work?') !!}</h2>
             </div>
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-turquoise-2" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex h-full flex-col justify-center">
                     <h3>{{ __('Sign up and share more about your organization') }}</h3>
@@ -47,7 +47,7 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-turquoise-2" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex h-full flex-col justify-center">
                     <h3>{{ __('Share more about your projects and who you are looking to engage') }}</h3>
@@ -68,7 +68,7 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-turquoise-2" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
                 <div class="stack flex h-full flex-col justify-center">
                     <h3>{{ __('Work directly with people on your accessibility project') }}</h3>
@@ -78,7 +78,7 @@
             </x-media-text>
         </x-section>
 
-        <x-section class="align:center mt-16 bg-turquoise-2">
+        <x-section class="align:center accent--color">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -86,7 +86,7 @@
         </x-section>
 
         @guest
-            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
+            <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
                     <div class="grid">

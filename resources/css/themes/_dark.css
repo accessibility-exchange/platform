@@ -12,6 +12,18 @@
     --theme-content-accent-background: var(--color-graphite-7);
     --theme-content-accent-color-background: var(--color-turquoise-2);
     --theme-content-accent-color-color: var(--color-black);
+    --theme-participants-background: var(--color-graphite-8);
+    --theme-participants-color: var(--color-lavender-3);
+    --theme-participants-border: var(--theme-participants-color);
+    --theme-consultants-background: var(--color-graphite-8);
+    --theme-consultants-color: var(--color-magenta-2);
+    --theme-consultants-border: var(--theme-participants-color);
+    --theme-connectors-background: var(--color-graphite-8);
+    --theme-connectors-color: var(--color-yellow-3);
+    --theme-connectors-border: var(--theme-participants-color);
+    --theme-regulated-organizations-background: var(--color-graphite-8);
+    --theme-regulated-organizations-color: var(--color-turquoise-2);
+    --theme-regulated-organizations-border: var(--theme-participants-color);
 
     /* Link */
     --theme-link-color: var(--color-turquoise-1);
