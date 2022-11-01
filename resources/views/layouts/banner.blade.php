@@ -4,6 +4,8 @@
     <div class="center center:wide">
         <div class="nav">
             @include('components.brand')
+            <!-- Theme Switcher -->
+            <livewire:theme-switcher />
             <!-- Language Switcher -->
             <nav class="languages" aria-label="{{ __('languages') }}">
                 <ul role="list">

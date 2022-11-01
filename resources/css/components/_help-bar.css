@@ -63,7 +63,7 @@
 
 @media (min-width: 60rem) {
     .help-bar {
-        height: var(--space-16);
+        height: calc(var(--space-0) + var(--space-16));
     }
 
     .help-bar [aria-expanded] {

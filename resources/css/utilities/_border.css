@@ -1,0 +1,15 @@
+.border--lavender {
+    border-block-start-color: var(--border-color-lavender);
+}
+
+.border--magenta {
+    border-block-start-color: var(--border-color-magenta);
+}
+
+.border--yellow {
+    border-block-start-color: var(--border-color-yellow);
+}
+
+.border--turquoise {
+    border-block-start-color: var(--border-color-turquoise);
+}

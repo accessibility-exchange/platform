@@ -1,14 +1,97 @@
 /* This file contains everything related to the black on white theme. */
 [data-theme="black-white"] {
+    /* Text and backgrounds */
     --theme-h1-color: #000;
     --theme-heading-color: #000;
     --theme-body-background: #fff;
+    --theme-guest-body-background: #fff;
+    --theme-home-body-background: #fff;
     --theme-body-color: #000;
+    --theme-content-dark-background: #fff;
+    --theme-content-dark-color: #000;
+    --theme-content-accent-background: #fff;
+    --theme-content-accent-color-background: #fff;
+    --theme-content-accent-color-color: #000;
+    --theme-participants-background: var(--color-graphite-8);
+    --theme-participants-color: var(--color-lavender-3);
+    --theme-participants-border: var(--theme-participants-color);
+    --theme-consultants-background: var(--color-graphite-8);
+    --theme-consultants-color: var(--color-magenta-2);
+    --theme-consultants-border: var(--theme-participants-color);
+    --theme-connectors-background: var(--color-graphite-8);
+    --theme-connectors-color: var(--color-yellow-3);
+    --theme-connectors-border: var(--theme-participants-color);
+    --theme-regulated-organizations-background: var(--color-graphite-8);
+    --theme-regulated-organizations-color: var(--color-turquoise-2);
+    --theme-regulated-organizations-border: var(--theme-participants-color);
+
+    /* Link */
     --theme-link-color: #000;
+    --theme-link-color-hover: #000;
+    --theme-link-outline-focus: #000;
+    --theme-link-background-active: #000;
+    --theme-link-color-active: #fff;
+    --theme-link-color-visited: #000;
+
+    /* Link on dark backgrounds */
+    --theme-link-dark-color: #000;
+    --theme-link-dark-color-hover: #000;
+    --theme-link-dark-outline-focus: #000;
+    --theme-link-dark-background-active: #000;
+    --theme-link-dark-color-active: #fff;
+    --theme-link-dark-color-visited: #000;
+
+    /* Call to action */
+    --theme-cta-background: #000;
+    --theme-cta-border: #000;
+    --theme-cta-color: #fff;
+    --theme-cta-outline: #000;
+    --theme-cta-background-hover: #fff;
+    --theme-cta-border-hover: #000;
+    --theme-cta-color-hover: #000;
+    --theme-cta-color-active: var(--color-blue-7);
+    --theme-cta-background-active: white;
+    --theme-cta-border-active: white;
+
+    /* Secondary call to action */
+    --theme-cta-secondary-background: #fff;
+    --theme-cta-secondary-border: #000;
+    --theme-cta-secondary-color: #000;
+    --theme-cta-secondary-outline: #000;
+    --theme-cta-secondary-background-hover: var(--color-grey-1);
+    --theme-cta-secondary-border-hover: var(--color-grey-1);
+    --theme-cta-secondary-color-hover: var(--color-blue-8);
+    --theme-cta-secondary-color-active: var(--color-blue-7);
+    --theme-cta-secondary-background-active: white;
+    --theme-cta-secondary-border-active: white;
+
+    /* Call to action on dark backgrounds */
+    --theme-cta-dark-background: var(--theme-cta-background);
+    --theme-cta-dark-border: var(--theme-cta-border);
+    --theme-cta-dark-color: var(--theme-cta-color);
+    --theme-cta-dark-outline: var(--theme-cta-outline);
+    --theme-cta-dark-background-hover: var(--theme-cta-background-hover);
+    --theme-cta-dark-border-hover: var(--theme-cta-border-hover);
+    --theme-cta-dark-color-hover: var(--theme-cta-color-hover);
+    --theme-cta-dark-color-active: var(--theme-cta-color-active);
+    --theme-cta-dark-background-active: var(--theme-cta-background-active);
+    --theme-cta-dark-border-active: var(--theme-cta-border-active);
+
+    /* Badge */
     --theme-badge-background: #fff;
     --theme-badge-border: #000;
     --theme-badge-color: #000;
+
+    /* Banner */
+
+    /* Divider */
     --theme-divider-color: #000;
+    --theme-border-color-lavender: var(--theme-divider-color);
+    --theme-border-color-turquoise: var(--theme-divider-color);
+    --theme-border-color-yellow: var(--theme-divider-color);
+    --theme-border-color-magenta: var(--theme-divider-color);
+
+    /* Alert */
     --theme-alert-background: #fff;
     --theme-alert-border: #000;
     --theme-alert-color: #000;
@@ -35,8 +118,11 @@
     --theme-button-secondary-background: #fff;
     --theme-button-secondary-border: #000;
     --theme-button-secondary-color: #000;
-    --theme-help-bar-background: var(--body-background);
-    --theme-help-bar-border: var(--divider-color);
+    --theme-help-bar-background: var(--theme-body-background);
+    --theme-help-bar-border: var(--theme-divider-color);
+    --theme-footer-background: var(--theme-body-background);
+    --theme-footer-heading-color: var(--theme-body-color);
+    --theme-footer-border: var(--divider-color);
     --theme-banner-background: var(--body-background);
     --theme-banner-border: var(--divider-color);
     --theme-nav-color: var(--link-color);

@@ -25,7 +25,7 @@
 
 .welcome main header h1,
 .welcome main header p {
-    color: var(--color-white);
+    color: var(--content-dark-color);
 }
 
 .welcome main .cta {

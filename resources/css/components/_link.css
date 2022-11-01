@@ -26,6 +26,10 @@ a:visited {
     color: var(--link-color-visited);
 }
 
+a:active:visited {
+    color: var(--link-color-active);
+}
+
 .dark a {
     color: var(--link-dark-color);
 }
@@ -47,6 +51,10 @@ a:visited {
 
 .dark a:visited {
     color: var(--link-dark-color-visited);
+}
+
+.dark a:active:visited {
+    color: var(--link-dark-color-active);
 }
 
 a.cta {
@@ -83,7 +91,7 @@ a.cta:hover {
 a.cta:focus {
     --tw-ring-color: var(--cta-outline);
 
-    @apply ring-2 ring-offset-2;
+    @apply ring-2 ring-offset-4;
 }
 
 a.cta:active {

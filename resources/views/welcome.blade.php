@@ -32,7 +32,7 @@
                     <section class="stack" aria-labelledby="what">
                         <h2 class="align:center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
                         <div class="grid">
-                            <div class="box border-t-lavender-3">
+                            <div class="box border--lavender">
                                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
                                 </h3>
                                 <p>{{ __('Connects the disability and Deaf communities and supporters with organizations that are “regulated” or supervised and monitored by the federal government, so that together they can work on accessibility projects, as required by the Accessible Canada Act.') }}
@@ -51,6 +51,7 @@
 
                     <section class="stack stack:lg" aria-labelledby="how">
                         <h2 class="align:center" id="how">{{ __('How does this work?') }}</h2>
+
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
                             <x-slot name="media">

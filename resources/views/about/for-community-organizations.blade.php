@@ -46,7 +46,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-magenta-2 pt-8">
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
                     </p>
@@ -60,7 +60,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-yellow-3 pt-8">
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
                     </p>
@@ -74,7 +74,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-turquoise-5 pt-8">
+                <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Get input for your projects') }}</h3>
                     <p>{{ __('Recruit individuals who are Deaf or have disabilities to give input on your own projects.') }}
                     </p>
@@ -88,7 +88,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-lavender-3 pt-8">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('Participate in consultations for organizations and businesses who are working on accessibility projects, and get paid for your participation.') }}
                     </p>

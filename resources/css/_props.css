@@ -29,7 +29,7 @@
     --link-color-hover: var(--theme-link-color-hover, var(--color-blue-7));
     --link-color-visited: var(--theme-link-color-visited, var(--color-blue-8));
     --link-outline-focus: var(--theme-link-outline-focus, var(--color-blue-6));
-    --link-color-active: var(--theme-link-color-hover, var(--color-blue-7));
+    --link-color-active: var(--theme-link-color-active, var(--color-blue-7));
     --link-background-active: var(--theme-link-background-active, var(--color-grey-2));
 
     /* Link on dark backgrounds */
@@ -37,7 +37,7 @@
     --link-dark-color-hover: var(--theme-link-dark-color-hover, var(--color-turquoise-1));
     --link-dark-color-visited: var(--theme-link-dark-color-visited, var(--color-turquoise-1));
     --link-dark-outline-focus: var(--theme-link-dark-outline-focus, var(--color-turquoise-1));
-    --link-dark-color-active: var(--theme-link-dark-color-hover, var(--color-turquoise-1));
+    --link-dark-color-active: var(--theme-link-dark-color-active, var(--color-turquoise-1));
     --link-dark-background-active: var(--theme-link-dark-background-active, var(--color-graphite-6));
 
     /* Call to action */
@@ -70,11 +70,11 @@
     --cta-dark-color: var(--theme-cta-dark-color, var(--color-blue-7));
     --cta-dark-outline: var(--theme-cta-dark-outline, var(--color-grey-2));
     --cta-dark-background-hover: var(--theme-cta-dark-background-hover, var(--color-grey-1));
-    --cta-dark-border-hover: var(--theme-dark-border-hover, var(--color-grey-1));
-    --cta-dark-color-hover: var(--theme-dark-color-hover, var(--color-blue-8));
-    --cta-dark-color-active: var(--theme-dark-color-active, var(--color-blue-7));
-    --cta-dark-background-active: var(--theme-dark-background-active, white);
-    --cta-dark-border-active: var(--theme-dark-border-active, white);
+    --cta-dark-border-hover: var(--theme-cta-dark-border-hover, var(--color-grey-1));
+    --cta-dark-color-hover: var(--theme-cta-dark-color-hover, var(--color-blue-8));
+    --cta-dark-color-active: var(--theme-cta-dark-color-active, var(--color-blue-7));
+    --cta-dark-background-active: var(--theme-cta-dark-background-active, white);
+    --cta-dark-border-active: var(--theme-cta-dark-border-active, white);
 
     /* Badge */
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
@@ -90,6 +90,10 @@
 
     /* Divider */
     --divider-color: var(--theme-divider-color, var(--color-graphite-6));
+    --border-color-lavender: var(--theme-border-color-lavender, var(--color-lavender-3));
+    --border-color-turquoise: var(--theme-border-color-turquoise, var(--color-turquoise-5));
+    --border-color-yellow: var(--theme-border-color-yellow, var(--color-yellow-3));
+    --border-color-magenta: var(--theme-border-color-magenta, var(--color-magenta-2));
 
     /* Alert */
     --alert-background: var(--theme-alert-background, var(--color-grey-2));
@@ -277,6 +281,7 @@
     --footer-background: var(--theme-footer-background, var(--color-blue-7));
     --footer-color: var(--theme-footer-color, var(--color-white));
     --footer-heading-color: var(--theme-footer-heading-color, var(--color-grey-2));
+    --footer-border: var(--theme-footer-border, transparent);
 
     /* Defined term */
     --defined-term-color: var(--theme-defined-term-color, var(--color-blue-6));

@@ -1,5 +1,6 @@
 [role="contentinfo"] {
     background: var(--footer-background);
+    border-block-start: var(--border) dashed var(--footer-border);
     color: var(--footer-color);
     margin-block-start: auto;
 }

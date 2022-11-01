@@ -23,7 +23,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-lavender-3 pt-8">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('As an individual with a disability, Deaf person, or a supporter, you can participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. You can also gain access to resources and training on how to do this.') }}
                     </p>
@@ -37,7 +37,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-magenta-2 pt-8">
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
                     </p>
@@ -51,7 +51,7 @@
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-yellow-3 pt-8">
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
                     </p>
