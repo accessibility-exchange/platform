@@ -801,7 +801,7 @@ return [
             __('If a Sign Language video translation is available, you will see a button in line with the website content. Pressing that button will load the Sign Language video.'),
             __('Off'),
             __('American Sign Language (ASL)'),
-            __('Langue des signes du Québec (LSQ)'),
+            __('Langue des signes québécoise (LSQ)'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1282%3A15836
         'Modal/Unblock' => [
@@ -933,7 +933,7 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1297%3A18818
         'Comm org - create your page - 3' => [
             __('Recommendation'),
-            __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.'),
+            __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes québécoise (LSQ) translations of your content.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1297%3A18839
         'Entity/My projects/Create new project - 22' => [
@@ -966,7 +966,7 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A17922
         'FCO/Create profile/languages-warning' => [
-            __('Please be aware that it is highly likely that people will request English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ)'),
+            __('Please be aware that it is highly likely that people will request English, French, American Sign Language (ASL), and Langue des signes québécoise (LSQ)'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A17632
         'FCO/Create profile/info' => [
