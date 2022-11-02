@@ -64,7 +64,7 @@
 
                     <div class="field__subfield stack">
                         <x-translatable-input name="other_disability_type_connection" :label="__('Disability type')"
-                            :model="$individual" x-show="otherDisability" />
+                            :shortLabel="__('disability type')" :model="$individual" x-show="otherDisability" />
                     </div>
                 </div>
             </fieldset>
@@ -223,7 +223,7 @@
                     </div>
                     <div class="field__subfield stack">
                         <x-translatable-input name="other_ethnoracial_identity_connection" :label="__('Ethnoracial identity')"
-                            :model="$individual" x-show="otherEthnoracialIdentity" />
+                            :shortLabel="__('ethnoracial identity')" :model="$individual" x-show="otherEthnoracialIdentity" />
                     </div>
                 </div>
                 <div class="field">

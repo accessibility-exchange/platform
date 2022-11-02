@@ -53,7 +53,8 @@
                 <h2>{{ __('Organization information') }}</h2>
 
                 <div class="field @error('name') field--error @enderror">
-                    <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" required />
+                    <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" :shortLabel="__('federally regulated organization name')"
+                        required />
                 </div>
 
                 <fieldset>
@@ -89,7 +90,7 @@
 
                 <div class="field @error('about') field--error @enderror">
                     <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
-                        required />
+                        :shortLabel="__('about')" required />
                 </div>
 
                 <fieldset class="stack">

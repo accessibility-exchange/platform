@@ -49,7 +49,7 @@ class UpdateProjectTeamRequest extends FormRequest
             if ($this->contact_person_vrs && ! $this->contact_person_phone) {
                 $validator->errors()->add(
                     'contact_person_phone',
-                    __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.')
+                    __('Since you have indicated that your contact person needs VRS, please enter a phone number.')
                 );
             }
         });

@@ -368,7 +368,6 @@ return [
             __('Province or territory'),
             __('(required)'),
             __('(optional)'),
-            __('Type to select...'),
             __('Add another location'),
             __('Disability and Deaf groups'),
             __('Yes, I’m interested in a specific disability or Deaf group'),
@@ -499,11 +498,6 @@ return [
             __('The group of participants who have accepted your invitation include:'),
             __('Locations'),
             __('Your participants are from the following locations in Canada.'),
-            __('West Coast'),
-            __('Prairie'),
-            __('Central'),
-            __('Atlantic'),
-            __('Northern'),
             __('Groups'),
             __(':percentage of your participants fall into more than one of these groups.'),
             __('Temporary'),
@@ -689,7 +683,6 @@ return [
             __('Authored by :author'),
             __('Added on :date'),
             __('Change resource format and language'),
-            __('Currently showing: :format - :language'),
             __('Table of contents'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2838%3A76528
@@ -801,7 +794,7 @@ return [
             __('If a Sign Language video translation is available, you will see a button in line with the website content. Pressing that button will load the Sign Language video.'),
             __('Off'),
             __('American Sign Language (ASL)'),
-            __('Langue des signes du Québec (LSQ)'),
+            __('Langue des signes québécoise (LSQ)'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1282%3A15836
         'Modal/Unblock' => [
@@ -876,7 +869,6 @@ return [
             __('Selected translations'),
             __('Add translation'),
             __('Translation'),
-            __('Pick a language...'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1725%3A47435
         'Consultant Community Connector / create profile - 6' => [
@@ -933,7 +925,7 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1297%3A18818
         'Comm org - create your page - 3' => [
             __('Recommendation'),
-            __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ) translations of your content.'),
+            __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes québécoise (LSQ) translations of your content.'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1297%3A18839
         'Entity/My projects/Create new project - 22' => [
@@ -966,7 +958,7 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A17922
         'FCO/Create profile/languages-warning' => [
-            __('Please be aware that it is highly likely that people will request English, French, American Sign Language (ASL), and Langue des signes du Québec (LSQ)'),
+            __('Please be aware that it is highly likely that people will request English, French, American Sign Language (ASL), and Langue des signes québécoise (LSQ)'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A17632
         'FCO/Create profile/info' => [
@@ -1009,30 +1001,7 @@ return [
         ],
     ],
     'Platform admin' => [
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3715%3A94295
-        'Platform admin/projects' => [
-            __('Admin toolbar'),
-            __('Manage users'),
-            __('Search by name or organization name...'),
-            __('User type'),
-            __('Pending approval'),
-            __('Blocked'),
-            __('Approve'),
-            __('Don’t approve'),
-            __('Showing :current of :total'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=4581%3A107478
-        'Platform admin/projects __ b' => [
-            __('Search by organization name...'),
-            __('Status updated'),
-            __('Estimate requested'),
-            __('Estimate returned Agreement received'),
-            __('Estimate returned Agreement pending'),
-            __('Estimate approved Agreement received'),
-            __('Estimate approved Agreement pending'),
-            __('Mark estimate as returned'),
-            __('Mark agreement as received'),
-        ],
+
         // https://docs.google.com/spreadsheets/d/1KzK9oeyQNGx5zVR_f0aCJ5mBkJ8KNtE-9jRZEp4Fbpk/edit#gid=1670408139
         'Notifications' => [
             __('You have been invited as a Consultation Participant'),

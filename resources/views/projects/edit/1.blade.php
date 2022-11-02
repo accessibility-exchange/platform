@@ -17,7 +17,8 @@
                 <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
 
-            <x-translatable-input name="name" :label="__('Project name (please fill this out)')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project" />
+            <x-translatable-input name="name" :label="__('Project name (please fill this out)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')"
+                :model="$project" />
 
             <h3>{{ __('Project goals') }}</h3>
 
