@@ -118,6 +118,7 @@
     --theme-button-secondary-background: #fff;
     --theme-button-secondary-border: #000;
     --theme-button-secondary-color: #000;
+    --theme-help-bar-color: var(--theme-body-color);
     --theme-help-bar-background: var(--theme-body-background);
     --theme-help-bar-border: var(--theme-divider-color);
     --theme-footer-background: var(--theme-body-background);
@@ -127,6 +128,7 @@
     --theme-banner-border: var(--divider-color);
     --theme-nav-color: var(--link-color);
     --theme-nav-current-color: var(--link-color);
+    --theme-nav-border: #000;
     --theme-card-shadow: 0 0 0 1px #000 inset;
     --theme-card-shadow-hover: 0 0 0 0.1875rem #000 inset;
     --theme-card-inset-background: #fff;

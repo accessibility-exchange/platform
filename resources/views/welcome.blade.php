@@ -38,7 +38,7 @@
                                 <p>{{ __('Connects the disability and Deaf communities and supporters with organizations that are “regulated” or supervised and monitored by the federal government, so that together they can work on accessibility projects, as required by the Accessible Canada Act.') }}
                                 </p>
                             </div>
-                            <div class="box border-t-magenta-3">
+                            <div class="box border--magenta">
                                 <h3>{{ __('Provides Guidance and Resources') }}</h3>
                                 <p>{{ __('Provides valuable resources and guides for organizations and people with disabilities and Deaf people on how to engage in accessible and inclusive ways.') }}
                                 </p>

@@ -43,8 +43,10 @@
 }
 
 .welcome .grid .box {
+    background-color: var(--home-body-background);
     border-block-start-style: solid;
     border-block-start-width: var(--border-3);
+    padding-inline: 0;
 }
 
 .full {
