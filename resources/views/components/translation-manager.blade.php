@@ -44,8 +44,7 @@
 
                         <div class="field @error('new_language') field--error @enderror">
                             <x-hearth-label for="new_language">{{ __('Language') }}</x-hearth-label>
-                            <x-hearth-select name="new_language" x-data="autocomplete()" :options="$availableLanguages"
-                                :selected="old('new_language', '')" required />
+                            <x-hearth-select name="new_language" :options="$availableLanguages" :selected="old('new_language', '')" required />
                         </div>
 
                         <p class="repel">
