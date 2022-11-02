@@ -41,7 +41,7 @@
 
                 <div class="field @error('skills_and_strengths') field--error @enderror">
                     <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths?') . ' ' . __('(optional)')"
-                        :shortLabel="skills and strengths" />
+                        :shortLabel="__('skills and strengths')" />
                     <x-hearth-error for="skills_and_strengths" />
                 </div>
 
