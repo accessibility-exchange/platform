@@ -299,6 +299,27 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->hasMany(Membership::class);
     }
 
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class)
+            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withTimestamps();
+    }
+
+    public function modules(): HasMany
+    {
+        return $this->hasMany(Module::class)
+            ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
+            ->withTimestamps();
+    }
+
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quiz::class)
+            ->withPivot('attempts', 'score')
+            ->withTimestamps();
+    }
+
     public function organizations(): MorphToMany
     {
         return $this->morphedByMany(Organization::class, 'membershipable', 'memberships')
@@ -470,5 +491,26 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         }
 
         return $notifications->sortByDesc('created_at')->paginate(20);
+    }
+
+    public function hasCompletedCourse(Course $course): bool
+    {
+        $modules = $course->modules;
+        $quiz = $course->quiz ?? null;
+
+        foreach ($modules as $module) {
+            if (! $user->modules->contains($module) ||
+                ! $user->pivot->completed_at) {
+                return false;
+            }
+        }
+
+        if ($quiz &&
+            ! $user->quizzes->contains($quiz) ||
+            $userQuiz->score < 0.75) {
+            return false;
+        }
+
+        return true;
     }
 }
