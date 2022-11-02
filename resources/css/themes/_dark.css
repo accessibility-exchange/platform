@@ -9,7 +9,9 @@
     --theme-body-color: var(--color-grey-2);
     --theme-content-dark-background: var(--color-graphite-6);
     --theme-content-dark-color: var(--color-grey-2);
-    --theme-content-accent-background: var(--color-graphite-7);
+    --theme-content-darker-background: var(--theme-content-dark-background);
+    --theme-content-darker-color: var(--theme-content-dark-color);
+    --theme-content-accent-background: var(--color-graphite-8);
     --theme-content-accent-color-background: var(--color-turquoise-2);
     --theme-content-accent-color-color: var(--color-black);
     --theme-participants-background: var(--color-graphite-8);
@@ -183,10 +185,6 @@
     --theme-tag-button-border: var(--color-turquoise-2);
     --theme-tag-button-color: var(--color-graphite-8);
 
-    /* Help bar */
-    --theme-help-bar-background: var(--color-graphite-6);
-    --theme-help-bar-border: transparent;
-
     /* Brand */
     --theme-brand-color: white;
 
@@ -231,11 +229,6 @@
     --theme-expander-background-active: var(--color-graphite-6);
     --theme-expander-color-active: var(--color-turquoise-1);
     --theme-expander-border-active: var(--color-turquoise-1);
-
-    /* Footer */
-    --theme-footer-background: var(--color-graphite-6);
-    --theme-footer-color: var(--color-grey-2);
-    --theme-footer-heading-color: var(--color-grey-2);
 
     /* Defined term */
     --theme-defined-term-color: var(--color-turquoise-1);

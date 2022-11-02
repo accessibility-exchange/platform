@@ -91,7 +91,7 @@
                         </x-media-text>
                     </section>
 
-                    <section class="dark full" aria-labelledby="disability">
+                    <section class="darker full" aria-labelledby="disability">
                         <div class="center center:wide stack stack:xl">
                             <div class="with-sidebar with-sidebar:2/3">
                                 <div>

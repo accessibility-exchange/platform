@@ -75,7 +75,10 @@ button.destructive:active {
 
 .dark button,
 .dark button[type="submit"],
-.dark input[type="submit"] {
+.dark input[type="submit"],
+.darker button,
+.darker button[type="submit"],
+.darker input[type="submit"] {
     background: var(--button-dark-primary-background);
     border-color: var(--button-dark-primary-border);
     color: var(--button-dark-primary-color);
@@ -83,7 +86,10 @@ button.destructive:active {
 
 .dark button:hover,
 .dark button[type="submit"]:hover,
-.dark input[type="submit"]:hover {
+.dark input[type="submit"]:hover,
+.darker button:hover,
+.darker button[type="submit"]:hover,
+.darker input[type="submit"]:hover {
     background: var(--button-dark-primary-background-hover);
     border-color: var(--button-dark-primary-border-hover);
     color: var(--button-dark-primary-color-hover);
@@ -91,13 +97,19 @@ button.destructive:active {
 
 .dark button:focus,
 .dark button[type="submit"]:focus,
-.dark input[type="submit"]:focus {
+.dark input[type="submit"]:focus,
+.darker button:focus,
+.darker button[type="submit"]:focus,
+.darker input[type="submit"]:focus {
     outline: var(--button-dark-primary-outline) solid calc(var(--space-1) / 2);
 }
 
 .dark button:active,
 .dark button[type="submit"]:active,
-.dark input[type="submit"]:active {
+.dark input[type="submit"]:active,
+.darker button:active,
+.darker button[type="submit"]:active,
+.darker input[type="submit"]:active {
     background: var(--button-dark-primary-background-active);
     border-color: var(--button-dark-primary-border-active);
     color: var(--button-dark-primary-color-active);

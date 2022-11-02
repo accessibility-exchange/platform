@@ -1,13 +1,6 @@
 [role="contentinfo"] {
-    background: var(--footer-background);
     border-block-start: var(--border) dashed var(--footer-border);
-    color: var(--footer-color);
     margin-block-start: auto;
-}
-
-[role="contentinfo"] h2,
-[role="contentinfo"] h3 {
-    color: var(--footer-heading-color);
 }
 
 [role="contentinfo"] h2 {

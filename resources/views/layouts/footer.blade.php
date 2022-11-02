@@ -1,4 +1,4 @@
-<footer class="dark" role="contentinfo">
+<footer class="darker" role="contentinfo">
     <div class="center center:wide">
         <div class="switcher">
             <div class="stack">

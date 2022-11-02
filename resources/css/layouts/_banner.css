@@ -1,6 +1,6 @@
 /* This file contains all styles related to the banner layout. */
 [role="banner"] {
-    background-color: var(--theme-banner-background, white);
+    background-color: var(--banner-background);
     border-block-end: var(--border) solid var(--banner-border);
     box-shadow: var(--banner-shadow);
     position: relative;

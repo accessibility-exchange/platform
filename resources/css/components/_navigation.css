@@ -123,6 +123,7 @@ button.nav-button {
     height: calc(var(--space-12) - var(--space-1));
     justify-content: center;
     padding-inline: var(--space-4);
+    width: auto;
 }
 
 button.nav-button:hover {

@@ -1,7 +1,5 @@
 .help-bar {
-    background: var(--theme-help-bar-background, var(--help-bar-background));
     border-block-end: var(--border) dashed var(--help-bar-border);
-    color: var(--help-bar-color);
     height: var(--space-16);
 }
 
@@ -15,7 +13,6 @@
 }
 
 .help-bar a {
-    color: var(--help-bar-color);
     font-weight: var(--font-normal);
 }
 

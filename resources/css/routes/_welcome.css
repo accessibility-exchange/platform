@@ -12,15 +12,23 @@
     text-align: center;
 }
 
-.welcome .dark {
+.dark {
     --heading-color: --content-dark-color;
 
     background-color: var(--content-dark-background);
     color: var(--content-dark-color);
 }
 
-.content .accent {
+.darker {
+    --heading-color: --content-darker-color;
+
+    background-color: var(--content-darker-background);
+    color: var(--content-darker-color);
+}
+
+.accent {
     background-color: var(--content-accent-background);
+    border: dashed 1px var(--content-accent-border);
 }
 
 .welcome main header h1,
@@ -50,15 +58,18 @@
 }
 
 .full {
+    border-block-end: 0;
+    border-inline: 0;
     left: calc(50% - 50vw);
     position: relative;
     width: 100vw;
 }
 
-.content .accent--color {
+.accent--color {
     --heading-color: var(--content-accent-color-color);
 
     background-color: var(--content-accent-color-background);
+    border: dashed 1px var(--content-accent-color-border);
     color: var(--content-accent-color-color);
 }
 

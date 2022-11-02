@@ -1,16 +1,21 @@
 :root {
     /* Text and backgrounds */
-    --h1-color: var(--theme-h1-color, black);
+    --h1-color: var(--theme-h1-color, var(--color-black));
     --heading-color: var(--theme-heading-color, var(--color-graphite-8));
     --body-background: var(--theme-body-background, var(--color-grey-1));
     --guest-body-background: var(--theme-guest-body-background, var(--color-grey-2));
     --home-body-background: var(--theme-home-body-background, var(--white));
     --body-color: var(--theme-body-color, var(--color-graphite-7));
-    --content-dark-background: var(--theme-content-dark-background, var(--color-blue-7));
+    --banner-background: var(--theme-banner-background, var(--color-white));
+    --content-dark-background: var(--theme-content-dark-background, var(--color-blue-6));
     --content-dark-color: var(--theme-content-dark-color, var(--color-white));
+    --content-darker-background: var(--theme-content-darker-background, var(--color-blue-7));
+    --content-darker-color: var(--theme-content-darker-color, var(--color-white));
     --content-accent-background: var(--theme-content-accent-background, var(--color-grey-2));
+    --content-accent-border: var(--theme-content-accent-border, transparent);
     --content-accent-color-background: var(--theme-content-accent-color-background, var(--color-turquoise-2));
     --content-accent-color-color: var(--theme-content-accent-color-color, var(--color-graphite-7));
+    --content-accent-color-border: var(--theme-content-accent-color-border, transparent);
     --participants-background: var(--theme-participants-background, var(--color-lavender-3));
     --participants-color: var(--theme-participants-color, var(--color-black));
     --participants-border: var(--theme-participants-border, transparent);
@@ -42,26 +47,26 @@
 
     /* Call to action */
     --cta-background: var(--theme-cta-background, var(--color-blue-7));
-    --cta-color: var(--theme-cta-color, white);
+    --cta-color: var(--theme-cta-color, var(--color-white));
     --cta-border: var(--theme-cta-border, transparent);
     --cta-outline: var(--theme-cta-outline, var(--color-blue-7));
     --cta-background-hover: var(--theme-cta-background-hover, var(--color-blue-8));
     --cta-border-hover: var(--theme-cta-border-hover, var(--color-blue-8));
-    --cta-color-hover: var(--theme-cta-color-hover, white);
-    --cta-color-active: var(--theme-cta-color-active, white);
+    --cta-color-hover: var(--theme-cta-color-hover, var(--color-white));
+    --cta-color-active: var(--theme-cta-color-active, var(--color-white));
     --cta-background-active: var(--theme-cta-background-active, var(--color-blue-6));
     --cta-border-active: var(--theme-cta-border-active, var(--color-blue-6));
 
     /* Secondary call to action */
     --cta-secondary-border: var(--theme-cta-secondary-border, var(--color-blue-7));
-    --cta-secondary-background: var(--theme-cta-secondary-background, white);
+    --cta-secondary-background: var(--theme-cta-secondary-background, var(--color-white));
     --cta-secondary-color: var(--theme-cta-secondary-color, var(--color-blue-7));
     --cta-secondary-outline: var(--theme-cta-secondary-outline, var(--color-blue-7));
-    --cta-secondary-background-hover: var(--theme-cta-secondary-background-hover, white);
+    --cta-secondary-background-hover: var(--theme-cta-secondary-background-hover, var(--color-white));
     --cta-secondary-border-hover: var(--theme-cta-secondary-border-hover, var(--color-blue-8));
     --cta-secondary-color-hover: var(--theme-cta-secondary-color-hover, var(--color-blue-8));
     --cta-secondary-color-active: var(--theme-cta-secondary-color-active, var(--color-blue-6));
-    --cta-secondary-background-active: var(--theme-cta-secondary-background-active, white);
+    --cta-secondary-background-active: var(--theme-cta-secondary-background-active, var(--color-white));
     --cta-secondary-border-active: var(--theme-cta-secondary-border-active, var(--color-blue-6));
 
     /* Call to action on dark backgrounds */
@@ -73,12 +78,12 @@
     --cta-dark-border-hover: var(--theme-cta-dark-border-hover, var(--color-grey-1));
     --cta-dark-color-hover: var(--theme-cta-dark-color-hover, var(--color-blue-8));
     --cta-dark-color-active: var(--theme-cta-dark-color-active, var(--color-blue-7));
-    --cta-dark-background-active: var(--theme-cta-dark-background-active, white);
-    --cta-dark-border-active: var(--theme-cta-dark-border-active, white);
+    --cta-dark-background-active: var(--theme-cta-dark-background-active, var(--color-white));
+    --cta-dark-border-active: var(--theme-cta-dark-border-active, var(--color-white));
 
     /* Badge */
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
-    --badge-color: var(--theme-badge-color, black);
+    --badge-color: var(--theme-badge-color, var(--color-black));
     --badge-color-alt: var(--theme-badge-color-alt, var(--badge-color));
     --badge-border: var(--theme-badge-border, var(--badge-background));
 
@@ -224,8 +229,6 @@
 
     /* Help bar */
     --help-bar-border: var(--theme-help-bar-border, transparent);
-    --help-bar-background: var(--theme-help-bar-background, var(--color-blue-7));
-    --help-bar-color: var(--theme-help-bar-color, var(--color-grey-2));
 
     /* Banner */
     --banner-border: var(--theme-banner-border, var(--color-grey-3));
@@ -278,9 +281,6 @@
     --expander-border-active: var(--theme-expander-border-active, var(--color-blue-6));
 
     /* Footer */
-    --footer-background: var(--theme-footer-background, var(--color-blue-7));
-    --footer-color: var(--theme-footer-color, var(--color-white));
-    --footer-heading-color: var(--theme-footer-heading-color, var(--color-grey-2));
     --footer-border: var(--theme-footer-border, transparent);
 
     /* Defined term */
@@ -328,7 +328,7 @@
         0 0 0.625rem rgb(255 160 206 / 50%)
     );
 
-    /* Individual cards */
+    /* Individual card */
     --card-individual-shadow: var(--theme-card-individual-shadow, 0 0.375rem 0 0 var(--color-lavender-3) inset);
     --card-individual-shadow-focus-within: var(
         --theme-card-individual-shadow-focus-within,
