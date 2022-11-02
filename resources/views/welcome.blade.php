@@ -53,7 +53,7 @@
                         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
 
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
                                 <x-placeholder width="915" height="515" />
                             </x-slot>
@@ -65,7 +65,7 @@
                                 </p>
                             </div>
                         </x-media-text>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
                                 <x-placeholder width="915" height="515" />
                             </x-slot>
@@ -77,7 +77,7 @@
                                 </p>
                             </div>
                         </x-media-text>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
                                 <x-placeholder width="915" height="515" />
                             </x-slot>
