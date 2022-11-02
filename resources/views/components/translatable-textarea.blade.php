@@ -10,7 +10,8 @@
                 @if ($hint)
                     <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
                 @endif
-                <x-hearth-textarea :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'" />
+                <x-hearth-textarea :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'"
+                    :required="$required" />
                 <x-hearth-error :for="$name . '.' . $language" />
             </div>
         @else

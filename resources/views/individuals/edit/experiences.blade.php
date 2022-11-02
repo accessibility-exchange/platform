@@ -27,7 +27,7 @@
                             'What are your lived experiences of disability or other intersectional identities?',
                         ) .
                             ' ' .
-                            __('(optional)')" :hint="__(
+                            __('(optional)')" :shortLabel="__('lived experiences')" :hint="__(
                             'Feel free to self-identify your experiences of disability, if you feel it is relevant to your work.',
                         )" />
                     <x-hearth-error for="lived_experience" />
@@ -40,7 +40,8 @@
                 <legend>{{ __('Skills and strengths') }}</legend>
 
                 <div class="field @error('skills_and_strengths') field--error @enderror">
-                    <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths?') . ' ' . __('(optional)')" />
+                    <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths?') . ' ' . __('(optional)')"
+                        :shortLabel="skills and strengths" />
                     <x-hearth-error for="skills_and_strengths" />
                 </div>
 
