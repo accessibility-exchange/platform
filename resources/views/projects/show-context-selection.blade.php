@@ -26,7 +26,7 @@
             ])->toArray()" :checked="old('context', session('context')) ?? ''" x-model="context" />
             <div class="field @error('ancestor') field--error @enderror stack" x-show="context == 'follow-up'" x-cloak>
                 <x-hearth-label for="ancestor" :value="__('Please select the original project for which this is a follow-up:')" />
-                <x-hearth-select name="ancestor" x-data="autocomplete()" :options="$ancestors" :selected="old('ancestor_id', session('ancestor_id'))" />
+                <x-hearth-select name="ancestor" :options="$ancestors" :selected="old('ancestor_id', session('ancestor_id'))" />
                 <x-hearth-error for="ancestor" />
             </div>
             <x-hearth-error for="context" />
