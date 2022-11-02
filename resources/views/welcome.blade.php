@@ -93,17 +93,13 @@
 
                     <section class="darker full" aria-labelledby="disability">
                         <div class="center center:wide stack stack:xl">
-                            <div class="with-sidebar with-sidebar:2/3">
-                                <div>
-                                    <h2 id="disability">{{ __('What do we mean when we say “disability”?') }}</h2>
-                                </div>
-                                <div class="stack">
-                                    <p class="h4">
-                                        {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
-                                    </p>
-                                    {{-- TODO: add link to glossary definition --}}
-                                    {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
-                                </div>
+                            <div class="stack">
+                                <h2 id="disability">{{ __('What do we mean when we say “disability”?') }}</h2>
+                                <p class="h4">
+                                    {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
+                                </p>
+                                {{-- TODO: add link to glossary definition --}}
+                                {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
                             </div>
                             <div class="frame">
                                 <x-placeholder />
