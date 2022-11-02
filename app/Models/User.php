@@ -8,6 +8,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -299,23 +300,23 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         return $this->hasMany(Membership::class);
     }
 
-    public function courses(): HasMany
+    public function courses(): BelongsToMany
     {
-        return $this->hasMany(Course::class)
+        return $this->belongsToMany(Course::class)
             ->withPivot('started_at', 'finished_at', 'received_certificate_at')
             ->withTimestamps();
     }
 
-    public function modules(): HasMany
+    public function modules(): BelongsToMany
     {
-        return $this->hasMany(Module::class)
+        return $this->belongsToMany(Module::class)
             ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
             ->withTimestamps();
     }
 
-    public function quizzes(): HasMany
+    public function quizzes(): BelongsToMany
     {
-        return $this->hasMany(Quiz::class)
+        return $this->belongsToMany(Quiz::class)
             ->withPivot('attempts', 'score')
             ->withTimestamps();
     }
@@ -499,15 +500,15 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
         $quiz = $course->quiz ?? null;
 
         foreach ($modules as $module) {
-            if (! $user->modules->contains($module) ||
-                ! $user->pivot->completed_at) {
+            if (! $this->modules->contains($module) ||
+                ! $this->pivot->completed_at) {
                 return false;
             }
         }
 
         if ($quiz &&
-            ! $user->quizzes->contains($quiz) ||
-            $userQuiz->score < 0.75) {
+            ! $this->quizzes->contains($quiz) ||
+            $quiz->score < 0.75) {
             return false;
         }
 
