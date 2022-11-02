@@ -332,7 +332,7 @@ button.nav-button .indicator {
         box-shadow: none;
     }
 
-    * + .account {
+    .account {
         margin-inline-start: auto;
     }
 }
