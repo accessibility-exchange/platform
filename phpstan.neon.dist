@@ -17,7 +17,9 @@ parameters:
     level: 5
 
     ignoreErrors:
-        - '#Call to an undefined static method Illuminate\\Support\\Facades\\Route::multilingual\(\)#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
         - '#Call to private method whereDate\(\) of parent class Illuminate\\Database\\Eloquent\\Relations\\HasMany<Illuminate\\Database\\Eloquent\\Model>#'
     checkMissingIterableValueType: false
+
+    scanFiles:
+      - vendor/chinleung/laravel-locales/src/helpers.php
