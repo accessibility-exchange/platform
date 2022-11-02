@@ -6,7 +6,7 @@ mkdir -p $FILES_PATH
 mkdir -p $CACHE_PATH
 
 ## fix permissions before syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1226
-chown -R www-data:www-data $FILES_PATH $CACHE_PATH
+chown -R www-data:www-data /app/storage /app/bootstrap/cache $FILES_PATH $CACHE_PATH
 
 ## sync files from container storage to permanent storage then remove container storage
 rsync -a /app/storage/ $FILES_PATH
