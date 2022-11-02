@@ -47,7 +47,7 @@
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
-            <div class="align:center">
+            <div class="text-center">
                 <h2 id="how">{!! __('How does being a :role work?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
             </div>
             <x-media-text>
@@ -96,7 +96,7 @@
             <p>TODO.</p>
         </x-section> --}}
 
-        <x-section class="align:center accent--color">
+        <x-section class="accent--color text-center">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}

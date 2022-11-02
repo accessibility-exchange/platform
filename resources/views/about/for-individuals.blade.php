@@ -14,7 +14,7 @@
         <x-placeholder />
 
         <x-section class="stack:lg" aria-labelledby="what">
-            <div class="align:center">
+            <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
             </div>
@@ -62,7 +62,7 @@
             </x-media-text>
         </x-section>
 
-        <x-section class="align:center accent--color">
+        <x-section class="accent--color text-center">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}

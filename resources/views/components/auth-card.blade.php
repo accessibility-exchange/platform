@@ -21,7 +21,7 @@
                 @svg('tae-logo-mono', ['class' => 'logo logo--themeable'])
                 <span class="visually-hidden">{{ __('app.name') }}</span>
             </a>
-            <h1 class="align:center">{{ $title }}</h1>
+            <h1 class="text-center">{{ $title }}</h1>
             {{ $slot }}
         </div>
     </div>

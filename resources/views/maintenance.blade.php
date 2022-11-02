@@ -10,7 +10,7 @@
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </div>
 
-                <h1 class="align:center">{{ __('Site unavailable') }}</h1>
+                <h1 class="text-center">{{ __('Site unavailable') }}</h1>
                 <p>
                     {{ __('The site is currently undergoing maintenance.') }}<br />
                     {{ __('Please wait a few moments and try again.') }}

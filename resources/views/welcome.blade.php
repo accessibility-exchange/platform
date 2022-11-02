@@ -30,7 +30,7 @@
                 <!-- Page Content -->
                 <div class="content stack">
                     <section class="stack" aria-labelledby="what">
-                        <h2 class="align:center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
+                        <h2 class="text-center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
                         <div class="grid">
                             <div class="box border--lavender">
                                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
@@ -50,7 +50,7 @@
                     </section>
 
                     <section class="stack stack:lg" aria-labelledby="how">
-                        <h2 class="align:center" id="how">{{ __('How does this work?') }}</h2>
+                        <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
 
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </section>
-                    <section class="stack align:center" aria-labelledby="partnership">
+                    <section class="stack text-center" aria-labelledby="partnership">
                         <h2 id="partnership">{{ __('Developed in partnership') }}</h2>
                         <p class="mx-auto max-w-prose">
                             {{ __('This website was made in partnership with members and organizations from the disability and Deaf communities, supporters, and members from Federally Regulated Organizations.') }}
@@ -119,7 +119,7 @@
 
                     @guest
                         <section class="full accent" aria-labelledby="join">
-                            <div class="center center:wide stack stack:xl align:center">
+                            <div class="center center:wide stack stack:xl text-center">
                                 <h2 id="join">{{ __('Join our accessibility community') }}</h2>
                                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                             </div>
