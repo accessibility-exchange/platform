@@ -255,7 +255,7 @@ button.nav-button .indicator {
     button.nav-button {
         background: var(--nav-parent-background);
         border-block-end: 0;
-        border-block-start: var(--border) solid var(--nav-border);
+        border-block-start: unset;
         border-radius: 0;
         color: var(--nav-color);
         height: 100%;
@@ -265,14 +265,14 @@ button.nav-button .indicator {
     button.nav-button:hover {
         background: var(--nav-parent-background-hover);
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
-        color: var(--nav-indicator);
+        color: var(--nav-color-hover);
     }
 
     .nav-link:focus,
     button.nav-button:focus {
         background: var(--nav-parent-background-focus);
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
-        color: var(--nav-indicator);
+        color: var(--nav-color-focus);
         outline: 1px solid transparent;
     }
 
@@ -281,7 +281,7 @@ button.nav-button .indicator {
     .nav [aria-expanded="true"] {
         background: var(--nav-parent-background-active);
         box-shadow: none;
-        color: var(--nav-indicator);
+        color: var(--nav-color-active);
     }
 
     .nav [aria-expanded="true"] {

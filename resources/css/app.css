@@ -62,7 +62,7 @@
 @import "routes/users/_show.css";
 @import "routes/_home.css";
 @import "routes/_welcome.css";
-@import "themes/_mono.css";
+@import "themes/_simple.css";
 @import "themes/_black-white.css";
 @import "themes/_black-brown.css";
 @import "themes/_black-yellow.css";

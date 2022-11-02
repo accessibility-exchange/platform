@@ -2,7 +2,10 @@
 [data-theme="white-black"],
 [data-theme="black-yellow"],
 [data-theme="yellow-black"],
-[data-theme="light-dark"] {
+[data-theme="light-dark"],
+[data-theme="black-brown"],
+[data-theme="grey-dark"],
+[data-theme="grey-white"] {
     /* Text and backgrounds */
     --theme-h1-color: var(--fg);
     --theme-heading-color: var(--fg);
@@ -34,20 +37,20 @@
     --theme-regulated-organizations-border: var(--fg);
 
     /* Link */
-    --theme-link-color: var(--fg);
-    --theme-link-color-hover: var(--fg);
-    --theme-link-outline-focus: var(--fg);
-    --theme-link-background-active: var(--fg);
+    --theme-link-color: var(--interactive);
+    --theme-link-color-hover: var(--interactive);
+    --theme-link-outline-focus: var(--interactive);
+    --theme-link-background-active: var(--interactive);
     --theme-link-color-active: var(--bg);
-    --theme-link-color-visited: var(--fg);
+    --theme-link-color-visited: var(--interactive);
 
     /* Link on dark backgrounds */
-    --theme-link-dark-color: var(--fg);
-    --theme-link-dark-color-hover: var(--fg);
-    --theme-link-dark-outline-focus: var(--fg);
-    --theme-link-dark-background-active: var(--fg);
+    --theme-link-dark-color: var(--interactive);
+    --theme-link-dark-color-hover: var(--interactive);
+    --theme-link-dark-outline-focus: var(--interactive);
+    --theme-link-dark-background-active: var(--interactive);
     --theme-link-dark-color-active: var(--bg);
-    --theme-link-dark-color-visited: var(--fg);
+    --theme-link-dark-color-visited: var(--interactive);
 
     /* Call to action */
     --theme-cta-background: var(--fg);
@@ -166,11 +169,34 @@
     --theme-banner-border: var(--divider-color);
 
     /* Brand */
+    --theme-brand-color: var(--theme-link-color);
 
     /* Navigation */
-    --theme-nav-color: var(--link-color);
-    --theme-nav-current-color: var(--link-color);
+    --theme-nav-background-mobile: var(--bg);
+    --theme-nav-background-hover-mobile: var(--fg);
+    --theme-nav-background-focus-mobile: var(--bg);
+    --theme-nav-background-active-mobile: var(--fg);
+    --theme-nav-border-mobile: var(--fg);
+    --theme-nav-color-mobile: var(--theme-link-color);
+    --theme-nav-indicator-mobile: var(--bg);
+    --theme-nav-parent-background: var(--bg);
+    --theme-nav-parent-background-hover: var(--fg);
+    --theme-nav-parent-background-focus: var(--bg);
+    --theme-nav-parent-background-active: var(--fg);
+    --theme-nav-parent-background-expanded: var(--bg);
     --theme-nav-border: var(--fg);
+    --theme-nav-item-border: transparent;
+    --theme-nav-color: var(--theme-link-color);
+    --theme-nav-color-hover: var(--bg);
+    --theme-nav-color-focus: var(--fg);
+    --theme-nav-color-active: var(--bg);
+    --theme-nav-indicator: var(--fg);
+    --theme-nav-dropdown-shadow: unset;
+    --theme-nav-child-background: var(--bg);
+    --theme-nav-child-background-hover: var(--fg);
+    --theme-nav-child-background-focus: var(--bg);
+    --theme-nav-child-background-active: var(--fg);
+    --theme-nav-current-color: var(--theme-link-color);
 
     /* Tabbed navigation */
 

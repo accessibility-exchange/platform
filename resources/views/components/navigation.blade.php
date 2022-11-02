@@ -1,7 +1,7 @@
 <!-- Primary Navigation Menu -->
 <nav class="primary flex text-center" aria-label="{{ __('main menu') }}" x-data="{ 'open': false }" @click.away="open = false">
     <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
-        @keyup.escape.window="open = false">
+        @keyup.escape.window="open = false" x-cloak>
         @svg('heroicon-o-bars-3', 'indicator')<span>{{ __('Menu') }}</span>
     </button>
     <ul role="list">

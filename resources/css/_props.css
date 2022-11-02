@@ -251,7 +251,11 @@
     --nav-parent-background-active: var(--theme-nav-parent-background-active, var(--color-grey-2));
     --nav-parent-background-expanded: var(--theme-nav-parent-background-expanded, var(--color-grey-2));
     --nav-border: var(--theme-nav-border, var(--color-grey-3));
+    --nav-item-border: var(--theme-nav-item-border, var(--color-grey-3));
     --nav-color: var(--theme-nav-color, var(--color-graphite-7));
+    --nav-color-hover: var(--theme-nav-color-hover, var(--nav-indicator));
+    --nav-color-focus: var(--theme-nav-color-focus, var(--nav-indicator));
+    --nav-color-active: var(--theme-nav-color-active, var(--nav-indicator));
     --nav-indicator: var(--theme-nav-indicator, var(--color-blue-7));
     --nav-dropdown-shadow: var(--theme-nav-dropdown-shadow, 0 0 10px rgb(0 0 0 / 15%));
     --nav-child-background: var(--theme-nav-child-background, white);
