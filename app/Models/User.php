@@ -176,7 +176,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
             'individual' => __('Video for individuals.'),
             'organization' => __('Video for community organizations.'),
             'regulated-organization' => __('Video for regulated organizations.'),
-            'regulated-organization-employee' => __('Video for regulated organization employees.'),
+            'training-participant' => __('Video for training participants.'),
             default => '',
         };
     }
