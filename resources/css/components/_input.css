@@ -96,8 +96,15 @@ input[type="checkbox"] {
     display: inline-block;
     height: var(--space-5);
     margin-block-end: calc(-1 * var(--space-1));
+    margin-inline-end: var(--space-1);
     padding-inline: 0;
     width: var(--space-5);
+}
+
+input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--radio-checked-border);
+    outline: transparent;
 }
 
 .field--error input[type="checkbox"],
@@ -116,6 +123,7 @@ input[type="checkbox"]:checked {
     border-color: var(--checkbox-checked-background);
 }
 
+.field--error input[type="checkbox"]:checked,
 input[type="checkbox"]:checked[aria-invalid="true"] {
     background-color: var(--input-error-color);
     border-color: var(--input-error-border);
@@ -127,6 +135,7 @@ input[type="radio"] {
     display: inline-block;
     height: var(--space-5);
     margin-block-end: calc(-1 * var(--space-1));
+    margin-inline-end: var(--space-2);
     padding-inline: 0;
     width: var(--space-5);
 }
@@ -144,6 +153,15 @@ input[type="radio"]:checked {
     box-shadow: inset 0 0 0 calc(var(--space-1) * 0.75) var(--body-background);
 }
 
+input[type="radio"]:focus,
+input[type="radio"]:checked:focus {
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--radio-checked-border),
+        inset 0 0 0 calc(var(--space-1) * 0.75) var(--body-background);
+    outline: transparent;
+}
+
+.field--error input[type="radio"]:checked,
 input[type="radio"]:checked[aria-invalid="true"] {
     background-color: var(--input-error-color);
     border-color: var(--input-error-border);
@@ -157,6 +175,11 @@ input[type="radio"]:checked[aria-invalid="true"] {
 /** Labels **/
 label {
     font-weight: var(--font-semibold);
+}
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+    color: var(--input-color);
 }
 
 /** Fields and fieldsets **/
@@ -205,7 +228,7 @@ legend {
 }
 
 [type="radio"] ~ .field__hint {
-    margin-inline-start: var(--space-7);
+    margin-inline-start: var(--space-8);
 }
 
 /** Errors **/

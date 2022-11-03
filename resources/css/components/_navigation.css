@@ -41,7 +41,7 @@
 .nav-link:hover {
     background: var(--nav-background-hover-mobile);
     box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
-    color: var(--nav-color-mobile);
+    color: var(--nav-color-hover-mobile);
 }
 
 .nav-link:focus {
@@ -53,6 +53,7 @@
 .nav-link:active {
     background: var(--nav-background-active-mobile);
     box-shadow: none;
+    color: var(--nav-color-active-mobile);
 }
 
 .nav-link[aria-current] {
@@ -118,7 +119,7 @@ button.nav-button {
     border: 0;
     border-radius: var(--radius-sm);
     box-shadow: none;
-    color: currentcolor;
+    color: var(--button-borderless-color);
     gap: var(--space-2);
     height: calc(var(--space-12) - var(--space-1));
     justify-content: center;

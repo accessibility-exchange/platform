@@ -133,9 +133,16 @@
     --theme-button-primary-border-active: white;
 
     /* Secondary button */
-    --theme-button-secondary-background: var(--color-graphite-7);
+    --theme-button-secondary-background: var(--color-graphite-8);
     --theme-button-secondary-border: var(--color-grey-1);
     --theme-button-secondary-color: var(--color-grey-1);
+    --theme-button-secondary-background-hover: var(--color-graphite-8);
+    --theme-button-secondary-border-hover: var(--color-grey-1);
+    --theme-button-secondary-color-hover: var(--color-grey-1);
+    --theme-button-secondary-outline: var(--color-grey-1);
+    --theme-button-secondary-color-active: var(--color-white);
+    --theme-button-secondary-background-active: var(--color-graphite-8);
+    --theme-button-secondary-border-active: var(--color-white);
 
     /* Destructive button */
     --theme-button-destructive-background: var(--color-red-2);
@@ -151,14 +158,16 @@
 
     /* Destructive secondary button */
     --theme-button-destructive-secondary-border: var(--color-red-2);
-    --theme-button-destructive-secondary-background: var(--color-graphite-7);
+    --theme-button-destructive-secondary-background: var(--color-graphite-8);
     --theme-button-destructive-secondary-color: var(--color-red-2);
-    --theme-button-destructive-secondary-background-hover: var(--color-graphite-7);
+    --theme-button-destructive-secondary-background-hover: var(--color-graphite-8);
     --theme-button-destructive-secondary-border-hover: var(--color-red-1);
     --theme-button-destructive-secondary-color-hover: var(--color-red-1);
+    --theme-button-destructive-secondary-color-focus: var(--color-red-1);
+    --theme-button-destructive-secondary-border-focus: var(--color-red-1);
     --theme-button-destructive-secondary-outline: var(--color-red-1);
     --theme-button-destructive-secondary-color-active: var(--color-white);
-    --theme-button-destructive-secondary-background-active: var(--color-graphite-7);
+    --theme-button-destructive-secondary-background-active: var(--color-graphite-8);
     --theme-button-destructive-secondary-border-active: var(--color-white);
 
     /* Borderless button */

@@ -95,9 +95,9 @@ a.cta:hover {
 }
 
 a.cta:focus {
-    --tw-ring-color: var(--cta-outline);
-
-    @apply ring-2 ring-offset-4;
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--cta-outline);
+    outline: transparent;
 }
 
 a.cta:active {
@@ -119,7 +119,9 @@ a.cta.secondary:hover {
 }
 
 a.cta.secondary:focus {
-    --tw-ring-color: var(--cta-secondary-outline);
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--cta-secondary-outline);
+    outline: transparent;
 }
 
 a.cta.secondary:active {
@@ -142,9 +144,12 @@ a.cta.secondary:active {
     color: var(--cta-dark-color-hover);
 }
 
-.dark a.cta:focus,
+.dark a.cta:focus {
+    --bg: var(--content-dark-background);
+}
+
 .darker a.cta:focus {
-    outline: var(--cta-dark-outline) solid calc(var(--space-1) / 2);
+    --bg: var(--content-darker-background);
 }
 
 .dark a.cta:active,

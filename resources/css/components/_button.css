@@ -1,6 +1,4 @@
-button,
-button[type="submit"],
-input[type="submit"] {
+button {
     align-items: center;
     appearance: none;
     background: var(--button-primary-background);
@@ -21,32 +19,25 @@ input[type="submit"] {
     width: auto;
 }
 
-button:hover,
-button[type="submit"]:hover,
-input[type="submit"]:hover {
+button:hover {
     background: var(--button-primary-background-hover);
     border-color: var(--button-primary-border-hover);
     color: var(--button-primary-color-hover);
 }
 
-button:focus,
-button[type="submit"]:focus,
-input[type="submit"]:focus {
-    outline: var(--button-primary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+button:focus {
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--button-primary-outline);
+    outline: transparent;
 }
 
-button:active,
-button[type="submit"]:active,
-input[type="submit"]:active {
+button:active {
     background: var(--button-primary-background-active);
     border-color: var(--button-primary-border-active);
     color: var(--button-primary-color-active);
 }
 
-button svg,
-button[type="submit"] svg,
-input[type="submit"] svg {
+button svg {
     height: 1em;
 }
 
@@ -64,7 +55,9 @@ button.destructive:hover {
 }
 
 button.destructive:focus {
-    outline: var(--button-destructive-outline) solid calc(var(--space-1) / 2);
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--button-destructive-outline);
+    outline: transparent;
 }
 
 button.destructive:active {
@@ -74,51 +67,35 @@ button.destructive:active {
 }
 
 .dark button,
-.dark button[type="submit"],
-.dark input[type="submit"],
-.darker button,
-.darker button[type="submit"],
-.darker input[type="submit"] {
+.darker button {
     background: var(--button-dark-primary-background);
     border-color: var(--button-dark-primary-border);
     color: var(--button-dark-primary-color);
 }
 
 .dark button:hover,
-.dark button[type="submit"]:hover,
-.dark input[type="submit"]:hover,
-.darker button:hover,
-.darker button[type="submit"]:hover,
-.darker input[type="submit"]:hover {
+.darker button:hover {
     background: var(--button-dark-primary-background-hover);
     border-color: var(--button-dark-primary-border-hover);
     color: var(--button-dark-primary-color-hover);
 }
 
-.dark button:focus,
-.dark button[type="submit"]:focus,
-.dark input[type="submit"]:focus,
-.darker button:focus,
-.darker button[type="submit"]:focus,
-.darker input[type="submit"]:focus {
-    outline: var(--button-dark-primary-outline) solid calc(var(--space-1) / 2);
+.dark button:focus {
+    --bg: var(--content-dark-background);
+}
+
+.darker button:focus {
+    --bg: var(--content-darker-background);
 }
 
 .dark button:active,
-.dark button[type="submit"]:active,
-.dark input[type="submit"]:active,
-.darker button:active,
-.darker button[type="submit"]:active,
-.darker input[type="submit"]:active {
+.darker button:active {
     background: var(--button-dark-primary-background-active);
     border-color: var(--button-dark-primary-border-active);
     color: var(--button-dark-primary-color-active);
 }
 
-button.secondary,
-button[type="reset"],
-input[type="reset"],
-input[type="submit"].secondary {
+button.secondary {
     align-items: center;
     appearance: none;
     background: var(--button-secondary-background);
@@ -139,27 +116,20 @@ input[type="submit"].secondary {
     width: auto;
 }
 
-button.secondary:hover,
-button[type="reset"]:hover,
-input[type="reset"]:hover,
-input[type="submit"].secondary:hover {
+button.secondary:hover {
     background-color: var(--button-secondary-background-hover);
     border-color: var(--button-secondary-border-hover);
     color: var(--button-secondary-color-hover);
 }
 
-button.secondary:focus,
-button[type="reset"]:focus,
-input[type="reset"]:focus,
-input[type="submit"].secondary:focus {
-    outline: var(--button-secondary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+button.secondary:focus {
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--button-secondary-outline);
+    color: var(--button-secondary-color-focus);
+    outline: transparent;
 }
 
-button.secondary:active,
-button[type="reset"]:active,
-input[type="reset"]:active,
-input[type="submit"].secondary:active {
+button.secondary:active {
     background-color: var(--button-secondary-background-active);
     border-color: var(--button-secondary-border-active);
     color: var(--button-secondary-color-active);
@@ -192,8 +162,11 @@ button.destructive.secondary:hover {
 }
 
 button.destructive.secondary:focus {
-    outline: var(--button-destructive-secondary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+    border-color: var(--button-destructive-secondary-border-focus);
+    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
+        0 0 0 calc(var(--space-1) * 1.5) var(--button-destructive-secondary-outline);
+    color: var(--button-destructive-secondary-color-focus);
+    outline: transparent;
 }
 
 button.destructive.secondary:active {
@@ -202,38 +175,49 @@ button.destructive.secondary:active {
     color: var(--button-destructive-secondary-color-active);
 }
 
-button.borderless,
-button.borderless[type="submit"],
-input.borderless[type="submit"] {
+button.borderless {
     background: inherit;
     border: 0;
     box-shadow: none;
-    color: currentcolor;
+    color: var(--button-borderless-color);
     margin-inline-start: calc(-1 * var(--space-4));
     padding-inline: var(--space-4);
 }
 
-button.borderless:hover,
-button.borderless[type="submit"]:hover,
-input.borderless[type="submit"]:hover {
+button.borderless:hover {
     background: var(--button-borderless-background-hover);
     color: var(--button-borderless-color-hover);
 }
 
-button.borderless:focus,
-button.borderless[type="submit"]:focus,
-input.borderless[type="submit"]:focus {
+button.borderless:focus {
+    box-shadow: 0 0 0 var(--border-2) var(--button-borderless-outline) inset;
     color: var(--button-borderless-color-focus);
-    outline: var(--button-borderless-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+    outline: transparent;
 }
 
-button.borderless:active,
-button.borderless[type="submit"]:active,
-input.borderless[type="submit"]:active {
+button.borderless:active {
     color: var(--button-borderless-color-active);
 }
 
 .borderless svg {
     height: 1.25em;
+}
+
+button.borderless.destructive {
+    color: var(--button-destructive-borderless-color);
+}
+
+button.borderless.destructive:hover {
+    background: var(--button-destructive-borderless-background-hover);
+    color: var(--button-destructive-borderless-color-hover);
+}
+
+button.borderless.destructive:focus {
+    box-shadow: 0 0 0 var(--border-2) var(--button-destructive-borderless-outline) inset;
+    color: var(--button-destructive-borderless-color-focus);
+}
+
+button.borderless.destructive:active {
+    background-color: var(--button-destructive-borderless-background-active);
+    color: var(--button-destructive-borderless-color-active);
 }

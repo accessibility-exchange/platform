@@ -150,6 +150,7 @@
     --button-secondary-border-hover: var(--theme-button-secondary-border-hover, var(--color-blue-8));
     --button-secondary-color-hover: var(--theme-button-secondary-color-hover, var(--color-blue-8));
     --button-secondary-outline: var(--theme-button-secondary-outline, var(--color-blue-7));
+    --button-secondary-color-focus: var(--theme-button-secondary-color-focus, var(--button-secondary-color));
     --button-secondary-color-active: var(--theme-button-secondary-color-active, var(--color-blue-6));
     --button-secondary-background-active: var(--theme-button-secondary-background-active, white);
     --button-secondary-border-active: var(--theme-button-secondary-border-active, var(--color-blue-6));
@@ -179,6 +180,14 @@
         --theme-button-destructive-secondary-color-hover,
         var(--color-red-9)
     );
+    --button-destructive-secondary-border-focus: var(
+        --theme-button-destructive-secondary-border-focus,
+        var(--color-red-8)
+    );
+    --button-destructive-secondary-color-focus: var(
+        --theme-button-destructive-secondary-color-focus,
+        var(--color-red-8)
+    );
     --button-destructive-secondary-outline: var(--theme-button-destructive-secondary-outline, var(--color-red-8));
     --button-destructive-secondary-color-active: var(
         --theme-button-destructive-secondary-color-active,
@@ -194,11 +203,42 @@
     );
 
     /* Borderless button */
+    --button-borderless-color: var(--theme-button-borderless-color, unset);
     --button-borderless-outline: var(--theme-button-borderless-outline, var(--color-blue-6));
     --button-borderless-color-hover: var(--theme-button-borderless-color-hover, var(--color-blue-7));
     --button-borderless-background-hover: var(--theme-button-borderless-background-hover, var(--color-grey-2));
     --button-borderless-color-focus: var(--theme-button-borderless-color-focus, var(--color-blue-6));
     --button-borderless-color-active: var(--theme-button-borderless-color-active, var(--color-blue-8));
+
+    /** Destructive borderless button */
+    --button-destructive-borderless-color: var(
+        --theme-button-destructive-borderless-color,
+        var(--button-destructive-secondary-color)
+    );
+    --button-destructive-borderless-outline: var(
+        --theme-button-destructive-borderless-outline,
+        var(--button-destructive-secondary-outline)
+    );
+    --button-destructive-borderless-color-hover: var(
+        --theme-button-destructive-borderless-color-hover,
+        var(--button-destructive-secondary-color-hover)
+    );
+    --button-destructive-borderless-background-hover: var(
+        --theme-button-destructive-borderless-background-hover,
+        var(--button-destructive-secondary-background-hover)
+    );
+    --button-destructive-borderless-color-focus: var(
+        --theme-button-destructive-borderless-color-focus,
+        var(--button-destructive-secondary-color-focus)
+    );
+    --button-destructive-borderless-color-active: var(
+        --theme-button-destructive-borderless-color-active,
+        var(--button-destructive-secondary-color-active)
+    );
+    --button-destructive-borderless-background-active: var(
+        --theme-button-destructive-borderless-background-active,
+        var(--button-destructive-secondary-background-active)
+    );
 
     /* Primary button on dark backgrounds */
     --button-dark-primary-background: var(--theme-button-dark-primary-background, var(--color-grey-2));
@@ -244,6 +284,8 @@
     --nav-background-active-mobile: var(--theme-nav-background-active-mobile, black);
     --nav-border-mobile: var(--theme-nav-border-mobile, var(--color-blue-8));
     --nav-color-mobile: var(--theme-nav-color-mobile, var(--color-grey-2));
+    --nav-color-hover-mobile: var(--theme-nav-color-hover-mobile, var(--color-grey-2));
+    --nav-color-active-mobile: var(--theme-nav-color-active-mobile, var(--color-grey-2));
     --nav-indicator-mobile: var(--theme-nav-indicator-mobile, var(--color-grey-1));
     --nav-parent-background: var(--theme-nav-parent-background, white);
     --nav-parent-background-hover: var(--theme-nav-parent-background-hover, var(--color-grey-1));
