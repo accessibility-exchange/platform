@@ -139,73 +139,73 @@
     --theme-radio-checked-border: var(--interactive);
 
     /* Primary button */
-    --theme-button-primary-background: var(--interactive);
-    --theme-button-primary-border: var(--interactive);
-    --theme-button-primary-color: var(--bg);
-    --theme-button-primary-background-hover: var(--bg);
-    --theme-button-primary-border-hover: var(--interactive);
-    --theme-button-primary-color-hover: var(--interactive);
-    --theme-button-primary-background-active: var(--bg);
-    --theme-button-primary-border-active: var(--interactive);
-    --theme-button-primary-color-active: var(--interactive);
-    --theme-button-primary-outline: var(--interactive);
-    --theme-button-primary-shadow: none;
+    --theme-btn-primary-background: var(--interactive);
+    --theme-btn-primary-border: var(--interactive);
+    --theme-btn-primary-color: var(--bg);
+    --theme-btn-primary-background-hover: var(--bg);
+    --theme-btn-primary-border-hover: var(--interactive);
+    --theme-btn-primary-color-hover: var(--interactive);
+    --theme-btn-primary-background-active: var(--bg);
+    --theme-btn-primary-border-active: var(--interactive);
+    --theme-btn-primary-color-active: var(--interactive);
+    --theme-btn-primary-outline: var(--interactive);
+    --theme-btn-primary-shadow: none;
 
     /* Primary button on dark backgrounds */
-    --theme-button-dark-primary-background: var(--theme-button-primary-background);
-    --theme-button-dark-primary-border: var(--theme-button-primary-border);
-    --theme-button-dark-primary-color: var(--theme-button-primary-color);
-    --theme-button-dark-primary-outline: var(--theme-button-primary-outline);
-    --theme-button-dark-primary-background-hover: var(--theme-button-primary-background-hover);
-    --theme-button-dark-primary-border-hover: var(--theme-button-primary-border-hover);
-    --theme-button-dark-primary-color-hover: var(--theme-button-primary-color-hover);
-    --theme-button-dark-primary-color-active: var(--theme-button-primary-color-active);
-    --theme-button-dark-primary-background-active: var(--theme-button-primary-background-active);
-    --theme-button-dark-primary-border-active: var(--theme-button-primary-border-active);
+    --theme-btn-dark-primary-background: var(--theme-btn-primary-background);
+    --theme-btn-dark-primary-border: var(--theme-btn-primary-border);
+    --theme-btn-dark-primary-color: var(--theme-btn-primary-color);
+    --theme-btn-dark-primary-outline: var(--theme-btn-primary-outline);
+    --theme-btn-dark-primary-background-hover: var(--theme-btn-primary-background-hover);
+    --theme-btn-dark-primary-border-hover: var(--theme-btn-primary-border-hover);
+    --theme-btn-dark-primary-color-hover: var(--theme-btn-primary-color-hover);
+    --theme-btn-dark-primary-color-active: var(--theme-btn-primary-color-active);
+    --theme-btn-dark-primary-background-active: var(--theme-btn-primary-background-active);
+    --theme-btn-dark-primary-border-active: var(--theme-btn-primary-border-active);
 
     /* Secondary button */
-    --theme-button-secondary-background: var(--bg);
-    --theme-button-secondary-border: var(--interactive);
-    --theme-button-secondary-color: var(--interactive);
-    --theme-button-secondary-background-hover: var(--interactive);
-    --theme-button-secondary-border-hover: var(--interactive);
-    --theme-button-secondary-color-hover: var(--bg);
-    --theme-button-secondary-background-active: var(--interactive);
-    --theme-button-secondary-border-active: var(--interactive);
-    --theme-button-secondary-color-active: var(--bg);
-    --theme-button-secondary-outline: var(--interactive);
+    --theme-btn-secondary-background: var(--bg);
+    --theme-btn-secondary-border: var(--interactive);
+    --theme-btn-secondary-color: var(--interactive);
+    --theme-btn-secondary-background-hover: var(--interactive);
+    --theme-btn-secondary-border-hover: var(--interactive);
+    --theme-btn-secondary-color-hover: var(--bg);
+    --theme-btn-secondary-background-active: var(--interactive);
+    --theme-btn-secondary-border-active: var(--interactive);
+    --theme-btn-secondary-color-active: var(--bg);
+    --theme-btn-secondary-outline: var(--interactive);
 
     /* Borderless button */
-    --theme-button-borderless-color: var(--interactive);
-    --theme-button-borderless-color-hover: var(--bg);
-    --theme-button-borderless-color-focus: var(--interactive);
-    --theme-button-borderless-color-active: var(--bg);
-    --theme-button-borderless-background-hover: var(--interactive);
-    --theme-button-borderless-outline: var(--interactive);
+    --theme-btn-borderless-color: var(--interactive);
+    --theme-btn-borderless-color-hover: var(--bg);
+    --theme-btn-borderless-color-focus: var(--interactive);
+    --theme-btn-borderless-color-active: var(--bg);
+    --theme-btn-borderless-background-hover: var(--interactive);
+    --theme-btn-borderless-outline: var(--interactive);
 
     /* Destructive button */
-    --theme-button-destructive-background: var(--theme-button-primary-background);
-    --theme-button-destructive-border: var(--theme-button-primary-border);
-    --theme-button-destructive-color: var(--theme-button-primary-color);
-    --theme-button-destructive-background-hover: var(--theme-button-primary-background-hover);
-    --theme-button-destructive-border-hover: var(--theme-button-primary-border-hover);
-    --theme-button-destructive-color-hover: var(--theme-button-primary-color-hover);
-    --theme-button-destructive-background-active: var(--theme-button-primary-background-active);
-    --theme-button-destructive-border-active: var(--theme-button-primary-border-active);
-    --theme-button-destructive-color-active: var(--theme-button-primary-color-active);
-    --theme-button-destructive-outline: var(--theme-button-primary-outline);
+    --theme-btn-destructive-background: var(--theme-btn-primary-background);
+    --theme-btn-destructive-border: var(--theme-btn-primary-border);
+    --theme-btn-destructive-color: var(--theme-btn-primary-color);
+    --theme-btn-destructive-background-hover: var(--theme-btn-primary-background-hover);
+    --theme-btn-destructive-border-hover: var(--theme-btn-primary-border-hover);
+    --theme-btn-destructive-color-hover: var(--theme-btn-primary-color-hover);
+    --theme-btn-destructive-background-active: var(--theme-btn-primary-background-active);
+    --theme-btn-destructive-border-active: var(--theme-btn-primary-border-active);
+    --theme-btn-destructive-color-active: var(--theme-btn-primary-color-active);
+    --theme-btn-destructive-outline: var(--theme-btn-primary-outline);
 
     /* Destructive secondary button */
-    --theme-button-destructive-secondary-background: var(--theme-button-secondary-background);
-    --theme-button-destructive-secondary-border: var(--theme-button-secondary-border);
-    --theme-button-destructive-secondary-color: var(--theme-button-secondary-color);
-    --theme-button-destructive-secondary-background-hover: var(--theme-button-secondary-background-hover);
-    --theme-button-destructive-secondary-border-hover: var(--theme-button-secondary-border-hover);
-    --theme-button-destructive-secondary-color-hover: var(--theme-button-secondary-color-hover);
-    --theme-button-destructive-secondary-background-active: var(--theme-button-secondary-background-active);
-    --theme-button-destructive-secondary-border-active: var(--theme-button-secondary-border-active);
-    --theme-button-destructive-secondary-color-active: var(--theme-button-secondary-color-active);
-    --theme-button-destructive-secondary-outline: var(--theme-button-secondary-outline);
+    --theme-btn-destructive-secondary-background: var(--theme-btn-secondary-background);
+    --theme-btn-destructive-secondary-border: var(--theme-btn-secondary-border);
+    --theme-btn-destructive-secondary-color: var(--theme-btn-secondary-color);
+    --theme-btn-destructive-secondary-background-hover: var(--theme-btn-secondary-background-hover);
+    --theme-btn-destructive-secondary-border-hover: var(--theme-btn-secondary-border-hover);
+    --theme-btn-destructive-secondary-color-hover: var(--theme-btn-secondary-color-hover);
+    --theme-btn-destructive-secondary-background-active: var(--theme-btn-secondary-background-active);
+    --theme-btn-destructive-secondary-border-active: var(--theme-btn-secondary-border-active);
+    --theme-btn-destructive-secondary-color-active: var(--theme-btn-secondary-color-active);
+    --theme-btn-destructive-secondary-outline: var(--theme-btn-secondary-outline);
 
     /* Tag */
     --theme-tag-background: var(--bg);

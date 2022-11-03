@@ -121,71 +121,71 @@
     --theme-radio-checked-border: var(--color-grey-2);
 
     /* Primary button */
-    --theme-button-primary-background: var(--color-grey-2);
-    --theme-button-primary-border: var(--color-grey-2);
-    --theme-button-primary-color: var(--color-blue-7);
-    --theme-button-primary-background-hover: var(--color-graphite-8);
-    --theme-button-primary-border-hover: var(--color-grey-1);
-    --theme-button-primary-color-hover: var(--color-grey-1);
-    --theme-button-primary-background-active: var(--color-graphite-8);
-    --theme-button-primary-border-active: var(--color-white);
-    --theme-button-primary-color-active: var(--color-white);
-    --theme-button-primary-outline: var(--color-grey-2);
+    --theme-btn-primary-background: var(--color-grey-2);
+    --theme-btn-primary-border: var(--color-grey-2);
+    --theme-btn-primary-color: var(--color-blue-7);
+    --theme-btn-primary-background-hover: var(--color-graphite-8);
+    --theme-btn-primary-border-hover: var(--color-grey-1);
+    --theme-btn-primary-color-hover: var(--color-grey-1);
+    --theme-btn-primary-background-active: var(--color-graphite-8);
+    --theme-btn-primary-border-active: var(--color-white);
+    --theme-btn-primary-color-active: var(--color-white);
+    --theme-btn-primary-outline: var(--color-grey-2);
 
     /* Primary button on dark backgrounds */
-    --theme-button-dark-primary-background: var(--theme-button-primary-background);
-    --theme-button-dark-primary-border: var(--theme-button-primary-border);
-    --theme-button-dark-primary-color: var(--theme-button-primary-color);
-    --theme-button-dark-primary-background-hover: var(--button-primary-background-hover);
-    --theme-button-dark-primary-border-hover: var(--button-primary-border-hover);
-    --theme-button-dark-primary-color-hover: var(--button-primary-color-hover);
-    --theme-button-dark-primary-background-active: var(--button-primary-background-active);
-    --theme-button-dark-primary-border-active: var(--button-primary-border-active);
-    --theme-button-dark-primary-color-active: var(--button-primary-color-active);
-    --theme-button-dark-primary-outline: var(--theme-button-primary-outline);
+    --theme-btn-dark-primary-background: var(--theme-btn-primary-background);
+    --theme-btn-dark-primary-border: var(--theme-btn-primary-border);
+    --theme-btn-dark-primary-color: var(--theme-btn-primary-color);
+    --theme-btn-dark-primary-background-hover: var(--btn-primary-background-hover);
+    --theme-btn-dark-primary-border-hover: var(--btn-primary-border-hover);
+    --theme-btn-dark-primary-color-hover: var(--btn-primary-color-hover);
+    --theme-btn-dark-primary-background-active: var(--btn-primary-background-active);
+    --theme-btn-dark-primary-border-active: var(--btn-primary-border-active);
+    --theme-btn-dark-primary-color-active: var(--btn-primary-color-active);
+    --theme-btn-dark-primary-outline: var(--theme-btn-primary-outline);
 
     /* Secondary button */
-    --theme-button-secondary-background: var(--color-graphite-8);
-    --theme-button-secondary-border: var(--color-grey-2);
-    --theme-button-secondary-color: var(--color-grey-2);
-    --theme-button-secondary-background-hover: var(--color-grey-2);
-    --theme-button-secondary-border-hover: var(--color-grey-2);
-    --theme-button-secondary-color-hover: var(--color-blue-7);
-    --theme-button-secondary-background-active: var(--color-white);
-    --theme-button-secondary-border-active: var(--color-white);
-    --theme-button-secondary-color-active: var(--color-blue-7);
-    --theme-button-secondary-outline: var(--color-grey-2);
+    --theme-btn-secondary-background: var(--color-graphite-8);
+    --theme-btn-secondary-border: var(--color-grey-2);
+    --theme-btn-secondary-color: var(--color-grey-2);
+    --theme-btn-secondary-background-hover: var(--color-grey-2);
+    --theme-btn-secondary-border-hover: var(--color-grey-2);
+    --theme-btn-secondary-color-hover: var(--color-blue-7);
+    --theme-btn-secondary-background-active: var(--color-white);
+    --theme-btn-secondary-border-active: var(--color-white);
+    --theme-btn-secondary-color-active: var(--color-blue-7);
+    --theme-btn-secondary-outline: var(--color-grey-2);
 
     /* Borderless button */
-    --theme-button-borderless-background-hover: var(--color-grey-1);
-    --theme-button-borderless-color-hover: var(--color-blue-7);
-    --theme-button-borderless-color-focus: var(--color-grey-2);
-    --theme-button-borderless-color-active: var(--color-grey-1);
-    --theme-button-borderless-outline: var(--color-grey-2);
+    --theme-btn-borderless-background-hover: var(--color-grey-1);
+    --theme-btn-borderless-color-hover: var(--color-blue-7);
+    --theme-btn-borderless-color-focus: var(--color-grey-2);
+    --theme-btn-borderless-color-active: var(--color-grey-1);
+    --theme-btn-borderless-outline: var(--color-grey-2);
 
     /* Destructive button */
-    --theme-button-destructive-background: var(--color-red-2);
-    --theme-button-destructive-border: var(--color-red-2);
-    --theme-button-destructive-color: var(--color-graphite-8);
-    --theme-button-destructive-background-hover: var(--color-graphite-8);
-    --theme-button-destructive-border-hover: var(--color-red-2);
-    --theme-button-destructive-color-hover: var(--color-red-2);
-    --theme-button-destructive-background-active: var(--color-graphite-8);
-    --theme-button-destructive-border-active: var(--color-red-1);
-    --theme-button-destructive-color-active: var(--color-red-1);
-    --theme-button-destructive-outline: var(--color-red-2);
+    --theme-btn-destructive-background: var(--color-red-2);
+    --theme-btn-destructive-border: var(--color-red-2);
+    --theme-btn-destructive-color: var(--color-graphite-8);
+    --theme-btn-destructive-background-hover: var(--color-graphite-8);
+    --theme-btn-destructive-border-hover: var(--color-red-2);
+    --theme-btn-destructive-color-hover: var(--color-red-2);
+    --theme-btn-destructive-background-active: var(--color-graphite-8);
+    --theme-btn-destructive-border-active: var(--color-red-1);
+    --theme-btn-destructive-color-active: var(--color-red-1);
+    --theme-btn-destructive-outline: var(--color-red-2);
 
     /* Destructive secondary button */
-    --theme-button-destructive-secondary-background: var(--color-graphite-8);
-    --theme-button-destructive-secondary-border: var(--color-red-2);
-    --theme-button-destructive-secondary-color: var(--color-red-2);
-    --theme-button-destructive-secondary-background-hover: var(--color-red-2);
-    --theme-button-destructive-secondary-border-hover: var(--color-red-2);
-    --theme-button-destructive-secondary-color-hover: var(--color-graphite-8);
-    --theme-button-destructive-secondary-background-active: var(--color-red-1);
-    --theme-button-destructive-secondary-border-active: var(--color-red-1);
-    --theme-button-destructive-secondary-color-active: var(--color-graphite-8);
-    --theme-button-destructive-secondary-outline: var(--color-red-2);
+    --theme-btn-destructive-secondary-background: var(--color-graphite-8);
+    --theme-btn-destructive-secondary-border: var(--color-red-2);
+    --theme-btn-destructive-secondary-color: var(--color-red-2);
+    --theme-btn-destructive-secondary-background-hover: var(--color-red-2);
+    --theme-btn-destructive-secondary-border-hover: var(--color-red-2);
+    --theme-btn-destructive-secondary-color-hover: var(--color-graphite-8);
+    --theme-btn-destructive-secondary-background-active: var(--color-red-1);
+    --theme-btn-destructive-secondary-border-active: var(--color-red-1);
+    --theme-btn-destructive-secondary-color-active: var(--color-graphite-8);
+    --theme-btn-destructive-secondary-outline: var(--color-red-2);
 
     /* Tag */
     --theme-tag-background: var(--color-graphite-8);

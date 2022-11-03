@@ -119,7 +119,7 @@ button.nav-button {
     border: 0;
     border-radius: var(--radius-sm);
     box-shadow: none;
-    color: var(--button-borderless-color);
+    color: var(--btn-borderless-color);
     gap: var(--space-2);
     height: calc(var(--space-12) - var(--space-1));
     justify-content: center;
@@ -128,18 +128,18 @@ button.nav-button {
 }
 
 button.nav-button:hover {
-    background: var(--button-borderless-background-hover);
-    color: var(--button-borderless-color-hover);
+    background: var(--btn-borderless-background-hover);
+    color: var(--btn-borderless-color-hover);
 }
 
 button.nav-button:focus {
-    color: var(--button-borderless-color-focus);
-    outline: var(--button-borderless-outline) solid calc(var(--space-1) / 2);
+    color: var(--btn-borderless-color-focus);
+    outline: var(--btn-borderless-outline) solid calc(var(--space-1) / 2);
     outline-offset: calc(var(--space-1) / 2);
 }
 
 button.nav-button:active {
-    color: var(--button-borderless-color-active);
+    color: var(--btn-borderless-color-active);
 }
 
 button.nav-button svg {

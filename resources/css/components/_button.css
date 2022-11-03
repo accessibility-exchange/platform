@@ -1,13 +1,13 @@
 button {
     align-items: center;
     appearance: none;
-    background: var(--button-primary-background);
-    border-color: var(--button-primary-border);
+    background: var(--btn-primary-background);
+    border-color: var(--btn-primary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
-    box-shadow: var(--button-primary-shadow);
-    color: var(--button-primary-color);
+    box-shadow: var(--btn-primary-shadow);
+    color: var(--btn-primary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -22,23 +22,23 @@ button {
 button:focus {
     @apply ring-2 ring-offset-3 ring-offset-bg;
 
-    --tw-ring-color: var(--button-primary-outline);
+    --tw-ring-color: var(--btn-primary-outline);
 
     outline: transparent;
 }
 
 button:hover {
-    background: var(--button-primary-background-hover);
-    border-color: var(--button-primary-border-hover);
-    color: var(--button-primary-color-hover);
+    background: var(--btn-primary-background-hover);
+    border-color: var(--btn-primary-border-hover);
+    color: var(--btn-primary-color-hover);
 }
 
 button:active,
 button:focus:active {
-    background: var(--button-primary-background-active);
-    border-color: var(--button-primary-border-active);
+    background: var(--btn-primary-background-active);
+    border-color: var(--btn-primary-border-active);
     box-shadow: none;
-    color: var(--button-primary-color-active);
+    color: var(--btn-primary-color-active);
 }
 
 button svg {
@@ -46,46 +46,46 @@ button svg {
 }
 
 button.destructive {
-    background: var(--button-destructive-background);
-    border-color: var(--button-destructive-border);
+    background: var(--btn-destructive-background);
+    border-color: var(--btn-destructive-border);
     box-shadow: none;
-    color: var(--button-destructive-color);
+    color: var(--btn-destructive-color);
 }
 
 button.destructive:hover {
-    background: var(--button-destructive-background-hover);
-    border-color: var(--button-destructive-border-hover);
-    color: var(--button-destructive-color-hover);
+    background: var(--btn-destructive-background-hover);
+    border-color: var(--btn-destructive-border-hover);
+    color: var(--btn-destructive-color-hover);
 }
 
 button.destructive:focus {
     @apply ring-2 ring-offset-3 ring-offset-bg;
 
-    --tw-ring-color: var(--button-destructive-outline);
+    --tw-ring-color: var(--btn-destructive-outline);
 
     outline: transparent;
 }
 
 button.destructive:active,
 button.destructive:focus:active {
-    background: var(--button-destructive-background-active);
-    border-color: var(--button-destructive-border-active);
+    background: var(--btn-destructive-background-active);
+    border-color: var(--btn-destructive-border-active);
     box-shadow: none;
-    color: var(--button-destructive-color-active);
+    color: var(--btn-destructive-color-active);
 }
 
 .dark button,
 .darker button {
-    background: var(--button-dark-primary-background);
-    border-color: var(--button-dark-primary-border);
-    color: var(--button-dark-primary-color);
+    background: var(--btn-dark-primary-background);
+    border-color: var(--btn-dark-primary-border);
+    color: var(--btn-dark-primary-color);
 }
 
 .dark button:hover,
 .darker button:hover {
-    background: var(--button-dark-primary-background-hover);
-    border-color: var(--button-dark-primary-border-hover);
-    color: var(--button-dark-primary-color-hover);
+    background: var(--btn-dark-primary-background-hover);
+    border-color: var(--btn-dark-primary-border-hover);
+    color: var(--btn-dark-primary-color-hover);
 }
 
 .dark button:focus {
@@ -100,22 +100,22 @@ button.destructive:focus:active {
 .dark button:focus:active,
 .darker button:active,
 .darker button:focus:active {
-    background: var(--button-dark-primary-background-active);
-    border-color: var(--button-dark-primary-border-active);
+    background: var(--btn-dark-primary-background-active);
+    border-color: var(--btn-dark-primary-border-active);
     box-shadow: none;
-    color: var(--button-dark-primary-color-active);
+    color: var(--btn-dark-primary-color-active);
 }
 
 button.secondary {
     align-items: center;
     appearance: none;
-    background: var(--button-secondary-background);
-    border-color: var(--button-secondary-border);
+    background: var(--btn-secondary-background);
+    border-color: var(--btn-secondary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
     box-shadow: none;
-    color: var(--button-secondary-color);
+    color: var(--btn-secondary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -130,34 +130,34 @@ button.secondary {
 button.secondary:focus {
     @apply ring-2 ring-offset-3 ring-offset-bg;
 
-    --tw-ring-color: var(--button-secondary-outline);
+    --tw-ring-color: var(--btn-secondary-outline);
 
     outline: transparent;
 }
 
 button.secondary:hover {
-    background-color: var(--button-secondary-background-hover);
-    border-color: var(--button-secondary-border-hover);
-    color: var(--button-secondary-color-hover);
+    background-color: var(--btn-secondary-background-hover);
+    border-color: var(--btn-secondary-border-hover);
+    color: var(--btn-secondary-color-hover);
 }
 
 button.secondary:active,
 button.secondary:focus:active {
-    background-color: var(--button-secondary-background-active);
-    border-color: var(--button-secondary-border-active);
+    background-color: var(--btn-secondary-background-active);
+    border-color: var(--btn-secondary-border-active);
     box-shadow: none;
-    color: var(--button-secondary-color-active);
+    color: var(--btn-secondary-color-active);
 }
 
 button.destructive.secondary {
     align-items: center;
     appearance: none;
-    background: var(--button-destructive-secondary-background);
-    border-color: var(--button-destructive-secondary-border);
+    background: var(--btn-destructive-secondary-background);
+    border-color: var(--btn-destructive-secondary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
-    color: var(--button-destructive-secondary-color);
+    color: var(--btn-destructive-secondary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -170,25 +170,25 @@ button.destructive.secondary {
 }
 
 button.destructive.secondary:hover {
-    background-color: var(--button-destructive-secondary-background-hover);
-    border-color: var(--button-destructive-secondary-border-hover);
-    color: var(--button-destructive-secondary-color-hover);
+    background-color: var(--btn-destructive-secondary-background-hover);
+    border-color: var(--btn-destructive-secondary-border-hover);
+    color: var(--btn-destructive-secondary-color-hover);
 }
 
 button.destructive.secondary:focus {
     @apply ring-2 ring-offset-3 ring-offset-bg;
 
-    --tw-ring-color: var(--button-destructive-secondary-outline);
+    --tw-ring-color: var(--btn-destructive-secondary-outline);
 
     outline: transparent;
 }
 
 button.destructive.secondary:active,
 button.destructive.secondary:focus:active {
-    background-color: var(--button-destructive-secondary-background-active);
-    border-color: var(--button-destructive-secondary-border-active);
+    background-color: var(--btn-destructive-secondary-background-active);
+    border-color: var(--btn-destructive-secondary-border-active);
     box-shadow: none;
-    color: var(--button-destructive-secondary-color-active);
+    color: var(--btn-destructive-secondary-color-active);
 }
 
 button.borderless {
@@ -196,26 +196,26 @@ button.borderless {
     border: solid var(--border-2);
     border-color: transparent;
     box-shadow: none;
-    color: var(--button-borderless-color);
+    color: var(--btn-borderless-color);
     margin-inline-start: calc(-1 * var(--space-4));
     padding-inline: var(--space-4);
 }
 
 button.borderless:hover {
-    background: var(--button-borderless-background-hover);
-    color: var(--button-borderless-color-hover);
+    background: var(--btn-borderless-background-hover);
+    color: var(--btn-borderless-color-hover);
 }
 
 button.borderless:focus {
-    border-color: var(--button-borderless-outline);
-    color: var(--button-borderless-color-focus);
+    border-color: var(--btn-borderless-outline);
+    color: var(--btn-borderless-color-focus);
     outline: transparent;
 }
 
 button.borderless:active,
 button.borderless:focus:active {
     box-shadow: none;
-    color: var(--button-borderless-color-active);
+    color: var(--btn-borderless-color-active);
 }
 
 .borderless svg {
@@ -223,23 +223,23 @@ button.borderless:focus:active {
 }
 
 button.borderless.destructive {
-    color: var(--button-destructive-borderless-color);
+    color: var(--btn-destructive-borderless-color);
 }
 
 button.borderless.destructive:hover {
-    background: var(--button-destructive-borderless-background-hover);
-    color: var(--button-destructive-borderless-color-hover);
+    background: var(--btn-destructive-borderless-background-hover);
+    color: var(--btn-destructive-borderless-color-hover);
 }
 
 button.borderless.destructive:focus {
-    border-color: var(--button-destructive-borderless-outline);
+    border-color: var(--btn-destructive-borderless-outline);
     box-shadow: none;
-    color: var(--button-destructive-borderless-color-focus);
+    color: var(--btn-destructive-borderless-color-focus);
 }
 
 button.borderless.destructive:active,
 button.borderless.destructive:focus:active {
-    background-color: var(--button-destructive-borderless-background-active);
+    background-color: var(--btn-destructive-borderless-background-active);
     box-shadow: none;
-    color: var(--button-destructive-borderless-color-active);
+    color: var(--btn-destructive-borderless-color-active);
 }
