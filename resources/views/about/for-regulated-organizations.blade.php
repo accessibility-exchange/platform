@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('How this works for Federally Regulated Organizations') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessbility Exchange') }}</a></li>
+            <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
         </ol>
         <h1>
             <span class="font-medium">{{ __('How this works for') }}</span><br />
