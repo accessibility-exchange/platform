@@ -15,7 +15,7 @@ enum UserContext: string
         return [
             'individual' => __('Individual'),
             'organization' => __('Community Organization'),
-            'regulated-organization' => __('Federally Regulated Organizations'),
+            'regulated-organization' => __('Federally Regulated Organization'),
             'training-participant' => __('Training Participant'),
         ];
     }
