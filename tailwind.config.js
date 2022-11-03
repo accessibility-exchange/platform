@@ -42,7 +42,8 @@ module.exports = {
             "red-7": "#B34D4D",
             "red-6": "#CD2C2D",
             "red-2": "#f6a7a7",
-            "red-1": "#f5cdcd"
+            "red-1": "#f5cdcd",
+            "bg": "var(--bg, var(--body-background))"
         },
         fontFamily: {
             base: ["\"Open Sans\"", "sans-serif"],
@@ -154,6 +155,9 @@ module.exports = {
             80: "20rem",
             96: "24rem",
             192: "48rem"
+        },
+        ringOffsetWidth: {
+            3: "3px"
         }
     },
     corePlugins: {

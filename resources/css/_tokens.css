@@ -36,6 +36,7 @@
     --color-red-6: #cd2c2d;
     --color-red-2: #f6a7a7;
     --color-red-1: #f5cdcd;
+    --color-bg: var(--bg, var(--body-background));
     --space-0: 0;
     --space-1: 0.25rem;
     --space-2: 0.5rem;

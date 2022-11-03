@@ -47,37 +47,37 @@
     --theme-cta-background: var(--color-grey-2);
     --theme-cta-border: var(--color-grey-2);
     --theme-cta-color: var(--color-blue-7);
-    --theme-cta-outline: var(--color-grey-2);
-    --theme-cta-background-hover: var(--color-grey-1);
+    --theme-cta-background-hover: var(--color-graphite-8);
     --theme-cta-border-hover: var(--color-grey-1);
-    --theme-cta-color-hover: var(--color-blue-8);
-    --theme-cta-color-active: var(--color-blue-7);
-    --theme-cta-background-active: white;
-    --theme-cta-border-active: white;
+    --theme-cta-color-hover: var(--color-grey-1);
+    --theme-cta-background-active: var(--color-graphite-8);
+    --theme-cta-border-active: var(--color-white);
+    --theme-cta-color-active: var(--color-white);
+    --theme-cta-outline: var(--color-grey-2);
 
     /* Secondary call to action */
-    --theme-cta-secondary-border: var(--theme-button-secondary-border);
-    --theme-cta-secondary-background: var(--theme-button-secondary-background);
-    --theme-cta-secondary-color: var(--theme-button-secondary-color);
-    --theme-cta-secondary-outline: var(--theme-button-primary-outline);
-    --theme-cta-secondary-background-hover: var(--theme-button-primary-background-hover);
-    --theme-cta-secondary-border-hover: var(--theme-button-primary-border-hover);
-    --theme-cta-secondary-color-hover: var(--theme-button-primary-color-hover);
-    --theme-cta-secondary-color-active: var(--theme-button-primary-color-active);
-    --theme-cta-secondary-background-active: var(--theme-button-primary-background-active);
-    --theme-cta-secondary-border-active: var(--theme-button-primary-border-active);
+    --theme-cta-secondary-background: var(--color-graphite-8);
+    --theme-cta-secondary-border: var(--color-grey-2);
+    --theme-cta-secondary-color: var(--color-grey-2);
+    --theme-cta-secondary-background-hover: var(--color-grey-2);
+    --theme-cta-secondary-border-hover: var(--color-grey-2);
+    --theme-cta-secondary-color-hover: var(--color-blue-7);
+    --theme-cta-secondary-background-active: var(--color-white);
+    --theme-cta-secondary-border-active: var(--color-white);
+    --theme-cta-secondary-color-active: var(--color-blue-7);
+    --theme-cta-secondary-outline: var(--color-grey-2);
 
     /* Call to action on dark backgrounds */
     --theme-cta-dark-background: var(--theme-cta-background);
     --theme-cta-dark-border: var(--theme-cta-border);
     --theme-cta-dark-color: var(--theme-cta-color);
-    --theme-cta-dark-outline: var(--theme-cta-outline);
     --theme-cta-dark-background-hover: var(--theme-cta-background-hover);
     --theme-cta-dark-border-hover: var(--theme-cta-border-hover);
     --theme-cta-dark-color-hover: var(--theme-cta-color-hover);
-    --theme-cta-dark-color-active: var(--theme-cta-color-active);
     --theme-cta-dark-background-active: var(--theme-cta-background-active);
     --theme-cta-dark-border-active: var(--theme-cta-border-active);
+    --theme-cta-dark-color-active: var(--theme-cta-color-active);
+    --theme-cta-dark-outline: var(--theme-cta-outline);
 
     /* Badge */
     --theme-badge-background: var(--color-graphite-7);
@@ -124,60 +124,68 @@
     --theme-button-primary-background: var(--color-grey-2);
     --theme-button-primary-border: var(--color-grey-2);
     --theme-button-primary-color: var(--color-blue-7);
-    --theme-button-primary-outline: var(--color-grey-2);
-    --theme-button-primary-background-hover: var(--color-grey-1);
+    --theme-button-primary-background-hover: var(--color-graphite-8);
     --theme-button-primary-border-hover: var(--color-grey-1);
-    --theme-button-primary-color-hover: var(--color-blue-8);
-    --theme-button-primary-color-active: var(--color-blue-7);
-    --theme-button-primary-background-active: white;
-    --theme-button-primary-border-active: white;
+    --theme-button-primary-color-hover: var(--color-grey-1);
+    --theme-button-primary-background-active: var(--color-graphite-8);
+    --theme-button-primary-border-active: var(--color-white);
+    --theme-button-primary-color-active: var(--color-white);
+    --theme-button-primary-outline: var(--color-grey-2);
+
+    /* Primary button on dark backgrounds */
+    --theme-button-dark-primary-background: var(--theme-button-primary-background);
+    --theme-button-dark-primary-border: var(--theme-button-primary-border);
+    --theme-button-dark-primary-color: var(--theme-button-primary-color);
+    --theme-button-dark-primary-background-hover: var(--button-primary-background-hover);
+    --theme-button-dark-primary-border-hover: var(--button-primary-border-hover);
+    --theme-button-dark-primary-color-hover: var(--button-primary-color-hover);
+    --theme-button-dark-primary-background-active: var(--button-primary-background-active);
+    --theme-button-dark-primary-border-active: var(--button-primary-border-active);
+    --theme-button-dark-primary-color-active: var(--button-primary-color-active);
+    --theme-button-dark-primary-outline: var(--theme-button-primary-outline);
 
     /* Secondary button */
     --theme-button-secondary-background: var(--color-graphite-8);
-    --theme-button-secondary-border: var(--color-grey-1);
-    --theme-button-secondary-color: var(--color-grey-1);
-    --theme-button-secondary-background-hover: var(--color-graphite-8);
-    --theme-button-secondary-border-hover: var(--color-grey-1);
-    --theme-button-secondary-color-hover: var(--color-grey-1);
-    --theme-button-secondary-outline: var(--color-grey-1);
-    --theme-button-secondary-color-active: var(--color-white);
-    --theme-button-secondary-background-active: var(--color-graphite-8);
+    --theme-button-secondary-border: var(--color-grey-2);
+    --theme-button-secondary-color: var(--color-grey-2);
+    --theme-button-secondary-background-hover: var(--color-grey-2);
+    --theme-button-secondary-border-hover: var(--color-grey-2);
+    --theme-button-secondary-color-hover: var(--color-blue-7);
+    --theme-button-secondary-background-active: var(--color-white);
     --theme-button-secondary-border-active: var(--color-white);
+    --theme-button-secondary-color-active: var(--color-blue-7);
+    --theme-button-secondary-outline: var(--color-grey-2);
+
+    /* Borderless button */
+    --theme-button-borderless-background-hover: var(--color-grey-1);
+    --theme-button-borderless-color-hover: var(--color-blue-7);
+    --theme-button-borderless-color-focus: var(--color-grey-2);
+    --theme-button-borderless-color-active: var(--color-grey-1);
+    --theme-button-borderless-outline: var(--color-grey-2);
 
     /* Destructive button */
     --theme-button-destructive-background: var(--color-red-2);
     --theme-button-destructive-border: var(--color-red-2);
     --theme-button-destructive-color: var(--color-graphite-8);
-    --theme-button-destructive-outline: var(--color-red-2);
-    --theme-button-destructive-background-hover: var(--color-red-1);
-    --theme-button-destructive-border-hover: var(--color-red-1);
-    --theme-button-destructive-color-hover: var(--color-graphite-8);
-    --theme-button-destructive-color-active: var(--color-graphite-8);
-    --theme-button-destructive-background-active: var(--color-red-1);
+    --theme-button-destructive-background-hover: var(--color-graphite-8);
+    --theme-button-destructive-border-hover: var(--color-red-2);
+    --theme-button-destructive-color-hover: var(--color-red-2);
+    --theme-button-destructive-background-active: var(--color-graphite-8);
     --theme-button-destructive-border-active: var(--color-red-1);
+    --theme-button-destructive-color-active: var(--color-red-1);
+    --theme-button-destructive-outline: var(--color-red-2);
 
     /* Destructive secondary button */
-    --theme-button-destructive-secondary-border: var(--color-red-2);
     --theme-button-destructive-secondary-background: var(--color-graphite-8);
+    --theme-button-destructive-secondary-border: var(--color-red-2);
     --theme-button-destructive-secondary-color: var(--color-red-2);
-    --theme-button-destructive-secondary-background-hover: var(--color-graphite-8);
-    --theme-button-destructive-secondary-border-hover: var(--color-red-1);
-    --theme-button-destructive-secondary-color-hover: var(--color-red-1);
-    --theme-button-destructive-secondary-color-focus: var(--color-red-1);
-    --theme-button-destructive-secondary-border-focus: var(--color-red-1);
-    --theme-button-destructive-secondary-outline: var(--color-red-1);
-    --theme-button-destructive-secondary-color-active: var(--color-white);
-    --theme-button-destructive-secondary-background-active: var(--color-graphite-8);
-    --theme-button-destructive-secondary-border-active: var(--color-white);
-
-    /* Borderless button */
-    --theme-button-borderless-outline: var(--color-grey-2);
-    --theme-button-borderless-color-hover: var(--color-grey-2);
-    --theme-button-borderless-background-hover: black;
-    --theme-button-borderless-color-focus: var(--color-grey-2);
-    --theme-button-borderless-color-active: var(--color-grey-1);
-
-    /* Primary button on dark backgrounds */
+    --theme-button-destructive-secondary-background-hover: var(--color-red-2);
+    --theme-button-destructive-secondary-border-hover: var(--color-red-2);
+    --theme-button-destructive-secondary-color-hover: var(--color-graphite-8);
+    --theme-button-destructive-secondary-background-active: var(--color-red-1);
+    --theme-button-destructive-secondary-border-active: var(--color-red-1);
+    --theme-button-destructive-secondary-color-active: var(--color-graphite-8);
+    --theme-button-destructive-secondary-outline: var(--color-red-2);
 
     /* Tag */
     --theme-tag-background: var(--color-graphite-8);

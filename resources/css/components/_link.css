@@ -84,26 +84,29 @@ a.cta {
     width: auto;
 }
 
-a.cta svg {
-    height: var(--space-4);
-}
-
 a.cta:hover {
     background: var(--cta-background-hover);
     border-color: var(--cta-border-hover);
     color: var(--cta-color-hover);
+    text-decoration: underline;
 }
 
 a.cta:focus {
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--cta-outline);
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--cta-outline);
+
     outline: transparent;
+    text-decoration: underline;
 }
 
-a.cta:active {
+a.cta:active,
+a.cta:focus:active {
     background: var(--cta-background-active);
     border-color: var(--cta-border-active);
+    box-shadow: none;
     color: var(--cta-color-active);
+    text-decoration: underline;
 }
 
 a.cta.secondary {
@@ -119,14 +122,16 @@ a.cta.secondary:hover {
 }
 
 a.cta.secondary:focus {
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--cta-secondary-outline);
-    outline: transparent;
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--cta-secondary-outline);
 }
 
-a.cta.secondary:active {
+a.cta.secondary:active,
+a.cta.secondary:focus:active {
     background: var(--cta-secondary-background-active);
     border-color: var(--cta-secondary-border-active);
+    box-shadow: none;
     color: var(--cta-secondary-color-active);
 }
 

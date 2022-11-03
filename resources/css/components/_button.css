@@ -6,7 +6,7 @@ button {
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--button-primary-shadow);
     color: var(--button-primary-color);
     display: flex;
     font-family: var(--font-base);
@@ -19,21 +19,25 @@ button {
     width: auto;
 }
 
+button:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--button-primary-outline);
+
+    outline: transparent;
+}
+
 button:hover {
     background: var(--button-primary-background-hover);
     border-color: var(--button-primary-border-hover);
     color: var(--button-primary-color-hover);
 }
 
-button:focus {
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--button-primary-outline);
-    outline: transparent;
-}
-
-button:active {
+button:active,
+button:focus:active {
     background: var(--button-primary-background-active);
     border-color: var(--button-primary-border-active);
+    box-shadow: none;
     color: var(--button-primary-color-active);
 }
 
@@ -55,14 +59,18 @@ button.destructive:hover {
 }
 
 button.destructive:focus {
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--button-destructive-outline);
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--button-destructive-outline);
+
     outline: transparent;
 }
 
-button.destructive:active {
+button.destructive:active,
+button.destructive:focus:active {
     background: var(--button-destructive-background-active);
     border-color: var(--button-destructive-border-active);
+    box-shadow: none;
     color: var(--button-destructive-color-active);
 }
 
@@ -89,9 +97,12 @@ button.destructive:active {
 }
 
 .dark button:active,
-.darker button:active {
+.dark button:focus:active,
+.darker button:active,
+.darker button:focus:active {
     background: var(--button-dark-primary-background-active);
     border-color: var(--button-dark-primary-border-active);
+    box-shadow: none;
     color: var(--button-dark-primary-color-active);
 }
 
@@ -116,22 +127,25 @@ button.secondary {
     width: auto;
 }
 
+button.secondary:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--button-secondary-outline);
+
+    outline: transparent;
+}
+
 button.secondary:hover {
     background-color: var(--button-secondary-background-hover);
     border-color: var(--button-secondary-border-hover);
     color: var(--button-secondary-color-hover);
 }
 
-button.secondary:focus {
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--button-secondary-outline);
-    color: var(--button-secondary-color-focus);
-    outline: transparent;
-}
-
-button.secondary:active {
+button.secondary:active,
+button.secondary:focus:active {
     background-color: var(--button-secondary-background-active);
     border-color: var(--button-secondary-border-active);
+    box-shadow: none;
     color: var(--button-secondary-color-active);
 }
 
@@ -162,22 +176,25 @@ button.destructive.secondary:hover {
 }
 
 button.destructive.secondary:focus {
-    border-color: var(--button-destructive-secondary-border-focus);
-    box-shadow: 0 0 0 calc(var(--space-1) * 0.75) var(--bg, var(--body-background)),
-        0 0 0 calc(var(--space-1) * 1.5) var(--button-destructive-secondary-outline);
-    color: var(--button-destructive-secondary-color-focus);
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--button-destructive-secondary-outline);
+
     outline: transparent;
 }
 
-button.destructive.secondary:active {
+button.destructive.secondary:active,
+button.destructive.secondary:focus:active {
     background-color: var(--button-destructive-secondary-background-active);
     border-color: var(--button-destructive-secondary-border-active);
+    box-shadow: none;
     color: var(--button-destructive-secondary-color-active);
 }
 
 button.borderless {
     background: inherit;
-    border: 0;
+    border: solid var(--border-2);
+    border-color: transparent;
     box-shadow: none;
     color: var(--button-borderless-color);
     margin-inline-start: calc(-1 * var(--space-4));
@@ -190,12 +207,14 @@ button.borderless:hover {
 }
 
 button.borderless:focus {
-    box-shadow: 0 0 0 var(--border-2) var(--button-borderless-outline) inset;
+    border-color: var(--button-borderless-outline);
     color: var(--button-borderless-color-focus);
     outline: transparent;
 }
 
-button.borderless:active {
+button.borderless:active,
+button.borderless:focus:active {
+    box-shadow: none;
     color: var(--button-borderless-color-active);
 }
 
@@ -213,11 +232,14 @@ button.borderless.destructive:hover {
 }
 
 button.borderless.destructive:focus {
-    box-shadow: 0 0 0 var(--border-2) var(--button-destructive-borderless-outline) inset;
+    border-color: var(--button-destructive-borderless-outline);
+    box-shadow: none;
     color: var(--button-destructive-borderless-color-focus);
 }
 
-button.borderless.destructive:active {
+button.borderless.destructive:active,
+button.borderless.destructive:focus:active {
     background-color: var(--button-destructive-borderless-background-active);
+    box-shadow: none;
     color: var(--button-destructive-borderless-color-active);
 }
