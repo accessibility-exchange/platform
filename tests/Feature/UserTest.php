@@ -62,7 +62,7 @@ test('users can view the introduction', function () {
 
     $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
-    $user->update(['context' => 'regulated-organization-employee']);
+    $user->update(['context' => 'training-participant']);
 
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
