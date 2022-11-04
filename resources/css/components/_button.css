@@ -48,7 +48,7 @@ button svg {
 button.destructive {
     background: var(--btn-destructive-background);
     border-color: var(--btn-destructive-border);
-    box-shadow: none;
+    box-shadow: var(--btn-destructive-shadow);
     color: var(--btn-destructive-color);
 }
 
@@ -157,6 +157,7 @@ button.destructive.secondary {
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
+    box-shadow: none;
     color: var(--btn-destructive-secondary-color);
     display: flex;
     font-family: var(--font-base);

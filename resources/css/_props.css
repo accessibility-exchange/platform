@@ -56,6 +56,7 @@
     --cta-border-active: var(--theme-cta-border-active, var(--color-blue-6));
     --cta-color-active: var(--theme-cta-color-active, var(--color-blue-6));
     --cta-outline: var(--theme-cta-outline, var(--color-blue-7));
+    --cta-shadow: var(--theme-cta-shadow, 0 0 10px rgb(0 0 0 / 15%));
 
     /* Secondary call to action */
     --cta-secondary-background: var(--theme-cta-secondary-background, var(--color-white));
@@ -187,6 +188,7 @@
     --btn-destructive-background-active: var(--theme-btn-destructive-background-active, var(--color-white));
     --btn-destructive-border-active: var(--theme-btn-destructive-border-active, var(--color-red-7));
     --btn-destructive-outline: var(--theme-btn-destructive-outline, var(--color-red-8));
+    --btn-destructive-shadow: var(--theme-btn-destructive-shadow, 0 0 10px rgb(0 0 0 / 15%));
 
     /* Destructive secondary button */
     --btn-destructive-secondary-border: var(--theme-btn-destructive-secondary-border, var(--color-red-8));
