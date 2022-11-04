@@ -177,10 +177,11 @@
 
     /* Borderless button */
     --theme-btn-borderless-color: var(--interactive);
+    --theme-btn-borderless-background-hover: var(--interactive);
     --theme-btn-borderless-color-hover: var(--bg);
     --theme-btn-borderless-color-focus: var(--interactive);
+    --theme-btn-borderless-background-active: var(--interactive);
     --theme-btn-borderless-color-active: var(--bg);
-    --theme-btn-borderless-background-hover: var(--interactive);
     --theme-btn-borderless-outline: var(--interactive);
 
     /* Destructive button */

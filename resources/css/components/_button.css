@@ -201,19 +201,24 @@ button.borderless {
     padding-inline: var(--space-4);
 }
 
-button.borderless:hover {
-    background: var(--btn-borderless-background-hover);
-    color: var(--btn-borderless-color-hover);
-}
-
 button.borderless:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-borderless-outline);
+
     border-color: var(--btn-borderless-outline);
     color: var(--btn-borderless-color-focus);
     outline: transparent;
 }
 
+button.borderless:hover {
+    background: var(--btn-borderless-background-hover);
+    color: var(--btn-borderless-color-hover);
+}
+
 button.borderless:active,
 button.borderless:focus:active {
+    background: var(--btn-borderless-background-active);
     box-shadow: none;
     color: var(--btn-borderless-color-active);
 }
@@ -226,15 +231,18 @@ button.borderless.destructive {
     color: var(--btn-destructive-borderless-color);
 }
 
+button.borderless.destructive:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-destructive-borderless-outline);
+
+    border-color: var(--btn-destructive-borderless-outline);
+    color: var(--btn-destructive-borderless-color-focus);
+}
+
 button.borderless.destructive:hover {
     background: var(--btn-destructive-borderless-background-hover);
     color: var(--btn-destructive-borderless-color-hover);
-}
-
-button.borderless.destructive:focus {
-    border-color: var(--btn-destructive-borderless-outline);
-    box-shadow: none;
-    color: var(--btn-destructive-borderless-color-focus);
 }
 
 button.borderless.destructive:active,

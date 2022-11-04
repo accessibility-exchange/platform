@@ -157,11 +157,13 @@
     --theme-btn-secondary-outline: var(--color-grey-2);
 
     /* Borderless button */
+    --theme-btn-borderless-color: var(--color-grey-1);
     --theme-btn-borderless-background-hover: var(--color-grey-1);
     --theme-btn-borderless-color-hover: var(--color-blue-7);
-    --theme-btn-borderless-color-focus: var(--color-grey-2);
-    --theme-btn-borderless-color-active: var(--color-grey-1);
-    --theme-btn-borderless-outline: var(--color-grey-2);
+    --theme-btn-borderless-color-focus: var(--color-grey-1);
+    --theme-btn-borderless-background-active: var(--color-white);
+    --theme-btn-borderless-color-active: var(--color-blue-7);
+    --theme-btn-borderless-outline: var(--color-grey-1);
 
     /* Destructive button */
     --theme-btn-destructive-background: var(--color-red-2);

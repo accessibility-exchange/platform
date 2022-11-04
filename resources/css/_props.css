@@ -168,12 +168,13 @@
     --btn-secondary-outline: var(--theme-btn-secondary-outline, var(--color-blue-6));
 
     /* Borderless button */
-    --btn-borderless-color: var(--theme-btn-borderless-color, unset);
-    --btn-borderless-background-hover: var(--theme-btn-borderless-background-hover, var(--color-grey-2));
-    --btn-borderless-color-hover: var(--theme-btn-borderless-color-hover, var(--color-blue-7));
+    --btn-borderless-color: var(--theme-btn-borderless-color, var(--color-blue-6));
+    --btn-borderless-background-hover: var(--theme-btn-borderless-background-hover, var(--color-blue-7));
+    --btn-borderless-color-hover: var(--theme-btn-borderless-color-hover, var(--color-white));
     --btn-borderless-color-focus: var(--theme-btn-borderless-color-focus, var(--color-blue-6));
-    --btn-borderless-color-active: var(--theme-btn-borderless-color-active, var(--color-blue-8));
-    --btn-borderless-outline: var(--theme-btn-borderless-outline, var(--color-blue-6));
+    --btn-borderless-background-active: var(--theme-btn-borderless-background-active, var(--color-blue-6));
+    --btn-borderless-color-active: var(--theme-btn-borderless-color-active, var(--color-white));
+    --btn-borderless-outline: var(--theme-btn-borderless-outline, var(--color-blue-7));
 
     /* Destructive button */
     --btn-destructive-background: var(--theme-btn-destructive-background, var(--color-red-8));
@@ -224,7 +225,7 @@
     );
     --btn-destructive-borderless-color-focus: var(
         --theme-btn-destructive-borderless-color-focus,
-        var(--btn-destructive-secondary-color-focus)
+        var(--btn-destructive-secondary-color)
     );
     --btn-destructive-borderless-color-active: var(
         --theme-btn-destructive-borderless-color-active,
