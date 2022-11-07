@@ -129,11 +129,17 @@
     /* Input */
     --theme-input-border: var(--interactive);
     --theme-input-color: var(--interactive);
+    --theme-input-border-hover: var(--interactive);
+    --theme-input-border-focus: var(--interactive);
+    --theme-input-border-active: var(--interactive);
     --theme-input-error-border: var(--interactive);
     --theme-input-error-color: var(--interactive);
+    --theme-input-error-background: var(--interactive);
 
     /* Checkbox */
     --theme-checkbox-checked-background: var(--interactive);
+    --theme-checkbox-background-active: var(--interactive);
+    --theme-checkbox-checked-border: var(--interactive);
 
     /* Radio button */
     --theme-radio-checked-background: var(--interactive);
