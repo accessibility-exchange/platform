@@ -168,8 +168,8 @@ input[type="radio"]:checked[aria-invalid="true"] {
 }
 
 [disabled] {
-    --input-color: var(--color-graphite-4);
-    --input-border: var(--color-graphite-4);
+    --input-color: var(--color-graphite-5);
+    --input-border: var(--color-graphite-5);
 }
 
 /** Labels **/

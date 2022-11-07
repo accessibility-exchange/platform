@@ -14,7 +14,6 @@ module.exports = {
             "graphite-7": "#3f424c",
             "graphite-6": "#4b5560",
             "graphite-5": "#637180",
-            "graphite-4": "#667584",
             "grey-3": "#d9dce3",
             "grey-2": "#eaedf3",
             "grey-1": "#f8fafd",
