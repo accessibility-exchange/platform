@@ -1,5 +1,13 @@
-<svg class="-mb-3" data-theme="{{ $for }}" width="40" height="40" viewBox="0 0 40 40" fill="none"
-    xmlns="http://www.w3.org/2000/svg">
+<svg
+    {{ $attributes->merge([
+        'class' => '-mb-3 w-10 h-10',
+        'data-theme' => $for,
+        'viewBox' => '0 0 40 40',
+        'fill' => 'none',
+        'aria-hidden' => 'true',
+        'role' => 'presentation',
+        'xmlns' => 'http://www.w3.org/2000/svg',
+    ]) }}>
     <rect x="0.5" y="0.5" width="39" height="39" rx="2.5"
         fill="var(--theme-body-background, var(--color-grey-1)" stroke="var(--theme-body-color, var(--color-graphite-7)"
         stroke-width="2" />

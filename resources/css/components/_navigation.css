@@ -22,8 +22,19 @@
     }
 }
 
+.theme-switcher input {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
 .nav-link,
-.nav-link:visited {
+.nav-link:visited,
+.theme-switcher label {
     align-items: center;
     background: var(--nav-background-mobile);
     border-block-end: var(--border) solid var(--nav-border-mobile);
@@ -38,33 +49,35 @@
     text-decoration: none;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.theme-switcher input:hover + label {
     background: var(--nav-background-hover-mobile);
     box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
     color: var(--nav-color-hover-mobile);
 }
 
-.nav-link:focus {
+.nav-link:focus,
+.theme-switcher input:focus + label {
     background: var(--nav-background-focus-mobile);
     box-shadow: inset 0 0 0 3px var(--nav-indicator-mobile);
     outline: 1px solid transparent;
 }
 
-.nav-link:active {
+.nav-link:active .theme-switcher input:active + label {
     background: var(--nav-background-active-mobile);
     box-shadow: none;
     color: var(--nav-color-active-mobile);
 }
 
-.nav-link[aria-current] {
+.nav-link[aria-current] .theme-switcher input:checked + label {
     box-shadow: inset 6px 0 0 0 var(--nav-current-color);
 }
 
-.nav-link[aria-current]:hover {
+.nav-link[aria-current]:hover .theme-switcher input:checked:hover + label {
     box-shadow: inset 3px 0 0 0 var(--nav-current-color);
 }
 
-.nav-link[aria-current]:focus {
+.theme-switcher input:checked:focus + label {
     box-shadow: inset 0 0 0 3px var(--nav-current-color);
 }
 
@@ -230,7 +243,6 @@ button.nav-button .indicator {
 
     .languages ul,
     .themes ul {
-        height: calc(var(--space-5) * 2 + var(--space-16));
         margin-block: 0;
         position: relative;
     }
@@ -242,7 +254,7 @@ button.nav-button .indicator {
         left: auto;
         right: 0;
         top: calc(var(--space-5) * 2 + var(--space-16));
-        width: auto;
+        width: var(--space-56);
         z-index: 2;
     }
 
@@ -253,7 +265,8 @@ button.nav-button .indicator {
 
     .nav-link,
     .nav-link:visited,
-    button.nav-button {
+    button.nav-button,
+    .theme-switcher label {
         background: var(--nav-parent-background);
         border-block-end: 0;
         border-block-start: unset;
@@ -263,14 +276,16 @@ button.nav-button .indicator {
     }
 
     .nav-link:hover,
-    button.nav-button:hover {
+    button.nav-button:hover,
+    .theme-switcher input:hover + label {
         background: var(--nav-parent-background-hover);
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
         color: var(--nav-color-hover);
     }
 
     .nav-link:focus,
-    button.nav-button:focus {
+    button.nav-button:focus,
+    .theme-switcher input:focus + label {
         background: var(--nav-parent-background-focus);
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
         color: var(--nav-color-focus);
@@ -279,7 +294,7 @@ button.nav-button .indicator {
 
     .nav-link:active,
     button.nav-button:active,
-    .nav [aria-expanded="true"] {
+    .nav [aria-expanded="true"] .theme-switcher input:active + label {
         background: var(--nav-parent-background-active);
         box-shadow: none;
         color: var(--nav-color-active);
@@ -289,47 +304,58 @@ button.nav-button .indicator {
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
     }
 
-    .nav-link[aria-current] {
+    .nav-link[aria-current],
+    .theme-switcher input:active + label {
         box-shadow: inset 0 -6px 0 0 var(--nav-current-color);
     }
 
-    .nav-link[aria-current]:hover {
+    .nav-link[aria-current]:hover,
+    .theme-switcher input:checked:hover + label {
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
     }
 
-    .nav-link[aria-current]:focus {
+    .nav-link[aria-current]:focus,
+    .theme-switcher input:checked:focus + label {
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
     }
 
-    .nav-link[aria-current]:active {
+    .nav-link[aria-current]:active,
+    .theme-switcher input:checked:active + label {
         box-shadow: none;
     }
 
-    .dropdown .nav-link:hover {
+    .dropdown .nav-link:hover,
+    .theme-switcher input:hover + label {
         box-shadow: inset 3px 0 0 0 var(--nav-indicator);
     }
 
-    .dropdown .nav-link:focus {
+    .dropdown .nav-link:focus,
+    .theme-switcher input:focus + label {
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
     }
 
-    .dropdown .nav-link:active {
+    .dropdown .nav-link:active,
+    .theme-switcher input:active + label {
         box-shadow: none;
     }
 
-    .dropdown .nav-link[aria-current] {
+    .dropdown .nav-link[aria-current],
+    .theme-switcher input:checked + label {
         box-shadow: inset 6px 0 0 0 var(--nav-current-color);
     }
 
-    .dropdown .nav-link[aria-current]:hover {
+    .dropdown .nav-link[aria-current]:hover,
+    .theme-switcher input:checked:hover + label {
         box-shadow: inset 3px 0 0 0 var(--nav-indicator);
     }
 
-    .dropdown .nav-link[aria-current]:focus {
+    .dropdown .nav-link[aria-current]:focus,
+    .theme-switcher input:checked:focus + label {
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
     }
 
-    .dropdown .nav-link[aria-current]:active {
+    .dropdown .nav-link[aria-current]:active,
+    .theme-switcher input:checked:active + label {
         box-shadow: none;
     }
 
