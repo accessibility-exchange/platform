@@ -171,6 +171,7 @@ button.nav-button .indicator {
 .themes ul ul {
     border-block-start: var(--border) solid var(--nav-border-mobile);
     left: 0;
+    margin-block-start: 0;
     position: absolute;
     top: calc(var(--space-12) + var(--space-20) + var(--space-6));
     width: 100vw;
