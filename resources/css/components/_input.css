@@ -23,6 +23,20 @@ input {
     height: var(--space-12);
 }
 
+input:hover,
+textarea:hover,
+select:hover {
+    box-shadow: 0 0 0 var(--border-3) var(--input-border-hover) inset;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    box-shadow: 0 0 0 var(--border-2) var(--input-border-focus) inset,
+        0 0 0 var(--border-2) var(--bg, var(--body-background)), 0 0 0 var(--border-4) var(--input-border-focus);
+    outline: transparent;
+}
+
 .field--error input,
 input[aria-invalid="true"] {
     border-color: var(--input-error-border);
@@ -141,6 +155,7 @@ select[aria-invalid="true"] {
     --input-border-active: var(--input-error-border);
     --checkbox-checked-background: var(--input-error-background);
     --radio-checked-border: var(--input-error-border);
+    --radio-checked-background: var(--input-error-background);
 }
 
 input[type="checkbox"]:checked {
@@ -208,7 +223,6 @@ fieldset {
 }
 
 .password .field {
-    background-color: var(--color-grey-2);
     border-radius: var(--radius-sm);
     padding: var(--space-2);
 }
