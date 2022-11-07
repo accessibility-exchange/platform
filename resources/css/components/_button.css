@@ -198,7 +198,7 @@ button.borderless {
     border-color: transparent;
     box-shadow: none;
     color: var(--btn-borderless-color);
-    margin-inline-start: calc(-1 * var(--space-4));
+    margin-inline-start: calc(-1 * var(--space-5));
     padding-inline: var(--space-4);
 }
 
