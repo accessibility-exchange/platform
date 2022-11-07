@@ -24,7 +24,7 @@
     width: var(--space-5);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
     .breadcrumbs {
         flex-flow: row wrap;
     }

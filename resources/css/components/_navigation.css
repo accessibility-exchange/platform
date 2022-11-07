@@ -198,7 +198,7 @@ button.nav-button .indicator {
     }
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 64rem) {
     .nav {
         flex-wrap: wrap;
         height: calc(var(--space-20) + var(--space-16) + var(--space-6));
