@@ -25,12 +25,10 @@
             {{ $slot }}
 
             @if ($actions ?? '' || $dismissable)
-                <div class="flex gap-2 px-1">
+                <div class="actions">
                     {{ $actions ?? '' }}
                     @if (!in_array($type, ['error', 'warning']) && $dismissable !== false)
-                        <button class="borderless" type="button" @click="visible = false">
-                            {{ __('Dismiss') }}
-                        </button>
+                        <button class="borderless" type="button" @click="visible = false">{{ __('Dismiss') }}</button>
                     @endif
                 </div>
             @endif
