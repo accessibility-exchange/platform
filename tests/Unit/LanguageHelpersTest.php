@@ -39,3 +39,13 @@ test('get a capitalized written or spoken language exonym', function () {
 test('get an invalid language exonym', function () {
     expect(get_language_exonym('xyz'))->toBeNull();
 });
+
+test('get written language for signed language', function () {
+    expect(get_written_language_for_signed_language('ase'))->toEqual('en');
+    expect(get_written_language_for_signed_language('fcs'))->toEqual('fr');
+});
+
+test('get signed language for written language', function () {
+    expect(get_signed_language_for_written_language('en'))->toEqual('ase');
+    expect(get_signed_language_for_written_language('fr'))->toEqual('fcs');
+});

@@ -4,6 +4,8 @@ import "./DefinedTerm.js";
 import Alpine from "alpinejs";
 import "wicg-inert";
 
+import Player from "@vimeo/player"; /* eslint-disable-line no-unused-vars */
+
 import confirmPassword from "./confirmPassword.js";
 import dateInput from "./dateInput.js";
 import enhancedCheckboxes from "./enhancedCheckboxes.js";
