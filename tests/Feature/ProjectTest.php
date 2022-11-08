@@ -353,7 +353,7 @@ test('users with regulated organization admin role can edit projects', function 
         'save_and_previous' => __('Save and previous'),
     ]);
 
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
@@ -728,7 +728,7 @@ test('registered users can access my projects page', function () {
     $response->assertDontSee('Projects I am contracted for');
     $response->assertSee('<h2>Projects I am participating in</h2>', false);
 
-    $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
+    $traineeUser = User::factory()->create(['context' => 'training-participant']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
     $response->assertForbidden();
 });

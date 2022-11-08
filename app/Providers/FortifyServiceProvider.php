@@ -86,7 +86,7 @@ class FortifyServiceProvider extends ServiceProvider
                     ->nullable(__('Choose a sign language…'))
                     ->toArray(),
                 'contexts' => Options::forEnum(UserContext::class)
-                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::Employee)
+                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::TrainingParticipant)
                     ->append(fn (UserContext $context) => ['hint' => $context->description()])
                     ->toArray(),
             ]);

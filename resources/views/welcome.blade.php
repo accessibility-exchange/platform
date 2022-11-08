@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" data-theme="{{ Cookie::get('theme', 'light') }}"
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="no-js" data-theme="@theme()" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     @include('partials.head', ['title' => $title ?? __('app.name')])
@@ -30,31 +29,32 @@
                 <!-- Page Content -->
                 <div class="content stack">
                     <section class="stack" aria-labelledby="what">
-                        <h2 class="align:center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
+                        <h2 class="text-center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
                         <div class="grid">
-                            <div class="box border-t-lavender-3">
+                            <div class="box border--lavender">
                                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
                                 </h3>
                                 <p>{{ __('Connects the disability and Deaf communities and supporters with organizations that are “regulated” or supervised and monitored by the federal government, so that together they can work on accessibility projects, as required by the Accessible Canada Act.') }}
                                 </p>
                             </div>
-                            <div class="box border-t-magenta-3">
+                            <div class="box border--magenta">
                                 <h3>{{ __('Provides Guidance and Resources') }}</h3>
-                                <p>{{ __('Provides valuable resources and guides for organizations and people with disabilities and Deaf people on how to engage in accessible and inclusive ways.') }}
+                                <p>{{ __('Provides valuable resources and guides for organizations and people with disabilities and Deaf people and their supporters on how to engage in accessible and inclusive ways.') }}
                                 </p>
                             </div>
                         </div>
                         <div class="frame">
-                            <x-placeholder class="text-blue-6" />
+                            <x-placeholder />
                         </div>
                     </section>
 
                     <section class="stack stack:lg" aria-labelledby="how">
-                        <h2 class="align:center" id="how">{{ __('How does this work?') }}</h2>
+                        <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
+
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
@@ -64,21 +64,21 @@
                                 </p>
                             </div>
                         </x-media-text>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
                                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This is for federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
+                                <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                                 </p>
                             </div>
                         </x-media-text>
-                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3">
+                        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
                             <x-slot name="media">
-                                <x-placeholder class="text-blue-6" width="915" height="515" />
+                                <x-placeholder width="915" height="515" />
                             </x-slot>
                             <div class="flex h-full flex-col justify-center">
                                 <h3><a
@@ -90,26 +90,22 @@
                         </x-media-text>
                     </section>
 
-                    <section class="dark full bg-blue-7" aria-labelledby="disability">
+                    <section class="darker full" aria-labelledby="disability">
                         <div class="center center:wide stack stack:xl">
-                            <div class="with-sidebar with-sidebar:2/3">
-                                <div>
-                                    <h2 id="disability">{{ __('What do we mean when we say “disability”?') }}</h2>
-                                </div>
-                                <div class="stack">
-                                    <p class="h4">
-                                        {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
-                                    </p>
-                                    {{-- TODO: add link to glossary definition --}}
-                                    {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
-                                </div>
+                            <div class="stack">
+                                <h2 id="disability">{{ __('What do we mean when we say “disability”?') }}</h2>
+                                <p class="h4">
+                                    {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
+                                </p>
+                                {{-- TODO: add link to glossary definition --}}
+                                {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
                             </div>
                             <div class="frame">
-                                <x-placeholder class="text-blue-6" />
+                                <x-placeholder />
                             </div>
                         </div>
                     </section>
-                    <section class="stack align:center" aria-labelledby="partnership">
+                    <section class="stack text-center" aria-labelledby="partnership">
                         <h2 id="partnership">{{ __('Developed in partnership') }}</h2>
                         <p class="mx-auto max-w-prose">
                             {{ __('This website was made in partnership with members and organizations from the disability and Deaf communities, supporters, and members from Federally Regulated Organizations.') }}
@@ -117,8 +113,8 @@
                     </section>
 
                     @guest
-                        <section class="full bg-grey-2" aria-labelledby="join">
-                            <div class="center center:wide stack stack:xl align:center">
+                        <section class="full accent" aria-labelledby="join">
+                            <div class="center center:wide stack stack:xl text-center">
                                 <h2 id="join">{{ __('Join our accessibility community') }}</h2>
                                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                             </div>

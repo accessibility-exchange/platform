@@ -6,9 +6,7 @@
 }
 
 .repel .cta,
-.repel button,
-.repel input[type="reset"],
-.repel input[type="submit"] {
+.repel button {
     min-width: 25%;
     width: auto;
 }

@@ -26,27 +26,41 @@ a:visited {
     color: var(--link-color-visited);
 }
 
-.dark a {
+a:active:visited {
+    color: var(--link-color-active);
+}
+
+.dark a,
+.darker a {
     color: var(--link-dark-color);
 }
 
-.dark a:hover {
+.dark a:hover,
+.darker a:hover {
     color: var(--link-dark-color-hover);
 }
 
-.dark a:focus {
+.dark a:focus,
+.darker a:focus {
     box-shadow: 0 0 0 var(--border-2) var(--link-dark-outline-focus);
     outline: 1px solid transparent;
 }
 
-.dark a:active {
+.dark a:active,
+.darker a:active {
     background: var(--link-dark-background-active);
     box-shadow: 0 0 0 var(--border-2) var(--link-dark-background-active);
     color: var(--link-dark-color-active);
 }
 
-.dark a:visited {
+.dark a:visited,
+.darker a:visited {
     color: var(--link-dark-color-visited);
+}
+
+.dark a:active:visited,
+.darker a:active:visited {
+    color: var(--link-dark-color-active);
 }
 
 a.cta {
@@ -70,26 +84,29 @@ a.cta {
     width: auto;
 }
 
-a.cta svg {
-    height: var(--space-4);
-}
-
 a.cta:hover {
     background: var(--cta-background-hover);
     border-color: var(--cta-border-hover);
     color: var(--cta-color-hover);
+    text-decoration: underline;
 }
 
 a.cta:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
     --tw-ring-color: var(--cta-outline);
 
-    @apply ring-2 ring-offset-2;
+    outline: transparent;
+    text-decoration: underline;
 }
 
-a.cta:active {
+a.cta:active,
+a.cta:focus:active {
     background: var(--cta-background-active);
     border-color: var(--cta-border-active);
+    box-shadow: none;
     color: var(--cta-color-active);
+    text-decoration: underline;
 }
 
 a.cta.secondary {
@@ -105,32 +122,43 @@ a.cta.secondary:hover {
 }
 
 a.cta.secondary:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
     --tw-ring-color: var(--cta-secondary-outline);
 }
 
-a.cta.secondary:active {
+a.cta.secondary:active,
+a.cta.secondary:focus:active {
     background: var(--cta-secondary-background-active);
     border-color: var(--cta-secondary-border-active);
+    box-shadow: none;
     color: var(--cta-secondary-color-active);
 }
 
-.dark a.cta {
+.dark a.cta,
+.darker a.cta {
     background: var(--cta-dark-background);
     border: var(--border-2) solid var(--cta-dark-border);
     color: var(--cta-dark-color);
 }
 
-.dark a.cta:hover {
+.dark a.cta:hover,
+.darker a.cta:hover {
     background: var(--cta-dark-background-hover);
     border-color: var(--cta-dark-border-hover);
     color: var(--cta-dark-color-hover);
 }
 
 .dark a.cta:focus {
-    outline: var(--cta-dark-outline) solid calc(var(--space-1) / 2);
+    --bg: var(--content-dark-background);
 }
 
-.dark a.cta:active {
+.darker a.cta:focus {
+    --bg: var(--content-darker-background);
+}
+
+.dark a.cta:active,
+.darker a.cta:active {
     background: var(--cta-dark-background-active);
     border-color: var(--cta-dark-border-active);
     color: var(--cta-dark-color-active);

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" data-theme="{{ Cookie::get('theme', 'light') }}"
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="no-js" data-theme="@theme()" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     @include('partials.head', ['title' => $title ?? __('app.name')])
@@ -14,7 +13,7 @@
         <div class="center center:wide">
             <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Page Heading -->
-                <header class="full -mt-12 border-x-0 border-b border-t-0 border-solid border-b-grey-3 bg-white py-12">
+                <header class="header--tabbed">
 
                     <div class="center center:wide stack">
                         <!-- Flash Messages -->

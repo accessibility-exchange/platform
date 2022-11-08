@@ -1,8 +1,8 @@
-<div class="help-bar dark">
+<div class="help-bar darker">
     <div class="center center:wide cluster justify:between">
         <div x-data="{ open: false }" @click.away="open = false">
             <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
-                @keyup.escape.window="open = false">
+                @keyup.escape.window="open = false" x-cloak>
                 {{ __('Get help') }}
                 @svg('heroicon-o-chevron-down', 'indicator')
             </button>

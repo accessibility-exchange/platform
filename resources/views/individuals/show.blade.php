@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() &&
             auth()->user()->isAdministrator() &&
-            $individual->checkStatus('suspended'))
+            $individual->user->checkStatus('suspended'))
             @push('banners')
                 <div class="banner banner--error">
                     <div class="center center:wide">
@@ -29,10 +29,11 @@
                             @method('PUT')
 
                             @if ($individual->checkStatus('published'))
-                                <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                                <button class="secondary" name="unpublish" type="submit"
+                                    value="1">{{ __('Unpublish') }}</button>
                             @else
-                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
-                                    :disabled="!Auth::user()->can('publish', $individual)" />
+                                <button class="secondary" name="publish" type="submit" value="1"
+                                    @if (!Auth::user()->can('publish', $individual)) disabled @endif>{{ __('Publish') }}</button>
                             @endif
                         </form>
                     @endcan

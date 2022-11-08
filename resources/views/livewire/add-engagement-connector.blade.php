@@ -39,7 +39,7 @@
     </fieldset>
 
     @if ($who)
-        <hr class="border-t-1 mt-16 mb-12 border-x-0 border-b-0 border-solid border-t-blue-7" />
+        <hr />
 
         <fieldset>
             <legend>{{ __('Community Connector') }}</legend>

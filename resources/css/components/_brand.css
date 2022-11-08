@@ -48,7 +48,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
     .brand {
         height: var(--space-16);
     }

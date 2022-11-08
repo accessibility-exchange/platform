@@ -91,7 +91,7 @@
         @endcan
     </x-slot>
 
-    <hr class="divider">
+    <hr />
 
     <x-language-changer :model="$project" />
 

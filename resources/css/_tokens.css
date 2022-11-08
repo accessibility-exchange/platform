@@ -1,4 +1,4 @@
-/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-10-20.
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 2022-11-08.
     Tokens location: ./tailwind.config.js */
 :root {
     --color-black: #000;
@@ -7,7 +7,6 @@
     --color-graphite-7: #3f424c;
     --color-graphite-6: #4b5560;
     --color-graphite-5: #637180;
-    --color-graphite-4: #667584;
     --color-grey-3: #d9dce3;
     --color-grey-2: #eaedf3;
     --color-grey-1: #f8fafd;
@@ -36,6 +35,7 @@
     --color-red-6: #cd2c2d;
     --color-red-2: #f6a7a7;
     --color-red-1: #f5cdcd;
+    --color-bg: var(--bg, var(--body-background));
     --space-0: 0;
     --space-1: 0.25rem;
     --space-2: 0.5rem;
@@ -76,6 +76,7 @@
     --border-2: 2px;
     --border-3: 3px;
     --border-4: 4px;
+    --border-6: 6px;
     --border-8: 8px;
     --border: 1px;
     --radius-none: 0;

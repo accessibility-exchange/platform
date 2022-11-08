@@ -27,7 +27,7 @@
     transform: rotate(-180deg);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
     .dropdown {
         position: relative;
     }

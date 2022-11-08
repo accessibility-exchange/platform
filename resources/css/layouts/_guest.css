@@ -3,6 +3,10 @@
     background-color: var(--guest-body-background);
 }
 
+.guest [role="banner"] {
+    border-block-end-color: var(--guest-banner-border);
+}
+
 .guest main {
     padding-block: 0;
 }

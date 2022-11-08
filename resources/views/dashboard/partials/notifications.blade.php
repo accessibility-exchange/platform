@@ -1,6 +1,6 @@
 <div class="stack">
     <div class="flex items-center gap-5">
-        @svg('heroicon-o-bell', 'icon--2xl text-magenta-3')
+        @svg('heroicon-o-bell', 'icon--2xl icon--magenta')
 
         <h2 class="mt-0">{{ __('Notifications') }}</h2>
         @if ($notifications->count())
