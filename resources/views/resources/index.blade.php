@@ -4,7 +4,7 @@
         <p><a href="{{ localized_route('resource-collections.index') }}">{{ __('Back to resource hub') }}</a></p>
         <h1 itemprop="name">{{ __('Browse all resources') }}</h1>
         <p class="subtitle">
-            {{ __('Browse different resources to find what can help you throughout a consultation phase based on your role and responsibilities.') }}
+            {{ __('Find learning materials, best practices, and tools to help you throughout your project.') }}
         </p>
     </x-slot>
 

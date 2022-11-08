@@ -40,7 +40,7 @@
                             </div>
                             <div class="box border--magenta">
                                 <h3>{{ __('Provides Guidance and Resources') }}</h3>
-                                <p>{{ __('Provides valuable resources and guides for organizations and people with disabilities and Deaf people on how to engage in accessible and inclusive ways.') }}
+                                <p>{{ __('Provides valuable resources and guides for organizations and people with disabilities and Deaf people and their supporters on how to engage in accessible and inclusive ways.') }}
                                 </p>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                                 <h3><a
                                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                                 </h3>
-                                <p>{{ __('This is for federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
+                                <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                                 </p>
                             </div>
                         </x-media-text>

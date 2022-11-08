@@ -728,7 +728,7 @@ test('registered users can access my projects page', function () {
     $response->assertDontSee('Projects I am contracted for');
     $response->assertSee('<h2>Projects I am participating in</h2>', false);
 
-    $traineeUser = User::factory()->create(['context' => 'regulated-organization-employee']);
+    $traineeUser = User::factory()->create(['context' => 'training-participant']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
     $response->assertForbidden();
 });
