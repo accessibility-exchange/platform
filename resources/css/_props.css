@@ -2,6 +2,7 @@
     /* Text and backgrounds */
     --h1-color: var(--theme-h1-color, var(--color-black));
     --heading-color: var(--theme-heading-color, var(--color-graphite-8));
+    --color-error: var(--theme-color-error, var(--color-red-8));
     --body-background: var(--theme-body-background, var(--color-grey-1));
     --guest-body-background: var(--theme-guest-body-background, var(--color-grey-2));
     --home-body-background: var(--theme-home-body-background, var(--white));

@@ -13,6 +13,7 @@
     --theme-guest-body-background: var(--bg);
     --theme-home-body-background: var(--bg);
     --theme-body-color: var(--fg);
+    --theme-color-error: var(--fg);
     --theme-banner-background: var(--bg);
     --theme-content-dark-background: var(--bg);
     --theme-content-dark-color: var(--fg);

@@ -7,6 +7,7 @@
     --theme-guest-body-background: var(--color-graphite-6);
     --theme-home-body-background: var(--color-graphite-8);
     --theme-body-color: var(--color-grey-2);
+    --theme-color-error: var(--color-red-2);
     --theme-content-dark-background: var(--color-graphite-6);
     --theme-content-dark-color: var(--color-grey-2);
     --theme-content-darker-background: var(--theme-content-dark-background);
