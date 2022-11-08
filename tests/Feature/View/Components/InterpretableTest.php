@@ -11,10 +11,10 @@ test('new Interpretable instance', function () {
     $response->assertStatus(200);
 
     $toSee = [
-        'id="'.Str::slug('The Accessibility Exchange'),
         '<h1 itemprop="name">',
         'The Accessibility Exchange',
         '</h1>',
+        'id="'.Str::slug('The Accessibility Exchange'),
     ];
 
     $response->assertSeeInOrder($toSee, false);
@@ -24,6 +24,7 @@ test('new Interpretable instance', function () {
 
     expect($interpretation)->toBeInstanceOf(Interpretation::class);
     expect($interpretation->route)->toBe('welcome');
+    expect($interpretation->namespace)->toBe('welcome');
     expect($interpretation->getTranslation('video', 'ase'))->toBe('');
     expect($interpretation->getTranslation('video', 'fcs'))->toBe('');
 });
@@ -37,10 +38,10 @@ test('existing Interpretable instance', function () {
     $response->assertStatus(200);
 
     $toSee = [
-        'id="'.Str::slug('The Accessibility Exchange'),
         '<h1 itemprop="name">',
         'The Accessibility Exchange',
         '</h1>',
+        'id="'.Str::slug('The Accessibility Exchange'),
         'data-vimeo',
         $interpretation->getTranslation('video', 'ase'),
     ];
@@ -54,8 +55,32 @@ test('existing Interpretable instance', function () {
     expect($interpretations->first())->toBeInstanceOf(Interpretation::class);
     expect($interpretations->first()->id)->toBe($interpretation->id);
     expect($interpretations->first()->route)->toBe('welcome');
+    expect($interpretations->first()->namespace)->toBe('welcome');
     expect($interpretations->first()->getTranslation('video', 'ase'))->toBe($interpretation->getTranslation('video', 'ase'));
     expect($interpretations->first()->getTranslation('video', 'fcs'))->toBe($interpretation->getTranslation('video', 'fcs'));
+});
+
+test('Interpretable instance using namespace', function () {
+    $response = $this->get(localized_route('welcome'));
+    $response->assertStatus(200);
+
+    $response = $this->get(localized_route('welcome'));
+    $response->assertStatus(200);
+
+    $toSee = [
+        '<h2 id="join">',
+        'Join our accessibility community',
+        '</h2>',
+        'id="'.Str::slug('Join our accessibility community'),
+    ];
+
+    $response->assertSeeInOrder($toSee, false);
+
+    $interpretation = Interpretation::firstWhere('name', 'Join our accessibility community');
+
+    expect($interpretation)->toBeInstanceOf(Interpretation::class);
+    expect($interpretation->route)->toBe('welcome');
+    expect($interpretation->namespace)->toBe('join');
 });
 
 test('in French and LSQ', function () {
@@ -69,10 +94,10 @@ test('in French and LSQ', function () {
     $response->assertStatus(200);
 
     $toSee = [
-        'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
         '<h1 itemprop="name">',
         'Le Connecteur pour l’accessibilité',
         '</h1>',
+        'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
         'data-vimeo',
         $interpretation->getTranslation('video', 'fcs'),
     ];

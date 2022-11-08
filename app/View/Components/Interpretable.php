@@ -23,20 +23,29 @@ class Interpretable extends Component
     public string $name;
 
     /**
+     * The explicit namespace to organize the interpretation under
+     *
+     * @var null|string
+     */
+    public ?string $namespace;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?string $namespace = null)
     {
         $this->name = $name;
+        $this->namespace = $namespace;
 
         $this->interpretation = Interpretation::firstOrCreate(
             [
-                'route' => Str::after(Route::currentRouteName(), locale().'.'),
                 'name' => $this->name,
+                'namespace' => $this->namespace ?? Str::after(Route::currentRouteName(), locale().'.'),
             ],
             [
+                'route' => Str::after(Route::currentRouteName(), locale().'.'),
                 'route_has_params' => (bool) request()->route()->parameters(),
             ]
         );

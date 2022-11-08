@@ -6,6 +6,23 @@ use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
+test('namespace generated from route', function () {
+    $interpretation = Interpretation::factory()->create([
+        'name' => 'The Accessibility Exchange',
+    ]);
+
+    expect($interpretation->namespace)->toBe('welcome');
+});
+
+test('explicit namespace set', function () {
+    $interpretation = Interpretation::factory()->create([
+        'name' => 'The Accessibility Exchange',
+        'namespace' => 'reuse',
+    ]);
+
+    expect($interpretation->namespace)->toBe('reuse');
+});
+
 test('returns name localized', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
