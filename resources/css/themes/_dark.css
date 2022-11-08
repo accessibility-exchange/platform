@@ -236,6 +236,9 @@
     --theme-nav-current-color: var(--color-lavender-2);
 
     /* Tabbed navigation */
+    --theme-header-tabbed-background: var(--color-graphite-6);
+    --theme-header-tabbed-border-color: var(--color-graphite-5);
+    --theme-nav-tabbed-background: var(--color-graphite-7);
 
     /* Pagination */
     --theme-pagination-color: var(--color-grey-2);

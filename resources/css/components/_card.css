@@ -1,5 +1,9 @@
 .card {
+    background-color: var(--box-background);
     box-shadow: var(--card-shadow);
+    color: var(--box-color);
+    padding-block: var(--space-6);
+    padding-inline: var(--space-8);
     position: relative;
 }
 
@@ -37,9 +41,11 @@
     outline: 1px solid transparent;
 }
 
-.card a:active {
+.card a:active,
+.card a:active:visited {
     background: inherit;
     box-shadow: none;
+    color: var(--card-link-color);
 }
 
 .card.individual {

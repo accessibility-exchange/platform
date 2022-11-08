@@ -270,6 +270,10 @@
     --theme-nav-current-color: var(--interactive);
 
     /* Tabbed navigation */
+    --theme-header-tabbed-border-color: var(--fg);
+    --theme-header-tabbed-background: var(--bg);
+    --theme-nav-tabbed-background: var(--bg);
+    --theme-nav-tabbed-border: var(--fg);
 
     /* Pagination */
 
@@ -287,8 +291,12 @@
     /* Defined term */
 
     /* Box */
+    --theme-box-color: var(--fg);
+    --theme-box-background: var(--bg);
+    --theme-box-border: var(--fg);
 
     /* Card */
+    --theme-card-link-color: var(--interactive);
     --theme-card-shadow: 0 0 0 1px var(--fg) inset;
     --theme-card-shadow-hover: 0 0 0 0.1875rem var(--fg) inset;
     --theme-card-inset-background: var(--bg);

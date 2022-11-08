@@ -299,6 +299,15 @@
     --nav-current-color: var(--theme-nav-current-color, var(--color-lavender-3));
 
     /* Tabbed navigation */
+    --header-tabbed-border-color: var(--theme-header-tabbed-border-color, var(--color-grey-3));
+    --header-tabbed-background: var(--theme-header-tabbed-background, var(--color-white));
+    --nav-tabbed-background: var(--theme-nav-tabbed-background, var(--color-white));
+    --nav-tabbed-shadow: var(
+        --theme-nav-tabbed-shadow,
+        0 4px 6px -1px rgb(0 0 0 / 10%),
+        0 2px 4px -2px rgb(0 0 0 / 10%)
+    );
+    --nav-tabbed-border: var(--theme-nav-tabbed-border, transparent);
 
     /* Pagination */
     --pagination-color: var(--theme-pagination-color, var(--color-graphite-7));
@@ -330,6 +339,7 @@
     /* Box */
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
+    --box-border: var(--theme-box-border, transparent);
 
     /* Card */
     --card-link-color: var(--theme-card-link-color, var(--color-black));
