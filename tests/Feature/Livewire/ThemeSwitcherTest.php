@@ -8,7 +8,8 @@ test('setting theme updates current user preference', function () {
     $this->actingAs($user);
 
     $this->livewire(ThemeSwitcher::class)
-        ->call('setTheme', 'dark');
+        ->call('setTheme', 'dark')
+        ->assertSet('theme', 'dark');
 
     expect($user->fresh()->theme)->toEqual('dark');
 });
