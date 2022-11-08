@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ResourceFormat;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +29,13 @@ class Resource extends Model
         'title',
         'user_id',
         'summary',
+        'formats',
+    ];
+
+    protected $casts = [
+        'title' => 'array',
+        'summary' => 'array',
+        'formats' => 'array',
     ];
 
     /**
@@ -79,26 +88,6 @@ class Resource extends Model
      *
      * @return MorphToMany
      */
-    public function formats(): MorphToMany
-    {
-        return $this->morphToMany(Format::class, 'formattable')->withPivot('original', 'language');
-    }
-
-    /**
-     * Get the original format of the resource.
-     *
-     * @return MorphToMany
-     */
-    public function originalFormat(): MorphToMany
-    {
-        return $this->morphToMany(Format::class, 'formattable')->wherePivot('original', true)->withPivot('language');
-    }
-
-    /**
-     * Get all the formats for the resource.
-     *
-     * @return MorphToMany
-     */
     public function phases(): MorphToMany
     {
         return $this->morphToMany(Phase::class, 'phaseable');
@@ -130,5 +119,12 @@ class Resource extends Model
     public function published(): string
     {
         return Carbon::parse($this->created_at)->format('F j, Y');
+    }
+
+    public function displayFormats(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => array_map(fn ($format) => ResourceFormat::labels()[$format], $this->formats),
+        );
     }
 }

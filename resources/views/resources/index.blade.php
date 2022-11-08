@@ -49,9 +49,9 @@
                 <ul role="list">
                     @foreach ($formats as $format)
                         <li>
-                            <x-hearth-input id="format-{{ $format->id }}" name="format[]" type="checkbox"
-                                value="{{ $format->id }}" />
-                            <label for="format-{{ $format->id }}">{{ $format->name }}</label>
+                            <x-hearth-input id="format-{{ $format['value'] }}" name="format[]" type="checkbox"
+                                value="{{ $format['value'] }}" />
+                            <label for="format-{{ $format['value'] }}">{{ $format['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>
