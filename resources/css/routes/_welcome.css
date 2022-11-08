@@ -52,8 +52,10 @@
 
 .welcome .grid .box {
     background-color: var(--home-body-background);
+    border-block-end-width: 0;
     border-block-start-style: solid;
     border-block-start-width: var(--border-3);
+    border-inline-width: 0;
     padding-inline: 0;
 }
 

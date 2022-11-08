@@ -15,7 +15,6 @@
 
 [role="contentinfo"] a,
 [role="contentinfo"] .brand {
-    color: inherit;
     font-weight: var(--font-semibold);
 }
 

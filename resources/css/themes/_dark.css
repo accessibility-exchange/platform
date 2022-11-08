@@ -38,10 +38,10 @@
     /* Link on dark backgrounds */
     --theme-link-dark-color: var(--theme-link-color);
     --theme-link-dark-color-hover: var(--theme-link--color-hover);
-    --theme-link-dark-color-visited: var(--theme-link--color-visited);
-    --theme-link-dark-outline-focus: var(--theme-link--outline-focus);
-    --theme-link-dark-color-active: var(--theme-link--color-hover);
-    --theme-link-dark-background-active: var(--theme-link--background-active);
+    --theme-link-dark-color-visited: var(--theme-link-color-visited);
+    --theme-link-dark-outline-focus: var(--theme-link-outline-focus);
+    --theme-link-dark-color-active: var(--theme-link-color-hover);
+    --theme-link-dark-background-active: var(--theme-link-background-active);
 
     /* Call to action */
     --theme-cta-background: var(--color-grey-2);
