@@ -13,11 +13,11 @@
     },
     "lint-staged": {
         "resources/css/**/*.css": [
-            "stylelint",
+            "stylelint --fix",
             "prettier --write"
         ],
         "resources/js/**/*.js": [
-            "eslint",
+            "eslint --fix",
             "prettier --write"
         ],
         "*.php": [
