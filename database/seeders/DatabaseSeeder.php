@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             ConstituencySeeder::class,
             ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,
-            FormatSeeder::class,
             ImpactSeeder::class,
             LanguageSeeder::class,
             LivedExperienceSeeder::class,
