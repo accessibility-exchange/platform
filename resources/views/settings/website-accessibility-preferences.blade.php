@@ -23,10 +23,12 @@
             <x-hearth-hint for="theme">{{ __('Change the colour of the text and background.') }}</x-hearth-hint>
             @foreach ($themes as $theme)
                 <div class="field h-10">
-                    <x-theme-preview :for="$theme['value']" />
                     <x-hearth-radio-button name="theme" x-model.string="theme" :value="$theme['value']" :checked="old('theme', $user->theme)"
                         @change="preview()" hinted="theme-hint" />
-                    <x-hearth-label :for="'theme-' . $theme['value']">{{ $theme['label'] }}</x-hearth-label>
+                    <x-hearth-label :for="'theme-' . $theme['value']">
+                        <x-theme-preview :for="$theme['value']" />
+                        {{ $theme['label'] }}
+                    </x-hearth-label>
                 </div>
             @endforeach
             <script>

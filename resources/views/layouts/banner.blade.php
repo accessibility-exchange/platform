@@ -4,8 +4,11 @@
     <div class="center center:wide">
         <div class="nav">
             @include('components.brand')
-            <!-- Theme Switcher -->
-            <livewire:theme-switcher />
+
+            @if (!request()->localizedRouteIs('settings.edit-website-accessibility-preferences'))
+                <!-- Theme Switcher -->
+                <livewire:theme-switcher />
+            @endif
             <!-- Language Switcher -->
             <nav class="languages" aria-label="{{ __('languages') }}">
                 <ul role="list">
