@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 uses(RefreshDatabase::class);
 
-test('new Interpretable instance', function () {
+test('new Interpretation instance', function () {
     $response = $this->get(localized_route('welcome'));
     $response->assertStatus(200);
 
@@ -29,7 +29,7 @@ test('new Interpretable instance', function () {
     expect($interpretation->getTranslation('video', 'fcs'))->toBe('');
 });
 
-test('existing Interpretable instance', function () {
+test('existing Interpretation instance', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
     ]);
@@ -60,7 +60,7 @@ test('existing Interpretable instance', function () {
     expect($interpretations->first()->getTranslation('video', 'fcs'))->toBe($interpretation->getTranslation('video', 'fcs'));
 });
 
-test('Interpretable instance using namespace', function () {
+test('Interpretation instance using namespace', function () {
     $response = $this->get(localized_route('welcome'));
     $response->assertStatus(200);
 

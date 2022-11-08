@@ -2,12 +2,12 @@
 
 namespace App\View\Components;
 
-use App\Models\Interpretation;
+use App\Models\Interpretation as InterpretationModel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Interpretable extends Component
+class Interpretation extends Component
 {
     public string $id;
 
@@ -16,7 +16,7 @@ class Interpretable extends Component
     public string $videoSrc;
 
     /**
-     * The identifier name used to reference the Interpretable and videos.
+     * The identifier name used to reference the Interpretation and videos.
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class Interpretable extends Component
         $this->name = $name;
         $this->namespace = $namespace;
 
-        $this->interpretation = Interpretation::firstOrCreate(
+        $this->interpretation = InterpretationModel::firstOrCreate(
             [
                 'name' => $this->name,
                 'namespace' => $this->namespace ?? Str::after(Route::currentRouteName(), locale().'.'),
@@ -61,6 +61,6 @@ class Interpretable extends Component
      */
     public function render()
     {
-        return view('components.interpretable');
+        return view('components.interpretation');
     }
 }

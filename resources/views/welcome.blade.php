@@ -18,7 +18,7 @@
                 <header class="dark full">
                     <div class="center center:wide stack stack:lg">
                         <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
-                        <x-interpretable name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+                        <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
                         <p class="h4">
                             {{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}
                         </p>
