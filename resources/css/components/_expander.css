@@ -55,6 +55,10 @@
     color: var(--expander-color-active);
 }
 
+.expander .title button:active:focus {
+    border-radius: var(--radius-none);
+}
+
 .expander .title button:active::before {
     border-block-start: var(--border-2) solid var(--expander-border-active);
 }

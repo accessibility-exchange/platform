@@ -5,7 +5,7 @@
         @svg('heroicon-o-chevron-down', 'indicator')
     </button>
 
-    <ul role="list" @click="open = false">
+    <ul role="list" @click="open = false" x-cloak>
         {{ $content }}
     </ul>
 </li>

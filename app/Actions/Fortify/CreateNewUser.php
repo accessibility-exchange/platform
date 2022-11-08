@@ -75,8 +75,8 @@ class CreateNewUser implements CreatesNewUsers
             ]
         )->validate();
 
-        Cookie::queue('theme', 'light');
         Cookie::queue('locale', $input['locale']);
+        Cookie::queue('theme', Cookie::get('theme', 'system'));
 
         session()->forget('locale');
         session()->forget('signed_language');
@@ -90,6 +90,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
             'context' => $input['context'],
             'locale' => $input['locale'],
+            'theme' => Cookie::get('theme', 'system'),
             'signed_language' => $input['signed_language'],
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),

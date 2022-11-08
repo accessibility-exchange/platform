@@ -1,17 +1,15 @@
-hr.divider {
-    @apply mt-12 mb-8 border-b-0;
-
+hr {
+    border-block-end: 0;
     border-block-start: var(--border) solid var(--divider-color);
+    border-inline: 0;
+    margin-block: var(--space-12) var(--space-8);
 }
 
 hr.divider--medium {
-    @apply mt-12 mb-8 border-b-0;
-
-    border-block-start: var(--border-2) solid var(--divider-color);
+    border-block-start-width: var(--border-2);
 }
 
 hr.divider--thick {
-    border-block-start-color: var(--divider-color);
-
-    @apply mt-16 mb-12 border-x-0 border-t-3 border-b-0 border-solid;
+    border-block-start-width: var(--border-3);
+    margin-block: var(--space-16) var(--space-12);
 }

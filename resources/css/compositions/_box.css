@@ -1,9 +1,7 @@
 .box {
     background-color: var(--box-background);
-    border: 0 solid;
+    border: var(--border) dashed var(--box-border);
     color: var(--box-color);
-    outline: var(--border) solid transparent;
-    outline-offset: calc(var(--border) * -1);
     padding-block: var(--space-6);
     padding-inline: var(--space-8);
 }

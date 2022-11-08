@@ -20,3 +20,7 @@
     height: var(--space-5);
     width: var(--space-5);
 }
+
+.link-list a:active {
+    border-block-start-color: var(--interactive, currentcolor);
+}

@@ -13,42 +13,42 @@
 }
 
 .badge--stop {
-    --badge-background: var(--color-red-1);
+    --badge-background: var(--bg, var(--color-red-1));
     --badge-border: var(--badge-background);
 
     color: var(--badge-color-alt);
 }
 
 .badge--go {
-    --badge-background: var(--color-green-1);
+    --badge-background: var(--bg, var(--color-green-1));
 
     color: var(--badge-color-alt);
 }
 
 .badge--yellow {
-    --badge-background: var(--color-yellow-2);
-    --badge-border: var(--badge-background);
+    --badge-background: var(--bg, var(--color-yellow-2));
+    --badge-border: var(--fg, var(--badge-background));
 
     color: var(--badge-color-alt);
 }
 
 .badge--turquoise {
-    --badge-background: var(--color-turquoise-1);
-    --badge-border: var(--badge-background);
+    --badge-background: var(--bg, var(--color-turquoise-1));
+    --badge-border: var(--fg, var(--badge-background));
 
     color: var(--badge-color-alt);
 }
 
 .badge--lavender {
-    --badge-background: var(--color-lavender-2);
-    --badge-border: var(--badge-background);
+    --badge-background: var(--bg, var(--color-lavender-2));
+    --badge-border: var(--fg, var(--badge-background));
 
     color: var(--badge-color-alt);
 }
 
 .badge--magenta {
-    --badge-background: var(--color-magenta-2);
-    --badge-border: var(--badge-background);
+    --badge-background: var(--bg, var(--color-magenta-2));
+    --badge-border: var(--fg, var(--badge-background));
 
     color: var(--badge-color-alt);
 }

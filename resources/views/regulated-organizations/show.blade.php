@@ -26,10 +26,11 @@
                         @method('PUT')
 
                         @if ($regulatedOrganization->checkStatus('published'))
-                            <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                            <button class="secondary" name="unpublish" type="submit"
+                                value="1">{{ __('Unpublish') }}</button>
                         @else
-                            <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
-                                :disabled="!Auth::user()->can('publish', $regulatedOrganization)" />
+                            <button class="secondary" name="publish" type="submit" value="1"
+                                @if (!Auth::user()->can('publish', $regulatedOrganization)) disabled @endif>{{ __('Publish') }}</button>
                         @endif
                     </form>
                 @endcan

@@ -1,0 +1,349 @@
+[data-theme="black-white"],
+[data-theme="white-black"],
+[data-theme="black-yellow"],
+[data-theme="yellow-black"],
+[data-theme="light-dark"],
+[data-theme="black-brown"],
+[data-theme="grey-dark"],
+[data-theme="grey-white"] {
+    /* Text and backgrounds */
+    --theme-h1-color: var(--fg);
+    --theme-heading-color: var(--fg);
+    --theme-body-background: var(--bg);
+    --theme-guest-body-background: var(--bg);
+    --theme-home-body-background: var(--bg);
+    --theme-body-color: var(--fg);
+    --theme-color-error: var(--fg);
+    --theme-banner-background: var(--bg);
+    --theme-content-dark-background: var(--bg);
+    --theme-content-dark-color: var(--fg);
+    --theme-content-darker-background: var(--bg);
+    --theme-content-darker-color: var(--fg);
+    --theme-content-accent-background: var(--bg);
+    --theme-content-accent-border: var(--fg);
+    --theme-content-accent-color-background: var(--bg);
+    --theme-content-accent-color-color: var(--fg);
+    --theme-content-accent-color-border: var(--fg);
+    --theme-participants-background: var(--bg);
+    --theme-participants-color: var(--fg);
+    --theme-participants-border: var(--fg);
+    --theme-consultants-background: var(--bg);
+    --theme-consultants-color: var(--fg);
+    --theme-consultants-border: var(--fg);
+    --theme-connectors-background: var(--bg);
+    --theme-connectors-color: var(--fg);
+    --theme-connectors-border: var(--fg);
+    --theme-regulated-organizations-background: var(--bg);
+    --theme-regulated-organizations-color: var(--fg);
+    --theme-regulated-organizations-border: var(--fg);
+
+    /* Link */
+    --theme-link-color: var(--interactive);
+    --theme-link-color-hover: var(--interactive);
+    --theme-link-outline-focus: var(--interactive);
+    --theme-link-background-active: var(--interactive);
+    --theme-link-color-active: var(--bg);
+    --theme-link-color-visited: var(--interactive);
+
+    /* Link on dark backgrounds */
+    --theme-link-dark-color: var(--interactive);
+    --theme-link-dark-color-hover: var(--interactive);
+    --theme-link-dark-outline-focus: var(--interactive);
+    --theme-link-dark-background-active: var(--interactive);
+    --theme-link-dark-color-active: var(--bg);
+    --theme-link-dark-color-visited: var(--interactive);
+
+    /* Call to action */
+    --theme-cta-background: var(--interactive);
+    --theme-cta-border: var(--interactive);
+    --theme-cta-color: var(--bg);
+    --theme-cta-background-hover: var(--bg);
+    --theme-cta-border-hover: var(--interactive);
+    --theme-cta-color-hover: var(--interactive);
+    --theme-cta-background-active: var(--bg);
+    --theme-cta-border-active: var(--interactive);
+    --theme-cta-color-active: var(--interactive);
+    --theme-cta-outline: var(--interactive);
+    --theme-cta-shadow: none;
+
+    /* Secondary call to action */
+    --theme-cta-secondary-background: var(--bg);
+    --theme-cta-secondary-border: var(--interactive);
+    --theme-cta-secondary-color: var(--interactive);
+    --theme-cta-secondary-background-hover: var(--interactive);
+    --theme-cta-secondary-border-hover: var(--interactive);
+    --theme-cta-secondary-color-hover: var(--bg);
+    --theme-cta-secondary-background-active: var(--interactive);
+    --theme-cta-secondary-border-active: var(--interactive);
+    --theme-cta-secondary-color-active: var(--bg);
+    --theme-cta-secondary-outline: var(--interactive);
+
+    /* Call to action on dark backgrounds */
+    --theme-cta-dark-background: var(--theme-cta-background);
+    --theme-cta-dark-border: var(--theme-cta-border);
+    --theme-cta-dark-color: var(--theme-cta-color);
+    --theme-cta-dark-background-hover: var(--theme-cta-background-hover);
+    --theme-cta-dark-border-hover: var(--theme-cta-border-hover);
+    --theme-cta-dark-color-hover: var(--theme-cta-color-hover);
+    --theme-cta-dark-background-active: var(--theme-cta-background-active);
+    --theme-cta-dark-border-active: var(--theme-cta-border-active);
+    --theme-cta-dark-color-active: var(--theme-cta-color-active);
+    --theme-cta-dark-outline: var(--theme-cta-outline);
+
+    /* Badge */
+    --theme-badge-background: var(--bg);
+    --theme-badge-border: var(--fg);
+    --theme-badge-color: var(--fg);
+
+    /* Banner */
+    --theme-banner-error-background: var(--bg);
+    --theme-banner-error-color: var(--fg);
+    --theme-banner-error-border: var(--fg);
+    --theme-banner-warning-background: var(--bg);
+    --theme-banner-warning-color: var(--fg);
+    --theme-banner-warning-border: var(--fg);
+
+    /* Divider */
+    --theme-divider-color: var(--fg);
+    --theme-border-color-lavender: var(--fg);
+    --theme-border-color-turquoise: var(--fg);
+    --theme-border-color-yellow: var(--fg);
+    --theme-border-color-magenta: var(--fg);
+
+    /* Alert */
+    --theme-alert-background: var(--bg);
+    --theme-alert-border: var(--fg);
+    --theme-alert-color: var(--fg);
+    --theme-alert-background-error: var(--bg);
+    --theme-alert-border-error: var(--fg);
+    --theme-alert-color-error: var(--fg);
+    --theme-alert-background-warning: var(--bg);
+    --theme-alert-border-warning: var(--fg);
+    --theme-alert-color-warning: var(--fg);
+    --theme-alert-background-success: var(--bg);
+    --theme-alert-border-success: var(--fg);
+    --theme-alert-color-success: var(--fg);
+
+    /* Hint */
+    --theme-hint-color: var(--fg);
+
+    /* Input */
+    --theme-input-border: var(--interactive);
+    --theme-input-color: var(--interactive);
+    --theme-input-border-hover: var(--interactive);
+    --theme-input-border-focus: var(--interactive);
+    --theme-input-border-active: var(--interactive);
+    --theme-input-error-border: var(--interactive);
+    --theme-input-error-color: var(--interactive);
+    --theme-input-error-background: var(--interactive);
+
+    /* Checkbox */
+    --theme-checkbox-checked-background: var(--interactive);
+    --theme-checkbox-background-active: var(--interactive);
+    --theme-checkbox-checked-border: var(--interactive);
+
+    /* Radio button */
+    --theme-radio-checked-background: var(--interactive);
+    --theme-radio-checked-border: var(--interactive);
+
+    /* Primary button */
+    --theme-btn-primary-background: var(--interactive);
+    --theme-btn-primary-border: var(--interactive);
+    --theme-btn-primary-color: var(--bg);
+    --theme-btn-primary-background-hover: var(--bg);
+    --theme-btn-primary-border-hover: var(--interactive);
+    --theme-btn-primary-color-hover: var(--interactive);
+    --theme-btn-primary-background-active: var(--bg);
+    --theme-btn-primary-border-active: var(--interactive);
+    --theme-btn-primary-color-active: var(--interactive);
+    --theme-btn-primary-outline: var(--interactive);
+    --theme-btn-primary-shadow: none;
+
+    /* Primary button on dark backgrounds */
+    --theme-btn-dark-primary-background: var(--theme-btn-primary-background);
+    --theme-btn-dark-primary-border: var(--theme-btn-primary-border);
+    --theme-btn-dark-primary-color: var(--theme-btn-primary-color);
+    --theme-btn-dark-primary-outline: var(--theme-btn-primary-outline);
+    --theme-btn-dark-primary-background-hover: var(--theme-btn-primary-background-hover);
+    --theme-btn-dark-primary-border-hover: var(--theme-btn-primary-border-hover);
+    --theme-btn-dark-primary-color-hover: var(--theme-btn-primary-color-hover);
+    --theme-btn-dark-primary-color-active: var(--theme-btn-primary-color-active);
+    --theme-btn-dark-primary-background-active: var(--theme-btn-primary-background-active);
+    --theme-btn-dark-primary-border-active: var(--theme-btn-primary-border-active);
+
+    /* Secondary button */
+    --theme-btn-secondary-background: var(--bg);
+    --theme-btn-secondary-border: var(--interactive);
+    --theme-btn-secondary-color: var(--interactive);
+    --theme-btn-secondary-background-hover: var(--interactive);
+    --theme-btn-secondary-border-hover: var(--interactive);
+    --theme-btn-secondary-color-hover: var(--bg);
+    --theme-btn-secondary-background-active: var(--interactive);
+    --theme-btn-secondary-border-active: var(--interactive);
+    --theme-btn-secondary-color-active: var(--bg);
+    --theme-btn-secondary-outline: var(--interactive);
+
+    /* Borderless button */
+    --theme-btn-borderless-color: var(--interactive);
+    --theme-btn-borderless-background-hover: var(--interactive);
+    --theme-btn-borderless-color-hover: var(--bg);
+    --theme-btn-borderless-color-focus: var(--interactive);
+    --theme-btn-borderless-background-active: var(--interactive);
+    --theme-btn-borderless-color-active: var(--bg);
+    --theme-btn-borderless-outline: var(--interactive);
+
+    /* Destructive button */
+    --theme-btn-destructive-background: var(--theme-btn-primary-background);
+    --theme-btn-destructive-border: var(--theme-btn-primary-border);
+    --theme-btn-destructive-color: var(--theme-btn-primary-color);
+    --theme-btn-destructive-background-hover: var(--theme-btn-primary-background-hover);
+    --theme-btn-destructive-border-hover: var(--theme-btn-primary-border-hover);
+    --theme-btn-destructive-color-hover: var(--theme-btn-primary-color-hover);
+    --theme-btn-destructive-background-active: var(--theme-btn-primary-background-active);
+    --theme-btn-destructive-border-active: var(--theme-btn-primary-border-active);
+    --theme-btn-destructive-color-active: var(--theme-btn-primary-color-active);
+    --theme-btn-destructive-outline: var(--theme-btn-primary-outline);
+    --theme-btn-destructive-shadow: none;
+
+    /* Destructive secondary button */
+    --theme-btn-destructive-secondary-background: var(--theme-btn-secondary-background);
+    --theme-btn-destructive-secondary-border: var(--theme-btn-secondary-border);
+    --theme-btn-destructive-secondary-color: var(--theme-btn-secondary-color);
+    --theme-btn-destructive-secondary-background-hover: var(--theme-btn-secondary-background-hover);
+    --theme-btn-destructive-secondary-border-hover: var(--theme-btn-secondary-border-hover);
+    --theme-btn-destructive-secondary-color-hover: var(--theme-btn-secondary-color-hover);
+    --theme-btn-destructive-secondary-background-active: var(--theme-btn-secondary-background-active);
+    --theme-btn-destructive-secondary-border-active: var(--theme-btn-secondary-border-active);
+    --theme-btn-destructive-secondary-color-active: var(--theme-btn-secondary-color-active);
+    --theme-btn-destructive-secondary-outline: var(--theme-btn-secondary-outline);
+
+    /* Tag */
+    --theme-tag-background: var(--bg);
+    --theme-tag-border: var(--fg);
+    --theme-tag-color: var(--fg);
+
+    /* Tag link */
+    --theme-tag-link-background: var(--bg);
+    --theme-tag-link-border: var(--fg);
+    --theme-tag-link-color: var(--interactive);
+
+    /* Tag button */
+    --theme-tag-button-background: var(--fg);
+    --theme-tag-button-border: var(--interactive);
+    --theme-tag-button-color: var(--interactive);
+
+    /* Help bar */
+    --theme-help-bar-border: var(--theme-divider-color);
+
+    /* Banner */
+    --theme-banner-border: var(--divider-color);
+
+    /* Brand */
+    --theme-brand-color: var(--theme-link-color);
+
+    /* Navigation */
+    --theme-nav-background-mobile: var(--bg);
+    --theme-nav-background-hover-mobile: var(--interactive);
+    --theme-nav-background-focus-mobile: var(--bg);
+    --theme-nav-background-active-mobile: var(--interactive);
+    --theme-nav-border-mobile: var(--fg);
+    --theme-nav-color-mobile: var(--interactive);
+    --theme-nav-color-hover-mobile: var(--bg);
+    --theme-nav-color-active-mobile: var(--bg);
+    --theme-nav-indicator-mobile: var(--interactive);
+    --theme-nav-parent-background: var(--bg);
+    --theme-nav-parent-background-hover: var(--interactive);
+    --theme-nav-parent-background-focus: var(--bg);
+    --theme-nav-parent-background-active: var(--interactive);
+    --theme-nav-parent-background-expanded: var(--bg);
+    --theme-nav-border: var(--fg);
+    --theme-nav-item-border: transparent;
+    --theme-nav-color: var(--interactive);
+    --theme-nav-color-hover: var(--bg);
+    --theme-nav-color-focus: var(--interactive);
+    --theme-nav-color-active: var(--bg);
+    --theme-nav-indicator: var(--interactive);
+    --theme-nav-dropdown-shadow: 0 0 0 var(--border) var(--fg);
+    --theme-nav-child-background: var(--bg);
+    --theme-nav-child-background-hover: var(--fg);
+    --theme-nav-child-background-focus: var(--bg);
+    --theme-nav-child-background-active: var(--fg);
+    --theme-nav-current-color: var(--interactive);
+
+    /* Tabbed navigation */
+    --theme-header-tabbed-border-color: var(--fg);
+    --theme-header-tabbed-background: var(--bg);
+    --theme-nav-tabbed-background: var(--bg);
+    --theme-nav-tabbed-border: var(--fg);
+    --theme-nav-tabbed-shadow: none;
+
+    /* Pagination */
+
+    /* Expander */
+    --theme-expander-color: var(--interactive);
+    --theme-expander-border: var(--interactive);
+    --theme-expander-color-focus: var(--interactive);
+    --theme-expander-background-active: var(--interactive);
+    --theme-expander-color-active: var(--bg);
+    --theme-expander-border-active: var(--interactive);
+
+    /* Footer */
+    --theme-footer-border: var(--divider-color);
+
+    /* Defined term */
+
+    /* Box */
+    --theme-box-color: var(--fg);
+    --theme-box-background: var(--bg);
+    --theme-box-border: var(--fg);
+
+    /* Card */
+    --theme-card-link-color: var(--interactive);
+    --theme-card-shadow: 0 0 0 1px var(--fg) inset;
+    --theme-card-shadow-hover: 0 0 0 0.1875rem var(--interactive) inset;
+    --theme-card-inset-background: var(--bg);
+    --theme-card-inset-shadow-hover: 0 0 0 2px var(--interactive) inset;
+
+    /* Regulated organization card */
+    --theme-card-regulated-organization-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-regulated-organization-shadow-focus-within: 0 0 0 0.375rem var(--fg) inset;
+
+    /* Organization card */
+    --theme-card-organization-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-organization-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+    --theme-card-inset-organization-shadow-hover: 0 0.375rem 0 0 var(--interactive) inset;
+    --theme-card-inset-organization-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+
+    /* Individual card */
+    --theme-card-individual-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-individual-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+    --theme-card-inset-individual-shadow-hover: 0 0.375rem 0 0 var(--interactive) inset;
+    --theme-card-inset-individual-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+
+    /* Project card */
+    --theme-card-project-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-project-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+
+    /* Engagement card */
+    --theme-card-engagement-shadow: 0 -0.1875rem 0 0 var(--fg) inset;
+    --theme-card-engagement-shadow-focus-within: 0 0 0 0.25rem var(--interactive) inset;
+    --theme-card-inset-engagement-shadow-hover: 0 -0.1875rem 0 0 var(--interactive) inset;
+    --theme-card-inset-engagement-shadow-focus-within: 0 0 0 1px var(--interactive) inset;
+
+    /* Resource card */
+    --theme-card-resource-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-resource-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
+
+    /* Resource collection card */
+    --card-resource-collection-background: var(--bg);
+    --card-resource-collection-color: var(--fg);
+    --card-resource-collection-shadow: 0 var(--space-5) 0 0 var(--fg) inset;
+    --theme-card-resource-collection-shadow-hover: 0 var(--space-5) 0 0 var(--interactive) inset;
+    --card-resource-collection-shadow-focus-within: 0 0 0 var(--border-3) var(--interactive) inset,
+        0 var(--space-5) 0 0 var(--interactive) inset;
+
+    /* Manage page sections */
+    --theme-manage-section-shadow: 0 0 0 1px var(--fg);
+    --theme-banner-shadow: none;
+    --theme-guest-banner-border: transparent;
+}
