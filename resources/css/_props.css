@@ -266,6 +266,7 @@
     /* Banner */
     --banner-border: var(--theme-banner-border, var(--color-grey-3));
     --banner-shadow: var(--theme-banner-shadow, 0 0 10px 0 rgb(0 0 0 / 15%));
+    --guest-banner-border: var(--theme-guest-banner-border, var(--banner-border));
 
     /* Brand */
     --brand-color: var(--theme-brand-color, var(--link-color));

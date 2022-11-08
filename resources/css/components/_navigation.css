@@ -251,7 +251,7 @@ button.nav-button .indicator {
     .languages ul ul,
     .themes ul ul {
         border-block-start: 0;
-        box-shadow: var(--banner-shadow);
+        box-shadow: var(--nav-dropdown-shadow);
         left: auto;
         right: 0;
         top: calc(var(--space-5) * 2 + var(--space-16));

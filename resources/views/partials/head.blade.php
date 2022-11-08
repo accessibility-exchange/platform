@@ -24,7 +24,7 @@
         <script>
             document.documentElement.className = document.documentElement.className.replace("no-js", "js");
         </script>
-        @if (Cookie::get('theme', 'system') === 'system')
+        @if ((auth()->hasUser() && auth()->user()->theme === 'system') || Cookie::get('theme', 'system') === 'system')
             <script>
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                     document.documentElement.dataset.theme = 'dark';

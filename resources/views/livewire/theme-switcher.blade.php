@@ -15,7 +15,7 @@
     }
 }">
     <ul role="list">
-        <li class="dropdown" x-data="{ open: false }" @keyup.escape.window="open = false" @click.away="open = false"
+        <li class="dropdown" x-data="{ open: true }" @keyup.escape.window="open = false" @click.away="open = false"
             @close.stop="open = false">
             <button class="nav-button" @click="open = ! open" x-bind:aria-expanded="open.toString()">
                 @svg('tae-contrast') <span>{{ __('Theme') }}</span>

@@ -17,6 +17,7 @@ use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use App\Statuses\UserStatus;
+use Blade;
 use Composer\InstalledVersions;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -48,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
+
+        Blade::directive('theme', function () {
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+        });
 
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];

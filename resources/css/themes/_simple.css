@@ -263,7 +263,7 @@
     --theme-nav-color-focus: var(--interactive);
     --theme-nav-color-active: var(--bg);
     --theme-nav-indicator: var(--interactive);
-    --theme-nav-dropdown-shadow: unset;
+    --theme-nav-dropdown-shadow: 0 0 0 var(--border) var(--fg);
     --theme-nav-child-background: var(--bg);
     --theme-nav-child-background-hover: var(--fg);
     --theme-nav-child-background-focus: var(--bg);
@@ -344,4 +344,6 @@
 
     /* Manage page sections */
     --theme-manage-section-shadow: 0 0 0 1px var(--fg);
+    --theme-banner-shadow: none;
+    --theme-guest-banner-border: transparent;
 }
