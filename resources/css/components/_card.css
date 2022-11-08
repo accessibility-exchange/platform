@@ -159,6 +159,22 @@
     box-shadow: var(--card-resource-collection-shadow-focus-within);
 }
 
+.card.resource {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow);
+}
+
+.card.resource:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-resource-shadow);
+}
+
+.card.resource:focus-within {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
+}
+
+.card.resource:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
+}
+
 .manage-section .card {
     @apply -mx-6;
 }

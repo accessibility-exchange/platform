@@ -331,6 +331,8 @@
     --theme-card-inset-engagement-shadow-focus-within: 0 0 0 1px var(--interactive) inset;
 
     /* Resource card */
+    --theme-card-resource-shadow: 0 0.375rem 0 0 var(--fg) inset;
+    --theme-card-resource-shadow-focus-within: 0 0 0 0.375rem var(--interactive) inset;
 
     /* Resource collection card */
     --card-resource-collection-background: var(--bg);

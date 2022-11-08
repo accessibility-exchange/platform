@@ -417,6 +417,12 @@
     );
 
     /* Resource card */
+    --card-resource-shadow: var(--theme-card-resource-shadow, 0 0.375rem 0 0 var(--color-yellow-3) inset);
+    --card-resource-shadow-focus-within: var(
+        --theme-card-resource-shadow-focus-within,
+        0 0 0 0.1875rem var(--color-yellow-3) inset,
+        0 0.375rem 0 0 var(--color-yellow-3) inset
+    );
 
     /* Resource collection card */
     --card-resource-collection-background: var(--theme-card-resource-collection-background, var(--color-yellow-2));
