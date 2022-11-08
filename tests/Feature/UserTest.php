@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Course;
+use App\Models\Module;
 use App\Models\Organization;
+use App\Models\Quiz;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
@@ -356,4 +359,30 @@ test('administrative user can be retrieved via query scope', function () {
 test('user email with mixed case is saved as lower case', function () {
     $user = User::factory()->create(['email' => 'John.Smith@example.com']);
     expect($user->email)->toEqual('john.smith@example.com');
+});
+
+test('user has pivot tables for module, course and quiz', function () {
+    $user = User::factory()->create();
+    $module = Module::factory()->create();
+    $quiz = Quiz::factory()->for($module)->create();
+    $course = Course::factory()->create();
+
+    $user->modules()->sync($module->id);
+    $user->quizzes()->sync($quiz->id);
+    $user->courses()->sync($course->id);
+
+    $this->assertDatabaseHas('module_user', [
+        'module_id' => $module->id,
+        'user_id' => $user->id,
+    ]);
+
+    $this->assertDatabaseHas('quiz_user', [
+        'quiz_id' => $quiz->id,
+        'user_id' => $user->id,
+    ]);
+
+    $this->assertDatabaseHas('course_user', [
+        'course_id' => $course->id,
+        'user_id' => $user->id,
+    ]);
 });
