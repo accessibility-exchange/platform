@@ -138,6 +138,27 @@
     width: calc(100% - calc(2 * var(--gutter)));
 }
 
+.card.resource-collection {
+    --card-link-color: var(--interactive, var(--card-resource-collection-color));
+
+    background: var(--card-resource-collection-background);
+    box-shadow: var(--card-shadow), var(--card-resource-collection-shadow);
+    color: var(--card-resource-collection-color);
+    padding-block-start: var(--space-10);
+}
+
+.card.resource-collection:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-resource-collection-shadow-hover);
+}
+
+.card.resource-collection:focus-within {
+    box-shadow: var(--card-resource-collection-shadow-focus-within);
+}
+
+.card.resource-collection:has(a:active) {
+    box-shadow: var(--card-resource-collection-shadow-focus-within);
+}
+
 .manage-section .card {
     @apply -mx-6;
 }

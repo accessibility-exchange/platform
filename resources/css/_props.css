@@ -419,6 +419,22 @@
     /* Resource card */
 
     /* Resource collection card */
+    --card-resource-collection-background: var(--theme-card-resource-collection-background, var(--color-yellow-2));
+    --card-resource-collection-color: var(--theme-card-resources-collection-color, var(--color-black));
+    --card-resource-collection-shadow: var(
+        --theme-card-resource-collection-shadow,
+        0 var(--space-5) 0 0 var(--color-yellow-3) inset
+    );
+    --card-resource-collection-shadow-hover: var(
+        --theme-card-resource-collection-shadow-hover,
+        var(--card-resource-collection-shadow)
+    );
+    --card-resource-collection-shadow-focus-within: var(
+        --theme-card-resource-collection-shadow-focus-within,
+        0 0 0.625rem var(--color-yellow-3),
+        0 0 0 var(--border-3) var(--color-black) inset,
+        0 var(--space-5) 0 0 var(--color-yellow-3) inset
+    );
 
     /* Manage page sections */
     --manage-section-shadow: var(--theme-manage-section-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));

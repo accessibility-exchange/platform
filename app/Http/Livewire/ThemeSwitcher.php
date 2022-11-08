@@ -19,6 +19,8 @@ class ThemeSwitcher extends Component
         $this->themes = Options::forEnum(Theme::class)->toArray();
         if (Auth::user()) {
             $this->theme = Auth::user()->theme;
+        } else {
+            $this->theme = Cookie::get('theme', 'system');
         }
     }
 

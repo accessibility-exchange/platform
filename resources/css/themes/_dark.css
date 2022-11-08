@@ -303,6 +303,8 @@
     /* Resource card */
 
     /* Resource collection card */
+    --theme-card-resource-collection-shadow-focus-within: 0 0 0.625rem var(--color-yellow-3),
+        0 0 0 var(--border-3) var(--color-white) inset, 0 var(--space-5) 0 0 var(--color-yellow-3) inset;
 
     /* Manage page sections */
 

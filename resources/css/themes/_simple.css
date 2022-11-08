@@ -333,6 +333,12 @@
     /* Resource card */
 
     /* Resource collection card */
+    --card-resource-collection-background: var(--bg);
+    --card-resource-collection-color: var(--fg);
+    --card-resource-collection-shadow: 0 var(--space-5) 0 0 var(--fg) inset;
+    --theme-card-resource-collection-shadow-hover: 0 var(--space-5) 0 0 var(--interactive) inset;
+    --card-resource-collection-shadow-focus-within: 0 0 0 var(--border-3) var(--interactive) inset,
+        0 var(--space-5) 0 0 var(--interactive) inset;
 
     /* Manage page sections */
     --theme-manage-section-shadow: 0 0 0 1px var(--fg);
