@@ -4,8 +4,7 @@
 
         <h2 class="mt-0">{{ __('Notifications') }}</h2>
         @if ($notifications->count())
-            <span
-                class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-magenta-3">{{ $notifications->count() }}</span>
+            <span class="notification-dot h-6 w-6">{{ $notifications->count() }}</span>
         @endif
     </div>
     @forelse($notifications as $notification)

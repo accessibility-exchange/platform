@@ -22,8 +22,7 @@
                         <x-nav-link class="inline-flex w-full items-center justify-center gap-2 border-t-0"
                             :href="localized_route('dashboard.notifications')" :active="request()->localizedRouteIs('dashboard.notifications')">
                             {{ __('Unread') }}@if ($unreadCount)
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-magenta-3">{{ $unreadCount }}</span>
+                                <span class="notification-dot h-6 w-6">{{ $unreadCount }}</span>
                             @endif
                         </x-nav-link>
                     </li>
