@@ -19,8 +19,8 @@
     <div x-data="modal()">
         <button class="secondary" type="button" @click="showModal">{{ __('Add language') }}</button>
         <template x-teleport="body">
-            <div class="modal-wrapper" x-show="showingModal">
-                <div class="modal stack" @keydown.escape.window="hideModal">
+            <div class="modal-wrapper" x-show="showingModal" @keydown.escape.window="hideModal">
+                <div class="modal stack" @click.outside="hideModal">
                     <h3>{{ __('Add language') }}</h3>
 
                     <div class="field @error('new_language') field--error @enderror">
