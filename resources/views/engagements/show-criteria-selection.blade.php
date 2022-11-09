@@ -36,7 +36,7 @@
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
@@ -80,7 +80,7 @@
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ crossDisability: {{ old('cross_disability', $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1) }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
@@ -122,7 +122,7 @@
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{
                     intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1)) }},
                     otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'

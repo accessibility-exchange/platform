@@ -1,11 +1,19 @@
 .link-list a {
     align-items: center;
-    border-block-start: var(--border) solid currentcolor;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-block: var(--space-5);
-    text-decoration: none;
+    text-decoration: underline;
+    width: 100%;
+}
+
+.link-list a::before {
+    border-block-start: var(--border) solid currentcolor;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
     width: 100%;
 }
 
@@ -19,6 +27,15 @@
     display: inline-block;
     height: var(--space-5);
     width: var(--space-5);
+}
+
+.link-list a:hover {
+    color: var(--link-color-hover);
+    text-decoration: none;
+}
+
+.link-list a:hover::before {
+    border-block-start-width: var(--border-3);
 }
 
 .link-list a:active {

@@ -5,3 +5,7 @@
     padding-block: var(--space-6);
     padding-inline: var(--space-8);
 }
+
+.box--alt {
+    background-color: var(--box-alt-background);
+}

@@ -13,14 +13,16 @@
 }
 
 .dark {
-    --heading-color: --content-dark-color;
+    --heading-color: var(--content-dark-color);
+    --btn-borderless-color: var(--content-dark-color);
 
     background-color: var(--content-dark-background);
     color: var(--content-dark-color);
 }
 
 .darker {
-    --heading-color: --content-darker-color;
+    --heading-color: var(--content-darker-color);
+    --btn-borderless-color: var(--content-dark-color);
 
     background-color: var(--content-darker-background);
     color: var(--content-darker-color);

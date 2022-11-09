@@ -269,7 +269,7 @@
     --guest-banner-border: var(--theme-guest-banner-border, var(--banner-border));
 
     /* Brand */
-    --brand-color: var(--theme-brand-color, var(--link-color));
+    --brand-color: var(--theme-brand-color, var(--white));
 
     /* Navigation */
     --nav-background-mobile: var(--theme-nav-background-mobile, var(--color-blue-7));
@@ -323,7 +323,7 @@
 
     /* Expander */
     --expander-color: var(--theme-expander-color, var(--color-blue-6));
-    --expander-border: var(--theme-expander-border, var(--color-blue-6));
+    --expander-color-hover: var(--theme-expander-color-hover, var(--color-blue-7));
     --expander-color-focus: var(--theme-expander-color-focus, var(--color-blue-7));
     --expander-background-active: var(--theme-expander-background-active, var(--color-grey-2));
     --expander-color-active: var(--theme-expander-color-active, var(--color-blue-7));
@@ -341,6 +341,7 @@
     /* Box */
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
+    --box-alt-background: var(--theme-box-alt-background, var(--color-grey-2));
     --box-border: var(--theme-box-border, transparent);
 
     /* Card */

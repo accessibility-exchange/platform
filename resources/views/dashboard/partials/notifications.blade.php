@@ -4,14 +4,13 @@
 
         <h2 class="mt-0">{{ __('Notifications') }}</h2>
         @if ($notifications->count())
-            <span
-                class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-magenta-3">{{ $notifications->count() }}</span>
+            <span class="notification-dot h-6 w-6">{{ $notifications->count() }}</span>
         @endif
     </div>
     @forelse($notifications as $notification)
         <x-dynamic-component :component="'notification.' . Str::kebab(class_basename($notification->type))" :notification="$notification" />
     @empty
-        <div class="box">{{ __('At present, you have no unread notifications.') }}</div>
+        <div class="box box--alt">{{ __('At present, you have no unread notifications.') }}</div>
     @endforelse
     <p><a class="with-icon" href="{{ localized_route('dashboard.notifications') }}">{{ __('All notifications') }}
             @if ($notifications->count() > 2)
