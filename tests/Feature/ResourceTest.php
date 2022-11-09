@@ -114,6 +114,15 @@ test('users can not delete resources belonging to others', function () {
     $response->assertForbidden();
 });
 
+test('users can view resources', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('resources.index'));
+    $response->assertOk();
+    $response->assertSee($resource->title);
+});
+
 test('single resource can be in many resource collections', function () {
     $resource = Resource::factory()->create();
 
