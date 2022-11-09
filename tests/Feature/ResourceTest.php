@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ConsultationPhase;
+use App\Enums\ResourceFormat;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
@@ -156,4 +158,14 @@ test('resources have slugs in both languages even if only one is provided', func
     $resource = Resource::factory()->create(['title' => ['fr' => 'Mon ressource']]);
     expect($resource->getTranslation('slug', 'en', false))
         ->toEqual($resource->getTranslation('slug', 'fr', false));
+});
+
+test('resource formats can be displayed', function () {
+    $resource = Resource::factory()->create(['formats' => ['pdf']]);
+    expect($resource->display_formats)->toContain(ResourceFormat::labels()['pdf']);
+});
+
+test('resource phases can be displayed', function () {
+    $resource = Resource::factory()->create(['phases' => ['design']]);
+    expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
 });
