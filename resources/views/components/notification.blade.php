@@ -1,6 +1,6 @@
-<div class="stack relative bg-white px-20 py-6 shadow-md">
+<div class="stack notification">
     @if (!$read)
-        <span class="absolute top-14 left-10 block h-5 w-5 rounded-full bg-magenta-3"></span>
+        <span class="notification-dot absolute top-14 left-10"></span>
     @endif
     <h3 class="h4">{{ $title }}</h3>
     <div class="content stack">

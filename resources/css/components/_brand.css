@@ -11,6 +11,12 @@
     height: inherit;
 }
 
+a.brand:visited svg,
+.dark a.brand:visited svg,
+.darker a.brand:visited svg {
+    color: var(--brand-color);
+}
+
 [data-theme] .logo {
     display: none;
     width: auto;
@@ -48,7 +54,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
     .brand {
         height: var(--space-16);
     }

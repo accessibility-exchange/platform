@@ -16,12 +16,12 @@
     </div>
     <div class="auth-card center">
         <div class="stack">
-            <a href="{{ localized_route('welcome') }}" rel="home">
+            <a class="brand" href="{{ localized_route('welcome') }}" rel="home">
                 @svg('tae-logo', ['class' => 'logo'])
                 @svg('tae-logo-mono', ['class' => 'logo logo--themeable'])
                 <span class="visually-hidden">{{ __('app.name') }}</span>
             </a>
-            <h1 class="align:center">{{ $title }}</h1>
+            <h1 class="text-center">{{ $title }}</h1>
             {{ $slot }}
         </div>
     </div>

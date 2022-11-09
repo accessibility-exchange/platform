@@ -2,7 +2,7 @@
     @if ($trainings)
         <ul class="stack" role="list">
             @foreach ($trainings as $i => $training)
-                <li class="stack box bg-grey-2">
+                <li class="stack box">
                     <h4>{{ __('Training') }}</h4>
                     <div class="field @error("team_trainings.{$i}.name") field-error @enderror">
                         <x-hearth-label :for="'team_trainings_' . $i . '_name'" :value="__('Name of training')" />

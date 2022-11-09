@@ -1,12 +1,6 @@
 [role="contentinfo"] {
-    background: var(--footer-background);
-    color: var(--footer-color);
+    border-block-start: var(--border) dashed var(--footer-border);
     margin-block-start: auto;
-}
-
-[role="contentinfo"] h2,
-[role="contentinfo"] h3 {
-    color: var(--footer-heading-color);
 }
 
 [role="contentinfo"] h2 {
@@ -21,7 +15,6 @@
 
 [role="contentinfo"] a,
 [role="contentinfo"] .brand {
-    color: inherit;
     font-weight: var(--font-semibold);
 }
 

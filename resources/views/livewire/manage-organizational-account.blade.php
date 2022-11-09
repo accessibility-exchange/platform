@@ -23,7 +23,7 @@
     </td>
     <td>
         @if ($account->checkStatus('suspended'))
-            <span class="flex items-center gap-2 text-red-8">
+            <span class="text-error flex items-center gap-2">
                 @svg('heroicon-o-no-symbol') <span class="font-semibold">{{ __('Suspended') }}</span>
             </span>
         @else

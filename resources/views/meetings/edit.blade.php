@@ -67,7 +67,7 @@
                 <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
                     :checked="in_array('in_person', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('in_person')">
+                <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
                     <div class="field @error('street_address') field--error @enderror">
                         <x-hearth-label for="street_address">{{ __('Street address') . ' ' . __('(required)') }}
                         </x-hearth-label>
@@ -109,7 +109,7 @@
                     :checked="in_array('web_conference', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                 </x-hearth-label>
-                <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('web_conference')">
+                <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
                     <div class="field @error('meeting_software') field--error @enderror">
                         <x-hearth-label for="meeting_software">{{ __('Software') . ' ' . __('(required)') }}
                         </x-hearth-label>
@@ -143,7 +143,7 @@
                 <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone" :checked="in_array('phone', old('meeting_types', $meeting->meeting_types ?? []))"
                     x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('phone')">
+                <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
                     <div class="field @error('meeting_phone') field-error @enderror">
                         <x-hearth-label for="meeting_phone" :value="__('Phone number to join') . ' ' . __('(required)')" />
                         <x-hearth-hint for="meeting_phone">

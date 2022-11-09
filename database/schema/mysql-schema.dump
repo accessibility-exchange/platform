@@ -293,33 +293,6 @@ CREATE TABLE `constituency_organization` (
   CONSTRAINT `constituency_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `consulting_method_individual`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consulting_method_individual` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `consulting_method_id` bigint unsigned NOT NULL,
-  `individual_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `consulting_method_individual_consulting_method_id_foreign` (`consulting_method_id`),
-  KEY `consulting_method_individual_individual_id_foreign` (`individual_id`),
-  CONSTRAINT `consulting_method_individual_consulting_method_id_foreign` FOREIGN KEY (`consulting_method_id`) REFERENCES `consulting_methods` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `consulting_method_individual_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `consulting_methods`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consulting_methods` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `content_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -520,35 +493,6 @@ CREATE TABLE `failed_jobs` (
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `formats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `formats` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `formattables`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `formattables` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `format_id` bigint unsigned NOT NULL,
-  `formattable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `formattable_id` bigint unsigned NOT NULL,
-  `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `original` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `formattables_format_id_foreign` (`format_id`),
-  KEY `formattables_formattable_type_formattable_id_index` (`formattable_type`,`formattable_id`),
-  CONSTRAINT `formattables_format_id_foreign` FOREIGN KEY (`format_id`) REFERENCES `formats` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `gender_identities`;
@@ -757,6 +701,7 @@ CREATE TABLE `individuals` (
   `street_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unit_apartment_suite` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `consulting_methods` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `individuals_user_id_foreign` (`user_id`),
   CONSTRAINT `individuals_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
@@ -962,6 +907,7 @@ CREATE TABLE `organizations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `oriented_at` timestamp NULL DEFAULT NULL,
+  `suspended_at` timestamp NULL DEFAULT NULL,
   `validated_at` timestamp NULL DEFAULT NULL,
   `published_at` timestamp NULL DEFAULT NULL,
   `name` json NOT NULL,
@@ -1005,33 +951,6 @@ DROP TABLE IF EXISTS `payment_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payment_types` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `phaseables`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `phaseables` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `phase_id` bigint unsigned NOT NULL,
-  `phaseable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phaseable_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `phaseables_phase_id_foreign` (`phase_id`),
-  KEY `phaseables_phaseable_type_phaseable_id_index` (`phaseable_type`,`phaseable_id`),
-  CONSTRAINT `phaseables_phase_id_foreign` FOREIGN KEY (`phase_id`) REFERENCES `phases` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `phases`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `phases` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -1128,6 +1047,8 @@ CREATE TABLE `regulated_organizations` (
   `preferred_contact_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `preferred_notification_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `notification_settings` json DEFAULT NULL,
+  `oriented_at` timestamp NULL DEFAULT NULL,
+  `suspended_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1175,6 +1096,8 @@ CREATE TABLE `resources` (
   `title` json NOT NULL,
   `slug` json NOT NULL,
   `summary` json NOT NULL,
+  `formats` json DEFAULT NULL,
+  `phases` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `resources_user_id_foreign` (`user_id`),
   KEY `resources_content_type_id_foreign` (`content_type_id`),
@@ -1247,6 +1170,7 @@ CREATE TABLE `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `oriented_at` timestamp NULL DEFAULT NULL,
+  `suspended_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `two_factor_secret` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `two_factor_recovery_codes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -1401,3 +1325,14 @@ INSERT INTO `migrations` VALUES (85,'2022_10_18_002311_add_organization_id_colum
 INSERT INTO `migrations` VALUES (86,'2022_10_18_153227_update_user_privacy_policy_and_terms_of_service',1);
 INSERT INTO `migrations` VALUES (87,'2022_10_19_161516_drop_media_table',1);
 INSERT INTO `migrations` VALUES (88,'2022_10_24_121706_remove_team_languages_column_from_projects_table',1);
+INSERT INTO `migrations` VALUES (89,'2022_10_24_140206_add_oriented_at_column_to_regulated_organizations_table',2);
+INSERT INTO `migrations` VALUES (90,'2022_10_24_174535_add_suspended_at_columns_to_various_tables',2);
+INSERT INTO `migrations` VALUES (91,'2022_11_08_203439_drop_formattables_table',2);
+INSERT INTO `migrations` VALUES (92,'2022_11_08_203780_drop_formats_table',2);
+INSERT INTO `migrations` VALUES (93,'2022_11_08_204008_add_formats_column_to_resources_table',2);
+INSERT INTO `migrations` VALUES (94,'2022_11_09_122702_drop_phaseables_table',2);
+INSERT INTO `migrations` VALUES (95,'2022_11_09_122719_drop_phases_table',2);
+INSERT INTO `migrations` VALUES (96,'2022_11_09_122754_add_phases_column_to_resources_table',2);
+INSERT INTO `migrations` VALUES (97,'2022_11_09_125102_drop_consulting_method_individual_table',2);
+INSERT INTO `migrations` VALUES (98,'2022_11_09_125235_drop_consulting_methods_table',2);
+INSERT INTO `migrations` VALUES (99,'2022_11_09_125556_add_consulting_methods_column_to_individuals_table',2);

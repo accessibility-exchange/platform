@@ -22,16 +22,9 @@
     <div class="stack">
         <h2>{{ __('Resource collections') }}</h2>
         @if ($resourceCollections->count() > 0)
-            <div class="stack cards cards--collections">
+            <div class="grid">
                 @foreach ($resourceCollections as $resourceCollection)
-                    <div class="box card card--collection stack">
-                        <h3 id="{{ Str::slug($resourceCollection->title) }}">{{ $resourceCollection->title }}</h3>
-                        <p>{{ $resourceCollection->description }}</p>
-                        <p class="actions"><a class="button"
-                                href="{{ localized_route('resource-collections.show', $resourceCollection) }}"
-                                aria-describedby="{{ Str::slug($resourceCollection->title) }}">{{ __('Visit resources') }}</a>
-                        </p>
-                    </div>
+                    <x-card.resource-collection :model="$resourceCollection" />
                 @endforeach
             </div>
         @else

@@ -1,5 +1,5 @@
 .welcome {
-    --body-background: var(--color-white);
+    background-color: var(--home-body-background);
 }
 
 .welcome main {
@@ -7,16 +7,35 @@
 }
 
 .welcome main header {
-    background-color: var(--color-blue-6);
-    color: var(--color-white);
     margin-block-start: 0;
     padding-block: var(--space-16);
     text-align: center;
 }
 
+.dark {
+    --heading-color: var(--content-dark-color);
+    --btn-borderless-color: var(--content-dark-color);
+
+    background-color: var(--content-dark-background);
+    color: var(--content-dark-color);
+}
+
+.darker {
+    --heading-color: var(--content-darker-color);
+    --btn-borderless-color: var(--content-dark-color);
+
+    background-color: var(--content-darker-background);
+    color: var(--content-darker-color);
+}
+
+.accent {
+    background-color: var(--content-accent-background);
+    border: dashed 1px var(--content-accent-border);
+}
+
 .welcome main header h1,
 .welcome main header p {
-    color: var(--color-white);
+    color: var(--content-dark-color);
 }
 
 .welcome main .cta {
@@ -34,17 +53,74 @@
 }
 
 .welcome .grid .box {
+    background-color: var(--home-body-background);
+    border-block-end-width: 0;
     border-block-start-style: solid;
     border-block-start-width: var(--border-3);
+    border-inline-width: 0;
     padding-inline: 0;
 }
 
-.welcome .dark {
-    --heading-color: var(--color-white);
-}
-
 .full {
+    border-block-end: 0;
+    border-inline: 0;
     left: calc(50% - 50vw);
     position: relative;
     width: 100vw;
+}
+
+.accent--color {
+    --heading-color: var(--content-accent-color-color);
+
+    background-color: var(--content-accent-color-background);
+    border: dashed 1px var(--content-accent-color-border);
+    color: var(--content-accent-color-color);
+}
+
+.header--participants {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--participants-color);
+    --link-color-visited: var(--participants-color);
+    --h1-color: var(--participants-color);
+
+    background-color: var(--participants-background);
+    border-color: var(--participants-border);
+    color: var(--participants-color);
+}
+
+.header--consultants {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--consultants-color);
+    --link-color-visited: var(--consultants-color);
+    --h1-color: var(--consultants-color);
+
+    background-color: var(--consultants-background);
+    border-color: var(--consultants-border);
+    color: var(--consultants-color);
+}
+
+.header--connectors {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--connectors-color);
+    --link-color-visited: var(--connectors-color);
+    --h1-color: var(--connectors-color);
+
+    background-color: var(--connectors-background);
+    border-color: var(--connectors-border);
+    color: var(--connectors-color);
+}
+
+.header--regulated-organization {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--regulated-organizations-color);
+    --link-color-visited: var(--regulated-organizations-color);
+    --h1-color: var(--regulated-organizations-color);
+
+    background-color: var(--regulated-organizations-background);
+    border-color: var(--regulated-organizations-border);
+    color: var(--regulated-organizations-color);
 }

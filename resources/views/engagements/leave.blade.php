@@ -32,7 +32,7 @@
 
                 <hr class="divider--thick" />
 
-                <div class="flex flex-col gap-6 gap-8 md:flex-row">
+                <div class="flex flex-col gap-6 md:flex-row">
                     <form action="{{ localized_route('engagements.leave', $engagement) }}" method="post">
                         @csrf
                         <button>

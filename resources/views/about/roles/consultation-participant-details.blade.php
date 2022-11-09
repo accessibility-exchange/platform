@@ -19,7 +19,7 @@
         </div>
     </x-slot>
 
-    <div class="stack stack:xl mt-16 -mb-8">
+    <div class="-mb-8 space-y-16">
         <div class="with-sidebar">
             @include('about.partials.what-we-ask-for-navigation')
             <div class="stack">
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <x-section class="align:center mt-16 bg-turquoise-2">
+        <x-section class="accent--color text-center">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -103,7 +103,7 @@
         </x-section>
 
         @guest
-            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
+            <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
                     <div class="grid">

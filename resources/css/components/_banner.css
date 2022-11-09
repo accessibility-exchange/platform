@@ -1,4 +1,5 @@
 .banner {
+    border-block-start: dashed 1px;
     @apply flex h-auto w-full items-center p-4;
 }
 
@@ -13,10 +14,12 @@
 
 .banner--error {
     background-color: var(--banner-error-background);
+    border-block-start-color: var(--banner-error-border);
     color: var(--banner-error-color);
 }
 
 .banner--warning {
     background-color: var(--banner-warning-background);
+    border-block-start-color: var(--banner-warning-border);
     color: var(--banner-warning-color);
 }
