@@ -54,7 +54,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         $this->conditionallyRequireContactMethods($validator);
 
         $validator->sometimes('meeting_types', 'required', function ($input) {
-            return in_array('interviews', $input->consulting_methods ?? []) || in_array('focus-group', $input->consulting_methods ?? []) || in_array('workshop', $input->consulting_methods ?? []);
+            return $input->consulting_methods && array_intersect(['interviews', 'focus-group', 'workshop'], $input->consulting_methods);
         });
     }
 
