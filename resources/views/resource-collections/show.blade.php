@@ -73,9 +73,9 @@
                 <ul role="list">
                     @foreach ($phases as $phase)
                         <li>
-                            <x-hearth-input id="phase-{{ $phase->id }}" name="phase[]" type="checkbox"
-                                value="{{ $phase->id }}" />
-                            <label for="phase-{{ $phase->id }}">{{ $phase->name }}</label>
+                            <x-hearth-input id="phase-{{ $phase['value'] }}" name="phase[]" type="checkbox"
+                                value="{{ $phase['value'] }}" />
+                            <label for="phase-{{ $phase['value'] }}">{{ $phase['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>
