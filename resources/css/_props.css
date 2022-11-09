@@ -323,7 +323,7 @@
 
     /* Expander */
     --expander-color: var(--theme-expander-color, var(--color-blue-6));
-    --expander-border: var(--theme-expander-border, var(--color-blue-6));
+    --expander-color-hover: var(--theme-expander-color-hover, var(--color-blue-7));
     --expander-color-focus: var(--theme-expander-color-focus, var(--color-blue-7));
     --expander-background-active: var(--theme-expander-background-active, var(--color-grey-2));
     --expander-color-active: var(--theme-expander-color-active, var(--color-blue-7));

@@ -281,7 +281,7 @@
 
     /* Expander */
     --theme-expander-color: var(--interactive);
-    --theme-expander-border: var(--interactive);
+    --theme-expander-color-hover: var(--interactive);
     --theme-expander-color-focus: var(--interactive);
     --theme-expander-background-active: var(--interactive);
     --theme-expander-color-active: var(--bg);

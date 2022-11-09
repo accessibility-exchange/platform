@@ -253,7 +253,7 @@
 
     /* Expander */
     --theme-expander-color: var(--color-turquoise-1);
-    --theme-expander-border: var(--color-turquoise-1);
+    --theme-expander-color-hover: var(--color-turquoise-2);
     --theme-expander-color-focus: var(--color-turquoise-1);
     --theme-expander-background-active: var(--color-graphite-6);
     --theme-expander-color-active: var(--color-turquoise-1);
