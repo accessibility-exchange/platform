@@ -39,19 +39,21 @@ class Interpretation extends Component
         $this->name = $name;
         $this->namespace = $namespace;
 
-        $this->interpretation = InterpretationModel::firstOrCreate(
-            [
-                'name' => $this->name,
-                'namespace' => $this->namespace ?? Str::after(Route::currentRouteName(), locale().'.'),
-            ],
-            [
-                'route' => Str::after(Route::currentRouteName(), locale().'.'),
-                'route_has_params' => (bool) request()->route()->parameters(),
-            ]
-        );
+        $this->interpretation = auth()->hasUser() && auth()->user()->sign_language_translations ?
+            InterpretationModel::firstOrCreate(
+                [
+                    'name' => $this->name,
+                    'namespace' => $this->namespace ?? Str::after(Route::currentRouteName(), locale().'.'),
+                ],
+                [
+                    'route' => Str::after(Route::currentRouteName(), locale().'.'),
+                    'route_has_params' => (bool) request()->route()->parameters(),
+                ]
+            ) :
+            null;
 
-        $this->id = Str::slug($this->interpretation->name);
-        $this->videoSrc = $this->interpretation->getTranslation('video', get_signed_language_for_written_language(locale()));
+        $this->id = Str::slug($this->interpretation?->name ?? $this->name);
+        $this->videoSrc = $this->interpretation?->getTranslation('video', get_signed_language_for_written_language(locale())) ?? '';
     }
 
     /**

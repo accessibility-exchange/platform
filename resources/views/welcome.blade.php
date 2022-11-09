@@ -31,6 +31,7 @@
                 <div class="content stack">
                     <section class="stack" aria-labelledby="what">
                         <h2 class="text-center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
+                        <x-interpretation name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
                         <div class="grid">
                             <div class="box border--lavender">
                                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
@@ -51,6 +52,7 @@
 
                     <section class="stack stack:lg" aria-labelledby="how">
                         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
+                        <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
 
                         <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
                         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
@@ -95,6 +97,8 @@
                         <div class="center center:wide stack stack:xl">
                             <div class="stack">
                                 <h2 id="disability">{{ __('What do we mean when we say “disability”?') }}</h2>
+                                <x-interpretation
+                                    name="{{ __('What do we mean when we say “disability”?', [], 'en') }}" />
                                 <p class="h4">
                                     {{ __('Disability is not in the person. It results when a person’s long-term physical, mental health, developmental, or sensory characteristics differ from society’s norms. When buildings, services, and workplaces are designed for the norm, they often present barriers to a person’s full and equal participation in society. That’s what we mean by disability. ') }}
                                 </p>
@@ -108,6 +112,7 @@
                     </section>
                     <section class="stack text-center" aria-labelledby="partnership">
                         <h2 id="partnership">{{ __('Developed in partnership') }}</h2>
+                        <x-interpretation name="{{ __('Developed in partnership', [], 'en') }}" />
                         <p class="mx-auto max-w-prose">
                             {{ __('This website was made in partnership with members and organizations from the disability and Deaf communities, supporters, and members from Federally Regulated Organizations.') }}
                         </p>
@@ -117,6 +122,8 @@
                         <section class="full accent" aria-labelledby="join">
                             <div class="center center:wide stack stack:xl text-center">
                                 <h2 id="join">{{ __('Join our accessibility community') }}</h2>
+                                <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
+                                    namespace="join" />
                                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
                             </div>
                         </section>
