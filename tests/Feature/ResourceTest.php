@@ -168,4 +168,7 @@ test('resource formats can be displayed', function () {
 test('resource phases can be displayed', function () {
     $resource = Resource::factory()->create(['phases' => ['design']]);
     expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
+
+    expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
+    expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
 });

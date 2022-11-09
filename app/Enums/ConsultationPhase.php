@@ -22,7 +22,7 @@ enum ConsultationPhase: string
         return match ($this) {
             self::Design => __('Design your inclusive and accessible consultation'),
             self::Engage => __('Engage with disability and Deaf communities and hold meaningful consultations'),
-            self::DeepenUnderstanding => __('')
+            self::DeepenUnderstanding => __('Deepen understanding about the systemic barriers (laws, policies, practices, and culture) underlying the experiences that consultation participants report')
         };
     }
 }
