@@ -14,13 +14,14 @@
 
 .badge--stop {
     --badge-background: var(--bg, var(--color-red-1));
-    --badge-border: var(--badge-background);
+    --badge-border: var(--fg, var(--color-red-1));
 
     color: var(--badge-color-alt);
 }
 
 .badge--go {
     --badge-background: var(--bg, var(--color-green-1));
+    --badge-border: var(--fg, var(--color-green-1));
 
     color: var(--badge-color-alt);
 }
