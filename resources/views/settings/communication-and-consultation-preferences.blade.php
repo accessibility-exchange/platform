@@ -102,7 +102,7 @@
         </div>
 
         @if ($individual->isParticipant())
-            <div class="stack" x-data="{ consultingMethods: {{ json_encode(old('consulting_methods', $individual->consulting_methods ?? '[]')) }} }">
+            <div class="stack" x-data="{ consultingMethods: {{ old('consulting_methods', $individual->consulting_methods ?? '[]') }} }">
                 <h2>{{ __('Consultations') }}</h2>
 
                 <fieldset class="field @error('consulting_methods') field--error @enderror">
