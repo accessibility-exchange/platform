@@ -30,7 +30,6 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             LivedExperienceSeeder::class,
             PaymentTypeSeeder::class,
-            PhaseSeeder::class,
             SectorSeeder::class,
             TopicSeeder::class,
         ]);

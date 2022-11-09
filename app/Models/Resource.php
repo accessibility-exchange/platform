@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -30,12 +31,14 @@ class Resource extends Model
         'user_id',
         'summary',
         'formats',
+        'phases',
     ];
 
     protected $casts = [
         'title' => 'array',
         'summary' => 'array',
         'formats' => 'array',
+        'phases' => 'array',
     ];
 
     /**
@@ -88,16 +91,6 @@ class Resource extends Model
      *
      * @return MorphToMany
      */
-    public function phases(): MorphToMany
-    {
-        return $this->morphToMany(Phase::class, 'phaseable');
-    }
-
-    /**
-     * Get all the formats for the resource.
-     *
-     * @return MorphToMany
-     */
     public function topics(): MorphToMany
     {
         return $this->morphToMany(Topic::class, 'topicable');
@@ -125,6 +118,13 @@ class Resource extends Model
     {
         return Attribute::make(
             get: fn ($value) => array_map(fn ($format) => ResourceFormat::labels()[$format], $this->formats),
+        );
+    }
+
+    public function displayPhases(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => array_map(fn ($phase) => ConsultationPhase::labels()[$phase], $this->phases),
         );
     }
 }
