@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             GenderIdentitySeeder::class,
             IndigenousIdentitySeeder::class,
             ConstituencySeeder::class,
-            ConsultingMethodSeeder::class,
             ContentTypeSeeder::class,
             ImpactSeeder::class,
             LanguageSeeder::class,

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
-use App\Models\ConsultingMethod;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -43,7 +43,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
                 'min:1',
                 Rule::requiredIf(request()->user()->individual->isParticipant()),
             ],
-            'consulting_methods.*' => 'exists:consulting_methods,id',
+            'consulting_methods.*' => [new Enum(EngagementFormat::class)],
             'meeting_types' => 'nullable|array',
             'meeting_types.*' => [new Enum(MeetingType::class)],
         ];
@@ -54,11 +54,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         $this->conditionallyRequireContactMethods($validator);
 
         $validator->sometimes('meeting_types', 'required', function ($input) {
-            $interviews = ConsultingMethod::where('name->en', 'Interviews')->first()->id;
-            $focusGroups = ConsultingMethod::where('name->en', 'Focus groups')->first()->id;
-            $workshops = ConsultingMethod::where('name->en', 'Workshops')->first()->id;
-
-            return in_array($interviews, $input->consulting_methods ?? []) || in_array($focusGroups, $input->consulting_methods ?? []) || in_array($workshops, $input->consulting_methods ?? []);
+            return in_array('interviews', $input->consulting_methods ?? []) || in_array('focus-group', $input->consulting_methods ?? []) || in_array('workshop', $input->consulting_methods ?? []);
         });
     }
 

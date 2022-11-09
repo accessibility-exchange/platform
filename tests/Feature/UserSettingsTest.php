@@ -1,13 +1,11 @@
 <?php
 
 use App\Models\AccessSupport;
-use App\Models\ConsultingMethod;
 use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
-use Database\Seeders\ConsultingMethodSeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
@@ -61,8 +59,6 @@ test('other users cannot manage access needs', function () {
 });
 
 test('individual users can manage communication and consultation preferences', function () {
-    $this->seed(ConsultingMethodSeeder::class);
-
     $user = User::factory()->create(['context' => 'individual']);
     $user->individual->roles = ['participant'];
     $user->individual->save();
@@ -75,14 +71,14 @@ test('individual users can manage communication and consultation preferences', f
         'preferred_contact_person' => 'me',
         'email' => $user->email,
         'preferred_contact_method' => 'email',
-        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+        'consulting_methods' => ['survey'],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'preferred_contact_person' => 'me',
         'email' => 'me@example.com',
         'preferred_contact_method' => 'email',
-        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+        'consulting_methods' => ['survey'],
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -96,7 +92,7 @@ test('individual users can manage communication and consultation preferences', f
         'preferred_contact_person' => 'support-person',
         'support_person_phone' => '9021234567',
         'preferred_contact_method' => 'email',
-        'consulting_methods' => [ConsultingMethod::where('name->en', 'Interviews')->first()->id],
+        'consulting_methods' => ['interviews'],
     ]);
 
     $response->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
@@ -108,7 +104,7 @@ test('individual users can manage communication and consultation preferences', f
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'me@here.com',
         'preferred_contact_method' => 'email',
-        'consulting_methods' => [ConsultingMethod::where('name->en', 'Surveys')->first()->id],
+        'consulting_methods' => ['survey'],
     ]);
 
     $response->assertSessionHasNoErrors();
@@ -121,8 +117,6 @@ test('individual users can manage communication and consultation preferences', f
 });
 
 test('other users cannot manage communication and consultation preferences', function () {
-    $this->seed(ConsultingMethodSeeder::class);
-
     $user = User::factory()->create(['context' => 'organization']);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
