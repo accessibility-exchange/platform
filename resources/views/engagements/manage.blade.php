@@ -277,7 +277,7 @@
                             </a>
                         </footer>
                     @else
-                        <div class="box stack bg-grey-2">
+                        <div class="box stack">
                             <p>{{ __('You currently do not have a Community Organization for this engagement.') }}</p>
                             <p>
                                 <a class="cta secondary"
