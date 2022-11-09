@@ -295,6 +295,7 @@
     /* Box */
     --theme-box-color: var(--fg);
     --theme-box-background: var(--bg);
+    --theme-box-alt-background: var(--bg);
     --theme-box-border: var(--fg);
 
     /* Card */

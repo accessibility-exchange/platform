@@ -341,6 +341,7 @@
     /* Box */
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
+    --box-alt-background: var(--theme-box-alt-background, var(--color-grey-2));
     --box-border: var(--theme-box-border, transparent);
 
     /* Card */

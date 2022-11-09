@@ -268,6 +268,7 @@
     /* Box */
     --theme-box-color: var(--color-white);
     --theme-box-background: var(--color-graphite-7);
+    --theme-box-alt-background: var(--color-graphite-6);
 
     /* Card */
     --theme-card-link-color: var(--color-grey-1);
