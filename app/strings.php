@@ -259,6 +259,9 @@ return [
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3326%3A100463
         'Manage project/empty' => [
+            __('Surveys'),
+            __('Workshops'),
+            __('Focus groups'),
             __('Project duration'),
             __('more'),
             __('Cancel project'),
