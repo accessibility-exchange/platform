@@ -49,9 +49,9 @@
                 <ul role="list">
                     @foreach ($formats as $format)
                         <li>
-                            <x-hearth-input id="format-{{ $format->id }}" name="format[]" type="checkbox"
-                                value="{{ $format->id }}" />
-                            <label for="format-{{ $format->id }}">{{ $format->name }}</label>
+                            <x-hearth-input id="format-{{ $format['value'] }}" name="format[]" type="checkbox"
+                                value="{{ $format['value'] }}" />
+                            <label for="format-{{ $format['value'] }}">{{ $format['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>
@@ -73,9 +73,9 @@
                 <ul role="list">
                     @foreach ($phases as $phase)
                         <li>
-                            <x-hearth-input id="phase-{{ $phase->id }}" name="phase[]" type="checkbox"
-                                value="{{ $phase->id }}" />
-                            <label for="phase-{{ $phase->id }}">{{ $phase->name }}</label>
+                            <x-hearth-input id="phase-{{ $phase['value'] }}" name="phase[]" type="checkbox"
+                                value="{{ $phase['value'] }}" />
+                            <label for="phase-{{ $phase['value'] }}">{{ $phase['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>

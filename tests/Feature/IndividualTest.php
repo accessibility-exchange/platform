@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\CommunityConnectorHasLivedExperience;
+use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\AgeBracket;
@@ -921,4 +922,9 @@ test('individual relationships to projects can be derived from both projects and
     expect($individual->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
+});
+
+test('individual consulting methods can be displayed', function () {
+    $individual = Individual::factory()->create(['consulting_methods' => ['survey']]);
+    expect($individual->display_consulting_methods)->toContain(EngagementFormat::labels()['survey']);
 });

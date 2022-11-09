@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ConsultationPhase;
+use App\Enums\ResourceFormat;
 use App\Http\Requests\DestroyResourceRequest;
 use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
 use App\Models\ContentType;
-use App\Models\Format;
-use App\Models\Phase;
 use App\Models\Resource;
 use App\Models\Topic;
 use Illuminate\Contracts\View\View;
+use Spatie\LaravelOptions\Options;
 
 class ResourceController extends Controller
 {
@@ -25,9 +26,9 @@ class ResourceController extends Controller
             'resources' => Resource::orderBy('title')->paginate(20),
             'topics' => Topic::all(),
             'types' => ContentType::all(),
-            'formats' => Format::all(),
+            'formats' => Options::forEnum(ResourceFormat::class)->toArray(),
             'languages' => ['en', 'fr'],
-            'phases' => Phase::all(),
+            'phases' => Options::forEnum(ConsultationPhase::class)->toArray(),
         ]);
     }
 
