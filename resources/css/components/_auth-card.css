@@ -8,6 +8,11 @@
     padding: var(--gutter);
 }
 
+.auth-card .brand {
+    display: block;
+    height: auto;
+}
+
 .auth-card .logo {
     margin-inline: auto;
     max-width: calc(var(--max-w-prose) / 2);

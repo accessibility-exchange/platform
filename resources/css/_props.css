@@ -269,7 +269,7 @@
     --guest-banner-border: var(--theme-guest-banner-border, var(--banner-border));
 
     /* Brand */
-    --brand-color: var(--theme-brand-color, var(--link-color));
+    --brand-color: var(--theme-brand-color, var(--white));
 
     /* Navigation */
     --nav-background-mobile: var(--theme-nav-background-mobile, var(--color-blue-7));
