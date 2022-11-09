@@ -23,6 +23,24 @@ test('explicit namespace set', function () {
     expect($interpretation->namespace)->toBe('reuse');
 });
 
+test('update namespace', function () {
+    $interpretation = Interpretation::factory()->create([
+        'name' => 'The Accessibility Exchange',
+    ]);
+
+    expect($interpretation->namespace)->toBe('welcome');
+
+    $interpretation->namespace = 'test';
+    $interpretation->save();
+    $interpretation->refresh();
+    expect($interpretation->namespace)->toBe('test');
+
+    $interpretation->namespace = null;
+    $interpretation->save();
+    $interpretation->refresh();
+    expect($interpretation->namespace)->toBe('welcome');
+});
+
 test('returns name localized', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
