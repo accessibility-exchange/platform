@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\LaravelOptions\Selectable;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
-class EmploymentStatus extends Model implements Selectable
+class Identity extends Model implements Selectable
 {
     use HasTranslations;
 
     protected $fillable = [
         'name',
         'description',
+        'cluster',
     ];
 
     protected $casts = [
@@ -34,10 +34,5 @@ class EmploymentStatus extends Model implements Selectable
             $this->id,
             ['hint' => $this->getTranslation('description', locale())]
         );
-    }
-
-    public function communityConnectors(): MorphToMany
-    {
-        return $this->morphToMany(Individual::class, 'connectable');
     }
 }
