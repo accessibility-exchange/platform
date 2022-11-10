@@ -6,6 +6,7 @@ use App\Enums\ConsultingService;
 use App\Enums\ProvinceOrTerritory;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;

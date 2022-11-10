@@ -6,6 +6,7 @@ use App\Enums\ConsultingService;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
