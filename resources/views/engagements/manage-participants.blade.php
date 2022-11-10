@@ -89,7 +89,7 @@
                         </tr>
                     </thead>
                     @foreach ($participants as $participant)
-                        <tr>
+                        <tr id="participant-{{ $participant->id }}">
                             <td>{{ $participant->name }}</td>
                             <td>
                                 <p @class([

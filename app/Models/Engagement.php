@@ -22,11 +22,14 @@ use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\Translatable\HasTranslations;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Engagement extends Model
 {
     use HasFactory;
     use HasSchemalessAttributes;
+    use HasRelationships;
     use HasStatus;
     use HasTranslations;
 
@@ -174,6 +177,17 @@ class Engagement extends Model
                 return $start->isoFormat('MMMM D').'–'.$end->isoFormat('LL');
             }
         );
+    }
+
+    public function meetingTypesIncludes(string $meetingType)
+    {
+        if ($this->format === 'interviews') {
+            return in_array($meetingType, $this->meeting_types ?? []);
+        } elseif ($this->meetings->count()) {
+            return in_array($meetingType, $this->meetings->pluck('meeting_types')->flatten()->unique()->toArray());
+        }
+
+        return false;
     }
 
     public function displayMeetingTypes(): Attribute
@@ -326,6 +340,11 @@ class Engagement extends Model
     public function participants(): BelongsToMany
     {
         return $this->belongsToMany(Individual::class)->withPivot('status', 'share_access_needs');
+    }
+
+    public function accessNeeds(): HasManyDeep
+    {
+        return $this->hasManyDeep(AccessSupport::class, ['engagement_individual', Individual::class, 'access_support_individual']);
     }
 
     public function confirmedParticipants(): BelongsToMany
