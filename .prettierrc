@@ -19,7 +19,14 @@
                 "tabWidth": 4,
                 "parser": "blade",
                 "sortTailwindcssClasses": true,
-                "sortHtmlAttributes": "code-guide",
+                "sortHtmlAttributes": "code-guide"
+            }
+        },
+        {
+            "files": [
+                "*.js"
+            ],
+            "options": {
                 "trailingComma": "none"
             }
         }

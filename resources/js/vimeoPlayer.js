@@ -63,13 +63,13 @@ document.addEventListener("alpine:init", () => {
                     // Events for interactive videos
                     // https://developer.vimeo.com/player/sdk/reference#events-for-interactive-videos
                     "interactivehotspotclicked",
-                    "interactiveoverlaypanelclicked",
+                    "interactiveoverlaypanelclicked"
                 ];
 
                 vimeoEvents.forEach(function (vimeoEvent) {
                     player.on(vimeoEvent, (data) => dispatch(vimeoEvent, data));
                 });
-            },
+            }
         };
     });
 });
