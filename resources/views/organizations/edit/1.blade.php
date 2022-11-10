@@ -21,7 +21,7 @@
             <h3>{{ __('Organization information') }}</h3>
 
             <div class="field @error('name') field--error @enderror">
-                <x-translatable-input name="name" :model="$organization" :label="__('Organization name')" :shortLabel="__('organization name')"
+                <x-translatable-input name="name" :model="$organization" :label="__('Organization name') . ' ' . __('(required)')" :shortLabel="__('organization name')"
                     :hint="__('This is the name that will show up publicly on your page.')" required />
                 <x-hearth-error for="name" />
             </div>
@@ -56,6 +56,7 @@
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
+                <x-hearth-error for="service_areas" />
             </fieldset>
 
             <fieldset>
