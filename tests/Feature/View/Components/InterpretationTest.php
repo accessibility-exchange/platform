@@ -22,7 +22,7 @@ test('new Interpretation instance', function () {
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee('data-vimeo');
+    $response->assertDontSee('interpretation__video');
 
     $interpretation = Interpretation::firstWhere('name', 'The Accessibility Exchange');
 
@@ -49,7 +49,7 @@ test('existing Interpretation instance', function () {
         'The Accessibility Exchange',
         '</h1>',
         'id="'.Str::slug('The Accessibility Exchange'),
-        'data-vimeo',
+        'interpretation__video',
         $interpretation->getTranslation('video', 'ase'),
     ];
 
@@ -107,7 +107,7 @@ test('in French and LSQ', function () {
         'Le Connecteur pour l’accessibilité',
         '</h1>',
         'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
-        'data-vimeo',
+        'interpretation__video',
         $interpretation->getTranslation('video', 'fcs'),
     ];
 
@@ -130,7 +130,7 @@ test('no Interpretation without sign language translations setting enabled', fun
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee('data-vimeo');
+    $response->assertDontSee('interpretation__video');
 
     $interpretations = Interpretation::all();
 
