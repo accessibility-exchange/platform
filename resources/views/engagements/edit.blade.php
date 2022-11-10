@@ -221,7 +221,6 @@
                 <div class="field__subfield stack">
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
-                    <x-hearth-error for="other_accepted_format" />
                 </div>
             </fieldset>
             <div class="field @error('open_to_other_formats') field--error @enderror">

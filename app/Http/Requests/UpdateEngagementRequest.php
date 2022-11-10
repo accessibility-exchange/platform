@@ -194,19 +194,16 @@ class UpdateEngagementRequest extends FormRequest
                 'boolean',
             ],
             'other_accepted_format' => [
-                'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews' && request('other_accepted_formats')),
-                'array',
+                Rule::excludeIf($this->engagement->format !== 'interviews' || ! request('other_accepted_formats')),
             ],
             'other_accepted_format.en' => [
                 'nullable',
-                'exclude_if:other_accepted_formats,false',
+                'required_without:name.fr',
                 'string',
             ],
             'other_accepted_format.fr' => [
                 'nullable',
-                'exclude_if:other_accepted_formats,false',
+                'required_without:name.en',
                 'string',
             ],
             'open_to_other_formats' => [

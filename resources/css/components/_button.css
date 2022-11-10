@@ -258,7 +258,6 @@ button[aria-disabled="true"] {
     border-color: var(--btn-disabled-border);
     border-style: dashed;
     border-width: var(--border-2);
-    box-shadow: none;
     color: var(--btn-disabled-color);
     cursor: not-allowed;
 }

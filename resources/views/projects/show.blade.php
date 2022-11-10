@@ -49,6 +49,7 @@
                             <button class="secondary" name="unpublish" value="1">{{ __('Unpublish') }}</button>
                         </form>
                     @elseif($project->checkStatus('draft') && $project->isPublishable())
+                        <span class="badge">{{ __('Draft mode') }}</span>
                         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST"
                             novalidate>
                             @csrf

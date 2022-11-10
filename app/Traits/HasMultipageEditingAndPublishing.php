@@ -35,7 +35,7 @@ trait HasMultipageEditingAndPublishing
             ? localized_route($this->getRoutePrefix().'.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step])
             : localized_route($this->getRoutePrefix().'.edit', [$this->getRoutePlaceholder() => $this]);
 
-        if (is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
+        if (is_null($request->input('preview')) && is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
                 flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success');
             } else {
@@ -50,6 +50,8 @@ trait HasMultipageEditingAndPublishing
         } elseif ($request->input('save_and_next')) {
             return redirect(localized_route($this->getRoutePrefix().'.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step + 1]));
         } elseif ($request->input('preview')) {
+            flash(__('You are previewing your :item page.', ['item' => $this->getSingularName()]).' <a href="'.localized_route($this->getRoutePrefix().'.edit', $this).'">'.__('Return to edit mode').'</a>', 'warning');
+
             return redirect(localized_route($this->getRoutePrefix().'.show', $this));
         } elseif ($request->input('publish')) {
             Gate::authorize('publish', $this);

@@ -316,6 +316,8 @@ test('users with regulated organization admin role can edit projects', function 
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
         'outcome_analysis' => $project->outcome_analysis,
+        'outcomes' => ['en' => 'Something.'],
+        'public_outcomes' => true,
         'save' => __('Save'),
     ]);
 
@@ -334,6 +336,8 @@ test('users with regulated organization admin role can edit projects', function 
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
         'outcome_analysis' => $project->outcome_analysis,
+        'outcomes' => ['en' => 'Something.'],
+        'public_outcomes' => true,
         'save_and_next' => __('Save and next'),
     ]);
 
