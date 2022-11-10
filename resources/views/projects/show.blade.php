@@ -54,7 +54,7 @@
                             @csrf
                             @method('PUT')
                             <button class="secondary" name="publish" value="1"
-                                @cannot('publish', $project) disabled @endcannot>{{ __('Publish') }}</button>
+                                @cannot('publish', $project) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         </form>
                     @endif
                     {{-- <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a> --}}

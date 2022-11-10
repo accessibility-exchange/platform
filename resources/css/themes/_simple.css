@@ -146,6 +146,11 @@
     --theme-radio-checked-background: var(--interactive);
     --theme-radio-checked-border: var(--interactive);
 
+    /* Disabled buttons */
+    --theme-btn-disabled-background: var(--bg);
+    --theme-btn-disabled-border: var(--fg);
+    --theme-btn-disabled-color: var(--fg);
+
     /* Primary button */
     --theme-btn-primary-background: var(--interactive);
     --theme-btn-primary-border: var(--interactive);

@@ -54,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
         });
 
+        Blade::directive('ariaDisabled', function () {
+            return "<?php echo 'aria-disabled=\"true\" x-data @click.prevent data-label=\"'.__('not available yet').'\"'; ?>";
+        });
+
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];
         });

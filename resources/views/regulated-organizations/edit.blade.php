@@ -36,7 +36,7 @@
                                 <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                             @endcan
                             <button class="secondary" name="publish" value="1"
-                                @cannot('publish', $regulatedOrganization) disabled @endcannot>{{ __('Publish page') }}</button>
+                                @cannot('publish', $regulatedOrganization) @ariaDisabled @endcannot>{{ __('Publish page') }}</button>
                         </p>
                         <p>{{ __('Once you publish your page, other users on this website can access your page.') }}</p>
                     @else

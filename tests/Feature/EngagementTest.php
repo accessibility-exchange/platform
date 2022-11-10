@@ -469,9 +469,9 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.edit', $engagement));
     if ($expected) {
-        $response->assertDontSee('disabled >', false);
+        $response->assertDontSee('aria-disabled="true"', false);
     } else {
-        $response->assertSee('disabled >', false);
+        $response->assertSee('aria-disabled="true"', false);
     }
 
     $response = $this->actingAs($regulatedOrganizationUser)->put(localized_route('engagements.update', $engagement), array_merge($data, ['publish' => 1]));
