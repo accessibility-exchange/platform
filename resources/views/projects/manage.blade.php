@@ -17,6 +17,12 @@
                     </p>
                     <div class="badge badge--status">{{ $project->status }}</div>
                 </div>
+                @can('update', $project)
+                    <div>
+                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
+                            {{ __('Edit project') }}</a>
+                    </div>
+                @endcan
                 {{-- TODO: cancel project --}}
                 {{-- <div> --}}
                 {{-- <button class="borderless destructive">{{ __('Cancel project') }}</button> --}}

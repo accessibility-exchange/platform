@@ -49,7 +49,7 @@
             </fieldset>
 
             <fieldset class="stack">
-                <legend>{{ __('Relevant experiences') }}</legend>
+                <legend>{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />

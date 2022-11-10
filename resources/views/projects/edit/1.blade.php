@@ -17,8 +17,8 @@
                 <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
 
-            <x-translatable-input name="name" :label="__('Project name (please fill this out)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')"
-                :model="$project" />
+            <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
+                required />
 
             <h3>{{ __('Project goals') }}</h3>
 
@@ -41,6 +41,7 @@
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
+                <x-hearth-error for="regions" />
             </fieldset>
 
             @if ($project->projectable instanceof App\Models\RegulatedOrganization)
@@ -82,6 +83,7 @@
                     <x-translatable-input name="outcome_analysis_other" :label="__('Please indicate who will be going through the results')" :short-label="__('who is going through the results')"
                         :model="$project" x-show="otherOutcomeAnalysis" />
                 </div>
+                <x-hearth-error for="outcome_analysis" />
             </fieldset>
 
             <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.') . ' ' . __('(required)')" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
@@ -93,7 +95,8 @@
                 <x-hearth-hint for="public_outcomes">
                     {{ __('This can mean either on this website, or on your organization’s website.') }}
                 </x-hearth-hint>
-                <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes)" />
+                <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes ?? '')" />
+                <x-hearth-error for="public_outcomes" />
             </fieldset>
 
             <p class="repel">
