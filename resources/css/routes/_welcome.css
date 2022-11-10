@@ -126,3 +126,7 @@
     border-color: var(--regulated-organizations-border);
     color: var(--regulated-organizations-color);
 }
+
+.welcome .back-to-top {
+    margin-block-start: 0;
+}
