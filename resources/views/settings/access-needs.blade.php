@@ -124,7 +124,9 @@
             @endforeach
         </fieldset>
 
-        <fieldset class="field @error('in_person_access_needs') field--error @enderror">
+        <fieldset class="field @error('in_person_access_needs') field--error @enderror" x-data="{
+            bringMySupportPerson: {{ in_array($bringMySupportPerson, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }}
+        }">
             <legend>
                 <h2>{{ __('For in-person meetings') }}</h2>
             </legend>
@@ -132,16 +134,36 @@
             </p>
             @foreach ($inPersonAccessSupports as $option)
                 <div class="field">
-                    <x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"
-                        name="in_person_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
-                            $option['value'],
-                            old('in_person_access_needs', $selectedAccessSupports ?? []),
-                        )" />
+                    @if ($option['value'] === $bringMySupportPerson)
+                        <x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"
+                            name="in_person_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
+                                $option['value'],
+                                old('in_person_access_needs', $selectedAccessSupports ?? []),
+                            )"
+                            x-model="bringMySupportPerson" />
+                    @else<x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"
+                            name="in_person_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
+                                $option['value'],
+                                old('in_person_access_needs', $selectedAccessSupports ?? []),
+                            )" />
+                    @endif
                     <x-hearth-label for="in_person_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
                     </x-hearth-label>
                     @if (isset($option['hint']) && !empty($option['hint']))
                         <x-hearth-hint for="in_person_access_needs-{{ $option['value'] }}">{{ $option['hint'] }}
                         </x-hearth-hint>
+                    @endif
+                    @if ($option['value'] === $bringMySupportPerson)
+                        <div class="stack" x-show="bringMySupportPerson" x-cloak>
+                            <x-card :level="4">
+                                <x-slot name="title">
+                                    {{ __('Notice') }}
+                                </x-slot>
+                                <p>
+                                    {{ __('For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this.') }}
+                                </p>
+                            </x-card>
+                        </div>
                     @endif
                 </div>
             @endforeach

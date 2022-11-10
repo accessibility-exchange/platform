@@ -138,3 +138,7 @@ h5 {
 .text-error {
     color: var(--color-error);
 }
+
+.text-success {
+    color: var(--color-success);
+}

@@ -329,6 +329,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->window_start_time->format('H:i:s'))->toEqual('09:00:00');
     expect($engagement->window_end_time->format('H:i:s'))->toEqual('17:00:00');
+    expect($engagement->meetingTypesIncludes('in_person'))->toBeTrue();
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
     expect($engagement->display_meeting_types)->toContain('Virtual – phone call');

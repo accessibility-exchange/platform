@@ -734,11 +734,18 @@ class EngagementController extends Controller
 
     public function manageAccessNeeds(Engagement $engagement): View
     {
+        $printVersion = AccessSupport::where('name->en', 'Printed version of engagement documents')->first();
+        $additionalConcerns = AccessSupport::where('name->en', 'I would like to speak to someone to discuss additional access needs or concerns')->first();
+
         return view('engagements.manage-access-needs', [
             'project' => $engagement->project,
             'engagement' => $engagement,
+            'participants' => $engagement->participants,
+            'anonymizableAccessNeeds' => $engagement->accessNeeds()->where('anonymizable', true)->get()->unique()->sortBy('name'),
+            'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(fn ($item) => $item->id !== $printVersion->id)->sortBy('name'),
             'invitations' => collect([]),
-            'participants' => collect([]),
+            'printVersion' => $printVersion,
+            'additionalConcerns' => $additionalConcerns,
         ]);
     }
 }
