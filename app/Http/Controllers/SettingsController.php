@@ -71,6 +71,7 @@ class SettingsController extends Controller
             'signLanguageInterpretation' => AccessSupport::where('name->en', 'Sign language interpretation')->first()->id,
             'spokenLanguageInterpretation' => AccessSupport::where('name->en', 'Spoken language interpretation')->first()->id,
             'followUpCallsOrEmails' => AccessSupport::where('name->en', 'Follow-up calls or emails')->first()->id,
+            'bringMySupportPerson' => AccessSupport::where('name->en', 'Bring my support person')->first()->id,
             'inPersonAccessSupports' => Options::forModels(AccessSupport::where([
                 ['in_person', true],
                 ['virtual', false],
