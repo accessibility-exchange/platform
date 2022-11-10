@@ -33,7 +33,7 @@
                                 value="1">{{ __('Unpublish') }}</button>
                         @else
                             <button class="secondary" name="publish" type="submit" value="1"
-                                @if (!Auth::user()->can('publish', $regulatedOrganization)) disabled @endif>{{ __('Publish') }}</button>
+                                @cannot('publish', $regulatedOrganization)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         @endif
                     </form>
                 @endcan

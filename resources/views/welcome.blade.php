@@ -123,6 +123,7 @@
                 </div>
             </article>
         </div>
+        <x-back-to-top width="wide" />
     </main>
 
     @include('layouts.footer')
