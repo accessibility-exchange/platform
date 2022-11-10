@@ -63,7 +63,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>{{ __('What language(s) are you comfortable working in?') }}</legend>
+                <legend>{{ __('What language(s) are you comfortable working in?') }} {{ __('(optional)') }}</legend>
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
