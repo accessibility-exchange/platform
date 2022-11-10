@@ -24,6 +24,7 @@
                 </div>
             </article>
         </div>
+        <x-back-to-top />
     </main>
 
     @include('layouts.footer')

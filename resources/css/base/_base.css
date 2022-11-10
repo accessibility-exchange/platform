@@ -5,14 +5,30 @@ html:focus-within {
 
 body {
     background: var(--body-background);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     min-height: 100vh;
 }
 
 main {
-    padding-block: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block-start: var(--space-8);
+}
+
+main .back-to-top {
+    background-color: var(--content-accent-background);
+    margin-block-start: var(--space-8);
+    padding-block: var(--space-10);
+}
+
+main .back-to-top .center {
+    --gutter: var(--space-4);
+}
+
+main .back-to-top a:visited {
+    color: var(--link-color);
 }
 
 main > .center {
