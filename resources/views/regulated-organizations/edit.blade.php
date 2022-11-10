@@ -60,17 +60,19 @@
                 <fieldset>
                     <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
 
-                    <div class="field">
+                    <div class="field @error('locality') field--error @enderror">
                         <x-hearth-label for="locality" :value="__('forms.label_locality')" />
                         <x-hearth-input id="locality" name="locality" type="text" :value="old('locality', $regulatedOrganization->locality)" required />
+                        <x-hearth-error for="locality" />
                     </div>
-                    <div class="field">
+                    <div class="field @error('region') field--error @enderror">
                         <x-hearth-label for="region" :value="__('forms.label_region')" />
                         <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$nullableRegions" />
+                        <x-hearth-error for="region" />
                     </div>
                 </fieldset>
 
-                <fieldset x-data="enhancedCheckboxes()">
+                <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
                     <legend>{{ __('Where are your organization’s service areas?') . ' ' . __('(required)') }}</legend>
                     <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
                     <div class="stack" x-cloak>
@@ -79,6 +81,7 @@
                         <button class="secondary" type="button"
                             x-on:click="selectNone()">{{ __('Select none') }}</button>
                     </div>
+                    <x-hearth-error for="service_areas" />
                 </fieldset>
 
                 <fieldset class="field @error('sectors') field--error @enderror">
