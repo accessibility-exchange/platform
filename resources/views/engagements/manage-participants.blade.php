@@ -102,7 +102,7 @@
                                     @endif
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'email')
-                                    <p class="flex items-center gap-1 text-green-7">
+                                    <p class="text-success flex items-center gap-1">
                                         @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
@@ -120,7 +120,7 @@
                                     @endif
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'phone')
-                                    <p class="flex items-center gap-1 text-green-7">
+                                    <p class="text-success flex items-center gap-1">
                                         @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>

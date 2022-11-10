@@ -91,8 +91,6 @@
         @endcan
     </x-slot>
 
-    <hr />
-
     <x-language-changer :model="$project" />
 
     <div class="stack mb-12 w-full md:w-2/3">
