@@ -120,7 +120,8 @@
                                     'social_links.' . $key,
                                     $regulatedOrganization->social_links[$key] ?? '',
                                 )" />
-                            <x-hearth-error for="social_links_{{ $key }}" />
+                            <x-hearth-error for="social_links_{{ $key }}"
+                                field="social_links.{{ $key }}" />
                         </div>
                     @endforeach
                 </fieldset>

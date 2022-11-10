@@ -80,9 +80,15 @@ class UpdateOrganizationRequest extends FormRequest
 
     public function messages(): array
     {
-        return [
+        $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
             'about.*.required_without' => __('You must fill out the field “About your organization”.'),
         ];
+
+        foreach ($this->social_links as $key => $value) {
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+        }
+
+        return $messages;
     }
 }

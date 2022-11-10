@@ -69,15 +69,14 @@ class UpdateIndividualRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
-        return [
-            'social_links.*.active_url' => __('You must enter a valid website address.'),
-        ];
+        $messages = [];
+
+        foreach ($this->social_links as $key => $value) {
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+        }
+
+        return $messages;
     }
 }

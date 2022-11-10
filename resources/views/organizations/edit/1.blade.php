@@ -87,7 +87,8 @@
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $organization->social_links[$key] ?? '')" />
-                        <x-hearth-error for="social_links_{{ $key }}" />
+                        <x-hearth-error for="social_links_{{ $key }}"
+                            field="social_links.{{ $key }}" />
                     </div>
                 @endforeach
             </fieldset>
