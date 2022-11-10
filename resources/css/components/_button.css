@@ -27,14 +27,14 @@ button:focus {
     outline: transparent;
 }
 
-button:hover {
+button:hover:not([aria-disabled="true"]) {
     background: var(--btn-primary-background-hover);
     border-color: var(--btn-primary-border-hover);
     color: var(--btn-primary-color-hover);
 }
 
-button:active,
-button:focus:active {
+button:active:not([aria-disabled="true"]),
+button:focus:active:not([aria-disabled="true"]) {
     background: var(--btn-primary-background-active);
     border-color: var(--btn-primary-border-active);
     box-shadow: none;
@@ -52,7 +52,7 @@ button.destructive {
     color: var(--btn-destructive-color);
 }
 
-button.destructive:hover {
+button.destructive:hover:not([aria-disabled="true"]) {
     background: var(--btn-destructive-background-hover);
     border-color: var(--btn-destructive-border-hover);
     color: var(--btn-destructive-color-hover);
@@ -66,8 +66,8 @@ button.destructive:focus {
     outline: transparent;
 }
 
-button.destructive:active,
-button.destructive:focus:active {
+button.destructive:active:not([aria-disabled="true"]),
+button.destructive:focus:active:not([aria-disabled="true"]) {
     background: var(--btn-destructive-background-active);
     border-color: var(--btn-destructive-border-active);
     box-shadow: none;
@@ -81,8 +81,8 @@ button.destructive:focus:active {
     color: var(--btn-dark-primary-color);
 }
 
-.dark button:hover,
-.darker button:hover {
+.dark button:hover:not([aria-disabled="true"]),
+.darker button:hover:not([aria-disabled="true"]) {
     background: var(--btn-dark-primary-background-hover);
     border-color: var(--btn-dark-primary-border-hover);
     color: var(--btn-dark-primary-color-hover);
@@ -96,10 +96,10 @@ button.destructive:focus:active {
     --bg: var(--content-darker-background);
 }
 
-.dark button:active,
-.dark button:focus:active,
-.darker button:active,
-.darker button:focus:active {
+.dark button:active:not([aria-disabled="true"]),
+.dark button:focus:active:not([aria-disabled="true"]),
+.darker button:active:not([aria-disabled="true"]),
+.darker button:focus:active:not([aria-disabled="true"]) {
     background: var(--btn-dark-primary-background-active);
     border-color: var(--btn-dark-primary-border-active);
     box-shadow: none;
@@ -135,14 +135,14 @@ button.secondary:focus {
     outline: transparent;
 }
 
-button.secondary:hover {
+button.secondary:hover:not([aria-disabled="true"]) {
     background-color: var(--btn-secondary-background-hover);
     border-color: var(--btn-secondary-border-hover);
     color: var(--btn-secondary-color-hover);
 }
 
-button.secondary:active,
-button.secondary:focus:active {
+button.secondary:active:not([aria-disabled="true"]),
+button.secondary:focus:active:not([aria-disabled="true"]) {
     background-color: var(--btn-secondary-background-active);
     border-color: var(--btn-secondary-border-active);
     box-shadow: none;
@@ -170,7 +170,7 @@ button.destructive.secondary {
     width: auto;
 }
 
-button.destructive.secondary:hover {
+button.destructive.secondary:hover:not([aria-disabled="true"]) {
     background-color: var(--btn-destructive-secondary-background-hover);
     border-color: var(--btn-destructive-secondary-border-hover);
     color: var(--btn-destructive-secondary-color-hover);
@@ -184,8 +184,8 @@ button.destructive.secondary:focus {
     outline: transparent;
 }
 
-button.destructive.secondary:active,
-button.destructive.secondary:focus:active {
+button.destructive.secondary:active:not([aria-disabled="true"]),
+button.destructive.secondary:focus:active:not([aria-disabled="true"]) {
     background-color: var(--btn-destructive-secondary-background-active);
     border-color: var(--btn-destructive-secondary-border-active);
     box-shadow: none;
@@ -251,4 +251,18 @@ button.borderless.destructive:focus:active {
     background-color: var(--btn-destructive-borderless-background-active);
     box-shadow: none;
     color: var(--btn-destructive-borderless-color-active);
+}
+
+button[aria-disabled="true"] {
+    background: var(--btn-disabled-background);
+    border-color: var(--btn-disabled-border);
+    border-style: dashed;
+    border-width: var(--border-2);
+    box-shadow: none;
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+}
+
+button[aria-disabled="true"]::after {
+    content: " (" attr(data-label) ")";
 }

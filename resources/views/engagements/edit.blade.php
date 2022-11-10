@@ -291,10 +291,7 @@
             <button>{{ __('Save') }}</button>
             @if ($engagement->checkStatus('draft'))
                 <button class="secondary" name="publish" value="1"
-                    @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
-                        ({{ __('not available yet') }})
-                    @endif
-                </button>
+                    @cannot('publish', $engagement) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
             @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())
