@@ -22,6 +22,10 @@
                         <span id="individual">{{ $individual->name }}</span>
                     </h1>
 
+                    @if ($individual->checkStatus('draft'))
+                        <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                    @endif
+
                     @can('update', $individual)
                         <form action="{{ localized_route('individuals.update-publication-status', $individual) }}"
                             method="POST" novalidate>
