@@ -16,8 +16,13 @@
             @endpush
         @endif
         <div class="stack">
-            <h1 class="repel" id="regulated-organization">
-                {{ $organization->getWrittenTranslation('name', $language) }}
+            <div class="repel">
+                <h1 id="organization">
+                    {{ $organization->getWrittenTranslation('name', $language) }}
+                </h1>
+                @if ($organization->checkStatus('draft'))
+                    <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                @endif
                 @can('update', $organization)
                     <form action="{{ localized_route('organizations.update-publication-status', $organization) }}"
                         method="POST" novalidate>
@@ -33,7 +38,7 @@
                         @endif
                     </form>
                 @endcan
-            </h1>
+            </div>
             <p class="meta">
                 <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
                 @foreach ($organization->roles as $role)
@@ -98,7 +103,7 @@
     <x-language-changer :model="$organization" />
 
     <div class="with-sidebar">
-        <nav class="secondary" aria-labelledby="regulated-organization">
+        <nav class="secondary" aria-labelledby="organization">
             <ul role="list">
                 <li>
                     <x-nav-link :href="localized_route('organizations.show', $organization)" :active="request()->localizedRouteIs('organizations.show')">{{ __('About') }}</x-nav-link>

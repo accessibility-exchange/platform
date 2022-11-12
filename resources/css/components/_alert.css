@@ -1,6 +1,7 @@
 /* This file contains all styles related to the alert component. */
 .alert {
     --btn-borderless-color: var(--alert-color);
+    --btn-borderless-color-focus: var(--alert-color);
 
     background: var(--alert-background);
     border: var(--border) solid var(--alert-border);
@@ -50,6 +51,9 @@
 
 .alert--error {
     --btn-borderless-color: var(--alert-color-error);
+    --btn-borderless-color-focus: var(--alert-color-error);
+    --link-color: var(--alert-color-error);
+    --link-color-visited: var(--alert-color-error);
 
     background: var(--alert-background-error);
     border-color: var(--alert-border-error);
@@ -58,6 +62,9 @@
 
 .alert--warning {
     --btn-borderless-color: var(--alert-color-warning);
+    --btn-borderless-color-focus: var(--alert-color-warning);
+    --link-color: var(--alert-color-warning);
+    --link-color-visited: var(--alert-color-warning);
 
     background: var(--alert-background-warning);
     border-color: var(--alert-border-warning);
@@ -66,6 +73,9 @@
 
 .alert--success {
     --btn-borderless-color: var(--alert-color-success);
+    --btn-borderless-color-focus: var(--alert-color-success);
+    --link-color: var(--alert-color-success);
+    --link-color-visited: var(--alert-color-success);
 
     background: var(--alert-background-success);
     border-color: var(--alert-border-success);

@@ -6,6 +6,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Models\Sector;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -119,16 +120,23 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'about.en' => __('"About your organization" (English)'),
             'accessibility_and_inclusion_links.*.title' => __('accessibility and inclusion link title'),
             'accessibility_and_inclusion_links.*.url' => __('accessibility and inclusion link'),
+            'social_links.*.active_url' => __(''),
         ];
     }
 
     public function messages(): array
     {
-        return [
+        $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
             'accessibility_and_inclusion_links.*.title.required_with' => __('Since a website link under “Accessibility and Inclusion links” has been entered, you must also enter a website title.'),
             'accessibility_and_inclusion_links.*.url.required_with' => __('Since a website title under “Accessibility and Inclusion links” has been entered, you must also enter a website link.'),
             'accessibility_and_inclusion_links.*.url.active_url' => __('Please enter a valid website link under “Accessibility and Inclusion links”.'),
         ];
+
+        foreach ($this->social_links as $key => $value) {
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+        }
+
+        return $messages;
     }
 }
