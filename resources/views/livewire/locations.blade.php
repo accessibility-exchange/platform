@@ -12,7 +12,7 @@
                             <x-hearth-error :for="$name . '_' . $i . '_region'" :field="$name . '.' . $i . '.region'" />
                         </div>
 
-                        <div class="field @error("{$name}.{$i}.locality") field-error @enderror">
+                        <div class="field @error("{$name}.{$i}.locality") field--error @enderror">
                             <x-hearth-label :for="$name . '_' . $i . '_locality'" :value="__('City or town') . ' ' . __('(required)')" />
                             <x-hearth-input :id="$name . '_' . $i . '_locality'" :name="$name . '[' . $i . '][locality]'" :value="$location['locality'] ?? ''" required />
                             <x-hearth-error :for="$name . '_' . $i . '_locality'" :field="$name . '.' . $i . '.locality'" />
