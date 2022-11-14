@@ -1,0 +1,18 @@
+.notification {
+    @apply relative px-20 py-6;
+
+    background-color: var(--box-background);
+    box-shadow: var(--card-shadow);
+    color: var(--box-color);
+}
+
+.notification-dot {
+    align-items: center;
+    background-color: var(--interactive, var(--color-magenta-3));
+    border-radius: var(--radius-full);
+    color: var(--bg, var(--color-black));
+    display: inline-flex;
+    height: var(--space-5);
+    justify-content: center;
+    width: var(--space-5);
+}

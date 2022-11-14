@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ConsultationPhase;
+use App\Enums\ResourceFormat;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
@@ -112,6 +114,15 @@ test('users can not delete resources belonging to others', function () {
     $response->assertForbidden();
 });
 
+test('users can view resources', function () {
+    $user = User::factory()->create();
+    $resource = Resource::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('resources.index'));
+    $response->assertOk();
+    $response->assertSee($resource->title);
+});
+
 test('single resource can be in many resource collections', function () {
     $resource = Resource::factory()->create();
 
@@ -156,4 +167,17 @@ test('resources have slugs in both languages even if only one is provided', func
     $resource = Resource::factory()->create(['title' => ['fr' => 'Mon ressource']]);
     expect($resource->getTranslation('slug', 'en', false))
         ->toEqual($resource->getTranslation('slug', 'fr', false));
+});
+
+test('resource formats can be displayed', function () {
+    $resource = Resource::factory()->create(['formats' => ['pdf']]);
+    expect($resource->display_formats)->toContain(ResourceFormat::labels()['pdf']);
+});
+
+test('resource phases can be displayed', function () {
+    $resource = Resource::factory()->create(['phases' => ['design']]);
+    expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
+
+    expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
+    expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
 });

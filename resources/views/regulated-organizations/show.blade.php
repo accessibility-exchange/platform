@@ -18,6 +18,9 @@
         <div class="stack">
             <h1 class="repel" id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
+                @if ($regulatedOrganization->checkStatus('draft'))
+                    <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                @endif
                 @can('update', $regulatedOrganization)
                     <form
                         action="{{ localized_route('regulated-organizations.update-publication-status', $regulatedOrganization) }}"
@@ -30,7 +33,7 @@
                                 value="1">{{ __('Unpublish') }}</button>
                         @else
                             <button class="secondary" name="publish" type="submit" value="1"
-                                @if (!Auth::user()->can('publish', $regulatedOrganization)) disabled @endif>{{ __('Publish') }}</button>
+                                @cannot('publish', $regulatedOrganization)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         @endif
                     </form>
                 @endcan

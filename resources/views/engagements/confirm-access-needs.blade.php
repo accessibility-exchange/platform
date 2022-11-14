@@ -34,7 +34,7 @@
         </ul>
 
         @if (Auth::user()->individual->accessSupports->where('anonymizable', false)->count())
-            <div class="box stack bg-grey-2">
+            <div class="box stack">
                 <h2>{{ __('What we need your permission to share') }}</h2>
                 <p>{{ __('In order for :projectable to meet the following access needs, they will need to know who requested them. Do you give us permission to share that it was you who requested the following access needs?', ['projectable' => $project->projectable->name]) }}
                 </p>

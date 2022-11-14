@@ -111,7 +111,7 @@
                     <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
                         :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('in_person')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
                         <div class="field @error('street_address') field--error @enderror">
                             <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
                             <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $engagement->street_address)" required />
@@ -149,7 +149,7 @@
                         :checked="in_array('web_conference', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('web_conference')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
                         <div class="field @error('meeting_software') field--error @enderror">
                             <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
                             <x-hearth-hint for="meeting_software">
@@ -183,7 +183,7 @@
                     <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone"
                         :checked="in_array('phone', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('phone')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
                         <div class="field @error('meeting_phone') field-error @enderror">
                             <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
                             <x-hearth-hint for="meeting_phone">
@@ -221,7 +221,6 @@
                 <div class="field__subfield stack">
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
-                    <x-hearth-error for="other_accepted_format" />
                 </div>
             </fieldset>
             <div class="field @error('open_to_other_formats') field--error @enderror">
@@ -291,10 +290,7 @@
             <button>{{ __('Save') }}</button>
             @if ($engagement->checkStatus('draft'))
                 <button class="secondary" name="publish" value="1"
-                    @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
-                        ({{ __('not available yet') }})
-                    @endif
-                </button>
+                    @if (!$engagement->isPublishable()) @ariaDisabled @endif>{{ __('Publish') }}</button>
             @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())

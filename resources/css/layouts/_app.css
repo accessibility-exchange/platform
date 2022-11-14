@@ -21,3 +21,7 @@
     position: relative;
     width: 100vw;
 }
+
+.nav--tabbed > div {
+    margin-block-end: calc(-1 * var(--border));
+}

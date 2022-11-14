@@ -11,7 +11,7 @@
 }
 
 .modal {
-    background: white;
+    background: var(--body-background);
     border: var(--border);
     border-radius: var(--radius-sm);
     display: block;

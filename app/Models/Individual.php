@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EngagementFormat;
 use App\Enums\IndividualRole;
 use App\Models\Scopes\IndividualUserNotSuspendedScope;
 use App\Traits\HasDisplayRegion;
@@ -86,6 +87,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'street_address',
         'unit_apartment_suite',
         'postal_code',
+        'consulting_methods',
     ];
 
     protected $casts = [
@@ -106,6 +108,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'meeting_types' => 'array',
         'birth_date' => 'datetime:Y-m-d',
         'other_access_need' => 'array',
+        'consulting_methods' => 'array',
     ];
 
     public array $translatable = [
@@ -224,11 +227,6 @@ class Individual extends Model implements CipherSweetEncrypted
     public function paymentTypes(): BelongsToMany
     {
         return $this->belongsToMany(PaymentType::class);
-    }
-
-    public function consultingMethods(): BelongsToMany
-    {
-        return $this->belongsToMany(ConsultingMethod::class);
     }
 
     public function constituencies(): BelongsToMany
@@ -519,6 +517,13 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return Attribute::make(
             get: fn ($value) => array_map(fn ($role) => IndividualRole::labels()[$role], $this->roles),
+        );
+    }
+
+    public function displayConsultingMethods(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => array_map(fn ($method) => EngagementFormat::labels()[$method], $this->consulting_methods),
         );
     }
 }

@@ -17,6 +17,12 @@
                     </p>
                     <div class="badge badge--status">{{ $project->status }}</div>
                 </div>
+                @can('update', $project)
+                    <div>
+                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
+                            {{ __('Edit project') }}</a>
+                    </div>
+                @endcan
                 {{-- TODO: cancel project --}}
                 {{-- <div> --}}
                 {{-- <button class="borderless destructive">{{ __('Cancel project') }}</button> --}}
@@ -59,9 +65,9 @@
 
         <x-manage-grid>
             <x-manage-columns class="col-start-1 col-end-2">
+                {{-- TODO: manage participant selection criteria
                 <x-manage-section :title="__('Participant selection criteria')">
-                    {{-- TODO: manage participant selection criteria --}}
-                </x-manage-section>
+                </x-manage-section> --}}
             </x-manage-columns>
             <x-manage-columns class="col-start-2 col-end-4">
                 <x-manage-section :title="__('Engagement')">
@@ -77,7 +83,7 @@
                     @forelse($project->allEngagements as $engagement)
                         <x-card.engagement :model="$engagement" :level="4" />
                     @empty
-                        <div class="box stack bg-grey-2">
+                        <div class="box box--alt stack">
                             <p>{{ __('You have not added any engagements yet.') }}</p>
                             <p>
                                 <a class="cta secondary"

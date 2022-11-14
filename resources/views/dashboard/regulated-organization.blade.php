@@ -1,10 +1,17 @@
 <div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
-        @can('view', $memberable)
+        @can('update', $memberable)
             <li>
                 <a
-                    href="{{ $memberable->checkStatus('draft') && $user->can('edit', $memberable) ? localized_route('regulated-organizations.edit', $memberable) : localized_route('regulated-organizations.show', $memberable) }}">{{ __('My organization’s page') }}</a>
+                    href="{{ localized_route('regulated-organizations.edit', $memberable) }}">{{ __('My organization’s page') }}</a>
             </li>
+        @else
+            @can('view', $memberable)
+                <li>
+                    <a
+                        href="{{ localized_route('regulated-organizations.show', $memberable) }}">{{ __('My organization’s page') }}</a>
+                </li>
+            @endcan
         @endcan
         @can('viewAny', App\Models\Project::class)
             <li>

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Resource;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -47,6 +48,8 @@ class DevSeeder extends Seeder
                 'email_verified_at' => now(),
                 'context' => 'organization',
             ]);
+
+        Resource::factory()->count(10)->create();
 
         $this->call([
             TestDataSeeder::class,

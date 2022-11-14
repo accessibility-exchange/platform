@@ -141,6 +141,24 @@ if (! function_exists('get_written_language_for_signed_language')) {
     }
 }
 
+if (! function_exists('get_signed_language_for_written_language')) {
+    /**
+     * Get the signed language which most closely corresponds to a written language.
+     *
+     * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
+     *
+     * @param  string  $code An ISO 639 code.
+     * @return string
+     */
+    function get_signed_language_for_written_language(string $code): string
+    {
+        return match ($code) {
+            'fr' => 'fcs',
+            default => 'ase',
+        };
+    }
+}
+
 if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
