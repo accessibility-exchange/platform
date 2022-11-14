@@ -25,6 +25,7 @@
     <div class="-mb-8 space-y-16">
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) !!}</h2>
+            <x-interpretation name="{{ __('What experiences should I have to be a :role?', [], 'en') }}" />
             <x-media-text>
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
@@ -43,6 +44,7 @@
 
         <x-section class="stack:lg" aria-labelledby="how">
             <h2 class="text-center" id="how">{!! __('How does being a :role work?', ['role' => __('Community Connector')]) !!}</h2>
+            <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
             <x-media-text>
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
@@ -101,6 +103,7 @@
             <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>

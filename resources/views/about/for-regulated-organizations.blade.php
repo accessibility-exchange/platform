@@ -16,6 +16,7 @@
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
+                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
             </div>
 
             <x-media-text>
@@ -90,6 +91,7 @@
             <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                     <div class="grid">
                         <div class="stack">
                             <h3 class="h4">{{ __('Sign up online') }}</h3>
