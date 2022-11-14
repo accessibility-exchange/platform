@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\LaravelOptions\Options;
 use Spatie\Translatable\HasTranslations;
 
 class Question extends Model
@@ -37,9 +36,4 @@ class Question extends Model
     {
         return $this->hasMany(Choice::class);
     }
-
-    // public function getChoices()
-    // {
-    //     return Options::forArray($this->choices()->pluck('value', 'label'))->toArray();
-    // }
 }
