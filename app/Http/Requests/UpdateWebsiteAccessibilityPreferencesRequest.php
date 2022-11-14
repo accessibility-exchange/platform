@@ -18,7 +18,7 @@ class UpdateWebsiteAccessibilityPreferencesRequest extends FormRequest
         return [
             'theme' => ['required', new Enum(Theme::class)],
             'text_to_speech' => 'required|boolean',
-            'sign_language_translations' => 'nullable|string|in:ase,fcs',
+            'sign_language_translations' => 'nullable|boolean',
         ];
     }
 }

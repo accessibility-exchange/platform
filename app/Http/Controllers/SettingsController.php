@@ -320,10 +320,6 @@ class SettingsController extends Controller
         return view('settings.website-accessibility-preferences', [
             'user' => Auth::user(),
             'themes' => Options::forEnum(Theme::class)->toArray(),
-            'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
-            ])->nullable(__('Off'))->toArray(),
         ]);
     }
 

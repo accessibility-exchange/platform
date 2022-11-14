@@ -1,0 +1,17 @@
+.interpretation {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.interpretation__video {
+    width: 100%;
+}
+
+.interpretation.interpretation--end {
+    align-items: flex-end;
+}
+
+.interpretation.interpretation--start {
+    align-items: flex-start;
+}
