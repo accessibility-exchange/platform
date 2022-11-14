@@ -14,7 +14,8 @@
 
 .dark {
     --heading-color: var(--content-dark-color);
-    --btn-borderless-color: var(--content-dark-color);
+    --btn-borderless-color: var(--interactive, var(--link-dark-color));
+    --btn-borderless-color-focus: var(--interactive, var(--link-dark-color));
 
     background-color: var(--content-dark-background);
     color: var(--content-dark-color);
@@ -22,7 +23,8 @@
 
 .darker {
     --heading-color: var(--content-darker-color);
-    --btn-borderless-color: var(--content-dark-color);
+    --btn-borderless-color: var(--interactive, var(--link-dark-color));
+    --btn-borderless-color-focus: var(--interactive, var(--link-dark-color));
 
     background-color: var(--content-darker-background);
     color: var(--content-darker-color);
@@ -123,4 +125,8 @@
     background-color: var(--regulated-organizations-background);
     border-color: var(--regulated-organizations-border);
     color: var(--regulated-organizations-color);
+}
+
+.welcome .back-to-top {
+    margin-block-start: 0;
 }

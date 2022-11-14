@@ -6,6 +6,7 @@ use App\Enums\ConsultingService;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -69,15 +70,14 @@ class UpdateIndividualRequest extends FormRequest
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
+    public function messages(): array
     {
-        return [
-            'social_links.*.active_url' => __('You must enter a valid website address.'),
-        ];
+        $messages = [];
+
+        foreach ($this->social_links as $key => $value) {
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+        }
+
+        return $messages;
     }
 }

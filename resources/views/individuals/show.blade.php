@@ -22,6 +22,10 @@
                         <span id="individual">{{ $individual->name }}</span>
                     </h1>
 
+                    @if ($individual->checkStatus('draft'))
+                        <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                    @endif
+
                     @can('update', $individual)
                         <form action="{{ localized_route('individuals.update-publication-status', $individual) }}"
                             method="POST" novalidate>
@@ -33,7 +37,7 @@
                                     value="1">{{ __('Unpublish') }}</button>
                             @else
                                 <button class="secondary" name="publish" type="submit" value="1"
-                                    @if (!Auth::user()->can('publish', $individual)) disabled @endif>{{ __('Publish') }}</button>
+                                    @cannot('publish', $individual)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                             @endif
                         </form>
                     @endcan

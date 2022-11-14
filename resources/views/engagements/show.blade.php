@@ -91,8 +91,6 @@
         @endcan
     </x-slot>
 
-    <hr />
-
     <x-language-changer :model="$project" />
 
     <div class="stack mb-12 w-full md:w-2/3">
@@ -152,18 +150,18 @@
                     <li class="flex items-center">
                         @switch($engagement->weekday_availabilities[$key])
                             @case('no')
-                                @svg('heroicon-s-x-circle', 'mr-2 text-red-6')
+                                @svg('heroicon-s-x-circle', 'mr-2 icon--red')
                                 <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('not available') }}</span>
                             @break
 
                             @case('upon-request')
-                                @svg('heroicon-s-question-mark-circle', 'mr-2 text-yellow-3') <span><span class="font-semibold">{{ $day }}</span> —
+                                @svg('heroicon-s-question-mark-circle', 'mr-2 icon--yellow') <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('upon request') }}</span>
                             @break
 
                             @default
-                                @svg('heroicon-s-check-circle', 'mr-2 text-green-5')
+                                @svg('heroicon-s-check-circle', 'mr-2 icon--green')
                                 <span><span class="font-semibold">{{ $day }}</span> — {{ __('available') }}</span>
                         @endswitch
                     </li>

@@ -8,6 +8,7 @@ import confirmPassword from "./confirmPassword.js";
 import dateInput from "./dateInput.js";
 import enhancedCheckboxes from "./enhancedCheckboxes.js";
 import modal from "./modal.js";
+import "./vimeoPlayer.js";
 
 window.Alpine = Alpine;
 Alpine.data("confirmPassword", confirmPassword);

@@ -221,7 +221,6 @@
                 <div class="field__subfield stack">
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
-                    <x-hearth-error for="other_accepted_format" />
                 </div>
             </fieldset>
             <div class="field @error('open_to_other_formats') field--error @enderror">
@@ -291,10 +290,7 @@
             <button>{{ __('Save') }}</button>
             @if ($engagement->checkStatus('draft'))
                 <button class="secondary" name="publish" value="1"
-                    @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
-                        ({{ __('not available yet') }})
-                    @endif
-                </button>
+                    @if (!$engagement->isPublishable()) @ariaDisabled @endif>{{ __('Publish') }}</button>
             @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())

@@ -49,12 +49,13 @@
                             <button class="secondary" name="unpublish" value="1">{{ __('Unpublish') }}</button>
                         </form>
                     @elseif($project->checkStatus('draft') && $project->isPublishable())
+                        <span class="badge">{{ __('Draft mode') }}</span>
                         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST"
                             novalidate>
                             @csrf
                             @method('PUT')
                             <button class="secondary" name="publish" value="1"
-                                @cannot('publish', $project) disabled @endcannot>{{ __('Publish') }}</button>
+                                @cannot('publish', $project) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         </form>
                     @endif
                     {{-- <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a> --}}

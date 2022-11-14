@@ -128,6 +128,7 @@ test('meetings can be edited', function () {
     $engagement = $engagement->fresh();
     expect($meeting->meeting_types)->toHaveCount(3);
     expect($engagement->meeting_dates)->toEqual('December 6–15, 2022');
+    expect($engagement->meetingTypesIncludes('in_person'))->toBeTrue();
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });

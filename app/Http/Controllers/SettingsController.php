@@ -71,6 +71,7 @@ class SettingsController extends Controller
             'signLanguageInterpretation' => AccessSupport::where('name->en', 'Sign language interpretation')->first()->id,
             'spokenLanguageInterpretation' => AccessSupport::where('name->en', 'Spoken language interpretation')->first()->id,
             'followUpCallsOrEmails' => AccessSupport::where('name->en', 'Follow-up calls or emails')->first()->id,
+            'bringMySupportPerson' => AccessSupport::where('name->en', 'Bring my support person')->first()->id,
             'inPersonAccessSupports' => Options::forModels(AccessSupport::where([
                 ['in_person', true],
                 ['virtual', false],
@@ -319,10 +320,6 @@ class SettingsController extends Controller
         return view('settings.website-accessibility-preferences', [
             'user' => Auth::user(),
             'themes' => Options::forEnum(Theme::class)->toArray(),
-            'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
-            ])->nullable(__('Off'))->toArray(),
         ]);
     }
 

@@ -18,7 +18,7 @@
                     <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                 @endcan
                 <button name="publish" value="1"
-                    @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
+                    @cannot('publish', $project) @ariaDisabled @endcannot>{{ __('Publish page') }}</button>
                 <p>{{ __('You must attend an orientation session before you can publish your projects.') }}</p>
             </div>
         @else
