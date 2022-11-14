@@ -11,10 +11,12 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+    // public function index()
+    // {
+    //     return view('courses.index', [
+    //         'courses' => Course::all(),
+    //     ]);
+    // }
 
     /**
      * Display the specified resource.
@@ -22,8 +24,13 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
-    {
-        //
-    }
+    // public function show(Course $course)
+    // {
+    //     return view('courses.show', [
+    //         'title' => $course->title,
+    //         'video' => $course->video,
+    //         'introduction' => $course->introduction,
+    //         'modules' => $course->modules,
+    //     ]);
+    // }
 }

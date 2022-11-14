@@ -12,8 +12,8 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
-    {
-        //
-    }
+    // public function show(Question $question)
+    // {
+    //     //
+    // }
 }
