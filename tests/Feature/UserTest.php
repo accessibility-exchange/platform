@@ -363,9 +363,9 @@ test('user email with mixed case is saved as lower case', function () {
 
 test('user has pivot tables for module, course and quiz', function () {
     $user = User::factory()->create();
-    $module = Module::factory()->create();
-    $quiz = Quiz::factory()->for($module)->create();
     $course = Course::factory()->create();
+    $module = Module::factory()->for($course)->create();
+    $quiz = Quiz::factory()->for($module)->create();
 
     $user->modules()->sync($module->id);
     $user->quizzes()->sync($quiz->id);
