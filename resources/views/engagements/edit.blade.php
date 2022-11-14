@@ -42,8 +42,8 @@
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <livewire:date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="window_end_date" :label="__('End date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
 
             <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
@@ -204,8 +204,8 @@
             <p>{{ __('Some participants may not be able to meet in real-time. For them, you can send out a list of questions, and participants can respond to them in formats you accept.') }}
             </p>
             <h4>{{ __('Dates') }}</h4>
-            <livewire:date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <fieldset
                 class="field @error('accepted_formats') field--error @enderror @error('other_accepted_formats') field--error @enderror @error('other_accepted_format') field--error @enderror stack"
                 x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !empty($engagement->other_accepted_format)) ? 1 : 'null' }} }">
@@ -239,8 +239,8 @@
             <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}
             </h2>
             <h3>{{ __('Date') }}</h3>
-            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-input name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
             <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
@@ -273,7 +273,7 @@
             <h2>{{ __('Sign up deadline') }}</h2>
 
             <div class="field @error('signup_by_date') field--error @enderror">
-                <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
+                <x-date-input name="signup_by_date" :label="$engagement->recruitment === 'open'
                     ? __('Participants must sign up for this engagement by the following date') .
                         ' ' .
                         __('(required)') .

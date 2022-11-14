@@ -29,7 +29,7 @@
         <h2>{{ __('Time and date') }}</h2>
 
         <div class="field">
-            <livewire:date-picker name="date" :label="__('Date') . ' ' . __('(required)')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
+            <x-date-input name="date" :label="__('Date') . ' ' . __('(required)')" :minimumYear="date('Y')" :value="old('date', $meeting->date?->format('Y-m-d'))" />
         </div>
         <fieldset class="mt-12">
             <legend>{{ __('Time') . ' ' . __('(required)') }}</legend>
