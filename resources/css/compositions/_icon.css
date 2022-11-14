@@ -22,6 +22,18 @@
     color: var(--fg, var(--color-blue-5));
 }
 
+.icon--red {
+    color: var(--fg, var(--color-red-6));
+}
+
+.icon--green {
+    color: var(--fg, var(--color-green-5));
+}
+
+.icon--yellow {
+    color: var(--fg, var(--color-yellow-3));
+}
+
 .with-icon {
     align-items: center;
     display: inline-flex;
