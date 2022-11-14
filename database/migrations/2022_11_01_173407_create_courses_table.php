@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('course_id');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('organization_id')->nullable();
             $table->json('title');
             $table->json('introduction');
             $table->json('video')->nullable();

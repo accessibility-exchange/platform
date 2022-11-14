@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_module', function (Blueprint $table) {
+        Schema::create('quiz_user', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->dateTime('started_content_at')->nullable();
-            $table->dateTime('finished_content_at')->nullable();
-            $table->dateTime('completed_at')->nullable();
+            $table->integer('attempts')->nullable();
+            $table->json('answers')->nullable();
+            $table->float('score')->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('module_id')
+            $table->foreignId('quiz_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_module');
+        Schema::dropIfExists('quiz_user');
     }
 };

@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quiz_id');
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('module_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignId('course_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->timestamps();
             $table->float('minimum_score');
             $table->json('title')->nullable();

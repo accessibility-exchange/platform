@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_course', function (Blueprint $table) {
+        Schema::create('module_user', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->dateTime('started_at')->nullable();
-            $table->dateTime('finished_at')->nullable();
-            $table->dateTime('received_certificate_at')->nullable();
+            $table->dateTime('started_content_at')->nullable();
+            $table->dateTime('finished_content_at')->nullable();
+            $table->dateTime('completed_at')->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->foreignId('course_id')
+            $table->foreignId('module_id')
                 ->constrained()
                 ->onDelete('cascade');
         });
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_course');
+        Schema::dropIfExists('module_user');
     }
 };
