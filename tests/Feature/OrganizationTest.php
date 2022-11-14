@@ -6,6 +6,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
+use App\Models\Course;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
@@ -1104,4 +1105,14 @@ test('organizations have slugs in both languages even if only one is provided', 
     $organization = Organization::factory()->create(['name' => ['fr' => 'Mon entreprise']]);
     expect($organization->getTranslation('slug', 'en', false))
         ->toEqual($organization->getTranslation('slug', 'fr', false));
+});
+
+test('organization can have many courses', function () {
+    $organization = Organization::factory()->create();
+
+    $courseOne = Course::factory()->for($organization)->create();
+    $courseOne = Course::factory()->for($organization)->create();
+
+    expect($organization->courses->contains($courseOne))->toBeTrue();
+    expect($organization->courses->contains($courseOne))->toBeTrue();
 });

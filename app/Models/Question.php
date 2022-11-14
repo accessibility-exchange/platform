@@ -38,8 +38,8 @@ class Question extends Model
         return $this->hasMany(Choice::class);
     }
 
-    public function getChoices()
-    {
-        return Options::forArray($this->choices()->pluck('value', 'label'))->toArray();
-    }
+    // public function getChoices()
+    // {
+    //     return Options::forArray($this->choices()->pluck('value', 'label'))->toArray();
+    // }
 }
