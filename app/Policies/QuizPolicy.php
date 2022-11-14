@@ -17,8 +17,8 @@ class QuizPolicy
      * @param  \App\Models\Quiz  $quiz
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Quiz $quiz)
-    {
-        //
-    }
+    // public function view(User $user, Quiz $quiz)
+    // {
+    //     //
+    // }
 }

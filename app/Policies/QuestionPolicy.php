@@ -17,8 +17,8 @@ class QuestionPolicy
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Question $question)
-    {
-        //
-    }
+    // public function view(User $user, Question $question)
+    // {
+    //     //
+    // }
 }

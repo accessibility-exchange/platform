@@ -16,10 +16,10 @@ class CoursePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
-    {
-        //
-    }
+    // public function viewAny(User $user)
+    // {
+    //     //
+    // }
 
     /**
      * Determine whether the user can view the model.
@@ -28,8 +28,8 @@ class CoursePolicy
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Course $course)
-    {
-        //
-    }
+    // public function view(User $user, Course $course)
+    // {
+    //     //
+    // }
 }
