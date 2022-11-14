@@ -90,13 +90,11 @@ class IndividualController extends Controller
 
         if ((in_array('connector', $oldRoles) || in_array('consultant', $oldRoles)) && ! in_array('connector', $newRoles) && ! in_array('consultant', $newRoles)) {
             $individual->unpublish(true);
-            flash(__('You have successfully updated your role to Consultation Participant.'), 'success');
+            flash(__('Your roles have been saved.'), 'success');
+        } elseif ((! in_array('consultant', $oldRoles) && in_array('consultant', $newRoles)) || (! in_array('connector', $oldRoles) && in_array('connector', $newRoles))) {
+            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.').' <a href="'.localized_route('individuals.edit', $individual).'">'.__('Review page').'</a>', 'warning');
         } else {
-            if ((! in_array('consultant', $oldRoles) && in_array('consultant', $newRoles)) || (! in_array('connector', $oldRoles) && in_array('connector', $newRoles))) {
-                flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.').' <a href="'.localized_route('individuals.edit', $individual).'">'.__('Review page').'</a>', 'warning');
-            } else {
-                flash(__('Your roles have been saved.'), 'success');
-            }
+            flash(__('Your roles have been saved.'), 'success');
         }
 
         return redirect(localized_route('dashboard'));
