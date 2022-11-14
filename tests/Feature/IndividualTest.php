@@ -63,7 +63,7 @@ test('individuals can edit their roles', function () {
     $user = User::factory()->create();
 
     $individual = $user->individual;
-    $individual->roles = ['consultant'];
+    $individual->roles = ['consultant', 'connector'];
     $individual->save();
     $individual->publish();
 
@@ -82,13 +82,34 @@ test('individuals can edit their roles', function () {
             'roles' => ['participant'],
         ]);
 
-    $response->assertSee('You have successfully updated your role to Consultation Participant.');
+    $response->assertSee('Your roles have been saved.');
 
     $individual = $individual->fresh();
 
-    expect($individual->isPreviewAble())->toBeFalse();
+    expect($individual->isPreviewable())->toBeFalse();
     expect($individual->isPublishable())->toBeFalse();
     expect($individual->checkStatus('published'))->toBeFalse();
+
+    $response = $this->actingAs($user)
+        ->followingRedirects()
+        ->from(localized_route('individuals.show-role-edit'))
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => ['consultant'],
+        ]);
+
+    $response->assertSee('Your roles have been saved. Please review your page.');
+
+    $individual = $individual->fresh();
+
+    $response = $this->actingAs($user)
+        ->followingRedirects()
+        ->from(localized_route('individuals.show-role-edit'))
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => ['consultant', 'participant'],
+        ]);
+
+    $response->assertDontSee('Your roles have been saved. Please review your page.');
+    $response->assertSee('Your roles have been saved.');
 });
 
 test('users can create individual pages', function () {
