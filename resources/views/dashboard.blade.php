@@ -3,10 +3,9 @@
     <x-slot name="header">
         @if ($teamInvitation)
             <x-invitation>
-                <p class="flex items-center gap-4"><span
-                        class="h-5 w-5 rounded-full bg-magenta-3"></span>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $teamInvitationable->name]) }}
+                <p>{{ __('You have been invited to join :invitationable’s team.', ['invitationable' => $teamInvitationable->name]) }}
                 </p>
-                <div class="flex items-center gap-4">
+                <div class="actions flex gap-3">
                     <a class="cta secondary" href="{{ $teamAcceptUrl }}">{{ __('Accept') }}</a>
                     <form class="inline" action="{{ route('invitations.decline', $teamInvitation) }}" method="post">
                         @csrf

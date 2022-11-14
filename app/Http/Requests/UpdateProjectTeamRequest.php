@@ -43,6 +43,13 @@ class UpdateProjectTeamRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in at least one language.'),
+        ];
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {

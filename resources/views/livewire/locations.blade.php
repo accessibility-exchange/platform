@@ -2,7 +2,7 @@
     @if ($locations)
         <ul class="stack" role="list">
             @foreach ($locations as $i => $location)
-                <li class="space-y-6 bg-grey-1 px-6 py-8" wire:key="location-{{ $i }}">
+                <li class="box stack" wire:key="location-{{ $i }}">
                     <fieldset>
                         <legend class="visually-hidden">{{ __('Location :number', ['number' => $i + 1]) }}</legend>
                         <div class="field @error("{$name}.{$i}.region") field--error @enderror mt-0">
@@ -12,7 +12,7 @@
                             <x-hearth-error :for="$name . '_' . $i . '_region'" :field="$name . '.' . $i . '.region'" />
                         </div>
 
-                        <div class="field @error("{$name}.{$i}.locality") field-error @enderror">
+                        <div class="field @error("{$name}.{$i}.locality") field--error @enderror">
                             <x-hearth-label :for="$name . '_' . $i . '_locality'" :value="__('City or town') . ' ' . __('(required)')" />
                             <x-hearth-input :id="$name . '_' . $i . '_locality'" :name="$name . '[' . $i . '][locality]'" :value="$location['locality'] ?? ''" required />
                             <x-hearth-error :for="$name . '_' . $i . '_locality'" :field="$name . '.' . $i . '.locality'" />
