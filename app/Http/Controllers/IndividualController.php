@@ -81,7 +81,7 @@ class IndividualController extends Controller
         $data = $request->validated();
 
         $individual = Auth::user()->individual;
-        $oldRoles = $individual->roles;
+        $oldRoles = $individual->roles ?? [];
 
         $individual->fill($data);
         $individual->save();
