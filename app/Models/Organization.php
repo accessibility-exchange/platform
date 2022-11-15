@@ -501,6 +501,11 @@ class Organization extends Model
         return $this->belongsToMany(Language::class)->withTimestamps();
     }
 
+    public function courses(): hasMany
+    {
+        return $this->hasMany(Course::class);
+    }
+
     public function getBaseDisabilityTypeAttribute(): string|false
     {
         if ($this->disabilityTypes->count() > 0) {
