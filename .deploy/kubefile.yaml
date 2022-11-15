@@ -3,6 +3,7 @@ deployments:
   - name: accessibility-app
     chart: colab/container
     class: small
+    version: latest
     secrets:
       - vault: accessibility-app
         path: secrets

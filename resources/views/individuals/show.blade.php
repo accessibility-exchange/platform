@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() &&
             auth()->user()->isAdministrator() &&
-            $individual->checkStatus('suspended'))
+            $individual->user->checkStatus('suspended'))
             @push('banners')
                 <div class="banner banner--error">
                     <div class="center center:wide">
