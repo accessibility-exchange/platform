@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -31,7 +32,7 @@ use TheIconic\NameParser\Parser as NameParser;
 /**
  * @property Collection $unreadNotifications
  */
-class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
+class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
     use HasFactory;
@@ -155,6 +156,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return $this->isAdministrator();
     }
 
     public function teamInvitation(): Invitation|null

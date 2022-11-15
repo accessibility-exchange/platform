@@ -12,7 +12,4 @@ return [
         'role' => 'presentation',
         'aria-hidden' => 'true',
     ],
-    'components' => [
-        'disabled' => true,
-    ],
 ];
