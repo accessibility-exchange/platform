@@ -17,7 +17,7 @@
                         ]) !!}:</span>&nbsp;{{ phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
-                    @svg('heroicon-o-envelope')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
+                    @svg('heroicon-o-mail')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
                         href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
                         {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
                     </a>

@@ -53,7 +53,7 @@
                         @svg('heroicon-s-check') {{ __('Yes') }}
                     </button>
                     <button class="secondary" name="share_access_needs" value="0">
-                        @svg('heroicon-s-x-mark') {{ __('No') }}
+                        @svg('heroicon-s-x') {{ __('No') }}
                     </button>
                 </form>
             </div>
