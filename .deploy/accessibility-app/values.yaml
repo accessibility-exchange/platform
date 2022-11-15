@@ -2,5 +2,5 @@ name: "IRIS Accessibility Exchange"
 health: /
 cronjobs:
   - name: schedule
-    scheddule: "* * * * *"
+    schedule: "* * * * *"
     command: "/usr/local/bin/php artisan schedule:run"
