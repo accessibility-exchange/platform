@@ -493,25 +493,4 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
 
         return $notifications->sortByDesc('created_at')->paginate(20);
     }
-
-    // public function hasCompletedCourse(Course $course): bool
-    // {
-    //     $modules = $course->modules;
-    //     $quiz = $course->quiz ?? null;
-
-    //     foreach ($modules as $module) {
-    //         if (! $this->modules->contains($module) ||
-    //             ! $this->pivot->completed_at) {
-    //             return false;
-    //         }
-    //     }
-
-    //     if ($quiz &&
-    //         ! $this->quizzes->contains($quiz) ||
-    //         $quiz->score < 0.75) {
-    //         return false;
-    //     }
-
-    //     return true;
-    // }
 }

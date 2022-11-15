@@ -20,6 +20,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('value');
             $table->json('label');
+            $table->boolean('is_answer');
             $table->timestamps();
         });
     }

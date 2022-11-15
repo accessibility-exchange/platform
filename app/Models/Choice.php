@@ -13,13 +13,13 @@ class Choice extends Model
     protected $fillable = [
         'value',
         'label',
-        'isAnswer',
+        'is_answer',
     ];
 
     protected $casts = [
         'value' => 'string',
         'label' => 'array',
-        'isAnswer' => 'boolean',
+        'is_answer' => 'boolean',
     ];
 
     public array $translatable = [
