@@ -70,6 +70,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'locations.*.region' => __('You must enter a province or territory.'),
             'locations.*.locality' => __('You must enter a city or town.'),
             'regions.required_if' => __('You must choose at least one province or territory.'),
+            'disability_types.required_if' => __('One or more Disability or Deaf groups are required.'),
         ];
     }
 
