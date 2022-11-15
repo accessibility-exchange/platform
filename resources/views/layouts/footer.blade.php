@@ -17,10 +17,9 @@
                         </li>
                         {{-- TODO: Add glossary feature --}}
                         {{-- <li><a href="">{{ __('Glossary') }}</a></li> --}}
-                        {{-- TODO: Add Terms of Service --}}
-                        {{-- <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a></li> --}}
-                        {{-- TODO: Add Privacy Policy --}}
-                        {{-- <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li> --}}
+                        <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a>
+                        </li>
+                        <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li>
                     </ul>
                 </nav>
             </div>
