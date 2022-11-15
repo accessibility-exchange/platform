@@ -9,6 +9,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -303,6 +304,27 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
+    }
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)
+            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withTimestamps();
+    }
+
+    public function modules(): BelongsToMany
+    {
+        return $this->belongsToMany(Module::class)
+            ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
+            ->withTimestamps();
+    }
+
+    public function quizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(Quiz::class)
+            ->withPivot('attempts', 'score')
+            ->withTimestamps();
     }
 
     public function organizations(): MorphToMany
