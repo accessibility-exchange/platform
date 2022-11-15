@@ -41,13 +41,3 @@
     </x-slot>
 </x-nav-dropdown>
 
-{{--
-
-                <x-nav-link :href="localized_route('logout')" x-on:click.prevent="$refs.form.submit()">
-                    {{ __('Sign out') }}
-                </x-nav-link>
-                <form method="POST" action="{{ localized_route('logout') }}" x-ref="form">
-                    @csrf
-                </form>
-
- --}}
