@@ -92,7 +92,7 @@ test('get context URL', function () {
     expect($interpretation->getContextURL('fr'))->toBe(localized_route('welcome', [], 'fr').'#'.Str::slug(__('The Accessibility Exchange', [], 'fr')));
 });
 
-test('only administrative users can access interpretations admin pages', function () {
+test('only administrative users can access interpretation admin pages', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
 
@@ -101,6 +101,13 @@ test('only administrative users can access interpretations admin pages', functio
 
     $this->actingAs($user)->get(InterpretationResource::getUrl('create'))->assertForbidden();
     $this->actingAs($administrator)->get(InterpretationResource::getUrl('create'))->assertSuccessful();
+
+    $this->actingAs($user)->get(InterpretationResource::getUrl('edit', [
+        'record' => Interpretation::factory()->create(),
+    ]))->assertForbidden();
+    $this->actingAs($administrator)->get(InterpretationResource::getUrl('edit', [
+        'record' => Interpretation::factory()->create(),
+    ]))->assertSuccessful();
 });
 
 test('interpretations can be listed', function () {
