@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            @svg('heroicon-s-no-symbol', 'icon--lg mr-2')
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>

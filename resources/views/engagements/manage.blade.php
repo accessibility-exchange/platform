@@ -43,11 +43,11 @@
                             @break
 
                             @case('open-call')
-                                @svg('heroicon-o-megaphone', 'mr-2')
+                                @svg('heroicon-o-speakerphone', 'mr-2')
                             @break
 
                             @default
-                                @svg('heroicon-o-puzzle-piece', 'mr-2')
+                                @svg('heroicon-o-puzzle', 'mr-2')
                         @endswitch
                         {{ $engagement->display_recruitment }}
                     </p>
@@ -95,7 +95,7 @@
                             <p>
                                 <a class="with-icon"
                                     href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
-                                    @svg('heroicon-m-chevron-right', 'icon--lg')
+                                    @svg('heroicon-s-chevron-right', 'icon--lg')
                                 </a>
                             </p>
                             <p>
@@ -113,7 +113,7 @@
                             <p>
                                 <a class="with-icon"
                                     href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
-                                    @svg('heroicon-m-chevron-right', 'icon--lg')
+                                    @svg('heroicon-s-chevron-right', 'icon--lg')
                                 </a>
                             </p>
                             <p>
@@ -136,7 +136,7 @@
                         <p>
                             <a class="with-icon"
                                 href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
-                                @svg('heroicon-m-chevron-right', 'icon--lg')
+                                @svg('heroicon-s-chevron-right', 'icon--lg')
                             </a>
                         </p>
                         <p>
@@ -237,7 +237,7 @@
                                     </span>
                                 @elseif ($project->checkStatus('estimateRequested'))
                                     <span class="badge badge--progress">
-                                        @svg('heroicon-o-arrow-path', 'mr-2')
+                                        @svg('heroicon-o-refresh', 'mr-2')
                                         {{ __('Estimate requested') }}
                                     </span>
                                 @else
@@ -273,7 +273,7 @@
                         <footer class="-mx-6 border-x-0 border-t border-b-0 border-solid border-grey-3 px-6 pt-5">
                             <a class="cta secondary"
                                 href="{{ localized_route('engagements.manage-organization', $engagement) }}">
-                                @svg('heroicon-o-wrench') {{ __('Manage') }}
+                                @svg('heroicon-o-cog') {{ __('Manage') }}
                             </a>
                         </footer>
                     @else
@@ -282,7 +282,7 @@
                             <p>
                                 <a class="cta secondary"
                                     href="{{ localized_route('engagements.manage-organization', $engagement) }}">
-                                    @svg('heroicon-o-wrench') {{ __('Manage') }}
+                                    @svg('heroicon-o-cog') {{ __('Manage') }}
                                 </a>
                             </p>
                         </div>
@@ -313,7 +313,7 @@
                         <p>
                             <a class="cta secondary"
                                 href="{{ localized_route('engagements.manage-connector', $engagement) }}">
-                                @svg('heroicon-o-wrench') {{ __('Manage') }}
+                                @svg('heroicon-o-cog') {{ __('Manage') }}
                             </a>
                         </p>
                     @else

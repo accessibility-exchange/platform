@@ -35,7 +35,7 @@
         <div class="banner banner--error">
             <div class="center center:wide">
                 <p>
-                    @svg('heroicon-s-no-symbol', 'icon--lg mr-2') <span>{!! Str::inlineMarkdown(
+                    @svg('heroicon-s-ban', 'icon--lg mr-2') <span>{!! Str::inlineMarkdown(
                         __('Your account has been suspended. Please [contact](:url) us if you need further assistance.', [
                             'url' => '#contact',
                         ]),

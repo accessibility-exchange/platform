@@ -33,7 +33,7 @@
                 {{ __('I agree to the ') }}
                 <a class="with-icon" href="{{ localized_route('about.terms-of-service') }}" target="_blank">
                     <span class="underline">{{ __('terms of service') }}</span>
-                    @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
+                    @svg('heroicon-o-external-link', 'ml-1')
                     <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
@@ -46,7 +46,7 @@
                 {{ __('I agree to the ') }}
                 <a class="with-icon" href="{{ localized_route('about.privacy-policy') }}" target="_blank">
                     <span class="underline">{{ __('privacy policy') }}</span>
-                    @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
+                    @svg('heroicon-o-external-link', 'ml-1')
                     <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
