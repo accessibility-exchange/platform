@@ -2,7 +2,7 @@
     <x-slot name="title">
         <a
             href="@can('update', $model){{ localized_route('engagements.manage', $model) }}@else{{ localized_route('engagements.show', $model) }}@endcan">{{ $model->name }}
-            @svg('heroicon-m-chevron-right', 'icon--xl absolute bottom-1/2 right-5')
+            @svg('heroicon-s-chevron-right', 'icon--xl absolute bottom-1/2 right-5')
         </a>
     </x-slot>
 

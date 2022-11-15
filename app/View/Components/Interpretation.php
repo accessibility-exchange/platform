@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\Interpretation as InterpretationModel;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
@@ -39,7 +40,7 @@ class Interpretation extends Component
         $this->name = $name;
         $this->namespace = $namespace;
 
-        $this->interpretation = auth()->hasUser() && auth()->user()->sign_language_translations ?
+        $this->interpretation = (auth()->hasUser() && auth()->user()->sign_language_translations) || Cookie::get('sign_language_translations') ?
             InterpretationModel::firstOrCreate(
                 [
                     'name' => $this->name,

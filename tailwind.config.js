@@ -160,6 +160,7 @@ module.exports = {
             3: "3px"
         }
     },
+    darkMode: "class",
     corePlugins: {
         preflight: false
     },

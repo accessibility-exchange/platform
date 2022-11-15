@@ -67,27 +67,25 @@ test('existing Interpretation instance', function () {
     expect($interpretations->first()->getTranslation('video', 'fcs'))->toBe($interpretation->getTranslation('video', 'fcs'));
 });
 
-// TODO: Re-add this test after supporting sign language preference for guest users.
-//       At the moment the only namespaced section on the welcome page is only visible for guests
-// test('Interpretation instance using namespace', function () {
-//     $response = $this->get(localized_route('welcome'));
-//     $response->assertStatus(200);
+test('Interpretation instance using namespace', function () {
+    $response = $this->withCookie('sign_language_translations', true)->get(localized_route('welcome'));
+    $response->assertStatus(200);
 
-//     $toSee = [
-//         '<h2 id="join">',
-//         'Join our accessibility community',
-//         '</h2>',
-//         'id="'.Str::slug('Join our accessibility community'),
-//     ];
+    $toSee = [
+        '<h2 id="join">',
+        'Join our accessibility community',
+        '</h2>',
+        'id="'.Str::slug('Join our accessibility community'),
+    ];
 
-//     $response->assertSeeInOrder($toSee, false);
+    $response->assertSeeInOrder($toSee, false);
 
-//     $interpretation = Interpretation::firstWhere('name', 'Join our accessibility community');
+    $interpretation = Interpretation::firstWhere('name', 'Join our accessibility community');
 
-//     expect($interpretation)->toBeInstanceOf(Interpretation::class);
-//     expect($interpretation->route)->toBe('welcome');
-//     expect($interpretation->namespace)->toBe('join');
-// });
+    expect($interpretation)->toBeInstanceOf(Interpretation::class);
+    expect($interpretation->route)->toBe('welcome');
+    expect($interpretation->namespace)->toBe('join');
+});
 
 test('in French and LSQ', function () {
     $interpretation = Interpretation::factory()->create([

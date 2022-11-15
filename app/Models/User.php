@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -31,7 +33,7 @@ use TheIconic\NameParser\Parser as NameParser;
 /**
  * @property Collection $unreadNotifications
  */
-class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePreference, MustVerifyEmail
+class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
     use HasFactory;
@@ -155,6 +157,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function preferredLocale()
     {
         return $this->locale;
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return $this->isAdministrator();
     }
 
     public function teamInvitation(): Invitation|null
@@ -297,6 +304,27 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasLocalePre
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
+    }
+
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)
+            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withTimestamps();
+    }
+
+    public function modules(): BelongsToMany
+    {
+        return $this->belongsToMany(Module::class)
+            ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
+            ->withTimestamps();
+    }
+
+    public function quizzes(): BelongsToMany
+    {
+        return $this->belongsToMany(Quiz::class)
+            ->withPivot('attempts', 'score')
+            ->withTimestamps();
     }
 
     public function organizations(): MorphToMany

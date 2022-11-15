@@ -69,12 +69,15 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'minimum_participants.lte' => __('The minimum number of participants is more than the ideal number of participants. Please enter a minimum that is less than or the same as the ideal number of participants.'),
             'locations.*.region' => __('You must enter a province or territory.'),
             'locations.*.locality' => __('You must enter a city or town.'),
+            'locations.required_if' => __('You must enter at least one city or town.'),
+            'regions.required_if' => __('You must choose at least one province or territory.'),
+            'disability_types.required_if' => __('One or more Disability or Deaf groups are required.'),
         ];
     }
 
     public function prepareForValidation()
     {
-        $this->mergeIfMissing([
+        request()->mergeIfMissing([
             'regions' => [],
             'locations' => [],
             'disability_types' => [],

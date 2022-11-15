@@ -59,6 +59,10 @@ Route::controller(SettingsController::class)
             ->middleware(['auth'])
             ->name('edit-website-accessibility-preferences');
 
+        Route::multilingual('/website-accessibility-preferences/sign-language-translations', 'updateWebsiteAccessibilitySignLanguageTranslations')
+            ->method('patch')
+            ->name('edit-website-accessibility-sign-language-translations');
+
         Route::multilingual('/website-accessibility-preferences', 'updateWebsiteAccessibilityPreferences')
             ->method('put')
             ->middleware(['auth'])

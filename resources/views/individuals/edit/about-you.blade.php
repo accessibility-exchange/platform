@@ -77,6 +77,7 @@
                     </legend>
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
+                    <x-hearth-error for="consulting_services" />
                 </fieldset>
             @endif
 
