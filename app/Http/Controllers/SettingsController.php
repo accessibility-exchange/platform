@@ -17,6 +17,7 @@ use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
+use App\Http\Requests\UpdateWebsiteAccessibilitySignLanguageTranslationsRequest;
 use App\Models\AccessSupport;
 use App\Models\Impact;
 use App\Models\PaymentType;
@@ -335,7 +336,32 @@ class SettingsController extends Controller
 
         Cookie::queue('theme', $data['theme']);
 
+        if ($data['sign_language_translations']) {
+            Cookie::queue('sign_language_translations', $data['sign_language_translations']);
+        } elseif (Cookie::get('sign_language_translations')) {
+            Cookie::queue(Cookie::forget('sign_language_translations'));
+        }
+
         return redirect(localized_route('settings.edit-website-accessibility-preferences'));
+    }
+
+    public function updateWebsiteAccessibilitySignLanguageTranslations(UpdateWebsiteAccessibilitySignLanguageTranslationsRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        if (auth()->check()) {
+            $user = Auth::user();
+            $user->fill($data);
+            $user->save();
+        }
+
+        if ($data['sign_language_translations']) {
+            Cookie::queue('sign_language_translations', $data['sign_language_translations']);
+        } elseif (Cookie::get('sign_language_translations')) {
+            Cookie::queue(Cookie::forget('sign_language_translations'));
+        }
+
+        return redirect($data['target'] ?? localized_route('welcome'));
     }
 
     public function editNotificationPreferences(): View
