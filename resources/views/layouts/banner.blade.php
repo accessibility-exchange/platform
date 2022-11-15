@@ -12,7 +12,7 @@
             <!-- Language Switcher -->
             <nav class="languages" aria-label="{{ __('languages') }}">
                 <ul role="list">
-                    <x-hearth-language-switcher />
+                    <x-language-switcher />
                 </ul>
             </nav>
             @include('components.navigation')

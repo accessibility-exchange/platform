@@ -14,4 +14,18 @@ return [
         'en',
         'fr',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Supported Sign Languages
+    |--------------------------------------------------------------------------
+    |
+    | The list of supported sign languages for each locale supported by the application.
+    |
+    */
+
+    'paired_sign_language' => [
+        'en' => 'ase',
+        'fr' => 'fcs',
+    ],
 ];

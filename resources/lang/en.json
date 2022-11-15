@@ -93,6 +93,7 @@
     ":projects projects and :engagements engagements you are running": ":projects projects and :engagements engagements you are running",
     ":role Invitation": ":role Invitation",
     ":service": ":service",
+    ":signLanguage (with :locale)": ":signLanguage (with :locale)",
     "A :type with this name already exists.": "A :type with this name already exists.",
     "about": "about",
     "About": "About",
