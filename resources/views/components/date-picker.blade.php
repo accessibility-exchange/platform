@@ -19,8 +19,8 @@
     <div class="flex w-full flex-wrap gap-4 md:flex-nowrap">
         <div class="field stack @error($name) field--error @enderror">
             <x-hearth-label :for="$name . '_year'" :value="__('forms.label_year')" />
-            <x-hearth-input class="w-20" type="text" :name="$name . '_year'" inputmode="numeric" maxlength="4"
-                :required="$required" :disabled="$disabled" :aria-describedby="$name . '-hint'" x-model="year" />
+            <x-hearth-input class="w-20" type="text" :name="$name . '_year'" inputmode="numeric" :required="$required"
+                :disabled="$disabled" :aria-describedby="$name . '-hint'" x-mask="9999" x-model="year" />
         </div>
         <div class="field stack @error($name) field--error @enderror">
             <x-hearth-label :for="$name . '_month'" :value="__('forms.label_month')" />
@@ -43,8 +43,8 @@
         </div>
         <div class="field stack @error($name) field--error @enderror">
             <x-hearth-label :for="$name . '_day'" :value="__('forms.label_day')" />
-            <x-hearth-input class="w-20" type="text" :name="$name . '_day'" maxlength="2" inputmode="numeric"
-                :required="$required" :disabled="$disabled" :aria-describedby="$name . '-hint'" x-model="day" />
+            <x-hearth-input class="w-20" type="text" :name="$name . '_day'" inputmode="numeric" :required="$required"
+                :disabled="$disabled" :aria-describedby="$name . '-hint'" x-mask="99" x-model="day" />
         </div>
     </div>
     <input name="{{ $name }}" type="hidden" x-bind:value="getDate" />

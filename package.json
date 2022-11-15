@@ -57,6 +57,7 @@
         "vite-plugin-manifest-sri": "^0.1.0"
     },
     "dependencies": {
+        "@alpinejs/mask": "^3.10.5",
         "@popperjs/core": "^2.11.6",
         "@vimeo/player": "^2.18.0",
         "alpinejs": "^3.10.5",
