@@ -37,8 +37,12 @@
                             @endcan
                             <button class="secondary" name="publish" value="1"
                                 @cannot('publish', $regulatedOrganization) @ariaDisabled @endcannot>{{ __('Publish page') }}</button>
+                            @cannot('publish', $regulatedOrganization)
+                            <p>{{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                            </p>
+                        @endcannot
+
                         </p>
-                        <p>{{ __('Once you publish your page, other users on this website can access your page.') }}</p>
                     @else
                         <p class="stack">
                             <x-hearth-input name="unpublish" type="submit" value="{{ __('Unpublish page') }}" />
