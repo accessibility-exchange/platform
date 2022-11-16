@@ -51,7 +51,7 @@ class InterpretationResource extends Resource
                 Tables\Columns\TextColumn::make('name')->disableClick(),
                 Tables\Columns\TextColumn::make('context')
                     ->label(__('Show context'))
-                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').$record->name.'</span>')
+                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').' '.$record->name.'</span>')
                     ->html()
                     ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
                     ->openUrlInNewTab()
