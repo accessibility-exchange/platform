@@ -118,7 +118,7 @@
                             </p>
                             <p>
                                 <span @class([
-                                    'badge badge--status',
+                                    'badge',
                                     'badge--stop' => !$engagement->isPreviewable(),
                                     'badge--go' => $engagement->isPreviewable(),
                                 ])>
@@ -141,7 +141,7 @@
                         </p>
                         <p>
                             <span @class([
-                                'badge badge--status',
+                                'badge',
                                 'badge--stop' => !$engagement->isPreviewable(),
                                 'badge--go' => $engagement->isPreviewable(),
                             ])>
@@ -241,7 +241,7 @@
                                         {{ __('Estimate requested') }}
                                     </span>
                                 @else
-                                    <span class="badge badge--status">
+                                    <span class="badge">
                                         {{ __('No estimate requested') }}
                                     </span>
                                 @endif
@@ -256,7 +256,7 @@
                                         @svg('heroicon-s-check-circle', 'mr-2') {{ __('Received') }}
                                     </span>
                                 @else
-                                    <span class="badge badge--status">
+                                    <span class="badge">
                                         {{ __('Not received') }}
                                     </span>
                                 @endif

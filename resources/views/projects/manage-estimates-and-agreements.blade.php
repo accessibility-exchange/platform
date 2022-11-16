@@ -17,9 +17,9 @@
             <p><strong>{{ __('Status') }}</strong></p>
             @if ($project->estimate_requested_at)
                 @if ($project->estimate_approved_at)
-                    <p><span class="badge badge--status">{{ __('Approved') }}</span></p>
+                    <p><span class="badge">{{ __('Approved') }}</span></p>
                 @elseif($project->estimate_returned_at)
-                    <p><span class="badge badge--status">{{ __('Returned') }}</span></p>
+                    <p><span class="badge">{{ __('Returned') }}</span></p>
                     <p>{{ __('This estimate was sent to :contact on :date.', ['contact' => $project->contact_person_email, 'date' => $project->estimate_requested_at->translatedFormat('F j, Y')]) }}
                         @include('projects.partials.included-engagements')
                     <div class="flex items-center gap-6">
@@ -29,14 +29,14 @@
                         </a>
                     </div>
                 @else
-                    <p><span class="badge badge--status">{{ __('Pending') }}</span></p>
+                    <p><span class="badge">{{ __('Pending') }}</span></p>
                     <p>{{ __('You sent this request on :date.', ['date' => $project->estimate_requested_at->translatedFormat('F j, Y')]) }}
                     </p>
                     @include('projects.partials.included-engagements')
                 @endif
             @else
                 <p>
-                    <span class="badge badge--status">
+                    <span class="badge">
                         {{ __('Not yet requested') }}
                     </span>
                 </p>
@@ -71,7 +71,7 @@
             ]) !!}</p>
             <p><strong>{{ __('Status') }}</strong></p>
             <p>
-                <span class="badge badge--status">
+                <span class="badge">
                     @if ($project->agreement_received_at)
                         {{ __('Received') }}
                     @else
