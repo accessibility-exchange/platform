@@ -57,13 +57,33 @@ class InterpretationResource extends Resource
                     ->openUrlInNewTab()
                     ->icon('heroicon-s-external-link')
                     ->iconPosition('after'),
-                Tables\Columns\IconColumn::make('asl')
-                    ->getStateUsing(fn (Interpretation $record): bool => $record->getTranslation('video', 'ase', false) !== '')
-                    ->boolean()
+                Tables\Columns\BadgeColumn::make('asl')
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'ase', false) !== '' ? __('Yes') : __('No'))
+                    ->colors([
+                        'success' => static fn ($state): bool => $state === __('Yes'),
+                        'danger' => static fn ($state): bool => $state === __('No'),
+                    ])
+                    ->icon(static function ($state): string {
+                        if ($state === __('Yes')) {
+                            return 'heroicon-o-check';
+                        }
+
+                        return 'heroicon-o-x';
+                    })
                     ->label('ASL Video'),
-                Tables\Columns\IconColumn::make('lsq')
-                    ->getStateUsing(fn (Interpretation $record): bool => $record->getTranslation('video', 'fcs', false) !== '')
-                    ->boolean()
+                Tables\Columns\BadgeColumn::make('lsq')
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'fcs', false) !== '' ? __('Yes') : __('No'))
+                    ->colors([
+                        'success' => static fn ($state): bool => $state === __('Yes'),
+                        'danger' => static fn ($state): bool => $state === __('No'),
+                    ])
+                    ->icon(static function ($state): string {
+                        if ($state === __('Yes')) {
+                            return 'heroicon-o-check';
+                        }
+
+                        return 'heroicon-o-x';
+                    })
                     ->label('LSQ Video'),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime(),
             ])
