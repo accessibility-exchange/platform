@@ -91,7 +91,8 @@ class InterpretationResource extends Resource
                 // TODO
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->tooltip(fn (Interpretation $record): string => "Edit {$record->name}"),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
