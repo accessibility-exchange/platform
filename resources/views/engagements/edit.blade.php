@@ -42,8 +42,8 @@
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
-            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" />
 
             <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
@@ -204,8 +204,8 @@
             <p>{{ __('Some participants may not be able to meet in real-time. For them, you can send out a list of questions, and participants can respond to them in formats you accept.') }}
             </p>
             <h4>{{ __('Dates') }}</h4>
-            <x-date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <x-date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="complete_by_date" :label="__('Responses are due by:')" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
             <fieldset
                 class="field @error('accepted_formats') field--error @enderror @error('other_accepted_formats') field--error @enderror @error('other_accepted_format') field--error @enderror stack"
                 x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !empty($engagement->other_accepted_format)) ? 1 : 'null' }} }">
@@ -239,8 +239,8 @@
             <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}
             </h2>
             <h3>{{ __('Date') }}</h3>
-            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
             <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
@@ -281,7 +281,7 @@
                     : __('Participants must respond to their invitation by the following date') .
                         ' ' .
                         __('(required)') .
-                        ':'" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+                        ':'" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
             </div>
         @endif
         <hr class="divider--thick" />

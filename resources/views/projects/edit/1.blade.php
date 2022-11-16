@@ -58,9 +58,11 @@
 
             <h3>{{ __('Project timeframe') }}</h3>
 
-            <x-date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" minimumYear="2021" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? '')" />
+            <x-hearth-error for="start_date" />
 
-            <x-date-picker name="end_date" :label="__('Project end date') . ' ' . __('(required)')" minimumYear="2021" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="end_date" :label="__('Project end date') . ' ' . __('(required)')" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? '')" />
+            <x-hearth-error for="end_date" />
 
             <h3>{{ __('Project outcome') }}</h3>
 

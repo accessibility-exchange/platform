@@ -8,9 +8,9 @@ export default (initial = "") => ({
     init() {
         this.date = initial;
         let [y, m, d] = this.date.split("-");
-        this.year = y;
-        this.month = m;
-        this.day = d;
+        this.year = y ?? "";
+        this.month = m ?? "";
+        this.day = d ?? "";
     },
     getDate() {
         if (this.year || (this.year !== "" && this.month) || (this.month !== "" && this.day) || this.day !== "") {
