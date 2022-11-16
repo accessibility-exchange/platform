@@ -48,10 +48,10 @@ class InterpretationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->disableClick(),
                 Tables\Columns\TextColumn::make('context')
                     ->label(__('Show context'))
-                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only">'.__('for').$record->name.'</span>')
+                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').$record->name.'</span>')
                     ->html()
                     ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
                     ->openUrlInNewTab()
@@ -70,7 +70,8 @@ class InterpretationResource extends Resource
 
                         return 'heroicon-o-x';
                     })
-                    ->label('ASL Video'),
+                    ->label('ASL Video')
+                    ->disableClick(),
                 Tables\Columns\BadgeColumn::make('lsq')
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'fcs', false) !== '' ? __('Yes') : __('No'))
                     ->colors([
@@ -84,8 +85,10 @@ class InterpretationResource extends Resource
 
                         return 'heroicon-o-x';
                     })
-                    ->label('LSQ Video'),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
+                    ->label('LSQ Video')
+                    ->disableClick(),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()
+                    ->disableClick(),
             ])
             ->filters([
                 // TODO
