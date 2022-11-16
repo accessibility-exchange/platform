@@ -28,9 +28,10 @@
                     <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                 @endcan
                 <button class="secondary" name="publish" value="1"
-                    @cannot('publish', $organization) @ariaDisabled @endcannot>{{ __('Publish page') }}</button>
+                    @cannot('publish', $organization) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
                 @cannot('publish', $organization)
-                <p>{{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                <p id="cannot-publish-explanation">
+                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
                 </p>
             @endcannot
             </p>
