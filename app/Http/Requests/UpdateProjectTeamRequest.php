@@ -43,13 +43,20 @@ class UpdateProjectTeamRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in at least one language.'),
+        ];
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
             if ($this->contact_person_vrs && ! $this->contact_person_phone) {
                 $validator->errors()->add(
                     'contact_person_phone',
-                    __('Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.')
+                    __('Since you have indicated that your contact person needs VRS, please enter a phone number.')
                 );
             }
         });

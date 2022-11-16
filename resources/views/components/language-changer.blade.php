@@ -3,7 +3,7 @@
 ])
 
 @if (count($model->languages) > 1)
-    <hr class="divider" />
+    <hr />
     <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row">
         <div class="flex">
             <label class="whitespace-nowrap" for='available_languages'>{{ __('Page also available in:') }}</label>

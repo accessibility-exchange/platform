@@ -1,10 +1,10 @@
-<x-app-layout>
+<x-app-wide-layout>
     <x-slot name="title">{{ __('Browse all resources') }}</x-slot>
     <x-slot name="header">
         <p><a href="{{ localized_route('resource-collections.index') }}">{{ __('Back to resource hub') }}</a></p>
         <h1 itemprop="name">{{ __('Browse all resources') }}</h1>
         <p class="subtitle">
-            {{ __('Browse different resources to find what can help you throughout a consultation phase based on your role and responsibilities.') }}
+            {{ __('Find learning materials, best practices, and tools to help you throughout your project.') }}
         </p>
     </x-slot>
 
@@ -17,7 +17,7 @@
             <button type="submit">{{ __('Search') }}</button>
         </form>
     </div>
-    <div class="resources">
+    <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters stack">
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <x-expander :level="3">
@@ -49,9 +49,9 @@
                 <ul role="list">
                     @foreach ($formats as $format)
                         <li>
-                            <x-hearth-input id="format-{{ $format->id }}" name="format[]" type="checkbox"
-                                value="{{ $format->id }}" />
-                            <label for="format-{{ $format->id }}">{{ $format->name }}</label>
+                            <x-hearth-input id="format-{{ $format['value'] }}" name="format[]" type="checkbox"
+                                value="{{ $format['value'] }}" />
+                            <label for="format-{{ $format['value'] }}">{{ $format['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>
@@ -73,31 +73,22 @@
                 <ul role="list">
                     @foreach ($phases as $phase)
                         <li>
-                            <x-hearth-input id="phase-{{ $phase->id }}" name="phase[]" type="checkbox"
-                                value="{{ $phase->id }}" />
-                            <label for="phase-{{ $phase->id }}">{{ $phase->name }}</label>
+                            <x-hearth-input id="phase-{{ $phase['value'] }}" name="phase[]" type="checkbox"
+                                value="{{ $phase['value'] }}" />
+                            <label for="phase-{{ $phase['value'] }}">{{ $phase['label'] }}</label>
                         </li>
                     @endforeach
                 </ul>
             </x-expander>
         </div>
-        <div class="stack cards">
-            @forelse($resources as $resource)
-                <article class="box card card--resource">
-                    <p><span class="visually-hidden">{{ __('Content type') }}:</span> {{ $types->random()->name }}</p>
-                    <p><span class="visually-hidden">{{ __('Format') }}:</span> {{ $formats->random()->name }} <span
-                            aria-hidden="true">&middot;</span> <span
-                            class="visually-hidden">{{ __('Language') }}:</span>
-                        {{ get_language_exonym(Arr::random($languages)) }}</p>
-                    <h2>
-                        <a href="{{ localized_route('resources.show', $resource) }}">{{ $resource->title }}</a>
-                    </h2>
-                    <p>{{ Str::limit($resource->summary, 140) }} <a
-                            href="{{ localized_route('resources.show', $resource) }}">{!! __('Read more <span class="visually-hidden">of :title</span>', ['title' => $resource->title]) !!}</a></p>
-                </article>
-            @empty
-                <p>{{ __('resource.none_found') }}</p>
-            @endforelse
+        <div class="md:pl-4">
+            <div class="stack">
+                @forelse($resources as $resource)
+                    <x-card.resource :model="$resource" :level="2" />
+                @empty
+                    <p>{{ __('resource.none_found') }}</p>
+                @endforelse
+            </div>
         </div>
     </div>
-</x-app-layout>
+</x-app-wide-layout>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\CommunityConnectorHasLivedExperience;
+use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\AgeBracket;
@@ -62,7 +63,7 @@ test('individuals can edit their roles', function () {
     $user = User::factory()->create();
 
     $individual = $user->individual;
-    $individual->roles = ['consultant'];
+    $individual->roles = ['consultant', 'connector'];
     $individual->save();
     $individual->publish();
 
@@ -81,13 +82,34 @@ test('individuals can edit their roles', function () {
             'roles' => ['participant'],
         ]);
 
-    $response->assertSee('You have successfully updated your role to Consultation Participant.');
+    $response->assertSee('Your roles have been saved.');
 
     $individual = $individual->fresh();
 
-    expect($individual->isPreviewAble())->toBeFalse();
+    expect($individual->isPreviewable())->toBeFalse();
     expect($individual->isPublishable())->toBeFalse();
     expect($individual->checkStatus('published'))->toBeFalse();
+
+    $response = $this->actingAs($user)
+        ->followingRedirects()
+        ->from(localized_route('individuals.show-role-edit'))
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => ['consultant'],
+        ]);
+
+    $response->assertSee('Your roles have been saved. Please review your page.');
+
+    $individual = $individual->fresh();
+
+    $response = $this->actingAs($user)
+        ->followingRedirects()
+        ->from(localized_route('individuals.show-role-edit'))
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => ['consultant', 'participant'],
+        ]);
+
+    $response->assertDontSee('Your roles have been saved. Please review your page.');
+    $response->assertSee('Your roles have been saved.');
 });
 
 test('users can create individual pages', function () {
@@ -921,4 +943,9 @@ test('individual relationships to projects can be derived from both projects and
     expect($individual->participatingProjects->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($participatingEngagementProject->id);
+});
+
+test('individual consulting methods can be displayed', function () {
+    $individual = Individual::factory()->create(['consulting_methods' => ['survey']]);
+    expect($individual->display_consulting_methods)->toContain(EngagementFormat::labels()['survey']);
 });

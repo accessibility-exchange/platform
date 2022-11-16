@@ -45,7 +45,7 @@
                 {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
         </div>
 
-        <hr class="border-t-1 mt-16 mb-12 border-x-0 border-b-0 border-solid border-t-blue-7" />
+        <hr />
 
         <h3>{{ __('Browse for an Community Connector') }}</h3>
 
@@ -67,7 +67,7 @@
 
         <p>
             <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
-                <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                @svg('heroicon-o-plus-circle')
                 {{ __('Add Community Connector') }}
             </a>
         </p>
@@ -83,7 +83,7 @@
                 <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">
-                <x-heroicon-s-x-mark role="presentation" aria-hidden="true" /> {{ __('Cancel invitation') }}
+                @svg('heroicon-s-x') {{ __('Cancel invitation') }}
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)
@@ -92,7 +92,7 @@
                 <x-card.organization level="3" :model="$engagement->organizationalConnector" />
             @endif
             <button class="borderless destructive" wire:click="removeConnector">
-                <x-heroicon-s-trash role="presentation" aria-hidden="true" /> {{ __('Remove') }}
+                @svg('heroicon-s-trash') {{ __('Remove') }}
             </button>
         @endif
     @endif
@@ -101,7 +101,7 @@
 
     <p>
         <a class="cta secondary" href="{{ localized_route('engagements.manage', $engagement) }}">
-            <x-heroicon-o-arrow-left role="presentation" aria-hidden="true" /> {{ __('Back') }}
+            @svg('heroicon-o-arrow-left') {{ __('Back') }}
         </a>
     </p>
 </div>

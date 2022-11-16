@@ -13,7 +13,7 @@
     margin-inline-end: var(--space-3);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
     .score__value {
         width: 100%;
     }
@@ -24,7 +24,7 @@
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 75rem) {
     .score__value {
         width: 40%;
     }

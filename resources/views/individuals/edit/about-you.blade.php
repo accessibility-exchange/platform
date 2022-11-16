@@ -45,16 +45,17 @@
             </fieldset>
 
             <div class="field @error('pronouns') field--error @enderror">
-                <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :hint="__('For example: he/him, she/her, they/them.')" />
+                <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
+                    :hint="__('For example: he/him, she/her, they/them.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
-                    <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :model="$individual" :hint="__(
-                        'This can include information about your background, and why you are interested in accessibility.',
-                    )"
-                        required />
+                    <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :shortLabel="__('bio')" :model="$individual"
+                        :hint="__(
+                            'This can include information about your background, and why you are interested in accessibility.',
+                        )" required />
                     <x-hearth-error for="bio" />
                 </div>
 
@@ -62,7 +63,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>{{ __('What language(s) are you comfortable working in?') }}</legend>
+                <legend>{{ __('What language(s) are you comfortable working in?') }} {{ __('(optional)') }}</legend>
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
@@ -76,17 +77,22 @@
                     </legend>
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
+                    <x-hearth-error for="consulting_services" />
                 </fieldset>
             @endif
 
             <fieldset>
                 <legend>{{ __('Social media links') }}</legend>
+                <p class="field__hint">
+                    {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                </p>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" />
-                        <x-hearth-error for="social_links_{{ $key }}" />
+                        <x-hearth-error for="social_links_{{ $key }}"
+                            field="social_links.{{ $key }}" />
                     </div>
                 @endforeach
             </fieldset>

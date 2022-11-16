@@ -28,7 +28,7 @@ form.search > * + * {
     margin-block-start: var(--space-5);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
     form.search {
         grid-template-columns: 1fr auto;
     }

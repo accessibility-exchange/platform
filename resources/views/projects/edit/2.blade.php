@@ -20,7 +20,8 @@
             <h3>{{ __('About your team') }}</h3>
 
             <div class="field @error('team_size') field--error @enderror stack">
-                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.') . ' ' . __('(optional)')" :hint="__('You can provide either an exact number or a range.')" :model="$project" />
+                <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.') . ' ' . __('(optional)')" :shortLabel="__('the number of people on your team')" :hint="__('You can provide either an exact number or a range.')"
+                    :model="$project" />
             </div>
 
             <fieldset class="field @error('team_has_disability_or_deaf_lived_experience') field--error @enderror stack">
@@ -89,7 +90,7 @@
 
                 <div class="field @error('contact_person_response_time') field-error @enderror">
                     <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time') . ' ' . __('(required)')" :hint="__('For example, three to five business days, within one hour')"
-                        :model="$project" required />
+                        :shortLabel="__('approximate response time')" :model="$project" required />
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>

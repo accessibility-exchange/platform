@@ -5,7 +5,7 @@
     <div class="languages">
         <template x-for="(language, index) in languages">
             <div
-                class="flex h-14 w-full items-center justify-between border border-x-0 border-b-0 border-solid border-t-grey-3 first-of-type:border-t-0">
+                class="flex h-14 w-full items-center justify-between border border-x-0 border-b-0 border-solid first-of-type:border-t-0">
                 <p class="repel w-full"><span x-text="language.exonym"></span><button class="secondary" type="button"
                         x-bind:data-index="index" @click="removeLanguage($event)"
                         x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span
@@ -19,8 +19,8 @@
     <div x-data="modal()">
         <button class="secondary" type="button" @click="showModal">{{ __('Add language') }}</button>
         <template x-teleport="body">
-            <div class="modal-wrapper" x-show="showingModal">
-                <div class="modal stack" @keydown.escape.window="hideModal">
+            <div class="modal-wrapper" x-show="showingModal" @keydown.escape.window="hideModal">
+                <div class="modal stack" @click.outside="hideModal">
                     <h3>{{ __('Add language') }}</h3>
 
                     <div class="field @error('new_language') field--error @enderror">

@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -49,12 +49,13 @@
                             <button class="secondary" name="unpublish" value="1">{{ __('Unpublish') }}</button>
                         </form>
                     @elseif($project->checkStatus('draft') && $project->isPublishable())
+                        <span class="badge">{{ __('Draft mode') }}</span>
                         <form action="{{ localized_route('projects.update-publication-status', $project) }}" method="POST"
                             novalidate>
                             @csrf
                             @method('PUT')
                             <button class="secondary" name="publish" value="1"
-                                @cannot('publish', $project) disabled @endcannot>{{ __('Publish') }}</button>
+                                @cannot('publish', $project) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         </form>
                     @endif
                     {{-- <a class="button" href="{{ localized_route('projects.manage', $project) }}">{{ __('Manage project') }}</a> --}}
@@ -99,15 +100,16 @@
         <div class="stack">
             @if (request()->localizedRouteIs('projects.show'))
                 <h2 class="repel">{{ __('Project overview') }} @can('update', $project)
-                        <a class="cta secondary"
-                            href="{{ localized_route('projects.edit', $project) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project overview') . '</span>']) !!}</a>
+                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project overview') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('projects.partials.overview')
             @elseif(request()->localizedRouteIs('projects.show-team'))
                 <h2 class="repel">{{ __('Project team') }} @can('update', $project)
                         <a class="cta secondary"
-                            href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project team') . '</span>']) !!}</a>
+                            href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project team') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('projects.partials.team')

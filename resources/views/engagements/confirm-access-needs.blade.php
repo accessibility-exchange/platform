@@ -34,7 +34,7 @@
         </ul>
 
         @if (Auth::user()->individual->accessSupports->where('anonymizable', false)->count())
-            <div class="box stack bg-grey-2">
+            <div class="box stack">
                 <h2>{{ __('What we need your permission to share') }}</h2>
                 <p>{{ __('In order for :projectable to meet the following access needs, they will need to know who requested them. Do you give us permission to share that it was you who requested the following access needs?', ['projectable' => $project->projectable->name]) }}
                 </p>
@@ -50,10 +50,10 @@
                     method="post">
                     @csrf
                     <button class="secondary" name="share_access_needs" value="1">
-                        <x-heroicon-s-check class="h-5 w-5" aria-hidden="true" /> {{ __('Yes') }}
+                        @svg('heroicon-s-check') {{ __('Yes') }}
                     </button>
                     <button class="secondary" name="share_access_needs" value="0">
-                        <x-heroicon-s-x-mark class="h-5 w-5" aria-hidden="true" /> {{ __('No') }}
+                        @svg('heroicon-s-x') {{ __('No') }}
                     </button>
                 </form>
             </div>

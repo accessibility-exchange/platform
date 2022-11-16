@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -22,6 +22,10 @@
                         <span id="individual">{{ $individual->name }}</span>
                     </h1>
 
+                    @if ($individual->checkStatus('draft'))
+                        <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                    @endif
+
                     @can('update', $individual)
                         <form action="{{ localized_route('individuals.update-publication-status', $individual) }}"
                             method="POST" novalidate>
@@ -29,10 +33,11 @@
                             @method('PUT')
 
                             @if ($individual->checkStatus('published'))
-                                <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                                <button class="secondary" name="unpublish" type="submit"
+                                    value="1">{{ __('Unpublish') }}</button>
                             @else
-                                <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
-                                    :disabled="!Auth::user()->can('publish', $individual)" />
+                                <button class="secondary" name="publish" type="submit" value="1"
+                                    @cannot('publish', $individual)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                             @endif
                         </form>
                     @endcan
@@ -51,7 +56,8 @@
                     </p>
                     <p><strong>{{ implode(', ', $individual->display_roles) }}</strong>
                         @can('update', $individual)
-                            <a href="{{ localized_route('individuals.show-role-edit') }}">{{ __('Edit') }}</a>
+                            <a href="{{ localized_route('individuals.show-role-edit') }}">@svg('heroicon-o-pencil', 'mr-1')
+                                {{ __('Edit') }}</a>
                         @endcan
                     </p>
                 </div>
@@ -68,7 +74,7 @@
                         @if (!empty($individual->website_link))
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $individual->website_link }}">
-                                    <x-heroicon-o-globe-alt class="icon" />
+                                    @svg('heroicon-o-globe-alt')
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
                             </li>
@@ -109,28 +115,32 @@
             @if (request()->localizedRouteIs('individuals.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', $individual) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', $individual) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.about')
             @elseif(request()->localizedRouteIs('individuals.show-experiences'))
                 <h2 class="repel">{{ __('Experiences') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 2]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 3 : 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Experiences') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.experiences')
             @elseif(request()->localizedRouteIs('individuals.show-interests'))
                 <h2 class="repel">{{ __('Interests') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 4 : 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 4 : 3]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('individuals.partials.interests')
             @elseif(request()->localizedRouteIs('individuals.show-communication-and-consultation-preferences'))
                 <h2 class="repel">{{ __('Communication and consultation preferences') }} @can('update', $individual)
                         <a class="cta secondary"
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 5 : 4]) }}">{!! __('Edit :section', [
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $individual->isConnector() ? 5 : 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', [
                                 'section' => '<span class="visually-hidden">' . __('Communication and consultation preferences') . '</span>',
                             ]) !!}</a>
                     @endcan

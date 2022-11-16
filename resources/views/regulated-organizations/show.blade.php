@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -18,6 +18,9 @@
         <div class="stack">
             <h1 class="repel" id="regulated-organization">
                 {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
+                @if ($regulatedOrganization->checkStatus('draft'))
+                    <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                @endif
                 @can('update', $regulatedOrganization)
                     <form
                         action="{{ localized_route('regulated-organizations.update-publication-status', $regulatedOrganization) }}"
@@ -26,10 +29,11 @@
                         @method('PUT')
 
                         @if ($regulatedOrganization->checkStatus('published'))
-                            <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                            <button class="secondary" name="unpublish" type="submit"
+                                value="1">{{ __('Unpublish') }}</button>
                         @else
-                            <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
-                                :disabled="!Auth::user()->can('publish', $regulatedOrganization)" />
+                            <button class="secondary" name="publish" type="submit" value="1"
+                                @cannot('publish', $regulatedOrganization)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         @endif
                     </form>
                 @endcan
@@ -51,7 +55,7 @@
                         @if ($regulatedOrganization->website_link)
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $regulatedOrganization->website_link }}">
-                                    <x-heroicon-o-globe-alt class="icon" />
+                                    @svg('heroicon-o-globe-alt')
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
                             </li>
@@ -113,7 +117,8 @@
             @if (request()->localizedRouteIs('regulated-organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)
                         <a class="cta secondary"
-                            href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('regulated-organizations.partials.about')

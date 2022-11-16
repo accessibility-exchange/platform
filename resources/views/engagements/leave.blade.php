@@ -24,7 +24,7 @@
                 <hr class="divider--thick" />
 
                 <p><a class="cta secondary" href="{{ localized_route('engagements.show', $engagement) }}">
-                        <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" /> {{ __('No, go back') }}
+                        @svg('heroicon-o-arrow-left') {{ __('No, go back') }}
                     </a></p>
             @else
                 <p>{{ __('Are you sure you want to leave this engagement? You’ll still be able to sign up for this engagement again before the sign up deadline.') }}
@@ -32,16 +32,16 @@
 
                 <hr class="divider--thick" />
 
-                <div class="flex flex-col gap-6 gap-8 md:flex-row">
+                <div class="flex flex-col gap-6 md:flex-row">
                     <form action="{{ localized_route('engagements.leave', $engagement) }}" method="post">
                         @csrf
                         <button>
-                            <x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5" aria-hidden="true" />
+                            @svg('heroicon-o-logout')
                             {{ __('Yes, leave engagement') }}
                         </button>
                     </form>
                     <a class="cta secondary" href="{{ localized_route('engagements.show', $engagement) }}">
-                        <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" /> {{ __('No, go back') }}
+                        @svg('heroicon-o-arrow-left') {{ __('No, go back') }}
                     </a>
                 </div>
             @endif
@@ -58,7 +58,7 @@
             <hr class="divider--thick" />
             <p>
                 <a class="cta secondary" href="{{ localized_route('engagements.show', $engagement) }}">
-                    <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" /> {{ __('Back') }}
+                    @svg('heroicon-o-arrow-left') {{ __('Back') }}
                 </a>
             </p>
         @endif

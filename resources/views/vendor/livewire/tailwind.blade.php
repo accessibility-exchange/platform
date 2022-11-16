@@ -23,7 +23,7 @@
                                 aria-label="{{ __('pagination.previous') }}"
                                 wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
-                                <x-heroicon-s-chevron-left class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-left')
                             </a>
                         @endif
                     </li>
@@ -34,7 +34,7 @@
                                 aria-label="{{ __('pagination.next') }}"
                                 wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
-                                <x-heroicon-s-chevron-right class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-right')
                             </a>
                         @else
                             <span class="spacer"></span>
@@ -52,7 +52,7 @@
                                 aria-label="{{ __('pagination.previous') }}"
                                 wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
-                                <x-heroicon-s-chevron-left class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-left')
                             </a>
                         </li>
                     @endif
@@ -86,7 +86,7 @@
                                 aria-label="{{ __('pagination.next') }}"
                                 wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
-                                <x-heroicon-s-chevron-right class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-right')
                             </a>
                         </li>
                     @endif

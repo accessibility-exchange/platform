@@ -23,10 +23,12 @@
             <x-hearth-hint for="theme">{{ __('Change the colour of the text and background.') }}</x-hearth-hint>
             @foreach ($themes as $theme)
                 <div class="field h-10">
-                    <x-theme-preview :for="$theme['value']" />
                     <x-hearth-radio-button name="theme" x-model.string="theme" :value="$theme['value']" :checked="old('theme', $user->theme)"
                         @change="preview()" hinted="theme-hint" />
-                    <x-hearth-label :for="'theme-' . $theme['value']">{{ $theme['label'] }}</x-hearth-label>
+                    <x-hearth-label :for="'theme-' . $theme['value']">
+                        <x-theme-preview :for="$theme['value']" />
+                        {{ $theme['label'] }}
+                    </x-hearth-label>
                 </div>
             @endforeach
             <script>
@@ -34,7 +36,15 @@
                     return {
                         theme: '{{ old('theme', $user->theme) }}',
                         preview() {
-                            document.documentElement.dataset.theme = this.theme;
+                            if (this.theme === 'system') {
+                                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                                    document.documentElement.dataset.theme = 'dark';
+                                } else {
+                                    document.documentElement.dataset.theme = 'light';
+                                }
+                            } else {
+                                document.documentElement.dataset.theme = this.theme;
+                            }
                         }
                     }
                 }
@@ -50,13 +60,14 @@
                 hinted="text_to_speech-hint" />
         </fieldset>
 
-        <fieldset class="field @error('sign_language_translations') field--error @enderror stack">
+        <fieldset class="field @error('sign_language_translations') field--error @enderror">
             <legend>{{ __('Sign language translations') }}</legend>
             <x-hearth-hint for="sign_language_translations">
                 {{ __('If a Sign Language video translation is available, you will see a button in line with the website content. Pressing that button will load the Sign Language video.') }}
             </x-hearth-hint>
-            <x-hearth-label for="sign_language_translations">{{ __('Sign Language translation') }}</x-hearth-label>
-            <x-hearth-select name="sign_language_translations" :options="$signedLanguages" :selected="old('sign_language_translations', $user->sign_language_translations ?? $user->signed_language)" />
+
+            <x-hearth-radio-buttons name="sign_language_translations" :options="\Spatie\LaravelOptions\Options::forArray([0 => __('Off'), 1 => __('On')])->toArray()" :checked="old('sign_language_translations', $user->sign_language_translations ?? false)"
+                hinted="sign_language_translations-hint" />
         </fieldset>
 
         <button>

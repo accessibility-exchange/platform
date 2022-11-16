@@ -1,6 +1,37 @@
 .icon {
-    height: 1em;
-    width: 1em;
+    @apply w-5 h-5;
+}
+
+.icon--lg {
+    @apply w-6 h-6;
+}
+
+.icon--xl {
+    @apply h-7 w-7;
+}
+
+.icon--2xl {
+    @apply h-12 w-12;
+}
+
+.icon--magenta {
+    color: var(--fg, var(--color-magenta-3));
+}
+
+.icon--blue {
+    color: var(--fg, var(--color-blue-5));
+}
+
+.icon--red {
+    color: var(--fg, var(--color-red-6));
+}
+
+.icon--green {
+    color: var(--fg, var(--color-green-5));
+}
+
+.icon--yellow {
+    color: var(--fg, var(--color-yellow-3));
 }
 
 .with-icon {

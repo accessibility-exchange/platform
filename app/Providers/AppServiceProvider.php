@@ -17,7 +17,10 @@ use App\Statuses\OrganizationStatus;
 use App\Statuses\ProjectStatus;
 use App\Statuses\RegulatedOrganizationStatus;
 use App\Statuses\UserStatus;
+use Blade;
 use Composer\InstalledVersions;
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationItem;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
@@ -48,6 +51,23 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
+
+        Blade::directive('theme', function () {
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+        });
+
+        Blade::directive('ariaDisabled', function () {
+            return "<?php echo 'aria-disabled=\"true\" x-data @click.prevent data-label=\"'.__('not available yet').'\"'; ?>";
+        });
+
+        Filament::serving(function () {
+            Filament::registerNavigationItems([
+                NavigationItem::make(__('Dashboard'))
+                    ->url(localized_route('dashboard'))
+                    ->icon('heroicon-o-view-boards')
+                    ->sort(-1),
+            ]);
+        });
 
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];

@@ -5,12 +5,12 @@
         <div class="center max-w-prose">
             <div class="stack text-center">
                 <div class="mx-auto w-1/2">
-                    <x-tae-logo class="logo" role="presentation" />
-                    <x-tae-logo-mono class="logo logo--themeable" role="presentation" />
+                    @svg('tae-logo', ['class' => 'logo'])
+                    @svg('tae-logo-mono', ['class' => 'logo logo--themeable'])
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </div>
 
-                <h1 class="align:center">{{ __('Site unavailable') }}</h1>
+                <h1 class="text-center">{{ __('Site unavailable') }}</h1>
                 <p>
                     {{ __('The site is currently undergoing maintenance.') }}<br />
                     {{ __('Please wait a few moments and try again.') }}

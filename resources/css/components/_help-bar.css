@@ -1,7 +1,5 @@
 .help-bar {
-    background: var(--theme-help-bar-background, var(--help-bar-background));
     border-block-end: var(--border) dashed var(--help-bar-border);
-    color: var(--help-bar-color);
     height: var(--space-16);
 }
 
@@ -15,16 +13,15 @@
 }
 
 .help-bar a {
-    color: var(--help-bar-color);
     font-weight: var(--font-normal);
 }
 
 .help-bar [aria-expanded] {
-    --button-borderless-outline: var(--color-grey-2);
-    --button-borderless-color-hover: var(--color-grey-2);
-    --button-borderless-background-hover: black;
-    --button-borderless-color-focus: var(--color-grey-2);
-    --button-borderless-color-active: var(--color-grey-1);
+    --btn-borderless-outline: var(--color-grey-2);
+    --btn-borderless-color-hover: var(--color-grey-2);
+    --btn-borderless-background-hover: black;
+    --btn-borderless-color-focus: var(--color-grey-2);
+    --btn-borderless-color-active: var(--color-grey-1);
 }
 
 .help-bar [aria-expanded] .indicator {
@@ -63,7 +60,7 @@
 
 @media (min-width: 60rem) {
     .help-bar {
-        height: var(--space-16);
+        height: calc(var(--space-0) + var(--space-16));
     }
 
     .help-bar [aria-expanded] {

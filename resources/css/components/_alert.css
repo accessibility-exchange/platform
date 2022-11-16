@@ -1,5 +1,8 @@
 /* This file contains all styles related to the alert component. */
 .alert {
+    --btn-borderless-color: var(--alert-color);
+    --btn-borderless-color-focus: var(--alert-color);
+
     background: var(--alert-background);
     border: var(--border) solid var(--alert-border);
     border-radius: var(--radius-sm);
@@ -21,14 +24,14 @@
     margin-inline-start: calc(-1 * var(--space-7));
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
     .alert .title {
         font-size: var(--text-xl);
         font-size: var(--text-fluid-lg);
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 75rem) {
     .alert .title {
         font-size: var(--text-2xl);
         font-size: var(--text-fluid-lg);
@@ -47,31 +50,51 @@
 }
 
 .alert--error {
+    --btn-borderless-color: var(--alert-color-error);
+    --btn-borderless-color-focus: var(--alert-color-error);
+    --link-color: var(--alert-color-error);
+    --link-color-visited: var(--alert-color-error);
+
     background: var(--alert-background-error);
     border-color: var(--alert-border-error);
     color: var(--alert-color-error);
 }
 
 .alert--warning {
+    --btn-borderless-color: var(--alert-color-warning);
+    --btn-borderless-color-focus: var(--alert-color-warning);
+    --link-color: var(--alert-color-warning);
+    --link-color-visited: var(--alert-color-warning);
+
     background: var(--alert-background-warning);
     border-color: var(--alert-border-warning);
     color: var(--alert-color-warning);
 }
 
 .alert--success {
+    --btn-borderless-color: var(--alert-color-success);
+    --btn-borderless-color-focus: var(--alert-color-success);
+    --link-color: var(--alert-color-success);
+    --link-color-visited: var(--alert-color-success);
+
     background: var(--alert-background-success);
     border-color: var(--alert-border-success);
     color: var(--alert-color-success);
 }
 
-@media (min-width: 768px) {
+.alert .actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+@media (min-width: 48rem) {
     .alert .title {
         font-size: var(--text-xl);
         font-size: var(--text-fluid-lg);
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 75rem) {
     .alert .title {
         font-size: var(--text-2xl);
         font-size: var(--text-fluid-lg);

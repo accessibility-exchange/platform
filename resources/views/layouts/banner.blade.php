@@ -4,10 +4,15 @@
     <div class="center center:wide">
         <div class="nav">
             @include('components.brand')
+
+            @if (!request()->localizedRouteIs('settings.edit-website-accessibility-preferences'))
+                <!-- Theme Switcher -->
+                <livewire:theme-switcher />
+            @endif
             <!-- Language Switcher -->
             <nav class="languages" aria-label="{{ __('languages') }}">
                 <ul role="list">
-                    <x-hearth-language-switcher />
+                    <x-language-switcher />
                 </ul>
             </nav>
             @include('components.navigation')
@@ -18,7 +23,7 @@
     <div class="banner banner--warning">
         <div class="center center:wide">
             <p>
-                <x-heroicon-s-exclamation-circle class="mr-2 h-6 w-6" /> <span><strong>CAUTION!</strong> This website is
+                @svg('heroicon-s-exclamation-circle', 'icon--lg mr-2') <span><strong>CAUTION!</strong> This website is
                     under
                     active development. The database is reset nightly, and data you enter will not be preserved.</span>
             </p>
@@ -30,7 +35,7 @@
         <div class="banner banner--error">
             <div class="center center:wide">
                 <p>
-                    <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" /> <span>{!! Str::inlineMarkdown(
+                    @svg('heroicon-s-ban', 'icon--lg mr-2') <span>{!! Str::inlineMarkdown(
                         __('Your account has been suspended. Please [contact](:url) us if you need further assistance.', [
                             'url' => '#contact',
                         ]),

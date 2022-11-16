@@ -2,6 +2,6 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space, var(--s1));
+    gap: var(--space, var(--size-3));
     justify-content: flex-start;
 }

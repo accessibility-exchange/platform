@@ -29,7 +29,8 @@
     <h3 class="repel">{{ __('As a Community Connector, :name can connect to:', ['name' => $individual->firstName]) }}
         @can('update', $individual)
             <p><a class="cta secondary"
-                    href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]) }}">{!! __('Edit :section', [
+                    href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                    {!! __('Edit :section', [
                         'section' => '<span class="visually-hidden">' . __('groups you can connect to') . '</span>',
                     ]) !!}</a>
             </p>

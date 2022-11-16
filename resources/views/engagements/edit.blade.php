@@ -12,7 +12,7 @@
             {{ __('Edit engagement details') }}
         </h1>
         <p><a class="with-icon" href="{{ localized_route('engagements.edit-languages', $engagement) }}">
-                <x-heroicon-o-pencil class="mr-2 h-5 w-5" role="presentation" aria-hidden="true" />
+                @svg('heroicon-o-pencil', 'mr-1')
                 {{ __('Edit page translations') }}
             </a>
         </p>
@@ -24,12 +24,12 @@
     <form class="stack" action="{{ localized_route('engagements.update', $engagement) }}" method="POST" novalidate>
         @csrf
         @method('put')
-        <hr class="divider--thick">
+        <hr class="divider--thick" />
 
         <h2>{{ __('Name') }}</h2>
 
         <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
-        <hr class="divider--thick">
+        <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
 
@@ -39,13 +39,13 @@
             :model="$engagement" />
 
         @if ($engagement->format === 'interviews')
-            <hr class="divider--thick">
+            <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <livewire:date-picker name="window_start_date" :label="__('Start date')" minimumYear="2022" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="window_end_date" :label="__('End date')" minimumYear="2022" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" />
 
-            <hr class="divider--thick">
+            <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
             <h3>{{ __('Real time interview') }}</h3>
             <h4>{{ __('Scheduling') }}</h4>
@@ -111,7 +111,7 @@
                     <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
                         :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('in_person')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
                         <div class="field @error('street_address') field--error @enderror">
                             <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
                             <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $engagement->street_address)" required />
@@ -149,7 +149,7 @@
                         :checked="in_array('web_conference', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('web_conference')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
                         <div class="field @error('meeting_software') field--error @enderror">
                             <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
                             <x-hearth-hint for="meeting_software">
@@ -183,7 +183,7 @@
                     <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone"
                         :checked="in_array('phone', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                    <div class="box stack my-6 bg-grey-2" x-show="meetingTypes.includes('phone')">
+                    <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
                         <div class="field @error('meeting_phone') field-error @enderror">
                             <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
                             <x-hearth-hint for="meeting_phone">
@@ -199,13 +199,13 @@
                     </div>
                 </div>
             </div>
-            <hr class="divider--thick">
+            <hr class="divider--thick" />
             <h3>{{ __('Written or recorded responses') }}</h3>
             <p>{{ __('Some participants may not be able to meet in real-time. For them, you can send out a list of questions, and participants can respond to them in formats you accept.') }}
             </p>
             <h4>{{ __('Dates') }}</h4>
-            <livewire:date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Responses are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
+            <x-date-picker name="materials_by_date" :label="__('Questions are sent to participants by:')" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="complete_by_date" :label="__('Responses are due by:')" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
             <fieldset
                 class="field @error('accepted_formats') field--error @enderror @error('other_accepted_formats') field--error @enderror @error('other_accepted_format') field--error @enderror stack"
                 x-data="{ otherAcceptedFormats: {{ old('other_accepted_formats', !empty($engagement->other_accepted_format)) ? 1 : 'null' }} }">
@@ -221,7 +221,6 @@
                 <div class="field__subfield stack">
                     <x-translatable-input name="other_accepted_format" :label="__('Other accepted format')" :short-label="__('other accepted format')"
                         :model="$engagement" x-show="otherAcceptedFormats" />
-                    <x-hearth-error for="other_accepted_format" />
                 </div>
             </fieldset>
             <div class="field @error('open_to_other_formats') field--error @enderror">
@@ -236,13 +235,13 @@
         @endif
 
         @if (in_array($engagement->format, ['survey', 'other-async']))
-            <hr class="divider--thick">
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') . ' ' . __('(required)') : __('Materials') . ' ' . __('(required)') }}
+            <hr class="divider--thick" />
+            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}
             </h2>
             <h3>{{ __('Date') }}</h3>
-            <livewire:date-picker name="materials_by_date" :label="__('Materials are sent to participants by:')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? null)" />
-            <livewire:date-picker name="complete_by_date" :label="__('Completed materials are due by:')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? null)" />
-            <hr class="divider">
+            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
+            <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
                     <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
@@ -260,7 +259,7 @@
         @endif
 
         @if (class_basename($engagement->project->projectable) === 'Organization')
-            <hr class="divider--thick">
+            <hr class="divider--thick" />
             <h2>{{ __('Payment') }}</h2>
             <div class="field @error('paid') field--error @enderror">
                 <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
@@ -270,11 +269,11 @@
         @endif
 
         @if ($engagement->who === 'individuals')
-            <hr class="divider--thick">
+            <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
 
             <div class="field @error('signup_by_date') field--error @enderror">
-                <livewire:date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
+                <x-date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
                     ? __('Participants must sign up for this engagement by the following date') .
                         ' ' .
                         __('(required)') .
@@ -282,19 +281,16 @@
                     : __('Participants must respond to their invitation by the following date') .
                         ' ' .
                         __('(required)') .
-                        ':'" :minimumYear="date('Y')" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? null)" />
+                        ':'" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
             </div>
         @endif
-        <hr class="divider--thick">
+        <hr class="divider--thick" />
 
         <div class="flex gap-4">
             <button>{{ __('Save') }}</button>
             @if ($engagement->checkStatus('draft'))
                 <button class="secondary" name="publish" value="1"
-                    @if (!$engagement->isPublishable()) disabled @endif>{{ __('Publish') }}@if (!$engagement->isPublishable())
-                        ({{ __('not available yet') }})
-                    @endif
-                </button>
+                    @if (!$engagement->isPublishable()) @ariaDisabled @endif>{{ __('Publish') }}</button>
             @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())

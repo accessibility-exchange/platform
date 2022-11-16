@@ -50,11 +50,18 @@ class TranslatableInput extends Component
     public mixed $model;
 
     /**
+     * Whether the form input is required.
+     *
+     * @var bool
+     */
+    public $required;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '')
+    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '', $required = false)
     {
         $languages = $model->languages ?? config('locales.supported');
 
@@ -69,6 +76,7 @@ class TranslatableInput extends Component
         $this->hint = $hint;
         $this->languages = $languages;
         $this->model = $model;
+        $this->required = $required;
     }
 
     /**

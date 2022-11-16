@@ -36,9 +36,14 @@
                                 <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                             @endcan
                             <button class="secondary" name="publish" value="1"
-                                @cannot('publish', $regulatedOrganization) disabled @endcannot>{{ __('Publish page') }}</button>
+                                @cannot('publish', $regulatedOrganization) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
+                            @cannot('publish', $regulatedOrganization)
+                            <p id="cannot-publish-explanation">
+                                {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                            </p>
+                        @endcannot
+
                         </p>
-                        <p>{{ __('Once you publish your page, other users on this website can access your page.') }}</p>
                     @else
                         <p class="stack">
                             <x-hearth-input name="unpublish" type="submit" value="{{ __('Unpublish page') }}" />
@@ -53,23 +58,26 @@
                 <h2>{{ __('Organization information') }}</h2>
 
                 <div class="field @error('name') field--error @enderror">
-                    <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" required />
+                    <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" :shortLabel="__('federally regulated organization name')"
+                        required />
                 </div>
 
                 <fieldset>
                     <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
 
-                    <div class="field">
+                    <div class="field @error('locality') field--error @enderror">
                         <x-hearth-label for="locality" :value="__('forms.label_locality')" />
                         <x-hearth-input id="locality" name="locality" type="text" :value="old('locality', $regulatedOrganization->locality)" required />
+                        <x-hearth-error for="locality" />
                     </div>
-                    <div class="field">
+                    <div class="field @error('region') field--error @enderror">
                         <x-hearth-label for="region" :value="__('forms.label_region')" />
                         <x-hearth-select id="region" name="region" :selected="old('region', $regulatedOrganization->region)" required :options="$nullableRegions" />
+                        <x-hearth-error for="region" />
                     </div>
                 </fieldset>
 
-                <fieldset x-data="enhancedCheckboxes()">
+                <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
                     <legend>{{ __('Where are your organization’s service areas?') . ' ' . __('(required)') }}</legend>
                     <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
                     <div class="stack" x-cloak>
@@ -78,6 +86,7 @@
                         <button class="secondary" type="button"
                             x-on:click="selectNone()">{{ __('Select none') }}</button>
                     </div>
+                    <x-hearth-error for="service_areas" />
                 </fieldset>
 
                 <fieldset class="field @error('sectors') field--error @enderror">
@@ -89,7 +98,7 @@
 
                 <div class="field @error('about') field--error @enderror">
                     <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
-                        required />
+                        :shortLabel="__('about')" required />
                 </div>
 
                 <fieldset class="stack">
@@ -116,7 +125,8 @@
                                     'social_links.' . $key,
                                     $regulatedOrganization->social_links[$key] ?? '',
                                 )" />
-                            <x-hearth-error for="social_links_{{ $key }}" />
+                            <x-hearth-error for="social_links_{{ $key }}"
+                                field="social_links.{{ $key }}" />
                         </div>
                     @endforeach
                 </fieldset>

@@ -18,5 +18,5 @@ return [
     'invitation_status' => 'Status',
     'invitation_role' => 'Role',
     'member_invited' => 'Invited',
-    'invitatation_title' => 'Invitation',
+    'invitation_title' => 'Invitation',
 ];

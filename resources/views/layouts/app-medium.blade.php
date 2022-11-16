@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" data-theme="{{ Cookie::get('theme', 'light') }}"
-    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="no-js" data-theme="@theme()" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     @include('partials.head', ['title' => $title ?? __('app.name')])
@@ -27,6 +26,7 @@
                 </div>
             </article>
         </div>
+        <x-back-to-top width="medium" />
     </main>
 
     @include('layouts.footer')

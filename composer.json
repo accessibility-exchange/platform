@@ -6,17 +6,18 @@
         "framework",
         "laravel"
     ],
-    "version": "1.0.0-alpha3",
+    "version": "1.0.0-alpha.5",
     "license": "MIT",
     "require": {
         "php": "^8.1",
         "axlon/laravel-postal-code-validation": "^3.3",
-        "blade-ui-kit/blade-heroicons": "^2.0",
+        "blade-ui-kit/blade-heroicons": "^1.3",
         "blade-ui-kit/blade-icons": "^1.2",
         "codeat3/blade-forkawesome": "^1.8",
         "codezero/laravel-unique-translation": "^3.5",
         "doctrine/dbal": "^3.3",
         "elhebert/laravel-sri": "^3.1",
+        "filament/filament": "^2.16",
         "fluid-project/hearth": "^3.0",
         "fruitcake/laravel-cors": "^3.0",
         "graham-campbell/markdown": "^14.0",
@@ -110,7 +111,8 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta"
+            "@php artisan ide-helper:meta",
+            "@php artisan filament:upgrade"
         ],
         "analyze": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint",

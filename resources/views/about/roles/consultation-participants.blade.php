@@ -1,10 +1,10 @@
 <x-app-wide-layout>
     <x-slot name="title">{{ __('Consultation Participants') }}</x-slot>
     <x-slot name="header">
-        <div class="full -mt-12 bg-lavender-3 py-12">
+        <div class="full header--participants -mt-12 py-12">
             <div class="center center:wide">
                 <ol class="breadcrumbs" role="list">
-                    <li><a href="{{ localized_route('welcome') }}">{{ __('Home') }}</a></li>
+                    <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                     @if (request()->localizedRouteIs('about.individual-consultation-participants'))
                         <li><a
                                 href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
@@ -22,9 +22,10 @@
         </div>
     </x-slot>
 
-    <div class="stack stack:xl -mb-8">
+    <div class="-mb-8 space-y-16">
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('Who can be a :role?', ['role' => __('Consultation Participant')]) !!}</h2>
+            <x-interpretation name="{{ __('Who can be a :role?', [], 'en') }}" />
             <x-media-text>
                 <x-slot name="media">
                     <x-placeholder width="915" height="515" />
@@ -47,8 +48,9 @@
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
-            <div class="align:center">
+            <div class="text-center">
                 <h2 id="how">{!! __('How does being a :role work?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
+                <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
             </div>
             <x-media-text>
                 <x-slot name="media">
@@ -91,12 +93,12 @@
             </x-media-text>
         </x-section>
 
-        <x-section aria-labelledby="faq">
+        {{-- <x-section aria-labelledby="faq">
             <h2 class="text-center" id="faq">{{ __('Frequently asked questions') }}</h2>
             <p>TODO.</p>
-        </x-section>
+        </x-section> --}}
 
-        <x-section class="align:center mt-16 bg-turquoise-2">
+        <x-section class="accent--color text-center">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -104,9 +106,10 @@
         </x-section>
 
         @guest
-            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
+            <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>

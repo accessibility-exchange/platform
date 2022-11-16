@@ -16,7 +16,7 @@
         ($user->context === 'individual' &&
             ($user->individual->isConsultant() || $user->individual->isConnector()) &&
             $user->individual->isParticipant()))
-        <nav class="full mb-12 bg-white shadow-md" aria-labelledby="projects">
+        <nav class="nav--tabbed" aria-labelledby="projects">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     @if ($user->context === 'organization')
@@ -79,7 +79,7 @@
             @include(isset($section) ? 'projects.my-projects.' . $section : 'projects.my-projects.participating')
     @endswitch
 
-    <div class="full -mb-8 mt-12 bg-turquoise-2 py-12">
+    <div class="full accent--color -mb-8 mt-12 py-12">
         <div class="center center:wide stack text-center">
             <h2>{{ __('Browse all projects') }}</h2>
             <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>

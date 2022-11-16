@@ -19,8 +19,7 @@
         </x-slot>
 
     @section('navigation')
-        <nav class="full mb-12 bg-white shadow-md"
-            aria-labelledby="{{ __(':name participants navigation', ['name' => $engagement->name]) }}">
+        <nav class="nav--tabbed" aria-labelledby="{{ __(':name participants navigation', ['name' => $engagement->name]) }}">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     <li class="w-full">
@@ -47,7 +46,7 @@
                 @if ($participants->count() < $engagement->ideal_participants)
                     <a class="cta secondary with-icon"
                         href="{{ localized_route('engagements.add-participant', $engagement) }}">
-                        <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                        @svg('heroicon-o-plus-circle')
                         {{ __('Add participant') }}
                     </a>
                 @endif
@@ -90,7 +89,7 @@
                         </tr>
                     </thead>
                     @foreach ($participants as $participant)
-                        <tr>
+                        <tr id="participant-{{ $participant->id }}">
                             <td>{{ $participant->name }}</td>
                             <td>
                                 <p @class([
@@ -103,8 +102,8 @@
                                     @endif
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'email')
-                                    <p class="flex items-center gap-1 text-green-7">
-                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                    <p class="text-success flex items-center gap-1">
+                                        @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif
@@ -121,8 +120,8 @@
                                     @endif
                                 </p>
                                 @if ($participant->user->preferred_contact_method === 'phone')
-                                    <p class="flex items-center gap-1 text-green-7">
-                                        <x-heroicon-s-check-circle class="h-5 w-5" role="presentation" aria-hidden="true" />
+                                    <p class="text-success flex items-center gap-1">
+                                        @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif

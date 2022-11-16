@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ConsultationPhase;
+use App\Enums\ResourceFormat;
 use App\Http\Requests\CreateResourceCollectionRequest;
 use App\Http\Requests\DestroyResourceCollectionRequest;
 use App\Http\Requests\UpdateResourceCollectionRequest;
 use App\Models\ContentType;
-use App\Models\Format;
-use App\Models\Phase;
 use App\Models\ResourceCollection;
 use App\Models\Topic;
+use Spatie\LaravelOptions\Options;
 
 class ResourceCollectionController extends Controller
 {
@@ -69,9 +70,9 @@ class ResourceCollectionController extends Controller
             'resources' => $resourceCollection->resources,
             'topics' => Topic::all(),
             'types' => ContentType::all(),
-            'formats' => Format::all(),
+            'formats' => Options::forEnum(ResourceFormat::class)->toArray(),
             'languages' => ['en', 'fr'],
-            'phases' => Phase::all(),
+            'phases' => Options::forEnum(ConsultationPhase::class)->toArray(),
         ]);
     }
 

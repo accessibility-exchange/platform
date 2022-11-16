@@ -4,8 +4,13 @@
 
     background: var(--body-background);
     border-radius: var(--radius-md);
-    box-shadow: var(--banner-shadow);
+    box-shadow: var(--card-shadow);
     padding: var(--gutter);
+}
+
+.auth-card .brand {
+    display: block;
+    height: auto;
 }
 
 .auth-card .logo {

@@ -134,3 +134,11 @@ h5 {
         font-weight: var(--font-normal);
     }
 }
+
+.text-error {
+    color: var(--color-error);
+}
+
+.text-success {
+    color: var(--color-success);
+}
