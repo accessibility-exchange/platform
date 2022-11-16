@@ -58,11 +58,11 @@ class InterpretationResource extends Resource
                     ->icon('heroicon-s-external-link')
                     ->iconPosition('after'),
                 Tables\Columns\IconColumn::make('asl')
-                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'ase', false) !== '')
+                    ->getStateUsing(fn (Interpretation $record): bool => $record->getTranslation('video', 'ase', false) !== '')
                     ->boolean()
                     ->label('ASL Video'),
                 Tables\Columns\IconColumn::make('lsq')
-                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'fcs', false) !== '')
+                    ->getStateUsing(fn (Interpretation $record): bool => $record->getTranslation('video', 'fcs', false) !== '')
                     ->boolean()
                     ->label('LSQ Video'),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime(),
