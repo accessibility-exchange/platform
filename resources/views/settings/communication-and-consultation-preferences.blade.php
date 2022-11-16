@@ -102,20 +102,20 @@
         </div>
 
         @if ($individual->isParticipant())
-            <div class="stack" x-data="{ consultingMethods: {{ json_encode(array_map(fn($value): int => (int) $value, old('consulting_methods', $selectedConsultingMethods ?? '[]'))) }} }">
+            <div class="stack" x-data="{ consultingMethods: {{ json_encode(old('consulting_methods', $individual->consulting_methods ?? [])) }} }">
                 <h2>{{ __('Consultations') }}</h2>
 
                 <fieldset class="field @error('consulting_methods') field--error @enderror">
                     <legend>
                         {{ __('Please indicate the types of consultations you are willing to do.') . ' ' . __('(required)') }}
                     </legend>
-                    <x-hearth-checkboxes name="consulting_methods" :options="$consultingMethods" :checked="old('consulting_methods', $selectedConsultingMethods)"
-                        x-model.number="consultingMethods" />
+                    <x-hearth-checkboxes name="consulting_methods" :options="$consultingMethods" :checked="old('consulting_methods', $individual->consulting_methods ?? [])"
+                        x-model="consultingMethods" />
                     <x-hearth-error for="consulting_methods" />
                 </fieldset>
 
                 <fieldset class="field @error('meeting_types') field--error @enderror"
-                    x-show="consultingMethods.includes({{ $interviews }}) || consultingMethods.includes({{ $focusGroups }}) || consultingMethods.includes({{ $workshops }})"
+                    x-show="consultingMethods.includes('interviews') || consultingMethods.includes('focus-group') || consultingMethods.includes('workshop') || consultingMethods.includes('other-sync')"
                     x-cloak>
                     <legend>
                         {{ __('Please indicate the types of meetings you are willing to attend.') . ' ' . __('(required)') }}

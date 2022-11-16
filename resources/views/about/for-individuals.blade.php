@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('How this works for Individuals with Disabilities and Deaf Individuals') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessbility Exchange') }}</a></li>
+            <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
         </ol>
         <h1>
             <span class="font-medium">{{ __('How this works for') }}</span><br />
@@ -10,20 +10,21 @@
         </h1>
     </x-slot>
 
-    <div class="stack stack:xl -mb-8">
-        <x-placeholder class="text-blue-6" />
+    <div class="-mb-8 space-y-16">
+        <x-placeholder />
 
         <x-section class="stack:lg" aria-labelledby="what">
-            <div class="align:center">
+            <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
+                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
             </div>
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-lavender-3" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-lavender-3 pt-8">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('As an individual with a disability, Deaf person, or a supporter, you can participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. You can also gain access to resources and training on how to do this.') }}
                     </p>
@@ -35,9 +36,9 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-magenta-2" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-magenta-2 pt-8">
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
                     </p>
@@ -49,9 +50,9 @@
 
             <x-media-text>
                 <x-slot name="media">
-                    <x-placeholder class="text-yellow-3" width="915" height="515" />
+                    <x-placeholder width="915" height="515" />
                 </x-slot>
-                <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-yellow-3 pt-8">
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
                     </p>
@@ -62,7 +63,7 @@
             </x-media-text>
         </x-section>
 
-        <x-section class="align:center mt-16 bg-turquoise-2">
+        <x-section class="accent--color text-center">
             <p class="h3">
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
@@ -70,9 +71,10 @@
         </x-section>
 
         @guest
-            <x-section class="full mt-16 bg-grey-2" aria-labelledby="join">
+            <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>

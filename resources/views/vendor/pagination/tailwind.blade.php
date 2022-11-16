@@ -19,7 +19,7 @@
                         @else
                             <a href="{{ $paginator->previousPageUrl() }}" aria-label="{{ __('pagination.previous') }}"
                                 rel="prev">
-                                <x-heroicon-s-chevron-left class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-left')
                             </a>
                         @endif
                     </li>
@@ -28,7 +28,7 @@
                         @if ($paginator->hasMorePages())
                             <a href="{{ $paginator->nextPageUrl() }}" aria-label="{{ __('pagination.next') }}"
                                 rel="prev">
-                                <x-heroicon-s-chevron-right class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-right')
                             </a>
                         @else
                             <span class="spacer"></span>
@@ -44,7 +44,7 @@
                         <li>
                             <a href="{{ $paginator->previousPageUrl() }}" aria-label="{{ __('pagination.previous') }}"
                                 rel="prev">
-                                <x-heroicon-s-chevron-left class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-left')
                             </a>
                         </li>
                     @endif
@@ -74,7 +74,7 @@
                         <li>
                             <a href="{{ $paginator->nextPageUrl() }}" aria-label="{{ __('pagination.next') }}"
                                 rel="prev">
-                                <x-heroicon-s-chevron-right class="h-5 w-5" aria-hidden="true" />
+                                @svg('heroicon-s-chevron-right')
                             </a>
                         </li>
                     @endif

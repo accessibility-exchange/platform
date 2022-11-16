@@ -16,7 +16,7 @@
             @csrf
 
             <button class="secondary destructive -mt-6">
-                <x-heroicon-o-trash class="h-5 w-5" aria-hidden="true" /> {{ __('Remove') }}
+                @svg('heroicon-o-trash') {{ __('Remove') }}
             </button>
         </form>
     @else

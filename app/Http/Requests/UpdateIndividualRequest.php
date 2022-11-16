@@ -6,6 +6,7 @@ use App\Enums\ConsultingService;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -67,5 +68,16 @@ class UpdateIndividualRequest extends FormRequest
         return [
             'bio.*' => __('bio'),
         ];
+    }
+
+    public function messages(): array
+    {
+        $messages = [];
+
+        foreach ($this->social_links as $key => $value) {
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+        }
+
+        return $messages;
     }
 }

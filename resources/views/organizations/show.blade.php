@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            <x-heroicon-s-no-symbol class="mr-2 h-6 w-6" />
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -16,8 +16,13 @@
             @endpush
         @endif
         <div class="stack">
-            <h1 class="repel" id="regulated-organization">
-                {{ $organization->getWrittenTranslation('name', $language) }}
+            <div class="repel">
+                <h1 id="organization">
+                    {{ $organization->getWrittenTranslation('name', $language) }}
+                </h1>
+                @if ($organization->checkStatus('draft'))
+                    <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                @endif
                 @can('update', $organization)
                     <form action="{{ localized_route('organizations.update-publication-status', $organization) }}"
                         method="POST" novalidate>
@@ -25,14 +30,15 @@
                         @method('PUT')
 
                         @if ($organization->checkStatus('published'))
-                            <x-hearth-input class="secondary" name="unpublish" type="submit" :value="__('Unpublish')" />
+                            <button class="secondary" name="unpublish" type="submit"
+                                value="1">{{ __('Unpublish') }}</button>
                         @else
-                            <x-hearth-input class="secondary" name="publish" type="submit" :value="__('Publish')"
-                                :disabled="!Auth::user()->can('publish', $organization)" />
+                            <button class="secondary" name="publish" type="submit" value="1"
+                                @cannot('publish', $organization)) @ariaDisabled @endcannot>{{ __('Publish') }}</button>
                         @endif
                     </form>
                 @endcan
-            </h1>
+            </div>
             <p class="meta">
                 <strong>{{ App\Enums\OrganizationType::labels()[$organization->type] }}</strong><br />
                 @foreach ($organization->roles as $role)
@@ -49,7 +55,7 @@
                         @if ($organization->website_link)
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $organization->website_link }}">
-                                    <x-heroicon-o-globe-alt class="icon" />
+                                    @svg('heroicon-o-globe-alt')
                                     {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
                                 </a>
                             </li>
@@ -97,7 +103,7 @@
     <x-language-changer :model="$organization" />
 
     <div class="with-sidebar">
-        <nav class="secondary" aria-labelledby="regulated-organization">
+        <nav class="secondary" aria-labelledby="organization">
             <ul role="list">
                 <li>
                     <x-nav-link :href="localized_route('organizations.show', $organization)" :active="request()->localizedRouteIs('organizations.show')">{{ __('About') }}</x-nav-link>
@@ -122,7 +128,8 @@
             @if (request()->localizedRouteIs('organizations.show'))
                 <h2 class="repel">{{ __('About') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', $organization) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', $organization) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.about')
@@ -131,7 +138,8 @@
                     {{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
                     @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">{!! __('Edit :section', [
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', [
                                 'section' =>
                                     '<span class="visually-hidden">' .
                                     __('Communities we :represent_or_serve_and_support', [
@@ -146,7 +154,8 @@
             @elseif(request()->localizedRouteIs('organizations.show-interests'))
                 <h2 class="repel">{{ __('Interests') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.interests')
@@ -160,7 +169,8 @@
             @elseif(request()->localizedRouteIs('organizations.show-contact-information'))
                 <h2 class="repel">{{ __('Contact information') }} @can('update', $organization)
                         <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">{!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>
+                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
+                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>
                     @endcan
                 </h2>
                 @include('organizations.partials.contact-information')

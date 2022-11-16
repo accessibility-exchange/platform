@@ -7,4 +7,9 @@ return [
             'prefix' => 'tae',
         ],
     ],
+    'class' => 'icon',
+    'attributes' => [
+        'role' => 'presentation',
+        'aria-hidden' => 'true',
+    ],
 ];

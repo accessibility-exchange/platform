@@ -2,7 +2,7 @@
     @if ($trainings)
         <ul class="stack" role="list">
             @foreach ($trainings as $i => $training)
-                <li class="stack box bg-grey-2">
+                <li class="stack box">
                     <h4>{{ __('Training') }}</h4>
                     <div class="field @error("team_trainings.{$i}.name") field-error @enderror">
                         <x-hearth-label :for="'team_trainings_' . $i . '_name'" :value="__('Name of training')" />
@@ -11,8 +11,8 @@
                     </div>
 
                     <div class="field @error("team_trainings.{$i}.date") field-error @enderror">
-                        <livewire:date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :minimumYear="date('Y') - 25"
-                            :maximumYear="date('Y')" :name="'team_trainings[' . $i . '][date]'" :value="old('team_trainings_' . $i . '_date', $training['date'] ?? null)" />
+                        <x-date-picker :wire:key="'training-'.$i" :label="__('Date of training')" :name="'team_trainings[' . $i . '][date]'"
+                            :value="old('team_trainings_' . $i . '_date', $training['date'] ?? '')" />
                         <x-hearth-error :for="'team_trainings_' . $i . '_date'" :field="'team_trainings.' . $i . '.date'" />
                     </div>
 

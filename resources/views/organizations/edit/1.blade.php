@@ -21,13 +21,14 @@
             <h3>{{ __('Organization information') }}</h3>
 
             <div class="field @error('name') field--error @enderror">
-                <x-translatable-input name="name" :model="$organization" :label="__('Organization name')" :hint="__('This is the name that will show up publicly on your page.')" required />
+                <x-translatable-input name="name" :model="$organization" :label="__('Organization name') . ' ' . __('(required)')" :shortLabel="__('organization name')"
+                    :hint="__('This is the name that will show up publicly on your page.')" required />
                 <x-hearth-error for="name" />
             </div>
 
             <div class="field @error('about') field--error @enderror">
-                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('This can include your vision and mission, what your organization offers, etc.')"
-                    required />
+                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization') . ' ' . __('(required)')" :shortLabel="__('about')"
+                    :hint="__('This can include your vision and mission, what your organization offers, etc.')" required />
             </div>
 
             <fieldset>
@@ -55,6 +56,7 @@
                     <button class="secondary" type="button" x-on:click="selectAll()">{{ __('Select all') }}</button>
                     <button class="secondary" type="button" x-on:click="selectNone()">{{ __('Select none') }}</button>
                 </div>
+                <x-hearth-error for="service_areas" />
             </fieldset>
 
             <fieldset>
@@ -85,7 +87,8 @@
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
                             :value="old('social_links.' . $key, $organization->social_links[$key] ?? '')" />
-                        <x-hearth-error for="social_links_{{ $key }}" />
+                        <x-hearth-error for="social_links_{{ $key }}"
+                            field="social_links.{{ $key }}" />
                     </div>
                 @endforeach
             </fieldset>

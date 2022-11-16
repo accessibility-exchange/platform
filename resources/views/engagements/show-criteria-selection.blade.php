@@ -32,11 +32,11 @@
             <div class="stack" x-show="!editing">
                 {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
@@ -75,12 +75,12 @@
             <div class="stack" x-show="!editing">
                 {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span
                         class="sr-only">{{ __('Disability or Deaf group') }}</span>
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{ crossDisability: {{ old('cross_disability', $engagement->matchingStrategy->hasDisabilityTypes() ? (int) $engagement->matchingStrategy->hasDisabilityType($crossDisability) : 1) }} }">
                     <fieldset class="field @error('cross_disability') field--error @enderror">
                         <legend>
@@ -118,12 +118,11 @@
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">{!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
                 <button class="secondary" type="button" @click="editing = !editing">
-                    <x-heroicon-o-pencil /> {{ __('Edit') }} <span
-                        class="sr-only">{{ __('Other identities') }}</span>
+                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Other identities') }}</span>
                 </button>
             </div>
 
-            <div class="space-y-6 bg-grey-2 px-6 py-8" x-cloak x-show="editing">
+            <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{
                     intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1)) }},
                     otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'

@@ -15,15 +15,14 @@
     </x-slot>
 
     @section('navigation')
-        <nav class="full mb-12 bg-white shadow-md" aria-labelledby="{{ __('notifications navigation') }}">
+        <nav class="nav--tabbed" aria-labelledby="{{ __('notifications navigation') }}">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     <li class="w-full">
                         <x-nav-link class="inline-flex w-full items-center justify-center gap-2 border-t-0"
                             :href="localized_route('dashboard.notifications')" :active="request()->localizedRouteIs('dashboard.notifications')">
                             {{ __('Unread') }}@if ($unreadCount)
-                                <span
-                                    class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-magenta-3">{{ $unreadCount }}</span>
+                                <span class="notification-dot h-6 w-6">{{ $unreadCount }}</span>
                             @endif
                         </x-nav-link>
                     </li>

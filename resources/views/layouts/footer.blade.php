@@ -1,13 +1,13 @@
-<footer class="dark" role="contentinfo">
+<footer class="darker" role="contentinfo">
     <div class="center center:wide">
         <div class="switcher">
             <div class="stack">
                 <!-- Brand -->
                 <a class="brand" href="{{ localized_route('welcome') }}" rel="home">
                     @if (locale() == 'en')
-                        <x-tae-logo-mono-en class="logo-footer" role="presentation" />
+                        @svg('tae-logo-mono-en', ['class' => 'logo-footer'])
                     @elseif(locale() == 'fr')
-                        <x-tae-logo-mono-fr class="logo-footer" role="presentation" />
+                        @svg('tae-logo-mono-fr', ['class' => 'logo-footer'])
                     @endif
                     <span class="visually-hidden">{{ __('app.name') }}</span>
                 </a>
@@ -17,10 +17,9 @@
                         </li>
                         {{-- TODO: Add glossary feature --}}
                         {{-- <li><a href="">{{ __('Glossary') }}</a></li> --}}
-                        {{-- TODO: Add Terms of Service --}}
-                        {{-- <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a></li> --}}
-                        {{-- TODO: Add Privacy Policy --}}
-                        {{-- <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li> --}}
+                        <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a>
+                        </li>
+                        <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li>
                     </ul>
                 </nav>
             </div>

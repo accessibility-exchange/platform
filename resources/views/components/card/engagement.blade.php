@@ -2,8 +2,7 @@
     <x-slot name="title">
         <a
             href="@can('update', $model){{ localized_route('engagements.manage', $model) }}@else{{ localized_route('engagements.show', $model) }}@endcan">{{ $model->name }}
-            <x-heroicon-m-chevron-right class="absolute bottom-1/2 right-5 h-7 w-7" role="presentation" aria-hidden="true"
-                fill="currentColor" />
+            @svg('heroicon-s-chevron-right', 'icon--xl absolute bottom-1/2 right-5')
         </a>
     </x-slot>
 
@@ -35,6 +34,6 @@
         @if ($model->seeking_community_connector)
             <span class="badge badge--yellow">{{ __('Seeking community connector') }}</span>
         @endif
-        <span @class(['badge badge--status', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
+        <span @class(['badge', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
     </p>
 </x-card>

@@ -39,8 +39,8 @@
                 @endif
             </ul>
 
-            <p><a
-                    href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">{{ __('Edit your contact information') }}</a>
+            <p><a href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">@svg('heroicon-o-pencil', 'mr-1')
+                    {{ __('Edit your contact information') }}</a>
             </p>
 
             <div class="field @error('preferred_notification_method') field--error @enderror">

@@ -3,6 +3,7 @@
 namespace App\Http\Responses;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
@@ -16,6 +17,8 @@ class LoginResponse implements LoginResponseContract
     public function toResponse($request)
     {
         $dashboard = localized_route('dashboard', [], Auth::user()->locale);
+
+        Cookie::queue('theme', Auth::user()->theme);
 
         if ($request->wantsJson()) {
             return response()->json(['two_factor' => false]);

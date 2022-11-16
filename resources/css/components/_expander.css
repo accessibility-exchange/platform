@@ -26,7 +26,7 @@
 }
 
 .expander .title button::before {
-    border-block-start: var(--border) solid var(--expander-border);
+    border-block-start: var(--border) solid currentcolor;
     content: "";
     display: block;
     left: var(--space-2);
@@ -35,8 +35,12 @@
     width: calc(100% - 2 * var(--space-2));
 }
 
+.expander .title button:hover {
+    color: var(--expander-color-hover);
+}
+
 .expander .title button:hover::before {
-    border-block-start-width: var(border-size-2);
+    border-block-start-width: var(--border-3);
 }
 
 .expander .title button:focus {
@@ -53,6 +57,10 @@
 .expander .title button:active {
     background-color: var(--expander-background-active);
     color: var(--expander-color-active);
+}
+
+.expander .title button:active:focus {
+    border-radius: var(--radius-none);
 }
 
 .expander .title button:active::before {

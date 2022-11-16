@@ -39,15 +39,15 @@
                     <p class="with-icon">
                         @switch($engagement->recruitment)
                             @case('connector')
-                                <x-heroicon-o-user-group class="icon mr-2 h-5 w-5" />
+                                @svg('heroicon-o-user-group', 'mr-2')
                             @break
 
                             @case('open-call')
-                                <x-heroicon-o-megaphone class="icon mr-2 h-5 w-5" />
+                                @svg('heroicon-o-speakerphone', 'mr-2')
                             @break
 
                             @default
-                                <x-heroicon-o-puzzle-piece class="icon mr-2 h-5 w-5" />
+                                @svg('heroicon-o-puzzle', 'mr-2')
                         @endswitch
                         {{ $engagement->display_recruitment }}
                     </p>
@@ -68,7 +68,7 @@
                     {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
                 </div>
                 <a class="cta secondary" href="{{ localized_route('engagements.edit-criteria', $engagement) }}">
-                    <x-heroicon-o-pencil /> {{ __('Edit') }}
+                    @svg('heroicon-o-pencil') {{ __('Edit') }}
                 </a>
             </x-manage-section>
         </x-manage-columns>
@@ -95,12 +95,12 @@
                             <p>
                                 <a class="with-icon"
                                     href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
-                                    <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                                    @svg('heroicon-s-chevron-right', 'icon--lg')
                                 </a>
                             </p>
                             <p>
                                 <span class="badge badge--stop">
-                                    <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" />
+                                    @svg('heroicon-s-x-circle', 'mr-2')
                                     {{ __('Not ready to publish') }}
                                 </span>
                             </p>
@@ -113,21 +113,19 @@
                             <p>
                                 <a class="with-icon"
                                     href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review and publish engagement details') }}
-                                    <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                                    @svg('heroicon-s-chevron-right', 'icon--lg')
                                 </a>
                             </p>
                             <p>
                                 <span @class([
-                                    'badge badge--status',
+                                    'badge',
                                     'badge--stop' => !$engagement->isPreviewable(),
                                     'badge--go' => $engagement->isPreviewable(),
                                 ])>
                                     @if (!$engagement->isPreviewable())
-                                        <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
-                                            aria-hidden="true" /> {{ __('Not ready to publish') }}
+                                        @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
                                     @else
-                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" role="presentation"
-                                            aria-hidden="true" /> {{ __('Ready to publish') }}
+                                        @svg('heroicon-s-check-circle', 'mr-2') {{ __('Ready to publish') }}
                                     @endif
                                 </span>
                             </p>
@@ -138,21 +136,19 @@
                         <p>
                             <a class="with-icon"
                                 href="{{ localized_route('engagements.edit', $engagement) }}">{{ !$engagement->isPublishable() ? __('Edit engagement details') : __('Review engagement details') }}
-                                <x-heroicon-m-chevron-right class="icon h-6 w-6" />
+                                @svg('heroicon-s-chevron-right', 'icon--lg')
                             </a>
                         </p>
                         <p>
                             <span @class([
-                                'badge badge--status',
+                                'badge',
                                 'badge--stop' => !$engagement->isPreviewable(),
                                 'badge--go' => $engagement->isPreviewable(),
                             ])>
                                 @if (!$engagement->isPreviewable())
-                                    <x-heroicon-s-x-circle class="icon mr-2 h-5 w-5" role="presentation"
-                                        aria-hidden="true" /> {{ __('Not ready to publish') }}
+                                    @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
                                 @else
-                                    <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" role="presentation"
-                                        aria-hidden="true" /> {{ __('Ready to publish') }}
+                                    @svg('heroicon-s-check-circle', 'mr-2') {{ __('Ready to publish') }}
                                 @endif
                             </span>
                         </p>
@@ -165,14 +161,14 @@
                     </p>
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                         <a class="cta secondary" href="{{ localized_route('engagements.edit', $engagement) }}">
-                            <x-heroicon-o-pencil /> {{ __('Edit') }} <span
+                            @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span
                                 class="sr-only">{{ $engagement->name }}</span>
                         </a>
                         <a href="{{ localized_route('engagements.show', $engagement) }}">{{ __('View') }}
                             <span class="sr-only">{{ $engagement->name }}</span></a>
                         <div>
                             <button class="borderless" @click="copy">
-                                <x-heroicon-o-clipboard role="presentation" aria-hidden="true" />
+                                @svg('heroicon-o-clipboard')
                                 {{ __('Copy link to share') }}
                             </button>
                         </div>
@@ -197,7 +193,7 @@
                             <div class="stack w-full md:w-1/3">
                                 <a class="cta secondary with-icon"
                                     href="{{ localized_route('meetings.edit', ['engagement' => $engagement, 'meeting' => $meeting]) }}">
-                                    <x-heroicon-o-pencil role="presentation" aria-hidden="true" /> {{ __('Edit') }}
+                                    @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }}
                                 </a>
                                 <form
                                     action="{{ localized_route('meetings.destroy', ['engagement' => $engagement, 'meeting' => $meeting]) }}"
@@ -205,7 +201,7 @@
                                     @csrf
                                     @method('delete')
                                     <button class="cta secondary destructive with-icon">
-                                        <x-heroicon-s-trash role="presentation" aria-hidden="true" />
+                                        @svg('heroicon-s-trash')
                                         {{ __('Remove') }}
                                     </button>
                                 </form>
@@ -221,7 +217,7 @@
                     <p>
                         <a class="cta secondary with-icon"
                             href="{{ localized_route('meetings.create', $engagement) }}">
-                            <x-heroicon-o-plus-circle />
+                            @svg('heroicon-o-plus-circle')
                             {{ __('Add new meeting') }}
                         </a>
                     </p>
@@ -236,16 +232,16 @@
                             <p>
                                 @if ($project->checkStatus('estimateApproved'))
                                     <span class="badge badge--go">
-                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" />
+                                        @svg('heroicon-s-check-circle', 'mr-2')
                                         {{ __('Estimate approved') }}
                                     </span>
                                 @elseif ($project->checkStatus('estimateRequested'))
                                     <span class="badge badge--progress">
-                                        <x-heroicon-o-arrow-path class="icon mr-2 h-5 w-5" />
+                                        @svg('heroicon-o-refresh', 'mr-2')
                                         {{ __('Estimate requested') }}
                                     </span>
                                 @else
-                                    <span class="badge badge--status">
+                                    <span class="badge">
                                         {{ __('No estimate requested') }}
                                     </span>
                                 @endif
@@ -257,10 +253,10 @@
                             <p>
                                 @if ($project->checkStatus('agreementReceived'))
                                     <span class="badge badge--go">
-                                        <x-heroicon-s-check-circle class="icon mr-2 h-5 w-5" /> {{ __('Received') }}
+                                        @svg('heroicon-s-check-circle', 'mr-2') {{ __('Received') }}
                                     </span>
                                 @else
-                                    <span class="badge badge--status">
+                                    <span class="badge">
                                         {{ __('Not received') }}
                                     </span>
                                 @endif
@@ -277,16 +273,16 @@
                         <footer class="-mx-6 border-x-0 border-t border-b-0 border-solid border-grey-3 px-6 pt-5">
                             <a class="cta secondary"
                                 href="{{ localized_route('engagements.manage-organization', $engagement) }}">
-                                <x-heroicon-o-wrench /> {{ __('Manage') }}
+                                @svg('heroicon-o-cog') {{ __('Manage') }}
                             </a>
                         </footer>
                     @else
-                        <div class="box stack bg-grey-2">
+                        <div class="box stack">
                             <p>{{ __('You currently do not have a Community Organization for this engagement.') }}</p>
                             <p>
                                 <a class="cta secondary"
                                     href="{{ localized_route('engagements.manage-organization', $engagement) }}">
-                                    <x-heroicon-o-wrench /> {{ __('Manage') }}
+                                    @svg('heroicon-o-cog') {{ __('Manage') }}
                                 </a>
                             </p>
                         </div>
@@ -317,7 +313,7 @@
                         <p>
                             <a class="cta secondary"
                                 href="{{ localized_route('engagements.manage-connector', $engagement) }}">
-                                <x-heroicon-o-wrench /> {{ __('Manage') }}
+                                @svg('heroicon-o-cog') {{ __('Manage') }}
                             </a>
                         </p>
                     @else
@@ -340,7 +336,7 @@
                         {{-- TODO: manage participants --}}
                         <a class="cta secondary"
                             href="{{ localized_route('engagements.manage-participants', $engagement) }}">
-                            <x-heroicon-o-users /> {{ __('Manage participants') }}
+                            @svg('heroicon-o-users') {{ __('Manage participants') }}
                         </a>
                     </p>
                 </x-manage-section>

@@ -14,7 +14,6 @@ module.exports = {
             "graphite-7": "#3f424c",
             "graphite-6": "#4b5560",
             "graphite-5": "#637180",
-            "graphite-4": "#667584",
             "grey-3": "#d9dce3",
             "grey-2": "#eaedf3",
             "grey-1": "#f8fafd",
@@ -42,7 +41,8 @@ module.exports = {
             "red-7": "#B34D4D",
             "red-6": "#CD2C2D",
             "red-2": "#f6a7a7",
-            "red-1": "#f5cdcd"
+            "red-1": "#f5cdcd",
+            "bg": "var(--bg, var(--body-background))"
         },
         fontFamily: {
             base: ["\"Open Sans\"", "sans-serif"],
@@ -82,6 +82,7 @@ module.exports = {
             2: "2px",
             3: "3px",
             4: "4px",
+            6: "6px",
             8: "8px"
         },
         borderRadius: {
@@ -154,8 +155,12 @@ module.exports = {
             80: "20rem",
             96: "24rem",
             192: "48rem"
+        },
+        ringOffsetWidth: {
+            3: "3px"
         }
     },
+    darkMode: "class",
     corePlugins: {
         preflight: false
     },

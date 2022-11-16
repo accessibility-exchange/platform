@@ -1,15 +1,13 @@
-button,
-button[type="submit"],
-input[type="submit"] {
+button {
     align-items: center;
     appearance: none;
-    background: var(--button-primary-background);
-    border-color: var(--button-primary-border);
+    background: var(--btn-primary-background);
+    border-color: var(--btn-primary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
-    box-shadow: var(--card-shadow);
-    color: var(--button-primary-color);
+    box-shadow: var(--btn-primary-shadow);
+    color: var(--btn-primary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -21,101 +19,103 @@ input[type="submit"] {
     width: auto;
 }
 
-button:hover,
-button[type="submit"]:hover,
-input[type="submit"]:hover {
-    background: var(--button-primary-background-hover);
-    border-color: var(--button-primary-border-hover);
-    color: var(--button-primary-color-hover);
+button:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-primary-outline);
+
+    outline: transparent;
 }
 
-button:focus,
-button[type="submit"]:focus,
-input[type="submit"]:focus {
-    outline: var(--button-primary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+button:hover:not([aria-disabled="true"]) {
+    background: var(--btn-primary-background-hover);
+    border-color: var(--btn-primary-border-hover);
+    color: var(--btn-primary-color-hover);
 }
 
-button:active,
-button[type="submit"]:active,
-input[type="submit"]:active {
-    background: var(--button-primary-background-active);
-    border-color: var(--button-primary-border-active);
-    color: var(--button-primary-color-active);
+button:active:not([aria-disabled="true"]),
+button:focus:active:not([aria-disabled="true"]) {
+    background: var(--btn-primary-background-active);
+    border-color: var(--btn-primary-border-active);
+    box-shadow: none;
+    color: var(--btn-primary-color-active);
 }
 
-button svg,
-button[type="submit"] svg,
-input[type="submit"] svg {
+button svg {
     height: 1em;
 }
 
 button.destructive {
-    background: var(--button-destructive-background);
-    border-color: var(--button-destructive-border);
-    box-shadow: none;
-    color: var(--button-destructive-color);
+    background: var(--btn-destructive-background);
+    border-color: var(--btn-destructive-border);
+    box-shadow: var(--btn-destructive-shadow);
+    color: var(--btn-destructive-color);
 }
 
-button.destructive:hover {
-    background: var(--button-destructive-background-hover);
-    border-color: var(--button-destructive-border-hover);
-    color: var(--button-destructive-color-hover);
+button.destructive:hover:not([aria-disabled="true"]) {
+    background: var(--btn-destructive-background-hover);
+    border-color: var(--btn-destructive-border-hover);
+    color: var(--btn-destructive-color-hover);
 }
 
 button.destructive:focus {
-    outline: var(--button-destructive-outline) solid calc(var(--space-1) / 2);
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-destructive-outline);
+
+    outline: transparent;
 }
 
-button.destructive:active {
-    background: var(--button-destructive-background-active);
-    border-color: var(--button-destructive-border-active);
-    color: var(--button-destructive-color-active);
+button.destructive:active:not([aria-disabled="true"]),
+button.destructive:focus:active:not([aria-disabled="true"]) {
+    background: var(--btn-destructive-background-active);
+    border-color: var(--btn-destructive-border-active);
+    box-shadow: none;
+    color: var(--btn-destructive-color-active);
 }
 
 .dark button,
-.dark button[type="submit"],
-.dark input[type="submit"] {
-    background: var(--button-dark-primary-background);
-    border-color: var(--button-dark-primary-border);
-    color: var(--button-dark-primary-color);
+.darker button {
+    background: var(--btn-dark-primary-background);
+    border-color: var(--btn-dark-primary-border);
+    color: var(--btn-dark-primary-color);
 }
 
-.dark button:hover,
-.dark button[type="submit"]:hover,
-.dark input[type="submit"]:hover {
-    background: var(--button-dark-primary-background-hover);
-    border-color: var(--button-dark-primary-border-hover);
-    color: var(--button-dark-primary-color-hover);
+.dark button:hover:not([aria-disabled="true"]),
+.darker button:hover:not([aria-disabled="true"]) {
+    background: var(--btn-dark-primary-background-hover);
+    border-color: var(--btn-dark-primary-border-hover);
+    color: var(--btn-dark-primary-color-hover);
 }
 
-.dark button:focus,
-.dark button[type="submit"]:focus,
-.dark input[type="submit"]:focus {
-    outline: var(--button-dark-primary-outline) solid calc(var(--space-1) / 2);
+.dark button:focus {
+    --bg: var(--content-dark-background);
 }
 
-.dark button:active,
-.dark button[type="submit"]:active,
-.dark input[type="submit"]:active {
-    background: var(--button-dark-primary-background-active);
-    border-color: var(--button-dark-primary-border-active);
-    color: var(--button-dark-primary-color-active);
+.darker button:focus {
+    --bg: var(--content-darker-background);
 }
 
-button.secondary,
-button[type="reset"],
-input[type="reset"],
-input[type="submit"].secondary {
+.dark button:active:not([aria-disabled="true"]),
+.dark button:focus:active:not([aria-disabled="true"]),
+.darker button:active:not([aria-disabled="true"]),
+.darker button:focus:active:not([aria-disabled="true"]) {
+    background: var(--btn-dark-primary-background-active);
+    border-color: var(--btn-dark-primary-border-active);
+    box-shadow: none;
+    color: var(--btn-dark-primary-color-active);
+}
+
+button.secondary {
     align-items: center;
     appearance: none;
-    background: var(--button-secondary-background);
-    border-color: var(--button-secondary-border);
+    background: var(--btn-secondary-background);
+    border-color: var(--btn-secondary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
     box-shadow: none;
-    color: var(--button-secondary-color);
+    color: var(--btn-secondary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -127,41 +127,38 @@ input[type="submit"].secondary {
     width: auto;
 }
 
-button.secondary:hover,
-button[type="reset"]:hover,
-input[type="reset"]:hover,
-input[type="submit"].secondary:hover {
-    background-color: var(--button-secondary-background-hover);
-    border-color: var(--button-secondary-border-hover);
-    color: var(--button-secondary-color-hover);
+button.secondary:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-secondary-outline);
+
+    outline: transparent;
 }
 
-button.secondary:focus,
-button[type="reset"]:focus,
-input[type="reset"]:focus,
-input[type="submit"].secondary:focus {
-    outline: var(--button-secondary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+button.secondary:hover:not([aria-disabled="true"]) {
+    background-color: var(--btn-secondary-background-hover);
+    border-color: var(--btn-secondary-border-hover);
+    color: var(--btn-secondary-color-hover);
 }
 
-button.secondary:active,
-button[type="reset"]:active,
-input[type="reset"]:active,
-input[type="submit"].secondary:active {
-    background-color: var(--button-secondary-background-active);
-    border-color: var(--button-secondary-border-active);
-    color: var(--button-secondary-color-active);
+button.secondary:active:not([aria-disabled="true"]),
+button.secondary:focus:active:not([aria-disabled="true"]) {
+    background-color: var(--btn-secondary-background-active);
+    border-color: var(--btn-secondary-border-active);
+    box-shadow: none;
+    color: var(--btn-secondary-color-active);
 }
 
 button.destructive.secondary {
     align-items: center;
     appearance: none;
-    background: var(--button-destructive-secondary-background);
-    border-color: var(--button-destructive-secondary-border);
+    background: var(--btn-destructive-secondary-background);
+    border-color: var(--btn-destructive-secondary-border);
     border-radius: var(--radius-sm);
     border-style: solid;
     border-width: var(--border-2);
-    color: var(--button-destructive-secondary-color);
+    box-shadow: none;
+    color: var(--btn-destructive-secondary-color);
     display: flex;
     font-family: var(--font-base);
     font-size: var(--text-base);
@@ -173,55 +170,98 @@ button.destructive.secondary {
     width: auto;
 }
 
-button.destructive.secondary:hover {
-    background-color: var(--button-destructive-secondary-background-hover);
-    border-color: var(--button-destructive-secondary-border-hover);
-    color: var(--button-destructive-secondary-color-hover);
+button.destructive.secondary:hover:not([aria-disabled="true"]) {
+    background-color: var(--btn-destructive-secondary-background-hover);
+    border-color: var(--btn-destructive-secondary-border-hover);
+    color: var(--btn-destructive-secondary-color-hover);
 }
 
 button.destructive.secondary:focus {
-    outline: var(--button-destructive-secondary-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-destructive-secondary-outline);
+
+    outline: transparent;
 }
 
-button.destructive.secondary:active {
-    background-color: var(--button-destructive-secondary-background-active);
-    border-color: var(--button-destructive-secondary-border-active);
-    color: var(--button-destructive-secondary-color-active);
-}
-
-button.borderless,
-button.borderless[type="submit"],
-input.borderless[type="submit"] {
-    background: inherit;
-    border: 0;
+button.destructive.secondary:active:not([aria-disabled="true"]),
+button.destructive.secondary:focus:active:not([aria-disabled="true"]) {
+    background-color: var(--btn-destructive-secondary-background-active);
+    border-color: var(--btn-destructive-secondary-border-active);
     box-shadow: none;
-    color: currentcolor;
-    margin-inline-start: calc(-1 * var(--space-4));
+    color: var(--btn-destructive-secondary-color-active);
+}
+
+button.borderless {
+    background: inherit;
+    border: solid var(--border-2);
+    border-color: transparent;
+    box-shadow: none;
+    color: var(--btn-borderless-color);
+    margin-inline-start: calc(-1 * var(--space-5));
     padding-inline: var(--space-4);
 }
 
-button.borderless:hover,
-button.borderless[type="submit"]:hover,
-input.borderless[type="submit"]:hover {
-    background: var(--button-borderless-background-hover);
-    color: var(--button-borderless-color-hover);
+button.borderless:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-borderless-outline);
+
+    border-color: var(--btn-borderless-outline);
+    color: var(--btn-borderless-color-focus);
+    outline: transparent;
 }
 
-button.borderless:focus,
-button.borderless[type="submit"]:focus,
-input.borderless[type="submit"]:focus {
-    color: var(--button-borderless-color-focus);
-    outline: var(--button-borderless-outline) solid calc(var(--space-1) / 2);
-    outline-offset: calc(var(--space-1) / 2);
+button.borderless:hover {
+    background: var(--btn-borderless-background-hover);
+    color: var(--btn-borderless-color-hover);
 }
 
 button.borderless:active,
-button.borderless[type="submit"]:active,
-input.borderless[type="submit"]:active {
-    color: var(--button-borderless-color-active);
+button.borderless:focus:active {
+    background: var(--btn-borderless-background-active);
+    box-shadow: none;
+    color: var(--btn-borderless-color-active);
 }
 
 .borderless svg {
     height: 1.25em;
+}
+
+button.borderless.destructive {
+    color: var(--btn-destructive-borderless-color);
+}
+
+button.borderless.destructive:focus {
+    @apply ring-2 ring-offset-3 ring-offset-bg;
+
+    --tw-ring-color: var(--btn-destructive-borderless-outline);
+
+    border-color: var(--btn-destructive-borderless-outline);
+    color: var(--btn-destructive-borderless-color-focus);
+}
+
+button.borderless.destructive:hover {
+    background: var(--btn-destructive-borderless-background-hover);
+    color: var(--btn-destructive-borderless-color-hover);
+}
+
+button.borderless.destructive:active,
+button.borderless.destructive:focus:active {
+    background-color: var(--btn-destructive-borderless-background-active);
+    box-shadow: none;
+    color: var(--btn-destructive-borderless-color-active);
+}
+
+button[aria-disabled="true"] {
+    background: var(--btn-disabled-background);
+    border-color: var(--btn-disabled-border);
+    border-style: dashed;
+    border-width: var(--border-2);
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+}
+
+button[aria-disabled="true"]::after {
+    content: " (" attr(data-label) ")";
 }

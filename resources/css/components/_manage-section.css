@@ -12,3 +12,7 @@
 .manage-section footer {
     padding-block-end: var(--space-6);
 }
+
+.manage-section .alert--notice {
+    background-color: var(--box-alt-background);
+}

@@ -15,8 +15,14 @@
                     <p><strong>{{ __('Project duration') }}</strong><br />
                         {{ $project->start_date && $project->end_date ? $project->start_date->translatedFormat('F Y') . ' – ' . $project->end_date?->translatedFormat('F Y') : 'n/a' }}
                     </p>
-                    <div class="badge badge--status">{{ $project->status }}</div>
+                    <div class="badge badge--alt">{{ $project->status }}</div>
                 </div>
+                @can('update', $project)
+                    <div>
+                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
+                            {{ __('Edit project') }}</a>
+                    </div>
+                @endcan
                 {{-- TODO: cancel project --}}
                 {{-- <div> --}}
                 {{-- <button class="borderless destructive">{{ __('Cancel project') }}</button> --}}
@@ -25,7 +31,7 @@
         </x-slot>
 
     @section('navigation')
-        <nav class="full mb-12 bg-white shadow-md" aria-labelledby="{{ __(':name navigation', ['name' => $project->name]) }}">
+        <nav class="nav--tabbed" aria-labelledby="{{ __(':name navigation', ['name' => $project->name]) }}">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     <li class="w-full">
@@ -58,31 +64,26 @@
         <h2 class="visually-hidden">{{ __('Manage') }}</h2>
 
         <x-manage-grid>
-            <x-manage-columns class="col-start-1 col-end-2">
-                <x-manage-section :title="__('Participant selection criteria')">
-                    {{-- TODO: manage participant selection criteria --}}
-                </x-manage-section>
-            </x-manage-columns>
-            <x-manage-columns class="col-start-2 col-end-4">
-                <x-manage-section :title="__('Engagement')">
+            <x-manage-columns class="col-start-1 col-end-3">
+                <x-manage-section :title="__('Engagements')">
                     <p>{{ __('An engagement involves a group of people participating in one set way (for example, a focus group or survey).') }}
                     </p>
                     @if ($project->allEngagements->count())
                         <a class="cta secondary"
                             href="{{ localized_route('engagements.show-language-selection', $project) }}">
-                            <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                            @svg('heroicon-o-plus-circle')
                             {{ __('Create engagement') }}
                         </a>
                     @endif
                     @forelse($project->allEngagements as $engagement)
                         <x-card.engagement :model="$engagement" :level="4" />
                     @empty
-                        <div class="box stack bg-grey-2">
+                        <div class="box box--alt stack">
                             <p>{{ __('You have not added any engagements yet.') }}</p>
                             <p>
                                 <a class="cta secondary"
                                     href="{{ localized_route('engagements.show-language-selection', $project) }}">
-                                    <x-heroicon-o-plus-circle role="presentation" aria-hidden="true" />
+                                    @svg('heroicon-o-plus-circle')
                                     {{ __('Create engagement') }}
                                 </a>
                         </div>

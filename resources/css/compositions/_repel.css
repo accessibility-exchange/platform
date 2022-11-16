@@ -1,14 +1,27 @@
 .repel {
-    align-items: center;
     display: flex;
+    flex-direction: column;
     gap: var(--gap, var(--space-4));
-    justify-content: space-between;
 }
 
 .repel .cta,
-.repel button,
-.repel input[type="reset"],
-.repel input[type="submit"] {
+.repel button {
     min-width: 25%;
     width: auto;
+}
+
+.repel .badge {
+    width: auto;
+}
+
+@media (min-width: 48rem) {
+    .repel {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .repel h1 {
+        max-width: 66%;
+    }
 }

@@ -1,9 +1,8 @@
 <!-- Primary Navigation Menu -->
-<nav class="primary align:center flex" aria-label="{{ __('main menu') }}" x-data="{ 'open': false }"
-    @click.away="open = false">
+<nav class="primary flex text-center" aria-label="{{ __('main menu') }}" x-data="{ 'open': false }" @click.away="open = false">
     <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
-        @keyup.escape.window="open = false">
-        <x-heroicon-o-bars-3 class="indicator" aria-hidden="true" /><span>{{ __('Menu') }}</span>
+        @keyup.escape.window="open = false" x-cloak>
+        @svg('heroicon-o-menu', 'indicator')<span>{{ __('Menu') }}</span>
     </button>
     <ul role="list">
         @auth
@@ -52,7 +51,7 @@
             </li>
             <li class="account">
                 <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
-                    <x-heroicon-s-user-circle aria-hidden="true" height="20" width="20" /> {{ Auth::user()->name }}
+                    @svg('heroicon-s-user-circle') {{ Auth::user()->name }}
                 </x-nav-link>
             </li>
             <!-- Authentication -->

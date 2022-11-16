@@ -6,6 +6,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Models\AgeBracket;
 use App\Models\AreaType;
 use App\Models\Constituency;
+use App\Models\Course;
 use App\Models\DisabilityType;
 use App\Models\Engagement;
 use App\Models\EthnoracialIdentity;
@@ -365,7 +366,7 @@ test('users with admin role can edit organization contact information', function
         'save' => 1,
     ]);
 
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since the checkbox for your contact person requiring VRS for phone calls is checked, you must enter a phone number.']);
+    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
@@ -1104,4 +1105,14 @@ test('organizations have slugs in both languages even if only one is provided', 
     $organization = Organization::factory()->create(['name' => ['fr' => 'Mon entreprise']]);
     expect($organization->getTranslation('slug', 'en', false))
         ->toEqual($organization->getTranslation('slug', 'fr', false));
+});
+
+test('organization can have many courses', function () {
+    $organization = Organization::factory()->create();
+
+    $courseOne = Course::factory()->for($organization)->create();
+    $courseOne = Course::factory()->for($organization)->create();
+
+    expect($organization->courses->contains($courseOne))->toBeTrue();
+    expect($organization->courses->contains($courseOne))->toBeTrue();
 });

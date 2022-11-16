@@ -18,8 +18,12 @@
                     <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
                 @endcan
                 <button name="publish" value="1"
-                    @cannot('publish', $project) disabled @endcannot>{{ __('Publish page') }}</button>
-                <p>{{ __('You must attend an orientation session before you can publish your projects.') }}</p>
+                    @cannot('publish', $project) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
+                @cannot('publish', $project)
+                    <p id="cannot-publish-explanation">
+                        {{ __('You must attend an orientation session and fill in all the required information before you can publish your project.') }}
+                    </p>
+                @endcannot
             </div>
         @else
             @can('unpublish', $project)

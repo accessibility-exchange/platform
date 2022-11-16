@@ -7,30 +7,28 @@
     <p class="title">
         @switch($type)
             @case('error')
-                <x-heroicon-o-x-circle />
+                @svg('heroicon-o-x-circle')
             @break
 
             @case('warning')
-                <x-heroicon-o-exclamation-circle />
+                @svg('heroicon-o-exclamation-circle')
             @break
 
             @case('success')
-                <x-heroicon-o-check-circle />
+                @svg('heroicon-o-check-circle')
             @break
 
             @default
-                <x-heroicon-o-information-circle />
+                @svg('heroicon-o-information-circle')
                 @endswitch{{ $title }}
             </p>
             {{ $slot }}
 
             @if ($actions ?? '' || $dismissable)
-                <div class="flex gap-2 px-1">
+                <div class="actions">
                     {{ $actions ?? '' }}
                     @if (!in_array($type, ['error', 'warning']) && $dismissable !== false)
-                        <button class="borderless" type="button" @click="visible = false">
-                            {{ __('Dismiss') }}
-                        </button>
+                        <button class="borderless" type="button" @click="visible = false">{{ __('Dismiss') }}</button>
                     @endif
                 </div>
             @endif

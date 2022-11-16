@@ -9,11 +9,13 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Enums\UserContext;
 use App\Http\Responses\FailedTwoFactorLoginResponse;
+use App\Http\Responses\FilamentLogoutResponse;
 use App\Http\Responses\LoginResponse;
 use App\Http\Responses\PasswordResetResponse;
 use App\Http\Responses\RegisterResponse;
 use App\Http\Responses\TwoFactorLoginResponse;
 use App\Traits\RetrievesUserByNormalizedEmail;
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,7 +88,7 @@ class FortifyServiceProvider extends ServiceProvider
                     ->nullable(__('Choose a sign language…'))
                     ->toArray(),
                 'contexts' => Options::forEnum(UserContext::class)
-                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::Employee)
+                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::TrainingParticipant)
                     ->append(fn (UserContext $context) => ['hint' => $context->description()])
                     ->toArray(),
             ]);
@@ -133,6 +135,10 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(
             PasswordResetResponseContract::class,
             PasswordResetResponse::class
+        );
+        $this->app->singleton(
+            LogoutResponse::class,
+            FilamentLogoutResponse::class
         );
     }
 }

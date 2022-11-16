@@ -1,5 +1,9 @@
 .card {
+    background-color: var(--box-background);
     box-shadow: var(--card-shadow);
+    color: var(--box-color);
+    padding-block: var(--space-6);
+    padding-inline: var(--space-8);
     position: relative;
 }
 
@@ -37,9 +41,11 @@
     outline: 1px solid transparent;
 }
 
-.card a:active {
+.card a:active,
+.card a:active:visited {
     background: inherit;
     box-shadow: none;
+    color: var(--card-link-color);
 }
 
 .card.individual {
@@ -130,6 +136,43 @@
     margin-block-start: 0;
     margin-inline-start: var(--gutter);
     width: calc(100% - calc(2 * var(--gutter)));
+}
+
+.card.resource-collection {
+    --card-link-color: var(--interactive, var(--card-resource-collection-color));
+
+    background: var(--card-resource-collection-background);
+    box-shadow: var(--card-shadow), var(--card-resource-collection-shadow);
+    color: var(--card-resource-collection-color);
+    padding-block-start: var(--space-10);
+}
+
+.card.resource-collection:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-resource-collection-shadow-hover);
+}
+
+.card.resource-collection:focus-within {
+    box-shadow: var(--card-resource-collection-shadow-focus-within);
+}
+
+.card.resource-collection:has(a:active) {
+    box-shadow: var(--card-resource-collection-shadow-focus-within);
+}
+
+.card.resource {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow);
+}
+
+.card.resource:hover {
+    box-shadow: var(--card-shadow-hover), var(--card-resource-shadow);
+}
+
+.card.resource:focus-within {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
+}
+
+.card.resource:has(a:active) {
+    box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
 }
 
 .manage-section .card {

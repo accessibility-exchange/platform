@@ -21,6 +21,14 @@
                 "sortTailwindcssClasses": true,
                 "sortHtmlAttributes": "code-guide"
             }
+        },
+        {
+            "files": [
+                "*.js"
+            ],
+            "options": {
+                "trailingComma": "none"
+            }
         }
     ]
 }

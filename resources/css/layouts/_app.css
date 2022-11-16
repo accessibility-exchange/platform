@@ -1,1 +1,27 @@
 /* This file contains all styles related to the application layout. */
+.header--tabbed {
+    background-color: var(--header-tabbed-background);
+    border-block-end: 0;
+    border-block-end: var(--border) solid var(--header-tabbed-border-color);
+    border-inline: 0;
+    left: calc(50% - 50vw);
+    margin-block-start: calc(-1 * var(--space-12));
+    padding-block: var(--space-12);
+    position: relative;
+    width: 100vw;
+}
+
+.nav--tabbed {
+    background-color: var(--nav-tabbed-background);
+    border-block-end: var(--border) solid var(--nav-tabbed-border);
+    border-inline: 0;
+    box-shadow: var(--nav-tabbed-shadow);
+    left: calc(50% - 50vw);
+    margin-block-end: var(--space-12);
+    position: relative;
+    width: 100vw;
+}
+
+.nav--tabbed > div {
+    margin-block-end: calc(-1 * var(--border));
+}

@@ -38,7 +38,7 @@
 
         <div class="flex flex-row gap-6">
             <a class="cta secondary" href="{{ localized_route('engagements.manage-participants', $engagement) }}">
-                <x-heroicon-o-arrow-left role="presentation" aria-hidden="true" /> {{ __('Cancel') }}
+                @svg('heroicon-o-arrow-left') {{ __('Cancel') }}
             </a>
             <button>{{ __('Send invitation') }}</button>
         </div>
