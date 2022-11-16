@@ -113,6 +113,62 @@ test('in French and LSQ', function () {
     $response->assertDontSee($interpretation->getTranslation('video', 'ase'));
 });
 
+test('do not fallback to ASL (ase)', function () {
+    $interpretation = Interpretation::factory()->create([
+        'name' => 'The Accessibility Exchange',
+        'video' => [
+            'ase' => 'https://vimeo.com/766454375',
+        ],
+    ]);
+
+    app()->setLocale('fr');
+
+    $user = User::factory()->create([
+        'sign_language_translations' => true,
+    ]);
+    $response = $this->actingAs($user)->get(localized_route('welcome'));
+    $response->assertStatus(200);
+
+    $toSee = [
+        '<h1 itemprop="name">',
+        'Le Connecteur pour l’accessibilité',
+        '</h1>',
+        'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
+    ];
+
+    $response->assertSeeInOrder($toSee, false);
+    $response->assertDontSee('interpretation__video');
+    $response->assertDontSee($interpretation->getTranslation('video', 'ase'));
+});
+
+test('do not fallback to LSQ (fcs)', function () {
+    $interpretation = Interpretation::factory()->create([
+        'name' => 'The Accessibility Exchange',
+        'video' => [
+            'fcs' => 'https://vimeo.com/766455246',
+        ],
+    ]);
+
+    app()->setLocale('en');
+
+    $user = User::factory()->create([
+        'sign_language_translations' => true,
+    ]);
+    $response = $this->actingAs($user)->get(localized_route('welcome'));
+    $response->assertStatus(200);
+
+    $toSee = [
+        '<h1 itemprop="name">',
+        'The Accessibility Exchange',
+        '</h1>',
+        'id="'.Str::slug('The Accessibility Exchange'),
+    ];
+
+    $response->assertSeeInOrder($toSee, false);
+    $response->assertDontSee('interpretation__video');
+    $response->assertDontSee($interpretation->getTranslation('video', 'fcs'));
+});
+
 test('no Interpretation without sign language translations setting enabled', function () {
     $user = User::factory()->create([
         'sign_language_translations' => false,
