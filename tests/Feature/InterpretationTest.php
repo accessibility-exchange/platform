@@ -111,8 +111,12 @@ test('only administrative users can access interpretation admin pages', function
 });
 
 test('interpretations can be listed', function () {
-    $interpretations = Interpretation::factory()->count(10)->create();
+    $interpretationsWithVideos = Interpretation::factory()->count(2)->create();
+    $interpretationsWithoutVideos = Interpretation::factory()->count(2)->create(['video' => ['fcs' => '', 'ase' => '']]);
 
     livewire(InterpretationResource\Pages\ListInterpretations::class)
-        ->assertCanSeeTableRecords($interpretations);
+        ->assertCanSeeTableRecords($interpretationsWithVideos);
+
+    livewire(InterpretationResource\Pages\ListInterpretations::class)
+        ->assertCanSeeTableRecords($interpretationsWithoutVideos);
 });

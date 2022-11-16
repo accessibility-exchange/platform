@@ -7,7 +7,7 @@ export default (initial = "") => ({
     validationError: "",
     init() {
         this.date = initial;
-        let [y, m, d] = this.date.split("-");
+        let [y = "", m = "", d = ""] = this.date.split("-");
         this.year = y;
         this.month = m;
         this.day = d;

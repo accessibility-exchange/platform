@@ -45,6 +45,12 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->middleware('guest')
         ->name('register-store');
 
+    Route::get('/admin/login', function () {
+        return redirect(localized_route('login'));
+    })
+        ->middleware('guest')
+        ->name('filament.auth.login');
+
     Route::multilingual('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware('guest')
         ->name('login');

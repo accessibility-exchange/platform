@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Str;
 
 class InterpretationResource extends Resource
 {
@@ -24,11 +25,10 @@ class InterpretationResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->columnSpan(2),
-                Forms\Components\TextInput::make('namespace')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('route')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('namespace')
                     ->maxLength(255),
                 Forms\Components\Toggle::make('route_has_params')
                     ->label('Route has parameters')
@@ -48,16 +48,54 @@ class InterpretationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('namespace'),
-                Tables\Columns\TextColumn::make('route'),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
+                Tables\Columns\TextColumn::make('name')->disableClick(),
+                Tables\Columns\TextColumn::make('context')
+                    ->label(__('Show context'))
+                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').' '.$record->name.'</span>')
+                    ->html()
+                    ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-s-external-link')
+                    ->iconPosition('after'),
+                Tables\Columns\BadgeColumn::make('asl')
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'ase', false) !== '' ? __('Yes') : __('No'))
+                    ->colors([
+                        'success' => static fn ($state): bool => $state === __('Yes'),
+                        'danger' => static fn ($state): bool => $state === __('No'),
+                    ])
+                    ->icon(static function ($state): string {
+                        if ($state === __('Yes')) {
+                            return 'heroicon-o-check';
+                        }
+
+                        return 'heroicon-o-x';
+                    })
+                    ->label('ASL Video')
+                    ->disableClick(),
+                Tables\Columns\BadgeColumn::make('lsq')
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'fcs', false) !== '' ? __('Yes') : __('No'))
+                    ->colors([
+                        'success' => static fn ($state): bool => $state === __('Yes'),
+                        'danger' => static fn ($state): bool => $state === __('No'),
+                    ])
+                    ->icon(static function ($state): string {
+                        if ($state === __('Yes')) {
+                            return 'heroicon-o-check';
+                        }
+
+                        return 'heroicon-o-x';
+                    })
+                    ->label('LSQ Video')
+                    ->disableClick(),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()
+                    ->disableClick(),
             ])
             ->filters([
                 // TODO
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->tooltip(fn (Interpretation $record): string => "Edit {$record->name}"),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

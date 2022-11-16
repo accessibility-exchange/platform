@@ -34,6 +34,6 @@
         @if ($model->seeking_community_connector)
             <span class="badge badge--yellow">{{ __('Seeking community connector') }}</span>
         @endif
-        <span @class(['badge badge--status', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
+        <span @class(['badge', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
     </p>
 </x-card>
