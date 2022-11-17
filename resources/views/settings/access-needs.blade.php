@@ -8,7 +8,9 @@
         <h1>
             {{ __('Access needs') }}
         </h1>
-        <p>{{ __('Unless specified, your access needs will be shared with the organization you are working with anonymously.') }}
+        <p>{{ __('When you sign up to participate in consultations, the access needs you check off below will be shared with the organization you are working with so they can meet them.') }}
+        </p>
+        <p>{{ __('Most of the time, we will not need to tell them who requested the access need. However, for some of the access needs, we will—and we’ll tell you which ones below.') }}
         </p>
     </x-slot>
 
