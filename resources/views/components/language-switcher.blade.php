@@ -40,4 +40,3 @@
         @endforeach
     </x-slot>
 </x-nav-dropdown>
-
