@@ -10,11 +10,11 @@
                 <livewire:theme-switcher />
             @endif
             <!-- Language Switcher -->
-            <nav class="languages" aria-label="{{ __('languages') }}">
+            {{-- <nav class="languages" aria-label="{{ __('languages') }}">
                 <ul role="list">
                     <x-language-switcher />
                 </ul>
-            </nav>
+            </nav> --}}
             @include('components.navigation')
         </div>
     </div>
