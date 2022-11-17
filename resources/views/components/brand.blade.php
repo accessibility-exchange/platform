@@ -1,9 +1,9 @@
 <!-- Brand -->
 <a class="brand" href="{{ localized_route('welcome') }}" rel="home">
-    @if (locale() == 'en' || locale() == 'ase')
+    @if (locale() == 'en' || locale() == 'asl')
         @svg('tae-logo-en', ['class' => 'logo'])
         @svg('tae-logo-mono-en', ['class' => 'logo logo--themeable'])
-    @elseif(locale() == 'fr' || locale() == 'fcs')
+    @elseif(locale() == 'fr' || locale() == 'lsq')
         @svg('tae-logo-fr', ['class' => 'logo'])
         @svg('tae-logo-mono-fr', ['class' => 'logo logo--themeable'])
     @endif

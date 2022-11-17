@@ -12,9 +12,9 @@ return [
 
     'supported' => [
         'en',
-        'ase',
+        'asl',
         'fr',
-        'fcs',
+        'lsq',
     ],
 
     /*

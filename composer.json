@@ -118,7 +118,11 @@
         "format": "vendor/bin/pint",
         "localize": [
             "rm -f -- resources/lang/en.json",
-            "@php artisan localize en,fr"
+            "@php artisan localize en,fr",
+            "cp -r resources/lang/fr resources/lang/lsq",
+            "cp -r resources/lang/en resources/lang/asl",
+            "cp resources/lang/fr.json resources/lang/lsq.json",
+            "cp resources/lang/en.json resources/lang/asl.json"
         ],
         "test": "php artisan test",
         "test-coverage": "php artisan test --coverage"
