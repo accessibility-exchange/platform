@@ -17,20 +17,14 @@
 
         <h2>{{ __('What’s been shared') }}</h2>
 
-        {!! Str::markdown(
-            __(
-                'Based on what you’ve selected in your :access_needs_settings_link, :projectable has been asked to provide the following access supports.',
-                [
-                    'access_needs_settings_link' =>
-                        '<a href="' .
-                        localized_route('settings.edit-access-needs') .
-                        '">' .
-                        __('access needs settings') .
-                        '</a>',
-                    'projectable' => $project->projectable->name,
-                ],
-            ),
-        ) !!}
+        <p>{!! __(
+            'Based on what you’ve selected in your :access_needs_settings_link, :projectable has been asked to provide the following access supports.',
+            [
+                'access_needs_settings_link' =>
+                    '<a href="' . localized_route('settings.edit-access-needs') . '">' . __('access needs settings') . '</a>',
+                'projectable' => $project->projectable->name,
+            ],
+        ) !!}</p>
 
         <ul class="my-8 space-y-6" role="list">
             @forelse(Auth::user()->individual->accessSupports->where('anonymizable', true) as $support)
