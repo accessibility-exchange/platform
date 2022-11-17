@@ -90,7 +90,7 @@
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
-                            :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" hinted="social_links-hint" />
+                            type="url" :value="old('social_links.' . $key, $individual->social_links[$key] ?? '')" hinted="social_links-hint" />
                         <x-hearth-error for="social_links_{{ $key }}"
                             field="social_links.{{ $key }}" />
                     </div>
@@ -102,7 +102,7 @@
                 <x-hearth-hint
                     for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
-                <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" />
+                <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>
 
