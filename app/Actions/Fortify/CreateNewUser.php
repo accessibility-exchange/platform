@@ -31,7 +31,6 @@ class CreateNewUser implements CreatesNewUsers
         $input['context'] = session('context');
         $input['accepted_privacy_policy'] = array_key_exists('accepted_privacy_policy', $input);
         $input['accepted_terms_of_service'] = array_key_exists('accepted_terms_of_service', $input);
-        $input['sign_language_translations'] = Cookie::get('sign_language_translations');
 
         if (session('roles') || session('invitation')) {
             $input['extra_attributes'] = [];
@@ -65,7 +64,6 @@ class CreateNewUser implements CreatesNewUsers
                 ],
                 'extra_attributes' => 'nullable|array',
                 'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr', 'asl', 'lsq']))],
-                'sign_language_translations' => 'nullable|boolean',
                 'accepted_privacy_policy' => 'accepted',
                 'accepted_terms_of_service' => 'accepted',
             ],
@@ -93,7 +91,6 @@ class CreateNewUser implements CreatesNewUsers
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
-            'sign_language_translations' => $input['sign_language_translations'],
         ]);
     }
 }

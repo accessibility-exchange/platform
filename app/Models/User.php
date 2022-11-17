@@ -59,7 +59,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'finished_introduction',
         'theme',
         'text_to_speech',
-        'sign_language_translations',
         'phone',
         'vrs',
         'support_person_name',

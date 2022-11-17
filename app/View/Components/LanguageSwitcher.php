@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\View\Component;
 
 class LanguageSwitcher extends Component
@@ -13,20 +12,6 @@ class LanguageSwitcher extends Component
      * @var array
      */
     public $locales;
-
-    /**
-     * The list of paired sign languages.
-     *
-     * @var array
-     */
-    public $pairedSignLanguages;
-
-    /**
-     * Whether or not sign language is enabled
-     *
-     * @var bool
-     */
-    public $isSignLanguageEnabled;
 
     /**
      * The route targeted by links in the language switcher.
@@ -52,9 +37,6 @@ class LanguageSwitcher extends Component
         foreach ($locales as $locale) {
             $this->locales[$locale] = get_language_exonym($locale, $locale);
         }
-
-        $this->pairedSignLanguages = config('locales.paired_sign_language') ?? [];
-        $this->isSignLanguageEnabled = auth()->check() ? auth()->user()->sign_language_translations : Cookie::get('sign_language_translations', false);
     }
 
     /**
