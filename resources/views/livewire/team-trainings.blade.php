@@ -28,7 +28,10 @@
 
                         <div class="field @error("team_trainings.{$i}.trainer_url") field-error @enderror">
                             <x-hearth-label :for="'team_trainings_' . $i . '_trainer_url'" :value="__('Website')" />
-                            <x-hearth-input :id="'team_trainings_' . $i . '_trainer_url'" :name="'team_trainings[' . $i . '][trainer_url]'" :value="$training['trainer_url'] ?? ''" required />
+                            <x-hearth-hint :for="'team_trainings_' . $i . '_trainer_url'">
+                                {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                            </x-hearth-hint>
+                            <x-hearth-input :id="'team_trainings_' . $i . '_trainer_url'" :name="'team_trainings[' . $i . '][trainer_url]'" :value="$training['trainer_url'] ?? ''" required hinted />
                             <x-hearth-error :for="'team_trainings_' . $i . '_trainer_url'" :field="'team_trainings.' . $i . '.trainer_url'" />
                         </div>
                     </fieldset>
