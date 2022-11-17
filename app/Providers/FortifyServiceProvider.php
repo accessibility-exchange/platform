@@ -82,8 +82,8 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return view('auth.register', [
                 'signLanguages' => Options::forArray([
-                    'ase' => get_language_exonym('ase', 'fr'),
-                    'fcs' => get_language_exonym('fcs', 'fr'),
+                    'asl' => get_language_exonym('asl', 'fr'),
+                    'lsq' => get_language_exonym('lsq', 'fr'),
                 ])
                     ->nullable(__('Choose a sign language…'))
                     ->toArray(),

@@ -55,7 +55,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'email',
         'password',
         'locale',
-        'signed_language',
         'context',
         'finished_introduction',
         'theme',

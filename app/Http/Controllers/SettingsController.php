@@ -89,8 +89,8 @@ class SettingsController extends Controller
             'additionalNeedsOrConcerns' => AccessSupport::where('name->en', 'I would like to speak to someone to discuss additional access needs or concerns')->first(),
             'selectedAccessSupports' => $individual->accessSupports->pluck('id')->toArray(),
             'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
+                'asl' => __('locales.asl'),
+                'lsq' => __('locales.lsq'),
             ])->nullable(__('Choose a sign language…'))->toArray(),
             'spokenOrWrittenLanguages' => Options::forArray(get_available_languages(true, false))->nullable(__('Choose a language…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
@@ -222,18 +222,10 @@ class SettingsController extends Controller
             $user->locale,
         ];
 
-        if ($user->signed_language) {
-            $workingLanguages[] = $user->signed_language;
-        }
-
         return view('settings.language-preferences', [
             'user' => $user,
             'individual' => $individual,
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
-            'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
-            ])->nullable(__('Choose a sign language…'))->toArray(),
             'workingLanguages' => $workingLanguages,
         ]);
     }

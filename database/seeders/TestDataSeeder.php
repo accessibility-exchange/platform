@@ -74,7 +74,7 @@ class TestDataSeeder extends Seeder
                 'email' => 'k@accessibilityexchange.ca',
                 'preferred_contact_person' => 'me',
                 'preferred_contact_method' => 'email',
-                'constituentLanguages' => ['ase', 'fcs', 'en', 'fr'],
+                'constituentLanguages' => ['asl', 'lsq', 'en', 'fr'],
                 'ethnoracial' => [],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
                 'genderIdentities' => [],
@@ -103,7 +103,7 @@ class TestDataSeeder extends Seeder
                     'region' => 'NS',
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
-                    'working_languages' => ['ase', 'en'],
+                    'working_languages' => ['asl', 'en'],
                     'consulting_services' => ['planning-consultation'],
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
@@ -589,7 +589,7 @@ class TestDataSeeder extends Seeder
         $engagementsForTesting = [
             [
                 'name' => ['en' => 'Workshop'],
-                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'languages' => ['en', 'fr', 'asl', 'lsq'],
                 'who' => 'individuals',
                 'format' => 'workshop',
                 'recruitment' => 'open-call',
@@ -602,7 +602,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 'name' => ['en' => 'Focus Group'],
-                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'languages' => ['en', 'fr', 'asl', 'lsq'],
                 'who' => 'individuals',
                 'format' => 'focus-group',
                 'recruitment' => 'connector',
@@ -616,7 +616,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 'name' => ['en' => 'Expert Analysis'],
-                'languages' => ['en', 'fr', 'ase', 'fcs'],
+                'languages' => ['en', 'fr', 'asl', 'lsq'],
                 'who' => 'organization',
                 'paid' => true,
                 'description' => ['en' => 'This is what we are doing'],

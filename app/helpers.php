@@ -31,9 +31,16 @@ if (! function_exists('get_available_languages')) {
      */
     function get_available_languages(bool $all = false, bool $signed = true): array
     {
+        $locale = match (locale()) {
+            'asl' => 'en',
+            'lsq' => 'fr',
+            default => locale()
+        };
+
         $languages = [
-            'fcs' => __('locales.fcs'),
-        ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
+            'lsq' => __('locales.lsq'),
+            'asl' => __('locales.asl'),
+        ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
         if ($all) {
             $result = array_filter(
@@ -43,6 +50,7 @@ if (! function_exists('get_available_languages')) {
                         (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
                         || ! strpos($language, '_')
                         || in_array($language, [
+                            'ase',
                             'egy',
                             'grc',
                             'zbl',
@@ -77,7 +85,7 @@ if (! function_exists('get_available_languages')) {
             );
         } else {
             $result = [];
-            $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
+            $minimum = config('locales.supported');
             foreach ($minimum as $locale) {
                 $result[$locale] = $languages[$locale];
             }
@@ -89,13 +97,13 @@ if (! function_exists('get_available_languages')) {
         unset($result['en']);
         $fr = $result['fr'];
         unset($result['fr']);
-        $ase = $result['ase'];
-        unset($result['ase']);
-        $fcs = $result['fcs'];
-        unset($result['fcs']);
+        $asl = $result['asl'];
+        unset($result['asl']);
+        $lsq = $result['lsq'];
+        unset($result['lsq']);
 
         if ($signed) {
-            foreach (['fcs', 'ase', 'fr', 'en'] as $code) {
+            foreach (['lsq', 'asl', 'fr', 'en'] as $code) {
                 $result = Arr::prepend($result, $$code, $code);
             }
         } else {
@@ -119,7 +127,7 @@ if (! function_exists('is_signed_language')) {
      */
     function is_signed_language(string $code): bool
     {
-        return in_array($code, ['ase', 'fcs']);
+        return in_array($code, ['asl', 'lsq']);
     }
 }
 
@@ -135,7 +143,7 @@ if (! function_exists('get_written_language_for_signed_language')) {
     function get_written_language_for_signed_language(string $code): string
     {
         return match ($code) {
-            'fcs' => 'fr',
+            'lsq' => 'fr',
             default => 'en',
         };
     }
@@ -153,8 +161,8 @@ if (! function_exists('get_signed_language_for_written_language')) {
     function get_signed_language_for_written_language(string $code): string
     {
         return match ($code) {
-            'fr' => 'fcs',
-            default => 'ase',
+            'fr' => 'lsq',
+            default => 'asl',
         };
     }
 }
@@ -170,17 +178,21 @@ if (! function_exists('get_language_exonym')) {
      */
     function get_language_exonym(string $code, string $locale = '', bool $capitalize = true): null|string
     {
-        if ($locale === '') {
-            $locale = locale();
-        }
+        $locale = $locale === '' ? locale() : $locale;
+
+        $locale = match ($locale) {
+            'asl' => 'en',
+            'lsq' => 'fr',
+            default => $locale
+        };
 
         switch ($code) {
-            case 'fcs':
+            case 'lsq':
                 return trans('locales.'.$code, [], $locale);
             default:
                 $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
-                $language = $languages[$code] ?? null;
+                $language = $code === 'asl' ? $languages['ase'] : $languages[$code] ?? null;
 
                 return $language && $capitalize ? Str::ucfirst($language) : $language;
         }

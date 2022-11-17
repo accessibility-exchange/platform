@@ -226,7 +226,7 @@ DROP TABLE IF EXISTS `choices`;
 CREATE TABLE `choices` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `question_id` bigint unsigned NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` json NOT NULL,
   `is_answer` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -761,9 +761,9 @@ DROP TABLE IF EXISTS `interpretations`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `interpretations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `namespace` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `namespace` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `route_has_params` tinyint(1) DEFAULT NULL,
   `video` json DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1328,12 +1328,10 @@ CREATE TABLE `users` (
   `two_factor_recovery_codes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `locale` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en',
-  `signed_language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'individual',
   `finished_introduction` tinyint(1) DEFAULT NULL,
   `theme` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'light',
   `text_to_speech` tinyint(1) DEFAULT NULL,
-  `sign_language_translations` tinyint(1) DEFAULT NULL,
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vrs` tinyint(1) DEFAULT NULL,
   `support_person_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1498,3 +1496,4 @@ INSERT INTO `migrations` VALUES (106,'2022_11_02_045232_create_module_user_table
 INSERT INTO `migrations` VALUES (107,'2022_11_02_045319_create_quiz_user_table',3);
 INSERT INTO `migrations` VALUES (108,'2022_11_08_181911_change_type_user_sign_language_translations',3);
 INSERT INTO `migrations` VALUES (109,'2022_11_10_181232_create_choices_table',3);
+INSERT INTO `migrations` VALUES (110,'2022_11_17_181722_remove_signed_language_columns_from_users_table',4);

@@ -129,25 +129,24 @@ test('other users cannot manage communication and consultation preferences', fun
 });
 
 test('users can manage language preferences', function () {
-    $user = User::factory()->create(['context' => 'individual', 'locale' => 'en', 'signed_language' => 'ase']);
+    $user = User::factory()->create(['context' => 'individual', 'locale' => 'asl']);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-language-preferences'));
 
     $response->assertOk();
-    $response->assertViewHas('workingLanguages', ['en', 'ase']);
+    $response->assertViewHas('workingLanguages', ['asl']);
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-language-preferences'), [
-        'locale' => 'en',
-        'signed_language' => 'ase',
-        'first_language' => 'ase',
-        'working_languages' => ['ase', 'en'],
+        'locale' => 'asl',
+        'first_language' => 'asl',
+        'working_languages' => ['asl', 'en'],
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-language-preferences'));
 
-    expect($user->signed_language)->toEqual('ase');
-    expect($user->individual->first_language)->toEqual('ase');
+    expect($user->locale)->toEqual('asl');
+    expect($user->individual->first_language)->toEqual('asl');
 
     $newUser = User::factory()->create(['context' => 'organization']);
 
@@ -156,15 +155,13 @@ test('users can manage language preferences', function () {
     $response->assertOk();
 
     $response = $this->actingAs($newUser)->put(localized_route('settings.update-language-preferences'), [
-        'locale' => 'fr',
-        'signed_language' => 'fcs',
+        'locale' => 'lsq',
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-language-preferences'));
 
-    expect($newUser->locale)->toEqual('fr');
-    expect($newUser->signed_language)->toEqual('fcs');
+    expect($newUser->locale)->toEqual('lsq');
 });
 
 test('individual user can manage payment information settings', function () {

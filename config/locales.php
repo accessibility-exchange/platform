@@ -27,7 +27,7 @@ return [
     */
 
     'paired_sign_language' => [
-        'en' => 'ase',
-        'fr' => 'fcs',
+        'en' => 'asl',
+        'fr' => 'lsq',
     ],
 ];

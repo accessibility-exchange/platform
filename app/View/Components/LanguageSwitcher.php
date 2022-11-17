@@ -50,7 +50,7 @@ class LanguageSwitcher extends Component
         $this->locales = [];
 
         foreach ($locales as $locale) {
-            $this->locales[$locale] = get_locale_name($locale, $locale);
+            $this->locales[$locale] = get_language_exonym($locale, $locale);
         }
 
         $this->pairedSignLanguages = config('locales.paired_sign_language') ?? [];
