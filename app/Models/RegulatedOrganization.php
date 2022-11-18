@@ -127,9 +127,16 @@ class RegulatedOrganization extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr'])
+        return SlugOptions::createWithLocales(['en', 'fr', 'asl', 'lsq'])
             ->generateSlugsFrom(function (RegulatedOrganization $model, $locale): string {
-                return $model->getTranslation('name', $locale);
+                if (in_array($locale, ['fr', 'lsq'])) {
+                    ray($model->getTranslation('name', 'fr'));
+
+                    return $model->getTranslation('name', 'fr');
+                }
+                ray($model->getTranslation('name', 'en'));
+
+                return $model->getTranslation('name', 'en');
             })
             ->saveSlugsTo('slug');
     }

@@ -43,9 +43,13 @@ class ResourceCollection extends Model
      */
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr'])
+        return SlugOptions::createWithLocales(['en', 'fr', 'asl', 'lsq'])
             ->generateSlugsFrom(function (ResourceCollection $model, $locale): string {
-                return $model->getTranslation('title', $locale);
+                if (in_array($locale, ['fr', 'lsq'])) {
+                    return $model->getTranslation('title', 'fr');
+                }
+
+                return $model->getTranslation('title', 'en');
             })
             ->saveSlugsTo('slug');
     }
