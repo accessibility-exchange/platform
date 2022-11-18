@@ -2,6 +2,7 @@
 
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
+use App\Models\Resource;
 use App\Models\ResourceCollection;
 use Illuminate\Database\Migrations\Migration;
 
