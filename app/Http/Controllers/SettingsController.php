@@ -385,10 +385,12 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
-            $membershipable = $user->regulatedOrganization;
-        } elseif ($user->context === 'organization' && $user->organization) {
-            $membershipable = $user->organization;
+        $membershipable = null;
+
+        if ($user->context === 'regulated-organization') {
+            $membershipable = $user->regulatedOrganization ?? null;
+        } elseif ($user->context === 'organization') {
+            $membershipable = $user->organization ?? null;
         }
 
         return view('settings.roles-and-permissions', [
@@ -404,10 +406,12 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
-            $invitationable = $user->regulatedOrganization;
-        } elseif ($user->context === 'organization' && $user->organization) {
-            $invitationable = $user->organization;
+        $invitationable = null;
+
+        if ($user->context === 'regulated-organization') {
+            $invitationable = $user->regulatedOrganization ?? null;
+        } elseif ($user->context === 'organization') {
+            $invitationable = $user->organization ?? null;
         }
 
         if ($invitationable) {
