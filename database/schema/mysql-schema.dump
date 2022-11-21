@@ -1497,3 +1497,4 @@ INSERT INTO `migrations` VALUES (107,'2022_11_02_045319_create_quiz_user_table',
 INSERT INTO `migrations` VALUES (108,'2022_11_08_181911_change_type_user_sign_language_translations',3);
 INSERT INTO `migrations` VALUES (109,'2022_11_10_181232_create_choices_table',3);
 INSERT INTO `migrations` VALUES (110,'2022_11_17_181722_remove_signed_language_columns_from_users_table',4);
+INSERT INTO `migrations` VALUES (111,'2022_11_18_135707_update_translatable_slugs',5);
