@@ -173,14 +173,14 @@ if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
      *
-     * @param  string  $code An ISO 639 language code.
-     * @param  string  $locale An ISO 639-1 language code (in which the locale name should be returned).
+     * @param  string  $code An ISO 639 language code, or 'asl'/'lsq'.
+     * @param  ?string  $locale An ISO 639-1 language code (in which the locale name should be returned).
      * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, string $locale = '', bool $capitalize = true): null|string
+    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true): null|string
     {
-        $locale = $locale === '' ? locale() : $locale;
+        $locale ??= locale();
 
         $locale = match ($locale) {
             'asl' => 'en',
