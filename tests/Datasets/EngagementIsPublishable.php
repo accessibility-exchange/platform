@@ -3,7 +3,7 @@
 dataset('engagementIsPublishable', function () {
     $baseModel = [
         'name' => ['en' => 'Workshop'],
-        'languages' => fn () => config('locales.supported'),
+        'languages' => ['en', 'fr', 'asl', 'sql'],
         'who' => 'individuals',
         'format' => 'workshop',
         'recruitment' => 'open-call',
