@@ -389,8 +389,6 @@ class SettingsController extends Controller
             $membershipable = $user->regulatedOrganization;
         } elseif ($user->context === 'organization' && $user->organization) {
             $membershipable = $user->organization;
-        } else {
-            $membershipable = null;
         }
 
         return view('settings.roles-and-permissions', [
@@ -406,11 +404,11 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        $invitationable = match ($user->context) {
-            'organization' => $user->organization ?? null,
-            'regulated-organization' => $user->regulatedOrganization ?? null,
-            default => null,
-        };
+        if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
+            $invitationable = $user->regulatedOrganization;
+        } elseif ($user->context === 'organization' && $user->organization) {
+            $invitationable = $user->organization;
+        }
 
         if ($invitationable) {
             return view('settings.roles-and-permissions.invite', [

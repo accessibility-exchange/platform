@@ -281,10 +281,12 @@ test('users can edit website accessibility preferences', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
-        'theme' => 'system',
+        'theme' => 'dark',
+        'text_to_speech' => false,
     ]);
 
     $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
+    $response->assertPlainCookie('theme', 'dark');
 });
 
 test('guests can not edit website accessibility preferences', function () {
