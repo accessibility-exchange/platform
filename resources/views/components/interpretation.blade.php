@@ -1,4 +1,4 @@
-@if (in_array(locale(), ['asl', 'lsq']))
+@if (is_signed_language(locale()))
     <div id="{{ $id }}" {{ $attributes->class(['interpretation', 'expander', 'stack']) }}
         x-data="{ expanded: false }">
         @if ($videoSrc)
