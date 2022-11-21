@@ -134,8 +134,6 @@ class SettingsController extends Controller
         if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($printedVersion, $data['document_access_needs']))) {
             $data['street_address'] = null;
             $data['unit_apartment_suite'] = null;
-            $data['locality'] = null;
-            $data['region'] = null;
             $data['postal_code'] = null;
         }
 

@@ -27,6 +27,10 @@ test('individual users can manage access needs', function () {
 
     $user = User::factory()->create(['context' => 'individual']);
 
+    $individual = $user->individual;
+    $individual->update(['region' => 'NL']);
+    $individual = $individual->fresh();
+
     $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
 
     $response->assertOk();
@@ -40,8 +44,9 @@ test('individual users can manage access needs', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-access-needs'));
 
-    $individual = $user->individual->fresh();
+    $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
+    expect($individual->region)->toEqual('NL');
 });
 
 test('other users cannot manage access needs', function () {
