@@ -1,6 +1,6 @@
 <x-nav-dropdown {{ $attributes->merge() }}>
     <x-slot name="trigger">
-        @svg('heroicon-o-translate') {{ __('hearth::nav.languages') }}
+        @svg('heroicon-o-translate') <span>{{ __('hearth::nav.languages') }}</span>
     </x-slot>
 
     <x-slot name="content" x-data>
