@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\GeneratesMultilingualSlugs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Spatie\Translatable\HasTranslations;
 
 class ResourceCollection extends Model
 {
+    use GeneratesMultilingualSlugs;
     use HasFactory;
     use HasTranslations;
     use HasTranslatableSlug;
@@ -45,11 +47,7 @@ class ResourceCollection extends Model
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (ResourceCollection $model, $locale): string {
-                if (in_array($locale, ['fr', 'lsq'])) {
-                    return $model->getTranslation('title', 'fr');
-                }
-
-                return $model->getTranslation('title', 'en');
+                return $this->generateSlugs($model, $locale);
             })
             ->saveSlugsTo('slug');
     }
