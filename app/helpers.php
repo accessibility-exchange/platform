@@ -103,7 +103,7 @@ if (! function_exists('get_available_languages')) {
         unset($result['lsq']);
 
         if ($signed) {
-            foreach (['lsq', 'asl', 'fr', 'en'] as $code) {
+            foreach (array_reverse(config('locales.supported')) as $code) {
                 $result = Arr::prepend($result, $$code, $code);
             }
         } else {
