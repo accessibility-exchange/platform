@@ -13,7 +13,7 @@ class EngagementFactory extends Factory
             'published_at' => date('Y-m-d h:i:s', time()),
             'project_id' => Project::factory(),
             'name' => ['en' => 'Workshop'],
-            'languages' => ['en', 'fr', 'asl', 'lsq'],
+            'languages' => config('locales.supported'),
             'who' => 'individuals',
             'format' => 'workshop',
             'recruitment' => 'open-call',

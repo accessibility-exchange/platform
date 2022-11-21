@@ -14,7 +14,7 @@ class SaveUserLanguagesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr', 'asl', 'lsq']))],
+            'locale' => ['required', Rule::in(config('locales.supported'))],
             'invitation' => 'nullable|boolean',
             'context' => [
                 'nullable',

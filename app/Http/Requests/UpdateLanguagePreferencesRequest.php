@@ -17,7 +17,7 @@ class UpdateLanguagePreferencesRequest extends FormRequest
         return [
             'locale' => [
                 'required',
-                Rule::in(config('locales.supported', ['en', 'fr', 'asl', 'lsq'])),
+                Rule::in(config('locales.supported')),
             ],
             'first_language' => [
                 'nullable',

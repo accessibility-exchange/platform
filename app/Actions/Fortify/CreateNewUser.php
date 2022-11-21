@@ -63,7 +63,7 @@ class CreateNewUser implements CreatesNewUsers
                     Rule::notIn([UserContext::Administrator->value]),
                 ],
                 'extra_attributes' => 'nullable|array',
-                'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr', 'asl', 'lsq']))],
+                'locale' => ['required', Rule::in(config('locales.supported'))],
                 'accepted_privacy_policy' => 'accepted',
                 'accepted_terms_of_service' => 'accepted',
             ],

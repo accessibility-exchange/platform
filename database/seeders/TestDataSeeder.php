@@ -589,7 +589,7 @@ class TestDataSeeder extends Seeder
         $engagementsForTesting = [
             [
                 'name' => ['en' => 'Workshop'],
-                'languages' => ['en', 'fr', 'asl', 'lsq'],
+                'languages' => config('locales.supported'),
                 'who' => 'individuals',
                 'format' => 'workshop',
                 'recruitment' => 'open-call',
@@ -602,7 +602,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 'name' => ['en' => 'Focus Group'],
-                'languages' => ['en', 'fr', 'asl', 'lsq'],
+                'languages' => config('locales.supported'),
                 'who' => 'individuals',
                 'format' => 'focus-group',
                 'recruitment' => 'connector',
@@ -616,7 +616,7 @@ class TestDataSeeder extends Seeder
             ],
             [
                 'name' => ['en' => 'Expert Analysis'],
-                'languages' => ['en', 'fr', 'asl', 'lsq'],
+                'languages' => config('locales.supported'),
                 'who' => 'organization',
                 'paid' => true,
                 'description' => ['en' => 'This is what we are doing'],

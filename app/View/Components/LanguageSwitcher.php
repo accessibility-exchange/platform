@@ -2,35 +2,16 @@
 
 namespace App\View\Components;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class LanguageSwitcher extends Component
 {
-    /**
-     * The list of locales.
-     *
-     * @var array
-     */
-    public $locales;
+    public array $locales;
 
-    /**
-     * The route targeted by links in the language switcher.
-     *
-     * @var string
-     */
-    public $target;
-
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $locales = config('locales.supported', [
-            'en',
-            'fr',
-        ]);
+        $locales = config('locales.supported');
 
         $this->locales = [];
 
@@ -39,12 +20,7 @@ class LanguageSwitcher extends Component
         }
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
-    public function render()
+    public function render(): View
     {
         return view('components.language-switcher');
     }

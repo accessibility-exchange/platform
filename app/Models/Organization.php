@@ -130,7 +130,7 @@ class Organization extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr', 'asl', 'lsq'])
+        return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (Organization $model, $locale): string {
                 if (in_array($locale, ['fr', 'lsq'])) {
                     return $model->getTranslation('name', 'fr');

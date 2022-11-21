@@ -39,10 +39,10 @@ test('users with organization or regulated organization admin role can create pr
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
-        'languages' => ['en', 'fr', 'asl', 'lsq'],
+        'languages' => config('locales.supported'),
     ]);
 
-    $response->assertSessionHas('languages', ['en', 'fr', 'asl', 'lsq']);
+    $response->assertSessionHas('languages', config('locales.supported'));
 
     $response = $this->actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $regulatedOrganization->id,
@@ -91,10 +91,10 @@ test('users with organization or regulated organization admin role can create pr
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
-        'languages' => ['en', 'fr', 'asl', 'lsq'],
+        'languages' => config('locales.supported'),
     ]);
 
-    $response->assertSessionHas('languages', ['en', 'fr', 'asl', 'lsq']);
+    $response->assertSessionHas('languages', config('locales.supported'));
 
     $response = $this->actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $organization->id,
