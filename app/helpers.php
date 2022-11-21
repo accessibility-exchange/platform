@@ -134,17 +134,19 @@ if (! function_exists('is_signed_language')) {
 if (! function_exists('get_written_language_for_signed_language')) {
     /**
      * Get the written language which most closely corresponds to a signed language.
+     * If a code other than ASL or LSQ is passed, it will be returned without modification.
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
-     * @return string
+     * @param  string  $code Either 'asl' or 'lsq'
+     * @return string  An ISO 639 code
      */
     function get_written_language_for_signed_language(string $code): string
     {
         return match ($code) {
+            'asl' => 'en',
             'lsq' => 'fr',
-            default => 'en',
+            default => $code,
         };
     }
 }
