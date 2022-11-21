@@ -17,7 +17,7 @@ test('get all available languages', function () {
     $languages = get_available_languages(true);
 
     expect(array_shift($languages))->toEqual('English');
-    expect(array_shift($languages))->toEqual('French');
+    expect(array_shift($languages))->toEqual('American Sign Language');
 
     expect($languages)->toHaveKey('es');
     expect(isset($languages['en_CA']))->toBeFalse();

@@ -47,7 +47,7 @@ class ResourceCollection extends Model
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (ResourceCollection $model, $locale): string {
-                return $this->generateSlugs($model, $locale);
+                return $this->generateSlugs($model, $locale, 'title');
             })
             ->saveSlugsTo('slug');
     }

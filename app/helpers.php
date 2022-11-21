@@ -190,14 +190,15 @@ if (! function_exists('get_language_exonym')) {
 
         switch ($code) {
             case 'lsq':
-                return trans('locales.'.$code, [], $locale);
+            case 'asl':
+                $language = trans('locales.'.$code, [], $locale);
             default:
                 $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
-                $language = $code === 'asl' ? $languages['ase'] : $languages[$code] ?? null;
-
-                return $language && $capitalize ? Str::ucfirst($language) : $language;
+                $language = $languages[$code] ?? null;
         }
+
+        return $capitalize ? Str::ucfirst($language) : $language;
     }
 }
 
