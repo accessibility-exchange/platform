@@ -27,10 +27,10 @@ class DeployGlobal extends Command
      */
     public function handle(): int
     {
-        $this->call('migrate', ['--step' => true, '--force' => true]);
         $this->call('optimize:clear');
-        $this->call('optimize');
         $this->call('event:cache');
+        $this->call('optimize');
+        $this->call('migrate', ['--step' => true, '--force' => true]);
 
         return 0;
     }
