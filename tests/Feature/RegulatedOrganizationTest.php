@@ -55,7 +55,7 @@ test('users can create regulated organizations', function () {
     $response = $this->actingAs($user)
         ->from(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization))
         ->post(localized_route('regulated-organizations.store-languages', $regulatedOrganization), [
-            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'languages' => config('locales.supported'),
         ]);
 
     $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
@@ -79,7 +79,7 @@ test('users with admin role can edit regulated organizations', function () {
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
-            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'languages' => config('locales.supported'),
             'type' => 'business',
         ]);
 
@@ -648,7 +648,7 @@ test('non members can not delete regulated organizations', function () {
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => ['en', 'fr', 'ase', 'fcs'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => config('locales.supported'), 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
     $response->assertOk();
@@ -688,8 +688,8 @@ test('user can view regulated organization in different languages', function () 
         'languages' => [
             'en',
             'fr',
-            'ase',
-            'fcs',
+            'asl',
+            'lsq',
             'iu',
         ],
         'locality' => 'Iqaluit',
@@ -710,7 +710,7 @@ test('user can view regulated organization in different languages', function () 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'iu']));
     $response->assertSee('ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ');
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'fcs']));
+    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'lsq']));
     $response->assertSee('Agence du revenue du Canada');
 });
 
@@ -728,8 +728,8 @@ test('regulated organization cannot be previewed until publishable', function ()
         'languages' => [
             'en',
             'fr',
-            'ase',
-            'fcs',
+            'asl',
+            'lsq',
             'iu',
         ],
         'region' => 'NU',

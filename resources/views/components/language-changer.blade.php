@@ -7,7 +7,7 @@
     <div class="mb-12 flex flex-col justify-between gap-6 md:flex-row">
         <div class="flex">
             <label class="whitespace-nowrap" for='available_languages'>{{ __('Page also available in:') }}</label>
-            <ul class="flex flex-wrap" id='available_languages' role="list">
+            <ul class="flex flex-wrap gap-3" id='available_languages' role="list">
                 @foreach ($model->languages as $code)
                     @if ($code !== locale())
                         @if (in_array($code, config('locales.supported')))

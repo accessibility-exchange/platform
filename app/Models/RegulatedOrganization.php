@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
+use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -33,6 +34,7 @@ use Spatie\Translatable\HasTranslations;
 class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
+    use GeneratesMultilingualSlugs;
     use HasContactPerson;
     use HasDisplayRegion;
     use HasFactory;
@@ -127,9 +129,9 @@ class RegulatedOrganization extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr'])
+        return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (RegulatedOrganization $model, $locale): string {
-                return $model->getTranslation('name', $locale);
+                return $this->generateSlugs($model, $locale);
             })
             ->saveSlugsTo('slug');
     }

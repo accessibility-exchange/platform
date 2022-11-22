@@ -9,12 +9,14 @@
                 <!-- Theme Switcher -->
                 <livewire:theme-switcher />
             @endif
-            <!-- Language Switcher -->
-            <nav class="languages" aria-label="{{ __('languages') }}">
-                <ul role="list">
-                    <x-language-switcher />
-                </ul>
-            </nav>
+            @if (!request()->localizedRouteIs('settings.edit-language-preferences'))
+                <!-- Language Switcher -->
+                <nav class="languages" aria-label="{{ __('languages') }}">
+                    <ul role="list">
+                        <x-language-switcher />
+                    </ul>
+                </nav>
+            @endif
             @include('components.navigation')
         </div>
     </div>

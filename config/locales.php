@@ -6,26 +6,15 @@ return [
     | Application Locales Configuration
     |--------------------------------------------------------------------------
     |
-    | The list of locales that are supported by the application.
+    | The list of locales that are supported by the application. Must ALWAYS
+    | contain 'en', 'asl', 'fr', and 'lsq'.
     |
     */
 
     'supported' => [
         'en',
+        'asl',
         'fr',
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Supported Sign Languages
-    |--------------------------------------------------------------------------
-    |
-    | The list of supported sign languages for each locale supported by the application.
-    |
-    */
-
-    'paired_sign_language' => [
-        'en' => 'ase',
-        'fr' => 'fcs',
+        'lsq',
     ],
 ];

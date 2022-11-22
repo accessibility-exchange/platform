@@ -21,8 +21,8 @@ class InterpretationFactory extends Factory
             'route' => 'welcome',
             'route_has_params' => false,
             'video' => [
-                'ase' => 'https://vimeo.com/766454375',
-                'fcs' => 'https://vimeo.com/766455246',
+                'asl' => 'https://vimeo.com/766454375',
+                'lsq' => 'https://vimeo.com/766455246',
             ],
         ];
     }
