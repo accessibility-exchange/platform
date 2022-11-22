@@ -243,6 +243,8 @@ class SettingsController extends Controller
             $individual->save();
         }
 
+        Cookie::queue('locale', $data['locale']);
+
         flash(__('Your language preferences have been updated.'), 'success');
 
         return redirect(localized_route('settings.edit-language-preferences'));
