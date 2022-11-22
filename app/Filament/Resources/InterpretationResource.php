@@ -33,11 +33,11 @@ class InterpretationResource extends Resource
                 Forms\Components\Toggle::make('route_has_params')
                     ->label('Route has parameters')
                     ->columnSpan(2),
-                Forms\Components\TextInput::make('video.ase')
+                Forms\Components\TextInput::make('video.asl')
                     ->label('ASL Video')
                     ->url()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('video.fcs')
+                Forms\Components\TextInput::make('video.lsq')
                     ->label('LSQ Video')
                     ->url()
                     ->maxLength(255),
@@ -58,7 +58,7 @@ class InterpretationResource extends Resource
                     ->icon('heroicon-s-external-link')
                     ->iconPosition('after'),
                 Tables\Columns\BadgeColumn::make('asl')
-                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'ase', false) !== '' ? __('Yes') : __('No'))
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'asl', false) !== '' ? __('Yes') : __('No'))
                     ->colors([
                         'success' => static fn ($state): bool => $state === __('Yes'),
                         'danger' => static fn ($state): bool => $state === __('No'),
@@ -73,7 +73,7 @@ class InterpretationResource extends Resource
                     ->label('ASL Video')
                     ->disableClick(),
                 Tables\Columns\BadgeColumn::make('lsq')
-                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'fcs', false) !== '' ? __('Yes') : __('No'))
+                    ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'lsq', false) !== '' ? __('Yes') : __('No'))
                     ->colors([
                         'success' => static fn ($state): bool => $state === __('Yes'),
                         'danger' => static fn ($state): bool => $state === __('No'),

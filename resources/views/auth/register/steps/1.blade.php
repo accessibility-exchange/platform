@@ -26,19 +26,9 @@
         </p>
 
         <div class="field @error('locale') field--error @enderror stack">
-            <x-hearth-label for="locale" :value="__('Spoken or written language (please choose one)')" />
+            <x-hearth-label for="locale" :value="__('Website language') . ' ' . __('(required)')" />
             <x-hearth-locale-select name="locale" :selected="old('locale', locale())" hinted="languages-hint" />
             <x-hearth-error for="locale" />
-        </div>
-
-        <div class="field @error('signed_language') field--error @enderror stack">
-            <x-hearth-label for="signed_language" :value="__('Sign Language') . ' ' . __('(optional)')" />
-            <x-hearth-hint for="signed_language">
-                {{ __('If you use Sign Language, you can select which Sign Language you use. When content is available in the Sign Language you select, the content will appear as a video.') }}
-            </x-hearth-hint>
-            <x-hearth-select name="signed_language" :options="$signLanguages" :selected="old('signed_language', '')"
-                hinted="languages-hint signed_language-hint" />
-            <x-hearth-error for="signed_language" />
         </div>
     </fieldset>
 

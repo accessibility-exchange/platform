@@ -34,7 +34,7 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
-    $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
+    $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
     $response->assertOk();
@@ -57,7 +57,7 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    expect($organization->working_languages)->toContain('ase');
+    expect($organization->working_languages)->toContain('asl');
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
@@ -1044,7 +1044,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();

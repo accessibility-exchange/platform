@@ -33,10 +33,10 @@ test('users with regulated organization admin role can create engagements', func
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('engagements.store-languages', $project), [
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
     ]);
     $response->assertRedirect(localized_route('engagements.create', $project));
-    $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+    $response->assertSessionHas('languages', config('locales.supported'));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
     $response->assertOk();
@@ -46,7 +46,7 @@ test('users with regulated organization admin role can create engagements', func
     ]);
 
     $response = $this->withSession([
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
     $response->assertSessionHasNoErrors();
@@ -97,7 +97,7 @@ test('users with regulated organization admin role can create engagements', func
     ]);
 
     $response = $this->withSession([
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
     $communityOrganizationEngagement = Engagement::where('name->en', $data['name']['en'])->first();
@@ -252,7 +252,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'first-language',
-        'first_languages' => ['fr', 'fcs'],
+        'first_languages' => ['fr', 'lsq'],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);

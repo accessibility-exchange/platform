@@ -18,21 +18,12 @@
 
         <h2>{{ __('Website language') }}</h2>
 
-        <p>{{ __('The languages you want to use for navigating this website.') }}</p>
+        <p>{{ __('The language you want to use for navigating this website.') }}</p>
 
         <div class="field @error('locale') field--error @enderror stack">
-            <x-hearth-label for="locale" :value="__('Spoken or written language') . ' ' . __('(required)')" />
+            <x-hearth-label for="locale" :value="__('Language') . ' ' . __('(required)')" />
             <x-hearth-locale-select name="locale" :selected="old('locale', $user->locale)" />
             <x-hearth-error for="locale" />
-        </div>
-
-        <div class="field @error('signed_language') field--error @enderror stack">
-            <x-hearth-label for="signed_language" :value="__('Signed language')" />
-            <x-hearth-hint for="signed_language">
-                {{ __('When content is available in the sign language you select, it will appear as a video.') }}
-            </x-hearth-hint>
-            <x-hearth-select name="signed_language" :options="$signedLanguages" :selected="old('signed_language', $user->signed_language)" hinted />
-            <x-hearth-error for="signed_language" />
         </div>
 
         @if ($user->context === 'individual')

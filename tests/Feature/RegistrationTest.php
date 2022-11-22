@@ -17,16 +17,13 @@ test('new users can register', function () {
     $response = $this->from(localized_route('register', ['step' => 1]))
         ->post(localized_route('register-languages'), [
             'locale' => 'en',
-            'signed_language' => 'ase',
         ]);
     $response->assertRedirect(localized_route('register', ['step' => 2]));
     $response->assertSessionHas('locale', 'en');
-    $response->assertSessionHas('signed_language', 'ase');
 
     $response = $this->from(localized_route('register', ['step' => 2]))
         ->withSession([
             'locale' => 'en',
-            'signed_language' => 'ase',
         ])
         ->post(localized_route('register-context'), [
             'context' => 'individual',
@@ -37,7 +34,6 @@ test('new users can register', function () {
     $response = $this->from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'signed_language' => 'ase',
             'context' => 'individual',
         ])
         ->post(localized_route('register-details'), [
@@ -51,7 +47,6 @@ test('new users can register', function () {
     $response = $this->from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'signed_language' => 'ase',
             'context' => 'individual',
         ])
         ->post(localized_route('register-details'), [
@@ -65,7 +60,6 @@ test('new users can register', function () {
 
     $response = $this->withSession([
         'locale' => 'en',
-        'signed_language' => 'ase',
         'name' => 'Test User',
         'email' => 'test@example.com',
         'context' => 'individual',

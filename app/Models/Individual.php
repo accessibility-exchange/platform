@@ -166,27 +166,37 @@ class Individual extends Model implements CipherSweetEncrypted
         return 'individuals';
     }
 
+    public function getSingularName(): string
+    {
+        return __('individual');
+    }
+
     public function steps(): array
     {
         return [
             1 => [
                 'edit' => 'about-you',
+                'label' => __('About you'),
                 'show' => 'individuals.show',
             ],
             2 => [
                 'edit' => $this->isConnector() ? 'groups-you-can-connect-to' : 'experiences',
+                'label' => $this->isConnector() ? __('Groups you can connect to') : __('Experiences'),
                 'show' => $this->isConnector() ? 'individuals.show' : 'individuals.show-experiences',
             ],
             3 => [
                 'edit' => $this->isConnector() ? 'experiences' : 'interests',
+                'label' => $this->isConnector() ? __('Experiences') : __('Interests'),
                 'show' => $this->isConnector() ? 'individuals.show-experiences' : 'individuals.show-interests',
             ],
             4 => [
                 'edit' => $this->isConnector() ? 'interests' : 'communication-and-consultation-preferences',
+                'label' => $this->isConnector() ? __('Interests') : __('Communication and consultation preferences'),
                 'show' => $this->isConnector() ? 'individuals.show-interests' : 'individuals.show-communication-and-consultation-preferences',
             ],
             5 => [
                 'edit' => $this->isConnector() ? 'communication-and-consultation-preferences' : null,
+                'label' => __('Communication and consultation preferences'),
                 'show' => $this->isConnector() ? 'individuals.show-communication-and-consultation-preferences' : null,
             ],
         ];

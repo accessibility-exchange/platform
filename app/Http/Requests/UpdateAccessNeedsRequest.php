@@ -28,7 +28,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             'signed_language_for_interpretation' => [
                 'nullable',
                 'string',
-                'in:ase,fcs',
+                'in:asl,lsq',
             ],
             'spoken_language_for_interpretation' => [
                 'nullable',
@@ -42,7 +42,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             'signed_language_for_translation' => [
                 'nullable',
                 'string',
-                'in:ase,fcs',
+                'in:asl,lsq',
             ],
             'written_language_for_translation' => [
                 'nullable',

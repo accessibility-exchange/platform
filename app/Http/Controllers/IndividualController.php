@@ -122,10 +122,6 @@ class IndividualController extends Controller
             $individual->user->locale,
         ];
 
-        if ($individual->user->signed_language) {
-            $workingLanguages[] = $individual->user->signed_language;
-        }
-
         return view('individuals.edit', [
             'individual' => $individual,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),

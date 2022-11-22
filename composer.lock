@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f40f7a8501cb69b96dfb86420199d43",
+    "content-hash": "ce750e130672493ab0317a16fbc78c1a",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -3103,6 +3103,60 @@
                 }
             ],
             "time": "2022-08-28T14:45:39+00:00"
+        },
+        {
+            "name": "hedronium/spaceless-blade",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Hedronium/SpacelessBlade.git",
+                "reference": "bab2c0d5eaf754876d0d057c6a3d81c239f4e8a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Hedronium/SpacelessBlade/zipball/bab2c0d5eaf754876d0d057c6a3d81c239f4e8a9",
+                "reference": "bab2c0d5eaf754876d0d057c6a3d81c239f4e8a9",
+                "shasum": ""
+            },
+            "replace": {
+                "solidew/spaceless-blade": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "hedronium\\SpacelessBlade\\SpacelessBladeProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "hedronium\\SpacelessBlade\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Omran Jamal",
+                    "email": "o.jamal97@gmail.com",
+                    "homepage": "http://about.me/omran.jamal"
+                }
+            ],
+            "description": "Adds the @spaceless tag to Blade. (works like in Twig)",
+            "keywords": [
+                "blade",
+                "laravel",
+                "spaceless",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/Hedronium/SpacelessBlade/issues",
+                "source": "https://github.com/Hedronium/SpacelessBlade/tree/master"
+            },
+            "time": "2019-08-24T06:23:59+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",

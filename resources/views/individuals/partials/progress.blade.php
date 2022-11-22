@@ -6,13 +6,13 @@
             @if ($step === 1)
                 <li>
                     <a
-                        href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ __('individual.edit-steps.' . $value['edit']) }}</a>
+                        href="{{ localized_route('individuals.edit', ['individual' => $individual]) }}">{{ $value['label'] }}</a>
                 </li>
             @else
                 @if ($value['edit'])
                     <li>
                         <a
-                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ __('individual.edit-steps.' . $value['edit']) }}</a>
+                            href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => $step]) }}">{{ $value['label'] }}</a>
                     </li>
                 @endif
             @endif

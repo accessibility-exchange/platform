@@ -14,7 +14,7 @@ class TranslationPicker extends Component
 
     public function __construct(?array $languages = null, ?array $availableLanguages = null)
     {
-        $this->languages = $languages ?? ['en', 'fr', 'ase', 'fcs'];
+        $this->languages = $languages ?? config('locales.supported');
         $this->availableLanguages = $availableLanguages ?? Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray();
     }
 

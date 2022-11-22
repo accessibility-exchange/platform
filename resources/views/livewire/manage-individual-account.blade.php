@@ -9,7 +9,7 @@
         <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
     </td>
     <td>
-        {{ Str::ucfirst(__('individual.singular_name')) }}
+        {{ __('Individual') }}
     </td>
     <td>
         @if ($individual->checkStatus('draft') && !$individual->isPublishable())
