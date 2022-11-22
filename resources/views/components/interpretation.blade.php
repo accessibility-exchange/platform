@@ -1,6 +1,5 @@
-@if (is_signed_language(locale()))
-    <div id="{{ $id }}" {{ $attributes->class(['interpretation', 'expander', 'stack']) }}
-        x-data="{ expanded: false }">
+@spaceless
+    <div id="{{ $id }}" {{ $attributes->class(['interpretation', 'expander', 'stack']) }} x-data="{ expanded: false }">
         @if ($videoSrc)
             <button class="borderless" type="button" x-bind:aria-expanded="expanded.toString()"
                 x-on:click="expanded = !expanded">
@@ -20,4 +19,4 @@
             </div>
         @endif
     </div>
-@endif
+@endspaceless

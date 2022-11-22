@@ -22,6 +22,7 @@
         "fruitcake/laravel-cors": "^3.0",
         "graham-campbell/markdown": "^14.0",
         "guzzlehttp/guzzle": "^7.5",
+        "hedronium/spaceless-blade": "^3.0",
         "laravel/framework": "^9.10",
         "laravel/tinker": "^2.7",
         "laravel/vonage-notification-channel": "^3.0",
