@@ -13,11 +13,6 @@
                 {{ __('About you') }}
             </h2>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
             <h3>{{ __('Organization information') }}</h3>
 
             <div class="field @error('name') field--error @enderror">
@@ -104,9 +99,9 @@
                 <x-hearth-error for="website_link" />
             </div>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <p class="flex flex-wrap gap-7">
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

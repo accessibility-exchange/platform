@@ -13,11 +13,6 @@
                 {{ __('Contact information') }}
             </h2>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-            </p>
-
             <div class="field @error('contact_person_name') field-error @enderror">
                 <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
                 <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
@@ -53,7 +48,7 @@
                 <x-hearth-error for="preferred_contact_method" />
             </div>
 
-            <p class="repel">
+            <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>
             </p>

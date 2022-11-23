@@ -12,12 +12,6 @@
                 {{ __('Experiences') }}
             </h2>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
             <fieldset>
                 <legend>{{ __('Lived experience') }}</legend>
 
@@ -55,11 +49,10 @@
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
             </fieldset>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous"
-                    value="1">{{ __('Save and previous') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <p class="flex flex-wrap gap-7">
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

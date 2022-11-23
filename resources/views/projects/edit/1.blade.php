@@ -12,11 +12,6 @@
                 {{ __('Project overview') }}
             </h2>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
             <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
                 required />
 
@@ -101,9 +96,9 @@
                 <x-hearth-error for="public_outcomes" />
             </fieldset>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <p class="flex flex-wrap gap-8">
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

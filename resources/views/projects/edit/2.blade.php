@@ -12,11 +12,6 @@
                 {{ __('Project team') }}
             </h2>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-            </p>
-
             <h3>{{ __('About your team') }}</h3>
 
             <div class="field @error('team_size') field--error @enderror stack">
@@ -95,7 +90,7 @@
                 </div>
             </fieldset>
 
-            <p class="repel">
+            <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>
             </p>
