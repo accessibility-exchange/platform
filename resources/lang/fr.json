@@ -94,7 +94,7 @@
     ":projects projects and :engagements engagements you are running": "Vous êtes en charge de :project projets et de :engagements consultations",
     ":role Invitation": "Invitation à devenir :role",
     ":service": ":service",
-    ":signLanguage (with :locale)": ":signLanguage (with :locale)",
+    ":signLanguage (with :locale)": ":signLanguage (avec :locale)",
     "A :type with this name already exists.": "Un :type avec ce nom existe déjà.",
     "about": "à propos",
     "About": "À propos",
