@@ -6,7 +6,7 @@
 </head>
 
 <body class="{{ $class ?? 'page' }}">
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">

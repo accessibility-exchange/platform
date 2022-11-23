@@ -1,4 +1,4 @@
-/* This file contains all styles related to the banner layout. */
+/* This file contains all styles related to the header layout. */
 [role="banner"] {
     background-color: var(--banner-background);
     border-block-end: var(--border) solid var(--banner-border);
