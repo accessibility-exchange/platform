@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactPerson;
 use App\Enums\MeetingType;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
