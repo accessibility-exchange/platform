@@ -10,13 +10,13 @@ test('adding a translation succeeds for a valid translatable model', function ()
         ->put(localized_route('translations.add'), [
             'translatable_type' => get_class($individual),
             'translatable_id' => $individual->id,
-            'new_language' => 'ase',
+            'new_language' => 'asl',
         ]);
 
     $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
 
-    expect(in_array('ase', $individual->languages))->toBeTrue();
+    expect(in_array('asl', $individual->languages))->toBeTrue();
 });
 
 test('removing a translation succeeds for a valid translatable model', function () {

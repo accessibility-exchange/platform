@@ -3,7 +3,6 @@
 namespace App\View\Components;
 
 use App\Models\Interpretation as InterpretationModel;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
@@ -40,7 +39,7 @@ class Interpretation extends Component
         $this->name = $name;
         $this->namespace = $namespace;
 
-        $this->interpretation = (auth()->hasUser() && auth()->user()->sign_language_translations) || Cookie::get('sign_language_translations') ?
+        $this->interpretation = (is_signed_language(locale())) ?
             InterpretationModel::firstOrCreate(
                 [
                     'name' => $this->name,
@@ -54,7 +53,7 @@ class Interpretation extends Component
             null;
 
         $this->id = Str::slug($this->interpretation?->name ?? $this->name);
-        $this->videoSrc = $this->interpretation?->getTranslation('video', get_signed_language_for_written_language(locale())) ?? '';
+        $this->videoSrc = $this->interpretation?->getTranslation('video', locale(), false) ?? '';
     }
 
     /**

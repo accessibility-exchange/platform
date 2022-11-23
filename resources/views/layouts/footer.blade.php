@@ -4,9 +4,9 @@
             <div class="stack">
                 <!-- Brand -->
                 <a class="brand" href="{{ localized_route('welcome') }}" rel="home">
-                    @if (locale() == 'en')
+                    @if (locale() == 'en' || locale() == 'asl')
                         @svg('tae-logo-mono-en', ['class' => 'logo-footer'])
-                    @elseif(locale() == 'fr')
+                    @elseif(locale() == 'fr' || locale() == 'lsq')
                         @svg('tae-logo-mono-fr', ['class' => 'logo-footer'])
                     @endif
                     <span class="visually-hidden">{{ __('app.name') }}</span>
@@ -17,10 +17,9 @@
                         </li>
                         {{-- TODO: Add glossary feature --}}
                         {{-- <li><a href="">{{ __('Glossary') }}</a></li> --}}
-                        {{-- TODO: Add Terms of Service --}}
-                        {{-- <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a></li> --}}
-                        {{-- TODO: Add Privacy Policy --}}
-                        {{-- <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li> --}}
+                        <li><a href="{{ localized_route('about.terms-of-service') }}">{{ __('Terms of Service') }}</a>
+                        </li>
+                        <li><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Privacy Policy') }}</a></li>
                     </ul>
                 </nav>
             </div>

@@ -60,16 +60,6 @@
                 hinted="text_to_speech-hint" />
         </fieldset>
 
-        <fieldset class="field @error('sign_language_translations') field--error @enderror">
-            <legend>{{ __('Sign language translations') }}</legend>
-            <x-hearth-hint for="sign_language_translations">
-                {{ __('If a Sign Language video translation is available, you will see a button in line with the website content. Pressing that button will load the Sign Language video.') }}
-            </x-hearth-hint>
-
-            <x-hearth-radio-buttons name="sign_language_translations" :options="\Spatie\LaravelOptions\Options::forArray([0 => __('Off'), 1 => __('On')])->toArray()" :checked="old('sign_language_translations', $user->sign_language_translations ?? false)"
-                hinted="sign_language_translations-hint" />
-        </fieldset>
-
         <button>
             {{ __('Save changes') }}
         </button>

@@ -6,6 +6,10 @@
     margin-block-start: var(--space);
 }
 
+.stack > *:empty + * {
+    margin-block-start: 0;
+}
+
 .stack > h5 + p {
     @apply mt-0;
 }

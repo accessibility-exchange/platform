@@ -31,9 +31,16 @@ if (! function_exists('get_available_languages')) {
      */
     function get_available_languages(bool $all = false, bool $signed = true): array
     {
+        $locale = match (locale()) {
+            'asl' => 'en',
+            'lsq' => 'fr',
+            default => locale()
+        };
+
         $languages = [
-            'fcs' => __('locales.fcs'),
-        ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.locale().'/language.php';
+            'lsq' => __('locales.lsq'),
+            'asl' => __('locales.asl'),
+        ] + require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
         if ($all) {
             $result = array_filter(
@@ -43,6 +50,7 @@ if (! function_exists('get_available_languages')) {
                         (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
                         || ! strpos($language, '_')
                         || in_array($language, [
+                            'ase',
                             'egy',
                             'grc',
                             'zbl',
@@ -77,7 +85,7 @@ if (! function_exists('get_available_languages')) {
             );
         } else {
             $result = [];
-            $minimum = array_merge(['ase', 'fcs'], config('locales.supported'));
+            $minimum = config('locales.supported');
             foreach ($minimum as $locale) {
                 $result[$locale] = $languages[$locale];
             }
@@ -89,13 +97,13 @@ if (! function_exists('get_available_languages')) {
         unset($result['en']);
         $fr = $result['fr'];
         unset($result['fr']);
-        $ase = $result['ase'];
-        unset($result['ase']);
-        $fcs = $result['fcs'];
-        unset($result['fcs']);
+        $asl = $result['asl'];
+        unset($result['asl']);
+        $lsq = $result['lsq'];
+        unset($result['lsq']);
 
         if ($signed) {
-            foreach (['fcs', 'ase', 'fr', 'en'] as $code) {
+            foreach (array_reverse(config('locales.supported')) as $code) {
                 $result = Arr::prepend($result, $$code, $code);
             }
         } else {
@@ -119,24 +127,26 @@ if (! function_exists('is_signed_language')) {
      */
     function is_signed_language(string $code): bool
     {
-        return in_array($code, ['ase', 'fcs']);
+        return in_array($code, ['asl', 'lsq']);
     }
 }
 
 if (! function_exists('get_written_language_for_signed_language')) {
     /**
      * Get the written language which most closely corresponds to a signed language.
+     * If a code other than ASL or LSQ is passed, it will be returned without modification.
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
-     * @return string
+     * @param  string  $code Either 'asl' or 'lsq'
+     * @return string  An ISO 639 code
      */
     function get_written_language_for_signed_language(string $code): string
     {
         return match ($code) {
-            'fcs' => 'fr',
-            default => 'en',
+            'asl' => 'en',
+            'lsq' => 'fr',
+            default => $code,
         };
     }
 }
@@ -153,8 +163,8 @@ if (! function_exists('get_signed_language_for_written_language')) {
     function get_signed_language_for_written_language(string $code): string
     {
         return match ($code) {
-            'fr' => 'fcs',
-            default => 'ase',
+            'fr' => 'lsq',
+            default => 'asl',
         };
     }
 }
@@ -163,27 +173,33 @@ if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
      *
-     * @param  string  $code An ISO 639 language code.
-     * @param  string  $locale An ISO 639-1 language code (in which the locale name should be returned).
+     * @param  string  $code An ISO 639 language code, or 'asl'/'lsq'.
+     * @param  ?string  $locale An ISO 639-1 language code (in which the locale name should be returned).
      * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, string $locale = '', bool $capitalize = true): null|string
+    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true): null|string
     {
-        if ($locale === '') {
-            $locale = locale();
+        $locale ??= locale();
+
+        $locale = match ($locale) {
+            'asl' => 'en',
+            'lsq' => 'fr',
+            default => $locale
+        };
+
+        $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
+
+        $language = match ($code) {
+            'asl', 'lsq' => trans('locales.'.$code, [], $locale),
+            default => $languages[$code] ?? null
+        };
+
+        if ($language) {
+            return $capitalize ? Str::ucfirst($language) : $language;
         }
 
-        switch ($code) {
-            case 'fcs':
-                return trans('locales.'.$code, [], $locale);
-            default:
-                $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
-
-                $language = $languages[$code] ?? null;
-
-                return $language && $capitalize ? Str::ucfirst($language) : $language;
-        }
+        return null;
     }
 }
 

@@ -30,7 +30,7 @@ class ProjectFactory extends Factory
             'projectable_type' => 'App\Models\RegulatedOrganization',
             'projectable_id' => RegulatedOrganization::factory(),
             'name' => ['en' => 'My accessibility project – '.Carbon::parse($start)->format('F Y')],
-            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'languages' => config('locales.supported'),
             'regions' => ['AB'],
             'start_date' => $start,
             'end_date' => $end,

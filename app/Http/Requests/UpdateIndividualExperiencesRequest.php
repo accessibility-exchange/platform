@@ -29,8 +29,8 @@ class UpdateIndividualExperiencesRequest extends FormRequest
             'relevant_experiences.*.title' => 'nullable|required_with:relevant_experiences.*.organization,relevant_experiences.*.start_year,relevant_experiences.*.end_year,relevant_experiences.*.current|string',
             'relevant_experiences.*.organization' => 'nullable|required_with:relevant_experiences.*.title|string',
             'relevant_experiences.*.start_year' => 'nullable|required_with:relevant_experiences.*.title|digits:4|integer|min:1900|max:'.(date('Y')),
-            'relevant_experiences.*.end_year' => 'nullable|required_without:relevant_experiences.*.current|prohibits:relevant_experiences.*.current|digits:4|integer|min:1900|gte:relevant_experiences.*.start_year|max:'.(date('Y')),
-            'relevant_experiences.*.current' => 'nullable|required_without:relevant_experiences.*.end_year|boolean',
+            'relevant_experiences.*.end_year' => 'nullable|exclude_without:relevant_experiences.*.start_year|required_without:relevant_experiences.*.current|prohibits:relevant_experiences.*.current|digits:4|integer|min:1900|gte:relevant_experiences.*.start_year|max:'.(date('Y')),
+            'relevant_experiences.*.current' => 'nullable|exclude_without:relevant_experiences.*.start_year|required_without:relevant_experiences.*.end_year|boolean',
         ];
     }
 
@@ -41,7 +41,7 @@ class UpdateIndividualExperiencesRequest extends FormRequest
             'relevant_experiences.*.organization' => __('Name of Organization'),
             'relevant_experiences.*.start_year' => __('Start Year'),
             'relevant_experiences.*.end_year' => __('End Year'),
-            'relevant_experiences.0.current' => __('I currently work or volunteer here'),
+            'relevant_experiences.*.current' => __('I currently work or volunteer here'),
         ];
     }
 

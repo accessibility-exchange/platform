@@ -34,7 +34,7 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
-    $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
+    $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
     $response->assertOk();
@@ -57,7 +57,7 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    expect($organization->working_languages)->toContain('ase');
+    expect($organization->working_languages)->toContain('asl');
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
@@ -385,20 +385,6 @@ test('users with admin role can edit organization contact information', function
 
     expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
-
-    expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
-    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
-    expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");
-    expect($organization->alternate_contact_method)->toEqual($organization->alternate_contact_point);
-
-    $organization->preferred_contact_method = 'phone';
-    $organization->save();
-    $organization = $organization->fresh();
-
-    expect($organization->primary_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
-    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_email);
-    expect($organization->primary_contact_method)->toEqual("Call {$organization->contact_person_name} at {$organization->contact_person_phone->formatForCountry('CA')}.");
-    expect($organization->alternate_contact_method)->toEqual("<{$organization->contact_person_email}>");
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
@@ -1044,7 +1030,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();

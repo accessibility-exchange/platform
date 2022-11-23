@@ -6,7 +6,7 @@
         "framework",
         "laravel"
     ],
-    "version": "1.0.0-alpha3",
+    "version": "1.0.0-alpha.5",
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -22,6 +22,7 @@
         "fruitcake/laravel-cors": "^3.0",
         "graham-campbell/markdown": "^14.0",
         "guzzlehttp/guzzle": "^7.5",
+        "hedronium/spaceless-blade": "^3.0",
         "laravel/framework": "^9.10",
         "laravel/tinker": "^2.7",
         "laravel/vonage-notification-channel": "^3.0",
@@ -118,7 +119,9 @@
         "format": "vendor/bin/pint",
         "localize": [
             "rm -f -- resources/lang/en.json",
-            "@php artisan localize en,fr"
+            "@php artisan localize en,fr",
+            "cp -r resources/lang/fr/* resources/lang/lsq",
+            "cp resources/lang/fr.json resources/lang/lsq.json"
         ],
         "test": "php artisan test",
         "test-coverage": "php artisan test --coverage"

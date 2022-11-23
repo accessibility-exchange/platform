@@ -83,11 +83,7 @@ class OrganizationController extends Controller
 
         $data['working_languages'] = [$user->locale];
 
-        if ($user->signed_language) {
-            $data['working_languages'][] = $user->signed_language;
-        }
-
-        $data['languages'] = ['en', 'fr', 'ase', 'fcs'];
+        $data['languages'] = config('locales.supported');
 
         $organization = Organization::create($data);
 

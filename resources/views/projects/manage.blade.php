@@ -15,7 +15,7 @@
                     <p><strong>{{ __('Project duration') }}</strong><br />
                         {{ $project->start_date && $project->end_date ? $project->start_date->translatedFormat('F Y') . ' – ' . $project->end_date?->translatedFormat('F Y') : 'n/a' }}
                     </p>
-                    <div class="badge badge--status">{{ $project->status }}</div>
+                    <div class="badge badge--alt">{{ $project->status }}</div>
                 </div>
                 @can('update', $project)
                     <div>
@@ -64,13 +64,8 @@
         <h2 class="visually-hidden">{{ __('Manage') }}</h2>
 
         <x-manage-grid>
-            <x-manage-columns class="col-start-1 col-end-2">
-                {{-- TODO: manage participant selection criteria
-                <x-manage-section :title="__('Participant selection criteria')">
-                </x-manage-section> --}}
-            </x-manage-columns>
-            <x-manage-columns class="col-start-2 col-end-4">
-                <x-manage-section :title="__('Engagement')">
+            <x-manage-columns class="col-start-1 col-end-3">
+                <x-manage-section :title="__('Engagements')">
                     <p>{{ __('An engagement involves a group of people participating in one set way (for example, a focus group or survey).') }}
                     </p>
                     @if ($project->allEngagements->count())

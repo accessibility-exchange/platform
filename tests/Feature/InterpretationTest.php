@@ -58,19 +58,19 @@ test('returns name localized', function () {
 
 test('localized video source', function () {
     $videoSrc = [
-        'ase' => 'https://vimeo.com/766454375',
-        'fcs' => 'https://vimeo.com/766455246',
+        'asl' => 'https://vimeo.com/766454375',
+        'lsq' => 'https://vimeo.com/766455246',
     ];
 
     $interpretation = Interpretation::factory()->create([
         'video' => null,
     ]);
 
-    $interpretation->setTranslation('video', 'ase', $videoSrc['ase']);
-    $interpretation->setTranslation('video', 'fcs', $videoSrc['fcs']);
+    $interpretation->setTranslation('video', 'asl', $videoSrc['asl']);
+    $interpretation->setTranslation('video', 'lsq', $videoSrc['lsq']);
 
-    expect($interpretation->getTranslation('video', 'ase'))->toBe($videoSrc['ase']);
-    expect($interpretation->getTranslation('video', 'fcs'))->toBe($videoSrc['fcs']);
+    expect($interpretation->getTranslation('video', 'asl'))->toBe($videoSrc['asl']);
+    expect($interpretation->getTranslation('video', 'lsq'))->toBe($videoSrc['lsq']);
 });
 
 test('get context URL', function () {
@@ -111,8 +111,12 @@ test('only administrative users can access interpretation admin pages', function
 });
 
 test('interpretations can be listed', function () {
-    $interpretations = Interpretation::factory()->count(10)->create();
+    $interpretationsWithVideos = Interpretation::factory()->count(2)->create();
+    $interpretationsWithoutVideos = Interpretation::factory()->count(2)->create(['video' => ['lsq' => '', 'asl' => '']]);
 
     livewire(InterpretationResource\Pages\ListInterpretations::class)
-        ->assertCanSeeTableRecords($interpretations);
+        ->assertCanSeeTableRecords($interpretationsWithVideos);
+
+    livewire(InterpretationResource\Pages\ListInterpretations::class)
+        ->assertCanSeeTableRecords($interpretationsWithoutVideos);
 });
