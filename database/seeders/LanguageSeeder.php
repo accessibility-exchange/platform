@@ -22,13 +22,13 @@ class LanguageSeeder extends Seeder
                     'fr' => 'Français',
                 ],
             ],
-            'ase' => [
+            'asl' => [
                 'name' => [
                     'en' => 'American Sign Language',
                     'fr' => 'Langue des signes américaine',
                 ],
             ],
-            'fcs' => [
+            'lsq' => [
                 'name' => [
                     'en' => 'Quebec Sign Language',
                     'fr' => 'Langue des signes québécoise',

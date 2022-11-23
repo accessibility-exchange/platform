@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
-use App\Traits\HasContactPerson;
+use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -41,7 +41,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 class Organization extends Model
 {
     use CascadesDeletes;
-    use HasContactPerson;
+    use GeneratesMultilingualSlugs;
     use HasDisplayRegion;
     use HasFactory;
     use HasSchemalessAttributes;
@@ -130,9 +130,9 @@ class Organization extends Model
 
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr'])
+        return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (Organization $model, $locale): string {
-                return $model->getTranslation('name', $locale);
+                return $this->generateSlugs($model, $locale);
             })
             ->saveSlugsTo('slug');
     }
@@ -504,6 +504,20 @@ class Organization extends Model
     public function courses(): hasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function getContactMethodsAttribute(): array
+    {
+        $methods = [];
+
+        if (! empty($this->contact_person_email)) {
+            $methods[] = 'email';
+        }
+        if (! empty($this->contact_person_phone)) {
+            $methods[] = 'phone';
+        }
+
+        return $methods;
     }
 
     public function getBaseDisabilityTypeAttribute(): string|false

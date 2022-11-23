@@ -24,7 +24,7 @@ class RegulatedOrganizationFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'type' => $this->faker->randomElement(['government', 'business', 'public-sector']),
-            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'languages' => config('locales.supported'),
             'service_areas' => ['NS'],
             'contact_person_email' => $this->faker->email,
             'contact_person_name' => $this->faker->name,

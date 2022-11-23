@@ -26,13 +26,11 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         $input['locale'] = session('locale');
-        $input['signed_language'] = session('signed_language');
         $input['name'] = session('name');
         $input['email'] = session('email');
         $input['context'] = session('context');
         $input['accepted_privacy_policy'] = array_key_exists('accepted_privacy_policy', $input);
         $input['accepted_terms_of_service'] = array_key_exists('accepted_terms_of_service', $input);
-        $input['sign_language_translations'] = Cookie::get('sign_language_translations');
 
         if (session('roles') || session('invitation')) {
             $input['extra_attributes'] = [];
@@ -65,9 +63,7 @@ class CreateNewUser implements CreatesNewUsers
                     Rule::notIn([UserContext::Administrator->value]),
                 ],
                 'extra_attributes' => 'nullable|array',
-                'locale' => ['required', Rule::in(config('locales.supported', ['en', 'fr']))],
-                'signed_language' => 'nullable|string|in:ase,fcs',
-                'sign_language_translations' => 'nullable|boolean',
+                'locale' => ['required', Rule::in(config('locales.supported'))],
                 'accepted_privacy_policy' => 'accepted',
                 'accepted_terms_of_service' => 'accepted',
             ],
@@ -81,7 +77,6 @@ class CreateNewUser implements CreatesNewUsers
         Cookie::queue('theme', Cookie::get('theme', 'system'));
 
         session()->forget('locale');
-        session()->forget('signed_language');
         session()->forget('context');
         session()->forget('name');
         session()->forget('email');
@@ -93,11 +88,9 @@ class CreateNewUser implements CreatesNewUsers
             'context' => $input['context'],
             'locale' => $input['locale'],
             'theme' => Cookie::get('theme', 'system'),
-            'signed_language' => $input['signed_language'],
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
-            'sign_language_translations' => $input['sign_language_translations'],
         ]);
     }
 }

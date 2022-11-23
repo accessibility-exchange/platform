@@ -21,10 +21,6 @@ class UserController extends Controller
 
         session()->put('locale', $data['locale']);
 
-        if (isset($data['signed_language'])) {
-            session()->put('signed_language', $data['signed_language']);
-        }
-
         if (isset($data['invitation'])) {
             session()->put('invitation', $data['invitation']);
         }
