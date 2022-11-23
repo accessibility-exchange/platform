@@ -207,7 +207,10 @@ fieldset {
     padding: 0;
 }
 
-.stack fieldset + fieldset {
+.stack fieldset + *,
+.stack * + fieldset,
+.stack .fieldset + *,
+.stack * + .fieldset {
     margin-block-start: var(--space-12);
 }
 
@@ -247,6 +250,7 @@ legend {
     color: var(--hint-color);
 }
 
+[type="checkbox"] ~ .field__hint,
 [type="radio"] ~ .field__hint {
     margin-inline-start: var(--space-8);
 }

@@ -37,17 +37,17 @@
     <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
 
     <ul class="tags" role="list">
-        @foreach ($individual->livedExperienceConnections as $livedExperience)
-            @if ($livedExperience->getTranslation('name', 'en') !== 'People who experience disabilities')
-                <li class="tag">{{ $livedExperience->name }}</li>
-            @endif
-        @endforeach
         @foreach ($individual->disabilityTypeConnections as $disabilityType)
             <li class="tag">{{ $disabilityType->name }}</li>
         @endforeach
         @if ($individual->other_disability_type_connection)
             <li class="tag">{{ $individual->other_disability_type_connection }}</li>
         @endif
+        @foreach ($individual->livedExperienceConnections as $livedExperience)
+            @if ($livedExperience->getTranslation('name', 'en') !== 'People with disabilities and/or Deaf people')
+                <li class="tag">{{ $livedExperience->name }}</li>
+            @endif
+        @endforeach
     </ul>
 
     @if ($individual->extra_attributes->has_indigenous_identities ||
@@ -76,13 +76,13 @@
                 <li class="tag">{{ __('Refugees and/or immigrants') }}</li>
             @endif
             @foreach ($individual->genderIdentityConnections as $genderIdentity)
-                <li class="tag">{{ $genderIdentity->name_plural }}</li>
+                <li class="tag">{{ $genderIdentity->name }}</li>
             @endforeach
             @if ($individual->constituencyConnections->contains($transPeople))
-                <li class="tag">{{ $transPeople->name_plural }}</li>
+                <li class="tag">{{ $transPeople->name }}</li>
             @endif
             @if ($individual->constituencyConnections->contains($twoslgbtqiaplusPeople))
-                <li class="tag">{{ $twoslgbtqiaplusPeople->name_plural }}</li>
+                <li class="tag">{{ $twoslgbtqiaplusPeople->name }}</li>
             @endif
         </ul>
     @endif

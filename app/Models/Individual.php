@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EngagementFormat;
+use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Models\Scopes\IndividualUserNotSuspendedScope;
 use App\Traits\HasDisplayRegion;
@@ -236,16 +237,6 @@ class Individual extends Model implements CipherSweetEncrypted
         return $this->belongsToMany(PaymentType::class);
     }
 
-    public function constituencies(): BelongsToMany
-    {
-        return $this->belongsToMany(Constituency::class);
-    }
-
-    public function livedExperiences(): BelongsToMany
-    {
-        return $this->belongsToMany(LivedExperience::class);
-    }
-
     public function accessSupports(): BelongsToMany
     {
         return $this->belongsToMany(AccessSupport::class);
@@ -441,69 +432,90 @@ class Individual extends Model implements CipherSweetEncrypted
         return in_array('connector', $this->roles ?? []);
     }
 
-    public function livedExperienceConnections(): MorphToMany
+    /**
+     * Identities of this individual. Not yet used.
+     */
+    public function identities(): BelongsToMany
     {
-        return $this->morphedByMany(LivedExperience::class, 'connectable');
+        return $this->belongsToMany(Identity::class);
     }
 
-    public function areaTypeConnections(): MorphToMany
+    public function identityConnections(): BelongsToMany
     {
-        return $this->morphedByMany(AreaType::class, 'connectable');
+        return $this->belongsToMany(Identity::class, 'individual_identity_connections');
     }
 
-    public function disabilityTypeConnections(): MorphToMany
+    public function livedExperienceConnections(): BelongsToMany
     {
-        return $this->morphedByMany(DisabilityType::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Experience);
     }
 
-    public function indigenousIdentityConnections(): MorphToMany
+    public function areaTypeConnections(): BelongsToMany
     {
-        return $this->morphedByMany(IndigenousIdentity::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Area);
     }
 
-    public function genderIdentityConnections(): MorphToMany
+    public function disabilityTypeConnections(): BelongsToMany
     {
-        return $this->morphedByMany(GenderIdentity::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::DisabilityAndDeaf);
     }
 
-    public function ageBracketConnections(): MorphToMany
+    public function indigenousIdentityConnections(): BelongsToMany
     {
-        return $this->morphedByMany(AgeBracket::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Indigenous);
     }
 
-    public function ethnoracialIdentityConnections(): MorphToMany
+    public function genderIdentityConnections(): BelongsToMany
     {
-        return $this->morphedByMany(EthnoracialIdentity::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Gender);
     }
 
-    public function constituencyConnections(): MorphToMany
+    public function ageBracketConnections(): BelongsToMany
     {
-        return $this->morphedByMany(Constituency::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Age);
     }
 
-    public function languageConnections(): MorphToMany
+    public function ethnoracialIdentityConnections(): BelongsToMany
     {
-        return $this->morphedByMany(Language::class, 'connectable');
+        return $this->identityConnections()->where('cluster', IdentityCluster::Ethnoracial);
     }
 
-    public function getBaseDisabilityTypeAttribute(): string|false
+    public function constituencyConnections(): BelongsToMany
     {
-        if ($this->disabilityTypeConnections->count() > 0) {
-            return $this->disabilityTypeConnections->contains(DisabilityType::where('name->en', 'Cross-disability')->first())
-                ? 'cross_disability'
-                : 'specific_disabilities';
-        } elseif (! empty($this->other_disability_type_connection)) {
-            return 'specific_disabilities';
-        }
-
-        return false;
+        return $this->identityConnections()->whereNull('cluster');
     }
 
-    public function getHasNbGncFluidConstituentsAttribute(): bool
+    public function languageConnections(): BelongsToMany
     {
-        return $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Non-binary people')->firstOrFail())
-            || $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->firstOrFail())
-            || $this->genderIdentityConnections->contains(GenderIdentity::where('name_plural->en', 'Gender fluid people')->firstOrFail());
+        return $this->belongsToMany(Language::class, 'individual_language');
+    }
+
+    public function baseDisabilityType(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->disabilityTypeConnections->count() > 0) {
+                    return $this->disabilityTypeConnections->contains(Identity::where('name->en', 'Cross-disability and Deaf')->first())
+                        ? 'cross_disability'
+                        : 'specific_disabilities';
+                } elseif (! empty($this->other_disability_type_connection)) {
+                    return 'specific_disabilities';
+                }
+
+                return false;
+            }
+        );
+    }
+
+    public function hasNbGncFluidConstituents(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->genderIdentityConnections->contains(Identity::where('name->en', 'Non-binary people')->firstOrFail())
+                    || $this->genderIdentityConnections->contains(Identity::where('name->en', 'Gender non-conforming people')->firstOrFail())
+                    || $this->genderIdentityConnections->contains(Identity::where('name->en', 'Gender fluid people')->firstOrFail());
+            }
+        );
     }
 
     public function blocks(): MorphToMany

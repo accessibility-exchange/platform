@@ -19,7 +19,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
     {
         return [
             'lived_experiences' => 'required|array',
-            'lived_experiences.*' => 'exists:lived_experiences,id',
+            'lived_experiences.*' => 'exists:identities,id',
             'base_disability_type' => [
                 'nullable',
                 'string',
@@ -32,29 +32,27 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return
-                        in_array(1, request('lived_experiences') ?? [])
-                        && request('base_disability_type') === 'specific_disabilities'
+                    return request('base_disability_type') === 'specific_disabilities'
                         && ! request('other_disability');
                 }),
                 'exclude_if:base_disability_type,cross_disability',
             ],
-            'disability_types.*' => 'exists:disability_types,id',
+            'disability_types.*' => 'exists:identities,id',
             'other_disability' => 'nullable|boolean',
             'other_disability_type_connection' => 'nullable|array|exclude_if:base_disability_type,cross_disability|exclude_unless:other_disability,true',
             'other_disability_type_connection.*' => 'nullable|string|max:255',
             'area_types' => 'required|array|min:1',
-            'area_types.*' => 'exists:area_types,id',
+            'area_types.*' => 'exists:identities,id',
             'has_indigenous_identities' => 'required|boolean',
             'indigenous_identities' => 'nullable|array|required_if:has_indigenous_identities,true|exclude_if:has_indigenous_identities,false',
-            'indigenous_identities.*' => 'exists:indigenous_identities,id',
+            'indigenous_identities.*' => 'exists:identities,id',
             'refugees_and_immigrants' => 'required|boolean',
             'has_gender_and_sexual_identities' => 'required|boolean',
             'gender_and_sexual_identities' => 'nullable|array|min:1|required_if:has_gender_and_sexual_identities,true|exclude_if:has_gender_and_sexual_identities,false',
             'gender_and_sexual_identities.*' => 'string|in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',
             'has_age_brackets' => 'required|boolean',
             'age_brackets' => 'nullable|array|required_if:has_age_brackets,true|exclude_if:has_age_brackets,false',
-            'age_brackets.*' => 'exists:age_brackets,id',
+            'age_brackets.*' => 'exists:identities,id',
             'has_ethnoracial_identities' => 'required|boolean',
             'ethnoracial_identities' => [
                 'nullable',
@@ -64,7 +62,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                         && ! request('other_ethnoracial');
                 }),
             ],
-            'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
+            'ethnoracial_identities.*' => 'exists:identities,id',
             'other_ethnoracial' => 'nullable|boolean',
             'other_ethnoracial_identity_connection' => 'nullable|array|exclude_if:has_ethnoracial_identities,false|exclude_unless:other_ethnoracial,true',
             'other_ethnoracial_identity_connection.*' => 'nullable|string|max:255',
@@ -111,7 +109,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
         return [
             'lived_experiences.required' => __('You must select at least one option for “Can you connect to people with disabilities, Deaf persons, and/or their supporters?”'),
             'base_disability_type.required' => __('You must select one option for “Please select people with disabilities that you can connect to”.'),
-            'disability_types.required' => __('You must select which specific disability or disabilities you can connect to.'),
+            'disability_types.required' => __('You must select which which people with specific disabilities and/or Deaf people you can connect to.'),
             'area_types.required' => __('You must select at least one option for “Where do the people that you can connect to come from?”'),
             'has_indigenous_identities.required' => __('You must select one option for “Can you connect to people who are First Nations, Inuit, or Métis?”'),
             'indigenous_identities.required_if' => __('You must select at least one Indigenous group you can connect to.'),

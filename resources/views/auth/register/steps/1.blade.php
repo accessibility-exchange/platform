@@ -26,7 +26,7 @@
         </p>
 
         <div class="field @error('locale') field--error @enderror stack">
-            <x-hearth-label for="locale" :value="__('Website language') . ' ' . __('(required)')" />
+            <x-hearth-label for="locale"><x-required>{{ __('Website language') }}</x-required></x-hearth-label>
             <x-hearth-locale-select name="locale" :selected="old('locale', locale())" hinted="languages-hint" />
             <x-hearth-error for="locale" />
         </div>

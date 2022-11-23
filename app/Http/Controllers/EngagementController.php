@@ -374,7 +374,9 @@ class EngagementController extends Controller
                         [
                             'name' => [
                                 'en' => get_language_exonym($code, 'en'),
+                                'asl' => get_language_exonym($code, 'en'),
                                 'fr' => get_language_exonym($code, 'fr'),
+                                'lsq' => get_language_exonym($code, 'fr'),
                             ],
                         ],
                     )->id;

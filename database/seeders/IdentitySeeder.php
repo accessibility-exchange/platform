@@ -51,7 +51,7 @@ class IdentitySeeder extends Seeder
                 'name' => __('2SLGBTQIA+ people'),
             ],
             [
-                'name' => __('Cross-disability'),
+                'name' => __('Cross-disability and Deaf'),
                 'cluster' => 'disability-and-deaf',
             ],
             [
@@ -198,11 +198,11 @@ class IdentitySeeder extends Seeder
                 'cluster' => 'indigenous',
             ],
             [
-                'name' => __('People who experience disabilities and/or Deaf people'),
+                'name' => __('People with disabilities and/or Deaf people'),
                 'cluster' => 'experience',
             ],
             [
-                'name' => __('Supporters of people who experience disabilities and/or Deaf people'),
+                'name' => __('Supporters'),
                 'cluster' => 'experience',
             ],
         ];
