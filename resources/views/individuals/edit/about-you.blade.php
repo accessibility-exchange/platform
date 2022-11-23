@@ -13,6 +13,8 @@
                 {{ __('About you') }}
             </h2>
 
+            <hr class="divider--thick">
+
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('Name') . ' ' . __('(required)')" />
                 <x-hearth-hint for="name">
@@ -100,6 +102,8 @@
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>
+
+            <hr class="divider--thick">
 
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

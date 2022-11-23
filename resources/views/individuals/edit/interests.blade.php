@@ -11,7 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Interests') }}
             </h2>
-
+            <hr class="divider--thick">
             <fieldset class="field @error('sectors') field--error @enderror">
                 <legend>
                     {{ __('What sectors of Federally Regulated Organizations are you interested in working with?') . ' ' . __('(optional)') }}
@@ -30,7 +30,7 @@
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $individual->impactsOfInterest->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />
             </fieldset>
-
+            <hr class="divider--thick">
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

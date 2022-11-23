@@ -11,7 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Experiences') }}
             </h2>
-
+            <hr class="divider--thick">
             <fieldset>
                 <legend>{{ __('Lived experience') }}</legend>
 
@@ -48,6 +48,8 @@
                 </x-hearth-hint>
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
             </fieldset>
+
+            <hr class="divider--thick">
 
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>

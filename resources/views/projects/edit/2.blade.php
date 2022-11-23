@@ -9,9 +9,10 @@
 
         <div class="stack">
             <h2>
+                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 2]) }}<br />
                 {{ __('Project team') }}
             </h2>
-
+            <hr class="divider--thick">
             <h3>{{ __('About your team') }}</h3>
 
             <div class="field @error('team_size') field--error @enderror stack">
@@ -89,7 +90,7 @@
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>
-
+            <hr class="divider--thick">
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>

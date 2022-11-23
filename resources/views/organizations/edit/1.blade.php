@@ -12,7 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('About you') }}
             </h2>
-
+            <hr class="divider--thick">
             <h3>{{ __('Organization information') }}</h3>
 
             <div class="field @error('name') field--error @enderror">
@@ -98,7 +98,7 @@
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $organization->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>
-
+            <hr class="divider--thick">
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
                 <button name="save_and_next" value="1">{{ __('Save and next') }}</button>

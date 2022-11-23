@@ -12,7 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Interests') }}
             </h2>
-
+            <hr class="divider--thick">
             <p>{{ __('This information is used to tell regulated organizations if you have any special interests. This entire page is optional.') }}
             </p>
 
@@ -34,7 +34,7 @@
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $organization->impacts->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />
             </fieldset>
-
+            <hr class="divider--thick">
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

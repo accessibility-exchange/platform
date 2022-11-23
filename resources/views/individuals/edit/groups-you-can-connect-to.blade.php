@@ -13,7 +13,7 @@
                 <br />
                 {{ __('Groups you can connect to') }}
             </h2>
-
+            <hr class="divider--thick">
             <h3>
                 {{ __('Which groups can you connect to Regulated Organizations?') }}
             </h3>
@@ -244,7 +244,7 @@
                 <x-hearth-radio-buttons name="connection_lived_experience" :options="$communityConnectorHasLivedExperience" :checked="old('connection_lived_experience', $individual->connection_lived_experience)" />
                 <x-hearth-error for="connection_lived_experience" />
             </fieldset>
-
+            <hr class="divider--thick">
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="previous" value="1">{{ __('Save and previous') }}</button>
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

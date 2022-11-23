@@ -11,6 +11,8 @@
                 {{ __('Communication and meeting preferences') }}
             </h2>
 
+            <hr class="divider--thick">
+
             <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
                 <fieldset>
                     <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
@@ -101,6 +103,8 @@
                 <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :checked="old('meeting_types', $individual->meeting_types ?? [])" />
                 <x-hearth-error for="meeting_types" />
             </fieldset>
+
+            <hr class="divider--thick">
 
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous"
