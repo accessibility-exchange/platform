@@ -30,17 +30,22 @@
                 @endif
             </p>
 
-            <ul>
-                <li><strong>{{ $user->preferred_contact_method === 'email' ? __('Email') : __('Phone') }}:</strong>
-                    {!! Str::inlineMarkdown($user->primary_contact_point) !!}</li>
-                @if ($user->alternate_contact_point)
-                    <li><strong>{{ $user->preferred_contact_method === 'email' ? __('Phone') : __('Email') }}:</strong>
-                        {!! Str::inlineMarkdown($user->alternate_contact_point) !!}</li>
+            @if ($user->preferred_contact_person === 'me')
+                <x-contact-point type='email' :value="$user->email" :preferred="$user->preferred_contact_method === 'email' && $user->phone" />
+                @if ($user->phone)
+                    <x-contact-point type='phone' :value="$user->phone->formatForCountry('CA')" :preferred="$user->preferred_contact_method === 'phone' && $user->email" :vrs="$user->vrs ?? false" />
                 @endif
-            </ul>
+            @else
+                @if ($user->support_person_email)
+                    <x-contact-point type='email' :value="$user->support_person_email" :preferred="$user->preferred_contact_method === 'email' && $user->support_person_phone" />
+                @endif
+                @if ($user->support_person_phone)
+                    <x-contact-point type='phone' :value="$user->support_person_phone->formatForCountry('CA')" :preferred="$user->preferred_contact_method === 'phone' && $user->support_person_email" :vrs="$user->support_person_vrs ?? false" />
+                @endif
+            @endif
 
-            <p><a href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">@svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit your contact information') }}</a>
+            <p><a href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">
+                    @svg('heroicon-o-pencil', 'mr-1'){{ __('Edit your contact information') }}</a>
             </p>
 
             <div class="field @error('preferred_notification_method') field--error @enderror">

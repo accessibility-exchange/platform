@@ -209,14 +209,11 @@ class Individual extends Model implements CipherSweetEncrypted
         return array_key_first($collection->where('edit', $key)->toArray());
     }
 
-    /**
-     * Get the individual's first name.
-     *
-     * @return string
-     */
-    public function getFirstNameAttribute(): string
+    public function firstName(): Attribute
     {
-        return (new NameParser())->parse($this->attributes['name'])->getFirstname();
+        return Attribute::make(
+            get: fn (): bool => (new NameParser())->parse($this->name)->getFirstname(),
+        );
     }
 
     public function user(): BelongsTo
@@ -534,6 +531,47 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return Attribute::make(
             get: fn ($value) => array_map(fn ($method) => EngagementFormat::labels()[$method], $this->consulting_methods),
+        );
+    }
+
+    public function preferredContactPerson(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->user->preferred_contact_person,
+        );
+    }
+
+    public function preferredContactMethod(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->user->preferred_contact_method,
+        );
+    }
+
+    public function contactEmail(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => match ($this->user->preferred_contact_person) {
+                'support-person' => $this->user->support_person_email,
+                default => $this->user->email
+            },
+        );
+    }
+
+    public function contactPhone(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => match ($this->user->preferred_contact_person) {
+                'support-person' => $this->user->support_person_phone?->formatForCountry('CA'),
+                default => $this->user->phone?->formatForCountry('CA')
+            },
+        );
+    }
+
+    public function contactVrs(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->user->requires_vrs,
         );
     }
 }
