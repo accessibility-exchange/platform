@@ -53,9 +53,9 @@
             </div>
 
             <div class="stack">
-                <button>{{ __('Save') }}</button>
-
                 <h2>{{ __('Organization information') }}</h2>
+
+                <hr class="divider--thick">
 
                 <div class="field @error('name') field--error @enderror">
                     <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" :shortLabel="__('federally regulated organization name')"
@@ -186,6 +186,8 @@
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
+
+                <hr class="divider--thick">
 
                 <button>{{ __('Save') }}</button>
             </div>
