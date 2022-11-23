@@ -44,7 +44,7 @@
 
             <div class="field @error('pronouns') field--error @enderror">
                 <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
-                    :hint="__('For example: he/him, she/her, they/them.')" />
+                    :hint="__('For example: he/him, she/her, they/them, other.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
@@ -71,7 +71,7 @@
             @if ($individual->isConsultant())
                 <fieldset class="field @error('consulting_services') field--error @enderror">
                     <legend>
-                        <x-required>{{ __('Which of these areas can you help a regulated organization with?') }}</x-required>
+                        <x-required>{{ __('How can you help a regulated organization?') }}</x-required>
                     </legend>
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
