@@ -4,7 +4,7 @@
             @if ($icon)
                 @svg($icon, 'icon--lg mr-2')
             @endif
-            <span>{{ $slot }}</span>
+            <span>{{ $slot ?? '' }}</span>
         </p>
     </div>
 </div>
