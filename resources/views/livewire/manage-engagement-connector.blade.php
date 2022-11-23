@@ -83,7 +83,7 @@
                 <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">
-                @svg('heroicon-s-x-mark') {{ __('Cancel invitation') }}
+                @svg('heroicon-s-x') {{ __('Cancel invitation') }}
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)

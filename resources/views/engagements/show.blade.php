@@ -8,7 +8,7 @@
                 <div class="banner banner--error">
                     <div class="center center:wide">
                         <p>
-                            @svg('heroicon-s-no-symbol', 'icon--lg mr-2')
+                            @svg('heroicon-s-ban', 'icon--lg mr-2')
                             <span>{{ __('This account has been suspended.') }}</span>
                         </p>
                     </div>
@@ -67,13 +67,13 @@
 
             @can('join', $engagement)
                 <a class="cta" href="{{ localized_route('engagements.sign-up', $engagement) }}">
-                    @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
+                    @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
                 </a>
             @endcan
 
             @can('participate', $engagement)
                 <a class="cta secondary" href="{{ localized_route('engagements.confirm-leave', $engagement) }}">
-                    @svg('heroicon-o-arrow-right-on-rectangle')
+                    @svg('heroicon-o-logout')
                     {{ __('Leave engagement') }}
                 </a>
             @endcan
@@ -244,7 +244,7 @@
             <div class="flex flex-col">
                 @if ($project->contact_person_email)
                     <div class="with-icon">
-                        @svg('heroicon-o-envelope')
+                        @svg('heroicon-o-mail')
                         <span><strong>{{ __('Email:') }}</strong> <a
                                 href="mailto:{{ $project->contact_person_email }}">{{ $project->contact_person_email }}</a></span>
                     </div>

@@ -6,7 +6,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
-test('a quiz can belongs to many users', function () {
+test('a quiz can belong to many users', function () {
     $quiz = Quiz::factory()->create();
 
     $user = User::factory()->create();
