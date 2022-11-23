@@ -21,10 +21,12 @@
 
             <p><strong>{{ __('Name') }}:</strong> {{ $user->organization->contact_person_name }}</p>
             @if ($user->organization->contact_person_email)
-                <x-contact-point type="email" :value="$user->organization->contact_person_email" :preferred="$user->organization->preferred_contact_method === 'email'" />
+                <x-contact-point type="email" :value="$user->organization->contact_person_email" :preferred="$user->organization->preferred_contact_method === 'email' &&
+                    $user->organization->contact_person_phone" />
             @endif
             @if ($user->organization->contact_person_phone)
-                <x-contact-point type="phone" :value="$user->organization->contact_person_phone->formatForCountry('CA')" :preferred="$user->organization->preferred_contact_method === 'phone'" :vrs="$user->organization->contact_person_vrs" />
+                <x-contact-point type="phone" :value="$user->organization->contact_person_phone" :preferred="$user->organization->preferred_contact_method === 'phone' &&
+                    $user->organization->contact_person_email" :vrs="$user->organization->contact_person_vrs" />
             @endif
 
             <p><a

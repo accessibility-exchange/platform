@@ -33,14 +33,14 @@
             @if ($user->preferred_contact_person === 'me')
                 <x-contact-point type='email' :value="$user->email" :preferred="$user->preferred_contact_method === 'email' && $user->phone" />
                 @if ($user->phone)
-                    <x-contact-point type='phone' :value="$user->phone->formatForCountry('CA')" :preferred="$user->preferred_contact_method === 'phone' && $user->email" :vrs="$user->vrs ?? false" />
+                    <x-contact-point type='phone' :value="$user->phone" :preferred="$user->preferred_contact_method === 'phone' && $user->email" :vrs="$user->vrs ?? false" />
                 @endif
             @else
                 @if ($user->support_person_email)
                     <x-contact-point type='email' :value="$user->support_person_email" :preferred="$user->preferred_contact_method === 'email' && $user->support_person_phone" />
                 @endif
                 @if ($user->support_person_phone)
-                    <x-contact-point type='phone' :value="$user->support_person_phone->formatForCountry('CA')" :preferred="$user->preferred_contact_method === 'phone' && $user->support_person_email" :vrs="$user->support_person_vrs ?? false" />
+                    <x-contact-point type='phone' :value="$user->support_person_phone" :preferred="$user->preferred_contact_method === 'phone' && $user->support_person_email" :vrs="$user->support_person_vrs ?? false" />
                 @endif
             @endif
 
