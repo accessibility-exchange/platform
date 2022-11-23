@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\LaravelOptions\Options;
 use Spatie\Translatable\HasTranslations;
 
 class Question extends Model
@@ -13,12 +14,18 @@ class Question extends Model
     use HasFactory;
     use HasTranslations;
 
+    protected $attributes = [
+        'minimum_choices' => 1,
+    ];
+
     protected $fillable = [
+        'minimum_choices',
         'order',
         'question',
     ];
 
     protected $casts = [
+        'minimum_choices' => 'integer',
         'order' => 'integer',
         'question' => 'array',
     ];
@@ -35,5 +42,10 @@ class Question extends Model
     public function choices(): HasMany
     {
         return $this->hasMany(Choice::class);
+    }
+
+    public function getChoices()
+    {
+        return Options::forArray($this->choices()->pluck('value'), useLabelsAsValue: true)->toArray();
     }
 }
