@@ -17,9 +17,8 @@ class UpdateLanguagePreferencesRequest extends FormRequest
         return [
             'locale' => [
                 'required',
-                Rule::in(config('locales.supported', ['en', 'fr'])),
+                Rule::in(config('locales.supported')),
             ],
-            'signed_language' => 'nullable|string|in:ase,fcs',
             'first_language' => [
                 'nullable',
                 Rule::requiredIf($this->user()->context === 'individual'),

@@ -27,6 +27,10 @@ test('individual users can manage access needs', function () {
 
     $user = User::factory()->create(['context' => 'individual']);
 
+    $individual = $user->individual;
+    $individual->update(['region' => 'NL']);
+    $individual = $individual->fresh();
+
     $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
 
     $response->assertOk();
@@ -40,8 +44,9 @@ test('individual users can manage access needs', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-access-needs'));
 
-    $individual = $user->individual->fresh();
+    $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
+    expect($individual->region)->toEqual('NL');
 });
 
 test('other users cannot manage access needs', function () {
@@ -129,25 +134,24 @@ test('other users cannot manage communication and consultation preferences', fun
 });
 
 test('users can manage language preferences', function () {
-    $user = User::factory()->create(['context' => 'individual', 'locale' => 'en', 'signed_language' => 'ase']);
+    $user = User::factory()->create(['context' => 'individual', 'locale' => 'asl']);
 
     $response = $this->actingAs($user)->get(localized_route('settings.edit-language-preferences'));
 
     $response->assertOk();
-    $response->assertViewHas('workingLanguages', ['en', 'ase']);
+    $response->assertViewHas('workingLanguages', ['asl']);
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-language-preferences'), [
-        'locale' => 'en',
-        'signed_language' => 'ase',
-        'first_language' => 'ase',
-        'working_languages' => ['ase', 'en'],
+        'locale' => 'asl',
+        'first_language' => 'asl',
+        'working_languages' => ['asl', 'en'],
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-language-preferences'));
 
-    expect($user->signed_language)->toEqual('ase');
-    expect($user->individual->first_language)->toEqual('ase');
+    expect($user->locale)->toEqual('asl');
+    expect($user->individual->first_language)->toEqual('asl');
 
     $newUser = User::factory()->create(['context' => 'organization']);
 
@@ -156,15 +160,13 @@ test('users can manage language preferences', function () {
     $response->assertOk();
 
     $response = $this->actingAs($newUser)->put(localized_route('settings.update-language-preferences'), [
-        'locale' => 'fr',
-        'signed_language' => 'fcs',
+        'locale' => 'lsq',
     ]);
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('settings.edit-language-preferences'));
 
-    expect($newUser->locale)->toEqual('fr');
-    expect($newUser->signed_language)->toEqual('fcs');
+    expect($newUser->locale)->toEqual('lsq');
 });
 
 test('individual user can manage payment information settings', function () {
@@ -284,99 +286,17 @@ test('users can edit website accessibility preferences', function () {
     $response->assertOk();
 
     $response = $this->actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
-        'theme' => 'system',
+        'theme' => 'dark',
+        'text_to_speech' => false,
     ]);
 
     $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
+    $response->assertPlainCookie('theme', 'dark');
 });
 
 test('guests can not edit website accessibility preferences', function () {
     $response = $this->get(localized_route('settings.edit-website-accessibility-preferences'));
     $response->assertRedirect(localized_route('login'));
-});
-
-test('users can edit sign_language_translations preference', function () {
-    $user = User::factory()->create([
-        'sign_language_translations' => false,
-    ]);
-
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
-        'theme' => 'system',
-        'text_to_speech' => false,
-        'sign_language_translations' => true,
-    ]);
-
-    $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
-
-    $user->refresh();
-
-    expect((bool) $user->sign_language_translations)->toBeTrue();
-});
-
-test('sign_language_translations cookie removed when preference disabled', function () {
-    $user = User::factory()->create([
-        'sign_language_translations' => true,
-    ]);
-
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)
-        ->withCookie('sign_language_translations', true)
-        ->put(localized_route('settings.update-website-accessibility-preferences'), [
-            'theme' => 'system',
-            'text_to_speech' => false,
-            'sign_language_translations' => false,
-        ]);
-
-    $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertCookieExpired('sign_language_translations');
-
-    $user->refresh();
-
-    expect((bool) $user->sign_language_translations)->toBeFalse();
-});
-
-test('users can edit sign_language_translations through language menu', function () {
-    $user = User::factory()->create([
-        'sign_language_translations' => false,
-    ]);
-
-    $response = $this->actingAs($user)->patch(localized_route('settings.edit-website-accessibility-sign-language-translations', [
-        'sign_language_translations' => true,
-        'target' => localized_route('welcome'),
-    ]));
-
-    $response->assertRedirect(localized_route('welcome'));
-    $response->assertCookie('sign_language_translations', true);
-
-    $user->refresh();
-
-    expect((bool) $user->sign_language_translations)->toBeTrue();
-});
-
-test('guest can edit sign_language_translations through language menu', function () {
-    $response = $this->patch(localized_route('settings.edit-website-accessibility-sign-language-translations', [
-        'sign_language_translations' => true,
-        'target' => localized_route('welcome'),
-    ]));
-
-    $response->assertRedirect(localized_route('welcome'));
-    $response->assertCookie('sign_language_translations', true);
-});
-
-test('sign_language_translations cookie removed when sign language disabled through language menu', function () {
-    $response = $this->withCookie('sign_language_translations', true)
-        ->patch(localized_route('settings.edit-website-accessibility-sign-language-translations', [
-            'sign_language_translations' => false,
-            'target' => localized_route('welcome'),
-        ]));
-
-    $response->assertRedirect(localized_route('welcome'));
-    $response->assertCookieExpired('sign_language_translations');
 });
 
 test('individual and organization users can edit notification preferences', function () {

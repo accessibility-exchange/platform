@@ -704,7 +704,7 @@ test('individual cannot leave an engagement which uses a community connector', f
     $this->engagement = $this->engagement->fresh();
 
     $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
-    $response->assertSee('please contact the Community Connector');
+    $response->assertSee('you will need to contact its Community Connector');
 
     $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
     $response->assertForbidden();

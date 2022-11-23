@@ -120,7 +120,6 @@ test('users can create individual pages', function () {
 
     $response = $this->withSession([
         'locale' => 'en',
-        'signed_language' => 'ase',
         'name' => 'Test User',
         'email' => 'test@example.com',
         'context' => 'individual',

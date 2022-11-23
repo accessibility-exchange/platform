@@ -11,7 +11,7 @@ class OrganizationFactory extends Factory
         return [
             'name' => $this->faker->company(),
             'type' => $this->faker->randomElement(['representative', 'support', 'civil-society']),
-            'languages' => ['en', 'fr', 'ase', 'fcs'],
+            'languages' => config('locales.supported'),
             'roles' => [],
             'service_areas' => ['NS'],
             'working_languages' => ['en', 'fr'],

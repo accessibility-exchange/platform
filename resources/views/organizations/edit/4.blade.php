@@ -12,12 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Contact information') }}
             </h2>
-
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-            </p>
-
+            <hr class="divider--thick">
             <div class="field @error('contact_person_name') field-error @enderror">
                 <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
                 <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
@@ -52,8 +47,8 @@
                 ])->toArray()" :selected="old('preferred_contact_method', $organization->preferred_contact_method ?? 'email')" />
                 <x-hearth-error for="preferred_contact_method" />
             </div>
-
-            <p class="repel">
+            <hr class="divider--thick">
+            <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>
             </p>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Enums\NotificationChannel;
@@ -17,7 +18,6 @@ use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
-use App\Http\Requests\UpdateWebsiteAccessibilitySignLanguageTranslationsRequest;
 use App\Models\AccessSupport;
 use App\Models\Impact;
 use App\Models\PaymentType;
@@ -89,8 +89,8 @@ class SettingsController extends Controller
             'additionalNeedsOrConcerns' => AccessSupport::where('name->en', 'I would like to speak to someone to discuss additional access needs or concerns')->first(),
             'selectedAccessSupports' => $individual->accessSupports->pluck('id')->toArray(),
             'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
+                'asl' => __('locales.asl'),
+                'lsq' => __('locales.lsq'),
             ])->nullable(__('Choose a sign language…'))->toArray(),
             'spokenOrWrittenLanguages' => Options::forArray(get_available_languages(true, false))->nullable(__('Choose a language…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
@@ -134,8 +134,6 @@ class SettingsController extends Controller
         if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($printedVersion, $data['document_access_needs']))) {
             $data['street_address'] = null;
             $data['unit_apartment_suite'] = null;
-            $data['locality'] = null;
-            $data['region'] = null;
             $data['postal_code'] = null;
         }
 
@@ -169,6 +167,7 @@ class SettingsController extends Controller
 
         return view('settings.communication-and-consultation-preferences', [
             'individual' => $individual,
+            'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'consultingMethods' => Options::forEnum(EngagementFormat::class)->toArray(),
         ]);
@@ -222,18 +221,10 @@ class SettingsController extends Controller
             $user->locale,
         ];
 
-        if ($user->signed_language) {
-            $workingLanguages[] = $user->signed_language;
-        }
-
         return view('settings.language-preferences', [
             'user' => $user,
             'individual' => $individual,
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
-            'signedLanguages' => Options::forArray([
-                'ase' => __('locales.ase'),
-                'fcs' => __('locales.fcs'),
-            ])->nullable(__('Choose a sign language…'))->toArray(),
             'workingLanguages' => $workingLanguages,
         ]);
     }
@@ -253,6 +244,8 @@ class SettingsController extends Controller
 
             $individual->save();
         }
+
+        Cookie::queue('locale', $data['locale']);
 
         flash(__('Your language preferences have been updated.'), 'success');
 
@@ -336,32 +329,7 @@ class SettingsController extends Controller
 
         Cookie::queue('theme', $data['theme']);
 
-        if ($data['sign_language_translations']) {
-            Cookie::queue('sign_language_translations', $data['sign_language_translations']);
-        } elseif (Cookie::get('sign_language_translations')) {
-            Cookie::queue(Cookie::forget('sign_language_translations'));
-        }
-
         return redirect(localized_route('settings.edit-website-accessibility-preferences'));
-    }
-
-    public function updateWebsiteAccessibilitySignLanguageTranslations(UpdateWebsiteAccessibilitySignLanguageTranslationsRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        if (auth()->check()) {
-            $user = Auth::user();
-            $user->fill($data);
-            $user->save();
-        }
-
-        if ($data['sign_language_translations']) {
-            Cookie::queue('sign_language_translations', $data['sign_language_translations']);
-        } elseif (Cookie::get('sign_language_translations')) {
-            Cookie::queue(Cookie::forget('sign_language_translations'));
-        }
-
-        return redirect($data['target'] ?? localized_route('welcome'));
     }
 
     public function editNotificationPreferences(): View
@@ -419,12 +387,12 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        if ($user->context === 'regulated-organization' && $user->regulatedOrganization) {
-            $membershipable = $user->regulatedOrganization;
-        } elseif ($user->context === 'organization' && $user->organization) {
-            $membershipable = $user->organization;
-        } else {
-            $membershipable = null;
+        $membershipable = null;
+
+        if ($user->context === 'regulated-organization') {
+            $membershipable = $user->regulatedOrganization ?? null;
+        } elseif ($user->context === 'organization') {
+            $membershipable = $user->organization ?? null;
         }
 
         return view('settings.roles-and-permissions', [
@@ -440,11 +408,13 @@ class SettingsController extends Controller
 
         $this->authorize('editRolesAndPermissions', $user);
 
-        $invitationable = match ($user->context) {
-            'organization' => $user->organization ?? null,
-            'regulated-organization' => $user->regulatedOrganization ?? null,
-            default => null,
-        };
+        $invitationable = null;
+
+        if ($user->context === 'regulated-organization') {
+            $invitationable = $user->regulatedOrganization ?? null;
+        } elseif ($user->context === 'organization') {
+            $invitationable = $user->organization ?? null;
+        }
 
         if ($invitationable) {
             return view('settings.roles-and-permissions.invite', [

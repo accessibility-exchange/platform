@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactPerson;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
@@ -122,10 +123,6 @@ class IndividualController extends Controller
             $individual->user->locale,
         ];
 
-        if ($individual->user->signed_language) {
-            $workingLanguages[] = $individual->user->signed_language;
-        }
-
         return view('individuals.edit', [
             'individual' => $individual,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
@@ -151,6 +148,7 @@ class IndividualController extends Controller
                 '0' => __('No'),
             ])->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
+            'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,

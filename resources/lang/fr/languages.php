@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'ase' => 'American Sign Language',
-    'fcs' => 'Quebec Sign Language',
+    'asl' => 'American Sign Language',
+    'lsq' => 'Quebec Sign Language',
 ];
