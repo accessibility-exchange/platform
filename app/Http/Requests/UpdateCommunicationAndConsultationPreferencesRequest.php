@@ -64,9 +64,11 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $this->mergeIfMissing([
             'consulting_methods' => [],
             'meeting_types' => [],
+            'support_person_vrs' => null,
+            'vrs' => null,
         ]);
     }
 

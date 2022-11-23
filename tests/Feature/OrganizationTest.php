@@ -372,6 +372,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
+        'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
         'save' => 1,
     ]);
@@ -382,9 +383,25 @@ test('users with admin role can edit organization contact information', function
     $organization = $organization->fresh();
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeTrue();
 
     expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_phone' => '19024444444',
+        'preferred_contact_method' => 'email',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+
+    $organization = $organization->fresh();
+
+    expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeNull();
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
