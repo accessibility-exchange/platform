@@ -17,10 +17,7 @@
                 <fieldset>
                     <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
 
-                    <x-hearth-radio-buttons name="preferred_contact_person" :options="[
-                        ['value' => 'me', 'label' => __('Me')],
-                        ['value' => 'support-person', 'label' => __('My support person')],
-                    ]" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
+                    <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
                         x-model="contactPerson" />
                 </fieldset>
 

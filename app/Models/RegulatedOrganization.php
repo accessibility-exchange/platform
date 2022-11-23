@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
-use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -35,7 +34,6 @@ class RegulatedOrganization extends Model
 {
     use CascadesDeletes;
     use GeneratesMultilingualSlugs;
-    use HasContactPerson;
     use HasDisplayRegion;
     use HasFactory;
     use HasMultipageEditingAndPublishing;
