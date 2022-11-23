@@ -5,10 +5,11 @@
         @else
             @svg('heroicon-o-phone')
         @endif
-        <span><strong>{{ $label }}@if ($preferred)
-                    ({{ __('preferred') }})
-                @endif:</strong>
-            {!! $value !!}@if ($vrs)
+        <span><strong>{{ $label }}{{ $preferred ? ' (' . __('preferred') . ')' : '' }}:</strong>
+            @if ($type === 'email')
+                <a href="mailto:{{ $value }}">{{ $value }}</a>@else{{ $value }}
+            @endif
+            @if ($vrs)
                 ({{ __('requires VRS') }})
             @endif
         </span>

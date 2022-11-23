@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ContactPoint extends Component
 {
@@ -21,7 +22,7 @@ class ContactPoint extends Component
     {
         $this->type = $type;
         $this->label = $this->type === 'email' ? __('Email') : __('Phone');
-        $this->value = $this->type === 'email' ? "<a href=\"mailto:${value}\">${value}</a>" : $value;
+        $this->value = $this->type === 'email' ? $value : PhoneNumber::make($value, 'CA')->formatForCountry('CA');
         $this->preferred = $preferred;
         $this->vrs = $this->type === 'phone' && $vrs ? true : false;
     }
