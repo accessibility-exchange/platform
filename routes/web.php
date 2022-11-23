@@ -163,3 +163,6 @@ require __DIR__.'/memberships.php';
 require __DIR__.'/invitations.php';
 require __DIR__.'/fortify.php';
 require __DIR__.'/settings.php';
+require __DIR__.'/courses.php';
+require __DIR__.'/modules.php';
+require __DIR__.'/quizzes.php';
