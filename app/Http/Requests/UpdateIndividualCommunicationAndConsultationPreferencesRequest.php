@@ -21,7 +21,10 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
     public function rules(): array
     {
         return [
-            'preferred_contact_person' => 'required|in:me,support-person',
+            'preferred_contact_person' => [
+                'required',
+                new Enum(ContactPerson::class),
+            ],
             'email' => [
                 'nullable',
                 'string',
