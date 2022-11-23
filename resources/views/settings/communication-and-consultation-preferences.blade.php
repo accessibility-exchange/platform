@@ -33,7 +33,7 @@
                     <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
                     <x-hearth-input name="email" type="email" :value="old('email', $individual->user->email)" />
                     <x-hearth-hint for="email">
-                        {{ __('This is also the email you use to sign in to this account. If you change this, you are also changing your sign in email.') }}
+                        {{ __('This is also the email you use to sign in to this account.') }}
                     </x-hearth-hint>
                     <x-hearth-error for="email" />
                 </div>
