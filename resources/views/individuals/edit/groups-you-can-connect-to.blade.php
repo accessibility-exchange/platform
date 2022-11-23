@@ -42,7 +42,7 @@
 
             <fieldset
                 class="field @error('base_disability_type') field--error @enderror @error('disability_types') field--error @enderror"
-                x-show="livedExperiences.includes(1)" x-data="{ baseDisabilityType: '{{ old('base_disability_type', $individual->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($individual->other_disability_type_connection) && $individual->other_disability_type_connection !== '' ? 'true' : 'false') }} }">
+                {{-- x-show="livedExperiences.includes(1)" --}} x-data="{ baseDisabilityType: '{{ old('base_disability_type', $individual->base_disability_type) }}', otherDisability: {{ old('other_disability', !is_null($individual->other_disability_type_connection) && $individual->other_disability_type_connection !== '' ? 'true' : 'false') }} }">
                 <legend>
                     {{ __('Please select people with disabilities that you can connect to') . ' ' . __('(required)') }}
                 </legend>

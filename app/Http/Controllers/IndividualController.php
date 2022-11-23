@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
@@ -16,17 +17,13 @@ use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
 use App\Models\Constituency;
 use App\Models\DisabilityType;
-use App\Models\EthnoracialIdentity;
 use App\Models\GenderIdentity;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\IndigenousIdentity;
 use App\Models\Individual;
 use App\Models\Language;
-use App\Models\LivedExperience;
 use App\Models\Sector;
 use App\Statuses\IndividualStatus;
 use App\Traits\UserEmailVerification;
@@ -111,8 +108,8 @@ class IndividualController extends Controller
         return view('individuals.show', array_merge(compact('individual'), [
             'language' => $language ?? locale(),
             // TODO: Is this the best way of handling these two constituencies?
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
         ]));
     }
 
@@ -128,18 +125,18 @@ class IndividualController extends Controller
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'constituencies' => Options::forModels(Constituency::class)->toArray(),
-            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
-            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
+            'livedExperiences' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Experience))->toArray(),
+            'ageBrackets' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Age))->toArray(),
             'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
-            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
-            'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
-            'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
-            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
-            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
-            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
-            'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
+            'areaTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Area))->toArray(),
+            'disabilityTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::DisabilityAndDeaf))->reject(fn (Identity $identity) => $identity->name === __('Cross-disability'))->toArray(),
+            'crossDisability' => Identity::query()->where('name->en', 'Cross-disability')->first(),
+            'indigenousIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Indigenous))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
+            'women' => Identity::where('name->en', 'Women')->first(),
+            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
+            'refugeesAndImmigrants' => Identity::where('name->en', 'Refugees and/or immigrants')->first(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
             'refugeesAndImmigrantsOptions' => Options::forArray([
