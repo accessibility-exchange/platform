@@ -12,13 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Interests') }}
             </h2>
-
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
+            <hr class="divider--thick">
             <p>{{ __('This information is used to tell regulated organizations if you have any special interests. This entire page is optional.') }}
             </p>
 
@@ -40,13 +34,11 @@
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $organization->impacts->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />
             </fieldset>
-
-            {{-- TODO: Other interests --}}
-
-            <p class="repel">
+            <hr class="divider--thick">
+            <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

@@ -13,10 +13,7 @@
                 {{ __('About you') }}
             </h2>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
+            <hr class="divider--thick">
 
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name" :value="__('Name') . ' ' . __('(required)')" />
@@ -106,9 +103,11 @@
                 <x-hearth-error for="website_link" />
             </div>
 
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <hr class="divider--thick">
+
+            <p class="flex flex-wrap gap-7">
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

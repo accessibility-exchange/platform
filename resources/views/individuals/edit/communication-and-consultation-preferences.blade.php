@@ -11,10 +11,7 @@
                 {{ __('Communication and meeting preferences') }}
             </h2>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-            </p>
+            <hr class="divider--thick">
 
             <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
                 <fieldset>
@@ -107,7 +104,9 @@
                 <x-hearth-error for="meeting_types" />
             </fieldset>
 
-            <p class="repel">
+            <hr class="divider--thick">
+
+            <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous"
                     value="1">{{ __('Save and previous') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>
