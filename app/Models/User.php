@@ -28,10 +28,10 @@ use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
-use TheIconic\NameParser\Parser as NameParser;
 
 /**
  * @property Collection $unreadNotifications
+ * @property bool $requires_vrs
  */
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
@@ -186,14 +186,14 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         };
     }
 
-    public function getFirstNameAttribute(): string
+    public function requiresVrs(): Attribute
     {
-        return (new NameParser())->parse($this->attributes['name'])->getFirstname();
-    }
-
-    public function getContactPersonAttribute(): string
-    {
-        return $this->preferred_contact_person === 'me' ? $this->first_name : $this->support_person_name;
+        return Attribute::make(
+            get: fn (): bool => match ($this->preferred_contact_person) {
+                'support-person' => $this->support_person_vrs ?? false,
+                default => $this->vrs ?? false
+            },
+        );
     }
 
     public function getContactMethodsAttribute(): array
@@ -215,73 +215,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         }
 
         return $methods;
-    }
-
-    public function getPrimaryContactPointAttribute(): string|null
-    {
-        $contactPoint = match ($this->preferred_contact_method) {
-            'phone' => $this->preferred_contact_person === 'me' ?
-                $this->phone->formatForCountry('CA') :
-                $this->support_person_phone->formatForCountry('CA'),
-            default => $this->preferred_contact_person === 'me' ?
-                $this->email :
-                $this->support_person_email,
-        };
-
-        if ($this->preferred_contact_method === 'phone' && $this->requires_vrs) {
-            $contactPoint .= ".  \n".__(':contact_person requires VRS for phone calls', ['contact_person' => $this->contact_person]);
-        }
-
-        return $contactPoint;
-    }
-
-    public function getRequiresVrsAttribute(): null|bool
-    {
-        return $this->preferred_contact_person === 'me' ?
-            $this->vrs :
-            $this->support_person_vrs;
-    }
-
-    public function getPrimaryContactMethodAttribute(): string|null
-    {
-        return match ($this->preferred_contact_method) {
-            'phone' => __('Call :contact_qualifier:contact_person at :phone_number.', [
-                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'phone_number' => $this->primary_contact_point,
-            ]),
-            default => __('Send an email to :contact_qualifier:contact_person at :email.', [
-                'contact_qualifier' => $this->preferred_contact_person == 'me' ? '' : __(':name’s support person, ', ['name' => $this->first_name]),
-                'contact_person' => $this->preferred_contact_person == 'me' ? $this->contact_person : $this->contact_person.',',
-                'email' => '<'.$this->primary_contact_point.'>',
-            ])
-        };
-    }
-
-    public function getAlternateContactPointAttribute(): string|null
-    {
-        $contactPoint = match ($this->preferred_contact_method) {
-            'phone' => $this->preferred_contact_person === 'me' ?
-                $this->email ?? null :
-                $this->support_person_email ?? null,
-            default => $this->preferred_contact_person === 'me' ?
-                $this->phone?->formatForCountry('CA') :
-                $this->support_person_phone?->formatForCountry('CA'),
-        };
-
-        if ($this->preferred_contact_method === 'email' && $this->requires_vrs) {
-            $contactPoint .= "  \n".__(':contact_person requires VRS for phone calls.', ['contact_person' => $this->contact_person]);
-        }
-
-        return $contactPoint;
-    }
-
-    public function getAlternateContactMethodAttribute(): string|null
-    {
-        return match ($this->preferred_contact_method) {
-            'phone' => $this->alternate_contact_point ? '<'.$this->alternate_contact_point.'>' : null,
-            default => $this->alternate_contact_point ?? null,
-        };
     }
 
     public function individual(): HasOne

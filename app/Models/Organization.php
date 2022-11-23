@@ -6,7 +6,6 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
-use App\Traits\HasContactPerson;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -43,7 +42,6 @@ class Organization extends Model
 {
     use CascadesDeletes;
     use GeneratesMultilingualSlugs;
-    use HasContactPerson;
     use HasDisplayRegion;
     use HasFactory;
     use HasSchemalessAttributes;
@@ -506,6 +504,20 @@ class Organization extends Model
     public function courses(): hasMany
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function getContactMethodsAttribute(): array
+    {
+        $methods = [];
+
+        if (! empty($this->contact_person_email)) {
+            $methods[] = 'email';
+        }
+        if (! empty($this->contact_person_phone)) {
+            $methods[] = 'phone';
+        }
+
+        return $methods;
     }
 
     public function getBaseDisabilityTypeAttribute(): string|false
