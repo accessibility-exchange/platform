@@ -22,28 +22,22 @@
     </div>
     @stack('banners')
     @env('dev')
-    <div class="banner banner--warning">
-        <div class="center center:wide">
-            <p>
-                @svg('heroicon-s-exclamation-circle', 'icon--lg mr-2') <span><strong>CAUTION!</strong> This website is
-                    under
-                    active development. The database is reset nightly, and data you enter will not be preserved.</span>
-            </p>
-        </div>
-    </div>
+    <x-banner type="warning">
+        {!! Str::inlineMarkdown(
+            __(
+                '**CAUTION!** This website is under active development. The database is reset nightly, and data you enter will not be preserved.',
+            ),
+        ) !!}
+    </x-banner>
     @endenv
     @if (auth()->hasUser() &&
         auth()->user()->checkStatus('suspended'))
-        <div class="banner banner--error">
-            <div class="center center:wide">
-                <p>
-                    @svg('heroicon-s-ban', 'icon--lg mr-2') <span>{!! Str::inlineMarkdown(
-                        __('Your account has been suspended. Please [contact](:url) us if you need further assistance.', [
-                            'url' => '#contact',
-                        ]),
-                    ) !!}</span>
-                </p>
-            </div>
-        </div>
+        <x-banner type="error">
+            {!! Str::inlineMarkdown(
+                __('Your account has been suspended. Please [contact](:url) us if you need further assistance.', [
+                    'url' => '#contact',
+                ]),
+            ) !!}
+        </x-banner>
     @endif
 </header>

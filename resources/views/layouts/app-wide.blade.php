@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">

@@ -5,14 +5,12 @@
             auth()->user()->isAdministrator() &&
             $individual->user->checkStatus('suspended'))
             @push('banners')
-                <div class="banner banner--error">
-                    <div class="center center:wide">
-                        <p>
-                            @svg('heroicon-s-ban', 'icon--lg mr-2')
-                            <span>{{ __('This account has been suspended.') }}</span>
-                        </p>
-                    </div>
-                </div>
+                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+            @endpush
+        @endif
+        @if ($individual->checkStatus('draft'))
+            @push('banners')
+                <x-banner type="warning" icon="">{{ __('You are previewing your public page.') }}</x-banner>
             @endpush
         @endif
         <div class="with-sidebar">
