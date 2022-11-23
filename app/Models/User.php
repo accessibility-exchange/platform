@@ -31,6 +31,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 /**
  * @property Collection $unreadNotifications
+ * @property bool $requires_vrs
  */
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {

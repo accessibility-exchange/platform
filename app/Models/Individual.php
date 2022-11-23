@@ -212,7 +212,7 @@ class Individual extends Model implements CipherSweetEncrypted
     public function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn (): bool => (new NameParser())->parse($this->name)->getFirstname(),
+            get: fn (): string => (new NameParser())->parse($this->name)->getFirstname(),
         );
     }
 
