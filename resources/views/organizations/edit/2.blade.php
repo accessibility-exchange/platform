@@ -17,8 +17,6 @@
                 {{ __('Please tell us which community or communities your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
             </p>
 
-            <p>{{ __('Please add any additional information you wish to share about your constituencies.') }}</p>
-
             <p>{!! Str::inlineMarkdown(
                 __(
                     'If your organization is offering services as a **Community Connector**, regulated organizations may ask you to assist them in connecting to your primary constituencies. If your organization is offering services as a **Consultation Participant**, regulated organizations may ask you to represent this group’s point of view in consultations.',
