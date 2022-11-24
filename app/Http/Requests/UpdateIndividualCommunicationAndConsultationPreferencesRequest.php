@@ -47,8 +47,10 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $this->mergeIfMissing([
             'meeting_types' => [],
+            'support_person_vrs' => null,
+            'vrs' => null,
         ]);
     }
 
