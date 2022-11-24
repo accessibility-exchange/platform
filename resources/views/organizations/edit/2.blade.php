@@ -10,26 +10,23 @@
         <div class="stack" x-data="{ livedExperiences: [{{ implode(', ', old('lived_experiences', $organization->livedExperiences->pluck('id')->toArray() ?? [])) }}] }">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
-                {{ __('Groups your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
+                {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
             </h2>
             <hr class="divider--thick">
-            <h3>
-                {{ __('What groups does your organization specifically :represent_or_serve_and_support? Please tell us your primary constituencies.', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
-            </h3>
-
-            <p>
-                <strong>{{ __('Primary constituency means a group that’s specifically in your mandate to :represent_or_serve_and_support.', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</strong>
+            <p class="h3">
+                {{ __('Please tell us which community or communities your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
             </p>
 
-            @if ($organization->isConnector())
-                <p>{{ __('As you’ve indicated that your organization is playing the role of Community Connector, a Regulated Organization may request your services to assist them in connecting to these groups.') }}
-                </p>
-            @endif
+            <p>{{ __('Please add any additional information you wish to share about your constituencies.') }}</p>
 
-            @if ($organization->isParticipant())
-                <p>{{ __('As you’ve indicated that your organization is playing the role of Consultation Participant, a Regulated Organization may ask you to represent this group’s point of view in consultations.') }}
-                </p>
-            @endif
+            <p>{!! Str::inlineMarkdown(
+                __(
+                    'If your organization is offering services as a **Community Connector**, regulated organizations may ask you to assist them in connecting to your primary constituencies. If your organization is offering services as a **Consultation Participant**, regulated organizations may ask you to represent this group’s point of view in consultations.',
+                ),
+            ) !!}</p>
+
+            <p>{{ __('Please note that selecting some of these options may open up new follow-up questions below them. ') }}
+            </p>
 
             @if ($organization->type !== 'civil-society')
                 @include('organizations.partials.lived-experiences')

@@ -1,15 +1,17 @@
 <h3>{{ __('Groups in the disability and Deaf community') }}</h3>
 
 <ul class="tags" role="list">
-    @foreach ($organization->livedExperiences as $livedExperience)
-        <li class="tag">{{ $livedExperience->name }}</li>
-    @endforeach
     @foreach ($organization->disabilityTypes as $disabilityType)
         <li class="tag">{{ $disabilityType->name }}</li>
     @endforeach
     @if ($organization->other_disability_type)
         <li class="tag">{{ $organization->other_disability_type }}</li>
     @endif
+    @foreach ($organization->livedExperiences as $livedExperience)
+        @if ($livedExperience->getTranslation('name', 'en') !== 'People with disabilities and/or Deaf people')
+            <li class="tag">{{ $livedExperience->name }}</li>
+        @endif
+    @endforeach
 </ul>
 
 @if ($organization->extra_attributes->has_indigenous_identities ||
@@ -38,13 +40,13 @@
             <li class="tag">{{ __('Refugees and/or immigrants') }}</li>
         @endif
         @foreach ($organization->genderIdentities as $genderIdentity)
-            <li class="tag">{{ $genderIdentity->name_plural }}</li>
+            <li class="tag">{{ $genderIdentity->name }}</li>
         @endforeach
-        @if ($organization->constituencies->contains($transPeople))
-            <li class="tag">{{ $transPeople->name_plural }}</li>
+        @if ($organization->identities->contains($transPeople))
+            <li class="tag">{{ $transPeople->name }}</li>
         @endif
-        @if ($organization->constituencies->contains($twoslgbtqiaplusPeople))
-            <li class="tag">{{ $twoslgbtqiaplusPeople->name_plural }}</li>
+        @if ($organization->identities->contains($twoslgbtqiaplusPeople))
+            <li class="tag">{{ $twoslgbtqiaplusPeople->name }}</li>
         @endif
     </ul>
 @endif
