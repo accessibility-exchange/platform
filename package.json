@@ -54,7 +54,8 @@
         "tailwindcss": "^3.1.8",
         "vite": "^3.2.2",
         "vite-plugin-full-reload": "^1.0.4",
-        "vite-plugin-manifest-sri": "^0.1.0"
+        "vite-plugin-manifest-sri": "^0.1.0",
+        "vite-plugin-static-copy": "^0.12.0"
     },
     "dependencies": {
         "@alpinejs/mask": "^3.10.5",
@@ -62,6 +63,7 @@
         "@vimeo/player": "^2.18.0",
         "alpinejs": "^3.10.5",
         "axios": "^0.27.2",
+        "infusion": "^4.5.0",
         "luxon": "^3.0.4",
         "wicg-inert": "^3.1.2"
     }

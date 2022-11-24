@@ -11,6 +11,7 @@
     <!-- Main Content -->
     <main id="main">
         <div class="center">
+            <x-text-to-speech />
             <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Flash Messages -->
                 @include('partials.flash-messages')

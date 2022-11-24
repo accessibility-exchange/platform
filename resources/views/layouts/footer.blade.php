@@ -59,3 +59,4 @@
 </footer>
 @livewireScripts()
 @stack('livewireScripts')
+@stack('infusionScripts')
