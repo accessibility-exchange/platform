@@ -44,7 +44,7 @@
                         x-model="baseDisabilityType" />
                     <x-hearth-error for="base_disability_type" />
                 </fieldset>
-                <fieldset class="field @error('disability_types') field--error @enderror"
+                <fieldset class="field box @error('disability_types') field--error @enderror"
                     x-show="baseDisabilityType == 'specific_disabilities'">
                     <legend>
                         <x-required>{{ __('Please select the specific disability and/or Deaf groups that you can connect to.') }}</x-required>
@@ -95,7 +95,7 @@
                     <x-hearth-error for="has_indigenous_identities" />
                 </fieldset>
 
-                <fieldset class="field @error('indigenous_identities') field--error @enderror"
+                <fieldset class="field box @error('indigenous_identities') field--error @enderror"
                     x-show="hasIndigenousIdentities == 1">
                     <legend><x-required>{{ __('Which Indigenous groups can you connect to?') }}</x-required></legend>
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
@@ -136,7 +136,7 @@
                     </div>
                     <x-hearth-error for="has_gender_and_sexual_identities" />
                 </fieldset>
-                <fieldset class="field @error('gender_and_sexual_identities') field--error @enderror"
+                <fieldset class="field box @error('gender_and_sexual_identities') field--error @enderror"
                     x-show="hasGenderAndSexualIdentities == 1">
                     <legend>
                         <x-required>{{ __('Which groups marginalized based on gender or sexual identity can you connect to?') }}</x-required>
@@ -197,7 +197,8 @@
                     </div>
                     <x-hearth-error for="has_age_brackets" />
                 </fieldset>
-                <fieldset class="field @error('age_brackets') field--error @enderror" x-show="hasAgeBrackets == 1">
+                <fieldset class="field box @error('age_brackets') field--error @enderror"
+                    x-show="hasAgeBrackets == 1">
                     <legend>
                         <x-required>{{ __('Which age groups can you connect to?') }}</x-required>
                     </legend>
@@ -228,7 +229,7 @@
 
                     <x-hearth-error for="has_ethnoracial_identities" />
                 </fieldset>
-                <fieldset class="field @error('ethnoracial_identities') field--error @enderror"
+                <fieldset class="field box @error('ethnoracial_identities') field--error @enderror"
                     x-show="hasEthnoracialIdentities == 1">
                     <legend>
                         <x-required>{{ __('Which ethno-racial identity or identities are the people you can connect to?') }}</x-required>

@@ -1,3 +1,3 @@
 <div>
-    {{ $slot }} ({{ __('required') }})<span class="icon--red">*</span>
+    {{ $slot }} ({{ __('required') }})<span class="text-error">*</span>
 </div>

@@ -18,7 +18,6 @@ use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
-use App\Models\Constituency;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
@@ -123,7 +122,6 @@ class IndividualController extends Controller
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
-            'constituencies' => Options::forModels(Constituency::class)->toArray(),
             'deafAndDisabilityGroups' => Identity::where('name->en', 'People with disabilities and/or Deaf people')->first(),
             'livedExperiences' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Experience))->toArray(),
             'ageBrackets' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Age))->toArray(),
@@ -172,7 +170,6 @@ class IndividualController extends Controller
     public function updateConstituencies(UpdateIndividualConstituenciesRequest $request, Individual $individual): RedirectResponse
     {
         $data = $request->validated();
-
         $data['identities'] = [];
 
         $crossDisability = Identity::where('name->en', 'Cross-disability and Deaf')->first();
@@ -200,18 +197,18 @@ class IndividualController extends Controller
         if (isset($data['gender_and_sexual_identities'])) {
             if (in_array('women', $data['gender_and_sexual_identities'])) {
                 $women = Identity::where('name->en', 'Women')->first();
-                $data['identities'][] = $women->id;
+                $data['gender_identities'][] = $women->id;
             }
 
             if (in_array('nb-gnc-fluid-people', $data['gender_and_sexual_identities'])) {
                 $nb = Identity::where('name->en', 'Non-binary people')->first();
-                $data['identities'][] = $nb->id;
+                $data['gender_identities'][] = $nb->id;
 
                 $gnc = Identity::where('name->en', 'Gender non-conforming people')->first();
-                $data['identities'][] = $gnc->id;
+                $data['gender_identities'][] = $gnc->id;
 
                 $fluid = Identity::where('name->en', 'Gender fluid people')->first();
-                $data['identities'][] = $fluid->id;
+                $data['gender_identities'][] = $fluid->id;
             }
 
             if (in_array('trans-people', $data['gender_and_sexual_identities'])) {

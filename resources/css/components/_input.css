@@ -207,11 +207,24 @@ fieldset {
     padding: 0;
 }
 
+fieldset.box {
+    padding-block-start: var(--space-12);
+}
+
+fieldset.box legend {
+    position: relative;
+    top: var(--space-12);
+}
+
 .stack fieldset + *,
 .stack * + fieldset,
 .stack .fieldset + *,
 .stack * + .fieldset {
     margin-block-start: var(--space-12);
+}
+
+fieldset + fieldset.box {
+    margin-block-start: var(--space-8);
 }
 
 .password {

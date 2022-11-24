@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
@@ -376,9 +377,9 @@ class Organization extends Model
 
         if (
             $this->extra_attributes['has_gender_and_sexual_identities'] &&
-            ! $this->genderIdentities()->count() &&
-            ! $this->constituencies->contains(Constituency::firstWhere('name->en', 'Trans person')) &&
-            ! $this->constituencies->contains(Constituency::firstWhere('name->en', '2SLGBTQIA+ person'))
+            ! $this->genderIdentities->count() &&
+            ! $this->identities->contains(Identity::firstWhere('name->en', 'Trans people')) &&
+            ! $this->identities->contains(Identity::firstWhere('name->en', '2SLGBTQIA+ people'))
         ) {
             return false;
         }
@@ -456,44 +457,44 @@ class Organization extends Model
         return $this->belongsToMany(Sector::class);
     }
 
+    public function identities(): BelongsToMany
+    {
+        return $this->belongsToMany(Identity::class)->withTimestamps();
+    }
+
     public function livedExperiences(): BelongsToMany
     {
-        return $this->belongsToMany(LivedExperience::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Experience);
     }
 
     public function areaTypes(): BelongsToMany
     {
-        return $this->belongsToMany(AreaType::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Area);
     }
 
     public function disabilityTypes(): BelongsToMany
     {
-        return $this->belongsToMany(DisabilityType::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::DisabilityAndDeaf);
     }
 
     public function indigenousIdentities(): BelongsToMany
     {
-        return $this->belongsToMany(IndigenousIdentity::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Indigenous);
     }
 
     public function genderIdentities(): BelongsToMany
     {
-        return $this->belongsToMany(GenderIdentity::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Gender);
     }
 
     public function ageBrackets(): BelongsToMany
     {
-        return $this->belongsToMany(AgeBracket::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Age);
     }
 
     public function ethnoracialIdentities(): BelongsToMany
     {
-        return $this->belongsToMany(EthnoracialIdentity::class)->withTimestamps();
-    }
-
-    public function constituencies(): BelongsToMany
-    {
-        return $this->belongsToMany(Constituency::class)->withTimestamps();
+        return $this->identities()->where('cluster', IdentityCluster::Ethnoracial);
     }
 
     public function constituentLanguages(): BelongsToMany
@@ -520,24 +521,28 @@ class Organization extends Model
         return $methods;
     }
 
-    public function getBaseDisabilityTypeAttribute(): string|false
+    public function baseDisabilityType(): Attribute
     {
-        if ($this->disabilityTypes->count() > 0) {
-            return $this->disabilityTypes->contains(DisabilityType::where('name->en', 'Cross-disability')->first())
-                ? 'cross_disability'
-                : 'specific_disabilities';
-        } elseif ($this->other_disability_type) {
-            return 'specific_disabilities';
-        }
+        return Attribute::make(
+            get: function () {
+                if ($this->disabilityTypes->count() > 0) {
+                    return $this->disabilityTypes->contains(Identity::firstWhere('name->en', 'Cross-disability and Deaf'))
+                        ? 'cross_disability'
+                        : 'specific_disabilities';
+                } elseif (! empty($this->other_disability_type)) {
+                    return 'specific_disabilities';
+                }
 
-        return false;
+                return false;
+            }
+        );
     }
 
     public function getHasNbGncFluidConstituentsAttribute(): bool
     {
-        return $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Non-binary people')->firstOrFail())
-            || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->firstOrFail())
-            || $this->genderIdentities->contains(GenderIdentity::where('name_plural->en', 'Gender fluid people')->firstOrFail());
+        return $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Non-binary people'))
+            || $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Gender non-conforming people'))
+            || $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Gender fluid people'));
     }
 
     public function displayRoles(): Attribute

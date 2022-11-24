@@ -437,12 +437,12 @@ class Individual extends Model implements CipherSweetEncrypted
      */
     public function identities(): BelongsToMany
     {
-        return $this->belongsToMany(Identity::class);
+        return $this->belongsToMany(Identity::class)->withTimestamps();
     }
 
     public function identityConnections(): BelongsToMany
     {
-        return $this->belongsToMany(Identity::class, 'individual_identity_connections');
+        return $this->belongsToMany(Identity::class, 'individual_identity_connections')->withTimestamps();
     }
 
     public function livedExperienceConnections(): BelongsToMany
@@ -487,7 +487,7 @@ class Individual extends Model implements CipherSweetEncrypted
 
     public function languageConnections(): BelongsToMany
     {
-        return $this->belongsToMany(Language::class, 'individual_language');
+        return $this->belongsToMany(Language::class)->withTimestamps();
     }
 
     public function baseDisabilityType(): Attribute

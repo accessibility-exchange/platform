@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'booking-providers' => __('Booking accessibility service providers'),
-    'planning-consultation' => __('Designing and organizing accessibility plans'),
-    'running-consultation' => __('Designing and organizing a consultation'),
-    'analysis' => __('Analysis of collected information'),
-    'writing-reports' => __('Writing accessibility reports'),
+    'booking-providers' => 'Booking accessibility service providers',
+    'planning-consultation' => 'Designing and organizing accessibility plans',
+    'running-consultation' => 'Designing and organizing a consultation',
+    'analysis' => 'Analysis of collected information',
+    'writing-reports' => 'Writing accessibility reports',
 ];

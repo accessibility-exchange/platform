@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
@@ -18,16 +19,9 @@ use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
 use App\Http\Requests\UpdateOrganizationInterestsRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\Constituency;
-use App\Models\DisabilityType;
-use App\Models\EthnoracialIdentity;
-use App\Models\GenderIdentity;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\IndigenousIdentity;
 use App\Models\Language;
-use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\Sector;
 use App\Statuses\OrganizationStatus;
@@ -153,8 +147,8 @@ class OrganizationController extends Controller
         return view('organizations.show', array_merge(compact('organization'), [
             'language' => $language ?? locale(),
             // TODO: Is this the best way of handling these two constituencies?
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
         ]));
     }
 
@@ -169,18 +163,19 @@ class OrganizationController extends Controller
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
-            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
-            'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
+            'deafAndDisabilityGroups' => Identity::where('name->en', 'People with disabilities and/or Deaf people')->first(),
+            'livedExperiences' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Experience))->toArray(),
+            'crossDisability' => Identity::where('name->en', 'Cross-disability and Deaf')->first(),
             'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
-            'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
-            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
-            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
-            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
-            'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
-            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
-            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
+            'disabilityTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::DisabilityAndDeaf))->reject(fn (Identity $identity) => $identity->name === __('Cross-disability and Deaf'))->toArray(),
+            'indigenousIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Indigenous))->toArray(),
+            'areaTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Area))->toArray(),
+            'women' => Identity::where('name->en', 'Women')->first(),
+            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
+            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
+            'refugeesAndImmigrants' => Identity::where('name->en', 'Refugees and/or immigrants')->first(),
+            'ageBrackets' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Age))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
             'staffHaveLivedExperience' => Options::forEnum(StaffHaveLivedExperience::class)->toArray(),
         ]);
     }
@@ -206,52 +201,49 @@ class OrganizationController extends Controller
     public function updateConstituencies(UpdateOrganizationConstituenciesRequest $request, Organization $organization): RedirectResponse
     {
         $data = $request->validated();
-        $data['constituencies'] = [];
+        $data['identities'] = [];
 
-        $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
-        $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
+        $crossDisability = Identity::where('name->en', 'Cross-disability and Deaf')->first();
+        $refugeesAndImmigrants = Identity::where('name->en', 'Refugees and/or immigrants')->first();
 
         if (isset($data['base_disability_type']) && $data['base_disability_type'] === 'cross_disability') {
-            $data['disability_types'] = [
-                $crossDisability->id,
-            ];
-            unset($data['other_disability_type']);
+            $data['identities'][] = $crossDisability->id;
+            $data['other_disability'] = 0;
+            $data['other_disability_type'] = null;
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
             $organization->extra_attributes->has_refugee_and_immigrant_constituency = 1;
 
-            $data['constituencies'][] = $refugeesAndImmigrants->id;
+            $data['identities'][] = $refugeesAndImmigrants->id;
         } else {
             $organization->extra_attributes->has_refugee_and_immigrant_constituency = 0;
         }
 
-        $data['other_disability_type'] = $data['other_disability_type'] ?? [];
-
         if (isset($data['gender_and_sexual_identities'])) {
             if (in_array('women', $data['gender_and_sexual_identities'])) {
-                $women = GenderIdentity::where('name_plural->en', 'Women')->first();
+                $women = Identity::where('name->en', 'Women')->first();
                 $data['gender_identities'][] = $women->id;
             }
 
             if (in_array('nb-gnc-fluid-people', $data['gender_and_sexual_identities'])) {
-                $nb = GenderIdentity::where('name_plural->en', 'Non-binary people')->first();
+                $nb = Identity::where('name->en', 'Non-binary people')->first();
                 $data['gender_identities'][] = $nb->id;
 
-                $gnc = GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first();
+                $gnc = Identity::where('name->en', 'Gender non-conforming people')->first();
                 $data['gender_identities'][] = $gnc->id;
 
-                $fluid = GenderIdentity::where('name_plural->en', 'Gender fluid people')->first();
+                $fluid = Identity::where('name->en', 'Gender fluid people')->first();
                 $data['gender_identities'][] = $fluid->id;
             }
 
             if (in_array('trans-people', $data['gender_and_sexual_identities'])) {
-                $transPeople = Constituency::where('name_plural->en', 'Trans people')->first();
+                $transPeople = Identity::where('name->en', 'Trans people')->first();
                 $data['constituencies'][] = $transPeople->id;
             }
 
             if (in_array('2slgbtqiaplus-people', $data['gender_and_sexual_identities'])) {
-                $twoslgbtqiaplusPeople = Constituency::where('name_plural->en', '2SLGBTQIA+ people')->firstOrFail();
+                $twoslgbtqiaplusPeople = Identity::where('name->en', '2SLGBTQIA+ people')->firstOrFail();
                 $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
             }
 
@@ -261,22 +253,23 @@ class OrganizationController extends Controller
         }
 
         foreach ([
-            'area_types',
-            'lived_experiences',
-            'disability_types',
-            'indigenous_identities',
-            'gender_identities',
             'age_brackets',
-            'ethnoracial_identities',
+            'area_types',
             'constituencies',
+            'disability_types',
+            'ethnoracial_identities',
+            'gender_identities',
+            'indigenous_identities',
+            'lived_experiences',
         ] as $relationship) {
-            $method = Str::camel($relationship);
             if (isset($data[$relationship])) {
-                $organization->$method()->sync($data[$relationship]);
-            } else {
-                $organization->$method()->detach();
+                foreach ($data[$relationship] as $identity) {
+                    $data['identities'][] = $identity;
+                }
             }
         }
+
+        $organization->identities()->sync($data['identities']);
 
         if (isset($data['constituent_languages'])) {
             $languages = [];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Identity;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Worksome\RequestFactories\Concerns\HasFactory;
@@ -17,6 +18,8 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
 
     public function rules(): array
     {
+        $disabilityAndDeaf = Identity::where('name->en', 'People with disabilities and/or Deaf people')->first();
+
         return [
             'lived_experiences' => 'required|array',
             'lived_experiences.*' => 'exists:identities,id',
@@ -24,8 +27,11 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                 'nullable',
                 'string',
                 'in:cross_disability,specific_disabilities',
-                Rule::requiredIf(function () {
-                    return in_array(1, request('lived_experiences') ?? []);
+                Rule::requiredIf(function () use ($disabilityAndDeaf) {
+                    return in_array($disabilityAndDeaf->id, request('lived_experiences') ?? []);
+                }),
+                Rule::excludeIf(function () use ($disabilityAndDeaf) {
+                    return ! in_array($disabilityAndDeaf->id, request('lived_experiences') ?? []);
                 }),
             ],
             'disability_types' => [
