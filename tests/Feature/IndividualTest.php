@@ -307,11 +307,52 @@ test('users can create individual pages', function () {
     $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
+        'vrs' => true,
         'preferred_contact_method' => 'email',
         'preferred_contact_person' => 'me',
         'meeting_types' => ['in_person', 'web_conference'],
         'save' => __('Save'),
     ]);
+
+    $individual->refresh();
+    expect($individual->user->vrs)->toBeTrue();
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+        'email' => 'me@here.com',
+        'phone' => '902-444-4567',
+        'preferred_contact_method' => 'email',
+        'preferred_contact_person' => 'me',
+        'meeting_types' => ['in_person', 'web_conference'],
+        'save' => __('Save'),
+    ]);
+
+    $individual->refresh();
+    expect($individual->user->vrs)->toBeNull();
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+        'email' => 'me@here.com',
+        'phone' => '902-444-4567',
+        'support_person_name' => 'Someone',
+        'support_person_email' => 'me@here.com',
+        'support_person_phone' => '438-444-4567',
+        'support_person_vrs' => true,
+        'preferred_contact_method' => 'email',
+        'preferred_contact_person' => 'support-person',
+        'meeting_types' => ['in_person', 'web_conference'],
+        'save' => __('Save'),
+    ]);
+
+    $individual = $individual->fresh();
+
+    expect($individual->user->phone)->toEqual('');
+    expect($individual->user->support_person_phone)->toEqual('+14384444567');
+    expect($individual->user->support_person_vrs)->toBeTrue();
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -331,7 +372,7 @@ test('users can create individual pages', function () {
     $individual = $individual->fresh();
 
     expect($individual->user->phone)->toEqual('');
-    expect($individual->user->support_person_phone)->toEqual('+14384444567');
+    expect($individual->user->support_person_vrs)->toBeNull();
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));

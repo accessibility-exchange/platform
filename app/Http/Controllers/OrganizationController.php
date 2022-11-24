@@ -338,8 +338,6 @@ class OrganizationController extends Controller
     {
         $data = $request->validated();
 
-        $data['contact_person_vrs'] = isset($data['contact_person_vrs']);
-
         $organization->fill($data);
         $organization->save();
 

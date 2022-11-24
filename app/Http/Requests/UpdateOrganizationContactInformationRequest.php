@@ -34,6 +34,13 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
         });
     }
 
+    public function prepareForValidation()
+    {
+        $this->mergeIfMissing([
+            'contact_person_vrs' => null,
+        ]);
+    }
+
     public function attributes(): array
     {
         return [
