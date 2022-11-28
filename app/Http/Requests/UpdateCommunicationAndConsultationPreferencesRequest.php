@@ -44,7 +44,6 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [
                 'nullable',
                 'array',
-                'min:1',
                 Rule::requiredIf(request()->user()->individual->isParticipant()),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
