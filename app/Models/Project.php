@@ -405,18 +405,17 @@ class Project extends Model
         return $query;
     }
 
-    public function scopeSeekingGroups($query, $seekingGroups)
+    public function scopeSeekingDisabilityAndDeafGroups($query, $seekingGroups)
     {
         $method = 'whereHas';
 
+        $crossDisability = Identity::firstWhere('name->en', 'Cross-disability and Deaf');
+
         foreach ($seekingGroups as $seekingGroup) {
-            $query->$method('engagements', function (Builder $engagementQuery) use ($seekingGroup) {
-                $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($seekingGroup) {
-                    $matchingStrategyQuery->whereHas('criteria', function (Builder $criteriaQuery) use ($seekingGroup) {
-                        $criteriaQuery->where([
-                            ['criteriable_type', 'App\Models\DisabilityType'],
-                            ['criteriable_id', $seekingGroup],
-                        ]);
+            $query->$method('engagements', function (Builder $engagementQuery) use ($seekingGroup, $crossDisability) {
+                $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($seekingGroup, $crossDisability) {
+                    $matchingStrategyQuery->whereHas('identities', function (Builder $criteriaQuery) use ($seekingGroup, $crossDisability) {
+                        $criteriaQuery->whereIn('identity_id', [$crossDisability->id, $seekingGroup]);
                     });
                 });
             });

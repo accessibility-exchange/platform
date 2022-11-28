@@ -10,7 +10,6 @@ use App\Models\Impact;
 use App\Models\Organization;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Carbon;
@@ -19,7 +18,6 @@ beforeEach(function () {
     $this->suspendedUser = User::factory()->create(['suspended_at' => now()]);
     $this->adminUser = User::factory()->create(['context' => 'administrator']);
 
-    $this->seed(DisabilityTypeSeeder::class);
     $this->seed(IdentitySeeder::class);
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);

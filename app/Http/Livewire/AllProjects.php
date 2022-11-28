@@ -3,9 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Enums\EngagementRecruitment;
+use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
-use App\Models\DisabilityType;
+use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Project;
 use App\Models\Sector;
@@ -73,7 +74,7 @@ class AllProjects extends Component
                         $query->initiators($initiators);
                     })
                     ->when($this->seekingGroups, function ($query, $seekingGroups) {
-                        $query->seekingGroups($seekingGroups);
+                        $query->seekingDisabilityAndDeafGroups($seekingGroups);
                     })
                     ->when($this->meetingTypes, function ($query, $meetingTypes) {
                         $query->meetingTypes($meetingTypes);
@@ -109,8 +110,10 @@ class AllProjects extends Component
                 ['value' => 'organization', 'label' => __('Community organization')],
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
-            'seekingGroupsData' => Options::forModels(DisabilityType::query()->where(
-                'name->en', '!=', 'Cross-disability'))->toArray(),
+            'seekingGroupsData' => Options::forModels(Identity::query()->where([
+                ['cluster', IdentityCluster::DisabilityAndDeaf],
+                ['name->en', '!=', 'Cross-disability and Deaf'],
+            ]))->toArray(),
             'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
