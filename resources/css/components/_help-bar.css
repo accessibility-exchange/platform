@@ -50,7 +50,8 @@
 
 .help-bar .responsive-switcher div {
     align-items: center;
-    border-block-start: var(--border) solid white;
+    background-color: var(--nav-background-mobile);
+    border-block-end: var(--border) solid var(--nav-border-mobile);
     display: flex;
     flex-wrap: wrap;
     height: auto;
@@ -71,6 +72,7 @@
         --space: var(--space-8);
 
         display: flex;
+        flex-direction: row;
         left: 0;
         position: relative;
         top: 0;
@@ -78,7 +80,8 @@
     }
 
     .help-bar .responsive-switcher div {
-        border-block-start: 0;
+        background-color: unset;
+        border-block-end: 0;
         padding: 0;
     }
 

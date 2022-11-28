@@ -31,8 +31,22 @@ main .back-to-top a:visited {
     color: var(--link-color);
 }
 
-main > .center {
-    --gutter: var(--space-4);
+main > .center .full {
+    padding-inline: var(--space-4);
+}
+
+main .content > * {
+    padding-inline: var(--space-4);
+}
+
+@media (min-width: 75rem) {
+    main > .center {
+        --gutter: var(--space-4);
+    }
+
+    main > .center .full {
+        padding-inline: 0;
+    }
 }
 
 ul {
