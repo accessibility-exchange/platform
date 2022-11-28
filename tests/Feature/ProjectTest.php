@@ -874,7 +874,7 @@ test('test project initiators scope', function () {
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
 });
 
-test('test project seekingGroups scope', function () {
+test('test project seekingDisabilityAndDeafGroups scope', function () {
     $this->seed(IdentitySeeder::class);
 
     $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
@@ -888,6 +888,8 @@ test('test project seekingGroups scope', function () {
         'matchable_id' => $engagementSeekingDeafExperience->id,
     ]);
     $matchingStrategySeekingDeafExperience->identities()->attach($disabilityTypeDeaf->id);
+
+    expect($matchingStrategySeekingDeafExperience->matchable->is($engagementSeekingDeafExperience))->toBeTrue;
 
     $disabilityTypeCognitive = Identity::where('name->en', 'Cognitive disabilities')->first();
     $projectSeekingCognitiveDisabilityExperienceName = 'Project Seeking Cognitive Disability Experience';
