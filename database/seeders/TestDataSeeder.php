@@ -2,16 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\Constituency;
-use App\Models\DisabilityType;
-use App\Models\EthnoracialIdentity;
-use App\Models\GenderIdentity;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\IndigenousIdentity;
 use App\Models\Language;
-use App\Models\LivedExperience;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -34,11 +27,11 @@ class TestDataSeeder extends Seeder
                 'ethnoracial' => ['Middle Eastern'],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
                 'genderIdentities' => [],
-                'constituencies' => ['Refugee or immigrant'],
+                'constituencies' => ['Refugees and/or immigrants'],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
-                'disabilityTypes' => ['Cross-disability'],
-                'livedExperiences' => ['People who experience disabilities'],
+                'disabilityTypes' => ['Cross-disability and Deaf'],
+                'livedExperiences' => ['People with disabilities and/or Deaf people'],
                 'sectors' => ['Transportation', 'Financial services', 'Federal government programs and services'],
                 'impacts' => ['Buildings and public spaces', 'Buying goods, services, facilities'],
                 'individualDetails' => [
@@ -78,11 +71,11 @@ class TestDataSeeder extends Seeder
                 'ethnoracial' => [],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
                 'genderIdentities' => [],
-                'constituencies' => ['Trans person'],
+                'constituencies' => ['Trans people'],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
-                'disabilityTypes' => [],
-                'livedExperiences' => ['Deaf people'],
+                'disabilityTypes' => ['Deaf'],
+                'livedExperiences' => ['People with disabilities and/or Deaf people'],
                 'sectors' => [
                     'Transportation',
                     'Financial services',
@@ -142,8 +135,8 @@ class TestDataSeeder extends Seeder
                     'Mental health-related disabilities',
                 ],
                 'livedExperiences' => [
-                    'People who experience disabilities',
-                    'Supporters of people who experience disabilities and/or Deaf people',
+                    'People with disabilities and/or Deaf people',
+                    'Supporters',
                 ],
                 'sectors' => [
                     'Transportation',
@@ -194,12 +187,12 @@ class TestDataSeeder extends Seeder
                 'constituentLanguages' => ['fr'],
                 'ethnoracial' => ['Black', 'Asian', 'Middle Eastern'],
                 'ageBrackets' => ['Working age adults (15–64)'],
-                'genderIdentities' => ['Gender fluid person', 'Gender non-conforming person', 'Non-binary person'],
-                'constituencies' => ['2SLGBTQIA+ person'],
+                'genderIdentities' => ['Gender fluid people', 'Gender non-conforming people', 'Non-binary people'],
+                'constituencies' => ['2SLGBTQIA+ people'],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
-                'disabilityTypes' => ['Cross-disability'],
-                'livedExperiences' => ['People who experience disabilities'],
+                'disabilityTypes' => ['Cross-disability and Deaf'],
+                'livedExperiences' => ['People with disabilities and/or Deaf people'],
                 'sectors' => [
                     'Transportation',
                     'Financial services',
@@ -247,7 +240,7 @@ class TestDataSeeder extends Seeder
                 'ethnoracial' => ['Black', 'Asian'],
                 'ageBrackets' => ['Older people (65+)'],
                 'genderIdentities' => [],
-                'constituencies' => [],
+                '' => [],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
                 'disabilityTypes' => [
@@ -256,8 +249,8 @@ class TestDataSeeder extends Seeder
                     'Developmental disabilities',
                 ],
                 'livedExperiences' => [
-                    'People who experience disabilities',
-                    'Supporters of people who experience disabilities and/or Deaf people',
+                    'People with disabilities and/or Deaf people',
+                    'Supporters',
                 ],
                 'sectors' => [
                     'Transportation',
@@ -317,44 +310,44 @@ class TestDataSeeder extends Seeder
             $constituentLanguages = array_pop($individualUser);
             $user = User::factory()->create($individualUser);
             foreach ($impacts as $name) {
-                $item = Impact::where('name->en', $name)->first();
+                $item = Impact::firstWhere('name->en', $name);
                 $user->individual->impactsOfInterest()->attach($item->id);
             }
             foreach ($sectors as $name) {
-                $item = Sector::where('name->en', $name)->first();
+                $item = Sector::firstWhere('name->en', $name);
                 $user->individual->sectorsOfInterest()->attach($item->id);
             }
             foreach ($livedExperiences as $name) {
-                $item = LivedExperience::where('name->en', $name)->first();
-                $user->individual->livedExperienceConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($disabilityTypes as $name) {
-                $item = DisabilityType::where('name->en', $name)->first();
-                $user->individual->disabilityTypeConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($areaTypes as $name) {
-                $item = AreaType::where('name->en', $name)->first();
-                $user->individual->areaTypeConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($indigenousIdentities as $name) {
-                $item = IndigenousIdentity::where('name->en', $name)->first();
-                $user->individual->indigenousIdentityConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($constituencies as $name) {
-                $item = Constituency::where('name->en', $name)->first();
-                $user->individual->constituencyConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($genderIdentities as $name) {
-                $item = GenderIdentity::where('name->en', $name)->first();
-                $user->individual->genderIdentityConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($ageGroups as $name) {
-                $item = AgeBracket::where('name->en', $name)->first();
-                $user->individual->ageBracketConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($ethnoracialIdentities as $name) {
-                $item = EthnoracialIdentity::where('name->en', $name)->first();
-                $user->individual->ethnoracialIdentityConnections()->attach($item->id);
+                $item = Identity::firstWhere('name->en', $name);
+                $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($constituentLanguages as $code) {
                 $language = Language::firstOrCreate(
