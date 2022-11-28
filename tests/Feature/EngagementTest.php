@@ -1,14 +1,11 @@
 <?php
 
+use App\Enums\IdentityCluster;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\DisabilityType;
 use App\Models\Engagement;
-use App\Models\EthnoracialIdentity;
-use App\Models\IndigenousIdentity;
+use App\Models\Identity;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
@@ -16,7 +13,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
-use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\IdentitySeeder;
 
 test('users with regulated organization admin role can create engagements', function () {
     $this->seed(DatabaseSeeder::class);
@@ -124,7 +121,7 @@ test('users without regulated organization admin role cannot create engagements'
 });
 
 test('users can view engagements', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
@@ -168,11 +165,11 @@ test('users with regulated organization admin role can edit engagements', functi
         ],
         'cross_disability' => 0,
         'disability_types' => [
-            DisabilityType::where('name->en', 'Hard-of-hearing')->first()->id,
+            Identity::where('name->en', 'DeafBlind')->first()->id,
         ],
         'intersectional' => 0,
         'other_identity_type' => 'age-bracket',
-        'age_brackets' => [AgeBracket::where('name->en', 'Older people (65+)')->first()->id],
+        'age_brackets' => [Identity::where('name->en', 'Older people (65+)')->first()->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -182,7 +179,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertSee('Halifax, Nova Scotia');
-    $response->assertSee('Hard-of-hearing');
+    $response->assertSee('DeafBlind');
     $response->assertSee('Older people (65+)');
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -207,7 +204,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'indigenous-identity',
-        'indigenous_identities' => IndigenousIdentity::all()->pluck('id')->toArray(),
+        'indigenous_identities' => Identity::where('cluster', IdentityCluster::Indigenous)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -223,7 +220,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'ethnoracial-identity',
-        'ethnoracial_identities' => EthnoracialIdentity::all()->pluck('id')->toArray(),
+        'ethnoracial_identities' => Identity::where('cluster', IdentityCluster::Ethnoracial)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -267,7 +264,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'area-type',
-        'area_types' => AreaType::all()->pluck('id')->toArray(),
+        'area_types' => Identity::where('cluster', IdentityCluster::Area)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -377,7 +374,7 @@ test('users without regulated organization admin role cannot edit engagements', 
 });
 
 test('users with regulated organization admin role can manage engagements', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\IdentityCluster;
 use App\Enums\ProvinceOrTerritory;
 use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
@@ -27,9 +29,20 @@ class MatchingStrategy extends Model
         'locations' => 'array',
     ];
 
+    /** @deprecated */
     public function criteria(): HasMany
     {
         return $this->hasMany(Criterion::class);
+    }
+
+    public function identities(): BelongsToMany
+    {
+        return $this->belongsToMany(Identity::class)->withTimeStamps();
+    }
+
+    public function languages(): BelongsToMany
+    {
+        return $this->belongsToMany(Language::class)->withTimeStamps();
     }
 
     public function matchable(): MorphTo
@@ -39,27 +52,24 @@ class MatchingStrategy extends Model
 
     public function hasDisabilityTypes(): bool
     {
-        return $this->criteria()->where('criteriable_type', DisabilityType::class)->count() > 0;
+        return $this->identities()->where('cluster', IdentityCluster::DisabilityAndDeaf)->count() > 0;
     }
 
-    public function hasDisabilityType(DisabilityType $disabilityType): bool
+    public function hasDisabilityType(Identity $disabilityType): bool
     {
-        return $this->criteria()->where('criteriable_type', DisabilityType::class)->with('criteriable')->get()->pluck('criteriable')->contains($disabilityType);
+        return $this->identities->contains($disabilityType);
     }
 
-    public function hasCriterion(string $model, mixed $criteriable): bool
+    public function hasIdentity(Identity $identity): bool
     {
-        return $this->criteria()->where('criteriable_type', $model)->with('criteriable')->get()->pluck('criteriable')->contains($criteriable);
+        return $this->identities->contains($identity);
     }
 
-    public function hasCriteria(string $model, array $criteriables): bool
+    public function hasIdentities(array $identities): bool
     {
-        $items = $model::whereIn(
-            'id',
-            Arr::map($criteriables, fn ($criteriable) => $criteriable->id)
-        )->get();
+        $identities = collect($identities);
 
-        return $this->criteria()->where('criteriable_type', $model)->with('criteriable')->get()->pluck('criteriable')->intersect($items)->count() === $items->count();
+        return $this->identities->intersect($identities)->count() === $identities->count();
     }
 
     public function locationType(): Attribute
@@ -105,12 +115,12 @@ class MatchingStrategy extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if ($this->hasDisabilityType(DisabilityType::where('name->en', 'Cross-disability')->first())) {
+                if ($this->hasDisabilityType(Identity::firstWhere('name->en', 'Cross-disability and Deaf'))) {
                     return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
                 }
 
                 if ($this->hasDisabilityTypes()) {
-                    return implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\DisabilityType')->get()->map(fn ($group) => $group->criteriable->name)->toArray());
+                    return implode("  \n", $this->identities()->where('cluster', IdentityCluster::DisabilityAndDeaf)->get()->map(fn ($identity) => $identity->name)->toArray());
                 }
 
                 return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
@@ -123,13 +133,13 @@ class MatchingStrategy extends Model
         return Attribute::make(
             get: function ($value) {
                 return match ($this->extra_attributes->get('other_identity_type', null)) {
-                    'age-bracket' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\AgeBracket')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
-                    'gender-and-sexual-identity' => implode("  \n", $this->criteria()->whereIn('criteriable_type', ['App\Models\Constituency', 'App\Models\GenderIdentity'])->get()->map(fn ($group) => $group->criteriable->name_plural)->toArray()),
-                    'indigenous-identity' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\IndigenousIdentity')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
-                    'ethnoracial-identity' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\EthnoracialIdentity')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
-                    'refugee-or-immigrant' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\Constituency')->get()->map(fn ($group) => $group->criteriable->name_plural)->toArray()),
-                    'first-language' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\Language')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
-                    'area-type' => implode("  \n", $this->criteria()->where('criteriable_type', 'App\Models\AreaType')->get()->map(fn ($group) => $group->criteriable->name)->toArray()),
+                    'age-bracket' => implode("  \n", $this->identities()->where('cluster', IdentityCluster::Age)->get()->map(fn ($identity) => $identity->name)->toArray()),
+                    'gender-and-sexual-identity' => implode("  \n", $this->identities()->where('cluster', IdentityCluster::Gender)->orWhereNull('cluster')->get()->map(fn ($identity) => $identity->name)->toArray()),
+                    'indigenous-identity' => implode("  \n", $this->identities()->where('cluster', IdentityCluster::Indigenous)->get()->map(fn ($identity) => $identity->name)->toArray()),
+                    'ethnoracial-identity' => implode("  \n", $this->identities()->where('cluster', IdentityCluster::Ethnoracial)->get()->map(fn ($identity) => $identity->name)->toArray()),
+                    'refugee-or-immigrant' => __('Refugees and/or immigrants'),
+                    'first-language' => implode("  \n", $this->languages->map(fn ($language) => $language->name)->toArray()),
+                    'area-type' => implode("  \n", $this->identities()->where('cluster', IdentityCluster::Area)->get()->map(fn ($identity) => $identity->name)->toArray()),
                     default => __('Intersectional')
                 };
             },
@@ -137,92 +147,63 @@ class MatchingStrategy extends Model
     }
 
     /**
-     * Synchronize associations with criteria from a single criteriable model.
+     * Synchronize associations with identities from a single identity cluster.
      */
-    public function syncRelatedCriteria(string $model, int|array $criteria, ?string $weight = null, bool $detaching = true): void
+    public function syncRelatedIdentities(IdentityCluster $cluster, int|array $identities, ?string $weight = null, bool $detaching = true): void
     {
-        if (! is_array($criteria)) {
-            $criteria = [$criteria];
+        if (! is_array($identities)) {
+            $identities = [$identities];
         }
 
         if ($detaching) {
-            Criterion::destroy(
-                $this->criteria()
-                    ->whereNotIn('criteriable_id', $criteria)
-                    ->where('criteriable_type', $model)
-                    ->get()
+            $this->identities()->detach(
+                $this->identities()
+                    ->where('cluster', $cluster)
+                    ->pluck('identity_id')
+                    ->toArray()
             );
         }
 
-        foreach ($criteria as $id) {
-            $this->criteria()->updateOrCreate(
-                ['criteriable_type' => $model, 'criteriable_id' => $id],
-                ['weight' => $weight === 'equal' ? 1 / count($criteria) : null]
+        foreach ($identities as $id) {
+            $this->identities()->attach(
+                $id,
+                ['weight' => $weight === 'equal' ? 1 / count($identities) : null]
             );
         }
     }
 
-    /**
-     * Synchronize associations with criteria from a single criteriable model,
-     * removing associations from other, mutually-exclusive criteriable models.
-     */
-    public function syncMutuallyExclusiveCriteria(string $model, int|array $criteria, array $mutuallyExclusiveModels, ?string $weight = null, bool $detaching = true): void
+    public function syncMutuallyExclusiveIdentities(IdentityCluster $cluster, int|array $identities, array $mutuallyExclusiveClusters, bool $detachLanguages = true, ?string $weight = null, bool $detaching = true): void
     {
-        if (! is_array($criteria)) {
-            $criteria = [$criteria];
+        if (! is_array($identities)) {
+            $identities = [$identities];
         }
 
-        Criterion::destroy(
-            $this->criteria()->whereIn('criteriable_type', $mutuallyExclusiveModels)->get()
+        $this->identities()->detach(
+            $this->identities()
+                ->whereIn('cluster', $mutuallyExclusiveClusters)
+                ->orWhereNull('cluster')
+                ->pluck('identity_id')
+                ->toArray()
         );
 
-        if ($detaching) {
-            Criterion::destroy(
-                $this->criteria()
-                    ->whereNotIn('criteriable_id', $criteria)
-                    ->where('criteriable_type', $model)
-                    ->get()
-            );
-        }
-
-        foreach ($criteria as $id) {
-            $this->criteria()->updateOrCreate(
-                ['criteriable_type' => $model, 'criteriable_id' => $id],
-                ['weight' => $weight === 'equal' ? 1 / count($criteria) : null]
-            );
-        }
-    }
-
-    /**
-     * Synchronize associations with criteria from a multiple criteriable models,
-     * optionally removing associations from other, mutually-exclusive criteriable models.
-     */
-    public function syncUnrelatedMutuallyExclusiveCriteria(array $criteria, ?array $mutuallyExclusiveModels, ?string $weight = null, bool $detaching = true): void
-    {
-        if ($mutuallyExclusiveModels) {
-            Criterion::destroy(
-                $this->criteria()->whereIn('criteriable_type', $mutuallyExclusiveModels)->get()
-            );
+        if ($detachLanguages) {
+            $this->languages()->detach();
         }
 
         if ($detaching) {
-            foreach ($criteria as $model => $ids) {
-                Criterion::destroy(
-                    $this->fresh()->criteria()
-                        ->whereNotIn('criteriable_id', $ids)
-                        ->where('criteriable_type', $model)
-                        ->get()
-                );
-            }
+            $this->identities()->detach(
+                $this->identities()
+                    ->where('cluster', $cluster)
+                    ->pluck('identity_id')
+                    ->toArray()
+            );
         }
 
-        foreach ($criteria as $model => $ids) {
-            foreach ($ids as $id) {
-                $this->criteria()->updateOrCreate(
-                    ['criteriable_type' => $model, 'criteriable_id' => $id],
-                    ['weight' => $weight === 'equal' ? 1 / count($ids) : null]
-                );
-            }
+        foreach ($identities as $id) {
+            $this->identities()->attach(
+                $id,
+                ['weight' => $weight === 'equal' ? 1 / count($identities) : null]
+            );
         }
     }
 }
