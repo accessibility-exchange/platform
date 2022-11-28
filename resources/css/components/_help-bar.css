@@ -17,11 +17,11 @@
 }
 
 .help-bar [aria-expanded] {
-    --btn-borderless-outline: var(--color-grey-2);
-    --btn-borderless-color-hover: var(--color-grey-2);
-    --btn-borderless-background-hover: black;
-    --btn-borderless-color-focus: var(--color-grey-2);
-    --btn-borderless-color-active: var(--color-grey-1);
+    --btn-borderless-outline: var(--interactive, var(--color-grey-2));
+    --btn-borderless-color-hover: var(--interactive, var(--color-grey-2));
+    --btn-borderless-background-hover: var(--bg, var(--color-black));
+    --btn-borderless-color-focus: var(--interactive, var(--color-grey-2));
+    --btn-borderless-color-active: var(--interactive, var(--color-grey-1));
 }
 
 .help-bar [aria-expanded] .indicator {
