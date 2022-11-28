@@ -109,6 +109,18 @@ test('individual users can manage communication and consultation preferences', f
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'me@here.com',
         'preferred_contact_method' => 'email',
+        'consulting_methods' => [],
+    ]);
+
+    $response->assertSessionHasErrors(['consulting_methods']);
+
+    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'phone' => '902-444-4444',
+        'vrs' => '1',
+        'preferred_contact_person' => 'support-person',
+        'support_person_name' => 'Jenny Appleseed',
+        'support_person_email' => 'me@here.com',
+        'preferred_contact_method' => 'email',
         'consulting_methods' => ['survey'],
     ]);
 
