@@ -79,7 +79,6 @@ class IdentityResource extends Resource
         return [
             'index' => Pages\ListIdentities::route('/'),
             'create' => Pages\CreateIdentity::route('/create'),
-            // 'edit' => Pages\EditIdentity::route('/{record}/edit'),
         ];
     }
 
