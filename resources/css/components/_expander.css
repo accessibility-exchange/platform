@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.expander.field {
+    margin-inline-start: calc(-1 * var(--space-2));
+}
+
 .expander .title {
     font-size: var(--text-base);
     font-weight: var(--font-normal);
@@ -23,6 +27,16 @@
     position: relative;
     text-align: start;
     width: calc(100% + 2 * var(--space-2));
+}
+
+.expander.field .title button {
+    width: calc(100% + var(--space-2));
+}
+
+.expander.field .expander__content input,
+.expander.field .expander__content textarea {
+    margin-inline-start: var(--space-2);
+    width: calc(100% - var(--space-2));
 }
 
 .expander .title button::before {
