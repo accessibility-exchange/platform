@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -30,14 +29,17 @@ class Resource extends Model
      */
     protected $fillable = [
         'title',
+        'author',
         'user_id',
         'summary',
         'formats',
         'phases',
+        'url',
     ];
 
     protected $casts = [
         'title' => 'array',
+        'author' => 'array',
         'summary' => 'array',
         'formats' => 'array',
         'phases' => 'array',
@@ -52,6 +54,8 @@ class Resource extends Model
         'title',
         'slug',
         'summary',
+        'url',
+        'author',
     ];
 
     /**
@@ -88,24 +92,24 @@ class Resource extends Model
         return $this->belongsToMany(ResourceCollection::class);
     }
 
-    /**
-     * Get all the formats for the resource.
-     *
-     * @return MorphToMany
-     */
-    public function topics(): MorphToMany
-    {
-        return $this->morphToMany(Topic::class, 'topicable');
-    }
-
-    /**
-     * Get the content time for the resource.
-     *
-     * @return BelongsTo
-     */
     public function contentType(): BelongsTo
     {
         return $this->belongsTo(ContentType::class);
+    }
+
+    public function topics(): BelongsToMany
+    {
+        return $this->belongsToMany(Topic::class)->withTimestamps();
+    }
+
+    public function impacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Impact::class)->withTimestamps();
+    }
+
+    public function sectors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sector::class)->withTimestamps();
     }
 
     /**

@@ -8,43 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
-test('users can create resources', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('resources.create'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->post(localized_route('resources.create'), [
-        'user_id' => $user->id,
-        'title' => 'Test resource',
-        'summary' => 'This is my resource.',
-    ]);
-
-    $resource = Resource::where('title->en', 'Test resource')->first();
-
-    $url = localized_route('resources.show', $resource);
-
-    $response->assertSessionHasNoErrors();
-
-    $response->assertRedirect($url);
-
-    expect($user->resources)->toHaveCount(1);
-});
-
-test('users can edit resources belonging to them', function () {
-    $user = User::factory()->create();
-    $resource = Resource::factory()->create(['user_id' => $user->id]);
-
-    $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
-        'title' => $resource->title,
-        'summary' => 'This is my updated resource.',
-    ]);
-    $response->assertRedirect(localized_route('resources.show', $resource));
-});
-
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
 
@@ -64,54 +27,6 @@ test('resources can be translated', function () {
 
     $this->expectException(AttributeIsNotTranslatable::class);
     $resource->setTranslation('user_id', 'en', 'user_id in English');
-});
-
-test('users can not edit resources belonging to others', function () {
-    $user = User::factory()->create();
-    $resource = Resource::factory()->create();
-
-    $response = $this->actingAs($user)->get(localized_route('resources.edit', $resource));
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->put(localized_route('resources.update', $resource), [
-        'title' => $resource->title,
-        'summary' => 'This is my updated resource.',
-    ]);
-    $response->assertForbidden();
-});
-
-test('users can delete resources belonging to them', function () {
-    $user = User::factory()->create();
-    $resource = Resource::factory()->create(['user_id' => $user->id]);
-
-    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-        'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
-});
-
-test('users can not delete resources belonging to them with wrong password', function () {
-    $user = User::factory()->create();
-    $resource = Resource::factory()->create(['user_id' => $user->id]);
-
-    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-        'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('resources.edit', $resource));
-});
-
-test('users can not delete resources belonging to others', function () {
-    $user = User::factory()->create();
-    $resource = Resource::factory()->create();
-
-    $response = $this->actingAs($user)->from(localized_route('resources.edit', $resource))->delete(localized_route('resources.destroy', $resource), [
-        'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
 });
 
 test('users can view resources', function () {
