@@ -51,7 +51,7 @@
             </li>
             <li class="account">
                 <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
-                    @svg('heroicon-s-user-circle') {{ Auth::user()->name }}
+                    @svg('heroicon-o-cog') {{ __('My settings') }}
                 </x-nav-link>
             </li>
             <!-- Authentication -->
