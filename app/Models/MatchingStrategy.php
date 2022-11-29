@@ -60,9 +60,10 @@ class MatchingStrategy extends Model
 
     public function hasIdentities(array $identities): bool
     {
-        $identities = collect($identities);
-
-        return $this->identities->intersect($identities)->count() === $identities->count();
+        return Arr::has(
+            $this->identities->pluck('name', 'id')->toArray(),
+            collect($identities)->pluck('id')->toArray()
+        );
     }
 
     public function locationType(): Attribute
