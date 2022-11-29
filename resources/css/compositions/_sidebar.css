@@ -4,6 +4,10 @@
     gap: var(--space-6);
 }
 
+.with-sidebar > * {
+    padding-inline: var(--space-4);
+}
+
 .with-sidebar > :first-child {
     flex-basis: var(--sidebar-basis, calc(var(--max-w-prose) / 2));
     flex-grow: 1;
@@ -32,4 +36,10 @@
 .with-sidebar\:2\/3 {
     --content-width: 66%;
     --sidebar-basis: 43ch;
+}
+
+@media (min-width: 75rem) {
+    .with-sidebar > * {
+        padding-inline: 0;
+    }
 }
