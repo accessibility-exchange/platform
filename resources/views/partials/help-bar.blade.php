@@ -1,5 +1,5 @@
 <div class="help-bar darker">
-    <div class="center center:wide cluster justify:between">
+    <div class="center center:wide cluster">
         <div x-data="{ open: false }" @click.away="open = false">
             <button class="borderless" x-bind:aria-expanded="open.toString()" x-on:click="open = !open"
                 @keyup.escape.window="open = false" x-cloak>
