@@ -1,6 +1,5 @@
 .help-bar {
     border-block-end: var(--border) dashed var(--help-bar-border);
-    height: var(--space-16);
 }
 
 .help-bar .center {
@@ -8,8 +7,11 @@
 
     align-items: center;
     display: flex;
-    height: var(--space-16);
+    gap: var(--space-3);
+    height: auto;
     justify-content: space-between;
+    min-height: var(--space-16);
+    padding-block: var(--space-2);
 }
 
 .help-bar a {
