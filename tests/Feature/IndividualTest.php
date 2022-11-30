@@ -654,7 +654,7 @@ test('users can edit individual pages', function () {
         'name' => $individual->name,
         'bio' => ['en' => 'test bio'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'locality' => 'St John\'s',
@@ -677,7 +677,7 @@ test('users can edit individual pages', function () {
         'name' => $draftIndividual->name,
         'bio' => ['en' => 'draft bio'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'locality' => 'St John\'s',
