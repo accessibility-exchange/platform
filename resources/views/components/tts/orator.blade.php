@@ -34,7 +34,7 @@
                 },
                 domReader: {
                     markup: {
-                        highlight: "<mark class=\"flc-orator-highlight\"></mark>"
+                        highlight: `<x-tts.mark />`
                     }
                 },
                 distributeOptions: [{
