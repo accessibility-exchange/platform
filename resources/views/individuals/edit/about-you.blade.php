@@ -43,7 +43,7 @@
 
             <div class="field @error('pronouns') field--error @enderror">
                 <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
-                    :hint="__('For example: he/him, she/her, they/them, other.')" />
+                    :hint="__('For example: he/him, she/her, they/them.')" />
                 <x-hearth-error for="pronouns" />
             </div>
 
