@@ -150,15 +150,17 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'crossDisability' => Identity::where('name->en', 'Cross-disability and Deaf')->first(),
-            'disabilityTypes' => Options::forModels(Identity::query()->where([
-                ['cluster', IdentityCluster::DisabilityAndDeaf],
-                ['name->en', '!=', 'Cross-disability and Deaf'],
-                ['name->en', '!=', 'Temporary disabilities'],
-            ]))->toArray(),
-            'ageBrackets' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Age))->toArray(),
-            'areaTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Area))->toArray(),
-            'indigenousIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Indigenous))->toArray(),
-            'ethnoracialIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
+            'disabilityTypes' => Options::forModels(Identity::query()
+                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)
+                ->where([
+                    ['name->en', '!=', 'Cross-disability and Deaf'],
+                    ['name->en', '!=', 'Temporary disabilities'],
+                ]))
+                ->toArray(),
+            'ageBrackets' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Age))->toArray(),
+            'areaTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Area))->toArray(),
+            'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
             'women' => Identity::where('name->en', 'Women')->first(),
             'nb' => Identity::where('name->en', 'Non-binary people')->first(),
             'gnc' => Identity::where('name->en', 'Gender non-conforming people')->first(),
@@ -196,15 +198,17 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'crossDisability' => Identity::where('name->en', 'Cross-disability and Deaf')->first(),
-            'disabilityTypes' => Options::forModels(Identity::query()->where([
-                ['cluster', IdentityCluster::DisabilityAndDeaf],
-                ['name->en', '!=', 'Cross-disability and Deaf'],
-                ['name->en', '!=', 'Temporary disabilities'],
-            ]))->toArray(),
-            'ageBrackets' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Age))->toArray(),
-            'areaTypes' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Area))->toArray(),
-            'indigenousIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Indigenous))->toArray(),
-            'ethnoracialIdentities' => Options::forModels(Identity::query()->where('cluster', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
+            'disabilityTypes' => Options::forModels(Identity::query()
+                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)
+                ->where([
+                    ['name->en', '!=', 'Cross-disability and Deaf'],
+                    ['name->en', '!=', 'Temporary disabilities'],
+                ]))
+                ->toArray(),
+            'ageBrackets' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Age))->toArray(),
+            'areaTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Area))->toArray(),
+            'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
             'women' => Identity::where('name->en', 'Women')->first(),
             'nb' => Identity::where('name->en', 'Non-binary people')->first(),
             'gnc' => Identity::where('name->en', 'Gender non-conforming people')->first(),

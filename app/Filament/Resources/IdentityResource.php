@@ -12,6 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Filters\Layout;
 use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Arr;
 
 class IdentityResource extends Resource
 {
@@ -37,7 +38,7 @@ class IdentityResource extends Resource
                 Forms\Components\Textarea::make('description.fr')
                     ->label(__('Description (French)'))
                     ->columnSpan(2),
-                Forms\Components\Select::make('cluster')
+                Forms\Components\CheckboxList::make('cluster')
                     ->options(self::getClusters())
                     ->label(__('Cluster')),
             ]);
@@ -49,14 +50,13 @@ class IdentityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cluster')
-                    ->getStateUsing(fn (Identity $record): string => $record->cluster ? IdentityCluster::labels()[$record->cluster] : '')
+                Tables\Columns\TagsColumn::make('clusters')
+                    ->getStateUsing(fn (Identity $record): array => $record->clusters ? Arr::map($record->clusters, fn ($cluster) => IdentityCluster::labels()[$cluster]) : [])
                     ->sortable(),
-                Tables\Columns\TextColumn::make('description'),
             ])
             ->filters(
                 [
-                    SelectFilter::make('cluster')->options(self::getClusters()),
+                    // SelectFilter::make('clusters')->options(self::getClusters()),
                 ],
                 layout: Layout::AboveContent
             )
@@ -64,7 +64,7 @@ class IdentityResource extends Resource
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([])
-            ->defaultSort('cluster');
+            ->defaultSort('clusters');
     }
 
     public static function getRelations(): array

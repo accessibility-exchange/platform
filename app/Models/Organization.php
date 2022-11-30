@@ -464,37 +464,37 @@ class Organization extends Model
 
     public function livedExperiences(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Experience);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Experience);
     }
 
     public function areaTypes(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Area);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Area);
     }
 
     public function disabilityTypes(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::DisabilityAndDeaf);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
     }
 
     public function indigenousIdentities(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Indigenous);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
     public function genderIdentities(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Gender);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Gender);
     }
 
     public function ageBrackets(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Age);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Age);
     }
 
     public function ethnoracialIdentities(): BelongsToMany
     {
-        return $this->identities()->where('cluster', IdentityCluster::Ethnoracial);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
     }
 
     public function constituentLanguages(): BelongsToMany

@@ -15,12 +15,13 @@ class Identity extends Model implements Selectable
     protected $fillable = [
         'name',
         'description',
-        'cluster',
+        'clusters',
     ];
 
     protected $casts = [
         'name' => 'array',
         'description' => 'array',
+        'clusters' => 'array',
     ];
 
     public array $translatable = [

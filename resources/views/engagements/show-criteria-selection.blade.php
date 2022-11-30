@@ -104,7 +104,7 @@
                             'disability_types',
                             $engagement->matchingStrategy
                                 ->identities()
-                                ->where('cluster', App\Enums\IdentityCluster::DisabilityAndDeaf)
+                                ->whereJsonContains('clusters', App\Enums\IdentityCluster::DisabilityAndDeaf)
                                 ->pluck('identity_id')
                                 ->toArray(),
                         )" />
@@ -154,7 +154,7 @@
                                 'age_brackets',
                                 $engagement->matchingStrategy
                                     ->identities()
-                                    ->where('cluster', App\Enums\IdentityCluster::Age)
+                                    ->whereJsonContains('clusters', App\Enums\IdentityCluster::Age)
                                     ->pluck('identity_id')
                                     ->toArray(),
                             )" required />
@@ -212,7 +212,7 @@
                                 'indigenous_identities',
                                 $engagement->matchingStrategy
                                     ->identities()
-                                    ->where('cluster', App\Enums\IdentityCluster::Indigenous)
+                                    ->whereJsonContains('clusters', App\Enums\IdentityCluster::Indigenous)
                                     ->pluck('identity_id')
                                     ->toArray(),
                             )" />
@@ -225,7 +225,7 @@
                                 'ethnoracial_identities',
                                 $engagement->matchingStrategy
                                     ->identities()
-                                    ->where('cluster', App\Enums\IdentityCluster::Ethnoracial)
+                                    ->whereJsonContains('clusters', App\Enums\IdentityCluster::Ethnoracial)
                                     ->pluck('identity_id')
                                     ->toArray(),
                             )" />
@@ -252,7 +252,7 @@
                             <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old(
                                 'area_types',
                                 $engagement->matchingStrategy->identities
-                                    ->where('cluster', App\Enums\IdentityCluster::Area)
+                                    ->whereJsonContains('clusters', App\Enums\IdentityCluster::Area)
                                     ->pluck('id')
                                     ->toArray(),
                             )"

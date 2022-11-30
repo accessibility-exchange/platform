@@ -9,211 +9,227 @@ class IdentitySeeder extends Seeder
 {
     public function run()
     {
-        $Identitys = [
+        $identities = [
             [
                 'name' => __('Children (under 15)'),
-                'cluster' => 'age',
+                'clusters' => ['age'],
             ],
             [
                 'name' => __('Youth (15–30)'),
-                'cluster' => 'age',
+                'clusters' => ['age'],
             ],
             [
                 'name' => __('Working age adults (15–64)'),
-                'cluster' => 'age',
+                'clusters' => ['age'],
             ],
             [
                 'name' => __('Older people (65+)'),
-                'cluster' => 'age',
+                'clusters' => ['age'],
             ],
             [
                 'name' => __('Urban areas'),
-                'cluster' => 'area',
+                'clusters' => ['area'],
             ],
             [
                 'name' => __('Rural areas'),
-                'cluster' => 'area',
+                'clusters' => ['area'],
             ],
             [
                 'name' => __('Remote areas'),
-                'cluster' => 'area',
+                'clusters' => ['area'],
             ],
             [
                 'name' => __('Refugees and/or immigrants'),
+                'clusters' => ['status'],
+            ],
+            [
+                'name' => __('Refugees'),
+                'clusters' => ['status'],
+            ],
+            [
+                'name' => __('Immigrants'),
+                'clusters' => ['status'],
             ],
             [
                 'name' => __('Single parents and/or guardians'),
+                'clusters' => ['family'],
             ],
             [
                 'name' => __('Trans people'),
+                'clusters' => ['gender-and-sexuality'],
             ],
             [
                 'name' => __('2SLGBTQIA+ people'),
+                'clusters' => ['gender-and-sexuality'],
             ],
             [
                 'name' => __('Cross-disability and Deaf'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Visual disabilities'),
                 'description' => __('Includes individuals with sight loss, blind individuals, and partially sighted individuals'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Deaf'),
-                'cluster' => 'disability-and-deaf',
+                'cluster' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Hard-of-hearing'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Physical and mobility disabilities'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Pain-related disabilities'),
                 'description' => __('Such as chronic fatigue syndrome'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Communication disabilities'),
                 'description' => __('Includes individuals with no spoken or signed language who communicate using gestures, pictures, letter boards, communication devices or assistance from a person who knows them well'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Neurodivergence'),
                 'description' => __('Such as Autism, ADHD'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Developmental disabilities'),
                 'description' => __('Includes intellectual disability'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Learning disabilities'),
                 'description' => __('Such as dyslexia'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Cognitive disabilities'),
                 'description' => __('Includes traumatic brain injury, memory difficulties, dementia'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Mental health-related disabilities'),
                 'description' => __('Such as dual diagnosis of a mental health barrier, substance dependence'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Multiple disabilities'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Episodic and invisible disabilities'),
                 'description' => __('Such as environmental, HIV, migraine'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('DeafBlind'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Body differences'),
                 'description' => __('Includes size, limb, and facial differences'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Temporary disabilities'),
                 'description' => __('Such as broken limbs, gestational diabetes'),
-                'cluster' => 'disability-and-deaf',
+                'clusters' => ['disability-and-deaf', 'unreachable'],
             ],
             [
                 'name' => __('White'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial', 'unreachable'],
             ],
             [
                 'name' => __('Black'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('East Asian'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('Asian'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('South Asian'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('Southeast Asian'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('Middle Eastern'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('Latin American'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('African'),
-                'cluster' => 'ethnoracial',
+                'clusters' => ['ethnoracial'],
             ],
             [
                 'name' => __('Women'),
-                'cluster' => 'gender',
+                'clusters' => ['gender', 'gender-and-sexuality'],
             ],
             [
                 'name' => __('Men'),
-                'cluster' => 'gender',
+                'clusters' => ['gender', 'gender-and-sexuality', 'unreachable'],
             ],
             [
                 'name' => __('Non-binary people'),
-                'cluster' => 'gender',
+                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
             ],
             [
                 'name' => __('Gender non-conforming people'),
-                'cluster' => 'gender',
+                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
             ],
             [
                 'name' => __('Gender fluid people'),
-                'cluster' => 'gender',
+                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
             ],
             [
                 'name' => __('First Nations'),
-                'cluster' => 'indigenous',
+                'clusters' => ['indigenous'],
             ],
             [
                 'name' => __('Inuit'),
-                'cluster' => 'indigenous',
+                'clusters' => ['indigenous'],
             ],
             [
                 'name' => __('Métis'),
-                'cluster' => 'indigenous',
+                'clusters' => ['indigenous'],
             ],
             [
                 'name' => __('People with disabilities and/or Deaf people'),
-                'cluster' => 'experience',
+                'clusters' => ['experience'],
             ],
             [
                 'name' => __('Supporters'),
-                'cluster' => 'experience',
+                'clusters' => ['experience', 'unreachable'],
             ],
         ];
 
-        foreach ($Identitys as $Identity) {
+        foreach ($identities as $identity) {
             Identity::firstOrCreate([
-                'name->en' => $Identity['name'],
-                'name->fr' => trans($Identity['name'], [], 'fr'),
-                'description->en' => $Identity['description'] ?? null,
-                'description->fr' => isset($Identity['description']) ? trans($Identity['description'], [], 'fr') : null,
-                'cluster' => $Identity['cluster'] ?? null,
+                'name' => [
+                    'en' => $identity['name'],
+                    'fr' => trans($identity['name'], [], 'fr'),
+                ],
+                'description' => [
+                    'en' => $identity['description'] ?? null,
+                    'fr' => isset($identity['description']) ? trans($identity['description'], [], 'fr') : null,
+                ],
+                'clusters' => $identity['clusters'] ?? [],
             ]);
         }
     }

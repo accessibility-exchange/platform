@@ -559,10 +559,7 @@ test('individuals with connector role can represent ethnoracial identities', fun
 
     $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
     $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $ethnoracialIdentity = Identity::where([
-        ['cluster', IdentityCluster::Ethnoracial],
-        ['name->en', 'Black'],
-    ])->first();
+    $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experiences' => [$livedExperience->id],

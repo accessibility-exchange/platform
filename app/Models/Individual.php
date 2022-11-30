@@ -447,37 +447,37 @@ class Individual extends Model implements CipherSweetEncrypted
 
     public function livedExperienceConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Experience);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Experience);
     }
 
     public function areaTypeConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Area);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Area);
     }
 
     public function disabilityTypeConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::DisabilityAndDeaf);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
     }
 
     public function indigenousIdentityConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Indigenous);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
     public function genderIdentityConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Gender);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Gender);
     }
 
     public function ageBracketConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Age);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Age);
     }
 
     public function ethnoracialIdentityConnections(): BelongsToMany
     {
-        return $this->identityConnections()->where('cluster', IdentityCluster::Ethnoracial);
+        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
     }
 
     public function constituencyConnections(): BelongsToMany

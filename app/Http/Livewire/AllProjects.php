@@ -110,10 +110,9 @@ class AllProjects extends Component
                 ['value' => 'organization', 'label' => __('Community organization')],
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
-            'seekingGroupsData' => Options::forModels(Identity::query()->where([
-                ['cluster', IdentityCluster::DisabilityAndDeaf],
-                ['name->en', '!=', 'Cross-disability and Deaf'],
-            ]))->toArray(),
+            'seekingGroupsData' => Options::forModels(Identity::query()
+                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)
+                ->where('name->en', '!=', 'Cross-disability and Deaf'))->toArray(),
             'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
