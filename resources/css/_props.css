@@ -84,6 +84,10 @@
     --cta-dark-background-active: var(--theme-cta-dark-background-active, var(--color-white));
     --cta-dark-border-active: var(--theme-cta-dark-border-active, var(--color-white));
 
+    /* Mark */
+    --mark-background: var(--theme-body-color, var(--color-blue-7));
+    --mark-color: var(--theme-body-background, var(--color-white));
+
     /* Badge */
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
     --badge-color: var(--theme-badge-color, var(--color-black));

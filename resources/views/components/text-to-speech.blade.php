@@ -24,13 +24,28 @@
                     content: "{{ $contentSelector }}",
                     parent: "#{{ $id }}"
                 },
-                components: {
-                    controller: {
-                        options: {
-                            parentContainer: "{orator}.dom.parent",
-                        }
+                strings: {
+                    play: "{{ __('Play') }}",
+                    pause: "{{ __('Pause') }}",
+                    stop: "{{ __('Stop') }}",
+                },
+                controller: {
+                    parentContainer: "{orator}.dom.parent",
+                },
+                domReader: {
+                    markup: {
+                        highlight: "<mark class=\"flc-orator-highlight\"></mark>"
                     }
-                }
+                },
+                distributeOptions: [{
+                    source: "{that}.options.strings",
+                    target: "{that controller}.options.strings",
+                    namespace: "controllerStrings"
+                }, {
+                    source: "{that}.options.strings",
+                    target: "{that selectionReader}.options.strings",
+                    namespace: "selectionReaderStrings"
+                }]
             });
         </script>
     @endpush
