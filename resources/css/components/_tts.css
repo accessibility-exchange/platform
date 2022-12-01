@@ -12,8 +12,8 @@
 }
 
 .tts-controller > button {
-    margin-block: calc(-1 var(--border-2));
-    margin-inline: *;
+    margin-block: calc(-1 * var(--border-2));
+    margin-inline: calc(-1 * var(--border-2));
 }
 
 .tts-controller :not(.tts-controller--playing) .tts-controller-pause {
