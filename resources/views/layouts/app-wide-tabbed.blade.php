@@ -11,7 +11,6 @@
     <!-- Main Content -->
     <main id="main">
         <div class="center center:wide">
-            <x-tts.orator />
             <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Page Heading -->
                 <header class="header--tabbed">
@@ -19,6 +18,9 @@
                     <div class="center center:wide stack">
                         <!-- Flash Messages -->
                         @include('partials.flash-messages')
+
+                        <!-- Text to Speech -->
+                        <x-tts.orator />
 
                         {{ $header }}
                     </div>

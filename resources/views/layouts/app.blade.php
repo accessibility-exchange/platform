@@ -11,12 +11,13 @@
     <!-- Main Content -->
     <main id="main">
         <div class="center">
-            <x-tts.orator />
             <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
                 <!-- Flash Messages -->
                 @include('partials.flash-messages')
                 <!-- Page Heading -->
                 <header class="stack">
+                    <!-- Text to Speech -->
+                    <x-tts.orator />
                     {{ $header }}
                 </header>
                 <!-- Page Content -->

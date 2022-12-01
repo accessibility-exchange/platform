@@ -18,6 +18,9 @@
 
                 <!-- Page Heading -->
                 <header class="stack">
+                    <!-- Text to Speech -->
+                    <x-tts.orator />
+
                     {{ $header }}
                 </header>
 

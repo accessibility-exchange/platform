@@ -31,6 +31,12 @@
                 },
                 controller: {
                     parentContainer: "{orator}.dom.parent",
+                    styles: {
+                        play: "tts-controller--playing"
+                    },
+                    markup: {
+                        container: `<x-tts.controller />`
+                    }
                 },
                 domReader: {
                     markup: {

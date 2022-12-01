@@ -1,0 +1,25 @@
+.tts-controller {
+    background-color: var(--tts-controller-background);
+    border: var(--border-2) solid var(--tts-controller-color);
+    border-radius: var(--radius-sm);
+    color: var(--tts-controller-color);
+    display: inline-flex;
+}
+
+.tts-controller > svg {
+    margin-block: var(--space-3);
+    margin-inline: var(--space-4);
+}
+
+.tts-controller > button {
+    margin-block: calc(-1 var(--border-2));
+    margin-inline: *;
+}
+
+.tts-controller :not(.tts-controller--playing) .tts-controller-pause {
+    display: none;
+}
+
+.tts-controller--playing .tts-controller-play {
+    display: none;
+}

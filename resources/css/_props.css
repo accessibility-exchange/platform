@@ -339,6 +339,10 @@
     --expander-color-active: var(--theme-expander-color-active, var(--color-blue-7));
     --expander-border-active: var(--theme-expander-border-active, var(--color-blue-6));
 
+    /* Text-to-speech */
+    --tts-controller-background: var(--theme-body-background, var(--color-white));
+    --tts-controller-color: var(--theme-body-color, var(--color-graphite-5));
+
     /* Footer */
     --footer-border: var(--theme-footer-border, transparent);
 
