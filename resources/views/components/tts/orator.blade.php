@@ -19,6 +19,14 @@
 
     @push('infusionScripts')
         <script>
+            // Re-defining as a hack to work around this method not being accessed as an invoker by the
+            // selectionReader, and thus not easily able to override.
+            fluid.orator.selectionReader.renderControlState = function(that, control) {
+                var text = that.options.strings[that.model.play ? "stop" : "play"];
+                control.attr("aria-label", text);
+                control.toggleClass(that.options.styles.playing, that.model.play);
+            };
+
             fluid.orator('body', {
                 selectors: {
                     content: "{{ $contentSelector }}",
@@ -41,6 +49,17 @@
                 domReader: {
                     markup: {
                         highlight: `<x-tts.mark />`
+                    }
+                },
+                selectionReader: {
+                    styles: {
+                        above: "tts-selection--above",
+                        below: "tts-selection--below",
+                        control: "tts-selection-controller",
+                        playing: "tts-selection--playing",
+                    },
+                    markup: {
+                        control: `<x-tts.popup />`
                     }
                 },
                 distributeOptions: [{

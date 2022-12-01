@@ -342,6 +342,8 @@
     /* Text-to-speech */
     --tts-controller-background: var(--theme-body-background, var(--color-white));
     --tts-controller-color: var(--theme-body-color, var(--color-graphite-5));
+    --tts-selection-controller-background: var(--theme-btn-primary-color, var(--btn-primary-background));
+    --tts-selection-controller-color: var(--theme-btn-primary-background, var(--btn-primary-color));
 
     /* Footer */
     --footer-border: var(--theme-footer-border, transparent);
