@@ -29,7 +29,7 @@
 
             fluid.orator('body', {
                 selectors: {
-                    content: "{{ $contentSelector }}",
+                    content: $("{{ $contentSelector }}").first(),
                     parent: "#{{ $id }}"
                 },
                 strings: {
