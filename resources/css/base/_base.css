@@ -44,6 +44,11 @@ main article > header {
     padding-inline: var(--space-4);
 }
 
+::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-color);
+}
+
 @media (min-width: 75rem) {
     main > .center {
         --gutter: var(--space-4);
