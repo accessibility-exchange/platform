@@ -9,12 +9,50 @@
 
 .tts-controller > svg {
     margin-block: var(--space-3);
-    margin-inline: var(--space-4);
+    margin-inline-end: var(--space-5);
+    margin-inline-start: var(--space-4);
 }
 
 .tts-controller > button {
+    gap: 0;
     margin-block: calc(-1 * var(--border-2));
     margin-inline: calc(-1 * var(--border-2));
+    padding-inline-start: 0;
+}
+
+.tts-controller > button::before {
+    background: var(--btn-primary-background);
+    border-block-start: solid var(--border-2) var(--btn-primary-border);
+    border-inline-start: solid var(--border-2) var(--btn-primary-border);
+    content: "";
+    display: block;
+    height: 1rem;
+    left: calc(-1 * (var(--space-2) + 0.08rem));
+    position: relative;
+    transform: rotate(-45deg);
+    width: 1rem;
+}
+
+.tts-controller > button:focus::before {
+    box-shadow: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+            var(--bg, var(--body-background)),
+        calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+            calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+    outline: transparent;
+}
+
+.tts-controller > button:hover:not([aria-disabled="true"])::before {
+    background: var(--btn-primary-background-hover);
+    border-color: var(--btn-primary-border-hover);
+    color: var(--btn-primary-color-hover);
+}
+
+.tts-controller > button:active:not([aria-disabled="true"])::before,
+.tts-controller > button:focus:active:not([aria-disabled="true"])::before {
+    background: var(--btn-primary-background-active);
+    border-color: var(--btn-primary-border-active);
+    box-shadow: none;
+    color: var(--btn-primary-color-active);
 }
 
 .tts-controller :not(.tts-controller--playing) .tts-controller-pause {
