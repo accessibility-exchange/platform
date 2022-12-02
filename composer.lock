@@ -8094,25 +8094,27 @@
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",
-            "version": "v1.16",
+            "version": "v1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/eloquent-has-many-deep.git",
-                "reference": "14abcb86912d306862841edc8279d94117fed526"
+                "reference": "435ce579703ac387ecd97caf98502bd511d735f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/14abcb86912d306862841edc8279d94117fed526",
-                "reference": "14abcb86912d306862841edc8279d94117fed526",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/435ce579703ac387ecd97caf98502bd511d735f6",
+                "reference": "435ce579703ac387ecd97caf98502bd511d735f6",
                 "shasum": ""
             },
             "require": {
                 "illuminate/database": "^9.0",
-                "php": "^8.0.2"
+                "php": "^8.0.2",
+                "staudenmeir/eloquent-has-many-deep-contracts": "^1.0"
             },
             "require-dev": {
                 "awobaz/compoships": "^2.1",
                 "illuminate/pagination": "^9.0",
+                "nesbot/carbon": "^2.62.1",
                 "phpunit/phpunit": "^9.5",
                 "staudenmeir/eloquent-eager-limit": "^1.7"
             },
@@ -8135,7 +8137,7 @@
             "description": "Laravel Eloquent HasManyThrough relationships with unlimited levels",
             "support": {
                 "issues": "https://github.com/staudenmeir/eloquent-has-many-deep/issues",
-                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.16"
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.17"
             },
             "funding": [
                 {
@@ -8143,7 +8145,48 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-08-27T06:55:03+00:00"
+            "time": "2022-11-16T07:09:47+00:00"
+        },
+        {
+            "name": "staudenmeir/eloquent-has-many-deep-contracts",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts.git",
+                "reference": "f9589acaaf25f55f38c6dd9d6c1caa6ff62addf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep-contracts/zipball/f9589acaaf25f55f38c6dd9d6c1caa6ff62addf6",
+                "reference": "f9589acaaf25f55f38c6dd9d6c1caa6ff62addf6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^9.0",
+                "php": "^8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Staudenmeir\\EloquentHasManyDeepContracts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Contracts for staudenmeir/eloquent-has-many-deep",
+            "support": {
+                "issues": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts/issues",
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts/tree/v1.0"
+            },
+            "time": "2022-09-12T18:34:56+00:00"
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
