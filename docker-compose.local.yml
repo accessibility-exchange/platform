@@ -1,0 +1,117 @@
+# For more information: https://laravel.com/docs/sail
+version: '3'
+services:
+
+    platform.test:
+        build:
+            context: ./
+            dockerfile: ./.deploy/accessibility-app/Dockerfile
+            args:
+                CIPHERSWEET_KEY: '${CIPHERSWEET_KEY}'
+        container_name: platform.test
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - 80:80
+            - 443:443
+            - 3000:3000
+        env_file: .env
+        environment:
+          USER_ID: 1000 # change to your numerical user id so that you can work on files in real time and have write privileges
+          SSL_SUBJECT: "/C=CA/ST=Organization State/L=Organization City/O=Organization Name/OU=Organization Unit/CN=platform.test"
+        entrypoint: /tmp/entrypoint.sh # override entrypoint file
+        volumes:
+            - './app:/app/app'
+            - './config:/app/config'
+            - './database:/app/database'
+            - './routes:/app/routes'
+            - './tests:/app/tests'
+            - 'app-storage:/opt/data'
+            - './.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh' # create different entrypoint file
+            - './.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes' # add include for http & https blocks
+            - './.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf' # replace primary nginx config
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+            - meilisearch
+            - selenium
+        healthcheck:
+            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:80"]
+            retries: 3
+            timeout: 5s
+
+    mysql:
+        container_name: platform.mysql
+        image: docker.io/bitnami/mysql:8.0
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - 'sail-mysql:/bitnami/mysql/data'
+            - '.local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+            retries: 3
+            timeout: 5s
+
+    redis:
+        container_name: platform.redis
+        image: 'bitnami/redis'
+        ports:
+            - '${FORWARD_REDIS_PORT:-}:6379'
+        environment:
+            REDIS_HOST: '${REDIS_HOST}'
+            REDIS_PASSWORD: '${REDIS_PASSWORD}'
+            REDIS_PORT: '${REDIS_PORT}'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            retries: 3
+            timeout: 5s
+
+    meilisearch:
+        container_name: platform.meilisearch
+        image: 'getmeili/meilisearch:latest'
+        ports:
+            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+        volumes:
+            - 'sail-meilisearch:/data.ms'
+        networks:
+            - sail
+        healthcheck:
+            test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
+            retries: 3
+            timeout: 5s
+
+    mailhog:
+        container_name: platform.mailhog
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - sail
+
+    selenium:
+        container_name: platform.selenium
+        image: 'selenium/standalone-chrome'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
+networks:
+    sail:
+volumes:
+    app-storage:
+    sail-mysql:
+    sail-redis:
+    sail-meilisearch:
