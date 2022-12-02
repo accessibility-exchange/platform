@@ -273,6 +273,8 @@ legend {
 .field--error .field__hint,
 .field--error legend,
 .field__error {
+    --box-color: var(--input-error-color);
+
     color: var(--input-error-color);
 }
 

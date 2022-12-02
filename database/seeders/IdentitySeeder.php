@@ -39,10 +39,6 @@ class IdentitySeeder extends Seeder
                 'clusters' => ['area'],
             ],
             [
-                'name' => __('Refugees and/or immigrants'),
-                'clusters' => ['status'],
-            ],
-            [
                 'name' => __('Refugees'),
                 'clusters' => ['status'],
             ],
@@ -63,17 +59,13 @@ class IdentitySeeder extends Seeder
                 'clusters' => ['gender-and-sexuality'],
             ],
             [
-                'name' => __('Cross-disability and Deaf'),
-                'clusters' => ['disability-and-deaf'],
-            ],
-            [
                 'name' => __('Visual disabilities'),
                 'description' => __('Includes individuals with sight loss, blind individuals, and partially sighted individuals'),
                 'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Deaf'),
-                'cluster' => ['disability-and-deaf'],
+                'clusters' => ['disability-and-deaf'],
             ],
             [
                 'name' => __('Hard-of-hearing'),
@@ -210,12 +202,8 @@ class IdentitySeeder extends Seeder
                 'clusters' => ['indigenous'],
             ],
             [
-                'name' => __('People with disabilities and/or Deaf people'),
-                'clusters' => ['experience'],
-            ],
-            [
                 'name' => __('Supporters'),
-                'clusters' => ['experience', 'unreachable'],
+                'clusters' => ['lived-experience', 'unreachable'],
             ],
         ];
 

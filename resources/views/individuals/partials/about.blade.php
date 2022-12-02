@@ -37,25 +37,22 @@
     <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
 
     <ul class="tags" role="list">
-        @foreach ($individual->disabilityTypeConnections as $disabilityType)
+        @foreach ($individual->disabilityAndDeafConnections as $disabilityType)
             <li class="tag">{{ $disabilityType->name }}</li>
         @endforeach
         @if ($individual->other_disability_type_connection)
             <li class="tag">{{ $individual->other_disability_type_connection }}</li>
         @endif
         @foreach ($individual->livedExperienceConnections as $livedExperience)
-            @if ($livedExperience->getTranslation('name', 'en') !== 'People with disabilities and/or Deaf people')
-                <li class="tag">{{ $livedExperience->name }}</li>
-            @endif
+            <li class="tag">{{ $livedExperience->name }}</li>
         @endforeach
     </ul>
 
-    @if ($individual->extra_attributes->has_indigenous_identities ||
-        $individual->extra_attributes->has_ethnoracial_identities)
+    @if ($individual->indigenousConnections->count() || $individual->ethnoracialIdentityConnections->count())
         <h4>{{ __('Ethno-racial groups') }}</h4>
 
         <ul class="tags" role="list">
-            @foreach ($individual->indigenousIdentityConnections as $indigenousIdentity)
+            @foreach ($individual->indigenousConnections as $indigenousIdentity)
                 <li class="tag">{{ $indigenousIdentity->name }}</li>
             @endforeach
             @foreach ($individual->ethnoracialIdentityConnections as $ethnoracialIdentity)
@@ -67,23 +64,16 @@
         </ul>
     @endif
 
-    @if ($individual->extra_attributes->has_gender_and_sexual_identities ||
-        $individual->extra_attributes->has_refugee_and_immigrant_constituency)
+    @if ($individual->genderAndSexualityConnections->count() || $individual->statusConnections->count())
         <h3>{{ __('Other identity groups') }}</h3>
 
         <ul class="tags" role="list">
-            @if ($individual->extra_attributes->has_refugee_and_immigrant_constituency)
-                <li class="tag">{{ __('Refugees and/or immigrants') }}</li>
-            @endif
-            @foreach ($individual->genderIdentityConnections as $genderIdentity)
+            @foreach ($individual->statusConnections as $statusIdentity)
+                <li class="tag">{{ $statusIdentity->name }}</li>
+            @endforeach
+            @foreach ($individual->genderAndSexualityConnections as $genderIdentity)
                 <li class="tag">{{ $genderIdentity->name }}</li>
             @endforeach
-            @if ($individual->constituencyConnections->contains($transPeople))
-                <li class="tag">{{ $transPeople->name }}</li>
-            @endif
-            @if ($individual->constituencyConnections->contains($twoslgbtqiaplusPeople))
-                <li class="tag">{{ $twoslgbtqiaplusPeople->name }}</li>
-            @endif
         </ul>
     @endif
 

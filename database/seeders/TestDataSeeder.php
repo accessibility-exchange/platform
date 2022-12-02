@@ -8,6 +8,7 @@ use App\Models\Language;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -27,11 +28,11 @@ class TestDataSeeder extends Seeder
                 'ethnoracial' => ['Middle Eastern'],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
                 'genderIdentities' => [],
-                'constituencies' => ['Refugees and/or immigrants'],
+                'constituencies' => ['Refugees', 'Immigrants'],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
-                'disabilityTypes' => ['Cross-disability and Deaf'],
-                'livedExperiences' => ['People with disabilities and/or Deaf people'],
+                'disabilityTypes' => [],
+                'livedExperiences' => [],
                 'sectors' => ['Transportation', 'Financial services', 'Federal government programs and services'],
                 'impacts' => ['Buildings and public spaces', 'Buying goods, services, facilities'],
                 'individualDetails' => [
@@ -75,7 +76,7 @@ class TestDataSeeder extends Seeder
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
                 'disabilityTypes' => ['Deaf'],
-                'livedExperiences' => ['People with disabilities and/or Deaf people'],
+                'livedExperiences' => [],
                 'sectors' => [
                     'Transportation',
                     'Financial services',
@@ -135,7 +136,6 @@ class TestDataSeeder extends Seeder
                     'Mental health-related disabilities',
                 ],
                 'livedExperiences' => [
-                    'People with disabilities and/or Deaf people',
                     'Supporters',
                 ],
                 'sectors' => [
@@ -191,8 +191,8 @@ class TestDataSeeder extends Seeder
                 'constituencies' => ['2SLGBTQIA+ people'],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
-                'disabilityTypes' => ['Cross-disability and Deaf'],
-                'livedExperiences' => ['People with disabilities and/or Deaf people'],
+                'disabilityTypes' => [],
+                'livedExperiences' => [],
                 'sectors' => [
                     'Transportation',
                     'Financial services',
@@ -249,7 +249,6 @@ class TestDataSeeder extends Seeder
                     'Developmental disabilities',
                 ],
                 'livedExperiences' => [
-                    'People with disabilities and/or Deaf people',
                     'Supporters',
                 ],
                 'sectors' => [
@@ -318,35 +317,35 @@ class TestDataSeeder extends Seeder
                 $user->individual->sectorsOfInterest()->attach($item->id);
             }
             foreach ($livedExperiences as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($disabilityTypes as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($areaTypes as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($indigenousIdentities as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($constituencies as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($genderIdentities as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($ageGroups as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($ethnoracialIdentities as $name) {
-                $item = Identity::firstWhere('name->en', $name);
+                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
                 $user->individual->identityConnections()->attach($item->id);
             }
             foreach ($constituentLanguages as $code) {

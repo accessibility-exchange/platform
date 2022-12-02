@@ -9,10 +9,18 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+
+beforeEach(function () {
+    $this->seed(IdentitySeeder::class);
+
+    $this->livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
+    $this->areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
+});
 
 test('individual users can select an individual role', function () {
     $user = User::factory()->create();
@@ -99,7 +107,6 @@ test('individuals can edit their roles', function () {
 });
 
 test('users can create individual pages', function () {
-    $this->seed(IdentitySeeder::class);
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);
 
@@ -126,18 +133,12 @@ test('users can create individual pages', function () {
     $individual->fill([
         'roles' => ['consultant'],
         'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
-        'extra_attributes' => [
-            'has_age_brackets' => 0,
-            'has_ethnoracial_identities' => 0,
-            'has_gender_and_sexual_identities' => 0,
-            'has_indigenous_identities' => 0,
-        ],
         'meeting_types' => [MeetingType::InPerson->value],
     ]);
     $individual->save();
 
-    $individual->livedExperienceConnections()->attach(Identity::where('cluster', IdentityCluster::Experience)->first()->id);
-    $individual->areaTypeConnections()->attach(Identity::where('cluster', IdentityCluster::Area)->first()->id);
+    $individual->identityConnections()->attach($this->livedExperience->id);
+    $individual->identityConnections()->attach($this->areaType->id);
 
     expect($individual)->toBeInstanceOf(Individual::class);
 
@@ -384,25 +385,20 @@ test('entity users can not create individual pages', function () {
 });
 
 test('individuals with connector role can represent individuals with disabilities', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    expect($individual->base_disability_type)->toBeFalse();
-
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
+    expect($individual->base_disability_type)->toEqual('');
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), []);
 
     $response->assertSessionHasErrors();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'area_types' => [$areaType->id],
+        'lived_experiences' => [$this->livedExperience->id],
+        'area_types' => [$this->areaType->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -413,26 +409,20 @@ test('individuals with connector role can represent individuals with disabilitie
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
     expect($individual->base_disability_type)->toEqual('specific_disabilities');
-    expect($individual->has_nb_gnc_fluid_constituents)->toBeFalse();
-    expect($livedExperience->communityConnectors)->toHaveCount(1);
+    expect($individual->hasConnections('genderDiverseConnections'))->toBeFalse();
+    expect($this->livedExperience->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $crossDisability = Identity::where('name->en', 'Cross-disability and Deaf')->first();
-
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'base_disability_type' => 'cross_disability',
-        'area_types' => [$areaType->id],
+        'lived_experiences' => [$this->livedExperience->id],
+        'base_disability_type' => 'cross_disability_and_deaf',
+        'area_types' => [$this->areaType->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -441,27 +431,22 @@ test('individuals with connector role can represent cross-disability individuals
 
     $individual = $individual->fresh();
 
-    expect($individual->base_disability_type)->toEqual('cross_disability');
-    expect($crossDisability->communityConnectors)->toHaveCount(1);
+    expect($individual->base_disability_type)->toEqual('cross_disability_and_deaf');
 });
 
 test('individuals with connector role can represent individuals in specific age brackets', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $ageBracket = Identity::where('cluster', IdentityCluster::Age)->first();
+    $ageBracket = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'area_types' => [$areaType->id],
-        'has_age_brackets' => 1,
-        'age_brackets' => [$ageBracket->id],
+        'lived_experiences' => [$this->livedExperience->id],
+        'area_types' => [$this->areaType->id],
+        'has_age_bracket_connections' => 1,
+        'age_bracket_connections' => [$ageBracket->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -471,25 +456,18 @@ test('individuals with connector role can represent individuals in specific age 
     $individual = $individual->fresh();
 
     expect($individual->ageBracketConnections)->toHaveCount(1);
-    expect($individual->extra_attributes->has_age_brackets)->toBeTruthy();
     expect($ageBracket->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals with connector role can represent refugees and immigrants', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $refugeesAndImmigrants = Identity::where('name->en', 'Refugees and/or immigrants')->first();
-
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'area_types' => [$areaType->id],
+        'lived_experiences' => [$this->livedExperience->id],
+        'area_types' => [$this->areaType->id],
         'refugees_and_immigrants' => 1,
     ]);
 
@@ -499,75 +477,54 @@ test('individuals with connector role can represent refugees and immigrants', fu
 
     $individual = $individual->fresh();
 
-    expect($individual->constituencyConnections)->toHaveCount(1);
-    expect($refugeesAndImmigrants->communityConnectors)->toHaveCount(1);
+    expect($individual->statusConnections)->toHaveCount(2);
 });
 
 test('individuals with connector role can represent gender and sexual minorities', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $women = Identity::where('name->en', 'Women')->first();
-    $nb = Identity::where('name->en', 'Non-binary people')->first();
-    $gnc = Identity::where('name->en', 'Gender non-conforming people')->first();
-    $fluid = Identity::where('name->en', 'Gender fluid people')->first();
-    $transPeople = Identity::where('name->en', 'Trans people')->first();
-    $twoslgbtqiaplusPeople = Identity::where('name->en', '2SLGBTQIA+ people')->firstOrFail();
+    $genderAndSexualIdentities = array_merge(Identity::whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
+        $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
+    })->pluck('id')->toArray(),
+        Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->whereNot(function ($query) {
+            $query->whereJsonContains('clusters', IdentityCluster::Gender);
+        })->pluck('id')->toArray());
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'area_types' => [$areaType->id],
-        'has_gender_and_sexual_identities' => 1,
-        'gender_and_sexual_identities' => [
-            'women',
-            'nb-gnc-fluid-people',
-            'trans-people',
-            '2slgbtqiaplus-people',
-        ],
+        'lived_experiences' => [$this->livedExperience->id],
+        'area_types' => [$this->areaType->id],
+        'has_gender_and_sexuality_connections' => 1,
+        'nb_gnc_fluid_identity' => 1,
+        'gender_and_sexuality_connections' => $genderAndSexualIdentities,
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
     $response->assertSessionHasNoErrors();
 
-    $individual = $individual->fresh();
+    $individual->refresh();
 
-    expect($individual->constituencyConnections)->toHaveCount(2);
-    expect($individual->genderIdentityConnections)->toHaveCount(4);
-    expect($individual->has_nb_gnc_fluid_constituents)->toBeTrue();
-    expect($individual->extra_attributes->has_gender_and_sexual_identities)->toBeTruthy();
-    expect($nb->communityConnectors)->toHaveCount(1);
-    expect($gnc->communityConnectors)->toHaveCount(1);
-    expect($fluid->communityConnectors)->toHaveCount(1);
-    expect($transPeople->communityConnectors)->toHaveCount(1);
-    expect($twoslgbtqiaplusPeople->communityConnectors)->toHaveCount(1);
+    expect($individual->genderAndSexualityConnections)->toHaveCount(6);
+    expect($individual->hasConnections('genderDiverseConnections'))->toBeTrue();
 });
 
 test('individuals with connector role can represent ethnoracial identities', function () {
-    $this->seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $individual = $user->individual;
     $individual->roles = ['connector'];
     $individual->save();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
     $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$livedExperience->id],
-        'ethnoracial_identities' => [$ethnoracialIdentity->id],
-        'area_types' => [$areaType->id],
+        'lived_experiences' => [$this->livedExperience->id],
+        'ethnoracial_identity_connections' => [$ethnoracialIdentity->id],
+        'area_types' => [$this->areaType->id],
     ]);
 
-    unset($data['other_ethnoracial']);
+    unset($data['has_other_ethnoracial_identity_connection']);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
@@ -577,7 +534,6 @@ test('individuals with connector role can represent ethnoracial identities', fun
 
     expect($individual->ethnoracialIdentityConnections)->toHaveCount(1);
     expect($individual->other_ethnoracial_identity_connections)->toBeNull();
-    expect($ethnoracialIdentity->communityConnectors)->toHaveCount(1);
 });
 
 test('individuals can have participant role', function () {
@@ -856,22 +812,20 @@ test('individual isPublishable()', function ($expected, $data, $userData, $conne
     $individual->update($data);
     $individual = $individual->fresh();
 
-    $livedExperience = Identity::where('cluster', IdentityCluster::Experience)->first();
-    $areaType = Identity::where('cluster', IdentityCluster::Area)->first();
-    $indigenousIdentity = Identity::where('cluster', IdentityCluster::Indigenous)->first();
-    $ageBracket = Identity::where('cluster', IdentityCluster::Age)->first();
+    $indigenousIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->first();
+    $ageBracket = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
 
     foreach ($connections as $connection) {
         if ($connection === 'livedExperienceConnections') {
-            $individual->livedExperienceConnections()->attach($livedExperience->id);
+            $individual->livedExperienceConnections()->attach($this->livedExperience->id);
         }
 
         if ($connection === 'areaTypeConnections') {
-            $individual->areaTypeConnections()->attach($areaType->id);
+            $individual->areaTypeConnections()->attach($this->areaType->id);
         }
 
-        if ($connection === 'indigenousIdentityConnections') {
-            $individual->indigenousIdentityConnections()->attach($indigenousIdentity->id);
+        if ($connection === 'indigenousConnections') {
+            $individual->indigenousConnections()->attach($indigenousIdentity->id);
         }
 
         if ($connection === 'ageBracketConnections') {

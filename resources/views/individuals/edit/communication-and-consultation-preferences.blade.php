@@ -8,7 +8,7 @@
         <div class="stack">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
-                {{ __('Communication and meeting preferences') }}
+                {{ __('Communication and consultation preferences') }}
             </h2>
 
             <hr class="divider--thick">

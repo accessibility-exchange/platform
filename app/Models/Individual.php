@@ -6,6 +6,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Models\Scopes\IndividualUserNotSuspendedScope;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
@@ -70,7 +71,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'social_links',
         'website_link',
         'extra_attributes',
-        'other_disability_type_connection',
+        'other_disability_connection',
         'other_ethnoracial_identity_connection',
         'connection_lived_experience',
         'lived_experience',
@@ -101,7 +102,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'working_languages' => 'array',
         'consulting_services' => 'array',
         'social_links' => 'array',
-        'other_disability_type_connection' => 'array',
+        'other_disability_connection' => 'array',
         'other_ethnoracial_identity_connection' => 'array',
         'lived_experience' => 'array',
         'skills_and_strengths' => 'array',
@@ -116,7 +117,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'picture_alt',
         'pronouns',
         'bio',
-        'other_disability_type_connection',
+        'other_disability_connection',
         'other_ethnoracial_identity_connection',
         'lived_experience',
         'skills_and_strengths',
@@ -351,18 +352,6 @@ class Individual extends Model implements CipherSweetEncrypted
                 Rule::requiredIf(fn () => $this->isConsultant()),
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
-            'extra_attributes.has_age_brackets' => [
-                Rule::requiredIf(fn () => $this->isConnector()),
-            ],
-            'extra_attributes.has_ethnoracial_identities' => [
-                Rule::requiredIf(fn () => $this->isConnector()),
-            ],
-            'extra_attributes.has_gender_and_sexual_identities' => [
-                Rule::requiredIf(fn () => $this->isConnector()),
-            ],
-            'extra_attributes.has_indigenous_identities' => [
-                Rule::requiredIf(fn () => $this->isConnector()),
-            ],
             'meeting_types' => 'required',
             'name' => 'required',
             'region' => 'required',
@@ -382,14 +371,6 @@ class Individual extends Model implements CipherSweetEncrypted
                 }
 
                 if (! $this->areaTypeConnections()->count()) {
-                    return false;
-                }
-
-                if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentityConnections()->count()) {
-                    return false;
-                }
-
-                if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBracketConnections()->count()) {
                     return false;
                 }
             }
@@ -445,44 +426,44 @@ class Individual extends Model implements CipherSweetEncrypted
         return $this->belongsToMany(Identity::class, 'individual_identity_connections')->withTimestamps();
     }
 
-    public function livedExperienceConnections(): BelongsToMany
+    public function ageBracketConnections(): BelongsToMany
     {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Experience);
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Age);
     }
 
     public function areaTypeConnections(): BelongsToMany
     {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Area);
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Area);
     }
 
-    public function disabilityTypeConnections(): BelongsToMany
+    public function disabilityAndDeafConnections(): BelongsToMany
     {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
-    }
-
-    public function indigenousIdentityConnections(): BelongsToMany
-    {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Indigenous);
-    }
-
-    public function genderIdentityConnections(): BelongsToMany
-    {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Gender);
-    }
-
-    public function ageBracketConnections(): BelongsToMany
-    {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Age);
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
     }
 
     public function ethnoracialIdentityConnections(): BelongsToMany
     {
-        return $this->identityConnections()->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
     }
 
-    public function constituencyConnections(): BelongsToMany
+    public function genderIdentityConnections(): BelongsToMany
     {
-        return $this->identityConnections()->whereNull('cluster');
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Gender);
+    }
+
+    public function genderAndSexualityConnections(): BelongsToMany
+    {
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality);
+    }
+
+    public function genderDiverseConnections(): BelongsToMany
+    {
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
+    }
+
+    public function indigenousConnections(): BelongsToMany
+    {
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
     public function languageConnections(): BelongsToMany
@@ -490,32 +471,36 @@ class Individual extends Model implements CipherSweetEncrypted
         return $this->belongsToMany(Language::class)->withTimestamps();
     }
 
+    public function livedExperienceConnections(): BelongsToMany
+    {
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience);
+    }
+
+    public function statusConnections(): BelongsToMany
+    {
+        return $this->identityConnections()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Status);
+    }
+
     public function baseDisabilityType(): Attribute
     {
         return Attribute::make(
             get: function () {
-                if ($this->disabilityTypeConnections->count() > 0) {
-                    return $this->disabilityTypeConnections->contains(Identity::where('name->en', 'Cross-disability and Deaf')->first())
-                        ? 'cross_disability'
-                        : 'specific_disabilities';
-                } elseif (! empty($this->other_disability_type_connection)) {
-                    return 'specific_disabilities';
-                }
-
-                return false;
+                return match ($this->extra_attributes->get('cross_disability_and_deaf_connections')) {
+                    1 => 'cross_disability_and_deaf',
+                    0 => 'specific_disabilities',
+                    default => ''
+                };
             }
         );
     }
 
-    public function hasNbGncFluidConstituents(): Attribute
+    public function hasConnections(string $connectionType): ?bool
     {
-        return Attribute::make(
-            get: function () {
-                return $this->genderIdentityConnections->contains(Identity::where('name->en', 'Non-binary people')->firstOrFail())
-                    || $this->genderIdentityConnections->contains(Identity::where('name->en', 'Gender non-conforming people')->firstOrFail())
-                    || $this->genderIdentityConnections->contains(Identity::where('name->en', 'Gender fluid people')->firstOrFail());
-            }
-        );
+        if ($this->identityConnections->count() > 0) {
+            return $this->$connectionType->count() > 0;
+        }
+
+        return null;
     }
 
     public function blocks(): MorphToMany

@@ -464,7 +464,7 @@ class Organization extends Model
 
     public function livedExperiences(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Experience);
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::LivedExperience);
     }
 
     public function areaTypes(): BelongsToMany

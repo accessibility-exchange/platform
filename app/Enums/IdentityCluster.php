@@ -8,7 +8,7 @@ enum IdentityCluster: string
     case Area = 'area';
     case DisabilityAndDeaf = 'disability-and-deaf';
     case Ethnoracial = 'ethnoracial';
-    case Experience = 'experience';
+    case LivedExperience = 'lived-experience';
     case Family = 'family';
     case Gender = 'gender';
     case GenderAndSexuality = 'gender-and-sexuality';
@@ -24,7 +24,7 @@ enum IdentityCluster: string
             'area' => __('Area'),
             'disability-and-deaf' => __('Disability and/or Deaf identity'),
             'ethnoracial' => __('Ethnoracial identity'),
-            'experience' => __('Lived experience'),
+            'lived-experience' => __('Lived experience'),
             'family' => __('Family'),
             'gender' => __('Gender identity'),
             'gender-and-sexuality' => __('Gender and sexuality'),

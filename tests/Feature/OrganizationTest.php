@@ -123,7 +123,7 @@ test('users with admin role can edit and publish organizations', function () {
             'roles' => [OrganizationRole::ConsultationParticipant->value],
         ]);
 
-    $organization->identities()->attach(Identity::where('cluster', IdentityCluster::Experience)->first()->id);
+    $organization->identities()->attach(Identity::where('cluster', IdentityCluster::LivedExperience)->first()->id);
     $organization->identities()->attach(Identity::where('cluster', IdentityCluster::Area)->first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
@@ -608,7 +608,7 @@ test('organization isPublishable()', function ($expected, $data, $connections = 
         }
 
         if ($connection === 'livedExperiences') {
-            $organization->identities()->attach(Identity::firstWhere('cluster', IdentityCluster::Experience)->id);
+            $organization->identities()->attach(Identity::firstWhere('cluster', IdentityCluster::LivedExperience)->id);
         }
 
         if ($connection === 'trans_identity') {

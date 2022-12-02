@@ -164,7 +164,7 @@ class OrganizationController extends Controller
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'deafAndDisabilityGroups' => Identity::where('name->en', 'People with disabilities and/or Deaf people')->first(),
-            'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Experience))->toArray(),
+            'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience))->toArray(),
             'crossDisability' => Identity::where('name->en', 'Cross-disability and Deaf')->first(),
             'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
             'disabilityTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->reject(fn (Identity $identity) => $identity->name === __('Cross-disability and Deaf'))->toArray(),

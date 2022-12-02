@@ -67,7 +67,7 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
-    $this->organization->livedExperiences()->attach(Identity::firstWhere('cluster', IdentityCluster::Experience)->id);
+    $this->organization->livedExperiences()->attach(Identity::firstWhere('cluster', IdentityCluster::LivedExperience)->id);
     $this->organization->areaTypes()->attach(Identity::firstWhere('cluster', IdentityCluster::Area)->id);
 
     $this->engagement = Engagement::factory()->create([

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ReachableIdentityScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\LaravelOptions\Selectable;
@@ -28,6 +29,11 @@ class Identity extends Model implements Selectable
         'name',
         'description',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new ReachableIdentityScope);
+    }
 
     public function toSelectOption(): SelectOption
     {
