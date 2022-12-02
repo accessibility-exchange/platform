@@ -149,7 +149,7 @@ test('users can create individual pages', function () {
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'social_links' => [
@@ -175,7 +175,7 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'publish' => __('Publish'),
@@ -190,7 +190,7 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'save' => __('Save'),
@@ -202,7 +202,7 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'unpublish' => __('Unpublish'),
@@ -216,7 +216,7 @@ test('users can create individual pages', function () {
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'preview' => __('Preview'),
@@ -233,7 +233,7 @@ test('users can create individual pages', function () {
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
             'consulting_services' => [
-                'planning-consultation',
+                'designing-consultation',
                 'running-consultation',
             ],
             'save_and_next' => __('Save and next'),
@@ -578,7 +578,7 @@ test('users can edit individual pages', function () {
         'name' => $individual->name,
         'bio' => ['en' => 'test bio'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'locality' => 'St John\'s',
@@ -601,7 +601,7 @@ test('users can edit individual pages', function () {
         'name' => $draftIndividual->name,
         'bio' => ['en' => 'draft bio'],
         'consulting_services' => [
-            'planning-consultation',
+            'designing-consultation',
             'running-consultation',
         ],
         'locality' => 'St John\'s',
