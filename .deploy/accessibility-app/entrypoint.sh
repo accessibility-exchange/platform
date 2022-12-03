@@ -23,6 +23,8 @@ ln -s $CACHE_PATH /app/bootstrap/cache
 ## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
 chown -R www-data:www-data $FILES_PATH $CACHE_PATH
 
+php artisan deploy:local
+
 if [ ! -f $FILES_PATH/../deploy.lock ]
 then
 
@@ -33,7 +35,5 @@ then
 fi
 
 rm -rf $FILES_PATH/../deploy.lock
-
-php artisan deploy:local
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
