@@ -21,30 +21,27 @@
 }
 
 .tts-controller > button::before {
-    background: var(--btn-primary-background);
+    background-color: var(--btn-primary-background);
     border-block-start: solid var(--border-2) var(--btn-primary-border);
     border-inline-start: solid var(--border-2) var(--btn-primary-border);
     content: "";
     display: block;
-    height: 1rem;
+    height: var(--space-4);
     left: calc(-1 * (var(--space-2) + 0.08rem));
     position: relative;
     transform: rotate(-45deg);
-    width: 1rem;
+    width: var(--space-4);
 }
 
 .tts-controller > button:focus::before {
-    box-shadow: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
-            var(--bg, var(--body-background)),
-        calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
-            calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+    box-shadow: var(--tts-arrow-ring);
     outline: transparent;
 }
 
 .tts-controller > button:hover:not([aria-disabled="true"])::before {
-    background: var(--btn-primary-background-hover);
-    border-color: var(--btn-primary-border-hover);
-    color: var(--btn-primary-color-hover);
+    background: var(--tts-controller-background-color-hover);
+    border-color: var(--tts-controller-border-color-hover);
+    color: var(--tts-controller-color-hover);
 }
 
 .tts-controller > button:active:not([aria-disabled="true"])::before,
@@ -83,12 +80,46 @@ button.tts-selection-controller {
     z-index: 9007199254740991;
 }
 
+button.tts-selection-controller::after {
+    background-color: var(--tts-selection-controller-background);
+    border-block-start: solid var(--border-2) var(--tts-selection-controller-color);
+    border-inline-start: solid var(--border-2) var(--tts-selection-controller-color);
+    content: "";
+    display: block;
+    height: var(--space-4);
+    left: calc(var(--space-4) - 0.1rem);
+    position: absolute;
+    width: var(--space-4);
+}
+
+button.tts-selection-controller:hover:not([aria-disabled="true"]),
+button.tts-selection-controller:hover:not([aria-disabled="true"])::after {
+    background-color: var(--tts-selection-controller-background-color-hover);
+    border-color: var(--tts-selection-controller-border-color-hover);
+    color: var(--tts-selection-controller-color-hover);
+}
+
 .tts-selection-controller.tts-selection--above {
-    margin-block-start: calc(-1 * var(--space-12));
+    margin-block-start: calc(-1 * var(--space-16));
+}
+
+.tts-selection-controller.tts-selection--above::after {
+    top: calc(var(--space-8) + 0.1rem);
+    transform: rotate(225deg);
 }
 
 .tts-selection-controller.tts-selection--below {
-    margin-block-start: var(--space-2);
+    margin-block-start: var(--space-5);
+}
+
+.tts-selection-controller.tts-selection--below::after {
+    top: calc(-1 * var(--space-2) - 0.08rem);
+    transform: rotate(45deg);
+}
+
+.tts-selection-controller:focus::after {
+    box-shadow: var(--tts-arrow-ring);
+    outline: transparent;
 }
 
 .tts-selection-controller:not(.tts-selection--playing) .tts-selection-stop {
