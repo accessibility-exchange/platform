@@ -84,6 +84,10 @@
     --cta-dark-background-active: var(--theme-cta-dark-background-active, var(--color-white));
     --cta-dark-border-active: var(--theme-cta-dark-border-active, var(--color-white));
 
+    /* Mark */
+    --mark-background: var(--theme-body-color, var(--color-blue-7));
+    --mark-color: var(--theme-body-background, var(--color-white));
+
     /* Badge */
     --badge-background: var(--theme-badge-background, var(--color-grey-2));
     --badge-color: var(--theme-badge-color, var(--color-black));
@@ -335,6 +339,23 @@
     --expander-color-active: var(--theme-expander-color-active, var(--color-blue-7));
     --expander-border-active: var(--theme-expander-border-active, var(--color-blue-6));
 
+    /* Text-to-speech */
+    --tts-arrow-ring-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--body-background));
+    --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+        calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+    --tts-arrow-ring: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
+    --tts-controller-background-color: var(--theme-body-background, var(--color-white));
+    --tts-controller-color: var(--theme-body-color, var(--color-graphite-5));
+    --tts-controller-background-color-hover: var(--btn-primary-background-hover);
+    --tts-controller-border-color-hover: var(--btn-primary-border-hover);
+    --tts-controller-color-hover: var(--btn-primary-color-hover);
+    --tts-selection-controller-background: var(--theme-btn-primary-color, var(--btn-primary-background));
+    --tts-selection-controller-color: var(--theme-btn-primary-background, var(--btn-primary-color));
+    --tts-selection-controller-background-color-hover: var(--theme-btn-primary-color-hover, var(--color-white));
+    --tts-selection-controller-border-color-hover: var(--theme-btn-primary-border-hover, var(--color-blue-7));
+    --tts-selection-controller-color-hover: var(--theme-btn-primary-background-hover, var(--color-blue-7));
+
     /* Footer */
     --footer-border: var(--theme-footer-border, transparent);
 
@@ -452,4 +473,8 @@
 
     /* Manage page sections */
     --manage-section-shadow: var(--theme-manage-section-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
+
+    /* Selection */
+    --selection-background: var(--theme-body-color, Highlight);
+    --selection-color: var(--theme-body-background, HighlightText);
 }
