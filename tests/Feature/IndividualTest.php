@@ -397,8 +397,8 @@ test('individuals with connector role can represent individuals with disabilitie
     $response->assertSessionHasErrors();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
-        'area_types' => [$this->areaType->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'area_type_connections' => [$this->areaType->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -420,9 +420,9 @@ test('individuals with connector role can represent cross-disability individuals
     $individual->save();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
         'base_disability_type' => 'cross_disability_and_deaf',
-        'area_types' => [$this->areaType->id],
+        'area_type_connections' => [$this->areaType->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -443,8 +443,8 @@ test('individuals with connector role can represent individuals in specific age 
     $ageBracket = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
-        'area_types' => [$this->areaType->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'area_type_connections' => [$this->areaType->id],
         'has_age_bracket_connections' => 1,
         'age_bracket_connections' => [$ageBracket->id],
     ]);
@@ -466,8 +466,8 @@ test('individuals with connector role can represent refugees and immigrants', fu
     $individual->save();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
-        'area_types' => [$this->areaType->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'area_type_connections' => [$this->areaType->id],
         'refugees_and_immigrants' => 1,
     ]);
 
@@ -494,8 +494,8 @@ test('individuals with connector role can represent gender and sexual minorities
         })->pluck('id')->toArray());
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
-        'area_types' => [$this->areaType->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'area_type_connections' => [$this->areaType->id],
         'has_gender_and_sexuality_connections' => 1,
         'nb_gnc_fluid_identity' => 1,
         'gender_and_sexuality_connections' => $genderAndSexualIdentities,
@@ -519,9 +519,9 @@ test('individuals with connector role can represent ethnoracial identities', fun
     $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
-        'lived_experiences' => [$this->livedExperience->id],
+        'lived_experience_connections' => [$this->livedExperience->id],
         'ethnoracial_identity_connections' => [$ethnoracialIdentity->id],
-        'area_types' => [$this->areaType->id],
+        'area_type_connections' => [$this->areaType->id],
     ]);
 
     unset($data['has_other_ethnoracial_identity_connection']);
@@ -816,10 +816,6 @@ test('individual isPublishable()', function ($expected, $data, $userData, $conne
     $ageBracket = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
 
     foreach ($connections as $connection) {
-        if ($connection === 'livedExperienceConnections') {
-            $individual->livedExperienceConnections()->attach($this->livedExperience->id);
-        }
-
         if ($connection === 'areaTypeConnections') {
             $individual->areaTypeConnections()->attach($this->areaType->id);
         }

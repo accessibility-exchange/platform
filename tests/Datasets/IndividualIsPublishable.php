@@ -21,7 +21,6 @@ dataset('individualIsPublishable', function () {
 
     $baseConnections = [
         'areaTypeConnections',
-        'livedExperienceConnections',
     ];
 
     return [
@@ -52,7 +51,6 @@ dataset('individualIsPublishable', function () {
             $baseUser,
             [
                 'areaTypeConnections',
-                'livedExperienceConnections',
             ],
         ],
         'not publishable when missing name' => [
@@ -61,7 +59,6 @@ dataset('individualIsPublishable', function () {
             $baseUser,
             [
                 'areaTypeConnections',
-                'livedExperienceConnections',
             ],
         ],
         'not publishable when missing region' => [
@@ -70,7 +67,6 @@ dataset('individualIsPublishable', function () {
             $baseUser,
             [
                 'areaTypeConnections',
-                'livedExperienceConnections',
             ],
         ],
         'not publishable when missing roles' => [
@@ -79,7 +75,6 @@ dataset('individualIsPublishable', function () {
             $baseUser,
             [
                 'areaTypeConnections',
-                'livedExperienceConnections',
             ],
         ],
         'not publishable when missing areaTypeConnections' => [
@@ -90,21 +85,7 @@ dataset('individualIsPublishable', function () {
                 ],
             ]),
             $baseUser,
-            [
-                'livedExperienceConnections',
-            ],
-        ],
-        'not publishable when missing livedExperienceConnections' => [
-            false,
-            array_replace_recursive($baseModel, [
-                'roles' => [
-                    IndividualRole::CommunityConnector->value,
-                ],
-            ]),
-            $baseUser,
-            [
-                'areaTypeConnections',
-            ],
+            [],
         ],
         'not publishable using participant role' => [
             false,
@@ -132,7 +113,6 @@ dataset('individualIsPublishable', function () {
                 'ageBracketConnections',
                 'areaTypeConnections',
                 'indigenousConnections',
-                'livedExperienceConnections',
             ],
         ],
         'publishable without optional connections' => [
