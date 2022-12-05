@@ -96,18 +96,24 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $this->mergeIfMissing([
+        $fallbacks = [
             'disability_and_deaf' => 0,
             'lived_experiences' => [],
             'base_disability_type' => null,
             'disability_and_deaf_connections' => [],
             'area_types' => [],
             'nb_gnc_fluid_identity' => 0,
-            'indigenous_identity_connections' => [],
             'gender_and_sexuality_connections' => [],
+            'indigenous_identity_connections' => [],
             'age_bracket_connections' => [],
             'ethnoracial_identity_connections' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator($validator)
