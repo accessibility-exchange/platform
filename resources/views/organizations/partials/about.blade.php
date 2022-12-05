@@ -20,7 +20,7 @@
 
 <h4>{{ __('Urban, rural, or remote') }}</h4>
 <ul class="tags" role="list">
-    @foreach ($organization->areaTypes as $areaType)
+    @foreach ($organization->areaTypeConstituencies as $areaType)
         <li class="tag">
             {{ $areaType->name }}
         </li>

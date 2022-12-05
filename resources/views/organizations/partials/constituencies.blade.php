@@ -1,13 +1,13 @@
 <h3>{{ __('Groups in the disability and Deaf community') }}</h3>
 
 <ul class="tags" role="list">
-    @foreach ($organization->disabilityTypes as $disabilityType)
+    @foreach ($organization->disabilityAndDeafConstituencies as $disabilityType)
         <li class="tag">{{ $disabilityType->name }}</li>
     @endforeach
     @if ($organization->other_disability_type)
         <li class="tag">{{ $organization->other_disability_type }}</li>
     @endif
-    @foreach ($organization->livedExperiences as $livedExperience)
+    @foreach ($organization->livedExperienceConstituencies as $livedExperience)
         @if ($livedExperience->getTranslation('name', 'en') !== 'People with disabilities and/or Deaf people')
             <li class="tag">{{ $livedExperience->name }}</li>
         @endif
@@ -19,10 +19,10 @@
     <h3>{{ __('Ethno-racial groups') }}</h3>
 
     <ul class="tags" role="list">
-        @foreach ($organization->indigenousIdentities as $indigenousIdentity)
+        @foreach ($organization->indigenousConstituencies as $indigenousIdentity)
             <li class="tag">{{ $indigenousIdentity->name }}</li>
         @endforeach
-        @foreach ($organization->ethnoracialIdentities as $ethnoracialIdentity)
+        @foreach ($organization->ethnoracialIdentityConstituencies as $ethnoracialIdentity)
             <li class="tag">{{ $ethnoracialIdentity->name }}</li>
         @endforeach
         @if ($organization->other_ethnoracial)
@@ -39,13 +39,13 @@
         @if ($organization->extra_attributes->has_refugee_and_immigrant_constituency)
             <li class="tag">{{ __('Refugees and/or immigrants') }}</li>
         @endif
-        @foreach ($organization->genderIdentities as $genderIdentity)
+        @foreach ($organization->genderIdentityConstituencies as $genderIdentity)
             <li class="tag">{{ $genderIdentity->name }}</li>
         @endforeach
-        @if ($organization->identities->contains($transPeople))
+        @if ($organization->ConstituentIdentities->contains($transPeople))
             <li class="tag">{{ $transPeople->name }}</li>
         @endif
-        @if ($organization->identities->contains($twoslgbtqiaplusPeople))
+        @if ($organization->ConstituentIdentities->contains($twoslgbtqiaplusPeople))
             <li class="tag">{{ $twoslgbtqiaplusPeople->name }}</li>
         @endif
     </ul>
@@ -55,17 +55,17 @@
     <h3>{{ __('Age groups') }}</h3>
 
     <ul class="tags" role="list">
-        @foreach ($organization->ageBrackets as $ageBracket)
+        @foreach ($organization->ageBracketConstituencies as $ageBracket)
             <li class="tag">{{ $ageBracket->name }}</li>
         @endforeach
     </ul>
 @endif
 
-@if ($organization->constituentLanguages->count() > 0)
+@if ($organization->languageConstituencies->count() > 0)
     <h3>{{ __('Language groups') }}</h3>
 
     <ul class="tags" role="list">
-        @foreach ($organization->constituentLanguages as $language)
+        @foreach ($organization->languageConstituencies as $language)
             <li class="tag">{{ $language->name }}</li>
         @endforeach
     </ul>

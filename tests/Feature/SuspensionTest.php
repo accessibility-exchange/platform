@@ -67,8 +67,8 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
-    $this->organization->livedExperiences()->attach(Identity::firstWhere('cluster', IdentityCluster::LivedExperience)->id);
-    $this->organization->areaTypes()->attach(Identity::firstWhere('cluster', IdentityCluster::Area)->id);
+    $this->organization->livedExperienceConstituencies()->attach(Identity::firstWhere('cluster', IdentityCluster::LivedExperience)->id);
+    $this->organization->areaTypeConstituencies()->attach(Identity::firstWhere('cluster', IdentityCluster::Area)->id);
 
     $this->engagement = Engagement::factory()->create([
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),

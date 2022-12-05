@@ -78,12 +78,12 @@
                         <x-hearth-label
                             for='has_other_disability_connection'>{{ __('Something else') }}</x-hearth-label>
                     </div>
-                    <x-hearth-error for="disability_and_deaf_connections" />
-                    <x-hearth-error for="has_other_disability_connection" />
                     <div class="field__subfield stack">
                         <x-translatable-input name="other_disability_connection" :label="__('Disability type')" :shortLabel="__('disability type')"
                             :model="$individual" x-show="otherDisability" x-cloak />
                     </div>
+                    <x-hearth-error for="disability_and_deaf_connections" />
+                    <x-hearth-error for="has_other_disability_connection" />
                 </fieldset>
             </div>
 

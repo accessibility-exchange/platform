@@ -6,6 +6,7 @@ use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
@@ -80,7 +81,7 @@ class Organization extends Model
         'social_links',
         'website_link',
         'extra_attributes',
-        'other_disability_type',
+        'other_disability_constituency',
         'other_ethnoracial_identity',
         'staff_lived_experience',
         'contact_person_name',
@@ -105,7 +106,7 @@ class Organization extends Model
         'working_languages' => 'array',
         'consulting_services' => 'array',
         'social_links' => 'array',
-        'other_disability_type' => 'array',
+        'other_disability_constituency' => 'array',
         'other_ethnoracial_identity' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
@@ -120,7 +121,7 @@ class Organization extends Model
         'name',
         'slug',
         'about',
-        'other_disability_type',
+        'other_disability_constituency',
         'other_ethnoracial_identity',
     ];
 
@@ -457,49 +458,64 @@ class Organization extends Model
         return $this->belongsToMany(Sector::class);
     }
 
-    public function identities(): BelongsToMany
+    public function constituentIdentities(): BelongsToMany
     {
         return $this->belongsToMany(Identity::class)->withTimestamps();
     }
 
-    public function livedExperiences(): BelongsToMany
+    public function ageBracketConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::LivedExperience);
+        return $this->constituentIdentities()->whereJsonContains('clusters', IdentityCluster::Age);
     }
 
-    public function areaTypes(): BelongsToMany
+    public function areaTypeConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Area);
+        return $this->constituentIdentities()->whereJsonContains('clusters', IdentityCluster::Area);
     }
 
-    public function disabilityTypes(): BelongsToMany
+    public function disabilityAndDeafConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf);
     }
 
-    public function indigenousIdentities(): BelongsToMany
+    public function ethnoracialIdentityConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
     }
 
-    public function genderIdentities(): BelongsToMany
+    public function genderIdentityConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Gender);
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Gender);
     }
 
-    public function ageBrackets(): BelongsToMany
+    public function genderAndSexualityConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Age);
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality);
     }
 
-    public function ethnoracialIdentities(): BelongsToMany
+    public function genderDiverseConstituencies(): BelongsToMany
     {
-        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
     }
 
-    public function constituentLanguages(): BelongsToMany
+    public function indigenousConstituencies(): BelongsToMany
+    {
+        return $this->constituentIdentities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
+    }
+
+    public function languageConstituencies(): BelongsToMany
     {
         return $this->belongsToMany(Language::class)->withTimestamps();
+    }
+
+    public function livedExperienceConstituencies(): BelongsToMany
+    {
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience);
+    }
+
+    public function statusConstituencies(): BelongsToMany
+    {
+        return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Status);
     }
 
     public function courses(): hasMany
@@ -525,17 +541,22 @@ class Organization extends Model
     {
         return Attribute::make(
             get: function () {
-                if ($this->disabilityTypes->count() > 0) {
-                    return $this->disabilityTypes->contains(Identity::firstWhere('name->en', 'Cross-disability and Deaf'))
-                        ? 'cross_disability'
-                        : 'specific_disabilities';
-                } elseif (! empty($this->other_disability_type)) {
-                    return 'specific_disabilities';
-                }
-
-                return false;
+                return match ($this->extra_attributes->get('cross_disability_and_deaf_constituencies')) {
+                    1 => 'cross_disability_and_deaf',
+                    0 => 'specific_disabilities',
+                    default => ''
+                };
             }
         );
+    }
+
+    public function hasConstituencies(string $constituencyType): ?bool
+    {
+        if ($this->constituentIdentities->count() > 0) {
+            return $this->$constituencyType->count() > 0;
+        }
+
+        return null;
     }
 
     public function getHasNbGncFluidConstituentsAttribute(): bool
