@@ -208,12 +208,12 @@ class IndividualController extends Controller
 
         foreach ([
             'age_bracket_connections',
-            'area_types',
+            'area_type_connections',
             'disability_and_deaf_connections',
             'ethnoracial_identity_connections',
             'gender_and_sexuality_connections',
-            'indigenous_identity_connections',
-            'lived_experiences',
+            'indigenous_connections',
+            'lived_experience_connections',
         ] as $relationship) {
             if (isset($data[$relationship])) {
                 foreach ($data[$relationship] as $identity) {

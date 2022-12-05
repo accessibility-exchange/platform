@@ -366,10 +366,6 @@ class Individual extends Model implements CipherSweetEncrypted
             }
 
             if ($this->isConnector()) {
-                if (! $this->livedExperienceConnections()->count()) {
-                    return false;
-                }
-
                 if (! $this->areaTypeConnections()->count()) {
                     return false;
                 }

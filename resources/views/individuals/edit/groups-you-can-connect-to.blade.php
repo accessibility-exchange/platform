@@ -87,45 +87,42 @@
                 </fieldset>
             </div>
 
-            <fieldset class="field @error('area_types') field--error @enderror">
+            <fieldset class="field @error('area_type_connections') field--error @enderror">
                 <legend><x-required>{{ __('Where do the people that you can connect to come from?') }}</x-required>
                 </legend>
-                <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $individual->areaTypeConnections->pluck('id')->toArray())" hinted="area_types-hint"
-                    required />
-                <x-hearth-error for="area_types" />
+                <x-hearth-hint for="area_type_connections">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                <x-hearth-checkboxes name="area_type_connections" :options="$areaTypes" :checked="old('area_type_connections', $individual->areaTypeConnections->pluck('id')->toArray())"
+                    hinted="area_type_connections-hint" required />
+                <x-hearth-error for="area_type_connections" />
             </fieldset>
 
-            <div class="stack fieldset" x-data="{ hasIndigenousIdentities: {{ old('has_indigenous_identity_connections', (int) $individual->hasConnections('indigenousConnections') ?? '') }} }">
-                <fieldset class="field @error('has_indigenous_identity_connections') field--error @enderror">
+            <div class="stack fieldset" x-data="{ hasIndigenousIdentities: {{ old('has_indigenous_connections', (int) $individual->hasConnections('indigenousConnections') ?? '') }} }">
+                <fieldset class="field @error('has_indigenous_connections') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Can you connect to people who are First Nations, Inuit, or Métis?') }}</x-required>
                     </legend>
                     <div class="field">
-                        <input id="has_indigenous_identity_connections-1" name="has_indigenous_identity_connections"
-                            type="radio" value="1" @checked(old('has_indigenous_identity_connections', (int) $individual->hasConnections('indigenousConnections') ?? ''))
-                            x-model="hasIndigenousIdentities" />
-                        <label for="has_indigenous_identity_connections-1">{{ __('Yes') }}</label>
+                        <input id="has_indigenous_connections-1" name="has_indigenous_connections" type="radio"
+                            value="1" @checked(old('has_indigenous_connections', (int) $individual->hasConnections('indigenousConnections') ?? '')) x-model="hasIndigenousIdentities" />
+                        <label for="has_indigenous_connections-1">{{ __('Yes') }}</label>
                     </div>
                     <div class="field">
-                        <input id="has_indigenous_identity_connections-0" name="has_indigenous_identity_connections"
-                            type="radio" value="0" @checked(!old('has_indigenous_identity_connections', (int) $individual->hasConnections('indigenousConnections') ?? ''))
-                            x-model="hasIndigenousIdentities" />
-                        <label for="has_indigenous_identity_connections-0">{{ __('No') }}</label>
+                        <input id="has_indigenous_connections-0" name="has_indigenous_connections" type="radio"
+                            value="0" @checked(!old('has_indigenous_connections', (int) $individual->hasConnections('indigenousConnections') ?? '')) x-model="hasIndigenousIdentities" />
+                        <label for="has_indigenous_connections-0">{{ __('No') }}</label>
                     </div>
-                    <x-hearth-error for="has_indigenous_identity_connections" />
+                    <x-hearth-error for="has_indigenous_connections" />
                 </fieldset>
 
-                <fieldset class="field box @error('indigenous_identity_connections') field--error @enderror"
+                <fieldset class="field box @error('indigenous_connections') field--error @enderror"
                     x-show="hasIndigenousIdentities == 1" x-cloak>
                     <legend><x-required>{{ __('Which Indigenous groups can you connect to?') }}</x-required></legend>
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
-                    <x-hearth-checkboxes name="indigenous_identity_connections" :options="$indigenousIdentities" :checked="old(
-                        'indigenous_identity_connections',
+                    <x-hearth-checkboxes name="indigenous_connections" :options="$indigenousIdentities" :checked="old(
+                        'indigenous_connections',
                         $individual->indigenousConnections->pluck('id')->toArray() ?? [],
-                    )"
-                        required />
-                    <x-hearth-error for="indigenous_identity_connections" />
+                    )" required />
+                    <x-hearth-error for="indigenous_connections" />
                 </fieldset>
             </div>
 

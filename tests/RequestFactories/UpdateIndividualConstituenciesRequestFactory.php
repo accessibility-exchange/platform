@@ -10,12 +10,12 @@ class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
     {
         return [
             'disability_and_deaf' => 1,
-            'lived_experiences' => [],
+            'lived_experience_connections' => [],
             'base_disability_type' => 'specific_disabilities',
             'has_other_disability_connection' => 1,
             'other_disability_connection' => ['en' => 'Something not listed'],
-            'area_types' => [],
-            'has_indigenous_identity_connections' => 0,
+            'area_type_connections' => [],
+            'has_indigenous_connections' => 0,
             'refugees_and_immigrants' => 0,
             'has_gender_and_sexuality_connections' => 0,
             'has_age_bracket_connections' => 0,
