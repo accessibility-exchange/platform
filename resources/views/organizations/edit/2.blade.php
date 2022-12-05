@@ -75,133 +75,151 @@
                 <x-hearth-error for="refugees_and_immigrants" />
             </fieldset>
 
-            <div class="fieldset" x-data="{ hasGenderAndSexualIdentities: '{{ old('has_gender_and_sexual_identities', $organization->extra_attributes->get('has_gender_and_sexual_identities', '')) }}' }">
-                <fieldset class="field @error('has_gender_and_sexual_identities') field--error @enderror">
+            <div class="fieldset" x-data="{ hasGenderAndSexualityConstituencies: '{{ old('has_gender_and_sexuality_constituencies', (int) $organization->hasConstituencies('genderAndSexualityConstituencies')) }}' }">
+                <fieldset class="field @error('has_gender_and_sexuality_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
                     <div class="field">
-                        <x-hearth-input id="has_gender_and_sexual_identities-1" name="has_gender_and_sexual_identities"
-                            type="radio" value="1" x-model="hasGenderAndSexualIdentities" />
-                        <label for="has_gender_and_sexual_identities-1">{{ __('Yes') }}</label>
+                        <input id="has_gender_and_sexuality_constituencies-1"
+                            name="has_gender_and_sexuality_constituencies" type="radio" value="1"
+                            @checked(old(
+                                    'has_gender_and_sexuality_constituencies',
+                                    (int) $organization->hasConstituencies('genderAndSexualityConstituencies')
+                                )) x-model="hasGenderAndSexualityConstituencies" />
+                        <label for="has_gender_and_sexuality_constituencies-1">{{ __('Yes') }}</label>
                     </div>
 
                     <div class="field">
-                        <x-hearth-input id="has_gender_and_sexual_identities-0" name="has_gender_and_sexual_identities"
-                            type="radio" value="0" x-model="hasGenderAndSexualIdentities" />
-                        <label for="has_gender_and_sexual_identities-0">{{ __('No') }}</label>
+                        <input id="has_gender_and_sexuality_constituencies-0"
+                            name="has_gender_and_sexuality_constituencies" type="radio" value="0"
+                            @checked(!old(
+                                    'has_gender_and_sexuality_constituencies',
+                                    (int) $organization->hasConstituencies('genderAndSexualityConstituencies')
+                                )) x-model="hasGenderAndSexualityConstituencies" />
+                        <label for="has_gender_and_sexuality_constituencies-0">{{ __('No') }}</label>
                     </div>
-                    <x-hearth-error for="has_gender_and_sexual_identities" />
+                    <x-hearth-error for="has_gender_and_sexuality_constituencies" />
                 </fieldset>
-                {{-- <fieldset class="field box @error('gender_and_sexual_identities') field--error @enderror"
-                    x-show="hasGenderAndSexualIdentities == 1">
+                <fieldset
+                    class="field box @error('gender_and_sexuality_constituencies') field--error @enderror @error('nb_gnc_fluid_identity') field--error @enderror"
+                    x-show="hasGenderAndSexualityConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which groups marginalized based on gender or sexual identity does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <div class="field">
-                        <x-hearth-checkbox id='gender_and_sexual_identities-women' name='gender_and_sexual_identities[]'
-                            value='women' :checked="in_array('women', old('gender_and_sexual_identities', [])) ||
-                                $organization->genderIdentityConstituencies->contains($women) ?? false" />
-                        <x-hearth-label for='gender_and_sexual_identities-women'>{{ $women->name }}</x-hearth-label>
+                        <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
+                            'nb_gnc_fluid_identity',
+                            $organization->hasConstituencies('genderDiverseConstituencies') ?? false,
+                        )" />
+                        <x-hearth-label
+                            for='nb_gnc_fluid_identity'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
                     </div>
                     <div class="field">
-                        <x-hearth-checkbox id='gender_and_sexual_identities-nb-gnc-fluid-people'
-                            name='gender_and_sexual_identities[]' value='nb-gnc-fluid-people' :checked="in_array('nb-gnc-fluid-people', old('gender_and_sexual_identities', [])) ||
-                                $organization->has_nb_gnc_fluid_constituents ?? false" />
-                        <x-hearth-label for='gender_and_sexual_identities-nb-gnc-fluid-people'>
-                            {{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
+                        <x-hearth-checkboxes name="gender_and_sexuality_constituencies" :options="$genderAndSexualIdentities"
+                            :checked="old(
+                                'gender_and_sexuality_constituencies',
+                                $organization->genderAndSexualityConstituencies->pluck('id')->toArray(),
+                            )" required />
                     </div>
-                    <div class="field">
-                        <x-hearth-checkbox id='gender_and_sexual_identities-trans-people'
-                            name='gender_and_sexual_identities[]' value='trans-people' :checked="in_array('trans-people', old('gender_and_sexual_identities', [])) ||
-                                $organization->ConstituentIdentities->contains($transPeople) ?? false" />
-                        <x-hearth-label for='gender_and_sexual_identities-trans-people'>{{ $transPeople->name }}
-                        </x-hearth-label>
-                    </div>
-                    <div class="field">
-                        <x-hearth-checkbox id='gender_and_sexual_identities-2slgbtqiaplus-people'
-                            name='gender_and_sexual_identities[]' value='2slgbtqiaplus-people' :checked="in_array('2slgbtqiaplus-people', old('gender_and_sexual_identities', [])) ||
-                                $organization->ConstituentIdentities->contains($twoslgbtqiaplusPeople) ?? false" />
-                        <x-hearth-label for='gender_and_sexual_identities-2slgbtqiaplus-people'>
-                            {{ $twoslgbtqiaplusPeople->name }}</x-hearth-label>
-                    </div>
-                    <x-hearth-error for="gender_and_sexual_identities" />
-                </fieldset> --}}
+                    <x-hearth-error for="gender_and_sexuality_constituencies" />
+                </fieldset>
             </div>
 
-            <div class="fieldset" x-data="{ hasAgeBrackets: '{{ old('has_age_brackets', $organization->extra_attributes->get('has_age_brackets', '')) }}' }">
-                <fieldset class="field @error('has_age_brackets') field--error @enderror">
+            <div class="fieldset" x-data="{ hasAgeBracketConstituencies: '{{ old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')) }}' }">
+                <fieldset class="field @error('has_age_bracket_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
                     <div class="field">
-                        <input id="has_age_brackets-1" name="has_age_brackets" type="radio" value="1"
-                            @checked(old('has_age_brackets', $organization->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" />
-                        <label for="has_age_brackets-1">{{ __('Yes') }}</label>
+                        <input id="has_age_bracket_constituencies-1" name="has_age_bracket_constituencies"
+                            type="radio" value="1" @checked(old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')))
+                            x-model="hasAgeBracketConstituencies" />
+                        <label for="has_age_bracket_constituencies-1">{{ __('Yes') }}</label>
                     </div>
 
                     <div class="field">
-                        <input id="has_age_brackets-0" name="has_age_brackets" type="radio" value="0"
-                            @checked(!old('has_age_brackets', $organization->extra_attributes->get('has_age_brackets', ''))) x-model="hasAgeBrackets" />
-                        <label for="has_age_brackets-0">{{ __('No') }}</label>
+                        <input id="has_age_bracket_constituencies-0" name="has_age_bracket_constituencies"
+                            type="radio" value="0" @checked(!old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')))
+                            x-model="hasAgeBracketConstituencies" />
+                        <label for="has_age_bracket_constituencies-0">{{ __('No') }}</label>
                     </div>
-                    <x-hearth-error for="has_age_brackets" />
+                    <x-hearth-error for="has_age_bracket_constituencies" />
                 </fieldset>
-                <fieldset class="field box @error('age_brackets') field--error @enderror" x-show="hasAgeBrackets == 1">
+                <fieldset class="field box @error('age_bracket_constituencies') field--error @enderror"
+                    x-show="hasAgeBracketConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which age groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
-                    <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old('age_brackets', $organization->ageBracketConstituencies->pluck('id')->toArray())" required />
-                    <x-hearth-error for="age_brackets" />
+                    <x-hearth-checkboxes name="age_bracket_constituencies" :options="$ageBrackets" :checked="old(
+                        'age_bracket_constituencies',
+                        $organization->ageBracketConstituencies->pluck('id')->toArray(),
+                    )"
+                        required />
+                    <x-hearth-error for="age_bracket_constituencies" />
                 </fieldset>
             </div>
 
             <div class="fieldset" x-data="{
-                hasEthnoracialIdentities: '{{ old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', '')) }}',
-                otherEthnoracialIdentity: {{ old('other_ethnoracial', !is_null($organization->other_ethnoracial_identity) && $organization->other_ethnoracial_identity !== '') ? 'true' : 'false' }}
+                hasEthnoracialIdentityConstituencies: '{{ old('has_ethnoracial_identity_constituencies', (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') || (!is_null($organization->other_ethnoracial_identity_constituency) && $organization->other_ethnoracial_identity_constituency !== ''))) }}',
+                otherEthnoracialIdentity: {{ old('has_other_ethnoracial_identity_constituency', !is_null($organization->other_ethnoracial_identity_constituency) && $organization->other_ethnoracial_identity_constituency !== '') ? 'true' : 'false' }}
             }">
-                <fieldset class="field @error('has_ethnoracial_identities') field--error @enderror">
+                <fieldset class="field @error('has_ethnoracial_identity_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
                     <div class="field">
-                        <input id="has_ethnoracial_identities-1" name="has_ethnoracial_identities" type="radio"
-                            value="1" @checked(old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" />
-                        <label for="has_ethnoracial_identities-1">{{ __('Yes') }}</label>
+                        <input id="has_ethnoracial_identity_constituencies-1"
+                            name="has_ethnoracial_identity_constituencies" type="radio" value="1"
+                            @checked(old(
+                                    'has_ethnoracial_identity_constituencies',
+                                    (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') ||
+                                        (!is_null($organization->other_ethnoracial_identity_constituency) &&
+                                            $organization->other_ethnoracial_identity_constituency !== ''))
+                                )) x-model="hasEthnoracialIdentityConstituencies" />
+                        <label for="has_ethnoracial_identity_constituencies-1">{{ __('Yes') }}</label>
                     </div>
                     <div class="field">
-                        <input id="has_ethnoracial_identities-0" name="has_ethnoracial_identities" type="radio"
-                            value="0" @checked(!old('has_ethnoracial_identities', $organization->extra_attributes->get('has_ethnoracial_identities', ''))) x-model="hasEthnoracialIdentities" />
-                        <label for="has_ethnoracial_identities-0">{{ __('No') }}</label>
+                        <input id="has_ethnoracial_identity_constituencies-0"
+                            name="has_ethnoracial_identity_constituencies" type="radio" value="0"
+                            @checked(!old(
+                                    'has_ethnoracial_identity_constituencies',
+                                    (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') ||
+                                        (!is_null($organization->other_ethnoracial_identity_constituency) &&
+                                            $organization->other_ethnoracial_identity_constituency !== ''))
+                                )) x-model="hasEthnoracialIdentityConstituencies" />
+                        <label for="has_ethnoracial_identity_constituencies-0">{{ __('No') }}</label>
                     </div>
-                    <x-hearth-error for="has_ethnoracial_identities" />
+                    <x-hearth-error for="has_ethnoracial_identity_constituencies" />
                 </fieldset>
-                <fieldset class="field box @error('ethnoracial_identities') field--error @enderror"
-                    x-show="hasEthnoracialIdentities == 1">
+                <fieldset class="field box @error('ethnoracial_identity_constituencies') field--error @enderror"
+                    x-show="hasEthnoracialIdentityConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which ethnoracial identity or identities are the people your organization specifically :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-required>
                     </legend>
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
-                    <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
-                        'ethnoracial_identities',
-                        $organization->ethnoracialIdentityConstituencies->pluck('id')->toArray(),
-                    )" required />
+                    <x-hearth-checkboxes name="ethnoracial_identity_constituencies" :options="$ethnoracialIdentities"
+                        :checked="old(
+                            'ethnoracial_identity_constituencies',
+                            $organization->ethnoracialIdentityConstituencies->pluck('id')->toArray(),
+                        )" required />
                     <div class="field">
-                        <x-hearth-checkbox name="other_ethnoracial" :checked="old(
-                            'other_ethnoracial',
-                            !is_null($organization->other_ethnoracial_identity) &&
-                                $organization->other_ethnoracial_identity !== '',
+                        <x-hearth-checkbox name="has_other_ethnoracial_identity_constituency" :checked="old(
+                            'has_other_ethnoracial_identity_constituency',
+                            !is_null($organization->other_ethnoracial_identity_constituency) &&
+                                $organization->other_ethnoracial_identity_constituency !== '',
                         )"
                             x-model="otherEthnoracialIdentity" />
-                        <x-hearth-label for='other_ethnoracial'>{{ __('Something else') }}</x-hearth-label>
+                        <x-hearth-label
+                            for='has_other_ethnoracial_identity_constituency'>{{ __('Something else') }}</x-hearth-label>
                     </div>
                     <div class="field__subfield stack">
-                        <x-translatable-input name="other_ethnoracial_identity" :label="__('Ethnoracial identity')" :model="$organization"
-                            :shortLabel="__('ethnoracial identity')" x-show="otherEthnoracialIdentity" />
+                        <x-translatable-input name="other_ethnoracial_identity_constituency" :label="__('Ethnoracial identity')"
+                            :model="$organization" :shortLabel="__('ethnoracial identity')" x-show="otherEthnoracialIdentity" />
                     </div>
-                    <x-hearth-error for="ethnoracial_identities" />
+                    <x-hearth-error for="ethnoracial_identity_constituencies" />
                 </fieldset>
             </div>
 
@@ -213,14 +231,17 @@
                 <x-hearth-error for="constituent_languages" />
             </fieldset>
 
-            <fieldset class="field @error('area_types') field--error @enderror">
+            <fieldset class="field @error('area_type_constituencies') field--error @enderror">
                 <legend>
                     <x-required>{{ __('Where do the people that you :represent_or_serve_and_support come from?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                 </legend>
-                <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
-                <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old('area_types', $organization->areaTypeConstituencies->pluck('id')->toArray())" hinted="area_types-hint"
-                    required />
-                <x-hearth-error for="area_types" />
+                <x-hearth-hint for="area_type_constituencies">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                <x-hearth-checkboxes name="area_type_constituencies" :options="$areaTypes" :checked="old(
+                    'area_type_constituencies',
+                    $organization->areaTypeConstituencies->pluck('id')->toArray(),
+                )"
+                    hinted="area_type_constituencies-hint" required />
+                <x-hearth-error for="area_type_constituencies" />
             </fieldset>
 
             @if ($organization->type === 'civil-society')

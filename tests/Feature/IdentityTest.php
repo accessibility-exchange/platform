@@ -16,8 +16,8 @@ beforeEach(function () {
 test('identities can be grouped by cluster', function () {
     $deafIdentity = Identity::firstWhere('name->en', 'Deaf');
 
-    $disabilityAndDeafIdentities = Identity::where('cluster', IdentityCluster::DisabilityAndDeaf)->get();
-    $genderIdentities = Identity::where('cluster', IdentityCluster::Gender)->get();
+    $disabilityAndDeafIdentities = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->get();
+    $genderIdentities = Identity::whereJsonContains('clusters', IdentityCluster::Gender)->get();
 
     expect($disabilityAndDeafIdentities->contains($deafIdentity))->toBeTrue();
     expect($genderIdentities->contains($deafIdentity))->toBeFalse();
@@ -40,8 +40,8 @@ test('identities can be listed', function () {
 
     $this->actingAs($administrator);
 
-    $identitiesWithoutClusters = Identity::whereNull('cluster')->get();
+    $identity = Identity::first();
 
     livewire(ListIdentities::class)
-        ->assertCanSeeTableRecords($identitiesWithoutClusters);
+        ->assertCanSeeTableRecords(collect([$identity]));
 });

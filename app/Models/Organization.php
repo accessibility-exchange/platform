@@ -82,7 +82,7 @@ class Organization extends Model
         'website_link',
         'extra_attributes',
         'other_disability_constituency',
-        'other_ethnoracial_identity',
+        'other_ethnoracial_identity_constituency',
         'staff_lived_experience',
         'contact_person_name',
         'contact_person_email',
@@ -107,7 +107,7 @@ class Organization extends Model
         'consulting_services' => 'array',
         'social_links' => 'array',
         'other_disability_constituency' => 'array',
-        'other_ethnoracial_identity' => 'array',
+        'other_ethnoracial_identity_constituency' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
         'notification_settings' => SchemalessAttributes::class,
@@ -122,7 +122,7 @@ class Organization extends Model
         'slug',
         'about',
         'other_disability_constituency',
-        'other_ethnoracial_identity',
+        'other_ethnoracial_identity_constituency',
     ];
 
     protected static function booted()
@@ -336,11 +336,6 @@ class Organization extends Model
             'contact_person_name' => 'required',
             'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
             'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
-            'extra_attributes.has_age_brackets' => 'required',
-            'extra_attributes.has_ethnoracial_identities' => 'required',
-            'extra_attributes.has_gender_and_sexual_identities' => 'required',
-            'extra_attributes.has_refugee_and_immigrant_constituency' => 'required',
-            'extra_attributes.has_indigenous_identities' => 'required',
             'languages' => 'required',
             'locality' => 'required',
             'name.en' => 'required_without:name.fr',
@@ -360,32 +355,7 @@ class Organization extends Model
             return false;
         }
 
-        if (! $this->livedExperiences()->count()) {
-            return false;
-        }
-
-        if (! $this->areaTypes()->count()) {
-            return false;
-        }
-
-        if ($this->extra_attributes['has_age_brackets'] && ! $this->ageBrackets()->count()) {
-            return false;
-        }
-
-        if ($this->extra_attributes['has_ethnoracial_identities'] && ! $this->ethnoracialIdentities()->count()) {
-            return false;
-        }
-
-        if (
-            $this->extra_attributes['has_gender_and_sexual_identities'] &&
-            ! $this->genderIdentities->count() &&
-            ! $this->identities->contains(Identity::firstWhere('name->en', 'Trans people')) &&
-            ! $this->identities->contains(Identity::firstWhere('name->en', '2SLGBTQIA+ people'))
-        ) {
-            return false;
-        }
-
-        if ($this->extra_attributes['has_indigenous_identities'] && ! $this->indigenousIdentities()->count()) {
+        if (! $this->areaTypeConstituencies()->count()) {
             return false;
         }
 
@@ -557,13 +527,6 @@ class Organization extends Model
         }
 
         return null;
-    }
-
-    public function getHasNbGncFluidConstituentsAttribute(): bool
-    {
-        return $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Non-binary people'))
-            || $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Gender non-conforming people'))
-            || $this->genderIdentities->contains(Identity::firstWhere('name->en', 'Gender fluid people'));
     }
 
     public function displayRoles(): Attribute

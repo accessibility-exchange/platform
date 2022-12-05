@@ -168,6 +168,11 @@ class OrganizationController extends Controller
             'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
             'disabilityTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->toArray(),
             'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->reject(fn (Identity $identity) => $identity->name === __('White'))->toArray(),
+            'genderAndSexualIdentities' => array_merge(Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
+            }))->toArray(), Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::Gender);
+            }))->toArray()),
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
@@ -225,52 +230,19 @@ class OrganizationController extends Controller
             }
         }
 
-        if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
-            foreach (Identity::whereJsonContains('clusters', IdentityCluster::Status)->get() as $statusIdentity) {
-                $data['identities'][] = $statusIdentity->id;
+        if (isset($data['nb_gnc_fluid_identity']) && $data['nb_gnc_fluid_identity'] == 1) {
+            foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->get() as $genderDiverseIdentity) {
+                $data['identities'][] = $genderDiverseIdentity->id;
             }
-        }
-
-        if (isset($data['gender_and_sexual_identities'])) {
-            if (in_array('women', $data['gender_and_sexual_identities'])) {
-                $women = Identity::where('name->en', 'Women')->first();
-                $data['gender_identities'][] = $women->id;
-            }
-
-            if (in_array('nb-gnc-fluid-people', $data['gender_and_sexual_identities'])) {
-                $nb = Identity::where('name->en', 'Non-binary people')->first();
-                $data['gender_identities'][] = $nb->id;
-
-                $gnc = Identity::where('name->en', 'Gender non-conforming people')->first();
-                $data['gender_identities'][] = $gnc->id;
-
-                $fluid = Identity::where('name->en', 'Gender fluid people')->first();
-                $data['gender_identities'][] = $fluid->id;
-            }
-
-            if (in_array('trans-people', $data['gender_and_sexual_identities'])) {
-                $transPeople = Identity::where('name->en', 'Trans people')->first();
-                $data['constituencies'][] = $transPeople->id;
-            }
-
-            if (in_array('2slgbtqiaplus-people', $data['gender_and_sexual_identities'])) {
-                $twoslgbtqiaplusPeople = Identity::where('name->en', '2SLGBTQIA+ people')->firstOrFail();
-                $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
-            }
-
-            $organization->extra_attributes->has_gender_and_sexual_identities = 1;
-        } else {
-            $organization->extra_attributes->has_gender_and_sexual_identities = 0;
         }
 
         foreach ([
-            'age_brackets',
-            'area_types',
-            'constituencies',
+            'age_bracket_constituencies',
+            'area_type_constituencies',
             'disability_and_deaf_constituencies',
-            'ethnoracial_identities',
-            'gender_identities',
-            'indigenous_identities',
+            'ethnoracial_identity_constituencies',
+            'gender_and_sexuality_constituencies',
+            'indigenous_constituencies',
             'lived_experience_constituencies',
         ] as $relationship) {
             if (isset($data[$relationship])) {
@@ -282,9 +254,13 @@ class OrganizationController extends Controller
 
         $organization->constituentIdentities()->sync($data['identities']);
 
-        if (isset($data['constituent_languages'])) {
+        if ($data['has_ethnoracial_identity_constituencies'] == 0) {
+            $data['other_ethnoracial_identity_constituency'] = null;
+        }
+
+        if (isset($data['language_constituencies'])) {
             $languages = [];
-            foreach ($data['constituent_languages'] as $code) {
+            foreach ($data['language_constituencies'] as $code) {
                 $language = Language::firstOrCreate(
                     ['code' => $code],
                     [
