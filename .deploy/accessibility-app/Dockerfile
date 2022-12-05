@@ -4,9 +4,11 @@ ARG CIPHERSWEET_KEY
 
 RUN apt-get update
 
-RUN apt-get install -y nginx git unzip supervisor rsync nano wget curl htop
-
 RUN apt-get install -y \
+    curl \
+    default-mysql-client \
+    git \
+    htop \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libxml2-dev \
@@ -14,7 +16,13 @@ RUN apt-get install -y \
     libbz2-dev \
     libonig-dev \
     libpng-dev \
-    libzip-dev
+    libzip-dev \
+    nano \
+    nginx \
+    rsync \
+    supervisor \
+    unzip \
+    wget
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
@@ -38,7 +46,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ENV NODE_VERSION 16
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
     && apt install -y nodejs \
-    && npm install -g npm 
+    && npm install -g npm
 
 COPY .deploy/accessibility-app/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 COPY .deploy/accessibility-app/nginx.conf /etc/nginx/nginx.conf
