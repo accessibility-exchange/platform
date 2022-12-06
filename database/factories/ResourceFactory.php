@@ -23,7 +23,9 @@ class ResourceFactory extends Factory
     {
         return [
             'title' => ['en' => $this->faker->words(3, true)],
+            'author' => ['en' => $this->faker->company()],
             'summary' => $this->faker->sentence(),
+            'url' => ['en' => $this->faker->url()],
         ];
     }
 }

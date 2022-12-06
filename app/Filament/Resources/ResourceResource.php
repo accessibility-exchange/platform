@@ -10,29 +10,31 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('author.en')
-                    ->label(__('Author name').' ('.get_language_exonym('en').')')
-                    ->requiredWithout('author.fr'),
-                Forms\Components\TextInput::make('author.fr')
-                    ->label(__('Author name').' ('.get_language_exonym('fr').')')
-                    ->requiredWithout('author.en'),
                 Forms\Components\TextInput::make('title.en')
                     ->label(__('Resource title').' ('.get_language_exonym('en').')')
                     ->requiredWithout('title.fr'),
                 Forms\Components\TextInput::make('title.fr')
                     ->label(__('Resource title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
+                Forms\Components\TextInput::make('author.en')
+                    ->label(__('Author name').' ('.get_language_exonym('en').')')
+                    ->requiredWithout('author.fr'),
+                Forms\Components\TextInput::make('author.fr')
+                    ->label(__('Author name').' ('.get_language_exonym('fr').')')
+                    ->requiredWithout('author.en'),
                 Forms\Components\TextInput::make('url.en')
                     ->label(__('Resource link').' ('.get_language_exonym('en').')')
                     ->requiredWithout('url.fr'),
@@ -56,7 +58,7 @@ class ResourceResource extends Resource
                 Forms\Components\Select::make('content_type_id')
                     ->relationship('contentType', 'name')
                     ->columnSpan(2),
-                Forms\Components\CheckboxList::make('phase')
+                Forms\Components\CheckboxList::make('phases')
                     ->label(__('Phases of consultation'))
                     ->options(self::getPhases())
                     ->columnSpan(2),
@@ -87,7 +89,13 @@ class ResourceResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name'),
+                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name'),
+                SelectFilter::make('phases')
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('phases', $data['values'])->orWhereNull('phases'))
+                    ->options(self::getPhases()),
+                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -99,9 +107,7 @@ class ResourceResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

@@ -2,10 +2,13 @@
 
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
+use App\Filament\Resources\ResourceResource;
+use App\Filament\Resources\ResourceResource\Pages\ListResources;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
+use function Pest\Livewire\livewire;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
 test('resources can be translated', function () {
@@ -95,4 +98,29 @@ test('resource phases can be displayed', function () {
 
     expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
     expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
+});
+
+test('only administrative users can access resource admin pages', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => 'administrator']);
+
+    $this->actingAs($user)->get(ResourceResource::getUrl('index'))->assertForbidden();
+    $this->actingAs($administrator)->get(ResourceResource::getUrl('index'))->assertSuccessful();
+
+    $this->actingAs($user)->get(ResourceResource::getUrl('create'))->assertForbidden();
+    $this->actingAs($administrator)->get(ResourceResource::getUrl('create'))->assertSuccessful();
+
+    $this->actingAs($user)->get(ResourceResource::getUrl('edit', [
+        'record' => Resource::factory()->create(),
+    ]))->assertForbidden();
+
+    $this->actingAs($administrator)->get(ResourceResource::getUrl('edit', [
+        'record' => Resource::factory()->create(),
+    ]))->assertSuccessful();
+});
+
+test('resources can be listed', function () {
+    $resources = Resource::factory()->count(2)->create();
+
+    livewire(ListResources::class)->assertCanSeeTableRecords($resources);
 });
