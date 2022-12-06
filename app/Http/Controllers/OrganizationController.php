@@ -210,18 +210,12 @@ class OrganizationController extends Controller
 
         $organization->extra_attributes->set('disability_and_deaf_constituencies', $data['disability_and_deaf']);
 
-        if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
-                $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
-                $data['has_other_disability_constituency'] = 0;
-                $data['other_disability_constituency'] = null;
-            } else {
-                $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 0);
-            }
-        } else {
-            $organization->extra_attributes->forget('cross_disability_and_deaf_constituencies');
+        if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
             $data['has_other_disability_constituency'] = 0;
             $data['other_disability_constituency'] = null;
+        } else {
+            $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 0);
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {

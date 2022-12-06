@@ -175,18 +175,12 @@ class IndividualController extends Controller
 
         $individual->extra_attributes->set('disability_and_deaf_connections', $data['disability_and_deaf']);
 
-        if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
-                $individual->extra_attributes->set('cross_disability_and_deaf_connections', 1);
-                $data['has_other_disability_connection'] = 0;
-                $data['other_disability_connection'] = null;
-            } else {
-                $individual->extra_attributes->set('cross_disability_and_deaf_connections', 0);
-            }
-        } else {
-            $individual->extra_attributes->forget('cross_disability_and_deaf_connections');
+        if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            $individual->extra_attributes->set('cross_disability_and_deaf_connections', 1);
             $data['has_other_disability_connection'] = 0;
             $data['other_disability_connection'] = null;
+        } else {
+            $individual->extra_attributes->set('cross_disability_and_deaf_connections', 0);
         }
 
         if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability_and_deaf') {
