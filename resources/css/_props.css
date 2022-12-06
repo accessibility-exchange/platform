@@ -345,6 +345,9 @@
     --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
         calc(0.45px + var(--space-px)) var(--btn-primary-outline);
     --tts-arrow-ring: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
+    --tts-arrow-ring-dark-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--content-dark-background));
+    --tts-arrow-ring-dark: var(--tts-arrow-ring-dark-inner), var(--tts-arrow-ring-outer);
     --tts-controller-background-color: var(--theme-body-background, var(--color-white));
     --tts-controller-color: var(--theme-body-color, var(--color-graphite-5));
     --tts-controller-background-color-hover: var(--btn-primary-background-hover);

@@ -33,9 +33,24 @@
     width: var(--space-4);
 }
 
+.dark .tts-controller > button::before {
+    background: var(--btn-dark-primary-background);
+    border-color: var(--btn-dark-primary-border);
+}
+
+.dark .tts-controller > button:hover:not([aria-disabled="true"])::before,
+.darker .tts-controller > button:hover:not([aria-disabled="true"])::before {
+    background: var(--btn-dark-primary-background-hover);
+    border-color: var(--btn-dark-primary-border-hover);
+}
+
 .tts-controller > button:focus::before {
     box-shadow: var(--tts-arrow-ring);
     outline: transparent;
+}
+
+.dark .tts-controller > button:focus::before {
+    box-shadow: var(--tts-arrow-ring-dark);
 }
 
 .tts-controller > button:hover:not([aria-disabled="true"])::before {
