@@ -111,8 +111,7 @@ class AllProjects extends Component
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
             'seekingGroupsData' => Options::forModels(Identity::query()
-                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)
-                ->where('name->en', '!=', 'Cross-disability and Deaf'))->toArray(),
+                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->toArray(),
             'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
