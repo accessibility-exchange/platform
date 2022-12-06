@@ -2,7 +2,6 @@
 .nav {
     align-items: center;
     display: flex;
-    gap: var(--space-4);
     justify-content: flex-start;
 }
 
@@ -178,6 +177,10 @@ button.nav-button .indicator {
     display: none;
 }
 
+.nav [aria-expanded] {
+    margin-inline-start: 0;
+}
+
 .nav [aria-expanded="false"] + * {
     display: none;
 }
@@ -253,7 +256,7 @@ button.nav-button .indicator {
         justify-content: flex-start;
         left: 0;
         position: relative;
-        top: 0;
+        top: var(--space-1);
         width: 100%;
     }
 

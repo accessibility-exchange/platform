@@ -18,10 +18,31 @@
     box-shadow: var(--nav-tabbed-shadow);
     left: calc(50% - 50vw);
     margin-block-end: var(--space-12);
+    padding-inline: 0;
     position: relative;
     width: 100vw;
 }
 
 .nav--tabbed > div {
     margin-block-end: calc(-1 * var(--border));
+}
+
+.nav--tabbed ul {
+    flex-direction: column;
+    gap: 0;
+}
+
+.nav--tabbed a {
+    justify-content: flex-start;
+}
+
+@media (min-width: 64rem) {
+    .nav--tabbed ul {
+        flex-direction: row;
+        gap: unset;
+    }
+
+    .nav--tabbed a {
+        justify-content: center;
+    }
 }

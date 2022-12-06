@@ -36,16 +36,16 @@
         "eslint-config-fluid": "^2.0.1",
         "eslint-config-prettier": "^8.5.0",
         "husky": "^8.0.1",
-        "laravel-vite-plugin": "^0.6.1",
-        "lint-staged": "^13.0.3",
+        "laravel-vite-plugin": "^0.7.1",
+        "lint-staged": "^13.0.4",
         "modern-css-reset": "^1.4.0",
         "npm-run-all": "^4.1.5",
-        "postcss": "^8.4.18",
+        "postcss": "^8.4.19",
         "postcss-custom-media": "^8.0.2",
         "postcss-import": "^15.0.0",
-        "postcss-import-ext-glob": "^2.0.1",
+        "postcss-import-ext-glob": "^2.1.1",
         "postcss-logical": "^5.0.4",
-        "prettier": "^2.5.1",
+        "prettier": "^2.8.0",
         "stylelint": "^14.13.0",
         "stylelint-config-prettier": "^9.0.3",
         "stylelint-config-standard": "^28.0.0",
@@ -54,7 +54,8 @@
         "tailwindcss": "^3.1.8",
         "vite": "^3.2.2",
         "vite-plugin-full-reload": "^1.0.4",
-        "vite-plugin-manifest-sri": "^0.1.0"
+        "vite-plugin-manifest-sri": "^0.1.0",
+        "vite-plugin-static-copy": "^0.12.0"
     },
     "dependencies": {
         "@alpinejs/mask": "^3.10.5",
@@ -62,6 +63,7 @@
         "@vimeo/player": "^2.18.0",
         "alpinejs": "^3.10.5",
         "axios": "^0.27.2",
+        "infusion": "^4.5.0",
         "luxon": "^3.0.4",
         "wicg-inert": "^3.1.2"
     }
