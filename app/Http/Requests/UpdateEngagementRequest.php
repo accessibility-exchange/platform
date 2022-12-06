@@ -237,16 +237,20 @@ class UpdateEngagementRequest extends FormRequest
 
     public function prepareForValidation(): void
     {
-        request()
-            ->merge([
-                'meeting_url' => normalize_url($this->meeting_url),
-            ])
-            ->mergeIfMissing([
-                'accepted_formats' => [],
-                'other_accepted_formats' => false,
-                'other_accepted_format' => [],
-                'paid' => false,
-            ]);
+        $fallbacks = [
+            'accepted_formats' => [],
+            'other_accepted_formats' => false,
+            'other_accepted_format' => [],
+            'paid' => false,
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks)->merge([
+            'meeting_url' => normalize_url($this->meeting_url),
+        ]);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function attributes(): array

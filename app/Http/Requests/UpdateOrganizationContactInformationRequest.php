@@ -36,9 +36,15 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $this->mergeIfMissing([
+        $fallbacks = [
             'contact_person_vrs' => null,
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function attributes(): array

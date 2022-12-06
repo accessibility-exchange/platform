@@ -63,10 +63,16 @@ class UpdateOrganizationRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $this->merge([
+        $fallbacks = [
             'social_links' => array_map('normalize_url', $this->social_links ?? []),
             'website_link' => normalize_url($this->website_link),
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function attributes(): array
