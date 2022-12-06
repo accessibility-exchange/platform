@@ -203,7 +203,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'indigenous-identity',
-        'indigenous_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->modelKeys(),
+        'indigenous_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->get()->modelKeys(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
