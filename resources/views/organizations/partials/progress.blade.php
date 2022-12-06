@@ -8,7 +8,7 @@
         </li>
         <li>
             <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">
-                {{ __('Groups your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
+                {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
             </a>
         </li>
         <li>
