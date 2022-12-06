@@ -163,13 +163,13 @@ test('users with regulated organization admin role can edit engagements', functi
                 'locality' => 'Halifax',
             ],
         ],
-        'cross_disability' => 0,
+        'cross_disability_and_deaf' => 0,
         'disability_types' => [
-            Identity::where('name->en', 'DeafBlind')->first()->id,
+            Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first()->id,
         ],
         'intersectional' => 0,
         'other_identity_type' => 'age-bracket',
-        'age_brackets' => [Identity::where('name->en', 'Older people (65+)')->first()->id],
+        'age_brackets' => [Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -179,13 +179,14 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
     $response->assertSee('Halifax, Nova Scotia');
-    $response->assertSee('DeafBlind');
-    $response->assertSee('Older people (65+)');
+    $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first()->name);
+    $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->name);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'gender-and-sexual-identity',
-        'gender_and_sexual_identities' => ['women', 'nb-gnc-fluid-people', 'trans-people', '2slgbtqiaplus-people'],
+        'nb_gnc_fluid_identity' => 1,
+        'gender_and_sexual_identities' => [Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -194,17 +195,15 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
 
-    $response->assertSee('Women');
-    $response->assertSee('Non-binary people');
-    $response->assertSee('Gender non-conforming people');
-    $response->assertSee('Gender fluid people');
-    $response->assertSee('Trans people');
-    $response->assertSee('2SLGBTQIA+ people');
+    $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()->name);
+    foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->pluck('name') as $identity) {
+        $response->assertSee($identity);
+    }
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'indigenous-identity',
-        'indigenous_identities' => Identity::where('cluster', IdentityCluster::Indigenous)->pluck('id')->toArray(),
+        'indigenous_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -213,14 +212,14 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('First Nations');
-    $response->assertSee('Métis');
-    $response->assertSee('Inuit');
+    foreach (Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name') as $identity) {
+        $response->assertSee($identity);
+    }
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'ethnoracial-identity',
-        'ethnoracial_identities' => Identity::where('cluster', IdentityCluster::Ethnoracial)->pluck('id')->toArray(),
+        'ethnoracial_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -229,9 +228,9 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('Black');
-    $response->assertSee('South Asian');
-    $response->assertSee('Latin American');
+    foreach (Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name') as $identity) {
+        $response->assertSee($identity);
+    }
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
@@ -244,7 +243,9 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('Refugees and/or immigrants');
+    foreach (Identity::whereJsonContains('clusters', IdentityCluster::Status)->pluck('name') as $identity) {
+        $response->assertSee($identity);
+    }
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
@@ -264,7 +265,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
         'other_identity_type' => 'area-type',
-        'area_types' => Identity::where('cluster', IdentityCluster::Area)->pluck('id')->toArray(),
+        'area_types' => Identity::whereJsonContains('clusters', IdentityCluster::Area)->pluck('id')->toArray(),
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -273,9 +274,9 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('Urban');
-    $response->assertSee('Rural');
-    $response->assertSee('Remote');
+    foreach (Identity::whereJsonContains('clusters', IdentityCluster::Area)->pluck('name') as $identity) {
+        $response->assertSee($identity);
+    }
 
     $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
     $response->assertOk();

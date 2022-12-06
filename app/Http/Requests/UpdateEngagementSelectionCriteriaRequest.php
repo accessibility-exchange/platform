@@ -26,15 +26,24 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'locations' => 'nullable|array|required_if:location_type,localities|exclude_if:location_type,regions',
             'locations.*.region' => ['required', new Enum(ProvinceOrTerritory::class)],
             'locations.*.locality' => 'required|string',
-            'cross_disability' => 'required|boolean',
-            'disability_types' => 'nullable|array|required_if:cross_disability,false|exclude_if:cross_disability,true',
+            'cross_disability_and_deaf' => 'required|boolean',
+            'disability_types' => 'nullable|array|required_if:cross_disability_and_deaf,false|exclude_if:cross_disability_and_deaf,true',
             'disability_types.*' => 'exists:identities,id',
             'intersectional' => 'required|boolean',
             'other_identity_type' => 'nullable|string|required_if:intersectional,false|exclude_if:intersectional,true',
             'age_brackets' => 'nullable|array|required_if:other_identity_type,age-bracket|exclude_unless:other_identity_type,age-bracket',
             'age_brackets.*' => 'exists:identities,id',
             'gender_and_sexual_identities' => 'nullable|array|required_if:other_identity_type,gender-and-sexual-identity|exclude_unless:other_identity_type,gender-and-sexual-identity',
-            'gender_and_sexual_identities.*' => 'in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',
+            'gender_and_sexual_identities.*' => 'exists:identities,id',
+            'nb_gnc_fluid_identity' => [
+                'nullable',
+                'boolean',
+                Rule::requiredIf(function () {
+                    return request('other_identity_type') === 'gender-and-sexual-identity'
+                        && count(request('gender_and_sexual_identities') ?? []) === 0;
+                }),
+                'exclude_unless:other_identity_type,gender-and-sexual-identity',
+            ],
             'indigenous_identities' => 'nullable|array|required_if:other_identity_type,indigenous-identity|exclude_unless:other_identity_type,indigenous-identity',
             'indigenous_identities.*' => 'exists:identities,id',
             'ethnoracial_identities' => 'nullable|array|required_if:other_identity_type,ethnoracial-identity|exclude_unless:other_identity_type,ethnoracial-identity',
@@ -72,12 +81,16 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'locations.required_if' => __('You must enter at least one city or town.'),
             'regions.required_if' => __('You must choose at least one province or territory.'),
             'disability_types.required_if' => __('One or more Disability or Deaf groups are required.'),
+            'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group.'),
+            'gender_and_sexual_identities.required' => __('You must select at least one gender or sexual identity group.'),
+            'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group.'),
+
         ];
     }
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'regions' => [],
             'locations' => [],
             'disability_types' => [],
@@ -86,6 +99,12 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'indigenous_identities' => [],
             'ethnoracial_identities' => [],
             'area_types' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 }

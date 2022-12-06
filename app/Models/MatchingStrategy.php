@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\IdentityCluster;
 use App\Enums\ProvinceOrTerritory;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\HasSchemalessAttributes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,17 +21,44 @@ class MatchingStrategy extends Model
     protected $fillable = [
         'regions',
         'locations',
+        'cross_disability_and_deaf',
         'extra_attributes',
     ];
 
     protected $casts = [
         'regions' => 'array',
         'locations' => 'array',
+        'cross_disability_and_deaf' => 'boolean',
     ];
 
     public function identities(): BelongsToMany
     {
         return $this->belongsToMany(Identity::class)->withTimeStamps();
+    }
+
+    public function ageBrackets(): BelongsToMany
+    {
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Age);
+    }
+
+    public function areaTypes(): BelongsToMany
+    {
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Area);
+    }
+
+    public function ethnoracialIdentities(): BelongsToMany
+    {
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial);
+    }
+
+    public function genderAndSexualityIdentities(): BelongsToMany
+    {
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality);
+    }
+
+    public function indigenousIdentities(): BelongsToMany
+    {
+        return $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
     public function languages(): BelongsToMany
@@ -109,12 +137,10 @@ class MatchingStrategy extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                if ($this->hasDisabilityType(Identity::firstWhere('name->en', 'Cross-disability and Deaf'))) {
-                    return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
-                }
-
                 if ($this->hasDisabilityTypes()) {
                     return implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->get()->map(fn ($identity) => $identity->name)->toArray());
+                } elseif ($this->cross_disability_and_deaf) {
+                    return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
                 }
 
                 return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
@@ -128,16 +154,29 @@ class MatchingStrategy extends Model
             get: function ($value) {
                 return match ($this->extra_attributes->get('other_identity_type', null)) {
                     'age-bracket' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Age)->get()->map(fn ($identity) => $identity->name)->toArray()),
-                    'gender-and-sexual-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Gender)->orWhereNull('cluster')->get()->map(fn ($identity) => $identity->name)->toArray()),
+                    'gender-and-sexual-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->get()->map(fn ($identity) => $identity->name)->toArray()),
                     'indigenous-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->get()->map(fn ($identity) => $identity->name)->toArray()),
                     'ethnoracial-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->get()->map(fn ($identity) => $identity->name)->toArray()),
-                    'refugee-or-immigrant' => __('Refugees and/or immigrants'),
+                    'refugee-or-immigrant' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->get()->map(fn ($identity) => $identity->name)->toArray()),
                     'first-language' => implode("  \n", $this->languages->map(fn ($language) => $language->name)->toArray()),
                     'area-type' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->get()->map(fn ($identity) => $identity->name)->toArray()),
                     default => __('Intersectional')
                 };
             },
         );
+    }
+
+    public function detachClusters(array $clusters)
+    {
+        foreach ($clusters as $cluster) {
+            $this->identities()->detach(
+                $this->identities()
+                    ->withoutGlobalScope(ReachableIdentityScope::class)
+                    ->whereJsonContains('clusters', $cluster)
+                    ->pluck('identity_id')
+                    ->toArray()
+            );
+        }
     }
 
     /**
@@ -150,12 +189,7 @@ class MatchingStrategy extends Model
         }
 
         if ($detaching) {
-            $this->identities()->detach(
-                $this->identities()
-                    ->whereJsonContains('clusters', $cluster)
-                    ->pluck('identity_id')
-                    ->toArray()
-            );
+            $this->detachClusters([$cluster]);
         }
 
         foreach ($identities as $id) {
@@ -172,25 +206,14 @@ class MatchingStrategy extends Model
             $identities = [$identities];
         }
 
-        $this->identities()->detach(
-            $this->identities()
-                ->whereIn('cluster', $mutuallyExclusiveClusters)
-                ->orWhereNull('cluster')
-                ->pluck('identity_id')
-                ->toArray()
-        );
+        $this->detachClusters($mutuallyExclusiveClusters);
 
         if ($detachLanguages) {
             $this->languages()->detach();
         }
 
         if ($detaching) {
-            $this->identities()->detach(
-                $this->identities()
-                    ->whereJsonContains('clusters', $cluster)
-                    ->pluck('identity_id')
-                    ->toArray()
-            );
+            $this->detachClusters([$cluster]);
         }
 
         foreach ($identities as $id) {

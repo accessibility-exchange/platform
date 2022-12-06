@@ -21,10 +21,10 @@ test('matching strategy can be checked for presence of identities', function () 
 
     $strategy = MatchingStrategy::factory()->create();
 
-    $age = Identity::firstWhere('cluster', IdentityCluster::Age);
-    $disability = Identity::firstWhere('cluster', IdentityCluster::DisabilityAndDeaf);
-    $gender = Identity::firstWhere('cluster', IdentityCluster::Gender);
-    $ethnoracial = Identity::firstWhere('cluster', IdentityCluster::Ethnoracial);
+    $age = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
+    $disability = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
+    $gender = Identity::whereJsonContains('clusters', IdentityCluster::Gender)->first();
+    $ethnoracial = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
 
     $strategy->identities()->attach([
         $age->id,

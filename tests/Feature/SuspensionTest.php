@@ -8,6 +8,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Organization;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\ImpactSeeder;
@@ -67,8 +68,8 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
-    $this->organization->livedExperienceConstituencies()->attach(Identity::firstWhere('cluster', IdentityCluster::LivedExperience)->id);
-    $this->organization->areaTypeConstituencies()->attach(Identity::firstWhere('cluster', IdentityCluster::Area)->id);
+    $this->organization->livedExperienceConstituencies()->attach(Identity::whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class)->first()->id);
+    $this->organization->areaTypeConstituencies()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
 
     $this->engagement = Engagement::factory()->create([
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),
