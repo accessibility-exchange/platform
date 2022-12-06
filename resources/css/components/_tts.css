@@ -44,13 +44,19 @@
     border-color: var(--btn-dark-primary-border-hover);
 }
 
-.tts-controller > button:focus::before {
-    box-shadow: var(--tts-arrow-ring);
-    outline: transparent;
+.dark .tts-controller > button:active:not([aria-disabled="true"])::before,
+.dark .tts-controller > button:focus:active:not([aria-disabled="true"])::before {
+    border-color: var(--btn-dark-primary-border-active);
 }
 
-.dark .tts-controller > button:focus::before {
-    box-shadow: var(--tts-arrow-ring-dark);
+.tts-controller > button:focus::before {
+    --tts-arrow-ring-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--body-background));
+    --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+        calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+
+    box-shadow: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
+    outline: transparent;
 }
 
 .tts-controller > button:hover:not([aria-disabled="true"])::before {
@@ -77,7 +83,7 @@
 
 /* Text to Speech selection controller */
 button.tts-selection-controller {
-    background-color: var(--tts-selection-controller-background);
+    background-color: var(--tts-selection-controller-background-color);
     border-color: var(--tts-selection-controller-color);
     color: var(--tts-selection-controller-color);
     padding-inline: var(--space-2);
@@ -96,7 +102,7 @@ button.tts-selection-controller {
 }
 
 button.tts-selection-controller::after {
-    background-color: var(--tts-selection-controller-background);
+    background-color: var(--tts-selection-controller-background-color);
     border-block-start: solid var(--border-2) var(--tts-selection-controller-color);
     border-inline-start: solid var(--border-2) var(--tts-selection-controller-color);
     content: "";
@@ -108,10 +114,26 @@ button.tts-selection-controller::after {
 }
 
 button.tts-selection-controller:hover:not([aria-disabled="true"]),
-button.tts-selection-controller:hover:not([aria-disabled="true"])::after {
+button.tts-selection-controller:hover:not([aria-disabled="true"])::after,
+button.tts-selection-controller:hover:active:not([aria-disabled="true"])::after {
     background-color: var(--tts-selection-controller-background-color-hover);
     border-color: var(--tts-selection-controller-border-color-hover);
     color: var(--tts-selection-controller-color-hover);
+}
+
+button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.dark button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after {
+    background-color: var(--tts-selection-controller-background-color-active);
+    border-color: var(--tts-selection-controller-border-color-active);
+    box-shadow: none;
+}
+
+.dark button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.dark button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after {
+    border-color: var(--btn-dark-primary-border-active);
 }
 
 .tts-selection-controller.tts-selection--above {
@@ -133,7 +155,12 @@ button.tts-selection-controller:hover:not([aria-disabled="true"])::after {
 }
 
 .tts-selection-controller:focus::after {
-    box-shadow: var(--tts-arrow-ring);
+    --tts-arrow-ring-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--body-background));
+    --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+        calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+
+    box-shadow: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
     outline: transparent;
 }
 
