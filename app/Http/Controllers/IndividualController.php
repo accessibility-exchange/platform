@@ -106,9 +106,6 @@ class IndividualController extends Controller
 
         return view('individuals.show', array_merge(compact('individual'), [
             'language' => $language ?? locale(),
-            // TODO: Is this the best way of handling these two constituencies?
-            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
         ]));
     }
 

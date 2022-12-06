@@ -147,9 +147,6 @@ class OrganizationController extends Controller
 
         return view('organizations.show', array_merge(compact('organization'), [
             'language' => $language ?? locale(),
-            // TODO: Is this the best way of handling these two constituencies?
-            'transPeople' => Identity::where('name->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Identity::where('name->en', '2SLGBTQIA+ people')->first(),
         ]));
     }
 
