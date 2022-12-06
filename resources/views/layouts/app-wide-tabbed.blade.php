@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">
@@ -18,6 +18,9 @@
                     <div class="center center:wide stack">
                         <!-- Flash Messages -->
                         @include('partials.flash-messages')
+
+                        <!-- Text to Speech -->
+                        <x-tts.orator />
 
                         {{ $header }}
                     </div>

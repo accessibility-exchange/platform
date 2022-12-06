@@ -2,7 +2,6 @@
 .nav {
     align-items: center;
     display: flex;
-    gap: var(--space-4);
     justify-content: flex-start;
 }
 
@@ -34,46 +33,61 @@
 
 .nav-link,
 .nav-link:visited,
-.theme-switcher label {
+.theme-switcher label,
+form button.nav-button {
     align-items: center;
     background: var(--nav-background-mobile);
     border-block-end: var(--border) solid var(--nav-border-mobile);
     border-block-start: 0;
     border-inline: 0;
+    border-radius: 0;
     color: var(--nav-color-mobile);
     display: flex;
     font-weight: var(--font-semibold);
     gap: var(--space-1);
+    height: auto;
+    justify-content: flex-start;
+    margin-block: 0;
     min-height: var(--space-12);
+    padding-block: var(--space-3);
     padding-inline: var(--space-4);
+    text-align: start;
     text-decoration: none;
+    width: 100%;
 }
 
 .nav-link:hover,
-.theme-switcher input:hover + label {
+.theme-switcher input:hover + label,
+form button.nav-button:hover {
     background: var(--nav-background-hover-mobile);
     box-shadow: inset 3px 0 0 0 var(--nav-indicator-mobile);
     color: var(--nav-color-hover-mobile);
 }
 
 .nav-link:focus,
-.theme-switcher input:focus + label {
+.theme-switcher input:focus + label,
+form button.nav-button:focus {
     background: var(--nav-background-focus-mobile);
     box-shadow: inset 0 0 0 3px var(--nav-indicator-mobile);
     outline: 1px solid transparent;
 }
 
-.nav-link:active .theme-switcher input:active + label {
+.nav-link:active,
+.nav-link:active:visited,
+.theme-switcher input:active + label,
+form button.nav-button:active {
     background: var(--nav-background-active-mobile);
     box-shadow: none;
     color: var(--nav-color-active-mobile);
 }
 
-.nav-link[aria-current] .theme-switcher input:checked + label {
+.nav-link[aria-current],
+.theme-switcher input:checked + label {
     box-shadow: inset 6px 0 0 0 var(--nav-current-color);
 }
 
-.nav-link[aria-current]:hover .theme-switcher input:checked:hover + label {
+.nav-link[aria-current]:hover,
+.theme-switcher input:checked:hover + label {
     box-shadow: inset 3px 0 0 0 var(--nav-current-color);
 }
 
@@ -163,6 +177,10 @@ button.nav-button .indicator {
     display: none;
 }
 
+.nav [aria-expanded] {
+    margin-inline-start: 0;
+}
+
 .nav [aria-expanded="false"] + * {
     display: none;
 }
@@ -238,7 +256,7 @@ button.nav-button .indicator {
         justify-content: flex-start;
         left: 0;
         position: relative;
-        top: 0;
+        top: var(--space-1);
         width: 100%;
     }
 
@@ -267,18 +285,21 @@ button.nav-button .indicator {
     .nav-link,
     .nav-link:visited,
     button.nav-button,
-    .theme-switcher label {
+    .theme-switcher label,
+    form button.nav-button {
         background: var(--nav-parent-background);
         border-block-end: 0;
         border-block-start: unset;
         border-radius: 0;
         color: var(--nav-color);
         height: 100%;
+        min-height: var(--space-12);
     }
 
     .nav-link:hover,
     button.nav-button:hover,
-    .theme-switcher input:hover + label {
+    .theme-switcher input:hover + label,
+    form button.nav-button:hover {
         background: var(--nav-parent-background-hover);
         box-shadow: inset 0 -3px 0 0 var(--nav-indicator);
         color: var(--nav-color-hover);
@@ -286,7 +307,8 @@ button.nav-button .indicator {
 
     .nav-link:focus,
     button.nav-button:focus,
-    .theme-switcher input:focus + label {
+    .theme-switcher input:focus + label,
+    form button.nav-button:focus {
         background: var(--nav-parent-background-focus);
         box-shadow: inset 0 0 0 3px var(--nav-indicator);
         color: var(--nav-color-focus);
@@ -294,8 +316,10 @@ button.nav-button .indicator {
     }
 
     .nav-link:active,
+    .nav-link:active:visited,
     button.nav-button:active,
-    .nav [aria-expanded="true"] .theme-switcher input:active + label {
+    .nav [aria-expanded="true"] .theme-switcher input:active + label,
+    form button.nav-button:active {
         background: var(--nav-parent-background-active);
         box-shadow: none;
         color: var(--nav-color-active);

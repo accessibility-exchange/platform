@@ -8,9 +8,10 @@ use Illuminate\Support\Str;
 uses(RefreshDatabase::class);
 
 test('new Interpretation instance', function () {
-    $user = User::factory()->create([
-        'sign_language_translations' => true,
-    ]);
+    $user = User::factory()->create();
+
+    app()->setLocale('asl');
+
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
 
@@ -29,8 +30,8 @@ test('new Interpretation instance', function () {
     expect($interpretation)->toBeInstanceOf(Interpretation::class);
     expect($interpretation->route)->toBe('welcome');
     expect($interpretation->namespace)->toBe('welcome');
-    expect($interpretation->getTranslation('video', 'ase'))->toBe('');
-    expect($interpretation->getTranslation('video', 'fcs'))->toBe('');
+    expect($interpretation->getTranslation('video', 'asl'))->toBe('');
+    expect($interpretation->getTranslation('video', 'lsq'))->toBe('');
 });
 
 test('existing Interpretation instance', function () {
@@ -38,9 +39,8 @@ test('existing Interpretation instance', function () {
         'name' => 'The Accessibility Exchange',
     ]);
 
-    $user = User::factory()->create([
-        'sign_language_translations' => true,
-    ]);
+    $user = User::factory()->create();
+    app()->setLocale('asl');
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
 
@@ -50,11 +50,11 @@ test('existing Interpretation instance', function () {
         '</h1>',
         'id="'.Str::slug('The Accessibility Exchange'),
         'interpretation__video',
-        $interpretation->getTranslation('video', 'ase'),
+        $interpretation->getTranslation('video', 'asl'),
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee($interpretation->getTranslation('video', 'fcs'));
+    $response->assertDontSee($interpretation->getTranslation('video', 'lsq'));
 
     $interpretations = Interpretation::where('name', 'The Accessibility Exchange')->get();
 
@@ -63,12 +63,13 @@ test('existing Interpretation instance', function () {
     expect($interpretations->first()->id)->toBe($interpretation->id);
     expect($interpretations->first()->route)->toBe('welcome');
     expect($interpretations->first()->namespace)->toBe('welcome');
-    expect($interpretations->first()->getTranslation('video', 'ase'))->toBe($interpretation->getTranslation('video', 'ase'));
-    expect($interpretations->first()->getTranslation('video', 'fcs'))->toBe($interpretation->getTranslation('video', 'fcs'));
+    expect($interpretations->first()->getTranslation('video', 'asl'))->toBe($interpretation->getTranslation('video', 'asl'));
+    expect($interpretations->first()->getTranslation('video', 'lsq'))->toBe($interpretation->getTranslation('video', 'lsq'));
 });
 
 test('Interpretation instance using namespace', function () {
-    $response = $this->withCookie('sign_language_translations', true)->get(localized_route('welcome'));
+    app()->setLocale('asl');
+    $response = $this->get(localized_route('welcome'));
     $response->assertStatus(200);
 
     $toSee = [
@@ -92,10 +93,10 @@ test('in French and LSQ', function () {
         'name' => 'The Accessibility Exchange',
     ]);
 
-    app()->setLocale('fr');
+    app()->setLocale('lsq');
 
     $user = User::factory()->create([
-        'sign_language_translations' => true,
+        'locale' => 'lsq',
     ]);
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
@@ -106,25 +107,25 @@ test('in French and LSQ', function () {
         '</h1>',
         'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
         'interpretation__video',
-        $interpretation->getTranslation('video', 'fcs'),
+        $interpretation->getTranslation('video', 'lsq'),
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee($interpretation->getTranslation('video', 'ase'));
+    $response->assertDontSee($interpretation->getTranslation('video', 'asl'));
 });
 
-test('do not fallback to ASL (ase)', function () {
+test('do not fallback to ASL (asl)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'ase' => 'https://vimeo.com/766454375',
+            'asl' => 'https://vimeo.com/766454375',
         ],
     ]);
 
-    app()->setLocale('fr');
+    app()->setLocale('lsq');
 
     $user = User::factory()->create([
-        'sign_language_translations' => true,
+        'locale' => 'lsq',
     ]);
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
@@ -138,21 +139,21 @@ test('do not fallback to ASL (ase)', function () {
 
     $response->assertSeeInOrder($toSee, false);
     $response->assertDontSee('interpretation__video');
-    $response->assertDontSee($interpretation->getTranslation('video', 'ase'));
+    $response->assertDontSee($interpretation->getTranslation('video', 'asl'));
 });
 
-test('do not fallback to LSQ (fcs)', function () {
+test('do not fallback to LSQ (lsq)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'fcs' => 'https://vimeo.com/766455246',
+            'lsq' => 'https://vimeo.com/766455246',
         ],
     ]);
 
-    app()->setLocale('en');
+    app()->setLocale('asl');
 
     $user = User::factory()->create([
-        'sign_language_translations' => true,
+        'locale' => 'asl',
     ]);
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
@@ -166,24 +167,14 @@ test('do not fallback to LSQ (fcs)', function () {
 
     $response->assertSeeInOrder($toSee, false);
     $response->assertDontSee('interpretation__video');
-    $response->assertDontSee($interpretation->getTranslation('video', 'fcs'));
+    $response->assertDontSee($interpretation->getTranslation('video', 'lsq'));
 });
 
 test('no Interpretation without sign language translations setting enabled', function () {
-    $user = User::factory()->create([
-        'sign_language_translations' => false,
-    ]);
+    $user = User::factory()->create();
     $response = $this->get(localized_route('welcome'));
     $response->assertStatus(200);
 
-    $toSee = [
-        '<h1 itemprop="name">',
-        'The Accessibility Exchange',
-        '</h1>',
-        'id="'.Str::slug('The Accessibility Exchange'),
-    ];
-
-    $response->assertSeeInOrder($toSee, false);
     $response->assertDontSee('interpretation__video');
 
     $interpretations = Interpretation::all();

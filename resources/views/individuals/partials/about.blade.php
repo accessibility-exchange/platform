@@ -10,9 +10,6 @@
         @endforeach
     @else
         <li>{{ get_language_exonym($individual->user->locale) }}</li>
-        @if ($individual->user->signed_language)
-            <li>{{ get_language_exonym($individual->user->signed_language) }}</li>
-        @endif
     @endif
 </ul>
 
@@ -20,7 +17,7 @@
     <h3>{{ __('As an Accessibility Consultant, :name can help with:', ['name' => $individual->firstName]) }}</h3>
     <ul>
         @foreach ($individual->consulting_services as $service)
-            <li>{{ __('consulting-services.' . $service) }}</li>
+            <li>{{ App\Enums\ConsultingService::labels()[$service] }}</li>
         @endforeach
     </ul>
 @endif

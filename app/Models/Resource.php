@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
+use App\Traits\GeneratesMultilingualSlugs;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Resource extends Model
 {
+    use GeneratesMultilingualSlugs;
     use HasFactory;
     use HasTranslations;
     use HasTranslatableSlug;
@@ -59,9 +61,9 @@ class Resource extends Model
      */
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::createWithLocales(['en', 'fr'])
+        return SlugOptions::createWithLocales(config('locales.supported'))
             ->generateSlugsFrom(function (Resource $model, $locale): string {
-                return $model->getTranslation('title', $locale);
+                return $this->generateSlugs($model, $locale, 'title');
             })
             ->saveSlugsTo('slug');
     }

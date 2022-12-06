@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Traits\ConditionallyRequireContactMethods;
@@ -22,7 +23,10 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'preferred_contact_person' => 'required|in:me,support-person',
+            'preferred_contact_person' => [
+                'required',
+                new Enum(ContactPerson::class),
+            ],
             'email' => [
                 'nullable',
                 'string',
@@ -40,7 +44,6 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [
                 'nullable',
                 'array',
-                'min:1',
                 Rule::requiredIf(request()->user()->individual->isParticipant()),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
@@ -60,9 +63,11 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $this->mergeIfMissing([
             'consulting_methods' => [],
             'meeting_types' => [],
+            'support_person_vrs' => null,
+            'vrs' => null,
         ]);
     }
 

@@ -6,7 +6,7 @@
 </head>
 
 <body class="{{ $class ?? 'page' }}">
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">
@@ -16,6 +16,8 @@
                 @include('partials.flash-messages')
                 <!-- Page Heading -->
                 <header class="stack">
+                    <!-- Text to Speech -->
+                    <x-tts.orator />
                     {{ $header }}
                 </header>
                 <!-- Page Content -->

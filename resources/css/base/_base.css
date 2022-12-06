@@ -31,8 +31,32 @@ main .back-to-top a:visited {
     color: var(--link-color);
 }
 
-main > .center {
-    --gutter: var(--space-4);
+main > .center .full {
+    padding-inline: var(--space-4);
+}
+
+main .content > *:not(.nav--tabbed, .alert, .with-sidebar),
+main article > header {
+    padding-inline: var(--space-4);
+}
+
+.with-sidebar > * {
+    padding-inline: var(--space-4);
+}
+
+::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-color);
+}
+
+@media (min-width: 75rem) {
+    main > .center {
+        --gutter: var(--space-4);
+    }
+
+    main > .center .full {
+        padding-inline: 0;
+    }
 }
 
 ul {

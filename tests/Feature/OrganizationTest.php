@@ -34,7 +34,7 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
-    $user = User::factory()->create(['context' => 'organization', 'signed_language' => 'ase']);
+    $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
     $response->assertOk();
@@ -57,7 +57,7 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    expect($organization->working_languages)->toContain('ase');
+    expect($organization->working_languages)->toContain('asl');
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
     $response->assertOk();
@@ -372,6 +372,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
+        'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
         'save' => 1,
     ]);
@@ -382,23 +383,25 @@ test('users with admin role can edit organization contact information', function
     $organization = $organization->fresh();
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeTrue();
 
     expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_phone' => '19024444444',
+        'preferred_contact_method' => 'email',
+        'save' => 1,
+    ]);
 
-    expect($organization->primary_contact_point)->toEqual($organization->contact_person_email);
-    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
-    expect($organization->primary_contact_method)->toEqual("Send an email to {$organization->contact_person_name} at <{$organization->contact_person_email}>.");
-    expect($organization->alternate_contact_method)->toEqual($organization->alternate_contact_point);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
-    $organization->preferred_contact_method = 'phone';
-    $organization->save();
     $organization = $organization->fresh();
 
-    expect($organization->primary_contact_point)->toEqual($organization->contact_person_phone->formatForCountry('CA'));
-    expect($organization->alternate_contact_point)->toEqual($organization->contact_person_email);
-    expect($organization->primary_contact_method)->toEqual("Call {$organization->contact_person_name} at {$organization->contact_person_phone->formatForCountry('CA')}.");
-    expect($organization->alternate_contact_method)->toEqual("<{$organization->contact_person_email}>");
+    expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeNull();
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
@@ -1044,7 +1047,7 @@ test('non members cannot delete organizations', function () {
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'ase'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.index'));
     $response->assertOk();

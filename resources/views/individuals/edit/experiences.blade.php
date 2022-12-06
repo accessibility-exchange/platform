@@ -11,13 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Experiences') }}
             </h2>
-
-            <p class="repel">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
+            <hr class="divider--thick">
             <fieldset>
                 <legend>{{ __('Lived experience') }}</legend>
 
@@ -40,7 +34,9 @@
                 <legend>{{ __('Skills and strengths') }}</legend>
 
                 <div class="field @error('skills_and_strengths') field--error @enderror">
-                    <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths?') . ' ' . __('(optional)')"
+                    <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths relevant to The Accessibility Exchange?') .
+                        ' ' .
+                        __('(optional)')"
                         :shortLabel="__('skills and strengths')" />
                     <x-hearth-error for="skills_and_strengths" />
                 </div>
@@ -55,11 +51,12 @@
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
             </fieldset>
 
-            <p class="repel">
-                <button class="secondary" name="save_and_previous"
-                    value="1">{{ __('Save and previous') }}</button>
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <hr class="divider--thick">
+
+            <p class="flex flex-wrap gap-7">
+                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

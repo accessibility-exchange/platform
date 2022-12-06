@@ -9,14 +9,10 @@
 
         <div class="stack">
             <h2>
+                {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 2]) }}<br />
                 {{ __('Project overview') }}
             </h2>
-
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
+            <hr class="divider--thick">
             <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
                 required />
 
@@ -100,10 +96,10 @@
                 <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes ?? '')" />
                 <x-hearth-error for="public_outcomes" />
             </fieldset>
-
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <hr class="divider--thick">
+            <p class="flex flex-wrap gap-8">
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

@@ -77,7 +77,7 @@ beforeEach(function () {
     $this->engagement = Engagement::factory()->create([
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),
         'name' => ['en' => 'Workshop'],
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
         'who' => 'individuals',
         'format' => 'survey',
         'recruitment' => 'open-call',

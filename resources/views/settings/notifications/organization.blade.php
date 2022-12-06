@@ -19,18 +19,15 @@
                 {{ __('Throughout this page, you can chose whether you would like notifications to be sent through the website or by contacting your organization’s contact person directly. You’ve provided the following contact information:') }}
             </p>
 
-            <ul>
-                <li><strong>{{ __('Name') }}:</strong> {{ $user->organization->contact_person_name }}</li>
-                <li><strong>{{ $user->organization->preferred_contact_method === 'email' ? __('Email') : __('Phone') }}:</strong>
-                    {{ $user->organization->preferred_contact_method === 'email' ? $user->organization->contact_person_email : $user->organization->contact_person_phone->formatForCountry('CA') }}
-                </li>
-                @if (($user->organization->preferred_contact_method === 'email' && $user->organization->contact_person_phone) ||
-                    ($user->organization->preferred_contact_method === 'phone' && $user->organization->contact_person_email))
-                    <li><strong>{{ $user->organization->preferred_contact_method === 'email' ? __('Phone') : __('Email') }}:</strong>
-                        {{ $user->organization->preferred_contact_method === 'email' ? $user->organization->contact_person_phone->formatForCountry('CA') : $user->organization->contact_person_email }}
-                    </li>
-                @endif
-            </ul>
+            <p><strong>{{ __('Name') }}:</strong> {{ $user->organization->contact_person_name }}</p>
+            @if ($user->organization->contact_person_email)
+                <x-contact-point type="email" :value="$user->organization->contact_person_email" :preferred="$user->organization->preferred_contact_method === 'email' &&
+                    $user->organization->contact_person_phone" />
+            @endif
+            @if ($user->organization->contact_person_phone)
+                <x-contact-point type="phone" :value="$user->organization->contact_person_phone" :preferred="$user->organization->preferred_contact_method === 'phone' &&
+                    $user->organization->contact_person_email" :vrs="$user->organization->contact_person_vrs" />
+            @endif
 
             <p><a
                     href="{{ localized_route('organizations.edit', ['organization' => $user->organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')

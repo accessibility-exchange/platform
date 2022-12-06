@@ -51,16 +51,16 @@
             </li>
             <li class="account">
                 <x-nav-link href="{{ localized_route('settings.show') }}" :active="request()->localizedRouteIs('users.settings')">
-                    @svg('heroicon-s-user-circle') {{ Auth::user()->name }}
+                    @svg('heroicon-o-cog') {{ __('My settings') }}
                 </x-nav-link>
             </li>
             <!-- Authentication -->
-            <li x-data>
-                <x-nav-link :href="localized_route('logout')" x-on:click.prevent="$refs.form.submit()">
-                    {{ __('Sign out') }}
-                </x-nav-link>
-                <form method="POST" action="{{ localized_route('logout') }}" x-ref="form">
+            <li>
+                <form method="POST" action="{{ localized_route('logout') }}">
                     @csrf
+                    <button class="nav-button">
+                        {{ __('Sign out') }}
+                    </button>
                 </form>
             </li>
         @endauth

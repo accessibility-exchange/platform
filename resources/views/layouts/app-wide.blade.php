@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">
@@ -17,6 +17,8 @@
 
                 <!-- Page Heading -->
                 <header class="stack">
+                    <!-- Text to Speech -->
+                    <x-tts.orator />
                     {{ $header }}
                 </header>
 

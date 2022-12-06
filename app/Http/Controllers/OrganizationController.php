@@ -83,11 +83,7 @@ class OrganizationController extends Controller
 
         $data['working_languages'] = [$user->locale];
 
-        if ($user->signed_language) {
-            $data['working_languages'][] = $user->signed_language;
-        }
-
-        $data['languages'] = ['en', 'fr', 'ase', 'fcs'];
+        $data['languages'] = config('locales.supported');
 
         $organization = Organization::create($data);
 
@@ -339,8 +335,6 @@ class OrganizationController extends Controller
     public function updateContactInformation(UpdateOrganizationContactInformationRequest $request, Organization $organization): RedirectResponse
     {
         $data = $request->validated();
-
-        $data['contact_person_vrs'] = isset($data['contact_person_vrs']);
 
         $organization->fill($data);
         $organization->save();

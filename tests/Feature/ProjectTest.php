@@ -39,10 +39,10 @@ test('users with organization or regulated organization admin role can create pr
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
     ]);
 
-    $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+    $response->assertSessionHas('languages', config('locales.supported'));
 
     $response = $this->actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $regulatedOrganization->id,
@@ -91,10 +91,10 @@ test('users with organization or regulated organization admin role can create pr
     $response->assertOk();
 
     $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
-        'languages' => ['en', 'fr', 'ase', 'fcs'],
+        'languages' => config('locales.supported'),
     ]);
 
-    $response->assertSessionHas('languages', ['en', 'fr', 'ase', 'fcs']);
+    $response->assertSessionHas('languages', config('locales.supported'));
 
     $response = $this->actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $organization->id,
@@ -376,6 +376,39 @@ test('users with regulated organization admin role can edit projects', function 
 
     $project = $project->fresh();
     expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_phone' => '19024445678',
+        'contact_person_vrs' => true,
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->contact_person_vrs)->toBeTrue();
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->contact_person_vrs)->toBeNull();
 });
 
 test('users without regulated organization admin role cannot edit projects', function () {

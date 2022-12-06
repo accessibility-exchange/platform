@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
-use App\Traits\HasContactPerson;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
@@ -29,7 +28,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Project extends Model
 {
-    use HasContactPerson;
     use HasFactory;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;

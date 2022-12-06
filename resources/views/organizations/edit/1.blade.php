@@ -12,12 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('About you') }}
             </h2>
-
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
-            </p>
-
+            <hr class="divider--thick">
             <h3>{{ __('Organization information') }}</h3>
 
             <div class="field @error('name') field--error @enderror">
@@ -79,14 +74,15 @@
             <h3>{{ __('Social media and website links') . ' ' . __('(optional)') }}</h3>
 
             <fieldset class="stack">
-                <legend>
-                    <h4>{{ __('Social media') }}</h4>
-                </legend>
+                <legend>{{ __('Social media links') }}</legend>
+                <x-hearth-hint for="social_links">
+                    {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                </x-hearth-hint>
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                         <x-hearth-input id="social_links_{{ $key }}" name="social_links[{{ $key }}]"
-                            :value="old('social_links.' . $key, $organization->social_links[$key] ?? '')" />
+                            type="url" :value="old('social_links.' . $key, $organization->social_links[$key] ?? '')" hinted="social_links-hint" />
                         <x-hearth-error for="social_links_{{ $key }}"
                             field="social_links.{{ $key }}" />
                     </div>
@@ -97,13 +93,15 @@
 
             <div class="field @error('website_link') field--error @enderror">
                 <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
-                <x-hearth-input name="website_link" type="url" :value="old('website_link', $organization->website_link)" />
+                <x-hearth-hint
+                    for="website_link">{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}</x-hearth-hint>
+                <x-hearth-input name="website_link" type="url" :value="old('website_link', $organization->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>
-
-            <p class="repel">
-                <button name="save" value="1">{{ __('Save') }}</button>
-                <button class="secondary" name="save_and_next" value="1">{{ __('Save and next') }}</button>
+            <hr class="divider--thick">
+            <p class="flex flex-wrap gap-7">
+                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
             </p>
         </div>
     </div>

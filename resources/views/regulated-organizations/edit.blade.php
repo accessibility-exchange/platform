@@ -53,9 +53,9 @@
             </div>
 
             <div class="stack">
-                <button>{{ __('Save') }}</button>
-
                 <h2>{{ __('Organization information') }}</h2>
+
+                <hr class="divider--thick">
 
                 <div class="field @error('name') field--error @enderror">
                     <x-translatable-input name="name" :model="$regulatedOrganization" :label="__('Federally regulated organization name')" :shortLabel="__('federally regulated organization name')"
@@ -114,17 +114,19 @@
                 <h2>{{ __('Social media and website links') . ' ' . __('(optional)') }}</h2>
 
                 <fieldset class="stack">
-                    <legend>
-                        <h3>{{ __('Social media') }}</h3>
-                    </legend>
+                    <legend>{{ __('Social media links') }}</legend>
+                    <x-hearth-hint for="social_links">
+                        {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                    </x-hearth-hint>
                     @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                         <div class="field @error('social_links.' . $key) field--error @enderror">
                             <x-hearth-label for="social_links_{{ $key }}" :value="__(':service', ['service' => Str::studly($key)]) . ' ' . __('(optional)')" />
                             <x-hearth-input id="social_links_{{ $key }}"
-                                name="social_links[{{ $key }}]" :value="old(
+                                name="social_links[{{ $key }}]" type="url" :value="old(
                                     'social_links.' . $key,
                                     $regulatedOrganization->social_links[$key] ?? '',
-                                )" />
+                                )"
+                                hinted="social_links-hint" />
                             <x-hearth-error for="social_links_{{ $key }}"
                                 field="social_links.{{ $key }}" />
                         </div>
@@ -133,9 +135,12 @@
 
                 <h3>{{ __('Organization website') }}</h3>
 
-                <div class="field">
+                <div class="field @error('website_link') field--error @enderror">
                     <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
-                    <x-hearth-input name="website_link" type="url" :value="old('website_link', $regulatedOrganization->website_link)" />
+                    <x-hearth-hint
+                        for="website_link">{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}</x-hearth-hint>
+                    <x-hearth-input name="website_link" type="url" :value="old('website_link', $regulatedOrganization->website_link)" hinted />
+                    <x-hearth-error for="website_link" />
                 </div>
 
                 <h3>{{ __('Contact information') }}</h3>
@@ -181,6 +186,8 @@
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
+
+                <hr class="divider--thick">
 
                 <button>{{ __('Save') }}</button>
             </div>

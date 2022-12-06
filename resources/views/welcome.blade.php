@@ -6,7 +6,7 @@
 </head>
 
 <body class="welcome">
-    @include('layouts.banner')
+    @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">
@@ -16,6 +16,8 @@
                 @include('partials.flash-messages')
                 <!-- Page Heading -->
                 <header class="dark full">
+                    <!-- Text to Speech -->
+                    <x-tts.orator class="center center:wide" />
                     <div class="center center:wide stack stack:lg">
                         <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
                         <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
