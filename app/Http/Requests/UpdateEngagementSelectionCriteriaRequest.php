@@ -77,7 +77,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'regions' => [],
             'locations' => [],
             'disability_types' => [],
@@ -86,6 +86,12 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'indigenous_identities' => [],
             'ethnoracial_identities' => [],
             'area_types' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 }
