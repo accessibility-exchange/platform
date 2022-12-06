@@ -76,11 +76,6 @@ class MatchingStrategy extends Model
         return $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->count() > 0;
     }
 
-    public function hasDisabilityType(Identity $disabilityType): bool
-    {
-        return $this->identities->contains($disabilityType);
-    }
-
     public function hasIdentity(Identity $identity): bool
     {
         return $this->identities->contains($identity);
