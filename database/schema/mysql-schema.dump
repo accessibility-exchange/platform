@@ -365,7 +365,7 @@ CREATE TABLE `identities` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `name` json NOT NULL,
   `description` json DEFAULT NULL,
-  `cluster` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `clusters` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -564,7 +564,7 @@ CREATE TABLE `individuals` (
   `social_links` json DEFAULT NULL,
   `website_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
-  `other_disability_type_connection` json DEFAULT NULL,
+  `other_disability_connection` json DEFAULT NULL,
   `other_ethnoracial_identity_connection` json DEFAULT NULL,
   `connection_lived_experience` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lived_experience` json DEFAULT NULL,
@@ -675,6 +675,7 @@ CREATE TABLE `matching_strategies` (
   `regions` json DEFAULT NULL,
   `locations` json DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
+  `cross_disability_and_deaf` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `matching_strategies_matchable_type_matchable_id_index` (`matchable_type`,`matchable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -846,8 +847,8 @@ CREATE TABLE `organizations` (
   `social_links` json DEFAULT NULL,
   `website_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
-  `other_disability_type` json DEFAULT NULL,
-  `other_ethnoracial_identity` json DEFAULT NULL,
+  `other_disability_constituency` json DEFAULT NULL,
+  `other_ethnoracial_identity_constituency` json DEFAULT NULL,
   `staff_lived_experience` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1329,3 +1330,8 @@ INSERT INTO `migrations` VALUES (117,'2022_11_09_184522_drop_employment_statuses
 INSERT INTO `migrations` VALUES (118,'2022_11_24_200740_create_language_matching_strategy_table',6);
 INSERT INTO `migrations` VALUES (119,'2022_11_24_202938_create_identity_matching_strategy_table',6);
 INSERT INTO `migrations` VALUES (120,'2022_11_28_151526_drop_redundant_identity_tables',7);
+INSERT INTO `migrations` VALUES (121,'2022_11_29_150313_add_clusters_column_to_identities_table',8);
+INSERT INTO `migrations` VALUES (122,'2022_12_02_013944_rename_other_disability_type_connection_column_on_individuals_table',8);
+INSERT INTO `migrations` VALUES (123,'2022_12_05_191025_rename_other_disability_type_column_on_organizations_table',8);
+INSERT INTO `migrations` VALUES (124,'2022_12_05_203758_rename_column_on_organizations_table',8);
+INSERT INTO `migrations` VALUES (125,'2022_12_06_141502_add_cross_disability_and_deaf_column_to_matching_strategies_table',8);
