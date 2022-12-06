@@ -164,7 +164,7 @@
                             <div class="field">
                                 <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
                                     'nb_gnc_fluid_identity',
-                                    $engagement->matchingStrategy->hasIdentities($genderDiverseIdentities),
+                                    $engagement->matchingStrategy->hasIdentities($genderDiverseIdentities) ?? false,
                                 )" />
                                 <x-hearth-label
                                     for='nb_gnc_fluid_identity'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
