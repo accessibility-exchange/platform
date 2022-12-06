@@ -1,62 +1,54 @@
 <h3>{{ __('Groups in the disability and Deaf community') }}</h3>
 
 <ul class="tags" role="list">
-    @foreach ($organization->disabilityAndDeafConstituencies as $disabilityType)
-        <li class="tag">{{ $disabilityType->name }}</li>
+    @foreach ($organization->disabilityAndDeafConstituencies as $constituency)
+        <li class="tag">{{ $constituency->name }}</li>
     @endforeach
-    @if ($organization->other_disability_type)
-        <li class="tag">{{ $organization->other_disability_type }}</li>
+    @if ($organization->other_disability_constituency)
+        <li class="tag">{{ $organization->other_disability_constituency }}</li>
     @endif
-    @foreach ($organization->livedExperienceConstituencies as $livedExperience)
-        @if ($livedExperience->getTranslation('name', 'en') !== 'People with disabilities and/or Deaf people')
-            <li class="tag">{{ $livedExperience->name }}</li>
-        @endif
+    @foreach ($organization->livedExperienceConstituencies as $constituency)
+        <li class="tag">{{ $constituency->name }}</li>
     @endforeach
 </ul>
 
-@if ($organization->extra_attributes->has_indigenous_identities ||
-    $organization->extra_attributes->has_ethnoracial_identities)
+@if ($organization->hasConstituencies('indigenousConstituencies') ||
+    $organization->hasConstituencies('ethnoracialIdentityConstituencies'))
     <h3>{{ __('Ethno-racial groups') }}</h3>
 
     <ul class="tags" role="list">
-        @foreach ($organization->indigenousConstituencies as $indigenousIdentity)
-            <li class="tag">{{ $indigenousIdentity->name }}</li>
+        @foreach ($organization->indigenousConstituencies as $constituency)
+            <li class="tag">{{ $constituency->name }}</li>
         @endforeach
-        @foreach ($organization->ethnoracialIdentityConstituencies as $ethnoracialIdentity)
-            <li class="tag">{{ $ethnoracialIdentity->name }}</li>
+        @foreach ($organization->ethnoracialIdentityConstituencies as $constituency)
+            <li class="tag">{{ $constituency->name }}</li>
         @endforeach
         @if ($organization->other_ethnoracial)
-            <li class="tag">{{ $organization->other_ethnoracial_identity }}</li>
+            <li class="tag">{{ $organization->other_ethnoracial_identity_constituency }}</li>
         @endif
     </ul>
 @endif
 
-@if ($organization->extra_attributes->has_gender_and_sexual_identities ||
-    $organization->extra_attributes->has_refugee_and_immigrant_constituency)
+@if ($organization->hasConstituencies('genderAndSexualityConstituencies') ||
+    $organization->hasConstituencies('statusConstituencies'))
     <h3>{{ __('Other identity groups') }}</h3>
 
     <ul class="tags" role="list">
-        @if ($organization->extra_attributes->has_refugee_and_immigrant_constituency)
-            <li class="tag">{{ __('Refugees and/or immigrants') }}</li>
-        @endif
-        @foreach ($organization->genderIdentityConstituencies as $genderIdentity)
-            <li class="tag">{{ $genderIdentity->name }}</li>
+        @foreach ($organization->statusConstituencies as $constituency)
+            <li class="tag">{{ $constituency->name }}</li>
         @endforeach
-        @if ($organization->ConstituentIdentities->contains($transPeople))
-            <li class="tag">{{ $transPeople->name }}</li>
-        @endif
-        @if ($organization->ConstituentIdentities->contains($twoslgbtqiaplusPeople))
-            <li class="tag">{{ $twoslgbtqiaplusPeople->name }}</li>
-        @endif
+        @foreach ($organization->genderAndSexualityConstituencies as $constituency)
+            <li class="tag">{{ $constituency->name }}</li>
+        @endforeach
     </ul>
 @endif
 
-@if ($organization->extra_attributes->has_age_brackets)
+@if ($organization->hasConstituencies('ageBracketConstituencies'))
     <h3>{{ __('Age groups') }}</h3>
 
     <ul class="tags" role="list">
-        @foreach ($organization->ageBracketConstituencies as $ageBracket)
-            <li class="tag">{{ $ageBracket->name }}</li>
+        @foreach ($organization->ageBracketConstituencies as $constituency)
+            <li class="tag">{{ $constituency->name }}</li>
         @endforeach
     </ul>
 @endif
