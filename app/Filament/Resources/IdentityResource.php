@@ -12,6 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Filters\Layout;
 use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
 class IdentityResource extends Resource
@@ -56,22 +57,21 @@ class IdentityResource extends Resource
             ])
             ->filters(
                 [
-                    // SelectFilter::make('clusters')->options(self::getClusters()),
+                    SelectFilter::make('clusters')
+                        ->multiple()
+                        ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('clusters', $data['values']))
+                        ->options(self::getClusters()),
                 ],
                 layout: Layout::AboveContent
             )
-            ->actions([
-                // Tables\Actions\EditAction::make(),
-            ])
+            ->actions([])
             ->bulkActions([])
             ->defaultSort('clusters');
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

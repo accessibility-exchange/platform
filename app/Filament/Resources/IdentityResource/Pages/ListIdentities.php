@@ -5,6 +5,7 @@ namespace App\Filament\Resources\IdentityResource\Pages;
 use App\Filament\Resources\IdentityResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListIdentities extends ListRecords
 {
@@ -15,5 +16,10 @@ class ListIdentities extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()->withoutGlobalScopes();
     }
 }
