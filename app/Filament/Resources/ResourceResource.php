@@ -99,6 +99,7 @@ class ResourceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->url(fn (ResourceModel $record): string => localized_route('resources.show', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
