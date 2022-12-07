@@ -38,7 +38,9 @@ class UpdateIndividualRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
             'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
-            'bio.*' => 'required',
+            'bio.*' => 'nullable|string',
+            'bio.en' => 'required_without:bio.fr',
+            'bio.fr' => 'required_without:bio.en',
             'working_languages' => 'nullable|array',
             'consulting_services' => [
                 'nullable',
@@ -72,7 +74,9 @@ class UpdateIndividualRequest extends FormRequest
 
     public function messages(): array
     {
-        $messages = [];
+        $messages = [
+            'bio.*.required_without' => 'You must enter your :attribute.',
+        ];
 
         foreach ($this->social_links as $key => $value) {
             $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);

@@ -19,6 +19,9 @@
                         <!-- Flash Messages -->
                         @include('partials.flash-messages')
 
+                        <!-- Text to Speech -->
+                        <x-tts.orator />
+
                         {{ $header }}
                     </div>
                 </header>

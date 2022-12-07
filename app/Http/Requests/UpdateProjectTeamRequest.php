@@ -71,5 +71,9 @@ class UpdateProjectTeamRequest extends FormRequest
                 return $training;
             }, $this->team_trainings ?? []),
         ]);
+
+        $this->mergeIfMissing([
+            'contact_person_vrs' => null,
+        ]);
     }
 }

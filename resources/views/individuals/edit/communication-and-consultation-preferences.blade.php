@@ -30,7 +30,7 @@
                             !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
                         )" />
                         <x-hearth-hint for="email">
-                            {{ __('This is also the email you use to log into this account. If you change this, you are also changing your log in email.') }}
+                            {{ __('This is also the email you use to log into this account.') }}
                         </x-hearth-hint>
                         <x-hearth-error for="email" />
                     </div>

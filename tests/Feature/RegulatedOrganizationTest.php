@@ -96,6 +96,25 @@ test('users with admin role can edit regulated organizations', function () {
     $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'contact_person_phone' => '19024445678',
+        'contact_person_vrs' => true,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+
+    $regulatedOrganization->refresh();
+    expect($regulatedOrganization->contact_person_vrs)->toBeTrue();
+
+    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'contact_person_phone' => '19024445678',
+    ]);
+
+    $response->assertSessionHasNoErrors();
+
+    $regulatedOrganization->refresh();
+    expect($regulatedOrganization->contact_person_vrs)->toBeNull();
+
+    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'service_areas' => ['NL', 'NS'],
         'social_links' => ['facebook' => 'https://facebook.com/'.Str::slug($regulatedOrganization->name)],
