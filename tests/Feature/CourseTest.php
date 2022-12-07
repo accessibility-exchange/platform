@@ -42,6 +42,15 @@ test('a course is belong to an organizations', function () {
     expect($course->organization->id)->toBe($organization->id);
 });
 
+test('users can see available courses', function () {
+    $course = Course::factory()->create();
+    $anotherCourse = Course::factory()->create();
+
+    $response = $this->get(localized_route('courses.index'));
+    $response->assertSee($course->title);
+    $response->assertSee($anotherCourse->title);
+});
+
 test('users can take the quiz for courses once they finish all the modules in the course', function () {
     $course = Course::factory()->create();
     $user = User::factory()->create();
