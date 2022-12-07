@@ -9,6 +9,8 @@ services:
             args:
                 CIPHERSWEET_KEY: '${CIPHERSWEET_KEY}'
         container_name: platform.test
+        # deploy:
+        #   replicas: 4
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
