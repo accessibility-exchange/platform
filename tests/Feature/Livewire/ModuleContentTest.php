@@ -42,7 +42,6 @@ test('On player start, intermediate table values are set', function () {
         'user_id' => $user->id,
         'module_id' => $module->id,
     ]);
-    $this->assertTrue($moduleContent->startedContentAt);
 });
 
 test('On player end, intermediate table values are updated', function () {
@@ -64,6 +63,4 @@ test('On player end, intermediate table values are updated', function () {
     $this->assertDatabaseCount('module_user', 1);
     $this->assertNotNull(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at);
     $this->assertNotNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->finished_at);
-
-    $this->assertTrue($moduleContent->finishedContentAt);
 });

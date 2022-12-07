@@ -13,9 +13,9 @@ class ModuleContent extends Component
 
     public User $user;
 
-    public ?string $startedContentAt;
+    public ?string $startedContentAt = null;
 
-    public ?string $finishedContentAt;
+    public ?string $finishedContentAt = null;
 
     public function mount(Module $module)
     {
