@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ModuleController;
+use App\Http\Livewire\ModuleContent;
 
-Route::multilingual('/modules/{module}', [ModuleController::class, 'show'])
-    ->name('modules.show');
+Route::multilingual('/modules/{module}', [ModuleContent::class, '__invoke'])
+    ->name('modules.module-content');
