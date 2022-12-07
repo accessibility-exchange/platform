@@ -95,6 +95,6 @@ class QuizController extends Controller
             }
         }
 
-        return view('quizzes.show-result', ['quiz' => $quiz]);
+        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $quizResults]);
     }
 }
