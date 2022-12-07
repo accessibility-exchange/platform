@@ -25,27 +25,28 @@
             </p>
 
             <fieldset
-                class="field @error('disability_and_deaf') field--error @enderror @error('lived_experiences') field--error @enderror">
+                class="field @error('disability_and_deaf') field--error @enderror @error('lived_experience_connections') field--error @enderror">
                 <legend>
                     <x-required>{{ __('Can you connect to people with disabilities and Deaf people, their supporters, or both?') }}</x-required>
                 </legend>
-                <x-hearth-hint for="lived_experiences">{{ __('Please check all that apply.') }}</x-hearth-hint>
+                <x-hearth-hint
+                    for="lived_experience_connections">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <div class="field">
                     <x-hearth-checkbox name="disability_and_deaf" :checked="old(
                         'disability_and_deaf',
                         $individual->extra_attributes->get('disability_and_deaf_connections', false),
                     )"
-                        x-model="disabilityAndDeafConnections" hinted="lived_experiences-hint" />
+                        x-model="disabilityAndDeafConnections" hinted="lived_experience_connections-hint" />
                     <x-hearth-label
                         for="disability_and_deaf">{{ __('People with disabilities and/or Deaf people') }}</x-hearth-label>
                 </div>
-                <x-hearth-checkboxes name="lived_experiences" :options="$livedExperiences" :checked="old(
-                    'lived_experiences',
+                <x-hearth-checkboxes name="lived_experience_connections" :options="$livedExperiences" :checked="old(
+                    'lived_experience_connections',
                     $individual->livedExperienceConnections->pluck('id')->toArray() ?? [],
                 )"
-                    hinted="lived_experiences-hint" required />
+                    hinted="lived_experience_connections-hint" required />
                 <x-hearth-error for="disability_and_deaf" />
-                <x-hearth-error for="lived_experiences" />
+                <x-hearth-error for="lived_experience_connections" />
             </fieldset>
 
             <div class="stack fieldset" x-show="disabilityAndDeafConnections" x-cloak x-data="{ baseDisabilityType: '{{ old('base_disability_type', $individual->base_disability_type ?? '') }}', otherDisability: {{ old('has_other_disability_connection', !is_null($individual->other_disability_connection) && $individual->other_disability_connection !== '' ? 'true' : 'false') }} }">
