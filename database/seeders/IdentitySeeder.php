@@ -131,11 +131,11 @@ class IdentitySeeder extends Seeder
             [
                 'name' => __('Temporary disabilities'),
                 'description' => __('Such as broken limbs, gestational diabetes'),
-                'clusters' => ['disability-and-deaf', 'unreachable'],
+                'clusters' => ['disability-and-deaf', 'reachable-when-mixed'],
             ],
             [
                 'name' => __('White'),
-                'clusters' => ['ethnoracial', 'unreachable'],
+                'clusters' => ['ethnoracial', 'reachable-when-mixed'],
             ],
             [
                 'name' => __('Black'),
@@ -175,7 +175,7 @@ class IdentitySeeder extends Seeder
             ],
             [
                 'name' => __('Men'),
-                'clusters' => ['gender', 'gender-and-sexuality', 'unreachable'],
+                'clusters' => ['gender', 'gender-and-sexuality', 'reachable-when-mixed'],
             ],
             [
                 'name' => __('Non-binary people'),
@@ -203,7 +203,7 @@ class IdentitySeeder extends Seeder
             ],
             [
                 'name' => __('Supporters'),
-                'clusters' => ['lived-experience', 'unreachable'],
+                'clusters' => ['lived-experience', 'reachable-when-mixed'],
             ],
         ];
 
