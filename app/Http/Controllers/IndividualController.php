@@ -134,7 +134,7 @@ class IndividualController extends Controller
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
-            'refugeesAndImmigrantsOptions' => Options::forArray([
+            'yesNoOptions' => Options::forArray([
                 '1' => __('Yes'),
                 '0' => __('No'),
             ])->toArray(),
@@ -219,7 +219,7 @@ class IndividualController extends Controller
 
         $individual->identityConnections()->sync($data['identities']);
 
-        if ($data['has_ethnoracial_identity_connections'] == 0) {
+        if ($data['has_ethnoracial_identity_connections'] == 0 || $data['has_other_ethnoracial_identity_connection'] == 0) {
             $data['other_ethnoracial_identity_connection'] = null;
         }
 

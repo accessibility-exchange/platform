@@ -7,7 +7,7 @@
 
         @include('organizations.partials.progress')
 
-        <div class="stack" x-data="{ disabilityAndDeafConstituencies: {{ old('disability_and_deaf', $organization->extra_attributes->get('disability_and_deaf_constituencies', false)) ? 'true' : 'false' }} }">
+        <div class="stack" x-data="{ disabilityAndDeafConstituencies: @js(old('disability_and_deaf', $organization->extra_attributes->get('disability_and_deaf_constituencies', false))) }">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
@@ -31,7 +31,7 @@
                 @include('organizations.partials.disability-types')
             @endif
 
-            <div class="fieldset" x-data="{ hasIndigenousConstituencies: '{{ old('has_indigenous_constituencies', (int) $organization->hasConstituencies('indigenousConstituencies') ?? '') }}' }">
+            <div class="fieldset" x-data="{ hasIndigenousConstituencies: @js(old('has_indigenous_constituencies', $organization->hasConstituencies('indigenousConstituencies'))) }">
                 <fieldset class="field @error('has_indigenous_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
@@ -48,7 +48,7 @@
                     </div>
                     <x-hearth-error for="has_indigenous_constituencies" />
                 </fieldset>
-                <fieldset class="field box @error('indigenous_constituencies') field--error @enderror"
+                <fieldset class="field box @error('indigenous_constituencies') field--error @enderror" x-cloak
                     x-show="hasIndigenousConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which Indigenous groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
@@ -67,43 +67,26 @@
                 <legend>
                     <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                 </legend>
-                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$refugeesAndImmigrantsOptions" :checked="old(
-                    'refugees_and_immigrants',
-                    (int) $organization->hasConstituencies('statusConstituencies'),
-                    '',
-                )" />
+                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$yesNoOptions" :checked="old('refugees_and_immigrants', $organization->hasConstituencies('statusConstituencies')) ??
+                    ''" />
                 <x-hearth-error for="refugees_and_immigrants" />
             </fieldset>
 
-            <div class="fieldset" x-data="{ hasGenderAndSexualityConstituencies: '{{ old('has_gender_and_sexuality_constituencies', (int) $organization->hasConstituencies('genderAndSexualityConstituencies')) }}' }">
+            <div class="fieldset" x-data="{ hasGenderAndSexualityConstituencies: @js(old('has_gender_and_sexuality_constituencies', $organization->hasConstituencies('genderAndSexualityConstituencies'))) }">
                 <fieldset class="field @error('has_gender_and_sexuality_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
-                    <div class="field">
-                        <input id="has_gender_and_sexuality_constituencies-1"
-                            name="has_gender_and_sexuality_constituencies" type="radio" value="1"
-                            @checked(old(
-                                    'has_gender_and_sexuality_constituencies',
-                                    (int) $organization->hasConstituencies('genderAndSexualityConstituencies')
-                                )) x-model="hasGenderAndSexualityConstituencies" />
-                        <label for="has_gender_and_sexuality_constituencies-1">{{ __('Yes') }}</label>
-                    </div>
-
-                    <div class="field">
-                        <input id="has_gender_and_sexuality_constituencies-0"
-                            name="has_gender_and_sexuality_constituencies" type="radio" value="0"
-                            @checked(!old(
-                                    'has_gender_and_sexuality_constituencies',
-                                    (int) $organization->hasConstituencies('genderAndSexualityConstituencies')
-                                )) x-model="hasGenderAndSexualityConstituencies" />
-                        <label for="has_gender_and_sexuality_constituencies-0">{{ __('No') }}</label>
-                    </div>
+                    <x-hearth-radio-buttons name="has_gender_and_sexuality_constituencies" :options="$yesNoOptions"
+                        :checked="old(
+                            'has_gender_and_sexuality_constituencies',
+                            $organization->hasConstituencies('genderAndSexualityConstituencies'),
+                        ) ?? ''" x-model="hasGenderAndSexualityConstituencies" />
                     <x-hearth-error for="has_gender_and_sexuality_constituencies" />
                 </fieldset>
                 <fieldset
                     class="field box @error('gender_and_sexuality_constituencies') field--error @enderror @error('nb_gnc_fluid_identity') field--error @enderror"
-                    x-show="hasGenderAndSexualityConstituencies == 1">
+                    x-cloak x-show="hasGenderAndSexualityConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which groups marginalized based on gender or sexual identity does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
@@ -127,27 +110,19 @@
                 </fieldset>
             </div>
 
-            <div class="fieldset" x-data="{ hasAgeBracketConstituencies: '{{ old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')) }}' }">
+            <div class="fieldset" x-data="{ hasAgeBracketConstituencies: @js(old('has_age_bracket_constituencies', $organization->hasConstituencies('ageBracketConstituencies'))) }">
                 <fieldset class="field @error('has_age_bracket_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
-                    <div class="field">
-                        <input id="has_age_bracket_constituencies-1" name="has_age_bracket_constituencies"
-                            type="radio" value="1" @checked(old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')))
-                            x-model="hasAgeBracketConstituencies" />
-                        <label for="has_age_bracket_constituencies-1">{{ __('Yes') }}</label>
-                    </div>
-
-                    <div class="field">
-                        <input id="has_age_bracket_constituencies-0" name="has_age_bracket_constituencies"
-                            type="radio" value="0" @checked(!old('has_age_bracket_constituencies', (int) $organization->hasConstituencies('ageBracketConstituencies')))
-                            x-model="hasAgeBracketConstituencies" />
-                        <label for="has_age_bracket_constituencies-0">{{ __('No') }}</label>
-                    </div>
+                    <x-hearth-radio-buttons name="has_age_bracket_constituencies" :options="$yesNoOptions" :checked="old(
+                        'has_age_bracket_constituencies',
+                        $organization->hasConstituencies('ageBracketConstituencies'),
+                    ) ?? ''"
+                        x-model="hasAgeBracketConstituencies" />
                     <x-hearth-error for="has_age_bracket_constituencies" />
                 </fieldset>
-                <fieldset class="field box @error('age_bracket_constituencies') field--error @enderror"
+                <fieldset class="field box @error('age_bracket_constituencies') field--error @enderror" x-cloak
                     x-show="hasAgeBracketConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which age groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
@@ -163,38 +138,18 @@
             </div>
 
             <div class="fieldset" x-data="{
-                hasEthnoracialIdentityConstituencies: '{{ old('has_ethnoracial_identity_constituencies', (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') || (!is_null($organization->other_ethnoracial_identity_constituency) && $organization->other_ethnoracial_identity_constituency !== ''))) }}',
-                otherEthnoracialIdentity: {{ old('has_other_ethnoracial_identity_constituency', !is_null($organization->other_ethnoracial_identity_constituency) && $organization->other_ethnoracial_identity_constituency !== '') ? 'true' : 'false' }}
+                hasEthnoracialIdentityConstituencies: @js(old('has_ethnoracial_identity_constituencies', $organization->hasConstituencies('ethnoracialIdentityConstituencies') || !blank($organization->other_ethnoracial_identity_constituency) ?: null)),
+                otherEthnoracialIdentity: @js(old('has_other_ethnoracial_identity_constituency', !blank($organization->other_ethnoracial_identity_constituency)))
             }">
                 <fieldset class="field @error('has_ethnoracial_identity_constituencies') field--error @enderror">
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
-                    <div class="field">
-                        <input id="has_ethnoracial_identity_constituencies-1"
-                            name="has_ethnoracial_identity_constituencies" type="radio" value="1"
-                            @checked(old(
-                                    'has_ethnoracial_identity_constituencies',
-                                    (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') ||
-                                        (!is_null($organization->other_ethnoracial_identity_constituency) &&
-                                            $organization->other_ethnoracial_identity_constituency !== ''))
-                                )) x-model="hasEthnoracialIdentityConstituencies" />
-                        <label for="has_ethnoracial_identity_constituencies-1">{{ __('Yes') }}</label>
-                    </div>
-                    <div class="field">
-                        <input id="has_ethnoracial_identity_constituencies-0"
-                            name="has_ethnoracial_identity_constituencies" type="radio" value="0"
-                            @checked(!old(
-                                    'has_ethnoracial_identity_constituencies',
-                                    (int) ($organization->hasConstituencies('ethnoracialIdentityConstituencies') ||
-                                        (!is_null($organization->other_ethnoracial_identity_constituency) &&
-                                            $organization->other_ethnoracial_identity_constituency !== ''))
-                                )) x-model="hasEthnoracialIdentityConstituencies" />
-                        <label for="has_ethnoracial_identity_constituencies-0">{{ __('No') }}</label>
-                    </div>
+                    <x-hearth-radio-buttons name="has_ethnoracial_identity_constituencies" :options="$yesNoOptions"
+                        checked="@js('has_ethnoracial_identity_constituencies', $organization->hasConstituencies('ethnoracialIdentityConstituencies') || !blank($organization->other_ethnoracial_identity_constituency) ?: '')" x-model="hasEthnoracialIdentityConstituencies" />
                     <x-hearth-error for="has_ethnoracial_identity_constituencies" />
                 </fieldset>
-                <fieldset class="field box @error('ethnoracial_identity_constituencies') field--error @enderror"
+                <fieldset class="field box @error('ethnoracial_identity_constituencies') field--error @enderror" x-cloak
                     x-show="hasEthnoracialIdentityConstituencies == 1">
                     <legend>
                         <x-required>{{ __('Which ethnoracial identity or identities are the people your organization specifically :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-required>
@@ -208,8 +163,7 @@
                     <div class="field">
                         <x-hearth-checkbox name="has_other_ethnoracial_identity_constituency" :checked="old(
                             'has_other_ethnoracial_identity_constituency',
-                            !is_null($organization->other_ethnoracial_identity_constituency) &&
-                                $organization->other_ethnoracial_identity_constituency !== '',
+                            !blank($organization->other_ethnoracial_identity_constituency),
                         )"
                             x-model="otherEthnoracialIdentity" />
                         <x-hearth-label
@@ -217,7 +171,7 @@
                     </div>
                     <div class="field__subfield stack">
                         <x-translatable-input name="other_ethnoracial_identity_constituency" :label="__('Ethnoracial identity')"
-                            :model="$organization" :shortLabel="__('ethnoracial identity')" x-show="otherEthnoracialIdentity" />
+                            :model="$organization" :shortLabel="__('ethnoracial identity')" x-cloak x-show="otherEthnoracialIdentity" />
                     </div>
                     <x-hearth-error for="ethnoracial_identity_constituencies" />
                 </fieldset>

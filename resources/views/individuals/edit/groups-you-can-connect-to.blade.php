@@ -195,7 +195,7 @@
             </div>
 
             <div class="stack fieldset" x-data="{
-                hasEthnoracialIdentities: @js(old('has_ethnoracial_identity_connections', $individual->hasConnections('ethnoracialIdentityConnections'))),
+                hasEthnoracialIdentities: @js(old('has_ethnoracial_identity_connections', $individual->hasConnections('ethnoracialIdentityConnections') || !blank($individual->other_ethnoracial_identity_connection) ?: null)),
                 otherEthnoracialIdentity: @js(old('other_ethnoracial', !blank($individual->other_ethnoracial_identity_connection)))
             }">
                 <fieldset class="field @error('has_ethnoracial_identity_connections') field--error @enderror">
@@ -205,8 +205,10 @@
                     <x-hearth-radio-buttons name="has_ethnoracial_identity_connections" :options="$yesNoOptions"
                         :checked="old(
                             'has_ethnoracial_identity_connections',
-                            $individual->hasConnections('ethnoracialIdentityConnections'),
-                        ) ?? ''" x-model="hasEthnoracialIdentities" />
+                            $individual->hasConnections('ethnoracialIdentityConnections') ||
+                            !blank($individual->other_ethnoracial_identity_connection) ?:
+                            '',
+                        )" x-model="hasEthnoracialIdentities" />
                     <x-hearth-error for="has_ethnoracial_identity_connections" />
                 </fieldset>
                 <fieldset class="field box @error('ethnoracial_identity_connections') field--error @enderror"
@@ -223,8 +225,7 @@
                     <div class="field">
                         <x-hearth-checkbox name="has_other_ethnoracial_identity_connection" :checked="old(
                             'has_other_ethnoracial_identity_connection',
-                            !is_null($individual->other_ethnoracial_identity_connection) &&
-                                $individual->other_ethnoracial_identity_connection !== '',
+                            !blank($individual->other_ethnoracial_identity_connection),
                         )"
                             x-model="otherEthnoracialIdentity" />
                         <x-hearth-label

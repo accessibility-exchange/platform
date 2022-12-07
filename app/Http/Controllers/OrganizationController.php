@@ -173,7 +173,7 @@ class OrganizationController extends Controller
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
-            'refugeesAndImmigrantsOptions' => Options::forArray([
+            'yesNoOptions' => Options::forArray([
                 '1' => __('Yes'),
                 '0' => __('No'),
             ])->toArray(),
@@ -207,12 +207,16 @@ class OrganizationController extends Controller
 
         $organization->extra_attributes->set('disability_and_deaf_constituencies', $data['disability_and_deaf']);
 
-        if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
-            $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
-            $data['has_other_disability_constituency'] = 0;
-            $data['other_disability_constituency'] = null;
+        if (isset($data['base_disability_type'])) {
+            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+                $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
+                $data['has_other_disability_constituency'] = 0;
+                $data['other_disability_constituency'] = null;
+            } else {
+                $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 0);
+            }
         } else {
-            $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 0);
+            $organization->extra_attributes->forget('cross_disability_and_deaf_constituencies');
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
@@ -245,7 +249,7 @@ class OrganizationController extends Controller
 
         $organization->constituentIdentities()->sync($data['identities']);
 
-        if ($data['has_ethnoracial_identity_constituencies'] == 0) {
+        if ($data['has_ethnoracial_identity_constituencies'] == 0 || $data['has_other_ethnoracial_identity_constituency'] == 0) {
             $data['other_ethnoracial_identity_constituency'] = null;
         }
 
