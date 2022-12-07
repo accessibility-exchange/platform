@@ -35,26 +35,16 @@ rm -rf /app/bootstrap/cache
 ln -s $FILES_PATH /app/storage
 ln -s $CACHE_PATH /app/bootstrap/cache
 
-## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
-chown -R www-data:www-data $FILES_PATH $CACHE_PATH
-
 # make sure to test mysql connection before running the php artisan commands
 while ! mysqladmin ping -h$DB_HOST -uroot -p$DB_PASSWORD --silent; do
     sleep 1
 done
 
-# run before global so that storage is linked
-php artisan deploy:local
+php artisan deploy:local # run before global so that storage is linked https://github.com/accessibility-exchange/platform/issues/1357
 
-if [ ! -f $FILES_PATH/../deploy.lock ]
-then
+flock -n -E 0 /opt/data/cache -c "php artisan deploy:global" # run exclusively on a single instance at once
 
-  touch $FILES_PATH/../deploy.lock
-
-  php artisan deploy:global
-
-fi
-
-rm -rf $FILES_PATH/../deploy.lock
+## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
+chown -R www-data:www-data $FILES_PATH $CACHE_PATH
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
