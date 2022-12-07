@@ -104,7 +104,7 @@
                     <legend>
                         <x-required>{{ __('Can you connect to people who are First Nations, Inuit, or Métis?') }}</x-required>
                     </legend>
-                    <x-hearth-radio-buttons name="has_indigenous_connections" :options="$refugeesAndImmigrantsOptions" :checked="old(
+                    <x-hearth-radio-buttons name="has_indigenous_connections" :options="$yesNoOptions" :checked="old(
                         'has_indigenous_connections',
                         $individual->hasConnections('indigenousConnections'),
                     ) ?? ''"
@@ -126,7 +126,7 @@
 
             <fieldset class="field @error('refugees_and_immigrants') field--error @enderror">
                 <legend><x-required>{{ __('Can you connect to refugees and/or immigrants?') }}</x-required></legend>
-                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$refugeesAndImmigrantsOptions" :checked="old('refugees_and_immigrants', $individual->hasConnections('statusConnections')) ?? ''" />
+                <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$yesNoOptions" :checked="old('refugees_and_immigrants', $individual->hasConnections('statusConnections')) ?? ''" />
                 <x-hearth-error for="refugees_and_immigrants" />
             </fieldset>
 
@@ -135,21 +135,11 @@
                     <legend>
                         <x-required>{{ __('Can you connect to people who are marginalized based on gender or sexual identity?') }}</x-required>
                     </legend>
-                    <div class="field">
-                        <x-hearth-input id="has_gender_and_sexuality_connections-1"
-                            name="has_gender_and_sexuality_connections" type="radio" value="1"
-                            x-model="hasGenderAndSexualityConnections" />
-                        <label for="has_gender_and_sexuality_connections-1">{{ __('Yes') }}</label>
-                    </div>
-                    <div class="field__subfield stack">
-
-                    </div>
-                    <div class="field">
-                        <x-hearth-input id="has_gender_and_sexuality_connections-0"
-                            name="has_gender_and_sexuality_connections" type="radio" value="0"
-                            x-model="hasGenderAndSexualityConnections" />
-                        <label for="has_gender_and_sexuality_connections-0">{{ __('No') }}</label>
-                    </div>
+                    <x-hearth-radio-buttons name="has_gender_and_sexuality_connections" :options="$yesNoOptions"
+                        :checked="old(
+                            'has_gender_and_sexuality_connections',
+                            $individual->hasConnections('genderAndSexualityConnections'),
+                        ) ?? ''" x-model="hasGenderAndSexualityConnections" />
                     <x-hearth-error for="has_gender_and_sexuality_connections" />
                 </fieldset>
                 <fieldset
@@ -182,16 +172,11 @@
                 <fieldset class="field @error('has_age_bracket_connections') field--error @enderror">
                     <legend><x-required>{{ __('Can you connect to a specific age bracket or brackets?') }}</x-required>
                     </legend>
-                    <div class="field">
-                        <input id="has_age_bracket_connections-1" name="has_age_bracket_connections" type="radio"
-                            value="1" @checked(old('has_age_bracket_connections', $individual->hasConnections('ageBracketConnections'), ''))) x-model="hasAgeBrackets" />
-                        <label for="has_age_bracket_connections-1">{{ __('Yes') }}</label>
-                    </div>
-                    <div class="field">
-                        <input id="has_age_bracket_connections-0" name="has_age_bracket_connections" type="radio"
-                            value="0" @checked(!old('has_age_bracket_connections', $individual->hasConnections('ageBracketConnections'), ''))) x-model="hasAgeBrackets" />
-                        <label for="has_age_bracket_connections-0">{{ __('No') }}</label>
-                    </div>
+                    <x-hearth-radio-buttons name="has_age_bracket_connections" :options="$yesNoOptions" :checked="old(
+                        'has_age_bracket_connections',
+                        $individual->hasConnections('ageBracketConnections'),
+                    ) ?? ''"
+                        x-model="hasAgeBrackets" />
                     <x-hearth-error for="has_age_bracket_connections" />
                 </fieldset>
                 <fieldset class="field box @error('age_bracket_connections') field--error @enderror"
@@ -217,19 +202,11 @@
                     <legend>
                         <x-required>{{ __('Can you connect to a specific ethnoracial identity or identities?') }}</x-required>
                     </legend>
-                    <div class="field">
-                        <input id="has_ethnoracial_identity_connections-1" name="has_ethnoracial_identity_connections"
-                            type="radio" value="1" @checked(old('has_ethnoracial_identity_connections', $individual->hasConnections('ethnoracialIdentityConnections'), ''))
-                            x-model="hasEthnoracialIdentities" />
-                        <label for="has_ethnoracial_identity_connections-1">{{ __('Yes') }}</label>
-                    </div>
-                    <div>
-                        <input id="has_ethnoracial_identity_connections-0" name="has_ethnoracial_identity_connections"
-                            type="radio" value="0" @checked(!old('has_ethnoracial_identity_connections', $individual->hasConnections('ethnoracialIdentityConnections'), ''))
-                            x-model="hasEthnoracialIdentities" />
-                        <label for="has_ethnoracial_identity_connections-0">{{ __('No') }}</label>
-                    </div>
-
+                    <x-hearth-radio-buttons name="has_ethnoracial_identity_connections" :options="$yesNoOptions"
+                        :checked="old(
+                            'has_ethnoracial_identity_connections',
+                            $individual->hasConnections('ethnoracialIdentityConnections'),
+                        ) ?? ''" x-model="hasEthnoracialIdentities" />
                     <x-hearth-error for="has_ethnoracial_identity_connections" />
                 </fieldset>
                 <fieldset class="field box @error('ethnoracial_identity_connections') field--error @enderror"
