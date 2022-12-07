@@ -7,10 +7,10 @@ if [ -f /usr/local/etc/php/php.ini-development ]; then
 fi
 
 # create self signed cert so that site can be served on HTTPS
-openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -subj "$SSL_SUBJECT" \
-    -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+# openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+# openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+#     -subj "$SSL_SUBJECT" \
+#     -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 # mirror developers user id so that they can edit live files in the docker
 if [ -n "$USER_ID" ]; then
