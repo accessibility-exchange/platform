@@ -25,6 +25,7 @@ class StoreQuizResultRequest extends FormRequest
     {
         $questionRules = [];
         $quiz = $this->route('quiz');
+        // @phpstan-ignore-next-line
         foreach ($quiz->questions as $question) {
             $questionRules['question_'.$question->id] = 'required|array';
         }

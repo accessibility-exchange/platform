@@ -13,6 +13,10 @@ class QuizResults extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Quiz $quiz;
+
+    public string $name;
+
     /**
      * Create a new message instance.
      *

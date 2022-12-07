@@ -3,12 +3,20 @@
 namespace App\Http\Livewire;
 
 use App\Mail\QuizResults;
+use App\Models\Quiz;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class EmailResults extends Component
 {
+    public Quiz $quiz;
+
+    public array $results = [];
+
+    public User $user;
+
     public function mount($quiz, $results)
     {
         $this->quiz = $quiz;

@@ -12,7 +12,7 @@ class QuizController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Quiz $quiz)
     {

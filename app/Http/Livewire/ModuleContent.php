@@ -3,11 +3,20 @@
 namespace App\Http\Livewire;
 
 use App\Models\Module;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ModuleContent extends Component
 {
+    public Module $module;
+
+    public User $user;
+
+    public ?string $startedContentAt;
+
+    public ?string $finishedContentAt;
+
     public function mount(Module $module)
     {
         $this->module = $module;
@@ -25,7 +34,7 @@ class ModuleContent extends Component
             $this->user->modules()->updateExistingPivot(
                 $this->module->id, ['finished_content_at' => now()]
             );
-            $this->finishedContentAt = true;
+            $this->finishedContentAt = 'finished_content';
             $finishedCourse = true;
             $course = $this->module->course;
             foreach ($course->modules as $module) {
@@ -58,7 +67,7 @@ class ModuleContent extends Component
             $this->user->modules()->attach(
                 $this->module->id, ['started_content_at' => now()]
             );
-            $this->startedContentAt = true;
+            $this->startedContentAt = 'started_content_at';
         }
     }
 
