@@ -90,10 +90,12 @@ button.destructive:focus:active:not([aria-disabled="true"]) {
 
 .dark button:focus {
     --bg: var(--content-dark-background);
+    --btn-primary-outline: var(--theme-btn-primary-outline, var(--btn-dark-primary-background));
 }
 
 .darker button:focus {
     --bg: var(--content-darker-background);
+    --btn-primary-outline: var(--theme-btn-primary-outline, var(--btn-dark-primary-background));
 }
 
 .dark button:active:not([aria-disabled="true"]),

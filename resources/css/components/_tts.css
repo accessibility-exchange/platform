@@ -1,0 +1,173 @@
+/* Text to Speech content controller */
+.tts-controller {
+    background-color: var(--tts-controller-background);
+    border: var(--border-2) solid var(--tts-controller-color);
+    border-radius: var(--radius-sm);
+    color: var(--tts-controller-color);
+    display: inline-flex;
+}
+
+.tts-controller > svg {
+    margin-block: var(--space-3);
+    margin-inline-end: var(--space-5);
+    margin-inline-start: var(--space-4);
+}
+
+.tts-controller > button {
+    gap: 0;
+    margin-block: calc(-1 * var(--border-2));
+    margin-inline: calc(-1 * var(--border-2));
+    padding-inline-start: 0;
+}
+
+.tts-controller > button::before {
+    background-color: var(--btn-primary-background);
+    border-block-start: solid var(--border-2) var(--btn-primary-border);
+    border-inline-start: solid var(--border-2) var(--btn-primary-border);
+    content: "";
+    display: block;
+    height: var(--space-4);
+    left: calc(-1 * (var(--space-2) + 0.08rem));
+    position: relative;
+    transform: rotate(-45deg);
+    width: var(--space-4);
+}
+
+.dark .tts-controller > button::before {
+    background: var(--btn-dark-primary-background);
+    border-color: var(--btn-dark-primary-border);
+}
+
+.dark .tts-controller > button:hover:not([aria-disabled="true"])::before,
+.darker .tts-controller > button:hover:not([aria-disabled="true"])::before {
+    background: var(--btn-dark-primary-background-hover);
+    border-color: var(--btn-dark-primary-border-hover);
+}
+
+.dark .tts-controller > button:active:not([aria-disabled="true"])::before,
+.dark .tts-controller > button:focus:active:not([aria-disabled="true"])::before {
+    border-color: var(--btn-dark-primary-border-active);
+}
+
+.tts-controller > button:focus::before {
+    --tts-arrow-ring-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--body-background));
+    --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+        calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+
+    box-shadow: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
+    outline: transparent;
+}
+
+.tts-controller > button:hover:not([aria-disabled="true"])::before {
+    background: var(--tts-controller-background-color-hover);
+    border-color: var(--tts-controller-border-color-hover);
+    color: var(--tts-controller-color-hover);
+}
+
+.tts-controller > button:active:not([aria-disabled="true"])::before,
+.tts-controller > button:focus:active:not([aria-disabled="true"])::before {
+    background: var(--btn-primary-background-active);
+    border-color: var(--btn-primary-border-active);
+    box-shadow: none;
+    color: var(--btn-primary-color-active);
+}
+
+.tts-controller :not(.tts-controller--playing) .tts-controller-pause {
+    display: none;
+}
+
+.tts-controller--playing .tts-controller-play {
+    display: none;
+}
+
+/* Text to Speech selection controller */
+button.tts-selection-controller {
+    background-color: var(--tts-selection-controller-background-color);
+    border-color: var(--tts-selection-controller-color);
+    color: var(--tts-selection-controller-color);
+    padding-inline: var(--space-2);
+    position: absolute;
+
+    /* Align down arrow to the beginning of the character that is first selected. */
+    transform: translate(-49%);
+
+    /*
+        Force the play button to the top of the stacking order
+
+        The z-index can take an integer value (https://www.w3.org/TR/CSS22/visuren.html#z-index) but a max and min are
+        not specified. Here we make use of a value equal to the JavaScript `Number.MAX_SAFE_INTEGER`
+    */
+    z-index: 9007199254740991;
+}
+
+button.tts-selection-controller::after {
+    background-color: var(--tts-selection-controller-background-color);
+    border-block-start: solid var(--border-2) var(--tts-selection-controller-color);
+    border-inline-start: solid var(--border-2) var(--tts-selection-controller-color);
+    content: "";
+    display: block;
+    height: var(--space-4);
+    left: calc(var(--space-4) - 0.1rem);
+    position: absolute;
+    width: var(--space-4);
+}
+
+button.tts-selection-controller:hover:not([aria-disabled="true"]),
+button.tts-selection-controller:hover:not([aria-disabled="true"])::after,
+button.tts-selection-controller:hover:active:not([aria-disabled="true"])::after {
+    background-color: var(--tts-selection-controller-background-color-hover);
+    border-color: var(--tts-selection-controller-border-color-hover);
+    color: var(--tts-selection-controller-color-hover);
+}
+
+button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.dark button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after {
+    background-color: var(--tts-selection-controller-background-color-active);
+    border-color: var(--tts-selection-controller-border-color-active);
+    box-shadow: none;
+}
+
+.dark button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.dark button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:active:not([aria-disabled="true"])::after,
+.darker button.tts-selection-controller:hover:focus:active:not([aria-disabled="true"])::after {
+    border-color: var(--btn-dark-primary-border-active);
+}
+
+.tts-selection-controller.tts-selection--above {
+    margin-block-start: calc(-1 * var(--space-16));
+}
+
+.tts-selection-controller.tts-selection--above::after {
+    top: calc(var(--space-8) + 0.1rem);
+    transform: rotate(225deg);
+}
+
+.tts-selection-controller.tts-selection--below {
+    margin-block-start: var(--space-5);
+}
+
+.tts-selection-controller.tts-selection--below::after {
+    top: calc(-1 * var(--space-2) - 0.08rem);
+    transform: rotate(45deg);
+}
+
+.tts-selection-controller:focus::after {
+    --tts-arrow-ring-inner: calc(-1 * var(--border-2)) calc(-1 * var(--border-2)) var(--space-0) var(--space-px)
+        var(--bg, var(--body-background));
+    --tts-arrow-ring-outer: calc((-1 * var(--border-2)) - 1.6px) calc((-1 * var(--border-2)) - 1.6px) var(--space-0)
+        calc(0.45px + var(--space-px)) var(--btn-primary-outline);
+
+    box-shadow: var(--tts-arrow-ring-inner), var(--tts-arrow-ring-outer);
+    outline: transparent;
+}
+
+.tts-selection-controller:not(.tts-selection--playing) .tts-selection-stop {
+    display: none;
+}
+
+.tts-selection--playing .tts-selection-play {
+    display: none;
+}
