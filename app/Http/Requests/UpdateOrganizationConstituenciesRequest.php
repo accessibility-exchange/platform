@@ -105,6 +105,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'indigenous_constituencies' => [],
             'age_bracket_constituencies' => [],
             'ethnoracial_identity_constituencies' => [],
+            'has_other_ethnoracial_identity_constituency' => 0,
         ];
 
         // Prepare input for validation
