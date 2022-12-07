@@ -39,7 +39,7 @@ class IdentityResource extends Resource
                 Forms\Components\Textarea::make('description.fr')
                     ->label(__('Description (French)'))
                     ->columnSpan(2),
-                Forms\Components\CheckboxList::make('cluster')
+                Forms\Components\CheckboxList::make('clusters')
                     ->options(self::getClusters())
                     ->label(__('Cluster')),
             ]);
