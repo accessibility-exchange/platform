@@ -16,6 +16,7 @@
             ]),
         ) !!}</p>
         <div class="my-12 flex flex-col gap-6 md:grid md:grid-cols-3">
+            {{-- TODO: Handle topics --}}
             <div class="stack">
                 <p><strong>{{ __('Phases of consultation') }}</strong></p>
                 <ul class="tags" role="list">
