@@ -64,3 +64,18 @@ test('On player end, intermediate table values are updated', function () {
     $this->assertNotNull(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at);
     $this->assertNotNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->finished_at);
 });
+
+test('Users have to complete all the modules in a course to finish a course', function () {
+    $course = Course::factory()->create();
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $firstModule = Module::factory()->for($course)->create();
+    $secondModule = Module::factory()->for($course)->create();
+    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $firstModule]);
+    $moduleContent->emit('onPlayerStart');
+    $moduleContent->emit('onPlayerEnd');
+    $this->assertNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->finished_at);
+    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $secondModule]);
+    $moduleContent->emit('onPlayerEnd');
+    $this->assertNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->finished_at);
+});
