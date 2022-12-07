@@ -484,7 +484,7 @@ class Individual extends Model implements CipherSweetEncrypted
                 return match ($this->extra_attributes->get('cross_disability_and_deaf_connections')) {
                     1 => 'cross_disability_and_deaf',
                     0 => 'specific_disabilities',
-                    default => ''
+                    default => null
                 };
             }
         );
