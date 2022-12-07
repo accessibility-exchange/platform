@@ -222,11 +222,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $this->hasOne(Individual::class);
     }
 
-    public function resources(): HasMany
-    {
-        return $this->hasMany(Resource::class);
-    }
-
     public function resourceCollections(): HasMany
     {
         return $this->hasMany(ResourceCollection::class);
