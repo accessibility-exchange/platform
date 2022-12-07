@@ -34,7 +34,9 @@ class Course extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withTimestamps();
     }
 
     public function organization(): BelongsTo

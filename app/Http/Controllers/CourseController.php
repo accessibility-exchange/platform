@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -26,11 +27,16 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        $user = Auth::user();
+        $courseUser = $user->courses->where('id', $course->id)->first();
+        $finishedCourse = $courseUser->pivot->finished_at ?? null;
+        $receivedCertificate = $courseUser->pivot->received_certificate_at ?? null;
+
         return view('courses.show', [
-            'title' => $course->title,
-            'video' => $course->video,
-            'introduction' => $course->introduction,
+            'user' => $user,
+            'course' => $course,
             'modules' => $course->modules,
+            'finishedCourse' => $finishedCourse && ! $receivedCertificate,
         ]);
     }
 }

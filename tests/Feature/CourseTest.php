@@ -41,3 +41,35 @@ test('a course is belong to an organizations', function () {
 
     expect($course->organization->id)->toBe($organization->id);
 });
+
+test('users can take the quiz for courses once they finish all the modules in the course', function () {
+    $course = Course::factory()->create();
+    $user = User::factory()->create();
+    $module = Module::factory()->for($course)->create();
+    Quiz::factory()->for($course)->create();
+    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
+    $response->assertOk();
+    $response->assertSee(__('not available yet'));
+    $response->assertDontSee(__('completed'));
+
+    $user->modules()->attach(
+        $module->id, [
+            'started_content_at' => now(),
+            'finished_content_at' => now(),
+        ]
+    );
+
+    $user->courses()->attach(
+        $course->id, [
+            'finished_at' => now(),
+        ]
+    );
+
+    $user->refresh();
+
+    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
+    $response->assertOk();
+    $response->assertSessionHasNoErrors();
+    $response->assertDontSee(__('not available yet'));
+    $response->assertSee(__('completed'));
+});
