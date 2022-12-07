@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SendQuizResultRequest;
 use App\Http\Requests\StoreQuizResultRequest;
-use App\Mail\QuizResult;
 use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -31,6 +30,7 @@ class QuizController extends Controller
     public function storeQuizResult(StoreQuizResultRequest $request, Quiz $quiz)
     {
         $data = $request->validated();
+        $user = Auth::user();
 
         $numberOfQuestions = 0;
         $quizScore = 0;
@@ -52,26 +52,49 @@ class QuizController extends Controller
                 }
             }
         }
-        $quizResult = $quizScore / $numberOfQuestions >= $quiz->minimum_score;
+        $quizResults = $quizScore / $numberOfQuestions >= $quiz->minimum_score;
+        $quizUser = $user->quizzes->where('id', $quiz->id)->first()->pivot ?? null;
         if ($quizScore / $numberOfQuestions >= $quiz->minimum_score) {
-            // Update quiz_user table with the score and attempts
+            if ($quizUser) {
+                $attempts = $quizUser->attempts;
+                $user->quizzes()->updateExistingPivot(
+                    $quiz->id, [
+                        'attempts' => $attempts + 1,
+                        'score' => $quizScore / $numberOfQuestions,
+                    ]
+                );
+            } else {
+                $user->quizzes()->attach(
+                    $quiz->id, [
+                        'attempts' => 1,
+                        'score' => $quizScore / $numberOfQuestions,
+                    ]
+                );
+            }
+            $user->courses()->updateExistingPivot(
+                $quiz->course->id, [
+                    'received_certificate_at' => now(),
+                ]
+            );
         } else {
-            // Update quiz_user table with the score and attempts
+            if ($quizUser) {
+                $attempts = $quizUser->attempts;
+                $user->quizzes()->updateExistingPivot(
+                    $quiz->id, [
+                        'attempts' => $attempts + 1,
+                        'score' => $quizScore / $numberOfQuestions,
+                    ]
+                );
+            } else {
+                $user->quizzes()->attach(
+                    $quiz->id, [
+                        'attempts' => 1,
+                        'score' => $quizScore / $numberOfQuestions,
+                    ]
+                );
+            }
         }
 
-        return view('quizzes.show-result', ['quiz' => $quiz, 'result' => $quizResult]);
-    }
-
-    public function store(StoreQuizRequest $request, Quiz $quiz)
-    {
-    }
-
-    public function email(SendQuizResultRequest $request, Quiz $quiz)
-    {
-        $data = $request->validated();
-
-        Mail::to($data['manager_email'])->send(new QuizResult('user name'));
-
-        flash(__('You have successfully sent the quiz result email.'), 'success');
+        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $quizResults]);
     }
 }
