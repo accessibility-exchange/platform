@@ -34,11 +34,21 @@ test('resources can be translated', function () {
 
 test('users can view resources', function () {
     $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => 'administrator']);
     $resource = Resource::factory()->create();
 
     $response = $this->actingAs($user)->get(localized_route('resources.index'));
     $response->assertOk();
     $response->assertSee($resource->title);
+
+    $response = $this->actingAs($user)->get(localized_route('resources.show', $resource));
+    $response->assertOk();
+    $response->assertSee($resource->title);
+    $response->assertDontSee('Edit resource');
+
+    $response = $this->actingAs($administrator)->get(localized_route('resources.show', $resource));
+    $response->assertOk();
+    $response->assertSee('Edit resource');
 });
 
 test('single resource can be in many resource collections', function () {

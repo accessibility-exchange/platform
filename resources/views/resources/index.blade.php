@@ -86,7 +86,7 @@
                 @forelse($resources as $resource)
                     <x-card.resource :model="$resource" :level="2" />
                 @empty
-                    <p>{{ __('resource.none_found') }}</p>
+                    <p>{{ __('No resources found.') }}</p>
                 @endforelse
             </div>
         </div>

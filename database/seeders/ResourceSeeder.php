@@ -21,7 +21,12 @@ class ResourceSeeder extends Seeder
             [
                 'title' => ['en' => 'The Accessible Canada Act, Accessibility Regulations and Standards'],
                 'author' => ['en' => 'ARCH Disability Law Centre'],
-                'url' => ['en' => 'https://archdisabilitylaw.ca/the-accessible-canada-act-accessibility-regulations-and-standards/'],
+                'url' => [
+                    'en' => 'https://archdisabilitylaw.ca/the-accessible-canada-act-accessibility-regulations-and-standards/',
+                    'asl' => 'https://www.youtube.com/watch?v=CE8OFr9jdXw',
+                    'fr' => 'https://archdisabilitylaw.ca/fr/la-loi-canadienne-sur-laccessibilite-les-reglements-daccessibilite-et-les-normes-daccessibilite/',
+                    'lsq' => 'https://www.youtube.com/watch?v=D5D6J8QFyX4',
+                ],
                 'phases' => ['design'],
                 'type' => ContentType::firstWhere('name->en', 'Guidelines and best practices'),
                 'sectors' => [Sector::firstWhere('name->en', 'Federal government programs and services')->id],

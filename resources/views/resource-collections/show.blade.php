@@ -103,7 +103,7 @@
                     </p>
                 </article>
             @empty
-                <p>{{ __('resource.none_found') }}</p>
+                <p>{{ __('No resources found.') }}</p>
             @endforelse
         </div>
     </div>

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Traits\GeneratesMultilingualSlugs;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -110,14 +109,6 @@ class Resource extends Model
     public function sectors(): BelongsToMany
     {
         return $this->belongsToMany(Sector::class)->withTimestamps();
-    }
-
-    /**
-     * @return string
-     */
-    public function published(): string
-    {
-        return Carbon::parse($this->created_at)->format('F j, Y');
     }
 
     public function displayFormats(): Attribute
