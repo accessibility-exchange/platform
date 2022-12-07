@@ -11,6 +11,6 @@ class ReachableIdentityScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->whereJsonDoesntContain('clusters', IdentityCluster::Unreachable);
+        $builder->whereJsonDoesntContain('clusters', IdentityCluster::OnlyReachableWithinMixedGroups);
     }
 }

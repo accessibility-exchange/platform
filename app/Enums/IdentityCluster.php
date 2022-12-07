@@ -15,7 +15,9 @@ enum IdentityCluster: string
     case GenderDiverse = 'gender-diverse';
     case Indigenous = 'indigenous';
     case Status = 'status';
-    case Unreachable = 'unreachable';
+    // This cluster contains identities that cannot be directly recruited but will be
+    // included in cross-disability and Deaf or intersectional groups.
+    case OnlyReachableWithinMixedGroups = 'reachable-when-mixed';
 
     public static function labels(): array
     {
@@ -31,7 +33,7 @@ enum IdentityCluster: string
             'gender-diverse' => __('Gender diverse'),
             'indigenous' => __('Indigenous identity'),
             'status' => __('Status'),
-            'unreachable' => __('Unreachable'),
+            'reachable-when-mixed' => __('Only reachable within cross-disability and Deaf or intersectional groups'),
         ];
     }
 }
