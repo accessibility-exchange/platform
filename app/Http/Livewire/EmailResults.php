@@ -13,14 +13,11 @@ class EmailResults extends Component
 {
     public Quiz $quiz;
 
-    public array $results = [];
-
     public User $user;
 
-    public function mount($quiz, $results)
+    public function mount($quiz)
     {
         $this->quiz = $quiz;
-        $this->results = $results;
 
         $this->user = Auth::user();
     }
