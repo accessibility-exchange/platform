@@ -9,19 +9,20 @@ class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
     public function definition(): array
     {
         return [
-            'lived_experiences' => [],
+            'disability_and_deaf' => 1,
+            'lived_experience_connections' => [],
             'base_disability_type' => 'specific_disabilities',
-            'other_disability' => 1,
-            'other_disability_type_connection' => ['en' => 'Something not listed'],
-            'area_types' => [],
-            'has_indigenous_identities' => 0,
+            'has_other_disability_connection' => 1,
+            'other_disability_connection' => ['en' => 'Something not listed'],
+            'area_type_connections' => [],
+            'has_indigenous_connections' => 0,
             'refugees_and_immigrants' => 0,
-            'has_gender_and_sexual_identities' => 0,
-            'has_age_brackets' => 0,
-            'has_ethnoracial_identities' => 1,
-            'other_ethnoracial' => 1,
+            'has_gender_and_sexuality_connections' => 0,
+            'has_age_bracket_connections' => 0,
+            'has_ethnoracial_identity_connections' => 1,
+            'has_other_ethnoracial_identity_connection' => 1,
             'other_ethnoracial_identity_connection' => ['en' => 'Something not listed'],
-            'constituent_languages' => ['en', 'fr'],
+            'language_connections' => ['en', 'fr'],
             'connection_lived_experience' => 'yes-some',
         ];
     }

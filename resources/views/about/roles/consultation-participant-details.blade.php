@@ -60,7 +60,7 @@
                     <p>{{ __('Your preferences for in-person or virtual engagements will determine what projects and engagements you are matched to.') }}
                     </p>
                 </x-expander>
-                <x-expander :summary="__('Communication and meeting preferences')" level="3">
+                <x-expander :summary="__('Communication and consultation preferences')" level="3">
                     <p>{{ __('We will ask you about what is the best way to contact you, and your contact information. We will also ask you about whether you have a preference for either in-person or virtual meetings.') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
