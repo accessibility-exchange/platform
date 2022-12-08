@@ -186,6 +186,8 @@ test('users with admin role can edit organization constituencies', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
+    expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeNull();
+
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
     $response->assertOk();
 
@@ -227,9 +229,12 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->base_disability_type)->toEqual('specific_disabilities');
     expect($organization->other_disability_constituency)->toEqual('Something else');
     expect($organization->areaTypeConstituencies)->toHaveCount(1);
+    expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeTrue();
     expect($organization->indigenousConstituencies)->toHaveCount(1);
     expect($organization->genderAndSexualityConstituencies)->toHaveCount(4);
+    expect($organization->genderDiverseConstituencies)->toHaveCount(3);
     expect($organization->ageBracketConstituencies)->toHaveCount(1);
+    expect($organization->statusConstituencies)->toHaveCount(2);
     expect($organization->ethnoracialIdentityConstituencies)->toHaveCount(1);
     expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');

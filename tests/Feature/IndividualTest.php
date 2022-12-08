@@ -512,6 +512,7 @@ test('individuals with connector role can represent gender and sexual minorities
 
     $individual->refresh();
 
+    expect($individual->genderIdentityConnections)->toHaveCount(4);
     expect($individual->genderAndSexualityConnections)->toHaveCount(6);
     expect($individual->hasConnections('genderDiverseConnections'))->toBeTrue();
 });
