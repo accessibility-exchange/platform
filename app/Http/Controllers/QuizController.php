@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizResultRequest;
 use App\Models\Quiz;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Quiz  $quiz
-     * @return \Illuminate\View\View
-     */
-    public function show(Quiz $quiz)
+    public function show(Quiz $quiz): View
     {
         $questions = $quiz->questions;
 
@@ -25,9 +20,7 @@ class QuizController extends Controller
         ]);
     }
 
-    //separate controller for quiz/user or separate method like storeResult
-
-    public function storeQuizResult(StoreQuizResultRequest $request, Quiz $quiz)
+    public function storeQuizResult(StoreQuizResultRequest $request, Quiz $quiz): View
     {
         $data = $request->validated();
         $user = Auth::user();
