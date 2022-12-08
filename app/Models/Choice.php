@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Translatable\HasTranslations;
 
 class Choice extends Model
 {
     use HasFactory;
+    use HasTranslations;
 
     protected $fillable = [
-        'value',
         'label',
         'is_answer',
     ];
 
     protected $casts = [
-        'value' => 'string',
         'label' => 'array',
         'is_answer' => 'boolean',
     ];

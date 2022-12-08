@@ -20,7 +20,6 @@ class ChoiceFactory extends Factory
         $option = $this->faker->words(3, true);
 
         return [
-            'value' => $option,
             'label' => ['en' => $option],
             'question_id' => Question::factory(),
             'is_answer' => false,
