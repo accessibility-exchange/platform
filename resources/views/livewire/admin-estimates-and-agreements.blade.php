@@ -98,5 +98,5 @@
         </table>
     </div>
 
-    {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind') }}
+    {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
 </div>

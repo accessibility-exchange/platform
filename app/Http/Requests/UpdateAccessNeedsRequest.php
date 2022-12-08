@@ -63,14 +63,21 @@ class UpdateAccessNeedsRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'general_access_needs' => [],
             'other' => 0,
+            'other_access_need' => null,
             'meeting_access_needs' => [],
             'in_person_access_needs' => [],
             'document_access_needs' => [],
             'additional_needs_or_concerns' => 0,
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator(Validator $validator)

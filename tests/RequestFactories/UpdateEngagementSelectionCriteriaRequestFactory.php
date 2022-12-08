@@ -12,7 +12,7 @@ class UpdateEngagementSelectionCriteriaRequestFactory extends RequestFactory
         return [
             'location_type' => 'regions',
             'regions' => array_column(ProvinceOrTerritory::cases(), 'value'),
-            'cross_disability' => 1,
+            'cross_disability_and_deaf' => 1,
             'intersectional' => 1,
             'ideal_participants' => 25,
             'minimum_participants' => 15,

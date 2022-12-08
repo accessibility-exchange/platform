@@ -207,8 +207,24 @@ fieldset {
     padding: 0;
 }
 
-.stack fieldset + fieldset {
+fieldset.box {
+    padding-block-start: var(--space-12);
+}
+
+fieldset.box legend {
+    position: relative;
+    top: var(--space-12);
+}
+
+.stack fieldset + *,
+.stack * + fieldset,
+.stack .fieldset + *,
+.stack * + .fieldset {
     margin-block-start: var(--space-12);
+}
+
+fieldset + fieldset.box {
+    margin-block-start: var(--space-8);
 }
 
 .password {
@@ -247,6 +263,7 @@ legend {
     color: var(--hint-color);
 }
 
+[type="checkbox"] ~ .field__hint,
 [type="radio"] ~ .field__hint {
     margin-inline-start: var(--space-8);
 }
@@ -256,6 +273,8 @@ legend {
 .field--error .field__hint,
 .field--error legend,
 .field__error {
+    --box-color: var(--input-error-color);
+
     color: var(--input-error-color);
 }
 
