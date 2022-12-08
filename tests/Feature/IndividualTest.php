@@ -391,14 +391,18 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual->save();
 
     expect($individual->base_disability_type)->toEqual('');
+    expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeNull();
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), []);
 
     $response->assertSessionHasErrors();
 
+    $disabilityOrDeafIdentity = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
+
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$this->livedExperience->id],
         'area_type_connections' => [$this->areaType->id],
+        'disability_and_deaf_connections' => [$disabilityOrDeafIdentity->id],
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -410,6 +414,8 @@ test('individuals with connector role can represent individuals with disabilitie
     expect($individual->livedExperienceConnections)->toHaveCount(1);
     expect($individual->base_disability_type)->toEqual('specific_disabilities');
     expect($individual->hasConnections('genderDiverseConnections'))->toBeFalse();
+    expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
+    expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
     expect($this->livedExperience->communityConnectors)->toHaveCount(1);
 });
 
@@ -908,4 +914,16 @@ test('individual relationships to projects can be derived from both projects and
 test('individual consulting methods can be displayed', function () {
     $individual = Individual::factory()->create(['consulting_methods' => ['survey']]);
     expect($individual->display_consulting_methods)->toContain(EngagementFormat::labels()['survey']);
+});
+
+test('identities can be attached to an individual', function () {
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $disabilityOrDeafIdentity = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
+    $individual->identities()->sync([$disabilityOrDeafIdentity->id]);
+    $individual->refresh();
+
+    expect($individual->identities->pluck('id')->toArray())->toContain($disabilityOrDeafIdentity->id);
+    expect($individual->identities->count())->toEqual(1);
 });
