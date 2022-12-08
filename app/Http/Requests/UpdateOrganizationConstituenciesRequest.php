@@ -95,7 +95,6 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
     public function prepareForValidation()
     {
         $fallbacks = [
-            'disability_and_deaf' => 0,
             'lived_experience_constituencies' => [],
             'base_disability_type' => null,
             'disability_and_deaf_constituencies' => [],

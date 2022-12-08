@@ -170,7 +170,11 @@ class IndividualController extends Controller
 
         $data['identities'] = [];
 
-        $individual->extra_attributes->set('disability_and_deaf_connections', $data['disability_and_deaf']);
+        if (isset($data['base_disability_type'])) {
+            $individual->extra_attributes->set('disability_and_deaf_connections', $data['disability_and_deaf']);
+        } else {
+            $individual->extra_attributes->forget('disability_and_deaf_connections');
+        }
 
         if (isset($data['base_disability_type'])) {
             if ($data['base_disability_type'] === 'cross_disability_and_deaf') {

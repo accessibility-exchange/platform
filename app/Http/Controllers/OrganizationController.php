@@ -205,7 +205,11 @@ class OrganizationController extends Controller
 
         $data['identities'] = [];
 
-        $organization->extra_attributes->set('disability_and_deaf_constituencies', $data['disability_and_deaf']);
+        if (isset($data['base_disability_type'])) {
+            $organization->extra_attributes->set('disability_and_deaf_constituencies', $data['disability_and_deaf']);
+        } else {
+            $organization->extra_attributes->forget('disability_and_deaf_constituencies');
+        }
 
         if (isset($data['base_disability_type'])) {
             if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
