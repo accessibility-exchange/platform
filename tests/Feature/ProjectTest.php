@@ -1084,3 +1084,11 @@ test('test locations scope', function () {
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 });
+
+test('projects can have matching strategies', function () {
+    $project = Project::factory()->create();
+    $matchingStrategy = MatchingStrategy::factory()->create();
+    $project->matchingStrategy()->save($matchingStrategy);
+
+    expect($project->matchingStrategy->id)->toEqual($matchingStrategy->id);
+});

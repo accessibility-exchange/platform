@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\IdentitySeeder;
+use Illuminate\Support\Carbon;
 
 test('users with regulated organization admin role can create engagements', function () {
     $this->seed(DatabaseSeeder::class);
@@ -536,4 +537,29 @@ test('engagement participants can be listed by administrator or community connec
 
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
+});
+
+test('project can show upcoming engagements', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $upcomingEngagement = Engagement::factory()->create([
+        'project_id' => $project->id,
+        'signup_by_date' => Carbon::now()->addWeeks(2),
+    ]);
+    $startedEngagement = Engagement::factory()->create([
+        'project_id' => $project->id,
+        'signup_by_date' => Carbon::now()->subWeeks(2),
+    ]);
+
+    expect($project->engagements->pluck('id')->toArray())
+        ->toContain($upcomingEngagement->id)
+        ->toContain($startedEngagement->id);
+
+    expect($project->upcomingEngagements)->toHaveCount(1);
+    expect($project->upcomingEngagements->first()->is($upcomingEngagement))->toBeTrue();
 });

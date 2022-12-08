@@ -263,10 +263,10 @@ class Project extends Model
         }
     }
 
-    public function regulatedOrganization(): BelongsTo
-    {
-        return $this->belongsTo(RegulatedOrganization::class);
-    }
+    // public function regulatedOrganization(): BelongsTo
+    // {
+    //     return $this->belongsTo(RegulatedOrganization::class);
+    // }
 
     public function impacts(): BelongsToMany
     {
@@ -322,7 +322,7 @@ class Project extends Model
 
     public function upcomingEngagements(): HasMany
     {
-        return $this->engagements(); // TODO: Filter engagements
+        return $this->engagements()->where('signup_by_date', '>', Carbon::now());
     }
 
     public function teamExperience(): string

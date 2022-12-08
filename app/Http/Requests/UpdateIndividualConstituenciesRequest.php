@@ -19,8 +19,6 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
 
     public function rules(): array
     {
-        ray($this->input());
-
         return [
             'disability_and_deaf' => 'nullable|boolean|required_without:lived_experience_connections',
             'lived_experience_connections' => 'nullable|array|required_if:disability_and_deaf,false',
