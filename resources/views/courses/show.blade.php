@@ -23,9 +23,16 @@
     <div class="stack ml-2 mr-2">
         <h2>{{ __('About this course') }}</h2>
         @if ($course->video)
-            <video class="w-full" controls>
-                <source src="" type="video/mp4">
-            </video>
+            <div class="stack w-full" x-data="vimeoPlayer({
+                url: '{{ 'https://vimeo.com/673048741/e7306e5863' }}',
+                byline: false,
+                pip: true,
+                portrait: false,
+                responsive: true,
+                speed: true,
+                title: false
+            })" @ended="player().setCurrentTime(0)">
+            </div>
         @endif
         <p>{{ $course->introduction }}</p>
     </div>
@@ -34,8 +41,6 @@
         <div class="grid">
             @foreach ($modules as $module)
                 <div class="flex flex-col">
-                    <video class="w-full" controls>
-                    </video>
                     <div>
                         <div class="flex items-center justify-between">
                             <a href="{{ localized_route('modules.module-content', $module) }}">
@@ -59,8 +64,9 @@
                 @csrf
                 <button>{{ __('Take Quiz') }}</button>
             </form>
-        @else
+        @elseif(!$finishedCourse)
             <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
+        @elseif($recievedCertificate)
         @endif
     </div>
 </x-app-wide-layout>
