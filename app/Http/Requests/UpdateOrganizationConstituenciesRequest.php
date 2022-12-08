@@ -17,7 +17,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'disability_and_deaf' => 'nullable|boolean|required_without:lived_experiences',
+            'disability_and_deaf' => 'nullable|boolean|required_without:lived_experience_constituencies',
             'lived_experience_constituencies' => 'nullable|array|required_if:disability_and_deaf,false',
             'lived_experience_constituencies.*' => 'exists:identities,id',
             'base_disability_type' => [

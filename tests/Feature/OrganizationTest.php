@@ -127,7 +127,7 @@ test('users with admin role can edit and publish organizations', function () {
     $response->assertNotFound();
 
     $organization->update(['locality' => 'Toronto']);
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertOk();
@@ -191,6 +191,7 @@ test('users with admin role can edit organization constituencies', function () {
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
     $response->assertOk();
 
+    $livedExperience = Identity::withoutGlobalScopes()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
     $disabilityType = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
     $indigenousIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->first();
@@ -223,7 +224,7 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->disabilityAndDeafConstituencies)->toHaveCount(0);
     expect($organization->base_disability_type)->toEqual('specific_disabilities');
@@ -239,7 +240,7 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
         'disability_and_deaf' => true,
         'base_disability_type' => 'specific_disabilities',
         'disability_and_deaf_constituencies' => [$disabilityType->id],
@@ -257,7 +258,7 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->disabilityAndDeafConstituencies)->toHaveCount(1);
     expect($organization->base_disability_type)->toEqual('specific_disabilities');
@@ -286,9 +287,52 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->base_disability_type)->toEqual('cross_disability_and_deaf');
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experience_constituencies' => [$livedExperience->id],
+        'disability_and_deaf' => null,
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => [],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization->refresh();
+
+    expect($organization->extra_attributes->get('disability_and_deaf_constituencies'))->toBeNull();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experience_constituencies' => [$livedExperience->id],
+        'disability_and_deaf' => null,
+        'base_disability_type' => null,
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => [],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization->refresh();
+
+    expect($organization->extra_attributes->get('cross_disability_and_deaf_constituencies'))->toBeNull();
 });
 
 test('users with admin role can edit organization interests', function () {
@@ -310,7 +354,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
@@ -324,7 +368,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(1);
     expect($organization->impacts)->toHaveCount(1);
@@ -336,7 +380,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
@@ -375,7 +419,7 @@ test('users with admin role can edit organization contact information', function
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
     expect($organization->contact_person_vrs)->toBeTrue();
@@ -393,7 +437,7 @@ test('users with admin role can edit organization contact information', function
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
     expect($organization->contact_person_vrs)->toBeNull();
@@ -502,7 +546,7 @@ test('organization pages can be published', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.show', $organization));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $this->assertTrue($organization->checkStatus('published'));
 });
@@ -539,7 +583,7 @@ test('organization pages can be unpublished', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.show', $organization));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $this->assertTrue($organization->checkStatus('draft'));
 });
@@ -573,7 +617,7 @@ test('organization pages cannot be published by other users', function () {
 
     $response->assertForbidden();
 
-    $organization = $organization->fresh();
+    $organization->refresh();
     $this->assertTrue($organization->checkStatus('draft'));
 });
 
@@ -1046,7 +1090,7 @@ test('guests cannot view organizations', function () {
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
     $organization = Organization::factory()->create(['roles' => ['consultant', 'connector', 'participant']]);
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $connectingEngagement = Engagement::factory()->create([
         'organizational_connector_id' => $organization->id,
