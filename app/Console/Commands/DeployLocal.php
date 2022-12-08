@@ -28,9 +28,6 @@ class DeployLocal extends Command
     public function handle(): int
     {
         $this->call('storage:link');
-        $this->call('google-fonts:fetch');
-        $this->call('icons:clear');
-        $this->call('icons:cache');
 
         return 0;
     }

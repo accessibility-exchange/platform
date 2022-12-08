@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BaseDisabilityType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualConstituenciesRequest extends FormRequest
@@ -18,113 +20,142 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lived_experiences' => 'required|array',
-            'lived_experiences.*' => 'exists:lived_experiences,id',
+            'disability_and_deaf' => 'nullable|boolean|required_without:lived_experience_connections',
+            'lived_experience_connections' => 'nullable|array|required_if:disability_and_deaf,false',
+            'lived_experience_connections.*' => 'exists:identities,id',
             'base_disability_type' => [
                 'nullable',
-                'string',
-                'in:cross_disability,specific_disabilities',
-                Rule::requiredIf(function () {
-                    return in_array(1, request('lived_experiences') ?? []);
-                }),
+                'required_if:disability_and_deaf,true',
+                'exclude_if:disability_and_deaf,false',
+                'exclude_without:disability_and_deaf',
+                new Enum(BaseDisabilityType::class),
             ],
-            'disability_types' => [
+            'disability_and_deaf_connections' => [
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return
-                        in_array(1, request('lived_experiences') ?? [])
-                        && request('base_disability_type') === 'specific_disabilities'
-                        && ! request('other_disability');
+                    return request('base_disability_type') === 'specific_disabilities'
+                        && ! request('has_other_disability_connection');
                 }),
-                'exclude_if:base_disability_type,cross_disability',
+                'exclude_if:disability_and_deaf,false',
+                'exclude_without:disability_and_deaf',
+                'exclude_if:base_disability_type,cross_disability_and_deaf',
+                'exclude_without:base_disability_type',
             ],
-            'disability_types.*' => 'exists:disability_types,id',
-            'other_disability' => 'nullable|boolean',
-            'other_disability_type_connection' => 'nullable|array|exclude_if:base_disability_type,cross_disability|exclude_unless:other_disability,true',
-            'other_disability_type_connection.*' => 'nullable|string|max:255',
-            'area_types' => 'required|array|min:1',
-            'area_types.*' => 'exists:area_types,id',
-            'has_indigenous_identities' => 'required|boolean',
-            'indigenous_identities' => 'nullable|array|required_if:has_indigenous_identities,true|exclude_if:has_indigenous_identities,false',
-            'indigenous_identities.*' => 'exists:indigenous_identities,id',
+            'disability_and_deaf_connections.*' => 'exists:identities,id',
+            'has_other_disability_connection' => 'nullable|boolean',
+            'other_disability_connection' => 'nullable|array|exclude_if:base_disability_type,cross_disability_and_deaf|exclude_unless:other_disability,true',
+            'other_disability_connection.*' => 'nullable|string|max:255',
+            'area_type_connections' => 'required|array|min:1',
+            'area_type_connections.*' => 'exists:identities,id',
+            'has_indigenous_connections' => 'required|boolean',
+            'indigenous_connections' => 'nullable|array|required_if:has_indigenous_connections,true|exclude_if:has_indigenous_connections,false',
+            'indigenous_connections.*' => 'exists:identities,id',
             'refugees_and_immigrants' => 'required|boolean',
-            'has_gender_and_sexual_identities' => 'required|boolean',
-            'gender_and_sexual_identities' => 'nullable|array|min:1|required_if:has_gender_and_sexual_identities,true|exclude_if:has_gender_and_sexual_identities,false',
-            'gender_and_sexual_identities.*' => 'string|in:women,nb-gnc-fluid-people,trans-people,2slgbtqiaplus-people',
-            'has_age_brackets' => 'required|boolean',
-            'age_brackets' => 'nullable|array|required_if:has_age_brackets,true|exclude_if:has_age_brackets,false',
-            'age_brackets.*' => 'exists:age_brackets,id',
-            'has_ethnoracial_identities' => 'required|boolean',
-            'ethnoracial_identities' => [
+            'has_gender_and_sexuality_connections' => 'required|boolean',
+            'gender_and_sexuality_connections' => [
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return request('has_ethnoracial_identities') == 1
-                        && ! request('other_ethnoracial');
+                    return request('has_gender_and_sexuality_connections')
+                        && ! request('nb_gnc_fluid_identity');
+                }),
+                'exclude_if:has_gender_and_sexuality_connections,false',
+            ],
+            'gender_and_sexuality_connections.*' => 'exists:identities,id',
+            'nb_gnc_fluid_identity' => [
+                'nullable',
+                'boolean',
+                Rule::requiredIf(function () {
+                    return request('has_gender_and_sexuality_connections')
+                        && count(request('gender_and_sexuality_connections') ?? []) === 0;
+                }),
+                'exclude_if:has_gender_and_sexuality_connections,false',
+            ],
+            'has_age_bracket_connections' => 'required|boolean',
+            'age_bracket_connections' => 'nullable|array|required_if:has_age_bracket_connections,true|exclude_if:has_age_bracket_connections,false',
+            'age_bracket_connections.*' => 'exists:identities,id',
+            'has_ethnoracial_identity_connections' => 'required|boolean',
+            'ethnoracial_identity_connections' => [
+                'nullable',
+                'array',
+                Rule::requiredIf(function () {
+                    return request('has_ethnoracial_identity_connections') == 1
+                        && ! request('has_other_ethnoracial_identity_connection');
                 }),
             ],
-            'ethnoracial_identities.*' => 'exists:ethnoracial_identities,id',
-            'other_ethnoracial' => 'nullable|boolean',
-            'other_ethnoracial_identity_connection' => 'nullable|array|exclude_if:has_ethnoracial_identities,false|exclude_unless:other_ethnoracial,true',
+            'ethnoracial_identity_connections.*' => 'exists:identities,id',
+            'has_other_ethnoracial_identity_connection' => 'nullable|boolean',
+            'other_ethnoracial_identity_connection' => 'nullable|array|exclude_if:has_ethnoracial_identity_connections,false|exclude_unless:has_other_ethnoracial_identity_connection,true',
             'other_ethnoracial_identity_connection.*' => 'nullable|string|max:255',
-            'constituent_languages' => 'nullable|array',
-            'constituent_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
+            'language_connections' => 'nullable|array',
+            'language_connections.*' => [Rule::in(array_keys(get_available_languages(true)))],
             'connection_lived_experience' => 'required|string|in:yes-some,yes-all,no,prefer-not-to-answer',
         ];
     }
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
-            'lived_experiences' => [],
-            'disability_types' => [],
-            'area_types' => [],
-            'indigenous_identities' => [],
-            'gender_and_sexual_identities' => [],
-            'age_brackets' => [],
-            'ethnoracial_identities' => [],
-        ]);
+        $fallbacks = [
+            'lived_experience_connections' => [],
+            'base_disability_type' => null,
+            'disability_and_deaf_connections' => [],
+            'area_type_connections' => [],
+            'nb_gnc_fluid_identity' => 0,
+            'gender_and_sexuality_connections' => [],
+            'indigenous_connections' => [],
+            'age_bracket_connections' => [],
+            'ethnoracial_identity_connections' => [],
+            'has_other_ethnoracial_identity_connection' => 0,
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator($validator)
     {
-        $validator->sometimes('other_disability_type_connection.en', 'required_without:other_disability_type_connection.fr', function ($input) {
-            return $input->other_disability;
+        $validator->sometimes('other_disability_connection.en', 'required_without:other_disability_connection.fr', function ($input) {
+            return $input->has_other_disability_connection;
         });
 
-        $validator->sometimes('other_disability_type_connection.fr', 'required_without:other_disability_type_connection.en', function ($input) {
-            return $input->other_disability;
+        $validator->sometimes('other_disability_connection.fr', 'required_without:other_disability_connection.en', function ($input) {
+            return $input->has_other_disability_connection;
         });
 
         $validator->sometimes('other_ethnoracial_identity_connection.en', 'required_without:other_ethnoracial_identity_connection.fr', function ($input) {
-            return $input->other_ethnoracial;
+            return $input->has_other_ethnoracial_identity_connection;
         });
 
         $validator->sometimes('other_ethnoracial_identity_connection.fr', 'required_without:other_ethnoracial_identity_connection.en', function ($input) {
-            return $input->other_ethnoracial;
+            return $input->has_other_ethnoracial_identity_connection;
         });
     }
 
     public function messages(): array
     {
         return [
-            'lived_experiences.required' => __('You must select at least one option for “Can you connect to people with disabilities, Deaf persons, and/or their supporters?”'),
-            'base_disability_type.required' => __('You must select one option for “Please select people with disabilities that you can connect to”.'),
-            'disability_types.required' => __('You must select which specific disability or disabilities you can connect to.'),
-            'area_types.required' => __('You must select at least one option for “Where do the people that you can connect to come from?”'),
-            'has_indigenous_identities.required' => __('You must select one option for “Can you connect to people who are First Nations, Inuit, or Métis?”'),
-            'indigenous_identities.required_if' => __('You must select at least one Indigenous group you can connect to.'),
+            'disability_and_deaf.required_without' => __('You must select at least one option for “Can you connect to people with disabilities, Deaf persons, and/or their supporters?”'),
+            'lived_experience_connections.required_if' => __('You must select at least one option for “Can you connect to people with disabilities, Deaf persons, and/or their supporters?”'),
+            'base_disability_type.required_if' => __('You must select one option for “Please select people with disabilities that you can connect to”.'),
+            'disability_and_deaf_connections.required' => __('You must select which people with specific disabilities and/or Deaf people you can connect to.'),
+            'area_type_connections.required' => __('You must select at least one option for “Where do the people that you can connect to come from?”'),
+            'has_indigenous_connections.required' => __('You must select one option for “Can you connect to people who are First Nations, Inuit, or Métis?”'),
+            'indigenous_connections.required_if' => __('You must select at least one Indigenous group you can connect to.'),
             'refugees_and_immigrants' => __('You must select one option for “Can you connect to refugees and/or immigrants?”'),
-            'has_gender_and_sexual_identities.required' => __('You must select one option for “Can you connect to people who are marginalized based on gender or sexual identity?”'),
-            'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group you can connect to.'),
-            'has_age_brackets.required' => __('You must select one option for “Can you connect to a specific age group or groups?”'),
-            'age_brackets.required_if' => __('You must select at least one age group you can connect to.'),
-            'has_ethnoracial_identities.required' => __('You must select one option for “Can you connect to people with a specific ethno-racial identity or identities?”'),
-            'ethnoracial_identities.required_if' => __('You must select at least one ethno-racial identity you can connect to.'),
-            'constituent_languages.*.in' => __('You must select a language.'),
+            'has_gender_and_sexuality_connections.required' => __('You must select one option for “Can you connect to people who are marginalized based on gender or sexual identity?”'),
+            'gender_and_sexuality_connections.required' => __('You must select at least one gender or sexual identity group you can connect to.'),
+            'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group you can connect to.'),
+            'has_age_bracket_connections.required' => __('You must select one option for “Can you connect to a specific age group or groups?”'),
+            'age_bracket_connections.required_if' => __('You must select at least one age group you can connect to.'),
+            'has_ethnoracial_identity_connections.required' => __('You must select one option for “Can you connect to people with a specific ethno-racial identity or identities?”'),
+            'ethnoracial_identity_connections.required' => __('You must select at least one ethno-racial identity you can connect to.'),
+            'language_connections.*.in' => __('You must select a language.'),
             'connection_lived_experience.required' => __('You must select one option for “Do you have lived experience of the people you can connect to?”'),
-            'other_disability_type_connection.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
+            'other_disability_connection.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
             'other_ethnoracial_identity_connection.*.required_without' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),
         ];
     }

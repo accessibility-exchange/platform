@@ -23,9 +23,15 @@ class UpdateAreasOfInterestRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'sectors' => [],
             'impacts' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 }

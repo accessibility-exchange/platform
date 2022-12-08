@@ -36,35 +36,6 @@ CREATE TABLE `access_supports` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `age_bracket_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `age_bracket_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `age_bracket_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `age_bracket_organization_age_bracket_id_foreign` (`age_bracket_id`),
-  KEY `age_bracket_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `age_bracket_organization_age_bracket_id_foreign` FOREIGN KEY (`age_bracket_id`) REFERENCES `age_brackets` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `age_bracket_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `age_brackets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `age_brackets` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `min` int DEFAULT NULL,
-  `max` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `all_individual_contracted_projects`;
 /*!50001 DROP VIEW IF EXISTS `all_individual_contracted_projects`*/;
 SET @saved_cs_client     = @@character_set_client;
@@ -163,34 +134,6 @@ SET character_set_client = utf8;
   `laravel_with` tinyint NOT NULL
 ) ENGINE=MyISAM */;
 SET character_set_client = @saved_cs_client;
-DROP TABLE IF EXISTS `area_type_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `area_type_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `area_type_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `area_type_organization_area_type_id_foreign` (`area_type_id`),
-  KEY `area_type_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `area_type_organization_area_type_id_foreign` FOREIGN KEY (`area_type_id`) REFERENCES `area_types` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `area_type_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `area_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `area_types` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `blind_indexes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -263,52 +206,6 @@ CREATE TABLE `connectables` (
   CONSTRAINT `connectables_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `constituencies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `constituencies` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `name_plural` json NOT NULL,
-  `adjective` json NOT NULL,
-  `description` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `constituency_individual`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `constituency_individual` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `constituency_id` bigint unsigned NOT NULL,
-  `individual_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constituency_individual_constituency_id_foreign` (`constituency_id`),
-  KEY `constituency_individual_individual_id_foreign` (`individual_id`),
-  CONSTRAINT `constituency_individual_constituency_id_foreign` FOREIGN KEY (`constituency_id`) REFERENCES `constituencies` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `constituency_individual_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `constituency_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `constituency_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `constituency_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `constituency_organization_constituency_id_foreign` (`constituency_id`),
-  KEY `constituency_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `constituency_organization_constituency_id_foreign` FOREIGN KEY (`constituency_id`) REFERENCES `constituencies` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `constituency_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `content_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -353,23 +250,6 @@ CREATE TABLE `courses` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `criteria`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `criteria` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `matching_strategy_id` bigint unsigned NOT NULL,
-  `criteriable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `criteriable_id` bigint unsigned NOT NULL,
-  `weight` double(8,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `criteria_matching_strategy_id_foreign` (`matching_strategy_id`),
-  KEY `criteria_criteriable_type_criteriable_id_index` (`criteriable_type`,`criteriable_id`),
-  CONSTRAINT `criteria_matching_strategy_id_foreign` FOREIGN KEY (`matching_strategy_id`) REFERENCES `matching_strategies` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `defined_terms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -383,46 +263,6 @@ CREATE TABLE `defined_terms` (
   `defineable_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `defined_terms_defineable_type_defineable_id_index` (`defineable_type`,`defineable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `disability_type_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `disability_type_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `disability_type_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `disability_type_organization_disability_type_id_foreign` (`disability_type_id`),
-  KEY `disability_type_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `disability_type_organization_disability_type_id_foreign` FOREIGN KEY (`disability_type_id`) REFERENCES `disability_types` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `disability_type_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `disability_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `disability_types` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `employment_statuses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employment_statuses` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `engagement_individual`;
@@ -501,34 +341,6 @@ CREATE TABLE `engagements` (
   CONSTRAINT `engagements_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `ethnoracial_identities`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ethnoracial_identities` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `ethnoracial_identity_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ethnoracial_identity_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `ethnoracial_identity_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ethnoracial_identity_foreign` (`ethnoracial_identity_id`),
-  KEY `ethnoracial_identity_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `ethnoracial_identity_foreign` FOREIGN KEY (`ethnoracial_identity_id`) REFERENCES `ethnoracial_identities` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `ethnoracial_identity_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -544,34 +356,66 @@ CREATE TABLE `failed_jobs` (
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `gender_identities`;
+DROP TABLE IF EXISTS `identities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gender_identities` (
+CREATE TABLE `identities` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `name` json NOT NULL,
-  `name_plural` json NOT NULL,
-  `adjective` json NOT NULL,
   `description` json DEFAULT NULL,
+  `clusters` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `gender_identity_organization`;
+DROP TABLE IF EXISTS `identity_individual`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `gender_identity_organization` (
+CREATE TABLE `identity_individual` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `gender_identity_id` bigint unsigned NOT NULL,
+  `individual_id` bigint unsigned NOT NULL,
+  `identity_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `identity_individual_individual_id_foreign` (`individual_id`),
+  KEY `identity_individual_identity_id_foreign` (`identity_id`),
+  CONSTRAINT `identity_individual_identity_id_foreign` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `identity_individual_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `identity_matching_strategy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `identity_matching_strategy` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `identity_id` bigint unsigned NOT NULL,
+  `matching_strategy_id` bigint unsigned NOT NULL,
+  `weight` double(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `identity_matching_strategy_identity_id_foreign` (`identity_id`),
+  KEY `identity_matching_strategy_matching_strategy_id_foreign` (`matching_strategy_id`),
+  CONSTRAINT `identity_matching_strategy_identity_id_foreign` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `identity_matching_strategy_matching_strategy_id_foreign` FOREIGN KEY (`matching_strategy_id`) REFERENCES `matching_strategies` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `identity_organization`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `identity_organization` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `identity_id` bigint unsigned NOT NULL,
   `organization_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `gender_identity_organization_gender_identity_id_foreign` (`gender_identity_id`),
-  KEY `gender_identity_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `gender_identity_organization_gender_identity_id_foreign` FOREIGN KEY (`gender_identity_id`) REFERENCES `gender_identities` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `gender_identity_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
+  KEY `identity_organization_identity_id_foreign` (`identity_id`),
+  KEY `identity_organization_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `identity_organization_identity_id_foreign` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `identity_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impact_individual`;
@@ -633,48 +477,36 @@ CREATE TABLE `impacts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `indigenous_identities`;
+DROP TABLE IF EXISTS `individual_identity_connections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `indigenous_identities` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `indigenous_identity_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `indigenous_identity_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `indigenous_identity_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `indigenous_identity_organization_indigenous_identity_id_foreign` (`indigenous_identity_id`),
-  KEY `indigenous_identity_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `indigenous_identity_organization_indigenous_identity_id_foreign` FOREIGN KEY (`indigenous_identity_id`) REFERENCES `indigenous_identities` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `indigenous_identity_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `individual_lived_experience`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `individual_lived_experience` (
+CREATE TABLE `individual_identity_connections` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `individual_id` bigint unsigned NOT NULL,
-  `lived_experience_id` bigint unsigned NOT NULL,
+  `identity_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `individual_lived_experience_individual_id_foreign` (`individual_id`),
-  KEY `individual_lived_experience_lived_experience_id_foreign` (`lived_experience_id`),
-  CONSTRAINT `individual_lived_experience_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `individual_lived_experience_lived_experience_id_foreign` FOREIGN KEY (`lived_experience_id`) REFERENCES `lived_experiences` (`id`) ON DELETE CASCADE
+  KEY `individual_identity_connections_individual_id_foreign` (`individual_id`),
+  KEY `individual_identity_connections_identity_id_foreign` (`identity_id`),
+  CONSTRAINT `individual_identity_connections_identity_id_foreign` FOREIGN KEY (`identity_id`) REFERENCES `identities` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `individual_identity_connections_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `individual_language`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `individual_language` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `individual_id` bigint unsigned NOT NULL,
+  `language_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `individual_language_individual_id_foreign` (`individual_id`),
+  KEY `individual_language_language_id_foreign` (`language_id`),
+  CONSTRAINT `individual_language_individual_id_foreign` FOREIGN KEY (`individual_id`) REFERENCES `individuals` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `individual_language_language_id_foreign` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individual_payment_type`;
@@ -732,7 +564,7 @@ CREATE TABLE `individuals` (
   `social_links` json DEFAULT NULL,
   `website_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
-  `other_disability_type_connection` json DEFAULT NULL,
+  `other_disability_connection` json DEFAULT NULL,
   `other_ethnoracial_identity_connection` json DEFAULT NULL,
   `connection_lived_experience` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lived_experience` json DEFAULT NULL,
@@ -788,6 +620,23 @@ CREATE TABLE `invitations` (
   KEY `invitations_invitationable_type_invitationable_id_index` (`invitationable_type`,`invitationable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `language_matching_strategy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `language_matching_strategy` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `language_id` bigint unsigned NOT NULL,
+  `matching_strategy_id` bigint unsigned NOT NULL,
+  `weight` double(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `language_matching_strategy_language_id_foreign` (`language_id`),
+  KEY `language_matching_strategy_matching_strategy_id_foreign` (`matching_strategy_id`),
+  CONSTRAINT `language_matching_strategy_language_id_foreign` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `language_matching_strategy_matching_strategy_id_foreign` FOREIGN KEY (`matching_strategy_id`) REFERENCES `matching_strategies` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `language_organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -814,33 +663,6 @@ CREATE TABLE `languages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `lived_experience_organization`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `lived_experience_organization` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `lived_experience_id` bigint unsigned NOT NULL,
-  `organization_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `lived_experience_foreign` (`lived_experience_id`),
-  KEY `lived_experience_organization_organization_id_foreign` (`organization_id`),
-  CONSTRAINT `lived_experience_foreign` FOREIGN KEY (`lived_experience_id`) REFERENCES `lived_experiences` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `lived_experience_organization_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `lived_experiences`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `lived_experiences` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `matching_strategies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -853,6 +675,7 @@ CREATE TABLE `matching_strategies` (
   `regions` json DEFAULT NULL,
   `locations` json DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
+  `cross_disability_and_deaf` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `matching_strategies_matchable_type_matchable_id_index` (`matchable_type`,`matchable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1024,8 +847,8 @@ CREATE TABLE `organizations` (
   `social_links` json DEFAULT NULL,
   `website_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extra_attributes` json DEFAULT NULL,
-  `other_disability_type` json DEFAULT NULL,
-  `other_ethnoracial_identity` json DEFAULT NULL,
+  `other_disability_constituency` json DEFAULT NULL,
+  `other_ethnoracial_identity_constituency` json DEFAULT NULL,
   `staff_lived_experience` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1498,3 +1321,17 @@ INSERT INTO `migrations` VALUES (108,'2022_11_08_181911_change_type_user_sign_la
 INSERT INTO `migrations` VALUES (109,'2022_11_10_181232_create_choices_table',3);
 INSERT INTO `migrations` VALUES (110,'2022_11_17_181722_remove_signed_language_columns_from_users_table',4);
 INSERT INTO `migrations` VALUES (111,'2022_11_18_135707_update_translatable_slugs',5);
+INSERT INTO `migrations` VALUES (112,'2022_07_28_300000_create_identities_table',6);
+INSERT INTO `migrations` VALUES (113,'2022_07_28_400000_create_identity_individual_table',6);
+INSERT INTO `migrations` VALUES (114,'2022_07_28_400000_create_identity_organization_table',6);
+INSERT INTO `migrations` VALUES (115,'2022_07_28_400000_create_individual_identity_connections_table',6);
+INSERT INTO `migrations` VALUES (116,'2022_07_28_400000_create_individual_language_table',6);
+INSERT INTO `migrations` VALUES (117,'2022_11_09_184522_drop_employment_statuses_table',6);
+INSERT INTO `migrations` VALUES (118,'2022_11_24_200740_create_language_matching_strategy_table',6);
+INSERT INTO `migrations` VALUES (119,'2022_11_24_202938_create_identity_matching_strategy_table',6);
+INSERT INTO `migrations` VALUES (120,'2022_11_28_151526_drop_redundant_identity_tables',7);
+INSERT INTO `migrations` VALUES (121,'2022_11_29_150313_add_clusters_column_to_identities_table',8);
+INSERT INTO `migrations` VALUES (122,'2022_12_02_013944_rename_other_disability_type_connection_column_on_individuals_table',8);
+INSERT INTO `migrations` VALUES (123,'2022_12_05_191025_rename_other_disability_type_column_on_organizations_table',8);
+INSERT INTO `migrations` VALUES (124,'2022_12_05_203758_rename_column_on_organizations_table',8);
+INSERT INTO `migrations` VALUES (125,'2022_12_06_141502_add_cross_disability_and_deaf_column_to_matching_strategies_table',8);

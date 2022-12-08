@@ -12,11 +12,11 @@ use App\Notifications\ParticipantDeclined;
 use App\Notifications\ParticipantInvited;
 use App\Notifications\ParticipantJoined;
 use App\Notifications\ParticipantLeft;
-use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\IdentitySeeder;
 use Illuminate\Support\Carbon;
 
 beforeEach(function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
