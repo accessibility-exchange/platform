@@ -30,19 +30,8 @@ class QuizController extends Controller
 
         foreach ($quiz->questions as $question) {
             $numberOfQuestions++;
-            $userChoices = $data['question_'.$question->id];
-            if (count($userChoices) < $question->minimum_choices) {
-                continue;
-            } else {
-                $numberOfCorrectAnswers = 0;
-                foreach ($question->choices as $choice) {
-                    if (in_array($choice->value, $userChoices) && $choice->is_answer) {
-                        $numberOfCorrectAnswers++;
-                    }
-                }
-                if ($numberOfCorrectAnswers >= $question->minimum_choices) {
-                    $quizScore++;
-                }
+            if (count(array_intersect($question->getCorrectChoices(), $data['question_'.$question->id])) >= $question->minimum_choices) {
+                $quizScore++;
             }
         }
         $quizResults = $quizScore / $numberOfQuestions >= $quiz->minimum_score;

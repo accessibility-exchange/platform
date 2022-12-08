@@ -18,10 +18,9 @@ class CourseController extends Controller
     public function show(Course $course): View
     {
         $user = Auth::user();
-        // @phpstan-ignore-next-line
-        $courseUserPivot = $user->courses->find($course->id)?->pivot;
-        $finishedCourse = $courseUserPivot?->finished_at;
-        $receivedCertificate = $courseUserPivot?->received_certificate_at;
+        $courseUser = $user->courses->find($course->id);
+        $finishedCourse = $courseUser?->getRelationValue('pivot')->finished_at;
+        $receivedCertificate = $courseUser?->getRelationValue('pivot')->received_certificate_at;
 
         return view('courses.show', [
             'user' => $user,

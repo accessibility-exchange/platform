@@ -80,8 +80,8 @@ test('users can view quiz results on finishing it', function () {
     $response->assertSessionHasErrors(['question_'.$secondQuestion->id => 'You must enter your question '.$secondQuestion->id.'.']);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->value],
-        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->value],
+        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id],
+        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->id],
     ];
 
     $response = $this->actingAs($user)
@@ -101,8 +101,8 @@ test('users can view quiz results on finishing it', function () {
     $firstQuestionAnotherCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->value, $firstQuestionAnotherCorrectChoice->value],
-        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->value],
+        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id, $firstQuestionAnotherCorrectChoice->id],
+        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->id],
     ];
 
     $user->refresh();
@@ -137,7 +137,7 @@ test('when users pass the quiz in first attempt', function () {
     $firstQuestionCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->value],
+        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id],
     ];
     $response = $this->actingAs($user)
         ->from(localized_route('quizzes.show', $quiz))
@@ -164,7 +164,7 @@ test('when users fail the quiz multiple times', function () {
     $firstQuestionWrongChoice = Choice::factory()->for($firstQuestion)->create();
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionWrongChoice->value],
+        'question_'.$firstQuestion->id => [$firstQuestionWrongChoice->id],
     ];
     $response = $this->actingAs($user)
         ->from(localized_route('quizzes.show', $quiz))

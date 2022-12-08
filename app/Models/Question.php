@@ -46,6 +46,21 @@ class Question extends Model
 
     public function getChoices()
     {
-        return Options::forArray($this->choices()->pluck('value'), useLabelsAsValue: true)->toArray();
+        return Options::forModels(
+            Choice::query()->whereIn('id', $this->choices->pluck('id')->toArray()),
+            label: fn (Choice $choice) => $choice->getTranslation('label', 'en')
+        )->toArray();
+    }
+
+    public function getCorrectChoices()
+    {
+        $correctChoices = [];
+        foreach ($this->choices as $choice) {
+            if ($choice->is_answer) {
+                $correctChoices[] = $choice->id;
+            }
+        }
+
+        return $correctChoices;
     }
 }
