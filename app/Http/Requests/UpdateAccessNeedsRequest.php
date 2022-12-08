@@ -66,6 +66,7 @@ class UpdateAccessNeedsRequest extends FormRequest
         $fallbacks = [
             'general_access_needs' => [],
             'other' => 0,
+            'other_access_need' => null,
             'meeting_access_needs' => [],
             'in_person_access_needs' => [],
             'document_access_needs' => [],

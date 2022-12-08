@@ -410,14 +410,6 @@ class EngagementController extends Controller
             $data['window_end_time'] = $window_end_time;
         }
 
-        if (! isset($data['accepted_formats'])) {
-            $data['accepted_formats'] = [];
-        }
-
-        if (! isset($data['other_accepted_formats'])) {
-            $data['other_accepted_format'] = null;
-        }
-
         $engagement->fill($data);
         $engagement->save();
 
