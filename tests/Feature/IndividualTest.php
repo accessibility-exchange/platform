@@ -417,6 +417,19 @@ test('individuals with connector role can represent individuals with disabilitie
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
     expect($this->livedExperience->communityConnectors)->toHaveCount(1);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'disability_and_deaf' => false,
+        'base_disability_type' => null,
+        'area_type_connections' => [$this->areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $individual->refresh();
+
+    expect($individual->extra_attributes->get('disability_and_deaf_connections'))->toBeNull();
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
@@ -435,9 +448,22 @@ test('individuals with connector role can represent cross-disability individuals
 
     $response->assertSessionHasNoErrors();
 
-    $individual = $individual->fresh();
+    $individual->refresh();
 
     expect($individual->base_disability_type)->toEqual('cross_disability_and_deaf');
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->create([
+        'lived_experience_connections' => [$this->livedExperience->id],
+        'disability_and_deaf' => false,
+        'base_disability_type' => null,
+        'area_type_connections' => [$this->areaType->id],
+    ]);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+
+    $individual->refresh();
+
+    expect($individual->extra_attributes->get('cross_disability_and_deaf_connections'))->toBeNull();
 });
 
 test('individuals with connector role can represent individuals in specific age brackets', function () {
