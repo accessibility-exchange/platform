@@ -24,7 +24,7 @@
         <h2>{{ __('About this course') }}</h2>
         @if ($course->video)
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ 'https://vimeo.com/673048741/e7306e5863' }}',
+                url: '{{ $course->video }}',
                 byline: false,
                 pip: true,
                 portrait: false,
