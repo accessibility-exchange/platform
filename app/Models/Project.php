@@ -263,11 +263,6 @@ class Project extends Model
         }
     }
 
-    // public function regulatedOrganization(): BelongsTo
-    // {
-    //     return $this->belongsTo(RegulatedOrganization::class);
-    // }
-
     public function impacts(): BelongsToMany
     {
         return $this->belongsToMany(Impact::class);
