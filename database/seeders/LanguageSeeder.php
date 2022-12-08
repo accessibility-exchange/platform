@@ -41,7 +41,9 @@ class LanguageSeeder extends Seeder
                 ['code' => $code],
                 [
                     'name->en' => $language['name']['en'],
+                    'name->asl' => $language['name']['en'],
                     'name->fr' => $language['name']['fr'],
+                    'name->lsq' => $language['name']['fr'],
                 ],
             );
         }

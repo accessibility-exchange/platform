@@ -49,7 +49,7 @@
                     <p>{{ __('Not everyone has had access to paid or volunteer experiences, but there are a lot of experiences that build certain skills and strengths. You can share more about that here. If you have had paid or volunteer experiences, you can also include that.') }}
                     </p>
                 </x-expander>
-                <x-expander :summary="__('Communication and meeting preferences')" level="3">
+                <x-expander :summary="__('Communication and consultation preferences')" level="3">
                     <p>{{ __('We will ask you about whether you have a preference for either in-person or virtual meetings. We will also ask you how you would like us to contact you, and for your contact information.') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
