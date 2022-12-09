@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Resource hub') }}</x-slot>
     <x-slot name="header">
         <h1 itemprop="name">{{ __('Resource hub') }}</h1>
@@ -31,4 +31,4 @@
             <p>{{ __('resource-collection.none_found') }}</p>
         @endif
     </div>
-</x-app-wide-layout>
+</x-app-layout>

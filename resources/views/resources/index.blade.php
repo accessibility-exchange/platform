@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Browse all resources') }}</x-slot>
     <x-slot name="header">
         <p><a href="{{ localized_route('resource-collections.index') }}">{{ __('Back to resource hub') }}</a></p>
@@ -91,4 +91,4 @@
             </div>
         </div>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

@@ -35,7 +35,7 @@ main > .center .full {
     padding-inline: var(--space-4);
 }
 
-main .content > *:not(.nav--tabbed, .alert, .with-sidebar),
+main .content > *:not(.nav--tabbed, .alert, .with-sidebar, .px-0),
 main article > header {
     padding-inline: var(--space-4);
 }

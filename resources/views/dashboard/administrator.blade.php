@@ -7,7 +7,7 @@
             <a href="{{ localized_route('admin.estimates-and-agreements') }}">{{ __('Estimates and agreements') }}</a>
         </li>
         <li>
-           <a href="{{ route('filament.resources.identities.index') }}">{{ __('Identities') }}</a>
+            <a href="{{ route('filament.resources.identities.index') }}">{{ __('Identities') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.resources.resources.index') }}">{{ __('Resources') }}</a>

@@ -122,7 +122,7 @@ class AllProjects extends Component
             'impactedAreasData' => Options::forModels(Impact::class)->toArray(),
             'recruitmentMethodsData' => Options::forEnum(EngagementRecruitment::class)->toArray(),
         ])
-            ->layout('layouts.app-wide');
+        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Confirm your access needs') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -68,4 +68,4 @@
                 href="{{ localized_route('engagements.show', $engagement) }}">{{ __('Go to engagement page') }}</a>
         </p>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

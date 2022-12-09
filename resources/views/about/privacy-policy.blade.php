@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ __('Privacy Policy') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -13,4 +13,4 @@
         <p>TODO.</p>
     </div>
 
-</x-app-medium-layout>
+</x-app-layout>

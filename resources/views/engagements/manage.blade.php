@@ -1,34 +1,36 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">{{ __('Manage engagement') }}</x-slot>
     <x-slot name="header">
-        <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a
-                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
-            </li>
-        </ol>
-        <p class="mt-8 text-2xl"><strong>{{ __('Engagement') }}</strong></p>
-        <h1 class="mt-0">
-            {{ $engagement->name }}
-        </h1>
-        @if ($engagement->format)
-            <p class="h4">{{ $engagement->display_format }}</p>
-        @endif
-        <div class="flex flex-col gap-6 md:flex-row md:justify-between">
-            <div class="flex flex-col gap-6 md:flex-row md:gap-20">
-                <div>
-                    <p><strong>{{ __('project.singular_name_titlecase') }}</strong></p>
-                    <p>{{ $project->name }}</p>
+        <div class="center center:wide stack">
+            <ol class="breadcrumbs" role="list">
+                <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+                <li><a
+                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                </li>
+            </ol>
+            <p class="mt-8 text-2xl"><strong>{{ __('Engagement') }}</strong></p>
+            <h1 class="mt-0">
+                {{ $engagement->name }}
+            </h1>
+            @if ($engagement->format)
+                <p class="h4">{{ $engagement->display_format }}</p>
+            @endif
+            <div class="flex flex-col gap-6 md:flex-row md:justify-between">
+                <div class="flex flex-col gap-6 md:flex-row md:gap-20">
+                    <div>
+                        <p><strong>{{ __('project.singular_name_titlecase') }}</strong></p>
+                        <p>{{ $project->name }}</p>
+                    </div>
+                    <div>
+                        <p><strong>{{ __('Run by') }}</strong></p>
+                        <p>{{ $project->projectable->name }}</p>
+                    </div>
                 </div>
-                <div>
-                    <p><strong>{{ __('Run by') }}</strong></p>
-                    <p>{{ $project->projectable->name }}</p>
-                </div>
+                {{-- TODO: cancel engagement --}}
+                {{-- <div> --}}
+                {{-- <button class="borderless destructive">{{ __('Cancel engagement') }}</button> --}}
+                {{-- </div> --}}
             </div>
-            {{-- TODO: cancel engagement --}}
-            {{-- <div> --}}
-            {{-- <button class="borderless destructive">{{ __('Cancel engagement') }}</button> --}}
-            {{-- </div> --}}
         </div>
     </x-slot>
 
@@ -366,4 +368,4 @@
             };
         }
     </script>
-</x-app-wide-tabbed-layout>
+</x-app-layout>
