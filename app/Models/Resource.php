@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Traits\GeneratesMultilingualSlugs;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -123,5 +124,81 @@ class Resource extends Model
         return Attribute::make(
             get: fn ($value) => array_map(fn ($phase) => ConsultationPhase::labels()[$phase], $this->phases),
         );
+    }
+
+    public function scopeWhereLanguages(Builder $query, array $languages)
+    {
+        $method = 'whereNotNull';
+
+        foreach ($languages as $language) {
+            $query->$method('url->'.$language);
+
+            $method = 'orWhereNotNull';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereTopics(Builder $query, array $topics)
+    {
+        $method = 'whereHas';
+
+        foreach ($topics as $topic) {
+            $query->$method('topics', function (Builder $topicQuery) use ($topic) {
+                $topicQuery->where('topic_id', $topic);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeWherePhases(Builder $query, array $phases)
+    {
+        $method = 'whereJsonContains';
+
+        foreach ($phases as $phase) {
+            $query->$method('phases', $phase);
+
+            $method = 'orWhereJsonContains';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereContentTypes(Builder $query, array $contentTypes)
+    {
+        return $query->whereIn('content_type_id', $contentTypes);
+    }
+
+    public function scopeWhereSectors(Builder $query, array $sectors)
+    {
+        $method = 'whereHas';
+
+        foreach ($sectors as $sector) {
+            $query->$method('sectors', function (Builder $sectorQuery) use ($sector) {
+                $sectorQuery->where('sector_id', $sector);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereImpacts(Builder $query, array $impacts)
+    {
+        $method = 'whereHas';
+
+        foreach ($impacts as $impact) {
+            $query->$method('impacts', function (Builder $impactQuery) use ($impact) {
+                $impactQuery->where('impact_id', $impact);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
     }
 }

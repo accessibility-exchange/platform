@@ -2,13 +2,14 @@
 <?php
 
 use App\Http\Controllers\ResourceController;
+use App\Http\Livewire\AllResources;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(ResourceController::class)
     ->prefix('resources')
     ->name('resources.')
     ->group(function () {
-        Route::multilingual('/resources/all', 'index')
+        Route::multilingual('/all', [AllResources::class, '__invoke'])
             ->middleware(['auth'])
             ->name('index');
 
