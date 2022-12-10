@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ConsultationPhase;
-use App\Enums\ResourceFormat;
 use App\Http\Requests\CreateResourceCollectionRequest;
 use App\Http\Requests\DestroyResourceCollectionRequest;
 use App\Http\Requests\UpdateResourceCollectionRequest;
-use App\Models\ContentType;
+use App\Models\Course;
 use App\Models\ResourceCollection;
-use App\Models\Topic;
-use Spatie\LaravelOptions\Options;
 
 class ResourceCollectionController extends Controller
 {
@@ -21,7 +17,7 @@ class ResourceCollectionController extends Controller
      */
     public function index()
     {
-        return view('resource-collections.index', ['resourceCollections' => ResourceCollection::orderBy('title')->get()]);
+        return view('resource-collections.index', ['resourceCollections' => ResourceCollection::orderBy('title')->get(), 'courses' => Course::all()]);
     }
 
     /**
@@ -55,25 +51,6 @@ class ResourceCollectionController extends Controller
         flash(__('resource-collection.create_succeeded'), 'success');
 
         return redirect(\localized_route('resource-collections.show', ['resourceCollection' => $resourceCollection]));
-    }
-
-    /**
-     * Display the specified resource collection.
-     *
-     * @param  \App\Models\ResourceCollection  $resourceCollection
-     * @return \Illuminate\View\View
-     */
-    public function show(ResourceCollection $resourceCollection)
-    {
-        return view('resource-collections.show', [
-            'resourceCollection' => $resourceCollection,
-            'resources' => $resourceCollection->resources,
-            'topics' => Topic::all(),
-            'types' => ContentType::all(),
-            'formats' => Options::forEnum(ResourceFormat::class)->toArray(),
-            'languages' => ['en', 'fr'],
-            'phases' => Options::forEnum(ConsultationPhase::class)->toArray(),
-        ]);
     }
 
     /**

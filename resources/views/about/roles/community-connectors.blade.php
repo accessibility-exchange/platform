@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--connectors stack">
     <x-slot name="title">{{ __('Community Connectors') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack -mt-12 py-12">
+        <div class="center center:wide stack pt-4 pb-12">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 @if (request()->localizedRouteIs('about.individual-community-connectors'))

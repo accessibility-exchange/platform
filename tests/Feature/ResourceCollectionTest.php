@@ -148,21 +148,6 @@ test('create resource collection validation', function () {
 
     $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
         'user_id' => $user->id,
-        'title' => 'Test resource collection',
-    ]);
-
-    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
-
-    $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
-        'user_id' => $user->id,
-        'title' => 'Test resource collection',
-        'description' => 1,
-    ]);
-
-    $response->assertSessionHasErrors(['description' => 'The description must be a string.']);
-
-    $response = $this->actingAs($user)->post(localized_route('resource-collections.create'), [
-        'user_id' => $user->id,
         'description' => 'This is my resource collection',
     ]);
 
@@ -194,19 +179,6 @@ test('create resource collection validation', function () {
 test('update resource collection validation', function () {
     $user = User::factory()->create();
     $resourceCollection = ResourceCollection::factory()->create(['user_id' => $user->id]);
-
-    $response = $this->actingAs($user)->put(localized_route('resource-collections.update', $resourceCollection), [
-        'title' => $resourceCollection->title,
-    ]);
-
-    $response->assertSessionHasErrors(['description' => 'You must enter your description.']);
-
-    $response = $this->actingAs($user)->put(localized_route('resource-collections.update', $resourceCollection), [
-        'title' => $resourceCollection->title,
-        'description' => 1,
-    ]);
-
-    $response->assertSessionHasErrors(['description' => 'The description must be a string.']);
 
     $response = $this->actingAs($user)->put(localized_route('resource-collections.update', $resourceCollection), [
         'description' => 'This is my updated resource collection.',

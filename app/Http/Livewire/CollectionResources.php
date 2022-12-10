@@ -5,16 +5,20 @@ namespace App\Http\Livewire;
 use App\Enums\ConsultationPhase;
 use App\Models\ContentType;
 use App\Models\Impact;
-use App\Models\Resource;
+use App\Models\ResourceCollection;
 use App\Models\Sector;
 use App\Models\Topic;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Routing\Route;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
 
-class AllResources extends Component
+class CollectionResources extends Component
 {
     use WithPagination;
+
+    public ResourceCollection $resourceCollection;
 
     public string $searchQuery = '';
 
@@ -31,6 +35,11 @@ class AllResources extends Component
     public array $topics = [];
 
     protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+
+    public function __invoke(Container $container, Route $route, ?ResourceCollection $resourceCollection = null)
+    {
+        return parent::__invoke($container, $route);
+    }
 
     public function selectNone()
     {
@@ -49,8 +58,8 @@ class AllResources extends Component
 
     public function render()
     {
-        return view('livewire.all-resources', [
-            'resources' => Resource::when($this->searchQuery, function ($query, $searchQuery) {
+        return view('livewire.collection-resources', [
+            'resources' => $this->resourceCollection->resources()->when($this->searchQuery, function ($query, $searchQuery) {
                 $query->where('title->en', 'like', '%'.$searchQuery.'%')
                     ->orWhere('title->fr', 'like', '%'.$searchQuery.'%');
             })
@@ -82,6 +91,6 @@ class AllResources extends Component
             'sectorsData' => Options::forModels(Sector::class)->toArray(),
             'topicsData' => Options::forModels(Topic::class)->toArray(),
         ])
-        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack full header--resources', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page resource-collection', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 }

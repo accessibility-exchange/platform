@@ -31,7 +31,7 @@ class CreateResourceCollectionRequest extends FormRequest
                 'max:255',
                 UniqueTranslationRule::for('resource_collections'),
             ],
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'user_id' => 'required',
             'resource_ids' => 'array|nullable',
             'resource_ids.*' => 'exists:resources,id',

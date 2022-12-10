@@ -1,4 +1,4 @@
-<x-app-layout header-class="header--tabbed" page-width="wide">
+<x-app-layout header-class="header--tabbed" page-width="wide" body-class="page resource">
     <x-slot name="title">{{ $resource->title }}</x-slot>
     <x-slot name="header">
         <div class="center center:wide stack">

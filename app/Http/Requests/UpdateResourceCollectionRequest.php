@@ -32,7 +32,7 @@ class UpdateResourceCollectionRequest extends FormRequest
                 UniqueTranslationRule::for('resource_collections')->ignore($this->resourceCollection->id),
 
             ],
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'resource_ids' => 'array',
             'resource_ids.*' => 'integer',
         ];

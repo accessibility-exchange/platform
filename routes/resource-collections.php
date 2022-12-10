@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ResourceCollectionController;
+use App\Http\Livewire\CollectionResources;
 use Illuminate\Support\Facades\Route;
 
 Route::multilingual('/resources', [ResourceCollectionController::class, 'index'])
@@ -16,10 +17,6 @@ Route::multilingual('/resources/collections/create', [ResourceCollectionControll
     ->middleware(['auth', 'can:create,App\Models\ResourceCollection'])
     ->name('resource-collections.store');
 
-Route::multilingual('/resources/collections/{resourceCollection}', [ResourceCollectionController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('resource-collections.show');
-
 Route::multilingual('/resources/collections/{resourceCollection}/edit', [ResourceCollectionController::class, 'edit'])
     ->middleware(['auth', 'can:update,resourceCollection'])
     ->name('resource-collections.edit');
@@ -33,3 +30,7 @@ Route::multilingual('/resources/collections/{resourceCollection}/delete', [Resou
     ->middleware(['auth', 'can:delete,resourceCollection'])
     ->method('delete')
     ->name('resource-collections.destroy');
+
+Route::multilingual('/resources/collections/{resourceCollection}', [CollectionResources::class, '__invoke'])
+    ->middleware(['auth'])
+    ->name('resource-collections.show');

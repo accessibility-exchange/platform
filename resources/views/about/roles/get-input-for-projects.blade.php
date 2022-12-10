@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--regulated-organization">
     <x-slot name="title">{{ __('Get input for your projects') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack -mt-12 py-12">
+        <div class="center center:wide stack pt-4 pb-12">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 @if (request()->localizedRouteIs('about.regulated-organization-get-input'))

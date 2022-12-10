@@ -7,8 +7,9 @@
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
         </ol>
-        <h1 id="browse-all-resources">
-            {{ __('Browse all resources') }}
+        <p class="h4">{{ __('Collection') }}</p>
+        <h1 class="mt-0" id="browse-all-resources">
+            {{ $resourceCollection->title }}
         </h1>
     </div>
 </x-slot>

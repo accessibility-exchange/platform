@@ -37,3 +37,11 @@ form.search > * + * {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+.page.resource-collection main {
+    box-shadow: var(--card-resource-shadow);
+}
+
+.page.resource main {
+    padding-block-start: 0;
+}
