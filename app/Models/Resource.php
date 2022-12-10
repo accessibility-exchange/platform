@@ -22,11 +22,6 @@ class Resource extends Model
     use HasTranslations;
     use HasTranslatableSlug;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'title',
         'author',
@@ -45,11 +40,6 @@ class Resource extends Model
         'phases' => 'array',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array<string>
-     */
     public mixed $translatable = [
         'title',
         'slug',
@@ -58,11 +48,6 @@ class Resource extends Model
         'author',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     *
-     * @return SlugOptions
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
@@ -72,21 +57,16 @@ class Resource extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    /**
-     * Get all the resource collections that include this resource.
-     *
-     * @return BelongsToMany
-     */
+    public function authorOrganization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
     public function resourceCollections(): BelongsToMany
     {
         return $this->belongsToMany(ResourceCollection::class);

@@ -9,15 +9,25 @@
             <h1>
                 {{ $resource->title }}
             </h1>
-            {{-- TODO: Handle author link --}}
-            <p>{!! Str::inlineMarkdown(
-                __('**:content_type** by :author', [
-                    'content_type' => $resource->contentType?->name ?? __('Resource'),
-                    'author' => $resource->author ?? __('The Accessibility Exchange'),
-                ]),
-            ) !!}</p>
-            <div class="my-12 flex flex-col gap-6 md:grid md:grid-cols-3">
-                {{-- TODO: Handle topics --}}
+            <p>
+                <strong>{{ $resource->contentType?->name ?? __('Resource') }}</strong> {{ __('by') }} @if ($resource->authorOrganization)
+                    <a
+                        href="{{ localized_route('organizations.show', $resource->authorOrganization) }}">{{ $resource->authorOrganization->name }}</a>
+                @else
+                    {{ $resource->author }}
+                @endif
+            </p>
+            <div class="my-12 flex flex-col gap-6 lg:grid lg:grid-cols-4">
+                <div class="stack">
+                    <p><strong>{{ __('Topics') }}</strong></p>
+                    <ul class="tags" role="list">
+                        @forelse($resource->topics ?? [] as $topic)
+                            <li class="tag">{{ $topic->name }}</li>
+                        @empty
+                            <li>{{ __('None listed') }}</li>
+                        @endforelse
+                    </ul>
+                </div>
                 <div class="stack">
                     <p><strong>{{ __('Phases of consultation') }}</strong></p>
                     <ul class="tags" role="list">

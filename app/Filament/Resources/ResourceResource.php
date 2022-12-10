@@ -29,12 +29,18 @@ class ResourceResource extends Resource
                 Forms\Components\TextInput::make('title.fr')
                     ->label(__('Resource title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
+                Forms\Components\Select::make('organization_id')
+                    ->relationship('authorOrganization', 'name')
+                    ->validationAttribute(__('author organization'))
+                    ->columnSpan(2),
                 Forms\Components\TextInput::make('author.en')
-                    ->label(__('Author name').' ('.get_language_exonym('en').')')
-                    ->requiredWithout('author.fr'),
+                    ->label(__('Author name').' ('.get_language_exonym('en').') ('.__('required without an author organization').')')
+                    ->validationAttribute(__('English author name'))
+                    ->requiredWithoutAll('organization_id,author.fr'),
                 Forms\Components\TextInput::make('author.fr')
-                    ->label(__('Author name').' ('.get_language_exonym('fr').')')
-                    ->requiredWithout('author.en'),
+                    ->label(__('Author name').' ('.get_language_exonym('fr').') ('.__('required without an author organization').')')
+                    ->validationAttribute(__('French author name'))
+                    ->requiredWithoutAll('organization_id,author.en'),
                 Forms\Components\TextInput::make('url.en')
                     ->label(__('Resource link').' ('.get_language_exonym('en').')')
                     ->requiredWithout('url.fr'),
@@ -55,6 +61,7 @@ class ResourceResource extends Resource
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Summary').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
+
                 Forms\Components\Select::make('content_type_id')
                     ->relationship('contentType', 'name')
                     ->columnSpan(2),
@@ -81,7 +88,8 @@ class ResourceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('author'),
+                Tables\Columns\TextColumn::make('author')
+                    ->formatStateUsing(fn (string $state, ResourceModel $record): string => $record->authorOrganization ? $record->authorOrganization->name : $state),
                 Tables\Columns\TextColumn::make('title'),
                 Tables\Columns\TextColumn::make('contentType.name'),
                 Tables\Columns\TextColumn::make('created_at')
