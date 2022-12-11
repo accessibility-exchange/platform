@@ -1050,13 +1050,10 @@ CREATE TABLE `resource_collections` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `user_id` bigint unsigned NOT NULL,
   `title` json NOT NULL,
   `slug` json NOT NULL,
   `description` json DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `resource_collections_user_id_foreign` (`user_id`),
-  CONSTRAINT `resource_collections_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_resource_collection`;
@@ -1376,3 +1373,4 @@ INSERT INTO `migrations` VALUES (129,'2022_11_29_005942_drop_topicables_table',9
 INSERT INTO `migrations` VALUES (130,'2022_11_29_010044_create_resource_topic_table',9);
 INSERT INTO `migrations` VALUES (131,'2022_12_09_192148_add_organization_id_column_to_resources_table',9);
 INSERT INTO `migrations` VALUES (132,'2022_12_10_210658_update_description_column_in_resource_collections_table',9);
+INSERT INTO `migrations` VALUES (133,'2022_12_11_201445_remove_user_id_column_from_resource_collections_table',10);

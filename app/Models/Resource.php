@@ -25,7 +25,6 @@ class Resource extends Model
     protected $fillable = [
         'title',
         'author',
-        'user_id',
         'summary',
         'formats',
         'phases',

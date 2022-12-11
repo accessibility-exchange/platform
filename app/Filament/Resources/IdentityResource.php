@@ -19,7 +19,7 @@ class IdentityResource extends Resource
 {
     protected static ?string $model = Identity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-s-cube';
 
     public static function form(Form $form): Form
     {

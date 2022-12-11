@@ -17,7 +17,7 @@ class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
+    protected static ?string $navigationIcon = 'heroicon-s-document-duplicate';
 
     public static function form(Form $form): Form
     {
@@ -61,7 +61,6 @@ class ResourceResource extends Resource
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Summary').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
-
                 Forms\Components\Select::make('content_type_id')
                     ->relationship('contentType', 'name')
                     ->columnSpan(2),

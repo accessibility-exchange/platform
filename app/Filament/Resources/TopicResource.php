@@ -14,7 +14,7 @@ class TopicResource extends Resource
 {
     protected static ?string $model = Topic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationIcon = 'heroicon-s-tag';
 
     public static function form(Form $form): Form
     {

@@ -18,31 +18,22 @@ class ResourceCollection extends Model
     use HasTranslations;
     use HasTranslatableSlug;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'title',
-        'user_id',
         'description',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
-    public array $translatable = [
+    protected $casts = [
+        'title' => 'array',
+        'description' => 'array',
+    ];
+
+    public mixed $translatable = [
         'title',
-        'description',
         'slug',
+        'description',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
@@ -52,31 +43,16 @@ class ResourceCollection extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    /**
-     * Get user of this resource collection
-     *
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get all the resources that are assigned this collection.
-     *
-     * @return BelongsToMany
-     */
     public function resources(): BelongsToMany
     {
         return $this->belongsToMany(Resource::class);

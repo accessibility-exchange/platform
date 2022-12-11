@@ -10,6 +10,9 @@
             <a href="{{ route('filament.resources.identities.index') }}">{{ __('Identities') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.resources.resource-collections.index') }}">{{ __('Resource collections') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.resources.resources.index') }}">{{ __('Resources') }}</a>
         </li>
         <li>
