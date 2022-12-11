@@ -69,7 +69,7 @@ class Resource extends Model
 
     public function resourceCollections(): BelongsToMany
     {
-        return $this->belongsToMany(ResourceCollection::class);
+        return $this->belongsToMany(ResourceCollection::class)->withTimestamps();
     }
 
     public function contentType(): BelongsTo

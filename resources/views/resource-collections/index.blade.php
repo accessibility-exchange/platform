@@ -10,7 +10,7 @@
     </x-slot>
 
     <x-section class="px-0" aria-labelledby="search">
-        <h2 class="h4" id="search">{{ __('Search') }}</h2>
+        <h2 class="h4" id="search">{{ __('Search for resources') }}</h2>
         <form class="search" action="{{ localized_route('resources.index') }}" method="get">
             @csrf
             <label class="visually-hidden" for="search">{{ __('Search') }}</label>
@@ -22,7 +22,7 @@
         <div class="center center:wide stack stack:xl">
             <h2 id="resource-collections">{{ __('Featured collections') }}</h2>
             @if ($resourceCollections->count() > 0)
-                <div class="grid">
+                <div class="grid gap-6 md:grid-cols-2">
                     @foreach ($resourceCollections as $resourceCollection)
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
@@ -36,7 +36,7 @@
         <div class="center center:wide stack stack:xl px-0">
             <h2 id="trainings">{{ __('Featured trainings') }}</h2>
             @if ($courses->count() > 0)
-                <div class="grid">
+                <div class="grid gap-6 md:grid-cols-2">
                     @foreach ($courses as $course)
                         <x-card.course :model="$course" />
                     @endforeach

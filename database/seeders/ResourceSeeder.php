@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
+use App\Models\ResourceCollection;
 use App\Models\Sector;
 use Illuminate\Database\Seeder;
 
@@ -31,6 +32,8 @@ class ResourceSeeder extends Seeder
                 'type' => ContentType::firstWhere('name->en', 'Guidelines and best practices'),
                 'sectors' => [Sector::firstWhere('name->en', 'Federal government programs and services')->id],
                 'impacts' => [Impact::firstWhere('name->en', 'Programs and services')->id, Impact::firstWhere('name->en', 'Communication, other than information and communication technologies')->id],
+                'topics' => [],
+                'resourceCollections' => [ResourceCollection::firstWhere('title->en', 'The Accessible Canada Act')->id],
             ],
             [
                 'title' => ['en' => 'An Introduction To The Accessible Canada Act'],
@@ -39,6 +42,8 @@ class ResourceSeeder extends Seeder
                 'phases' => ['design'],
                 'sectors' => [Sector::firstWhere('name->en', 'Federal government programs and services')->id],
                 'impacts' => [Impact::firstWhere('name->en', 'Programs and services')->id, Impact::firstWhere('name->en', 'Communication, other than information and communication technologies')->id],
+                'topics' => [],
+                'resourceCollections' => [ResourceCollection::firstWhere('title->en', 'The Accessible Canada Act')->id],
             ],
         ];
 
@@ -62,6 +67,14 @@ class ResourceSeeder extends Seeder
 
             if (isset($resource['impacts'])) {
                 $item->impacts()->attach($resource['impacts']);
+            }
+
+            if (isset($resource['topics'])) {
+                $item->topics()->attach($resource['topics']);
+            }
+
+            if (isset($resource['resourceCollections'])) {
+                $item->resourceCollections()->attach($resource['resourceCollections']);
             }
         }
     }
