@@ -6,13 +6,13 @@ on:
     branches:
       - dev
 
+concurrency: deploy-dev
+
 jobs:
   deploy:
     if: github.repository == 'accessibility-exchange/platform'
 
     runs-on: ubuntu-latest
-
-    concurrency: deploy-dev
 
     steps:
       - name: Start deployment
