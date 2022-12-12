@@ -16,22 +16,8 @@ class ResourceCollectionPolicy
         return $user->isAdministrator() ? true : null;
     }
 
-    public function create(User $user): bool
-    {
-        return true;
-    }
-
     public function update(User $user, ResourceCollection $resourceCollection): Response
     {
-        return $user->id === $resourceCollection->user_id
-            ? Response::allow()
-            : Response::deny(__('You cannot edit this resource collection.'));
-    }
-
-    public function delete(User $user, ResourceCollection $resourceCollection): Response
-    {
-        return $user->id === $resourceCollection->user_id
-            ? Response::allow()
-            : Response::deny(__('You cannot delete this resource collection.'));
+        return Response::deny(__('You cannot edit this resource collection.'));
     }
 }

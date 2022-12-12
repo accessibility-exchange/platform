@@ -1,15 +1,18 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">{{ __('Notification list') }}</x-slot>
     <x-slot name="header">
-        <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
-            <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
-            <li><a href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notifications') }}</a>
-            </li>
-        </ol>
-        <h1>
-            {{ __('Notification List') }}
-        </h1>
+        <div class="center center:wide stack">
+            <ol class="breadcrumbs" role="list">
+                <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
+                <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
+                <li><a
+                        href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notifications') }}</a>
+                </li>
+            </ol>
+            <h1>
+                {{ __('Notification List') }}
+            </h1>
+        </div>
     </x-slot>
 
     <nav class="nav--tabbed" aria-labelledby="notifications">
@@ -99,4 +102,4 @@
             @endforelse
         </table>
     </div>
-</x-app-wide-tabbed-layout>
+</x-app-layout>

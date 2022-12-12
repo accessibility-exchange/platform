@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Roles and permissions') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -88,4 +88,4 @@
         </table>
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>

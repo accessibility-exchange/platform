@@ -14,7 +14,6 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-block-start: var(--space-8);
 }
 
 main .back-to-top {
@@ -35,8 +34,9 @@ main > .center .full {
     padding-inline: var(--space-4);
 }
 
-main .content > *:not(.nav--tabbed, .alert, .with-sidebar),
+main .content > *:not(.nav--tabbed, .alert, .with-sidebar, .px-0),
 main article > header {
+    padding-block-start: var(--space-8);
     padding-inline: var(--space-4);
 }
 

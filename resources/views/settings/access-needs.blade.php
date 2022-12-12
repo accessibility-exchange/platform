@@ -20,20 +20,17 @@
         @csrf
         @method('put')
 
-        <fieldset class="field @error('general_access_needs') field--error @enderror" x-data="{ other: {{ old('other', !is_null($individual->other_access_need) && $individual->other_access_need !== '') ? 'true' : 'false' }} }">
+        <fieldset class="field @error('general_access_needs') field--error @enderror" x-data="{ other: @js(old('other', !blank($individual->other_access_need))) }">
             <legend>
                 <h2>{{ __('General access needs') }}</h2>
             </legend>
 
             <x-hearth-checkboxes name="general_access_needs" :options="$generalAccessSupports" :checked="old('general_access_needs', $selectedAccessSupports)" />
             <div class="field @error('general_access_needs') field--error @enderror">
-                <x-hearth-checkbox name="other" :checked="old(
-                    'other',
-                    (!is_null($individual->other_access_need) && $individual->other_access_need !== '') || 1,
-                )" x-model="other" />
+                <x-hearth-checkbox name="other" :checked="old('other', !blank($individual->other_access_need))" x-model="other" />
                 <x-hearth-label for='other'>{{ __('Other (please describe)') }}</x-hearth-label>
             </div>
-            <div class="field__subfield @error('other_access_need') field--error @enderror stack" x-show="other"
+            <div class="field__subfield @error('other_access_need') field--error @enderror stack" x-show="other" x-cloak
                 x-cloak>
                 <x-hearth-label for="other_access_need">{{ __('Access need') }}</x-hearth-label>
                 <x-hearth-textarea name="other_access_need" :value="old('other_access_need', $individual->other_access_need)" :aria-invalid="$errors->has('general_access_needs')" />
@@ -99,35 +96,28 @@
                             x-model="followUpNeeds" />
                         <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
                         </x-hearth-label>
-                        <div class="stack" x-show="followUpNeeds" x-cloak>
-                            <x-card :level="4">
-                                <x-slot name="title">
-                                    {{ __('Notice') }}
-                                </x-slot>
-                                <p>
-                                    {{ __('For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this.') }}
-                                </p>
-                            </x-card>
-                        </div>
-                    @else
-                        <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
-                            name="meeting_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
-                                $option['value'],
-                                old('meeting_access_needs', $selectedAccessSupports ?? []),
-                            )" />
-                        <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
-                        </x-hearth-label>
-                    @endif
-                    @if (isset($option['hint']) && !empty($option['hint']))
-                        <x-hearth-hint for="meeting_access_needs-{{ $option['value'] }}">{{ $option['hint'] }}
-                        </x-hearth-hint>
-                    @endif
+                        <x-hearth-alert x-show="followUpNeeds" x-cloak :dismissable="false">
+                            <p>
+                                {{ __('For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this.') }}
+                            </p>
+                        </x-hearth-alert>
                 </div>
+            @else
+                <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}" name="meeting_access_needs[]"
+                    value="{{ $option['value'] }}" :checked="in_array($option['value'], old('meeting_access_needs', $selectedAccessSupports ?? []))" />
+                <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
+                </x-hearth-label>
+            @endif
+            @if (isset($option['hint']) && !empty($option['hint']))
+                <x-hearth-hint for="meeting_access_needs-{{ $option['value'] }}">{{ $option['hint'] }}
+                </x-hearth-hint>
+            @endif
+            </div>
             @endforeach
         </fieldset>
 
         <fieldset class="field @error('in_person_access_needs') field--error @enderror" x-data="{
-            bringMySupportPerson: {{ in_array($bringMySupportPerson, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }}
+            bringMySupportPerson: @js(in_array($bringMySupportPerson, old('meeting_access_needs', $selectedAccessSupports ?? [])))
         }">
             <legend>
                 <h2>{{ __('For in-person meetings') }}</h2>
@@ -156,37 +146,29 @@
                         </x-hearth-hint>
                     @endif
                     @if ($option['value'] === $bringMySupportPerson)
-                        <div class="stack" x-show="bringMySupportPerson" x-cloak>
-                            <x-card :level="4">
-                                <x-slot name="title">
-                                    {{ __('Notice') }}
-                                </x-slot>
-                                <p>
-                                    {{ __('For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this.') }}
-                                </p>
-                            </x-card>
-                        </div>
+                        <x-hearth-alert x-cloak x-show="bringMySupportPerson" :dismissable="false">
+                            <p>
+                                {{ __('For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this.') }}
+                            </p>
+                        </x-hearth-alert>
                     @endif
                 </div>
             @endforeach
         </fieldset>
 
         <fieldset class="field @error('document_access_needs') field--error @enderror" x-data="{
-            translationSigned: {{ in_array($signLanguageTranslation, old('document_access_needs', $selectedAccessSupports)) ? 'true' : 'false' }},
-            translationWritten: {{ in_array($writtenLanguageTranslation, old('document_access_needs', $selectedAccessSupports)) ? 'true' : 'false' }},
-            printedVersion: {{ in_array($printedVersion, old('document_access_needs', $selectedAccessSupports)) ? 'true' : 'false' }}
+            translationSigned: @js(in_array($signLanguageTranslation, old('document_access_needs', $selectedAccessSupports))),
+            translationWritten: @js(in_array($writtenLanguageTranslation, old('document_access_needs', $selectedAccessSupports))),
+            printedVersion: @js(in_array($printedVersion, old('document_access_needs', $selectedAccessSupports)))
         }">
             <legend>
                 <h2>{{ __('For engagement documents') }}</h2>
             </legend>
-            <x-card :level="4">
-                <x-slot name="title">
-                    {{ __('Notice') }}
-                </x-slot>
+            <x-hearth-alert x-show="true" :dismissable="false">
                 <p>
                     {{ __('For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this.') }}
                 </p>
-            </x-card>
+            </x-hearth-alert>
             @foreach ($documentAccessSupports as $option)
                 <div class="field">
                     @if ($option['value'] === $signLanguageTranslation)

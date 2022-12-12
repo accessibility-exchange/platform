@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">
         @if ($project->checkStatus('published'))
             {{ __('Edit your project page') }}
@@ -32,4 +32,4 @@
     @else
         @include('projects.edit.1')
     @endif
-</x-app-wide-layout>
+</x-app-layout>

@@ -5,28 +5,35 @@
     @include('partials.head', ['title' => $title ?? __('app.name')])
 </head>
 
-<body class="{{ $class ?? 'page' }}">
+<body class="{{ $bodyClass }}">
     @include('layouts.header')
 
     <!-- Main Content -->
     <main id="main">
-        <div class="center">
-            <article class="stack" itemscope itemtype="https://schema.org/{{ $itemtype ?? 'WebPage' }}">
+        <div @class([
+            'center',
+            'center:medium' => $pageWidth === 'medium',
+            'center:wide' => $pageWidth === 'wide',
+        ])>
+            <article class="stack">
                 <!-- Flash Messages -->
                 @include('partials.flash-messages')
+
                 <!-- Page Heading -->
-                <header class="stack">
+                <header class="{{ $headerClass }}">
                     <!-- Text to Speech -->
                     <x-tts.orator />
+
                     {{ $header }}
                 </header>
+
                 <!-- Page Content -->
                 <div class="content stack">
                     {{ $slot }}
                 </div>
             </article>
         </div>
-        <x-back-to-top />
+        <x-back-to-top :width="$pageWidth ?? null" />
     </main>
 
     @include('layouts.footer')

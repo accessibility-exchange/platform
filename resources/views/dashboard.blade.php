@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('My dashboard') }}</x-slot>
     <x-slot name="header">
         @if ($teamInvitation)
@@ -55,4 +55,4 @@
     @elseif ($user->context === 'regulated-organization')
         @include('dashboard.regulated-organization')
     @endif
-</x-app-wide-layout>
+</x-app-layout>

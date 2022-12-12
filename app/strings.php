@@ -661,11 +661,6 @@ return [
             __('Browse resources for Regulated Organizations'),
             __('Here you may find resources for employees of the Regulated Organizations.'),
             __('Browse resources by :creator'),
-            __('Featured collections'),
-            __('Collection'),
-            __('Featured trainings'),
-            __('Is there something you are looking for that isn’t here?'),
-            __('Browse all resources'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3117%3A94816
         'Resources Hub/CCRW collections' => [
