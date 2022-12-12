@@ -77,6 +77,25 @@ test('deleting resources belonging to resource collection removes them from the 
     ]);
 });
 
+test('users can view resource collections', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => 'administrator']);
+    $resourceCollection = ResourceCollection::factory()->create();
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.index'));
+    $response->assertOk();
+    $response->assertSee($resourceCollection->title);
+
+    $response = $this->actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection));
+    $response->assertOk();
+    $response->assertSee($resourceCollection->title);
+    $response->assertDontSee('Edit resource collection');
+
+    $response = $this->actingAs($administrator)->get(localized_route('resource-collections.show', $resourceCollection));
+    $response->assertOk();
+    $response->assertSee('Edit resource collection');
+});
+
 test('only administrative users can access resource collection admin pages', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);

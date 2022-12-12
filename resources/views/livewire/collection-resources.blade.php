@@ -8,9 +8,13 @@
             <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
         </ol>
         <p class="h4">{{ __('Collection') }}</p>
-        <h1 class="mt-0" id="browse-all-resources">
+        <h1 class="mt-0" id="collection-title">
             {{ $resourceCollection->title }}
         </h1>
+
+        @if ($resourceCollection->description)
+            {!! Str::markdown($resourceCollection->description) !!}
+        @endif
     </div>
 </x-slot>
 
@@ -137,7 +141,7 @@
             </div>
         </div>
         <div class="md:pl-4">
-            <section aria-labelledby="browse-all-resources">
+            <section aria-labelledby="collection-title">
                 <div class="resources stack">
                     @forelse($resources as $resource)
                         <x-card.resource :model="$resource" :level="2" />
@@ -150,4 +154,9 @@
             {{ $resources->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
         </div>
     </div>
+    @can('update', $resourceCollection)
+        <p class="mt-12"><a class="cta secondary"
+                href="{{ route('filament.resources.resource-collections.edit', $resourceCollection) }}">@svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit resource collection') }}</a></p>
+    @endcan
 </div>
