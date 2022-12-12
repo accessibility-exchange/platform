@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ResourceCollection;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ResourceCollectionSeeder extends Seeder
@@ -25,7 +24,6 @@ class ResourceCollectionSeeder extends Seeder
 
         foreach ($resourceCollections as $resourceCollection) {
             ResourceCollection::firstOrCreate([
-                'user_id' => User::where('context', 'administrator')->first()->id,
                 'title->en' => $resourceCollection['title'],
                 'description->en' => $resourceCollection['description'] ?? '',
             ]);
