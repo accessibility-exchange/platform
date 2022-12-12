@@ -2,9 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Resources\ResourceCollectionResource;
+use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
+use function Pest\Livewire\livewire;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
 test('resource collections can be translated', function () {
@@ -71,4 +75,29 @@ test('deleting resources belonging to resource collection removes them from the 
         'resource_collection_id' => $resourceCollection->id,
         'resource_id' => $resource->id,
     ]);
+});
+
+test('only administrative users can access resource collection admin pages', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => 'administrator']);
+
+    $this->actingAs($user)->get(ResourceCollectionResource::getUrl('index'))->assertForbidden();
+    $this->actingAs($administrator)->get(ResourceCollectionResource::getUrl('index'))->assertSuccessful();
+
+    $this->actingAs($user)->get(ResourceCollectionResource::getUrl('create'))->assertForbidden();
+    $this->actingAs($administrator)->get(ResourceCollectionResource::getUrl('create'))->assertSuccessful();
+
+    $this->actingAs($user)->get(ResourceCollectionResource::getUrl('edit', [
+        'record' => ResourceCollection::factory()->create(),
+    ]))->assertForbidden();
+
+    $this->actingAs($administrator)->get(ResourceCollectionResource::getUrl('edit', [
+        'record' => ResourceCollection::factory()->create(),
+    ]))->assertSuccessful();
+});
+
+test('resource collections can be listed', function () {
+    $resourceCollections = ResourceCollection::factory()->count(2)->create();
+
+    livewire(ListResourceCollections::class)->assertCanSeeTableRecords($resourceCollections);
 });
