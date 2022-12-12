@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ $title }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -263,4 +263,4 @@
 
         <button>{{ __('Save selection criteria') }}</button>
     </form>
-</x-app-medium-layout>
+</x-app-layout>

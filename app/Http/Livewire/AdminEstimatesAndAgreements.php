@@ -36,7 +36,7 @@ class AdminEstimatesAndAgreements extends Component
                     ->orderBy('estimate_or_agreement_updated_at', 'desc')
                     ->paginate(20),
         ])
-            ->layout('layouts.app-wide');
+        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

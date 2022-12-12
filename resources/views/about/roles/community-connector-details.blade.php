@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('What information do we ask for?') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -19,7 +19,7 @@
         </div>
     </x-slot>
 
-    <div class="-mb-8 space-y-16">
+    <div class="-mb-8 space-y-16 px-0">
         <div class="with-sidebar">
             @include('about.partials.what-we-ask-for-navigation')
             <div class="stack">
@@ -126,4 +126,4 @@
         @endguest
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>

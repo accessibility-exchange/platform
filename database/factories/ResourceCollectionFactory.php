@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\ResourceCollection;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResourceCollectionFactory extends Factory
@@ -25,7 +24,6 @@ class ResourceCollectionFactory extends Factory
         return [
             'title' => ['en' => $this->faker->words(3, true)],
             'description' => ['en' => $this->faker->sentence()],
-            'user_id' => User::factory(),
         ];
     }
 }

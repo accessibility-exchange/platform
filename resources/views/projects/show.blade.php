@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
@@ -122,4 +122,4 @@
     </div>
     {{-- TODO: Contact project team. --}}
 
-</x-app-wide-layout>
+</x-app-layout>

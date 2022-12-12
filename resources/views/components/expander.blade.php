@@ -3,7 +3,7 @@
         <button type="button" x-bind:aria-expanded="expanded.toString()" x-on:click="expanded = !expanded">
             <span>{{ $summary }}</span>
             @svg('heroicon-s-plus', 'indicator', ['x-show' => '!expanded'])
-            @svg('heroicon-s-minus', 'indicator', ['x-show' => 'expanded'])
+            @svg('heroicon-s-minus', 'indicator', ['x-show' => 'expanded', 'x-cloak'])
         </button>
     </x-heading>
     <div class="stack" x-show="expanded" x-cloak>

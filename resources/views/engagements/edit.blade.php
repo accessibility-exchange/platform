@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ __('Edit engagement') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -305,4 +305,4 @@
             </p>
         @endif
     </form>
-</x-app-medium-layout>
+</x-app-layout>

@@ -10,9 +10,9 @@ jobs:
   deploy:
     if: github.repository == 'accessibility-exchange/platform'
 
-    runs-on: ubuntu-latest
-
     concurrency: deploy-dev
+
+    runs-on: ubuntu-latest
 
     steps:
       - name: Start deployment

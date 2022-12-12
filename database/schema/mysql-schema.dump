@@ -466,6 +466,22 @@ CREATE TABLE `impact_project` (
   CONSTRAINT `impact_project_project_id_foreign` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `impact_resource`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `impact_resource` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `impact_id` bigint unsigned NOT NULL,
+  `resource_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `impact_resource_impact_id_foreign` (`impact_id`),
+  KEY `impact_resource_resource_id_foreign` (`resource_id`),
+  CONSTRAINT `impact_resource_impact_id_foreign` FOREIGN KEY (`impact_id`) REFERENCES `impacts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `impact_resource_resource_id_foreign` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1034,13 +1050,10 @@ CREATE TABLE `resource_collections` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `user_id` bigint unsigned NOT NULL,
   `title` json NOT NULL,
   `slug` json NOT NULL,
-  `description` json NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `resource_collections_user_id_foreign` (`user_id`),
-  CONSTRAINT `resource_collections_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  `description` json DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_resource_collection`;
@@ -1059,6 +1072,38 @@ CREATE TABLE `resource_resource_collection` (
   CONSTRAINT `resource_resource_collection_resource_id_foreign` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_sector`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_sector` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `resource_id` bigint unsigned NOT NULL,
+  `sector_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_sector_resource_id_foreign` (`resource_id`),
+  KEY `resource_sector_sector_id_foreign` (`sector_id`),
+  CONSTRAINT `resource_sector_resource_id_foreign` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_sector_sector_id_foreign` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resource_topic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resource_topic` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `resource_id` bigint unsigned NOT NULL,
+  `topic_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `resource_topic_resource_id_foreign` (`resource_id`),
+  KEY `resource_topic_topic_id_foreign` (`topic_id`),
+  CONSTRAINT `resource_topic_resource_id_foreign` FOREIGN KEY (`resource_id`) REFERENCES `resources` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_topic_topic_id_foreign` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1066,18 +1111,20 @@ CREATE TABLE `resources` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `user_id` bigint unsigned NOT NULL,
   `content_type_id` bigint unsigned DEFAULT NULL,
   `title` json NOT NULL,
   `slug` json NOT NULL,
   `summary` json NOT NULL,
   `formats` json DEFAULT NULL,
   `phases` json DEFAULT NULL,
+  `author` json DEFAULT NULL,
+  `url` json DEFAULT NULL,
+  `organization_id` bigint unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `resources_user_id_foreign` (`user_id`),
   KEY `resources_content_type_id_foreign` (`content_type_id`),
+  KEY `resources_organization_id_foreign` (`organization_id`),
   CONSTRAINT `resources_content_type_id_foreign` FOREIGN KEY (`content_type_id`) REFERENCES `content_types` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `resources_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `resources_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `sectors`;
@@ -1105,22 +1152,6 @@ CREATE TABLE `sessions` (
   PRIMARY KEY (`id`),
   KEY `sessions_user_id_index` (`user_id`),
   KEY `sessions_last_activity_index` (`last_activity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `topicables`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `topicables` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `topic_id` bigint unsigned NOT NULL,
-  `topicable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `topicable_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `topicables_topic_id_foreign` (`topic_id`),
-  KEY `topicables_topicable_type_topicable_id_index` (`topicable_type`,`topicable_id`),
-  CONSTRAINT `topicables_topic_id_foreign` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `topics`;
@@ -1335,3 +1366,11 @@ INSERT INTO `migrations` VALUES (122,'2022_12_02_013944_rename_other_disability_
 INSERT INTO `migrations` VALUES (123,'2022_12_05_191025_rename_other_disability_type_column_on_organizations_table',8);
 INSERT INTO `migrations` VALUES (124,'2022_12_05_203758_rename_column_on_organizations_table',8);
 INSERT INTO `migrations` VALUES (125,'2022_12_06_141502_add_cross_disability_and_deaf_column_to_matching_strategies_table',8);
+INSERT INTO `migrations` VALUES (126,'2022_11_29_001847_update_columns_in_resources_table',9);
+INSERT INTO `migrations` VALUES (127,'2022_11_29_004006_create_impact_resource_table',9);
+INSERT INTO `migrations` VALUES (128,'2022_11_29_004030_create_resource_sector_table',9);
+INSERT INTO `migrations` VALUES (129,'2022_11_29_005942_drop_topicables_table',9);
+INSERT INTO `migrations` VALUES (130,'2022_11_29_010044_create_resource_topic_table',9);
+INSERT INTO `migrations` VALUES (131,'2022_12_09_192148_add_organization_id_column_to_resources_table',9);
+INSERT INTO `migrations` VALUES (132,'2022_12_10_210658_update_description_column_in_resource_collections_table',9);
+INSERT INTO `migrations` VALUES (133,'2022_12_11_201445_remove_user_id_column_from_resource_collections_table',10);

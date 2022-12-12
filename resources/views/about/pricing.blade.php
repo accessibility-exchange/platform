@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Pricing') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -13,4 +13,4 @@
         <p>TODO.</p>
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>

@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ __('Leave engagement') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -84,4 +84,4 @@
             </p>
         @endif
     </div>
-</x-app-medium-layout>
+</x-app-layout>
