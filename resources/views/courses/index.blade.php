@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="header">
         <h1>
             {{ __('Available courses') }}
@@ -13,4 +13,4 @@
             </div>
         @endforeach
     </div>
-</x-app-wide-layout>
+</x-app-layout>

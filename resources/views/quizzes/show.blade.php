@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="header">
     </x-slot>
     <div class="stack ml-2 mr-2">
@@ -17,4 +17,4 @@
             <button>submit</button>
         </form>
     </div>
-</x-app-wide-layout>
+</x-app-layout>
