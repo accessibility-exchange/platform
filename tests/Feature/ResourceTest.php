@@ -4,9 +4,17 @@ use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Filament\Resources\ResourceResource;
 use App\Filament\Resources\ResourceResource\Pages\ListResources;
+use App\Models\ContentType;
+use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\Sector;
+use App\Models\Topic;
 use App\Models\User;
+use Database\Seeders\ContentTypeSeeder;
+use Database\Seeders\ImpactSeeder;
+use Database\Seeders\SectorSeeder;
+use Database\Seeders\TopicSeeder;
 use Illuminate\Support\Facades\App;
 use function Pest\Livewire\livewire;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
@@ -133,4 +141,100 @@ test('resources can be listed', function () {
     $resources = Resource::factory()->count(2)->create();
 
     livewire(ListResources::class)->assertCanSeeTableRecords($resources);
+});
+
+test('resources can be scoped by language', function () {
+    $englishResource = Resource::factory()->create();
+    $frenchResource = Resource::factory()->create(['url' => ['fr' => 'https://example.com/fr']]);
+
+    expect(Resource::all())->toHaveCount(2);
+
+    $englishResources = Resource::whereLanguages(['en'])->pluck('id')->toArray();
+    expect($englishResources)->toContain($englishResource->id);
+    expect($englishResources)->toHaveCount(1);
+
+    $frenchResources = Resource::whereLanguages(['fr'])->pluck('id')->toArray();
+    expect($frenchResources)->toContain($frenchResource->id);
+    expect($frenchResources)->toHaveCount(1);
+});
+
+test('resources can be scoped by topic', function () {
+    $this->seed(TopicSeeder::class);
+
+    $topic = Topic::first();
+
+    $resourceWithTopic = Resource::factory()->create();
+    $resourceWithTopic->topics()->attach($topic);
+    $resourceWithTopic->refresh();
+    $resourceWithoutTopic = Resource::factory()->create();
+
+    $resourcesWithTopic = Resource::whereTopics([$topic->id])->pluck('id')->toArray();
+    expect(Resource::all())->toHaveCount(2);
+    expect($resourcesWithTopic)->toContain($resourceWithTopic->id);
+    expect($resourcesWithTopic)->toHaveCount(1);
+});
+
+test('resources can be scoped by phase', function () {
+    $designResource = Resource::factory()->create(['phases' => ['design']]);
+    $engageResource = Resource::factory()->create(['phases' => ['engage']]);
+
+    expect(Resource::all())->toHaveCount(2);
+
+    $designResources = Resource::wherePhases(['design'])->pluck('id')->toArray();
+    expect($designResources)->toContain($designResource->id);
+    expect($designResources)->toHaveCount(1);
+
+    $engageResources = Resource::wherePhases(['engage'])->pluck('id')->toArray();
+    expect($engageResources)->toContain($engageResource->id);
+    expect($engageResources)->toHaveCount(1);
+});
+
+test('resources can be scoped by content type', function () {
+    $this->seed(ContentTypeSeeder::class);
+
+    $contentType = ContentType::first();
+
+    $resourceWithContentType = Resource::factory()->create();
+    $resourceWithContentType->contentType()->associate($contentType->id);
+    $resourceWithContentType->save();
+    $resourceWithContentType->refresh();
+
+    $resourceWithoutContentType = Resource::factory()->create();
+
+    $resourcesWithContentType = Resource::whereContentTypes([$contentType->id])->pluck('id')->toArray();
+    expect(Resource::all())->toHaveCount(2);
+    expect($resourcesWithContentType)->toContain($resourceWithContentType->id);
+    expect($resourcesWithContentType)->toHaveCount(1);
+});
+
+test('resources can be scoped by sector', function () {
+    $this->seed(SectorSeeder::class);
+
+    $sector = Sector::first();
+
+    $resourceWithSector = Resource::factory()->create();
+    $resourceWithSector->sectors()->attach($sector);
+    $resourceWithSector->refresh();
+    $resourceWithoutSector = Resource::factory()->create();
+
+    $resourcesWithSector = Resource::whereSectors([$sector->id])->pluck('id')->toArray();
+    expect(Resource::all())->toHaveCount(2);
+    expect($resourcesWithSector)->toContain($resourceWithSector->id);
+    expect($resourcesWithSector)->toHaveCount(1);
+});
+
+test('resources can be scoped by area of impact', function () {
+    $this->seed(ImpactSeeder::class);
+
+    $impact = Impact::first();
+
+    $resourceWithImpact = Resource::factory()->create();
+    $resourceWithImpact->impacts()->attach($impact);
+    $resourceWithImpact->refresh();
+    $resourceWithoutImpact = Resource::factory()->create();
+
+    $resourcesWithImpact = Resource::whereImpacts([$impact->id])->pluck('id')->toArray();
+    expect(Resource::all())->toHaveCount(2);
+    expect($resourcesWithImpact)->toContain($resourceWithImpact->id);
+    expect($resourcesWithImpact)->toHaveCount(1);
 });

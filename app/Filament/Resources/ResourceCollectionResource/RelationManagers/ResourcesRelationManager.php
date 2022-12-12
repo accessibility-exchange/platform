@@ -18,7 +18,7 @@ class ResourcesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('title.en')
                     ->required()
                     ->maxLength(255),
             ]);
