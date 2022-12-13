@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.1"
       - uses: actions/checkout@v3
       - uses: technote-space/get-diff-action@v6
         id: git-diff
@@ -26,6 +23,10 @@ jobs:
             package-lock.json
             **/*.css
             **/*.js"
+      - uses: shivammathur/setup-php@v2
+        if: steps.git-diff.outputs.diff
+        with:
+          php-version: "8.1"
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
