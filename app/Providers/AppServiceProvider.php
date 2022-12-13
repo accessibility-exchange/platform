@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
             Filament::registerNavigationItems([
                 NavigationItem::make(__('Dashboard'))
                     ->url(localized_route('dashboard'))
-                    ->icon('heroicon-o-view-boards')
+                    ->icon('heroicon-s-view-boards')
                     ->sort(-1),
             ]);
         });

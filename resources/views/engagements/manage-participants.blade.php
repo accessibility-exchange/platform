@@ -1,21 +1,23 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">
         @section('title'){{ __('Manage participants') }}@show
         </x-slot>
         <x-slot name="header">
-            <ol class="breadcrumbs" role="list">
-                <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-                <li><a
-                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
-                </li>
-                <li><a
-                        href="@can('update', $engagement){{ localized_route('engagements.manage', $engagement) }}@else{{ localized_route('engagements.show', $engagement) }}@endcan">{{ $engagement->name }}</a>
-                </li>
-                @yield('breadcrumbs')
-            </ol>
-            <h1 id="project">
-                {{ __('Manage participants') }}
-            </h1>
+            <div class="center center:wide stack">
+                <ol class="breadcrumbs" role="list">
+                    <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+                    <li><a
+                            href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                    </li>
+                    <li><a
+                            href="@can('update', $engagement){{ localized_route('engagements.manage', $engagement) }}@else{{ localized_route('engagements.show', $engagement) }}@endcan">{{ $engagement->name }}</a>
+                    </li>
+                    @yield('breadcrumbs')
+                </ol>
+                <h1 id="project">
+                    {{ __('Manage participants') }}
+                </h1>
+            </div>
         </x-slot>
 
     @section('navigation')
@@ -147,4 +149,4 @@
             <p>{{ __('No confirmed participants found.') }}</p>
         @endif
     @show
-</x-app-wide-tabbed-layout>
+</x-app-layout>

@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $individual->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
@@ -146,4 +146,4 @@
             @endif
         </div>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

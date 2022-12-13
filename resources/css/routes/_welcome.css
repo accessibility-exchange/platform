@@ -116,7 +116,8 @@
     color: var(--consultants-color);
 }
 
-.header--connectors {
+.header--connectors,
+.header--resources {
     @apply border-b border-t-0 border-x-0 border-solid;
 
     --link-color: var(--connectors-color);
@@ -126,6 +127,12 @@
     background-color: var(--connectors-background);
     border-color: var(--connectors-border);
     color: var(--connectors-color);
+}
+
+.header--resource-collection {
+    @apply border-b-0 border-t-6 border-x-0 border-solid;
+
+    border-color: var(--connectors-background);
 }
 
 .header--regulated-organization {

@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ $meeting->id ? __('Edit meeting') : __('Add new meeting') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -171,4 +171,4 @@
             <button>{{ $meeting->id ? __('Save meeting') : __('Add meeting') }}</button>
         </div>
     </form>
-</x-app-medium-layout>
+</x-app-layout>

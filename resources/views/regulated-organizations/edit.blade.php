@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $regulatedOrganization->name }}</x-slot>
     <x-slot name="header">
         <div class="repel">
@@ -193,4 +193,4 @@
             </div>
         </div>
     </form>
-</x-app-wide-layout>
+</x-app-layout>

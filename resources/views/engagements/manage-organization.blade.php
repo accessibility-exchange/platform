@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
@@ -37,4 +37,4 @@
             <button>{{ __('Save') }}</button>
         </form>
     @endif
-</x-app-medium-layout>
+</x-app-layout>

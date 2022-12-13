@@ -1,17 +1,19 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">
         {{ __('Notifications') }}
     </x-slot>
     <x-slot name="header">
-        <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('dashboard') }}">{{ __('Dashboard') }}</a></li>
-            @if (request()->localizedRouteIs('dashboard.notifications-all'))
-                <li><a href="{{ localized_route('dashboard.notifications') }}">{{ __('Notifications') }}</a></li>
-            @endif
-        </ol>
-        <h1 id="notifications">
-            {{ __('Notifications') }}
-        </h1>
+        <div class="center center:wide stack">
+            <ol class="breadcrumbs" role="list">
+                <li><a href="{{ localized_route('dashboard') }}">{{ __('Dashboard') }}</a></li>
+                @if (request()->localizedRouteIs('dashboard.notifications-all'))
+                    <li><a href="{{ localized_route('dashboard.notifications') }}">{{ __('Notifications') }}</a></li>
+                @endif
+            </ol>
+            <h1 id="notifications">
+                {{ __('Notifications') }}
+            </h1>
+        </div>
     </x-slot>
 
     @section('navigation')
@@ -46,4 +48,4 @@
         {{ $notifications->links() }}
     </div>
 
-</x-app-wide-tabbed-layout>
+</x-app-layout>

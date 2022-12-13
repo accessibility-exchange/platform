@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Welcome to the Accessibility Exchange') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -26,4 +26,4 @@
             <button>{{ __('Continue') }}</button>
         </form>
     </div>
-</x-app-wide-layout>
+</x-app-layout>
