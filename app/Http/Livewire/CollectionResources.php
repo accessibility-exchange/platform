@@ -10,6 +10,7 @@ use App\Models\Sector;
 use App\Models\Topic;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
@@ -60,8 +61,10 @@ class CollectionResources extends Component
     {
         return view('livewire.collection-resources', [
             'resources' => $this->resourceCollection->resources()->when($this->searchQuery, function ($query, $searchQuery) {
-                $query->where('title->en', 'like', '%'.$searchQuery.'%')
-                    ->orWhere('title->fr', 'like', '%'.$searchQuery.'%');
+                $query->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
             })
                 ->when($this->contentTypes, function ($query, $contentTypes) {
                     $query->whereContentTypes($contentTypes);

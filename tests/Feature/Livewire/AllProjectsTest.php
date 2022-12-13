@@ -18,14 +18,14 @@ use Database\Seeders\SectorSeeder;
 test('test searchQuery property change', function () {
     $sampleProjectName = 'Sample Project';
     Project::factory()->create(['name->en' => $sampleProjectName]);
-    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => '']);
-    $allProjects->assertSee($sampleProjectName);
-
-    $allProjects->set('searchQuery', 'Test');
-    $allProjects->assertDontSee($sampleProjectName);
-
-    $allProjects->set('searchQuery', 'Sample');
-    $allProjects->assertSee($sampleProjectName);
+    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => ''])
+        ->assertSee($sampleProjectName)
+        ->set('searchQuery', 'Test')
+        ->assertDontSee($sampleProjectName)
+        ->set('searchQuery', 'Sample')
+        ->assertSee($sampleProjectName)
+        ->set('searchQuery', 'sample')
+        ->assertSee($sampleProjectName);
 });
 
 test('test statuses property change', function () {
