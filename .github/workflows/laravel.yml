@@ -17,9 +17,7 @@ jobs:
     name: tests - PHP ${{ matrix.php }}
 
     steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
+
       - uses: actions/checkout@v3
       - uses: technote-space/get-diff-action@v6
         id: git-diff
@@ -28,6 +26,10 @@ jobs:
             composer.json
             composer.lock
             **/*.php
+      - uses: shivammathur/setup-php@v2
+        if: steps.git-diff.outputs.diff
+        with:
+          php-version: ${{ matrix.php }}
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3

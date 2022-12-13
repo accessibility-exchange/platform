@@ -1,1 +1,1 @@
-@svg('tae-logo-mono-en', ['class' => 'logo logo--themeable h-10'])
+@svg('tae-logo-' . (in_array(locale(), ['fr', 'lsq']) ? 'fr' : 'en'), ['class' => 'logo logo--themeable h-10'])

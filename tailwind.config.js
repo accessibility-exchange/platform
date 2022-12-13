@@ -1,48 +1,66 @@
 // eslint-disable-next-line no-unused-vars
 const { Config } = require("tailwindcss");
+const colors = require('tailwindcss/colors');
 
 /**
  * @type {Config} config
  **/
 module.exports = {
-    content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
+    content: ["./resources/**/*.blade.php", "./resources/**/*.js", "./vendor/filament/**/*.blade.php"],
     theme: {
-        colors: {
-            black: "#000",
-            white: "#fff",
-            "graphite-8": "#2b2e38",
-            "graphite-7": "#3f424c",
-            "graphite-6": "#4b5560",
-            "graphite-5": "#637180",
-            "grey-3": "#d9dce3",
-            "grey-2": "#eaedf3",
-            "grey-1": "#f8fafd",
-            "blue-8": "#0f1138",
-            "blue-7": "#26296a",
-            "blue-6": "#3842aa",
-            "blue-5": "#7077CB",
-            "blue-1": "#F5F7FE",
-            "green-7": "#097571",
-            "green-5": "#00aea9",
-            "green-2": "#92e5e3",
-            "green-1": "#bfe2e1",
-            "turquoise-5": "#00b9d6",
-            "turquoise-2": "#7de2f4",
-            "turquoise-1": "#c6f4fe",
-            "lavender-3": "#cab6d9",
-            "lavender-2": "#eecef0",
-            "magenta-3": "#f16e9d",
-            "magenta-2": "#ffa0ce",
-            "yellow-3": "#f5dc62",
-            "yellow-2": "#fce88b",
-            "yellow-1": "#ebedbb",
-            "red-9": "#691616",
-            "red-8": "#922020",
-            "red-7": "#B34D4D",
-            "red-6": "#CD2C2D",
-            "red-2": "#f6a7a7",
-            "red-1": "#f5cdcd",
-            "bg": "var(--bg, var(--body-background))"
+        extend: {
+            colors: {
+                black: "#000",
+                white: "#fff",
+                "graphite-8": "#2b2e38",
+                "graphite-7": "#3f424c",
+                "graphite-6": "#4b5560",
+                "graphite-5": "#637180",
+                "grey-3": "#d9dce3",
+                "grey-2": "#eaedf3",
+                "grey-1": "#f8fafd",
+                "blue-8": "#0f1138",
+                "blue-7": "#26296a",
+                "blue-6": "#3842aa",
+                "blue-5": "#7077CB",
+                "blue-1": "#F5F7FE",
+                "green-7": "#097571",
+                "green-5": "#00aea9",
+                "green-2": "#92e5e3",
+                "green-1": "#bfe2e1",
+                "turquoise-5": "#00b9d6",
+                "turquoise-2": "#7de2f4",
+                "turquoise-1": "#c6f4fe",
+                "lavender-3": "#cab6d9",
+                "lavender-2": "#eecef0",
+                "magenta-3": "#f16e9d",
+                "magenta-2": "#ffa0ce",
+                "yellow-3": "#f5dc62",
+                "yellow-2": "#fce88b",
+                "yellow-1": "#ebedbb",
+                "red-9": "#691616",
+                "red-8": "#922020",
+                "red-7": "#B34D4D",
+                "red-6": "#CD2C2D",
+                "red-2": "#f6a7a7",
+                "red-1": "#f5cdcd",
+                "bg": "var(--bg, var(--body-background))",
+                danger: colors.rose,
+                primary: {
+                    "50": "#585b9c",
+                    "100": "#4e5192",
+                    "200": "#444788",
+                    "300": "#3a3d7e",
+                    "400": "#303374",
+                    "500": "#26296a",
+                    "600": "#1c1f60",
+                    "700": "#121556",
+                    "800": "#080b4c",
+                    "900": "#000142"
+                },
+                success: colors.green,
+                warning: colors.yellow,
+            }
         },
         fontFamily: {
             base: ["\"Open Sans\"", "sans-serif"],
@@ -160,9 +178,10 @@ module.exports = {
             3: "3px"
         }
     },
-    darkMode: "class",
     corePlugins: {
-        preflight: false
+        preflight: false,
     },
-    plugins: []
+    plugins: [
+        require('@tailwindcss/typography')
+    ]
 };

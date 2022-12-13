@@ -43,15 +43,21 @@ class ResourceResource extends Resource
                     ->requiredWithoutAll('organization_id,author.en'),
                 Forms\Components\TextInput::make('url.en')
                     ->label(__('Resource link').' ('.get_language_exonym('en').')')
+                    ->activeUrl()
+                    ->url()
                     ->requiredWithout('url.fr'),
                 Forms\Components\TextInput::make('url.fr')
                     ->label(__('Resource link').' ('.get_language_exonym('fr').')')
+                    ->activeUrl()
+                    ->url()
                     ->requiredWithout('url.en'),
                 Forms\Components\TextInput::make('url.asl')
                     ->label(__('Resource link').' ('.get_language_exonym('asl').')')
+                    ->activeUrl()
                     ->url(),
                 Forms\Components\TextInput::make('url.lsq')
                     ->label(__('Resource link').' ('.get_language_exonym('lsq').')')
+                    ->activeUrl()
                     ->url(),
                 Forms\Components\MarkdownEditor::make('summary.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])

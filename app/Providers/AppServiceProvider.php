@@ -61,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Filament::serving(function () {
+            Filament::registerViteTheme('resources/css/filament.css');
             Filament::registerNavigationItems([
                 NavigationItem::make(__('Dashboard'))
                     ->url(localized_route('dashboard'))
