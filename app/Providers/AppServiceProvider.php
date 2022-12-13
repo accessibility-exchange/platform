@@ -69,6 +69,14 @@ class AppServiceProvider extends ServiceProvider
                 NavigationItem::make(__('Dashboard'))
                     ->url(localized_route('dashboard'))
                     ->icon('heroicon-s-view-boards')
+                    ->sort(-3),
+                NavigationItem::make(__('Manage accounts'))
+                    ->url(localized_route('admin.manage-accounts'))
+                    ->icon('heroicon-s-users')
+                    ->sort(-2),
+                NavigationItem::make(__('Estimates and agreements'))
+                    ->url(localized_route('admin.estimates-and-agreements'))
+                    ->icon('heroicon-s-clipboard-check')
                     ->sort(-1),
             ]);
         });
