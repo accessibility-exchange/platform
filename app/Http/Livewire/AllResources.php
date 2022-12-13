@@ -8,6 +8,7 @@ use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\Sector;
 use App\Models\Topic;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
@@ -51,8 +52,10 @@ class AllResources extends Component
     {
         return view('livewire.all-resources', [
             'resources' => Resource::when($this->searchQuery, function ($query, $searchQuery) {
-                $query->where('title->en', 'like', '%'.$searchQuery.'%')
-                    ->orWhere('title->fr', 'like', '%'.$searchQuery.'%');
+                $query->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                    ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
             })
                 ->when($this->contentTypes, function ($query, $contentTypes) {
                     $query->whereContentTypes($contentTypes);
