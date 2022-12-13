@@ -133,5 +133,10 @@ test('projects can be searched by organization name', function () {
         ->call('search')
         ->assertSee(localized_route('projects.show', $project))
         ->assertDontSee(localized_route('projects.show', $otherProject))
+        ->assertSee('1 result')
+        ->set('searchQuery', 'umbrella')
+        ->call('search')
+        ->assertSee(localized_route('projects.show', $project))
+        ->assertDontSee(localized_route('projects.show', $otherProject))
         ->assertSee('1 result');
 });
