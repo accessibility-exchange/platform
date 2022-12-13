@@ -27,6 +27,7 @@ beforeEach(function () {
     $this->resourceCollection = ResourceCollection::factory()->create();
     $this->sampleResource = Resource::factory()->create([
         'title->en' => 'Sample Resource',
+        'summary->en' => 'This is an example.',
         'phases' => ['design'],
         'url' => [
             'en' => 'https://example.com',
@@ -50,6 +51,10 @@ test('test searchQuery property change', function () {
         ->set('searchQuery', 'Test')
         ->assertDontSee($this->sampleResource->title)
         ->set('searchQuery', 'Sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'EXAMPLE')
         ->assertSee($this->sampleResource->title);
 
     $collectionResources = $this->livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'searchQuery' => ''])
@@ -57,6 +62,10 @@ test('test searchQuery property change', function () {
         ->set('searchQuery', 'Test')
         ->assertDontSee($this->sampleResource->title)
         ->set('searchQuery', 'Sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'EXAMPLE')
         ->assertSee($this->sampleResource->title);
 });
 
