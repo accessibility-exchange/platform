@@ -161,6 +161,7 @@ select {
 [type="radio"]:checked:hover,
 [type="radio"]:checked:focus {
     background-color: currentcolor;
+    border-color: transparent;
 }
 
 [type="checkbox"]:indeterminate {
