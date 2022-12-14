@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Criterion;
-use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\MatchingStrategy;
@@ -13,7 +12,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Carbon\Carbon;
-use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use function Pest\Faker\faker;
@@ -376,6 +375,39 @@ test('users with regulated organization admin role can edit projects', function 
 
     $project = $project->fresh();
     expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_phone' => '19024445678',
+        'contact_person_vrs' => true,
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->contact_person_vrs)->toBeTrue();
+
+    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+        'team_count' => '42',
+        'contact_person_email' => 'me@here.com',
+        'contact_person_name' => 'Jonny Appleseed',
+        'contact_person_phone' => '19024445678',
+        'preferred_contact_method' => 'email',
+        'contact_person_response_time' => ['en' => 'ASAP'],
+        'save_and_previous' => __('Save and previous'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+
+    $project = $project->fresh();
+    expect($project->contact_person_vrs)->toBeNull();
 });
 
 test('users without regulated organization admin role cannot edit projects', function () {
@@ -842,41 +874,41 @@ test('test project initiators scope', function () {
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
 });
 
-test('test project seekingGroups scope', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+test('test project seekingDisabilityAndDeafGroups scope', function () {
+    $this->seed(IdentitySeeder::class);
 
-    $disabilityTypeDeaf = DisabilityType::where('name->en', 'Deaf')->first();
-    $projectSeekingDeafExperience = Project::factory()->create();
+    $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
+    $projectSeekingDeafExperienceName = 'Project Seeking Deaf Experience';
+    $projectSeekingDeafExperience = Project::factory()->create([
+        'name->en' => $projectSeekingDeafExperienceName,
+    ]);
     $engagementSeekingDeafExperience = Engagement::factory()->create(['project_id' => $projectSeekingDeafExperience->id]);
     $matchingStrategySeekingDeafExperience = MatchingStrategy::factory()->create([
         'matchable_type' => 'App\Models\Engagement',
         'matchable_id' => $engagementSeekingDeafExperience->id,
     ]);
-    $deafCriterion = Criterion::factory()->create([
-        'matching_strategy_id' => $matchingStrategySeekingDeafExperience->id,
-        'criteriable_type' => 'App\Models\DisabilityType',
-        'criteriable_id' => $disabilityTypeDeaf->id,
-    ]);
+    $matchingStrategySeekingDeafExperience->identities()->attach($disabilityTypeDeaf->id);
 
-    $disabilityTypeCognitive = DisabilityType::where('name->en', 'Cognitive disabilities')->first();
-    $projectSeekingCognitiveDisabilityExperience = Project::factory()->create();
+    expect($matchingStrategySeekingDeafExperience->matchable->is($engagementSeekingDeafExperience))->toBeTrue;
+
+    $disabilityTypeCognitive = Identity::where('name->en', 'Cognitive disabilities')->first();
+    $projectSeekingCognitiveDisabilityExperienceName = 'Project Seeking Cognitive Disability Experience';
+    $projectSeekingCognitiveDisabilityExperience = Project::factory()->create([
+        'name->en' => $projectSeekingCognitiveDisabilityExperienceName,
+    ]);
     $engagementSeekingCognitiveDisabilityExperience = Engagement::factory()->create(['project_id' => $projectSeekingCognitiveDisabilityExperience->id]);
     $matchingStrategySeekingCognitiveDisabilityExperience = MatchingStrategy::factory()->create([
         'matchable_type' => 'App\Models\Engagement',
         'matchable_id' => $engagementSeekingCognitiveDisabilityExperience->id,
     ]);
-    $cognitiveDisabilityCriterion = Criterion::factory()->create([
-        'matching_strategy_id' => $matchingStrategySeekingCognitiveDisabilityExperience->id,
-        'criteriable_type' => 'App\Models\DisabilityType',
-        'criteriable_id' => $disabilityTypeCognitive->id,
-    ]);
+    $matchingStrategySeekingCognitiveDisabilityExperience->identities()->attach($disabilityTypeCognitive->id);
 
-    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeDeaf->id])->get();
+    $seekingGroupQuery = Project::seekingDisabilityAndDeafGroups([$disabilityTypeDeaf->id])->get();
 
     expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeTrue();
     expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeFalse();
 
-    $seekingGroupQuery = Project::seekingGroups([$disabilityTypeCognitive->id])->get();
+    $seekingGroupQuery = Project::seekingDisabilityAndDeafGroups([$disabilityTypeCognitive->id])->get();
     expect($seekingGroupQuery->contains($projectSeekingCognitiveDisabilityExperience))->toBeTrue();
     expect($seekingGroupQuery->contains($projectSeekingDeafExperience))->toBeFalse();
 });
@@ -1051,4 +1083,12 @@ test('test locations scope', function () {
 
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
+});
+
+test('projects can have matching strategies', function () {
+    $project = Project::factory()->create();
+    $matchingStrategy = MatchingStrategy::factory()->create();
+    $project->matchingStrategy()->save($matchingStrategy);
+
+    expect($project->matchingStrategy->id)->toEqual($matchingStrategy->id);
 });

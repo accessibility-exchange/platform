@@ -8,7 +8,7 @@
         <div class="stack">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
-                {{ __('Communication and meeting preferences') }}
+                {{ __('Communication and consultation preferences') }}
             </h2>
 
             <hr class="divider--thick">
@@ -30,7 +30,7 @@
                             !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
                         )" />
                         <x-hearth-hint for="email">
-                            {{ __('This is also the email you use to log into this account. If you change this, you are also changing your log in email.') }}
+                            {{ __('This is also the email you use to log into this account.') }}
                         </x-hearth-hint>
                         <x-hearth-error for="email" />
                     </div>
@@ -39,12 +39,12 @@
                         <x-hearth-input name="phone" type="tel" :value="old(
                             'phone',
                             $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
-                        )" wire:model.lazy="phone" />
+                        )" />
                         <x-hearth-error for="phone" />
                     </div>
 
                     <div class="field @error('vrs') field-error @enderror">
-                        <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs ?? false)" wire:model="vrs" />
+                        <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs) ?? false" />
                         <x-hearth-label for="vrs" :value="__('I require Video Relay Service (VRS) for phone calls')" />
                         <x-hearth-error for="vrs" />
                     </div>
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="field @error('support_person_vrs') field-error @enderror">
-                        <x-hearth-checkbox name="support_person_vrs" :checked="old('support_person_vrs', $individual->user->support_person_vrs ?? false)" />
+                        <x-hearth-checkbox name="support_person_vrs" :checked="old('support_person_vrs', $individual->user->support_person_vrs) ?? false" />
                         <x-hearth-label for="support_person_vrs" :value="__('My support person requires Video Relay Service (VRS) for phone calls')" />
                         <x-hearth-error for="support_person_vrs" />
                     </div>

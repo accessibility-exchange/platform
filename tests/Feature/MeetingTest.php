@@ -5,7 +5,7 @@ use App\Models\Meeting;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\IdentitySeeder;
 
 beforeEach(function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
@@ -22,7 +22,7 @@ beforeEach(function () {
 });
 
 test('meetings can be created', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $user = User::where('context', 'regulated-organization')->first();
     $otherUser = User::where('context', 'individual')->first();
@@ -134,7 +134,7 @@ test('meetings can be edited', function () {
 });
 
 test('meetings can be deleted', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $user = User::where('context', 'regulated-organization')->first();
     $otherUser = User::where('context', 'individual')->first();

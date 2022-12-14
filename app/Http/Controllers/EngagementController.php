@@ -6,6 +6,7 @@ use App\Enums\AcceptedFormat;
 use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
@@ -19,14 +20,8 @@ use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Mail\ContractorInvitation;
 use App\Models\AccessSupport;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\Constituency;
-use App\Models\DisabilityType;
 use App\Models\Engagement;
-use App\Models\EthnoracialIdentity;
-use App\Models\GenderIdentity;
-use App\Models\IndigenousIdentity;
+use App\Models\Identity;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
@@ -145,30 +140,26 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.show-criteria-selection', $engagement));
     }
 
-    public function showCriteriaSelection(Engagement $engagement): View
+    public function criteriaSelection(Engagement $engagement): View
     {
         return view('engagements.show-criteria-selection', [
-            'title' => __('Create engagement'),
-            'surtitle' => __('Create engagement'),
-            'heading' => $engagement->who === 'individuals' ? __('Confirm your participant selection criteria') : __('Confirm your organization selection criteria'),
+            'title' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Create engagement') : __('Manage engagement'),
+            'surtitle' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Create engagement') : __('Manage engagement'),
+            'heading' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Confirm your participant selection criteria') : __('Edit your participant selection criteria'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
-            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
-            'disabilityTypes' => Options::forModels(DisabilityType::query()->where([
-                ['name->en', '!=', 'Cross-disability'],
-                ['name->en', '!=', 'Temporary disabilities'],
-            ]))->toArray(),
-            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
-            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
-            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
-            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
-            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
-            'nb' => GenderIdentity::where('name_plural->en', 'Non-binary people')->first(),
-            'gnc' => GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first(),
-            'fluid' => GenderIdentity::where('name_plural->en', 'Gender fluid people')->first(),
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
+            'disabilityTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->toArray(),
+            'ageBrackets' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Age))->toArray(),
+            'areaTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Area))->toArray(),
+            'genderAndSexualityIdentities' => array_merge(Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
+            }))->toArray(), Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::Gender);
+            }))->toArray()),
+            'genderDiverseIdentities' => Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->get()->toArray(),
+            'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'locationTypeOptions' => Options::forArray([
                 'regions' => __('Specific provinces or territories'),
@@ -183,52 +174,7 @@ class EngagementController extends Controller
                 'gender-and-sexual-identity' => __('Gender and sexual identity'),
                 'indigenous-identity' => __('Indigenous'),
                 'ethnoracial-identity' => __('Race and ethnicity'),
-                'refugee-or-immigrant' => __('Immigrants and/or refugees'),
-                'first-language' => __('First language'),
-                'area-type' => __('Living in urban, rural, or remote areas'),
-            ])->nullable(__('Select a criteria…'))->toArray(),
-        ]);
-    }
-
-    public function editCriteria(Engagement $engagement): View
-    {
-        return view('engagements.show-criteria-selection', [
-            'title' => __('Manage engagement'),
-            'surtitle' => __('Manage engagement'),
-            'heading' => $engagement->who === 'individuals' ? __('Edit your participant selection criteria') : __('Edit your organization selection criteria'),
-            'project' => $engagement->project,
-            'engagement' => $engagement,
-            'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
-            'crossDisability' => DisabilityType::where('name->en', 'Cross-disability')->first(),
-            'disabilityTypes' => Options::forModels(DisabilityType::query()->where([
-                ['name->en', '!=', 'Cross-disability'],
-                ['name->en', '!=', 'Temporary disabilities'],
-            ]))->toArray(),
-            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
-            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
-            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
-            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
-            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
-            'nb' => GenderIdentity::where('name_plural->en', 'Non-binary people')->first(),
-            'gnc' => GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first(),
-            'fluid' => GenderIdentity::where('name_plural->en', 'Gender fluid people')->first(),
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
-            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
-            'locationTypeOptions' => Options::forArray([
-                'regions' => __('Specific provinces or territories'),
-                'localities' => __('Specific cities or towns'),
-            ])->toArray(),
-            'intersectionalOptions' => Options::forArray([
-                '1' => __('No, give me a group with intersectional experiences and/or identities'),
-                '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
-            ])->toArray(),
-            'otherIdentityOptions' => Options::forArray([
-                'age-bracket' => __('Age'),
-                'gender-and-sexual-identity' => __('Gender and sexual identity'),
-                'indigenous-identity' => __('Indigenous'),
-                'ethnoracial-identity' => __('Race and ethnicity'),
-                'refugee-or-immigrant' => __('Immigrants and/or refugees'),
+                'refugee-or-immigrant' => __('Refugees and/or immigrants'),
                 'first-language' => __('First language'),
                 'area-type' => __('Living in urban, rural, or remote areas'),
             ])->nullable(__('Select a criteria…'))->toArray(),
@@ -254,114 +200,94 @@ class EngagementController extends Controller
         $engagement->fill($engagementData);
         $engagement->save();
 
-        $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
-
-        if ($matchingStrategyData['cross_disability'] == 1) {
-            $matchingStrategy->syncRelatedCriteria('App\Models\DisabilityType', $crossDisability->id);
-        } elseif ($matchingStrategyData['cross_disability'] == 0) {
-            $matchingStrategy->syncRelatedCriteria('App\Models\DisabilityType', $matchingStrategyData['disability_types']);
+        if ($matchingStrategyData['cross_disability_and_deaf'] == 1) {
+            $matchingStrategy->detachClusters([IdentityCluster::DisabilityAndDeaf]);
+        } elseif ($matchingStrategyData['cross_disability_and_deaf'] == 0) {
+            $matchingStrategy->syncRelatedIdentities(IdentityCluster::DisabilityAndDeaf, $matchingStrategyData['disability_types']);
         }
 
         $matchingStrategy->fill($matchingStrategyData);
 
+        $matchingStrategy->extra_attributes->intersectional = $matchingStrategyData['intersectional'];
+
         if ($matchingStrategyData['intersectional'] == 0) {
             $matchingStrategy->extra_attributes->other_identity_type = $matchingStrategyData['other_identity_type'];
             if ($matchingStrategyData['other_identity_type'] === 'age-bracket') {
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\AgeBracket',
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->syncMutuallyExclusiveIdentities(
+                    IdentityCluster::Age,
                     $matchingStrategyData['age_brackets'],
                     [
-                        'App\Models\Constituency',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\EthnoracialIdentity',
-                        'App\Models\AreaType',
+                        IdentityCluster::Area,
+                        IdentityCluster::Ethnoracial,
+                        IdentityCluster::GenderAndSexuality,
+                        IdentityCluster::Indigenous,
                     ]
                 );
             }
 
             if ($matchingStrategyData['other_identity_type'] === 'gender-and-sexual-identity') {
-                $criteria = [
-                    'App\Models\GenderIdentity' => [],
-                    'App\Models\Constituency' => [],
-                ];
-
-                if (in_array('women', $matchingStrategyData['gender_and_sexual_identities'])) {
-                    $women = GenderIdentity::where('name_plural->en', 'Women')->first();
-                    $criteria['App\Models\GenderIdentity'][] = $women->id;
+                if (isset($matchingStrategyData['nb_gnc_fluid_identity']) && $matchingStrategyData['nb_gnc_fluid_identity'] == 1) {
+                    foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->get() as $genderDiverseIdentity) {
+                        $matchingStrategyData['gender_and_sexual_identities'][] = $genderDiverseIdentity->id;
+                    }
                 }
 
-                if (in_array('nb-gnc-fluid-people', $matchingStrategyData['gender_and_sexual_identities'])) {
-                    $nb = GenderIdentity::where('name_plural->en', 'Non-binary people')->first();
-                    $criteria['App\Models\GenderIdentity'][] = $nb->id;
-
-                    $gnc = GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first();
-                    $criteria['App\Models\GenderIdentity'][] = $gnc->id;
-
-                    $fluid = GenderIdentity::where('name_plural->en', 'Gender fluid people')->first();
-                    $criteria['App\Models\GenderIdentity'][] = $fluid->id;
-                }
-
-                if (in_array('trans-people', $matchingStrategyData['gender_and_sexual_identities'])) {
-                    $transPeople = Constituency::where('name_plural->en', 'Trans people')->first();
-                    $criteria['App\Models\Constituency'][] = $transPeople->id;
-                }
-
-                if (in_array('2slgbtqiaplus-people', $matchingStrategyData['gender_and_sexual_identities'])) {
-                    $twoslgbtqiaplusPeople = Constituency::where('name_plural->en', '2SLGBTQIA+ people')->firstOrFail();
-                    $criteria['App\Models\Constituency'][] = $twoslgbtqiaplusPeople->id;
-                }
-
-                $matchingStrategy->syncUnrelatedMutuallyExclusiveCriteria(
-                    $criteria,
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->syncMutuallyExclusiveIdentities(
+                    IdentityCluster::GenderAndSexuality,
+                    $matchingStrategyData['gender_and_sexual_identities'],
                     [
-                        'App\Models\AgeBracket',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\EthnoracialIdentity',
-                        'App\Models\AreaType',
+                        IdentityCluster::Age,
+                        IdentityCluster::Area,
+                        IdentityCluster::Ethnoracial,
+                        IdentityCluster::Indigenous,
+                        IdentityCluster::Status,
                     ]
                 );
             }
+
             if ($matchingStrategyData['other_identity_type'] === 'indigenous-identity') {
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\IndigenousIdentity',
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->syncMutuallyExclusiveIdentities(
+                    IdentityCluster::Indigenous,
                     $matchingStrategyData['indigenous_identities'],
                     [
-                        'App\Models\AgeBracket',
-                        'App\Models\Constituency',
-                        'App\Models\EthnoracialIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\AreaType',
+                        IdentityCluster::Age,
+                        IdentityCluster::Area,
+                        IdentityCluster::Ethnoracial,
+                        IdentityCluster::GenderAndSexuality,
                     ]
                 );
             }
 
             if ($matchingStrategyData['other_identity_type'] === 'ethnoracial-identity') {
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\EthnoracialIdentity',
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->syncMutuallyExclusiveIdentities(
+                    IdentityCluster::Ethnoracial,
                     $matchingStrategyData['ethnoracial_identities'],
                     [
-                        'App\Models\AgeBracket',
-                        'App\Models\Constituency',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\AreaType',
+                        IdentityCluster::Age,
+                        IdentityCluster::Area,
+                        IdentityCluster::GenderAndSexuality,
+                        IdentityCluster::Indigenous,
+                        IdentityCluster::Status,
                     ]
                 );
             }
 
             if ($matchingStrategyData['other_identity_type'] === 'refugee-or-immigrant') {
-                $refugeeOrImmigrant = Constituency::where('name->en', 'Refugee or immigrant')->first();
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\Constituency',
-                    $refugeeOrImmigrant->id,
-                    [
-                        'App\Models\AgeBracket',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\EthnoracialIdentity',
-                        'App\Models\AreaType',
-                    ]
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->detachClusters([
+                    IdentityCluster::Age,
+                    IdentityCluster::Area,
+                    IdentityCluster::Ethnoracial,
+                    IdentityCluster::GenderAndSexuality,
+                    IdentityCluster::Indigenous,
+                ]);
+
+                $matchingStrategy->identities()->attach(
+                    Identity::whereJsonContains('clusters', IdentityCluster::Status)->pluck('id'),
                 );
             }
 
@@ -374,41 +300,51 @@ class EngagementController extends Controller
                         [
                             'name' => [
                                 'en' => get_language_exonym($code, 'en'),
+                                'asl' => get_language_exonym($code, 'en'),
                                 'fr' => get_language_exonym($code, 'fr'),
+                                'lsq' => get_language_exonym($code, 'fr'),
                             ],
                         ],
                     )->id;
                 }
 
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\Language',
-                    $languages,
-                    [
-                        'App\Models\AreaType',
-                        'App\Models\AgeBracket',
-                        'App\Models\Constituency',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\EthnoracialIdentity',
-                    ]
-                );
+                $matchingStrategy->languages()->sync($languages);
+                $matchingStrategy->detachClusters([
+                    IdentityCluster::Age,
+                    IdentityCluster::Area,
+                    IdentityCluster::Ethnoracial,
+                    IdentityCluster::GenderAndSexuality,
+                    IdentityCluster::Indigenous,
+                    IdentityCluster::Status,
+                ]);
             }
 
             if ($matchingStrategyData['other_identity_type'] === 'area-type') {
-                $matchingStrategy->syncMutuallyExclusiveCriteria(
-                    'App\Models\AreaType',
+                $matchingStrategy->languages()->detach();
+                $matchingStrategy->syncMutuallyExclusiveIdentities(
+                    IdentityCluster::Area,
                     $matchingStrategyData['area_types'],
                     [
-                        'App\Models\AgeBracket',
-                        'App\Models\Constituency',
-                        'App\Models\IndigenousIdentity',
-                        'App\Models\GenderIdentity',
-                        'App\Models\EthnoracialIdentity',
+                        IdentityCluster::Age,
+                        IdentityCluster::Indigenous,
+                        IdentityCluster::GenderAndSexuality,
+                        IdentityCluster::Ethnoracial,
+                        IdentityCluster::Status,
+
                     ]
                 );
             }
         } else {
             $matchingStrategy->extra_attributes->forget('other_identity_type');
+            $matchingStrategy->languages()->detach();
+            $matchingStrategy->detachClusters([
+                IdentityCluster::Age,
+                IdentityCluster::Area,
+                IdentityCluster::Ethnoracial,
+                IdentityCluster::GenderAndSexuality,
+                IdentityCluster::Indigenous,
+                IdentityCluster::Status,
+            ]);
         }
 
         $matchingStrategy->save();
@@ -472,14 +408,6 @@ class EngagementController extends Controller
         if (isset($data['window_end_time'])) {
             $window_end_time = Carbon::createFromTimeString($data['window_end_time'])->toTimeString();
             $data['window_end_time'] = $window_end_time;
-        }
-
-        if (! isset($data['accepted_formats'])) {
-            $data['accepted_formats'] = [];
-        }
-
-        if (! isset($data['other_accepted_formats'])) {
-            $data['other_accepted_format'] = null;
         }
 
         $engagement->fill($data);

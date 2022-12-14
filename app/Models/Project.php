@@ -263,11 +263,6 @@ class Project extends Model
         }
     }
 
-    public function regulatedOrganization(): BelongsTo
-    {
-        return $this->belongsTo(RegulatedOrganization::class);
-    }
-
     public function impacts(): BelongsToMany
     {
         return $this->belongsToMany(Impact::class);
@@ -322,7 +317,7 @@ class Project extends Model
 
     public function upcomingEngagements(): HasMany
     {
-        return $this->engagements(); // TODO: Filter engagements
+        return $this->engagements()->where('signup_by_date', '>', Carbon::now());
     }
 
     public function teamExperience(): string
@@ -405,19 +400,18 @@ class Project extends Model
         return $query;
     }
 
-    public function scopeSeekingGroups($query, $seekingGroups)
+    public function scopeSeekingDisabilityAndDeafGroups($query, $seekingGroups)
     {
         $method = 'whereHas';
 
         foreach ($seekingGroups as $seekingGroup) {
             $query->$method('engagements', function (Builder $engagementQuery) use ($seekingGroup) {
                 $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($seekingGroup) {
-                    $matchingStrategyQuery->whereHas('criteria', function (Builder $criteriaQuery) use ($seekingGroup) {
-                        $criteriaQuery->where([
-                            ['criteriable_type', 'App\Models\DisabilityType'],
-                            ['criteriable_id', $seekingGroup],
-                        ]);
-                    });
+                    $matchingStrategyQuery
+                        ->whereHas('identities', function (Builder $criteriaQuery) use ($seekingGroup) {
+                            $criteriaQuery->where('identity_id', $seekingGroup);
+                        })
+                        ->orWhere('cross_disability_and_deaf', true);
                 });
             });
 

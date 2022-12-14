@@ -86,7 +86,7 @@ class UpdateNotificationPreferencesRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'notification_settings.consultants.channels' => [],
             'notification_settings.connectors.channels' => [],
             'notification_settings.reports.channels' => [],
@@ -95,7 +95,13 @@ class UpdateNotificationPreferencesRequest extends FormRequest
             'notification_settings.projects.types' => [],
             'notification_settings.projects.engagements' => [],
             'notification_settings.updates.channels' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function messages(): array

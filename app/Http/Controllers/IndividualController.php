@@ -6,6 +6,7 @@ use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
 use App\Enums\ContactPerson;
+use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
@@ -17,17 +18,11 @@ use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\AccessSupport;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\Constituency;
-use App\Models\DisabilityType;
-use App\Models\EthnoracialIdentity;
-use App\Models\GenderIdentity;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\IndigenousIdentity;
 use App\Models\Individual;
 use App\Models\Language;
-use App\Models\LivedExperience;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Statuses\IndividualStatus;
 use App\Traits\UserEmailVerification;
@@ -111,9 +106,6 @@ class IndividualController extends Controller
 
         return view('individuals.show', array_merge(compact('individual'), [
             'language' => $language ?? locale(),
-            // TODO: Is this the best way of handling these two constituencies?
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
         ]));
     }
 
@@ -128,22 +120,21 @@ class IndividualController extends Controller
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
-            'constituencies' => Options::forModels(Constituency::class)->toArray(),
-            'livedExperiences' => Options::forModels(LivedExperience::class)->toArray(),
-            'ageBrackets' => Options::forModels(AgeBracket::class)->toArray(),
             'consultingServices' => Options::forEnum(ConsultingService::class)->toArray(),
-            'areaTypes' => Options::forModels(AreaType::class)->toArray(),
-            'disabilityTypes' => Options::forModels(DisabilityType::query()->where('name->en', '!=', 'Cross-disability'))->toArray(),
-            'crossDisability' => DisabilityType::query()->where('name->en', 'Cross-disability')->first(),
-            'indigenousIdentities' => Options::forModels(IndigenousIdentity::class)->toArray(),
-            'ethnoracialIdentities' => Options::forModels(EthnoracialIdentity::query()->where('name->en', '!=', 'White'))->toArray(),
-            'women' => GenderIdentity::where('name_plural->en', 'Women')->first(),
-            'transPeople' => Constituency::where('name_plural->en', 'Trans people')->first(),
-            'twoslgbtqiaplusPeople' => Constituency::where('name_plural->en', '2SLGBTQIA+ people')->first(),
-            'refugeesAndImmigrants' => Constituency::where('name_plural->en', 'Refugees and/or immigrants')->first(),
-            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'ageBrackets' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Age))->toArray(),
+            'areaTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Area))->toArray(),
             'baseDisabilityTypes' => Options::forEnum(BaseDisabilityType::class)->toArray(),
-            'refugeesAndImmigrantsOptions' => Options::forArray([
+            'disabilityTypes' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->toArray(),
+            'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->toArray(),
+            'genderAndSexualIdentities' => array_merge(Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
+            }))->toArray(), Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->whereNot(function ($query) {
+                $query->whereJsonContains('clusters', IdentityCluster::Gender);
+            }))->toArray()),
+            'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
+            'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
+            'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
+            'yesNoOptions' => Options::forArray([
                 '1' => __('Yes'),
                 '0' => __('No'),
             ])->toArray(),
@@ -177,113 +168,82 @@ class IndividualController extends Controller
     {
         $data = $request->validated();
 
-        $data['constituencies'] = [];
+        $data['identities'] = [];
 
-        $crossDisability = DisabilityType::where('name->en', 'Cross-disability')->first();
-        $refugeesAndImmigrants = Constituency::where('name->en', 'Refugee or immigrant')->first();
-
-        if (isset($data['base_disability_type']) && $data['base_disability_type'] === 'cross_disability') {
-            $data['disability_types'] = [
-                $crossDisability->id,
-            ];
-            $data['other_disability'] = 0;
-            $data['other_disability_type_connection'] = null;
+        if (isset($data['base_disability_type'])) {
+            $individual->extra_attributes->set('disability_and_deaf_connections', $data['disability_and_deaf']);
+        } else {
+            $individual->extra_attributes->forget('disability_and_deaf_connections');
         }
 
-        if (! isset($data['other_disability']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability') {
-            $data['other_disability'] = 0;
-            $data['other_disability_type_connection'] = null;
+        if (isset($data['base_disability_type'])) {
+            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+                $individual->extra_attributes->set('cross_disability_and_deaf_connections', 1);
+                $data['has_other_disability_connection'] = 0;
+                $data['other_disability_connection'] = null;
+            } else {
+                $individual->extra_attributes->set('cross_disability_and_deaf_connections', 0);
+            }
+        } else {
+            $individual->extra_attributes->forget('cross_disability_and_deaf_connections');
+        }
+
+        if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability_and_deaf') {
+            $data['has_other_disability_connection'] = 0;
+            $data['other_disability_connection'] = null;
         }
 
         if (isset($data['refugees_and_immigrants']) && $data['refugees_and_immigrants'] == 1) {
-            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 1);
-
-            $data['constituencies'][] = $refugeesAndImmigrants->id;
-        } else {
-            $individual->extra_attributes->set('has_refugee_and_immigrant_constituency', 0);
+            foreach (Identity::whereJsonContains('clusters', IdentityCluster::Status)->get() as $statusIdentity) {
+                $data['identities'][] = $statusIdentity->id;
+            }
         }
 
-        if (isset($data['gender_and_sexual_identities'])) {
-            if (in_array('women', $data['gender_and_sexual_identities'])) {
-                $women = GenderIdentity::where('name_plural->en', 'Women')->first();
-                $data['gender_identities'][] = $women->id;
+        if (isset($data['nb_gnc_fluid_identity']) && $data['nb_gnc_fluid_identity'] == 1) {
+            foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->get() as $genderDiverseIdentity) {
+                $data['identities'][] = $genderDiverseIdentity->id;
             }
-
-            if (in_array('nb-gnc-fluid-people', $data['gender_and_sexual_identities'])) {
-                $nb = GenderIdentity::where('name_plural->en', 'Non-binary people')->first();
-                $data['gender_identities'][] = $nb->id;
-
-                $gnc = GenderIdentity::where('name_plural->en', 'Gender non-conforming people')->first();
-                $data['gender_identities'][] = $gnc->id;
-
-                $fluid = GenderIdentity::where('name_plural->en', 'Gender fluid people')->first();
-                $data['gender_identities'][] = $fluid->id;
-            }
-
-            if (in_array('trans-people', $data['gender_and_sexual_identities'])) {
-                $transPeople = Constituency::where('name_plural->en', 'Trans people')->first();
-                $data['constituencies'][] = $transPeople->id;
-            }
-
-            if (in_array('2slgbtqiaplus-people', $data['gender_and_sexual_identities'])) {
-                $twoslgbtqiaplusPeople = Constituency::where('name_plural->en', '2SLGBTQIA+ people')->firstOrFail();
-                $data['constituencies'][] = $twoslgbtqiaplusPeople->id;
-            }
-
-            $individual->extra_attributes->set('has_gender_and_sexual_identities', 1);
-        } else {
-            $individual->extra_attributes->set('has_gender_and_sexual_identities', 0);
         }
 
         foreach ([
-            'area_types' => 'areaTypeConnections',
-            'lived_experiences' => 'livedExperienceConnections',
-            'disability_types' => 'disabilityTypeConnections',
-            'indigenous_identities' => 'indigenousIdentityConnections',
-            'gender_identities' => 'genderIdentityConnections',
-            'age_brackets' => 'ageBracketConnections',
-            'ethnoracial_identities' => 'ethnoracialIdentityConnections',
-            'constituencies' => 'constituencyConnections',
-        ] as $relationship => $method) {
+            'age_bracket_connections',
+            'area_type_connections',
+            'disability_and_deaf_connections',
+            'ethnoracial_identity_connections',
+            'gender_and_sexuality_connections',
+            'indigenous_connections',
+            'lived_experience_connections',
+        ] as $relationship) {
             if (isset($data[$relationship])) {
-                $individual->$method()->sync($data[$relationship]);
-            } else {
-                $individual->$method()->detach();
+                foreach ($data[$relationship] as $identity) {
+                    $data['identities'][] = $identity;
+                }
             }
         }
 
-        if (! isset($data['other_ethnoracial']) || $data['has_ethnoracial_identities'] == 0) {
-            $data['other_ethnoracial'] = 0;
+        $individual->identityConnections()->sync($data['identities']);
+
+        if ($data['has_ethnoracial_identity_connections'] == 0 || $data['has_other_ethnoracial_identity_connection'] == 0) {
             $data['other_ethnoracial_identity_connection'] = null;
         }
 
-        if (isset($data['constituent_languages'])) {
+        if (isset($data['language_connections'])) {
             $languages = [];
-            foreach ($data['constituent_languages'] as $code) {
+            foreach ($data['language_connections'] as $code) {
                 $language = Language::firstOrCreate(
                     ['code' => $code],
                     [
                         'name' => [
                             'en' => get_language_exonym($code, 'en'),
+                            'asl' => get_language_exonym($code, 'en'),
                             'fr' => get_language_exonym($code, 'fr'),
+                            'lsq' => get_language_exonym($code, 'fr'),
                         ],
                     ],
                 );
                 $languages[] = $language->id;
             }
             $individual->languageConnections()->sync($languages);
-        }
-
-        foreach ([
-            'indigenous_identities',
-            'age_brackets',
-            'ethnoracial_identities',
-        ] as $relationship) {
-            if (isset($data[$relationship])) {
-                $individual->extra_attributes->set("has_$relationship", 1);
-            } else {
-                $individual->extra_attributes->set("has_$relationship", 0);
-            }
         }
 
         $individual->fill($data);
@@ -305,8 +265,6 @@ class IndividualController extends Controller
         $individual->fill($data);
 
         $individual->save();
-
-        $individual->livedExperiences()->sync($data['lived_experiences'] ?? []);
 
         return $individual->handleUpdateRequest($request, $individual->getStepForKey('experiences'));
     }

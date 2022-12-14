@@ -12,10 +12,19 @@
     text-align: center;
 }
 
+.welcome #tts-controller {
+    margin-block-start: calc(-1 * var(--space-12));
+    text-align: start;
+}
+
 .dark {
     --heading-color: var(--content-dark-color);
     --btn-borderless-color: var(--interactive, var(--link-dark-color));
     --btn-borderless-color-focus: var(--interactive, var(--link-dark-color));
+    --mark-background: var(--content-darker-color, var(--color-white));
+    --mark-color: var(--content-darker-background, var(--color-black));
+    --tts-controller-background: var(--content-darker-background);
+    --tts-controller-color: var(--content-darker-color);
 
     background-color: var(--content-dark-background);
     color: var(--content-dark-color);
@@ -25,6 +34,10 @@
     --heading-color: var(--content-darker-color);
     --btn-borderless-color: var(--interactive, var(--link-dark-color));
     --btn-borderless-color-focus: var(--interactive, var(--link-dark-color));
+    --mark-background: var(--content-darker-color, var(--color-white));
+    --mark-color: var(--content-darker-background, var(--color-black));
+    --tts-controller-background: var(--content-darker-background);
+    --tts-controller-color: var(--content-darker-color);
 
     background-color: var(--content-darker-background);
     color: var(--content-darker-color);
@@ -103,7 +116,8 @@
     color: var(--consultants-color);
 }
 
-.header--connectors {
+.header--connectors,
+.header--resources {
     @apply border-b border-t-0 border-x-0 border-solid;
 
     --link-color: var(--connectors-color);
@@ -113,6 +127,12 @@
     background-color: var(--connectors-background);
     border-color: var(--connectors-border);
     color: var(--connectors-color);
+}
+
+.header--resource-collection {
+    @apply border-b-0 border-t-6 border-x-0 border-solid;
+
+    border-color: var(--connectors-background);
 }
 
 .header--regulated-organization {

@@ -162,6 +162,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $this->isAdministrator();
     }
 
+    public function canManageSettings(): bool
+    {
+        return $this->isAdministrator();
+    }
+
     public function teamInvitation(): Invitation|null
     {
         return Invitation::where('email', $this->email)->whereIn('invitationable_type', ['App\Models\Organization', 'App\Models\RegulatedOrganization'])->first() ?? null;
@@ -220,16 +225,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function individual(): HasOne
     {
         return $this->hasOne(Individual::class);
-    }
-
-    public function resources(): HasMany
-    {
-        return $this->hasMany(Resource::class);
-    }
-
-    public function resourceCollections(): HasMany
-    {
-        return $this->hasMany(ResourceCollection::class);
     }
 
     public function memberships(): HasMany

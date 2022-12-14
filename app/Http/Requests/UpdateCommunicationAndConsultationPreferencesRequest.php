@@ -44,7 +44,6 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [
                 'nullable',
                 'array',
-                'min:1',
                 Rule::requiredIf(request()->user()->individual->isParticipant()),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
@@ -64,10 +63,18 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'consulting_methods' => [],
             'meeting_types' => [],
-        ]);
+            'support_person_vrs' => null,
+            'vrs' => null,
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function messages(): array

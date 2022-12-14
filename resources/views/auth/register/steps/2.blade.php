@@ -2,7 +2,7 @@
     <fieldset class="field @error('context') field--error @enderror stack">
         <legend>{{ __('Tell us about who you are.') }}</legend>
         <x-hearth-hint for="context">
-            {{ __('If more than one of these apply to you, you have the option to register additional accounts separately.') }}
+            {{ __('If more than one of the following applies to you, you will need to register separate accounts.') }}
         </x-hearth-hint>
         <x-expander :summary="__('Learn more')" level="3">
             <p>

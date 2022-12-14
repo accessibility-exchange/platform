@@ -14,7 +14,6 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-block-start: var(--space-8);
 }
 
 main .back-to-top {
@@ -31,8 +30,33 @@ main .back-to-top a:visited {
     color: var(--link-color);
 }
 
-main > .center {
-    --gutter: var(--space-4);
+main > .center .full {
+    padding-inline: var(--space-4);
+}
+
+main .content > *:not(.nav--tabbed, .alert, .with-sidebar, .px-0),
+main article > header {
+    padding-block-start: var(--space-8);
+    padding-inline: var(--space-4);
+}
+
+.with-sidebar > * {
+    padding-inline: var(--space-4);
+}
+
+::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-color);
+}
+
+@media (min-width: 75rem) {
+    main > .center {
+        --gutter: var(--space-4);
+    }
+
+    main > .center .full {
+        padding-inline: 0;
+    }
 }
 
 ul {

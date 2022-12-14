@@ -64,12 +64,21 @@ class UpdateProjectTeamRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $this->merge([
-            'team_trainings' => array_map(function ($training) {
-                $training['trainer_url'] = normalize_url($training['trainer_url']);
+        $fallbacks = [
+            'contact_person_vrs' => null,
+        ];
 
-                return $training;
-            }, $this->team_trainings ?? []),
-        ]);
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks)
+            ->merge([
+                'team_trainings' => array_map(function ($training) {
+                    $training['trainer_url'] = normalize_url($training['trainer_url']);
+
+                    return $training;
+                }, $this->team_trainings ?? []),
+            ]);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 }

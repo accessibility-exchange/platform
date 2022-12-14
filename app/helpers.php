@@ -178,7 +178,7 @@ if (! function_exists('get_language_exonym')) {
      * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true): null|string
+    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true, bool $acronym = false): null|string
     {
         $locale ??= locale();
 
@@ -191,7 +191,7 @@ if (! function_exists('get_language_exonym')) {
         $languages = require __DIR__.'./../vendor/umpirsky/language-list/data/'.$locale.'/language.php';
 
         $language = match ($code) {
-            'asl', 'lsq' => trans('locales.'.$code, [], $locale),
+            'asl', 'lsq' => $acronym ? Str::upper($code) : trans('locales.'.$code, [], $locale),
             default => $languages[$code] ?? null
         };
 

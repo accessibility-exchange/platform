@@ -1,0 +1,15 @@
+mark,
+button:hover mark,
+button.secondary mark,
+.expander button mark {
+    background-color: var(--mark-background);
+    color: var(--mark-color);
+    outline: var(--space-1) solid var(--mark-background);
+}
+
+button mark,
+button.secondary:hover mark {
+    background-color: var(--mark-color);
+    color: var(--mark-background);
+    outline-color: var(--mark-color);
+}

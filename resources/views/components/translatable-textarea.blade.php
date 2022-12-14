@@ -19,7 +19,7 @@
             @else
                 <div class="expander field @error($name . '.' . $language) field--error @enderror stack"
                     x-data="{ expanded: false, value: '{{ old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '') }}', badgeText: '{{ __('Content added') }}' }">
-                    <p class="expander__summary"
+                    <p class="title"
                         id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}">
                         <button type="button"
                             aria-describedby="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"

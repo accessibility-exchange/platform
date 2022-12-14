@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Edit your role') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -27,4 +27,4 @@
         @method('put')
         @csrf
     </form>
-</x-app-wide-layout>
+</x-app-layout>

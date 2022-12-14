@@ -47,9 +47,17 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'meeting_types' => [],
-        ]);
+            'support_person_vrs' => null,
+            'vrs' => null,
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator(Validator $validator)

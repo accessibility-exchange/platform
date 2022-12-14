@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">
         @if ($organization->checkStatus('published'))
             {{ __('Edit your organization page') }}
@@ -33,4 +33,4 @@
         @include('organizations.edit.1')
     @endif
 
-</x-app-wide-layout>
+</x-app-layout>

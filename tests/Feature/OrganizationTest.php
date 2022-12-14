@@ -1,26 +1,19 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
-use App\Models\AgeBracket;
-use App\Models\AreaType;
-use App\Models\Constituency;
 use App\Models\Course;
-use App\Models\DisabilityType;
 use App\Models\Engagement;
-use App\Models\EthnoracialIdentity;
-use App\Models\GenderIdentity;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\IndigenousIdentity;
-use App\Models\LivedExperience;
 use App\Models\Organization;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\AreaTypeSeeder;
-use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
@@ -108,20 +101,13 @@ test('users can create organizations', function () {
 });
 
 test('users with admin role can edit and publish organizations', function () {
-    $this->seed(LivedExperienceSeeder::class);
-    $this->seed(AreaTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
+
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
             'contact_person_name' => faker()->name,
-            'extra_attributes' => [
-                'has_age_brackets' => 0,
-                'has_ethnoracial_identities' => 0,
-                'has_gender_and_sexual_identities' => 0,
-                'has_refugee_and_immigrant_constituency' => 0,
-                'has_indigenous_identities' => 0,
-            ],
             'staff_lived_experience' => 'yes',
             'preferred_contact_method' => 'email',
             'about' => 'test about',
@@ -131,8 +117,8 @@ test('users with admin role can edit and publish organizations', function () {
             'roles' => [OrganizationRole::ConsultationParticipant->value],
         ]);
 
-    $organization->livedExperiences()->attach(LivedExperience::first()->id);
-    $organization->areaTypes()->attach(AreaType::first()->id);
+    $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class)->first()->id);
+    $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
 
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
     $response->assertOk();
@@ -141,7 +127,7 @@ test('users with admin role can edit and publish organizations', function () {
     $response->assertNotFound();
 
     $organization->update(['locality' => 'Toronto']);
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
     $response->assertOk();
@@ -193,33 +179,44 @@ test('users with admin role can edit and publish organizations', function () {
 });
 
 test('users with admin role can edit organization constituencies', function () {
-    $this->seed(DatabaseSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
+    expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeNull();
+
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
     $response->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
-        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
+    $livedExperience = Identity::withoutGlobalScopes()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
+    $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
+    $disabilityType = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
+    $indigenousIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->first();
+    $ageBracket = Identity::whereJsonContains('clusters', IdentityCluster::Age)->first();
+    $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
+    $genderIdentity = Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
+        'disability_and_deaf' => true,
         'base_disability_type' => 'specific_disabilities',
-        'disability_types' => [],
-        'other_disability' => true,
-        'other_disability_type' => ['en' => 'Something else'],
-        'area_types' => [AreaType::first()->id],
-        'has_indigenous_identities' => true,
-        'indigenous_identities' => [IndigenousIdentity::first()->id],
+        'disability_and_deaf_constituencies' => [],
+        'has_other_disability_constituency' => true,
+        'other_disability_constituency' => ['en' => 'Something else'],
+        'has_indigenous_constituencies' => true,
+        'indigenous_constituencies' => [$indigenousIdentity->id],
         'refugees_and_immigrants' => true,
-        'has_gender_and_sexual_identities' => true,
-        'gender_and_sexual_identities' => ['women', 'nb-gnc-fluid-people', 'trans-people', '2slgbtqiaplus-people'],
-        'has_age_brackets' => true,
-        'age_brackets' => [AgeBracket::first()->id],
-        'has_ethnoracial_identities' => true,
-        'ethnoracial_identities' => [EthnoracialIdentity::first()->id],
-        'constituent_languages' => ['en', 'fr'],
+        'has_gender_and_sexuality_constituencies' => true,
+        'nb_gnc_fluid_identity' => true,
+        'gender_and_sexuality_constituencies' => [$genderIdentity->id],
+        'has_age_bracket_constituencies' => true,
+        'age_bracket_constituencies' => [$ageBracket->id],
+        'has_ethnoracial_identity_constituencies' => true,
+        'ethnoracial_identity_constituencies' => [$ethnoracialIdentity->id],
+        'area_type_constituencies' => [$areaType->id],
+        'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
     ]);
@@ -227,32 +224,33 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
-    expect($organization->livedExperiences)->toHaveCount(1);
-    expect($organization->disabilityTypes)->toHaveCount(0);
+    expect($organization->disabilityAndDeafConstituencies)->toHaveCount(0);
     expect($organization->base_disability_type)->toEqual('specific_disabilities');
-    expect($organization->other_disability_type)->toEqual('Something else');
-    expect($organization->areaTypes)->toHaveCount(1);
-    expect($organization->indigenousIdentities)->toHaveCount(1);
-    expect($organization->genderIdentities)->toHaveCount(4);
-    expect($organization->constituencies)->toHaveCount(3);
-    expect($organization->ageBrackets)->toHaveCount(1);
-    expect($organization->ethnoracialIdentities)->toHaveCount(1);
-    expect($organization->constituentLanguages)->toHaveCount(2);
+    expect($organization->other_disability_constituency)->toEqual('Something else');
+    expect($organization->areaTypeConstituencies)->toHaveCount(1);
+    expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeTrue();
+    expect($organization->indigenousConstituencies)->toHaveCount(1);
+    expect($organization->genderAndSexualityConstituencies)->toHaveCount(4);
+    expect($organization->genderDiverseConstituencies)->toHaveCount(3);
+    expect($organization->ageBracketConstituencies)->toHaveCount(1);
+    expect($organization->statusConstituencies)->toHaveCount(2);
+    expect($organization->ethnoracialIdentityConstituencies)->toHaveCount(1);
+    expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
-        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
+        'disability_and_deaf' => true,
         'base_disability_type' => 'specific_disabilities',
-        'disability_types' => [DisabilityType::where('name->en', 'Multiple disabilities')->first()->id],
-        'area_types' => [AreaType::first()->id],
-        'has_indigenous_identities' => false,
+        'disability_and_deaf_constituencies' => [$disabilityType->id],
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
         'refugees_and_immigrants' => false,
-        'has_gender_and_sexual_identities' => false,
-        'has_age_brackets' => false,
-        'has_ethnoracial_identities' => false,
-        'constituent_languages' => ['en', 'fr'],
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
     ]);
@@ -260,30 +258,28 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
-    expect($organization->livedExperiences)->toHaveCount(1);
-    expect($organization->disabilityTypes)->toHaveCount(1);
+    expect($organization->disabilityAndDeafConstituencies)->toHaveCount(1);
     expect($organization->base_disability_type)->toEqual('specific_disabilities');
-    expect($organization->areaTypes)->toHaveCount(1);
-    expect($organization->indigenousIdentities)->toHaveCount(0);
-    expect($organization->genderIdentities)->toHaveCount(0);
-    expect($organization->constituencies)->toHaveCount(0);
-    expect($organization->ageBrackets)->toHaveCount(0);
-    expect($organization->ethnoracialIdentities)->toHaveCount(0);
-    expect($organization->constituentLanguages)->toHaveCount(2);
+    expect($organization->areaTypeConstituencies)->toHaveCount(1);
+    expect($organization->indigenousConstituencies)->toHaveCount(0);
+    expect($organization->genderIdentityConstituencies)->toHaveCount(0);
+    expect($organization->ageBracketConstituencies)->toHaveCount(0);
+    expect($organization->ethnoracialIdentityConstituencies)->toHaveCount(0);
+    expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
-        'lived_experiences' => [LivedExperience::where('name->en', 'People who experience disabilities')->first()->id],
-        'base_disability_type' => 'cross_disability',
-        'area_types' => [AreaType::first()->id],
-        'has_indigenous_identities' => false,
+        'disability_and_deaf' => true,
+        'base_disability_type' => 'cross_disability_and_deaf',
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
         'refugees_and_immigrants' => false,
-        'has_gender_and_sexual_identities' => false,
-        'has_age_brackets' => false,
-        'has_ethnoracial_identities' => false,
-        'constituent_languages' => ['en', 'fr'],
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
     ]);
@@ -291,9 +287,52 @@ test('users with admin role can edit organization constituencies', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
-    expect($organization->base_disability_type)->toEqual('cross_disability');
+    expect($organization->base_disability_type)->toEqual('cross_disability_and_deaf');
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experience_constituencies' => [$livedExperience->id],
+        'disability_and_deaf' => null,
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => [],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization->refresh();
+
+    expect($organization->extra_attributes->get('disability_and_deaf_constituencies'))->toBeNull();
+
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+        'lived_experience_constituencies' => [$livedExperience->id],
+        'disability_and_deaf' => null,
+        'base_disability_type' => null,
+        'area_type_constituencies' => [$areaType->id],
+        'has_indigenous_constituencies' => false,
+        'refugees_and_immigrants' => false,
+        'has_gender_and_sexuality_constituencies' => false,
+        'has_age_bracket_constituencies' => false,
+        'has_ethnoracial_identity_constituencies' => false,
+        'language_constituencies' => [],
+        'staff_lived_experience' => 'prefer-not-to-answer',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+
+    $organization->refresh();
+
+    expect($organization->extra_attributes->get('cross_disability_and_deaf_constituencies'))->toBeNull();
 });
 
 test('users with admin role can edit organization interests', function () {
@@ -315,7 +354,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
@@ -329,7 +368,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(1);
     expect($organization->impacts)->toHaveCount(1);
@@ -341,7 +380,7 @@ test('users with admin role can edit organization interests', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
@@ -372,6 +411,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
+        'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
         'save' => 1,
     ]);
@@ -379,12 +419,28 @@ test('users with admin role can edit organization contact information', function
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeTrue();
 
     expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+        'contact_person_name' => $name,
+        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_phone' => '19024444444',
+        'preferred_contact_method' => 'email',
+        'save' => 1,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+
+    $organization->refresh();
+
+    expect($organization->contact_methods)->toContain('email')->toContain('phone');
+    expect($organization->contact_person_vrs)->toBeNull();
 });
 
 test('users without admin role cannot edit or publish organizations', function () {
@@ -490,7 +546,7 @@ test('organization pages can be published', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.show', $organization));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $this->assertTrue($organization->checkStatus('published'));
 });
@@ -527,7 +583,7 @@ test('organization pages can be unpublished', function () {
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('organizations.show', $organization));
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $this->assertTrue($organization->checkStatus('draft'));
 });
@@ -561,54 +617,36 @@ test('organization pages cannot be published by other users', function () {
 
     $response->assertForbidden();
 
-    $organization = $organization->fresh();
+    $organization->refresh();
     $this->assertTrue($organization->checkStatus('draft'));
 });
 
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
-    $this->seed(AgeBracketSeeder::class);
-    $this->seed(AreaTypeSeeder::class);
-    $this->seed(ConstituencySeeder::class);
-    $this->seed(GenderIdentitySeeder::class);
-    $this->seed(EthnoracialIdentitySeeder::class);
-    $this->seed(IndigenousIdentitySeeder::class);
-    $this->seed(LivedExperienceSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
     // fill data so that we don't hit a Database Integrity constraint violation during creation
     $organization = Organization::factory()->create();
     $organization->fill($data);
 
     foreach ($connections as $connection) {
-        if ($connection === 'ageBrackets') {
-            $organization->ageBrackets()->attach(AgeBracket::first()->id);
+        if ($connection === 'ageBracketConstituencies') {
+            $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->id);
         }
 
-        if ($connection === 'areaTypes') {
-            $organization->areaTypes()->attach(AreaType::first()->id);
+        if ($connection === 'areaTypeConstituencies') {
+            $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
         }
 
-        if ($connection === 'ethnoracialIdentities') {
-            $organization->ethnoracialIdentities()->attach(EthnoracialIdentity::first()->id);
+        if ($connection === 'ethnoracialIdentityConstituencies') {
+            $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first()->id);
         }
 
-        if ($connection === 'genderIdentities') {
-            $organization->genderIdentities()->attach(GenderIdentity::first()->id);
+        if ($connection === 'genderAndSexualityConstituencies') {
+            $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Gender)->first()->id);
         }
 
-        if ($connection === 'indigenousIdentities') {
-            $organization->indigenousIdentities()->attach(IndigenousIdentity::first()->id);
-        }
-
-        if ($connection === 'livedExperiences') {
-            $organization->livedExperiences()->attach(LivedExperience::first()->id);
-        }
-
-        if ($connection === 'trans_identity') {
-            $organization->constituencies()->attach(Constituency::firstWhere('name->en', 'Trans person')->id);
-        }
-
-        if ($connection === '2SLGBTQIA+_identity') {
-            $organization->constituencies()->attach(Constituency::firstWhere('name->en', '2SLGBTQIA+ person')->id);
+        if ($connection === 'indigenousConstituencies') {
+            $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->first()->id);
         }
     }
 
@@ -1052,7 +1090,7 @@ test('guests cannot view organizations', function () {
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
     $organization = Organization::factory()->create(['roles' => ['consultant', 'connector', 'participant']]);
 
-    $organization = $organization->fresh();
+    $organization->refresh();
 
     $connectingEngagement = Engagement::factory()->create([
         'organizational_connector_id' => $organization->id,
