@@ -8,6 +8,7 @@ use App\Models\RegulatedOrganization;
 use App\Notifications\AgreementReceived;
 use App\Notifications\EstimateReturned;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -29,14 +30,15 @@ class AdminEstimatesAndAgreements extends Component
                             'projectable',
                             [Organization::class, RegulatedOrganization::class],
                             function (Builder $projectableQuery) use ($searchQuery) {
-                                $projectableQuery->where('name->en', 'like', '%'.$searchQuery.'%')
-                                    ->orWhere('name->fr', 'like', '%'.$searchQuery.'%');
+                                $projectableQuery
+                                    ->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                                    ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
                             });
                     })
                     ->orderBy('estimate_or_agreement_updated_at', 'desc')
                     ->paginate(20),
         ])
-            ->layout('layouts.app-wide');
+        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

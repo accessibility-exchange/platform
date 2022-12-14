@@ -57,20 +57,27 @@ class UpdateAccessNeedsRequest extends FormRequest
                 new Enum(ProvinceOrTerritory::class),
             ],
             'postal_code' => 'nullable|string|max:7',
-            'additional_needs_or_concerns' => 'nullable|integer|exists:access_supports,id',
+            'additional_needs_or_concerns' => 'nullable|exists:access_supports,id',
         ];
     }
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'general_access_needs' => [],
             'other' => 0,
+            'other_access_need' => null,
             'meeting_access_needs' => [],
             'in_person_access_needs' => [],
             'document_access_needs' => [],
-            'additional_needs_or_concerns' => 0,
-        ]);
+            'additional_needs_or_concerns' => null,
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator(Validator $validator)

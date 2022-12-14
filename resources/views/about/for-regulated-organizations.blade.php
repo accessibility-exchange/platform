@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('How this works for Federally Regulated Organizations') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -10,7 +10,7 @@
         </h1>
     </x-slot>
 
-    <div class="-mb-8 space-y-16">
+    <div class="-mb-8 space-y-16 px-0">
         <x-placeholder />
 
         <x-section class="stack:lg" aria-labelledby="what">
@@ -112,4 +112,4 @@
         @endguest
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>

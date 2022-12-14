@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $individual->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
@@ -84,7 +84,6 @@
     </x-slot>
 
     <x-language-changer :model="$individual" />
-
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="individual">
             <ul role="list">
@@ -147,4 +146,4 @@
             @endif
         </div>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

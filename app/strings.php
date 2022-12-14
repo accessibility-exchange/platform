@@ -86,8 +86,8 @@ return [
             __('Update your matching information'),
             __('It’s been at least a year since you’ve updated your matching information. Please update this so you are matched to the appropriate projects.'),
             __('Update matching information'),
-            __('Update your communication and meeting preferences'),
-            __('It’s been at least a year since you’ve updated your communication and meeting preferences. Please update this so you are matched to the appropriate projects.'),
+            __('Update your communication and consultation preferences'),
+            __('It’s been at least a year since you’ve updated your communication and consultation preferences. Please update this so you are matched to the appropriate projects.'),
             __('Update preferences'),
         ],
 
@@ -106,7 +106,6 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1784%3A51670
         'Dashboard/Ind-AC+CC/Enter collab preferences' => [
             __('These details will help people know what to expect when working with you.'),
-            __('Communication and meeting  preferences'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3706%3A98442
         'Dashboard/Ind-AC+CC/Onboarding in progress-3' => [
@@ -662,11 +661,6 @@ return [
             __('Browse resources for Regulated Organizations'),
             __('Here you may find resources for employees of the Regulated Organizations.'),
             __('Browse resources by :creator'),
-            __('Featured collections'),
-            __('Collection'),
-            __('Featured trainings'),
-            __('Is there something you are looking for that isn’t here?'),
-            __('Browse all resources'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=3117%3A94816
         'Resources Hub/CCRW collections' => [
@@ -883,7 +877,6 @@ return [
             __('Groups you can connect to'),
             __('Experiences'),
             __('Interests'),
-            __('Communication and meeting preferences'),
             __('You must attend an [orientation session](:url) before you can publish your page.'),
             __('Upload a file'),
             __('You can upload videos, images, audio, or other files.'),

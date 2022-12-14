@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Glossary') }}</x-slot>
     <x-slot name="header">
         <h1 id="project">
@@ -15,4 +15,4 @@
     @else
         <p>{{ __('Nothing found.') }}</p>
     @endif
-</x-app-wide-layout>
+</x-app-layout>

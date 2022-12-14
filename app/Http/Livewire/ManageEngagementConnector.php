@@ -56,7 +56,7 @@ class ManageEngagementConnector extends Component
     public function render()
     {
         return view('livewire.manage-engagement-connector')
-            ->layout('layouts.app-medium');
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'medium']);
     }
 
     public function updateStatus()

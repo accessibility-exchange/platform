@@ -20,20 +20,11 @@ rm -rf /app/bootstrap/cache
 ln -s $FILES_PATH /app/storage
 ln -s $CACHE_PATH /app/bootstrap/cache
 
+php artisan deploy:local
+
+flock -n -E 0 /opt/data/cache -c "php artisan deploy:global" # run exclusively on a single instance at once
+
 ## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
 chown -R www-data:www-data $FILES_PATH $CACHE_PATH
-
-if [ ! -f $FILES_PATH/../deploy.lock ]
-then
-
-  touch $FILES_PATH/../deploy.lock
-
-  php artisan deploy:global
-
-fi
-
-rm -rf $FILES_PATH/../deploy.lock
-
-php artisan deploy:local
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

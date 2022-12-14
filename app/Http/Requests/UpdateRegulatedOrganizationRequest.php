@@ -86,15 +86,24 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $this->merge([
-            'accessibility_and_inclusion_links' => array_map(function ($item) {
-                $item['url'] = normalize_url($item['url']);
+        $fallbacks = [
+            'contact_person_vrs' => null,
+        ];
 
-                return $item;
-            }, $this->accessibility_and_inclusion_links ?? []),
-            'social_links' => array_map('normalize_url', $this->social_links ?? []),
-            'website_link' => normalize_url($this->website_link),
-        ]);
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks)
+            ->merge([
+                'accessibility_and_inclusion_links' => array_map(function ($item) {
+                    $item['url'] = normalize_url($item['url']);
+
+                    return $item;
+                }, $this->accessibility_and_inclusion_links ?? []),
+                'social_links' => array_map('normalize_url', $this->social_links ?? []),
+                'website_link' => normalize_url($this->website_link),
+            ]);
     }
 
     public function withValidator($validator)

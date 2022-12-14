@@ -5,13 +5,12 @@ namespace App\Models;
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Traits\GeneratesMultilingualSlugs;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -23,42 +22,31 @@ class Resource extends Model
     use HasTranslations;
     use HasTranslatableSlug;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'title',
-        'user_id',
+        'author',
         'summary',
         'formats',
         'phases',
+        'url',
     ];
 
     protected $casts = [
         'title' => 'array',
+        'author' => 'array',
         'summary' => 'array',
         'formats' => 'array',
         'phases' => 'array',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array<string>
-     */
     public mixed $translatable = [
         'title',
         'slug',
         'summary',
+        'url',
+        'author',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     *
-     * @return SlugOptions
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
@@ -68,52 +56,39 @@ class Resource extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
 
-    /**
-     * Get all the resource collections that include this resource.
-     *
-     * @return BelongsToMany
-     */
+    public function authorOrganization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
     public function resourceCollections(): BelongsToMany
     {
-        return $this->belongsToMany(ResourceCollection::class);
+        return $this->belongsToMany(ResourceCollection::class)->withTimestamps();
     }
 
-    /**
-     * Get all the formats for the resource.
-     *
-     * @return MorphToMany
-     */
-    public function topics(): MorphToMany
-    {
-        return $this->morphToMany(Topic::class, 'topicable');
-    }
-
-    /**
-     * Get the content time for the resource.
-     *
-     * @return BelongsTo
-     */
     public function contentType(): BelongsTo
     {
         return $this->belongsTo(ContentType::class);
     }
 
-    /**
-     * @return string
-     */
-    public function published(): string
+    public function topics(): BelongsToMany
     {
-        return Carbon::parse($this->created_at)->format('F j, Y');
+        return $this->belongsToMany(Topic::class)->withTimestamps();
+    }
+
+    public function impacts(): BelongsToMany
+    {
+        return $this->belongsToMany(Impact::class)->withTimestamps();
+    }
+
+    public function sectors(): BelongsToMany
+    {
+        return $this->belongsToMany(Sector::class)->withTimestamps();
     }
 
     public function displayFormats(): Attribute
@@ -128,5 +103,81 @@ class Resource extends Model
         return Attribute::make(
             get: fn ($value) => array_map(fn ($phase) => ConsultationPhase::labels()[$phase], $this->phases),
         );
+    }
+
+    public function scopeWhereLanguages(Builder $query, array $languages)
+    {
+        $method = 'whereNotNull';
+
+        foreach ($languages as $language) {
+            $query->$method('url->'.$language);
+
+            $method = 'orWhereNotNull';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereTopics(Builder $query, array $topics)
+    {
+        $method = 'whereHas';
+
+        foreach ($topics as $topic) {
+            $query->$method('topics', function (Builder $topicQuery) use ($topic) {
+                $topicQuery->where('topic_id', $topic);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeWherePhases(Builder $query, array $phases)
+    {
+        $method = 'whereJsonContains';
+
+        foreach ($phases as $phase) {
+            $query->$method('phases', $phase);
+
+            $method = 'orWhereJsonContains';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereContentTypes(Builder $query, array $contentTypes)
+    {
+        return $query->whereIn('content_type_id', $contentTypes);
+    }
+
+    public function scopeWhereSectors(Builder $query, array $sectors)
+    {
+        $method = 'whereHas';
+
+        foreach ($sectors as $sector) {
+            $query->$method('sectors', function (Builder $sectorQuery) use ($sector) {
+                $sectorQuery->where('sector_id', $sector);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeWhereImpacts(Builder $query, array $impacts)
+    {
+        $method = 'whereHas';
+
+        foreach ($impacts as $impact) {
+            $query->$method('impacts', function (Builder $impactQuery) use ($impact) {
+                $impactQuery->where('impact_id', $impact);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
     }
 }

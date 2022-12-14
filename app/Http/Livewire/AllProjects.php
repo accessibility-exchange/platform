@@ -3,12 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\Enums\EngagementRecruitment;
+use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
-use App\Models\DisabilityType;
+use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Project;
 use App\Models\Sector;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
@@ -60,8 +62,8 @@ class AllProjects extends Component
         return view('livewire.all-projects', [
             'projects' => Project::status('published')
                     ->when($this->searchQuery, function ($query, $searchQuery) {
-                        $query->where('name->en', 'like', '%'.$searchQuery.'%')
-                            ->orWhere('name->fr', 'like', '%'.$searchQuery.'%');
+                        $query->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                            ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
                     })
                     ->when($this->statuses, function ($query, $statuses) {
                         $query->statuses($statuses);
@@ -73,7 +75,7 @@ class AllProjects extends Component
                         $query->initiators($initiators);
                     })
                     ->when($this->seekingGroups, function ($query, $seekingGroups) {
-                        $query->seekingGroups($seekingGroups);
+                        $query->seekingDisabilityAndDeafGroups($seekingGroups);
                     })
                     ->when($this->meetingTypes, function ($query, $meetingTypes) {
                         $query->meetingTypes($meetingTypes);
@@ -109,8 +111,8 @@ class AllProjects extends Component
                 ['value' => 'organization', 'label' => __('Community organization')],
                 ['value' => 'regulatedOrganization', 'label' => __('Regulated organization')],
             ],
-            'seekingGroupsData' => Options::forModels(DisabilityType::query()->where(
-                'name->en', '!=', 'Cross-disability'))->toArray(),
+            'seekingGroupsData' => Options::forModels(Identity::query()
+                ->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf))->toArray(),
             'meetingTypesData' => Options::forEnum(MeetingType::class)->toArray(),
             'locationsData' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'compensationsData' => [
@@ -121,7 +123,7 @@ class AllProjects extends Component
             'impactedAreasData' => Options::forModels(Impact::class)->toArray(),
             'recruitmentMethodsData' => Options::forEnum(EngagementRecruitment::class)->toArray(),
         ])
-            ->layout('layouts.app-wide');
+        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

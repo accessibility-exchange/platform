@@ -1,19 +1,17 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
-use App\Models\AreaType;
 use App\Models\Engagement;
+use App\Models\Identity;
 use App\Models\Impact;
-use App\Models\LivedExperience;
 use App\Models\Organization;
+use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
-use Database\Seeders\AreaTypeSeeder;
-use Database\Seeders\DisabilityTypeSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\LivedExperienceSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Carbon;
 
@@ -21,11 +19,9 @@ beforeEach(function () {
     $this->suspendedUser = User::factory()->create(['suspended_at' => now()]);
     $this->adminUser = User::factory()->create(['context' => 'administrator']);
 
-    $this->seed(AreaTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
     $this->seed(ImpactSeeder::class);
-    $this->seed(LivedExperienceSeeder::class);
     $this->seed(SectorSeeder::class);
-    $this->seed(DisabilityTypeSeeder::class);
 
     $this->participantUser = User::factory()->create();
     $this->participantUser->individual->update([
@@ -71,8 +67,9 @@ beforeEach(function () {
         $this->organizationUser,
         ['role' => 'admin']
     );
-    $this->organization->livedExperiences()->attach(LivedExperience::first()->id);
-    $this->organization->areaTypes()->attach(AreaType::first()->id);
+
+    $this->organization->livedExperienceConstituencies()->attach(Identity::whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class)->first()->id);
+    $this->organization->areaTypeConstituencies()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
 
     $this->engagement = Engagement::factory()->create([
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),

@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('organization.index_title') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -44,4 +44,4 @@
                 <p>{{ __('organization.none_found') }}</p>
             @endforelse
         </div>
-    </x-app-wide-layout>
+    </x-app-layout>

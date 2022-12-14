@@ -8,7 +8,7 @@
     align-items: center;
     background: var(--tag-background);
     border: var(--border-2) solid var(--tag-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-full);
     color: var(--tag-color);
     display: flex;
     flex-direction: row;

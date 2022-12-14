@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ __('Add participant') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -43,4 +43,4 @@
             <button>{{ __('Send invitation') }}</button>
         </div>
     </form>
-</x-app-medium-layout>
+</x-app-layout>

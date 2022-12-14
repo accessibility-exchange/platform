@@ -1,28 +1,26 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide" header-class="full header--participants stack">
     <x-slot name="title">{{ __('Consultation Participants') }}</x-slot>
     <x-slot name="header">
-        <div class="full header--participants -mt-12 py-12">
-            <div class="center center:wide">
-                <ol class="breadcrumbs" role="list">
-                    <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
-                    @if (request()->localizedRouteIs('about.individual-consultation-participants'))
-                        <li><a
-                                href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
-                        </li>
-                    @elseif(request()->localizedRouteIs('about.organization-consultation-participants'))
-                        <li><a
-                                href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
-                        </li>
-                    @endif
-                </ol>
-                <h1 class="w-1/2">
-                    {{ __('Consultation Participants') }}
-                </h1>
-            </div>
+        <div class="center center:wide stack pt-4 pb-12">
+            <ol class="breadcrumbs" role="list">
+                <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
+                @if (request()->localizedRouteIs('about.individual-consultation-participants'))
+                    <li><a
+                            href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
+                    </li>
+                @elseif(request()->localizedRouteIs('about.organization-consultation-participants'))
+                    <li><a
+                            href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
+                    </li>
+                @endif
+            </ol>
+            <h1 class="w-1/2">
+                {{ __('Consultation Participants') }}
+            </h1>
         </div>
     </x-slot>
 
-    <div class="-mb-8 space-y-16">
+    <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('Who can be a :role?', ['role' => __('Consultation Participant')]) !!}</h2>
             <x-interpretation name="{{ __('Who can be a :role?', [], 'en') }}" />
@@ -126,4 +124,4 @@
         @endguest
     </div>
 
-</x-app-wide-layout>
+</x-app-layout>
