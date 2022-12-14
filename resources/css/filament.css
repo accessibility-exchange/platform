@@ -197,3 +197,58 @@ select {
 a.filament-button:focus {
     color: white;
 }
+
+.dark .filament-sidebar-collapse-button,
+.dark .filament-sidebar-close-button,
+.dark .icon,
+.dark a {
+    color: white !important;
+}
+
+.dark .focus\:ring-primary-500:focus {
+    --tw-ring-color: white;
+}
+
+.dark .dark\:focus\:border-primary-500:focus,
+.dark .dark\:focus\:border-primary-400:focus {
+    border-color: white !important;
+}
+
+.dark .dark\:focus\:text-primary-400:focus {
+    color: white !important;
+}
+
+.filament-sidebar-item a {
+    @apply focus:ring-2 focus:ring-primary-500 dark:focus:ring-white focus:ring-inset outline-transparent;
+}
+
+.focus\:bg-gray-500\/5:focus {
+    background-color: transparent !important;
+}
+
+.dark [type="checkbox"]:focus,
+.dark [type="radio"]:focus {
+    border-color: white;
+}
+
+.dark .is-focused .choices__inner {
+    --tw-ring-color: white;
+}
+
+.logo {
+    display: block;
+}
+
+.logo.logo--themeable {
+    display: none;
+}
+
+.dark .logo {
+    display: none;
+}
+
+.dark .logo.logo--themeable {
+    @apply text-white;
+
+    display: block;
+}
