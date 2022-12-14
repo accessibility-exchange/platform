@@ -63,4 +63,5 @@ RUN npm install
 
 RUN chown www-data:root $APP_HOME/public/ -R
 
+RUN ["chmod", "+x", "$APP_HOME/.deploy/accessibility-app/entrypoint.sh"]
 ENTRYPOINT $APP_HOME/.deploy/accessibility-app/entrypoint.sh
