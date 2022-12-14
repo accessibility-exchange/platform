@@ -3,7 +3,10 @@
 </x-slot>
 
 <x-slot name="header">
-    <h1 id="manage-users">
+    <ol class="breadcrumbs" role="list">
+        <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
+    </ol>
+    <h1 id="manage-accounts">
         {{ __('Manage accounts') }}
     </h1>
 </x-slot>
@@ -37,7 +40,7 @@
         @endif
     </div>
 
-    <div role="region" aria-labelledby="manage-users" tabindex="0">
+    <div role="region" aria-labelledby="manage-accounts" tabindex="0">
         <table>
             <thead>
                 <tr>

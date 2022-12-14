@@ -3,6 +3,9 @@
 </x-slot>
 
 <x-slot name="header">
+    <ol class="breadcrumbs" role="list">
+        <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
+    </ol>
     <h1 id="estimates-and-agreements">
         {{ __('Estimates and agreements') }}
     </h1>

@@ -1,4 +1,4 @@
-@markdown{{ $individual->getWrittenTranslation('bio', $language) }}@endmarkdown
+{!! Str::markdown($individual->getWrittenTranslation('bio', $language)) !!}
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
