@@ -11,6 +11,9 @@ $COMPOSE_CMD up -d --force-recreate --build --pull always
 
 # Deploy app
 $EXEC_CMD npm install
+# Commented this out because when a new Composer package
+# adds things to the AppServiceProvider, the artisan command
+# will throw an error if `composer install` hasn't been run.
 # $EXEC_CMD ./artisan down --render="maintenance"
 $EXEC_CMD composer install --optimize-autoloader
 $EXEC_CMD ./artisan migrate:fresh --force
