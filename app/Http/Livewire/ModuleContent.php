@@ -21,9 +21,9 @@ class ModuleContent extends Component
     {
         $this->module = $module;
         $this->user = Auth::user();
-        $moduleUser = $this->user->modules->where('id', $module->id)->first();
-        $this->startedContentAt = $moduleUser->pivot->started_content_at ?? null;
-        $this->finishedContentAt = $moduleUser->pivot->finished_content_at ?? null;
+        $moduleUser = $this->user->modules->find($module->id);
+        $this->startedContentAt = $moduleUser?->getRelationValue('pivot')->started_content_at;
+        $this->finishedContentAt = $moduleUser?->getRelationValue('pivot')->finished_content_at;
     }
 
     protected $listeners = ['onPlayerEnd', 'onPlayerStart'];
@@ -38,7 +38,7 @@ class ModuleContent extends Component
             $finishedCourse = true;
             $course = $this->module->course;
             foreach ($course->modules as $module) {
-                $moduleUser = $module->users->where('id', $this->user->id)->first()->pivot ?? null;
+                $moduleUser = $module->users->find($this->user->id)?->getRelationValue('pivot');
                 if (! $moduleUser) {
                     $finishedCourse = false;
                     break;
@@ -58,8 +58,8 @@ class ModuleContent extends Component
     public function onPlayerStart()
     {
         if (! $this->startedContentAt) {
-            $course = $this->module->course->first();
-            if (! ($this->user->courses->where('id', $course->id)->first()->pivot ?? null)) {
+            $course = $this->module->course()->first();
+            if (! ($this->user->courses->find($course->id)?->getRelationValue('pivot'))) {
                 $this->user->courses()->attach(
                     $course->id, ['started_at' => now()]
                 );

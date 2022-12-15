@@ -1,4 +1,4 @@
-<x-app-layout page-width="wide">
+<x-app-wide-layout>
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -46,7 +46,7 @@
                             <a href="{{ localized_route('modules.module-content', $module) }}">
                                 {{ $module->title }}
                             </a>
-                            @if ($user->modules->where('id', $module->id)->first()->pivot->finished_content_at ?? null)
+                            @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
                                 <span class="badge">{{ __('completed') }}</span>
                             @endif
                         </div>
@@ -59,14 +59,14 @@
                 </div>
             @endforeach
         </div>
-        @if ($finishedCourse)
+        @if ($finishedCourse && !$receivedCertificate)
             <form class="stack" action="{{ localized_route('quizzes.show', $course->quiz) }}" novalidate>
                 @csrf
                 <button>{{ __('Take Quiz') }}</button>
             </form>
-        @elseif(!$finishedCourse)
+        @elseif(!$finishedCourse && !$receivedCertificate)
             <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
-        @elseif($recievedCertificate)
+        @elseif($receivedCertificate)
         @endif
     </div>
-</x-app-layout>
+</x-app-wide-layout>
