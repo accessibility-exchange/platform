@@ -42,7 +42,7 @@ class ModuleContent extends Component
                 if (! $moduleUser) {
                     $finishedCourse = false;
                     break;
-                } elseif ($moduleUser && ! $moduleUser->finished_content_at) {
+                } elseif (! $moduleUser->finished_content_at) {
                     $finishedCourse = false;
                     break;
                 }
