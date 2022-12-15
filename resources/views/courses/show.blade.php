@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -69,4 +69,4 @@
         @elseif($receivedCertificate)
         @endif
     </div>
-</x-app-wide-layout>
+</x-app-layout>
