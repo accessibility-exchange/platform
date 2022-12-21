@@ -55,7 +55,7 @@ class QuizResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('course.title')
-                    ->sortable('title'),
+                    ->sortable(['title']),
                 Tables\Columns\TextColumn::make('minimum_score'),
                 Tables\Columns\TextColumn::make('questions_count')->counts('questions'),
                 Tables\Columns\TextColumn::make('created_at')
