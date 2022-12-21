@@ -23,6 +23,9 @@
             <a href="{{ route('filament.resources.topics.index') }}">{{ __('Topics') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.resources.courses.index') }}">{{ __('Training') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.pages.settings') }}">{{ __('Website settings') }}</a>
         </li>
     </x-quick-links>

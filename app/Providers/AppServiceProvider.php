@@ -22,6 +22,7 @@ use Composer\InstalledVersions;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -78,6 +79,11 @@ class AppServiceProvider extends ServiceProvider
                     ->url(localized_route('admin.estimates-and-agreements'))
                     ->icon('heroicon-s-clipboard-check')
                     ->sort(-1),
+            ]);
+
+            Filament::registerNavigationGroups([
+                NavigationGroup::make()
+                    ->label('Training'),
             ]);
         });
 

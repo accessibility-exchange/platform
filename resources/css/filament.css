@@ -57,6 +57,12 @@ select:focus {
     outline-offset: 2px;
 }
 
+.filament-forms-toggle-component:focus {
+    --tw-border-opacity: 1;
+
+    border-color: rgb(38 41 106 / var(--tw-border-opacity));
+}
+
 input::placeholder,
 textarea::placeholder {
     color: #6b7280;
@@ -194,7 +200,8 @@ select {
     outline: 1px auto -webkit-focus-ring-color;
 }
 
-a.filament-button:focus {
+a.filament-button:focus,
+button.filament-button:focus {
     color: white;
 }
 
@@ -227,7 +234,8 @@ a.filament-button:focus {
 }
 
 .dark [type="checkbox"]:focus,
-.dark [type="radio"]:focus {
+.dark [type="radio"]:focus,
+.dark .filament-forms-toggle-component:focus {
     border-color: white;
 }
 
