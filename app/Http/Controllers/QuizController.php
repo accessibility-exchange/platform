@@ -36,6 +36,7 @@ class QuizController extends Controller
             }
         }
 
+        //@phpstan-ignore-next-line
         if ($quizWithCounts->questions_count > 0) {
             $quizScore = $correctQuestions / $quizWithCounts->questions_count;
             $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');

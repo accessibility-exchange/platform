@@ -2,7 +2,6 @@
 
 use App\Models\Choice;
 use App\Models\Course;
-use App\Models\Module;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
@@ -19,13 +18,6 @@ test('a quiz can belong to many users', function () {
 
     expect($quiz->users->contains($user))->toBeTrue();
     expect($quiz->users->contains($anotherUser))->toBeTrue();
-});
-
-test('a quiz can belong to a module', function () {
-    $module = Module::factory()->for(Course::factory()->create())->create();
-    $quiz = Quiz::factory()->for($module)->create();
-
-    expect($quiz->module->id)->toBe($module->id);
 });
 
 test('a quiz can belong to a course', function () {
@@ -60,7 +52,7 @@ test('users can view quiz results on finishing it', function () {
     $secondQuestionCorrectChoice = Choice::factory()->for($secondQuestion)->create(['is_answer' => true]);
     $secondQuestionWrongChoice = Choice::factory()->for($secondQuestion)->create();
 
-    $response = $this->actingAs($user)->get(localized_route('quizzes.show', $quiz));
+    $response = $this->actingAs($user)->get(localized_route('quizzes.show', $course));
     $response->assertOk();
     $response->assertSee($firstQuestion->title);
     $response->assertSee($firstQuestionCorrectChoice->label);
@@ -80,8 +72,8 @@ test('users can view quiz results on finishing it', function () {
     ];
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $response->assertSessionHasErrors();
 
@@ -97,8 +89,8 @@ test('users can view quiz results on finishing it', function () {
     ];
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $response->assertSessionHasNoErrors();
 
@@ -127,8 +119,8 @@ test('users can view quiz results on finishing it', function () {
     $user->refresh();
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
@@ -164,8 +156,8 @@ test('when users pass the quiz in first attempt', function () {
     ];
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $response->assertSessionHasNoErrors();
 
@@ -195,8 +187,8 @@ test('when users fail the quiz multiple times', function () {
         ],
     ];
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $response->assertSessionHasNoErrors();
 
@@ -208,8 +200,8 @@ test('when users fail the quiz multiple times', function () {
     ]);
 
     $response = $this->actingAs($user->refresh())
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.store-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.store-result', $course), $inputData);
 
     $response->assertSessionHasNoErrors();
 
