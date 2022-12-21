@@ -32,7 +32,7 @@
             </div>
 
             <div class="field @error('contact_person_vrs') field-error @enderror">
-                <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $organization->contact_person_vrs ?? false)" />
+                <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $organization->contact_person_vrs) ?? false" />
                 <x-hearth-label for="contact_person_vrs" :value="__('They require Video Relay Service (VRS) for phone calls')" />
                 <x-hearth-error for="contact_person_vrs" />
             </div>
