@@ -44,11 +44,6 @@ class Quiz extends Model
         return $this->hasMany(Question::class);
     }
 
-    public function module(): BelongsTo
-    {
-        return $this->belongsTo(Module::class);
-    }
-
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
