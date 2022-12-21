@@ -35,7 +35,7 @@ class Course extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withPivot('started_at', 'received_certificate_at')
             ->withTimestamps();
     }
 
@@ -52,5 +52,21 @@ class Course extends Model
     public function modules(): HasMany
     {
         return $this->hasMany(Module::class);
+    }
+
+    public function isFinished(?User $user): bool
+    {
+        $isFinished = true;
+        foreach ($this->modules as $module) {
+            $moduleUser = $module->users->find($user->id)?->getRelationValue('pivot');
+            if ($moduleUser?->finished_content_at) {
+                continue;
+            } else {
+                $isFinished = false;
+                break;
+            }
+        }
+
+        return $isFinished;
     }
 }

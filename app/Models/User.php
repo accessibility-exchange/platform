@@ -230,7 +230,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class)
-            ->withPivot('started_at', 'finished_at', 'received_certificate_at')
+            ->withPivot('started_at', 'received_certificate_at')
             ->withTimestamps();
     }
 

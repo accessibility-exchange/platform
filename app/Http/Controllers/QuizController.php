@@ -3,80 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizResultRequest;
-use App\Models\Quiz;
+use App\Models\Course;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
-    public function show(Quiz $quiz): View
+    public function show(Course $course): View
     {
-        $questions = $quiz->questions;
+        $quiz = $course->quiz;
 
         return view('quizzes.show', [
+            'course' => $course,
             'quiz' => $quiz,
             'title' => $quiz->title,
-            'questions' => $questions,
+            'questions' => $quiz->questions,
         ]);
     }
 
-    public function storeQuizResult(StoreQuizResultRequest $request, Quiz $quiz): View
+    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View
     {
         $data = $request->validated();
         $user = Auth::user();
+        $correctQuestions = 0;
+        $quiz = $course->quiz;
+        $quizWithCounts = $quiz->loadCount('questions');
+        $isPass = false;
 
-        $numberOfQuestions = 0;
-        $quizScore = 0;
-
-        foreach ($quiz->questions as $question) {
-            $numberOfQuestions++;
-            if (count(array_intersect($question->getCorrectChoices(), $data['question_'.$question->id])) >= $question->minimum_choices) {
-                $quizScore++;
+        foreach ($quizWithCounts->questions as $question) {
+            if ($question->getCorrectChoices() == $data['questions'][$question->id]) {
+                $correctQuestions++;
             }
         }
-        $quizResults = $quizScore / $numberOfQuestions >= $quiz->minimum_score;
-        $quizUser = $user->quizzes->where('id', $quiz->id)->first()->pivot ?? null;
-        if ($quizScore / $numberOfQuestions >= $quiz->minimum_score) {
+
+        if ($quizWithCounts->questions_count > 0) {
+            $quizScore = $correctQuestions / $quizWithCounts->questions_count;
+            $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');
             if ($quizUser) {
                 $attempts = $quizUser->attempts;
                 $user->quizzes()->updateExistingPivot(
                     $quiz->id, [
                         'attempts' => $attempts + 1,
-                        'score' => $quizScore / $numberOfQuestions,
+                        'score' => $quizScore,
                     ]
                 );
             } else {
                 $user->quizzes()->attach(
                     $quiz->id, [
                         'attempts' => 1,
-                        'score' => $quizScore / $numberOfQuestions,
+                        'score' => $quizScore,
                     ]
                 );
             }
-            $user->courses()->updateExistingPivot(
-                $quiz->course->id, [
-                    'received_certificate_at' => now(),
-                ]
-            );
-        } else {
-            if ($quizUser) {
-                $attempts = $quizUser->attempts;
-                $user->quizzes()->updateExistingPivot(
-                    $quiz->id, [
-                        'attempts' => $attempts + 1,
-                        'score' => $quizScore / $numberOfQuestions,
-                    ]
-                );
-            } else {
-                $user->quizzes()->attach(
-                    $quiz->id, [
-                        'attempts' => 1,
-                        'score' => $quizScore / $numberOfQuestions,
+            if ($quizScore >= $quiz->minimum_score) {
+                $isPass = true;
+                $user->courses()->updateExistingPivot(
+                    $quiz->course->id, [
+                        'received_certificate_at' => now(),
                     ]
                 );
             }
         }
 
-        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $quizResults]);
+        return view('quizzes.store-result', ['quiz' => $quiz, 'results' => $isPass]);
     }
 }

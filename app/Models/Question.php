@@ -14,18 +14,12 @@ class Question extends Model
     use HasFactory;
     use HasTranslations;
 
-    protected $attributes = [
-        'minimum_choices' => 1,
-    ];
-
     protected $fillable = [
-        'minimum_choices',
         'order',
         'question',
     ];
 
     protected $casts = [
-        'minimum_choices' => 'integer',
         'order' => 'integer',
         'question' => 'array',
     ];
@@ -47,8 +41,8 @@ class Question extends Model
     public function getChoices()
     {
         return Options::forModels(
-            Choice::query()->whereIn('id', $this->choices->pluck('id')->toArray()),
-            label: fn (Choice $choice) => $choice->getTranslation('label', 'en')
+            Choice::query()->whereIn('id', $this->choices->modelKeys()),
+            label: fn (Choice $choice) => $choice->getTranslation('label', locale())
         )->toArray();
     }
 

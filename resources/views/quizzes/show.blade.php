@@ -5,12 +5,12 @@
         <x-slot name="title">{{ $title }}</x-slot>
     </div>
     <div class="stack ml-2 mr-2">
-        <form class="stack" action="{{ localized_route('quizzes.show-result', $quiz) }}" method="POST" novalidate>
+        <form class="stack" action="{{ localized_route('quizzes.store-result', $course) }}" method="POST" novalidate>
             @csrf
             @foreach ($questions as $question)
                 <fieldset class="field @error('{{ $question->question }}') field--error @enderror">
                     <legend>{{ $question->question . '?' }}</legend>
-                    <x-hearth-checkboxes name="question_{{ $question->id }}" :options="$question->getChoices()" required />
+                    <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->getChoices()" required />
                     <x-hearth-error for="{{ $question->question }}" />
                 </fieldset>
             @endforeach

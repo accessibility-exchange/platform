@@ -2,11 +2,16 @@
 
 use App\Http\Controllers\QuizController;
 
-Route::multilingual('/quizzes/{quiz}', [QuizController::class, 'show'])
-    ->middleware('auth')
-    ->name('quizzes.show');
+Route::controller(QuizController::class)
+    ->prefix('quizzes')
+    ->name('quizzes')
+    ->group(function () {
+        Route::multilingual('courses/{course}/quiz', 'show')
+            ->middleware('auth')
+            ->name('.show');
 
-Route::multilingual('/quizzes/{quiz}/result', [QuizController::class, 'storeQuizResult'])
-    ->method('post')
-    ->middleware('auth')
-    ->name('quizzes.show-result');
+        Route::multilingual('/courses/{course}/quiz/result', 'storeQuizResult')
+            ->method('post')
+            ->middleware('auth')
+            ->name('.store-result');
+    });

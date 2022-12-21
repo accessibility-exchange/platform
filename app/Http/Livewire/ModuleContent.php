@@ -13,52 +13,35 @@ class ModuleContent extends Component
 
     public User $user;
 
-    public ?string $startedContentAt = null;
+    public bool $isStarted = false;
 
-    public ?string $finishedContentAt = null;
+    public bool $isFinished = false;
 
     public function mount(Module $module)
     {
         $this->module = $module;
         $this->user = Auth::user();
         $moduleUser = $this->user->modules->find($module->id);
-        $this->startedContentAt = $moduleUser?->getRelationValue('pivot')->started_content_at;
-        $this->finishedContentAt = $moduleUser?->getRelationValue('pivot')->finished_content_at;
+        $this->isStarted = (bool) $moduleUser?->getRelationValue('pivot')->started_content_at;
+        $this->isFinished = (bool) $moduleUser?->getRelationValue('pivot')->finished_content_at;
     }
 
     protected $listeners = ['onPlayerEnd', 'onPlayerStart'];
 
     public function onPlayerEnd()
     {
-        if (! $this->finishedContentAt) {
+        if (! $this->isFinished) {
             $this->user->modules()->updateExistingPivot(
                 $this->module->id, ['finished_content_at' => now()]
             );
-            $this->finishedContentAt = 'finished_content';
-            $finishedCourse = true;
-            $course = $this->module->course;
-            foreach ($course->modules as $module) {
-                $moduleUser = $module->users->find($this->user->id)?->getRelationValue('pivot');
-                if (! $moduleUser) {
-                    $finishedCourse = false;
-                    break;
-                } elseif (! $moduleUser->finished_content_at) {
-                    $finishedCourse = false;
-                    break;
-                }
-            }
-            if ($finishedCourse) {
-                $course->users()->updateExistingPivot(
-                    $this->user->id, ['finished_at' => now()]
-                );
-            }
+            $this->isFinished = true;
         }
     }
 
     public function onPlayerStart()
     {
-        if (! $this->startedContentAt) {
-            $course = $this->module->course()->first();
+        if (! $this->isStarted) {
+            $course = $this->module->course;
             if (! ($this->user->courses->find($course->id)?->getRelationValue('pivot'))) {
                 $this->user->courses()->attach(
                     $course->id, ['started_at' => now()]
@@ -67,12 +50,12 @@ class ModuleContent extends Component
             $this->user->modules()->attach(
                 $this->module->id, ['started_content_at' => now()]
             );
-            $this->startedContentAt = 'started_content_at';
+            $this->isStarted = true;
         }
     }
 
     public function render()
     {
-        return view('livewire.module-content')->layout('layouts.app-wide');
+        return view('livewire.module-content')->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 }

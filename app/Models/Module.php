@@ -41,6 +41,7 @@ class Module extends Model
             ->withTimestamps();
     }
 
+    // remove quiz relationship from Module
     public function quiz(): HasOne
     {
         return $this->hasOne(Quiz::class);

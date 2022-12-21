@@ -6,7 +6,7 @@
         </h1>
     </x-slot>
     <div class="stack ml-2 mr-2">
-        <a href="{{ localized_route('courses.index') }}">{{ __('Back') }}</a>
+        <a href="{{ localized_route('resource-collections.index') }}">{{ __('Back') }}</a>
         <x-slot name="title">{{ $course->title }}</x-slot>
         <div class="flex justify-between">
             <div>
@@ -24,7 +24,7 @@
         <h2>{{ __('About this course') }}</h2>
         @if ($course->video)
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ $course->video }}',
+                url: '{{ $course->video[locale()] }}',
                 byline: false,
                 pip: true,
                 portrait: false,
@@ -43,7 +43,8 @@
                 <div class="flex flex-col">
                     <div>
                         <div class="flex items-center justify-between">
-                            <a href="{{ localized_route('modules.module-content', $module) }}">
+                            <a
+                                href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
                                 {{ $module->title }}
                             </a>
                             @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
@@ -60,7 +61,7 @@
             @endforeach
         </div>
         @if ($finishedCourse && !$receivedCertificate)
-            <form class="stack" action="{{ localized_route('quizzes.show', $course->quiz) }}" novalidate>
+            <form class="stack" action="{{ localized_route('quizzes.show', $course) }}" novalidate>
                 @csrf
                 <button>{{ __('Take Quiz') }}</button>
             </form>

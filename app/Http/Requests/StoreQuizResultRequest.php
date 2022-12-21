@@ -11,10 +11,10 @@ class StoreQuizResultRequest extends FormRequest
      *
      * @return bool
      */
-    // public function authorize()
-    // {
-    //     return false;
-    // }
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,13 +23,8 @@ class StoreQuizResultRequest extends FormRequest
      */
     public function rules()
     {
-        $questionRules = [];
-        $quiz = $this->route('quiz');
-        // @phpstan-ignore-next-line
-        foreach ($quiz->questions as $question) {
-            $questionRules['question_'.$question->id] = 'required|array';
-        }
-
-        return $questionRules;
+        return [
+            'questions.*' => 'required',
+        ];
     }
 }

@@ -36,7 +36,7 @@ class QuizResults extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Quiz Results for '.$this->name,
+            subject: __('Quiz Results for ').$this->name,
         );
     }
 
