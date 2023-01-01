@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ad03e3ba3257679f664cdc2e5f1132a",
+    "content-hash": "bebf282b548ca5f846efa34e4fcaeabf",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -7993,16 +7993,16 @@
         },
         {
             "name": "spatie/valuestore",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/valuestore.git",
-                "reference": "85144129c7c4611c0e95ef9558cac20fba12cb48"
+                "reference": "29562273e843ff0967725f1e2cb946e5c029d606"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/valuestore/zipball/85144129c7c4611c0e95ef9558cac20fba12cb48",
-                "reference": "85144129c7c4611c0e95ef9558cac20fba12cb48",
+                "url": "https://api.github.com/repos/spatie/valuestore/zipball/29562273e843ff0967725f1e2cb946e5c029d606",
+                "reference": "29562273e843ff0967725f1e2cb946e5c029d606",
                 "shasum": ""
             },
             "require": {
@@ -8044,7 +8044,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/valuestore/issues",
-                "source": "https://github.com/spatie/valuestore/tree/1.3.1"
+                "source": "https://github.com/spatie/valuestore/tree/1.3.2"
             },
             "funding": [
                 {
@@ -8056,7 +8056,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-03T16:51:45+00:00"
+            "time": "2022-12-13T09:04:49+00:00"
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",
@@ -15515,5 +15515,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
