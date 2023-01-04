@@ -6,6 +6,8 @@ use App\Http\Requests\StoreQuizResultRequest;
 use App\Models\Course;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class QuizController extends Controller
 {
@@ -29,10 +31,13 @@ class QuizController extends Controller
         $quiz = $course->quiz;
         $quizWithCounts = $quiz->loadCount('questions');
         $isPass = false;
+        $validator = Validator::make([], []);
 
         foreach ($quizWithCounts->questions as $question) {
             if ($question->getCorrectChoices() == $data['questions'][$question->id]) {
                 $correctQuestions++;
+            } else {
+                $validator->errors()->add('questions['.$question->id.']', __('Wrong answer'));
             }
         }
 
@@ -63,6 +68,8 @@ class QuizController extends Controller
                         'received_certificate_at' => now(),
                     ]
                 );
+            } else {
+                throw new ValidationException($validator);
             }
         }
 

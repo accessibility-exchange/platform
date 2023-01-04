@@ -8,10 +8,10 @@
         <form class="stack" action="{{ localized_route('quizzes.store-result', $course) }}" method="POST" novalidate>
             @csrf
             @foreach ($questions as $question)
-                <fieldset class="field @error('{{ $question->question }}') field--error @enderror">
+                <fieldset class="field @error('questions[{{ $question->id }}]') field--error @enderror">
                     <legend>{{ $question->question . '?' }}</legend>
                     <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->getChoices()" required />
-                    <x-hearth-error for="{{ $question->question }}" />
+                    <x-hearth-error for="questions[{{ $question->id }}]" />
                 </fieldset>
             @endforeach
             <button>submit</button>

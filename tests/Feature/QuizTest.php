@@ -92,7 +92,7 @@ test('users can view quiz results on finishing it', function () {
         ->from(localized_route('quizzes.show', $course))
         ->post(localized_route('quizzes.store-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
@@ -100,7 +100,6 @@ test('users can view quiz results on finishing it', function () {
         'attempts' => 1,
         'score' => 0.5,
     ]);
-    $response->assertSee(__('You have not passed the quiz.'));
 
     $firstQuestionAnotherCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
 
@@ -190,7 +189,7 @@ test('when users fail the quiz multiple times', function () {
         ->from(localized_route('quizzes.show', $course))
         ->post(localized_route('quizzes.store-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
@@ -203,7 +202,7 @@ test('when users fail the quiz multiple times', function () {
         ->from(localized_route('quizzes.show', $course))
         ->post(localized_route('quizzes.store-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
