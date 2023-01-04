@@ -10,6 +10,8 @@ class ListInterpretations extends ListRecords
 {
     protected static string $resource = InterpretationResource::class;
 
+    protected static ?string $title = 'Sign language interpretations';
+
     protected function getActions(): array
     {
         return [

@@ -9,7 +9,6 @@ const generateCSSProps = () => {
     let result = "";
 
     const groups = [
-        {key: "colors", prefix: "color"},
         {key: "spacing", prefix: "space"},
         {key: "borderWidth", prefix: "border"},
         {key: "borderRadius", prefix: "radius"},
@@ -17,6 +16,10 @@ const generateCSSProps = () => {
         {key: "fontFamily", prefix: "font"},
         {key: "fontWeight", prefix: "font"},
         {key: "maxWidth", prefix: "max-w"}
+    ];
+
+    const extendedGroups = [
+        {key: "colors", prefix: "color"},
     ];
 
     // Add a note that this is auto generated
@@ -30,6 +33,22 @@ const generateCSSProps = () => {
     // property to define a :root custom prop
     groups.forEach(({key, prefix}) => {
         const group = config.theme[key];
+
+        if (!group) {
+            return;
+        }
+
+        Object.keys(group).forEach(key => {
+            if (key === "DEFAULT") {
+                result += `--${prefix}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            } else {
+                result += `--${prefix}-${key.replace(".", "_")}: ${Array.isArray(group[key]) ? group[key][0] : group[key]};`;
+            }
+        });
+    });
+
+    extendedGroups.forEach(({key, prefix}) => {
+        const group = config.theme.extend[key];
 
         if (!group) {
             return;

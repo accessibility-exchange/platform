@@ -39,12 +39,12 @@
                         <x-hearth-input name="phone" type="tel" :value="old(
                             'phone',
                             $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
-                        )" wire:model.lazy="phone" />
+                        )" />
                         <x-hearth-error for="phone" />
                     </div>
 
                     <div class="field @error('vrs') field-error @enderror">
-                        <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs ?? false)" wire:model="vrs" />
+                        <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs) ?? false" />
                         <x-hearth-label for="vrs" :value="__('I require Video Relay Service (VRS) for phone calls')" />
                         <x-hearth-error for="vrs" />
                     </div>
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="field @error('support_person_vrs') field-error @enderror">
-                        <x-hearth-checkbox name="support_person_vrs" :checked="old('support_person_vrs', $individual->user->support_person_vrs ?? false)" />
+                        <x-hearth-checkbox name="support_person_vrs" :checked="old('support_person_vrs', $individual->user->support_person_vrs) ?? false" />
                         <x-hearth-label for="support_person_vrs" :value="__('My support person requires Video Relay Service (VRS) for phone calls')" />
                         <x-hearth-error for="support_person_vrs" />
                     </div>
