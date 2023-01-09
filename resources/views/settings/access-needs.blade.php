@@ -45,6 +45,8 @@
             <legend>
                 <h2>{{ __('For meeting in real time') }}</h2>
             </legend>
+            <p>{{ __('Access needs for when you agree to attend a meeting in real-time, either in-person or virtually.') }}
+            </p>
             @foreach ($meetingAccessSupports as $option)
                 <div class="field">
                     @if ($option['value'] === $signLanguageInterpretation)
@@ -122,7 +124,8 @@
             <legend>
                 <h2>{{ __('For in-person meetings') }}</h2>
             </legend>
-            <p>{{ __('All organizations have been asked to provide gender-neutral and accessible washrooms by default.') }}
+            <p>{{ __('Access needs for when you are attending a meeting in-person.') }}
+                <b>{{ __('Please note that all organizations have been asked to provide gender neutral and accessible washrooms by default.') }}</b>
             </p>
             @foreach ($inPersonAccessSupports as $option)
                 <div class="field">
@@ -164,6 +167,7 @@
             <legend>
                 <h2>{{ __('For engagement documents') }}</h2>
             </legend>
+            <p>{{ __('Access needs for any materials you may be sent.') }}</p>
             <x-hearth-alert x-show="true" :dismissable="false">
                 <p>
                     {{ __('For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this.') }}
