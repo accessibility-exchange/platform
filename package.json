@@ -28,7 +28,7 @@
         ]
     },
     "devDependencies": {
-        "@commitlint/cli": "^17.2.0",
+        "@commitlint/cli": "^17.3.0",
         "@commitlint/config-conventional": "^17.1.0",
         "@shufo/prettier-plugin-blade": "^1.8.0",
         "@tailwindcss/typography": "^0.5.8",
