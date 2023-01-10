@@ -106,6 +106,7 @@
     --border-color-turquoise: var(--theme-border-color-turquoise, var(--color-turquoise-5));
     --border-color-yellow: var(--theme-border-color-yellow, var(--color-yellow-3));
     --border-color-magenta: var(--theme-border-color-magenta, var(--color-magenta-2));
+    --border-color-teal: var(--theme-border-color-teal, var(--color-green-5));
 
     /* Alert */
     --alert-background: var(--theme-alert-background, var(--color-grey-2));

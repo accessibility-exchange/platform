@@ -110,6 +110,7 @@
     --theme-border-color-turquoise: var(--fg);
     --theme-border-color-yellow: var(--fg);
     --theme-border-color-magenta: var(--fg);
+    --theme-border-color-teal: var(--fg);
 
     /* Alert */
     --theme-alert-background: var(--bg);
