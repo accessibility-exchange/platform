@@ -10,6 +10,28 @@ Route::controller(SettingsController::class)
             ->middleware(['auth'])
             ->name('show');
 
+        Route::multilingual('/matching', 'matching')
+            ->middleware(['auth', 'password.confirm'])
+            ->name('show-matching');
+
+        Route::multilingual('/matching/how-matching-works', 'howMatching')
+            ->middleware(['auth', 'password.confirm'])
+            ->name('show-how');
+
+        Route::multilingual('/matching/information', 'editMatching')
+            ->middleware(['auth', 'password.confirm'])
+            ->name('edit-matching');
+
+        Route::multilingual('/matching/information', 'updateMatching')
+            ->method('put')
+            ->middleware(['auth', 'password.confirm'])
+            ->name('update-matching');
+
+        Route::multilingual('/matching/information', 'destroyMatching')
+            ->method('delete')
+            ->middleware(['auth', 'password.confirm'])
+            ->name('destroy-matching');
+
         Route::multilingual('/access-needs', 'editAccessNeeds')
             ->middleware(['auth'])
             ->name('edit-access-needs');

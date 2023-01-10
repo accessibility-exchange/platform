@@ -15,7 +15,8 @@
     @endif
     <ul class="link-list" role="list">
         @if ($user->context === 'individual')
-            {{-- Matching --}}
+            <li><a href="{{ localized_route('settings.show-matching') }}">{{ __('Matching') }}</a>
+            </li>
         @endif
         @if ($user->context === 'individual' && ($user->individual->isConnector() || $user->individual->isConsultant()))
             <li><a
