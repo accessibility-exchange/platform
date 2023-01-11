@@ -18,6 +18,12 @@
     color: var(--banner-error-color);
 }
 
+.banner--success {
+    background-color: var(--banner-success-background);
+    border-block-start-color: var(--banner-success-border);
+    color: var(--banner-success-color);
+}
+
 .banner--warning {
     background-color: var(--banner-warning-background);
     border-block-start-color: var(--banner-warning-border);

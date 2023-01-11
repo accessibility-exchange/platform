@@ -97,6 +97,8 @@
     /* Banner */
     --banner-error-background: var(--theme-banner-error-background, var(--color-red-7));
     --banner-error-color: var(--theme-banner-error-color, var(--color-white));
+    --banner-success-background: var(--theme-alert-background-success, var(--color-green-1));
+    --banner-success-color: var(--theme-alert-color-success, var(--color-graphite-8));
     --banner-warning-background: var(--theme-banner-warning-background, var(--color-yellow-3));
     --banner-warning-color: var(--theme-banner-warning-color, var(--color-black));
 
