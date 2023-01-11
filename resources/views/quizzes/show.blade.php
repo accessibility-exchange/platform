@@ -8,13 +8,26 @@
         <form class="stack" action="{{ localized_route('quizzes.store-result', $course) }}" method="POST" novalidate>
             @csrf
             @foreach ($questions as $question)
-                <fieldset class="field @error('questions[{{ $question->id }}]') field--error @enderror">
+                <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
+                    @if (session('wrongAnswers'))
+                        @if (in_array($question->id, session('wrongAnswers')))
+                            <x-banner type="error">
+                                {{ __('Please try again.') }}
+                            </x-banner>
+                        @else
+                            <x-banner type="success">
+                                {{ __('Correct answer!') }}
+                            </x-banner>
+                        @endif
+                    @endif
                     <legend>{{ $question->question . '?' }}</legend>
-                    <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->getChoices()" required />
-                    <x-hearth-error for="questions[{{ $question->id }}]" />
+                    <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->getChoices()" :checked="session('previousAnswers') && array_key_exists($question->id, session('previousAnswers'))
+                        ? session('previousAnswers')[$question->id]
+                        : []" />
+                    <x-hearth-error for="questions.{{ $question->id }}" />
                 </fieldset>
             @endforeach
-            <button>submit</button>
+            <button>{{ __('Submit') }}</button>
         </form>
     </div>
 </x-app-layout>

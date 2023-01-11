@@ -23,8 +23,21 @@ class StoreQuizResultRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'questions.*' => 'required',
-        ];
+        $rules = [];
+        foreach ($this->course->quiz->questions as $question) {
+            $rules['questions.'.$question->id] = 'required';
+        }
+
+        return $rules;
+    }
+
+    public function messages()
+    {
+        $messages = [];
+        foreach ($this->course->quiz->questions as $question) {
+            $messages['questions.'.$question->id.'.required'] = __('You must answer this question');
+        }
+
+        return $messages;
     }
 }

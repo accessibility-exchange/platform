@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuizResultRequest;
 use App\Models\Course;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class QuizController extends Controller
 {
@@ -23,7 +23,7 @@ class QuizController extends Controller
         ]);
     }
 
-    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View
+    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View | RedirectResponse
     {
         $data = $request->validated();
         $user = Auth::user();
@@ -32,12 +32,16 @@ class QuizController extends Controller
         $quizWithCounts = $quiz->loadCount('questions');
         $isPass = false;
         $validator = Validator::make([], []);
+        $previousAnswers = [];
+        $wrongAnswers = [];
 
         foreach ($quizWithCounts->questions as $question) {
+            $previousAnswers[$question->id] = $data['questions'][$question->id];
             if ($question->getCorrectChoices() == $data['questions'][$question->id]) {
                 $correctQuestions++;
             } else {
-                $validator->errors()->add('questions['.$question->id.']', __('Wrong answer'));
+                $validator->errors()->add('questions.'.$question->id, __('Wrong answer'));
+                $wrongAnswers[] = $question->id;
             }
         }
 
@@ -69,7 +73,7 @@ class QuizController extends Controller
                     ]
                 );
             } else {
-                throw new ValidationException($validator);
+                return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers])->withErrors($validator);
             }
         }
 
