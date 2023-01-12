@@ -32,7 +32,7 @@
         @endif
         @if ($user->context === 'individual')
             <li><a
-                    href="{{ localized_route('settings.edit-access-needs') }}">{{ __('Access needs for consultation') }}</a>
+                    href="{{ localized_route('settings.edit-access-needs') }}">{{ __('Access needs for consultations') }}</a>
             </li>
             <li><a
                     href="{{ localized_route('settings.edit-communication-and-consultation-preferences') }}">{{ __('Communication and consultation preferences') }}</a>

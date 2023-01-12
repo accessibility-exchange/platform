@@ -59,10 +59,11 @@
                         </button>
                     </div>
                     <div class="flex flex-col">
-                        <button class="secondary" name="share_access_needs" value="0">
+                        <button class="secondary" name="share_access_needs" value="0"
+                            aria-describedby="share_access_needs-no">
                             @svg('heroicon-s-x') {{ __('No, don’t share my access needs') }}
                         </button>
-                        <p class="mt-2">
+                        <p class="mt-2" id="share_access_needs-no">
                             {{ __('If you select no, our support line will contact you and arrange for a way to have your access needs met.') }}
                     </div>
                 </div>

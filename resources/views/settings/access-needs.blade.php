@@ -125,7 +125,7 @@
                 <h2>{{ __('For in-person meetings') }}</h2>
             </legend>
             <p>{{ __('Access needs for when you are attending a meeting in-person.') }}
-                <b>{{ __('Please note that all organizations have been asked to provide gender neutral and accessible washrooms by default.') }}</b>
+                <strong>{{ __('Please note that all organizations have been asked to provide gender neutral and accessible washrooms by default.') }}</strong>
             </p>
             @foreach ($inPersonAccessSupports as $option)
                 <div class="field">

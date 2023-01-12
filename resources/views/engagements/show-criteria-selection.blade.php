@@ -145,7 +145,7 @@
                             'other_identity_type',
                             $engagement->matchingStrategy->extra_attributes->get('other_identity_type', ''),
                         )"
-                            x-model="otherIdentityType" />
+                            x-model="otherIdentityType" hinted="other_identity_type-hint" />
                         <x-hearth-error for="other_identity_type" />
                     </div>
                     <div x-show="intersectional == 0" x-cloak>
