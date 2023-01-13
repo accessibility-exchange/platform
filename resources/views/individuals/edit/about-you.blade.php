@@ -12,11 +12,13 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('About you') }}
             </h2>
+            <x-interpretation class="interpretation--start" name="{{ __('About you', [], 'en') }}" />
 
             <hr class="divider--thick">
 
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
+                <x-interpretation class="interpretation--start" name="{{ __('Name', [], 'en') }}" />
                 <x-hearth-hint for="name">
                     {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
                 </x-hearth-hint>
@@ -26,10 +28,13 @@
 
             <fieldset>
                 <legend>{{ __('Where do you live?') }}</legend>
+                <x-interpretation class="interpretation--start" name="{{ __('Where do you live?', [], 'en') }}" />
 
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label
                         for="region"><x-required>{{ __('Province or territory') }}</x-required></x-hearth-label>
+                    <x-interpretation class="interpretation--start" name="{{ __('Province or territory', [], 'en') }}"
+                        namespace="province-territory" />
                     <x-hearth-select name="region" :options="$regions" :selected="old('region', $individual->region)" required />
                     <x-hearth-error for="region" />
                 </div>
@@ -62,10 +67,14 @@
 
             <fieldset>
                 <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional></legend>
+                <x-interpretation class="interpretation--start"
+                    name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}" />
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
                 )" :availableLanguages="$languages" />
+                <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
+                    namespace="add-language" />
             </fieldset>
 
             @if ($individual->isConsultant())
@@ -73,6 +82,8 @@
                     <legend>
                         <x-required>{{ __('How can you help a regulated organization?') }}</x-required>
                     </legend>
+                    <x-interpretation class="interpretation--start"
+                        name="{{ __('How can you help a regulated organization?', [], 'en') }}" />
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
                     <x-hearth-error for="consulting_services" />
@@ -81,6 +92,7 @@
 
             <fieldset>
                 <legend>{{ __('Social media links') }}</legend>
+                <x-interpretation class="interpretation--start" name="{{ __('Social media links', [], 'en') }}" />
                 <x-hearth-hint for="social_links">
                     {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
@@ -99,6 +111,9 @@
             <div class="field @error('website_link') field-error @enderror">
                 <x-hearth-label class="h4"
                     for="website_link"><x-optional>{{ __('Website link') }}</x-optional></x-hearth-label>
+                @if (locale() === 'lsq')
+                    <x-interpretation class="interpretation--start" name="{{ __('Website link', [], 'en') }}" />
+                @endif
                 <x-hearth-hint
                     for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
@@ -109,8 +124,21 @@
             <hr class="divider--thick">
 
             <p class="flex flex-wrap gap-7">
-                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
-                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                @if (locale() === 'asl' || locale() === 'lsq')
+                    <div>
+                        <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                        <x-interpretation class="interpretation--start" name="{{ __('Save', [], 'en') }}"
+                            namespace="save" />
+                    </div>
+                    <div>
+                        <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                        <x-interpretation class="interpretation--start" name="{{ __('Save and next', [], 'en') }}"
+                            namespace="save-next" />
+                    </div>
+                @else
+                    <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                    <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                @endif
             </p>
         </div>
     </div>

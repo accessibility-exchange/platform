@@ -11,6 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Experiences') }}
             </h2>
+            <x-interpretation name="{{ __('Experiences', [], 'en') }}" />
             <hr class="divider--thick">
             <fieldset>
                 <legend>{{ __('Lived experience') }}</legend>
@@ -46,6 +47,7 @@
 
             <fieldset class="stack">
                 <legend>{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
+                <x-interpretation class="interpretation--start" name="{{ __('Relevant experiences', [], 'en') }}" />
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
@@ -54,9 +56,29 @@
             <hr class="divider--thick">
 
             <p class="flex flex-wrap gap-7">
-                <button class="secondary" name="save_and_previous" value="1">{{ __('Save and previous') }}</button>
-                <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
-                <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                @if (locale() === 'asl' || locale() === 'lsq')
+                    <div>
+                        <button class="secondary" name="save_and_previous"
+                            value="1">{{ __('Save and previous') }}</button>
+                        <x-interpretation class="interpretation--start" name="{{ __('Save and previous', [], 'en') }}"
+                            namespace="save-previous" />
+                    </div>
+                    <div>
+                        <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                        <x-interpretation class="interpretation--start" name="{{ __('Save', [], 'en') }}"
+                            namespace="save" />
+                    </div>
+                    <div>
+                        <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                        <x-interpretation class="interpretation--start" name="{{ __('Save and next', [], 'en') }}"
+                            namespace="save-next" />
+                    </div>
+                @else
+                    <button class="secondary" name="save_and_previous"
+                        value="1">{{ __('Save and previous') }}</button>
+                    <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
+                    <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
+                @endif
             </p>
         </div>
     </div>

@@ -46,6 +46,7 @@
             <div class="flex h-full flex-col justify-center">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
+                <x-interpretation name="{{ __('For Individuals', [], 'en') }}" />
                 <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                 </p>
             </div>
@@ -58,6 +59,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                 </h3>
+                <x-interpretation name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
                 <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                 </p>
             </div>
@@ -70,6 +72,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                 </h3>
+                <x-interpretation name="{{ __('For Community Organizations', [], 'en') }}" />
                 <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                 </p>
             </div>

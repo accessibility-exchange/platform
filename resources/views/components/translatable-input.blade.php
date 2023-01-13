@@ -7,6 +7,7 @@
                 @else
                     <x-hearth-label :for="$name . '_' . $language" :value="$label . ' (' . get_language_exonym($language) . ')'" />
                 @endif
+                <x-interpretation class="interpretation--start" name="{{ __($label, [], 'en') }}" />
                 @if ($hint)
                     <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
                 @endif
