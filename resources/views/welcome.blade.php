@@ -9,7 +9,6 @@
             </p>
             @guest
                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                <x-interpretation name="{{ __('Sign up', [], 'en') }}" namespace="sign-up" />
             @endguest
         </div>
     </x-slot>
@@ -110,7 +109,6 @@
                 <h2 id="join">{{ __('Join our accessibility community') }}</h2>
                 <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                <x-interpretation name="{{ __('Sign up', [], 'en') }}" namespace="sign-up" />
             </div>
         </section>
     @endguest
