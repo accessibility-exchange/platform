@@ -77,7 +77,7 @@ test('users with regulated organization admin role can create engagements', func
 
     expect($engagement->matchingStrategy->location_summary)->toEqual('All provinces and territories');
     expect($engagement->matchingStrategy->disability_and_deaf_group_summary)->toEqual('Cross disability (includes people with disabilities, Deaf people, and supporters)');
-    expect($engagement->matchingStrategy->other_identities_summary)->toEqual('Intersectional');
+    expect($engagement->matchingStrategy->other_identities_summary)->toEqual('Intersectional - This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.');
 
     $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
     $response->assertOk();

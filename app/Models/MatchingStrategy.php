@@ -155,7 +155,7 @@ class MatchingStrategy extends Model
                     'refugee-or-immigrant' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray()),
                     'first-language' => implode("  \n", $this->languages->map(fn ($language) => $language->name)->toArray()),
                     'area-type' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray()),
-                    default => __('Intersectional')
+                    default => __('Intersectional').' - '.__('This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.'),
                 };
             },
         );
