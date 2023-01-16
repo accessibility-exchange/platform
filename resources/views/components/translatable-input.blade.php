@@ -7,12 +7,12 @@
                 @else
                     <x-hearth-label :for="$name . '_' . $language" :value="$label . ' (' . get_language_exonym($language) . ')'" />
                 @endif
+                @if ($hint)
+                    <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
+                @endif
                 @if ($interpretationName)
                     <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
                         namespace={{ $interpretationNameSpace }} />
-                @endif
-                @if ($hint)
-                    <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
                 @endif
                 <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'"
                     :required="$required" />

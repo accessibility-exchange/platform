@@ -11,7 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Interests') }}
             </h2>
-            <x-interpretation name="{{ __('Interests', [], 'en') }}" />
+            <x-interpretation class="interpretation--start" name="{{ __('Interests', [], 'en') }}" />
             <hr class="divider--thick">
             <fieldset class="field @error('sectors') field--error @enderror">
                 <legend>
@@ -27,11 +27,11 @@
                 <legend>
                     {{ __('What areas of the Accessible Canada Act are you most interested in working on?') . ' ' . __('(optional)') }}
                 </legend>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('What areas of the Accessible Canada Act are you most interested in working on? (optional)', [], 'en') }}" />
                 <x-hearth-hint for="impacts">
                     {{ __('These are the seven areas listed within the Accessible Canada Act. Federally regulated organizations must work to improve their accessibility in all of these areas.') }}
                 </x-hearth-hint>
+                <x-interpretation class="interpretation--start"
+                    name="{{ __('What areas of the Accessible Canada Act are you most interested in working on? (optional)', [], 'en') }}" />
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $individual->impactsOfInterest->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />
             </fieldset>

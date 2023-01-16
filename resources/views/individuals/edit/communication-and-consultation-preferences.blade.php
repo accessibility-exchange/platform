@@ -10,7 +10,8 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Communication and consultation preferences') }}
             </h2>
-            <x-interpretation name="{{ __('Communication and consultation preferences', [], 'en') }}" />
+            <x-interpretation class="interpretation--start"
+                name="{{ __('Communication and consultation preferences', [], 'en') }}" />
 
             <hr class="divider--thick">
 

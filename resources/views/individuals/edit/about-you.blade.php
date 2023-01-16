@@ -16,15 +16,19 @@
 
             <hr class="divider--thick">
 
-            <div class="field @error('name') field--error @enderror">
-                <x-hearth-label for="name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
-                <x-interpretation class="interpretation--start" name="{{ __('Name (required)', [], 'en') }}" />
-                <x-hearth-hint for="name">
-                    {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
-                </x-hearth-hint>
-                <x-hearth-input name="name" type="text" :value="old('name', $individual->name)" required hinted />
-                <x-hearth-error for="name" />
-            </div>
+            <fieldset>
+                <div class="field @error('name') field--error @enderror">
+                    <x-hearth-label for="name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
+                    <x-hearth-hint for="name">
+                        {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
+                    </x-hearth-hint>
+                    <x-interpretation class="interpretation--start" name="{{ __('Name (required)', [], 'en') }}" />
+                    <x-hearth-input name="name" type="text" :value="old('name', $individual->name)" required hinted />
+                    <x-hearth-error for="name" />
+                </div>
+            </fieldset>
+
+            <hr class="divider--thin">
 
             <fieldset>
                 <legend>{{ __('Where do you live?') }}</legend>
@@ -49,11 +53,17 @@
                 </div>
             </fieldset>
 
-            <div class="field @error('pronouns') field--error @enderror">
-                <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
-                    :hint="__('For example: he/him, she/her, they/them.')" :interpretationName="'Pronouns (optional)'" />
-                <x-hearth-error for="pronouns" />
-            </div>
+            <hr class="divider--thin">
+
+            <fieldset>
+                <div class="field @error('pronouns') field--error @enderror">
+                    <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
+                        :hint="__('For example: he/him, she/her, they/them.')" :interpretationName="'Pronouns (optional)'" />
+                    <x-hearth-error for="pronouns" />
+                </div>
+            </fieldset>
+
+            <hr class="divider--thin">
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror">
@@ -66,6 +76,8 @@
 
                 {{-- TODO: Upload a file. --}}
             </fieldset>
+
+            <hr class="divider--thin">
 
             <fieldset>
                 <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional></legend>
@@ -92,12 +104,14 @@
                 </fieldset>
             @endif
 
+            <hr class="divider--thick">
+
             <fieldset>
                 <legend>{{ __('Social media links') }}</legend>
-                <x-interpretation class="interpretation--start" name="{{ __('Social media links', [], 'en') }}" />
                 <x-hearth-hint for="social_links">
                     {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
+                <x-interpretation class="interpretation--start" name="{{ __('Social media links', [], 'en') }}" />
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
                     <div class="field @error('social_links.' . $key) field--error @enderror">
                         <x-hearth-label
@@ -110,13 +124,15 @@
                 @endforeach
             </fieldset>
 
+            <hr class="divider--thick">
+
             <div class="field @error('website_link') field-error @enderror">
                 <x-hearth-label class="h4"
                     for="website_link"><x-optional>{{ __('Website link') }}</x-optional></x-hearth-label>
-                <x-interpretation class="interpretation--start" name="{{ __('Website link (optional)', [], 'en') }}" />
                 <x-hearth-hint
                     for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
+                <x-interpretation class="interpretation--start" name="{{ __('Website link (optional)', [], 'en') }}" />
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>

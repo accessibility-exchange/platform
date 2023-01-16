@@ -32,6 +32,10 @@
                 @endcan
                 <button class="secondary" name="publish" value="1"
                     @cannot('publish', $individual) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
+                @cannot('publish', $individual)
+                <p id="cannot-publish-explanation">
+                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                </p>
                 @can('publish', $individual)
                     <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
                         namespace="publish-page" />
@@ -39,10 +43,6 @@
                     <x-interpretation class="interpretation--start" name="{{ __('Publish page (not available)', [], 'en') }}"
                         namespace="publish-page-disabled" />
                 @endcan
-                @cannot('publish', $individual)
-                <p id="cannot-publish-explanation">
-                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
-                </p>
             @endcannot
             </p>
         @else

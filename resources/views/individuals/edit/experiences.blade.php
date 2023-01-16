@@ -11,7 +11,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => $individual->isConnector() ? 5 : 4]) }}<br />
                 {{ __('Experiences') }}
             </h2>
-            <x-interpretation name="{{ __('Experiences', [], 'en') }}" />
+            <x-interpretation class="interpretation--start" name="{{ __('Experiences', [], 'en') }}" />
             <hr class="divider--thick">
             <fieldset>
                 <legend>{{ __('Lived experience') }}</legend>
@@ -31,6 +31,8 @@
                 {{-- Upload a file --}}
             </fieldset>
 
+            <hr class="divider--thick">
+
             <fieldset>
                 <legend>{{ __('Skills and strengths') }}</legend>
 
@@ -47,10 +49,10 @@
 
             <fieldset class="stack">
                 <legend>{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('Relevant experiences (optional)', [], 'en') }}" />
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
+                <x-interpretation class="interpretation--start"
+                    name="{{ __('Relevant experiences (optional)', [], 'en') }}" />
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
             </fieldset>
 
