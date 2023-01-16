@@ -2,8 +2,12 @@
     <x-quick-links>
         @if ($user->individual->isConnector() || $user->individual->isConsultant())
             <li>
-                <a
-                    href="{{ $user->individual->checkStatus('draft') ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">{{ __('Public page') }}</a>
+                @if ($user->individual->checkStatus('published'))
+                    <a href="{{ localized_route('individuals.show', $user->individual) }}">{{ __('My public page') }}</a>
+                @else
+                    <a
+                        href="{{ localized_route('individuals.edit', $user->individual) }}">{{ __('Edit my public page') }}</a>
+                @endif
             </li>
             @can('viewAny', App\Models\Project::class)
                 <li>

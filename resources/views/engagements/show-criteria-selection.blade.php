@@ -139,11 +139,13 @@
                         x-show="intersectional == 0">
                         <x-hearth-label for="other_identity_type">{{ __('Types of experiences or identities') }}
                         </x-hearth-label>
+                        <x-hearth-hint
+                            for="other_identity_type">{{ __('To protect the privacy of participants, you are only able to pick one of the following criteria.') }}</x-hearth-hint>
                         <x-hearth-select name="other_identity_type" :options="$otherIdentityOptions" :selected="old(
                             'other_identity_type',
                             $engagement->matchingStrategy->extra_attributes->get('other_identity_type', ''),
                         )"
-                            x-model="otherIdentityType" />
+                            x-model="otherIdentityType" hinted="other_identity_type-hint" />
                         <x-hearth-error for="other_identity_type" />
                     </div>
                     <div x-show="intersectional == 0" x-cloak>
