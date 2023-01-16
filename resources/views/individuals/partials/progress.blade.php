@@ -1,5 +1,10 @@
 <div class="steps stack">
     <h3>{{ __('Page sections') }}</h3>
+    @if ($individual->isConnector())
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections (connector)', [], 'en') }}" />
+    @else
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}" />
+    @endif
 
     <ol class="progress stack">
         @foreach ($individual->steps() as $step => $value)
@@ -27,7 +32,13 @@
                 @endcan
                 <button class="secondary" name="publish" value="1"
                     @cannot('publish', $individual) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
-                <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}" />
+                @can('publish', $individual)
+                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
+                        namespace="publish-page" />
+                @else
+                    <x-interpretation class="interpretation--start" name="{{ __('Publish page (not available)', [], 'en') }}"
+                        namespace="publish-page-disabled" />
+                @endcan
                 @cannot('publish', $individual)
                 <p id="cannot-publish-explanation">
                     {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}

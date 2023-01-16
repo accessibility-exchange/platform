@@ -79,7 +79,7 @@
             <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
+                    <x-interpretation name="{{ __('Join our accessibility community (individuals)', [], 'en') }}" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>

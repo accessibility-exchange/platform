@@ -18,7 +18,7 @@
                     {{ __('What sectors of Federally Regulated Organizations are you interested in working with?') . ' ' . __('(optional)') }}
                 </legend>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What sectors of Federally Regulated Organizations are you interested in working with?', [], 'en') }}" />
+                    name="{{ __('What sectors of Federally Regulated Organizations are you interested in working with? (optional)', [], 'en') }}" />
                 <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
                 <x-hearth-error for="sectors" />
             </fieldset>
@@ -28,7 +28,7 @@
                     {{ __('What areas of the Accessible Canada Act are you most interested in working on?') . ' ' . __('(optional)') }}
                 </legend>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What areas of the Accessible Canada Act are you most interested in working on?', [], 'en') }}" />
+                    name="{{ __('What areas of the Accessible Canada Act are you most interested in working on? (optional)', [], 'en') }}" />
                 <x-hearth-hint for="impacts">
                     {{ __('These are the seven areas listed within the Accessible Canada Act. Federally regulated organizations must work to improve their accessibility in all of these areas.') }}
                 </x-hearth-hint>

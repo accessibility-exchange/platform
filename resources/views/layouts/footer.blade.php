@@ -26,8 +26,8 @@
             <div class="switcher grow:2">
                 <div class="stack" id="contact" tabindex="-1">
                     <h2>{{ __('Contact') }}</h2>
-                    <x-interpretation class="interpretation--start" name="{{ __('Contact', [], 'en') }}"
-                        namespace="contact" />
+                    <x-interpretation class="interpretation--start" name="{{ __('Footer: Contact', [], 'en') }}"
+                        namespace="footer-contact" />
                     <address class="stack">
                         <h3>{{ __('Email') }}</h3>
                         <p><a

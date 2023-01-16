@@ -18,7 +18,7 @@
 
             <div class="field @error('name') field--error @enderror">
                 <x-hearth-label for="name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
-                <x-interpretation class="interpretation--start" name="{{ __('Name', [], 'en') }}" />
+                <x-interpretation class="interpretation--start" name="{{ __('Name (required)', [], 'en') }}" />
                 <x-hearth-hint for="name">
                     {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
                 </x-hearth-hint>
@@ -33,14 +33,16 @@
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label
                         for="region"><x-required>{{ __('Province or territory') }}</x-required></x-hearth-label>
-                    <x-interpretation class="interpretation--start" name="{{ __('Province or territory', [], 'en') }}"
-                        namespace="province-territory" />
+                    <x-interpretation class="interpretation--start"
+                        name="{{ __('Province or territory (required)', [], 'en') }}" namespace="province-territory" />
                     <x-hearth-select name="region" :options="$regions" :selected="old('region', $individual->region)" required />
                     <x-hearth-error for="region" />
                 </div>
 
                 <div class="field @error('locality') field--error @enderror">
                     <x-hearth-label for="locality"><x-optional>{{ __('City or town') }}</x-optional></x-hearth-label>
+                    <x-interpretation class="interpretation--start"
+                        name="{{ __('City or town (optional)', [], 'en') }}" />
                     <x-hearth-input name="locality" type="text"
                         value="{{ old('locality', $individual->locality) }}" />
                     <x-hearth-error for="locality" />
@@ -49,7 +51,7 @@
 
             <div class="field @error('pronouns') field--error @enderror">
                 <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
-                    :hint="__('For example: he/him, she/her, they/them.')" />
+                    :hint="__('For example: he/him, she/her, they/them.')" :interpretationName="'Pronouns (optional)'" />
                 <x-hearth-error for="pronouns" />
             </div>
 
@@ -58,7 +60,7 @@
                     <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :shortLabel="__('bio')" :model="$individual"
                         :hint="__(
                             'This can include information about your background, and why you are interested in accessibility.',
-                        )" required />
+                        )" :interpretationName="'Your bio (required)'" required />
                     <x-hearth-error for="bio" />
                 </div>
 
@@ -68,7 +70,7 @@
             <fieldset>
                 <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional></legend>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}" />
+                    name="{{ __('What language(s) are you comfortable working in? (optional)', [], 'en') }}" />
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
@@ -83,7 +85,7 @@
                         <x-required>{{ __('How can you help a regulated organization?') }}</x-required>
                     </legend>
                     <x-interpretation class="interpretation--start"
-                        name="{{ __('How can you help a regulated organization?', [], 'en') }}" />
+                        name="{{ __('How can you help a regulated organization? (required)', [], 'en') }}" />
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
                     <x-hearth-error for="consulting_services" />
@@ -111,9 +113,7 @@
             <div class="field @error('website_link') field-error @enderror">
                 <x-hearth-label class="h4"
                     for="website_link"><x-optional>{{ __('Website link') }}</x-optional></x-hearth-label>
-                @if (locale() === 'lsq')
-                    <x-interpretation class="interpretation--start" name="{{ __('Website link', [], 'en') }}" />
-                @endif
+                <x-interpretation class="interpretation--start" name="{{ __('Website link (optional)', [], 'en') }}" />
                 <x-hearth-hint
                     for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
