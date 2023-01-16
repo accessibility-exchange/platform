@@ -24,7 +24,7 @@
 
         <h2>{{ __('Other identities') }}</h2>
 
-        {{ __('Intersectional') . ' - ' . __('This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.') }}
+        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
 
         <form class="mt-12" action="{{ localized_route('engagements.join', $engagement) }}" method="post">
             @csrf
