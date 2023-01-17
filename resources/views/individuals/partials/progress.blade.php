@@ -1,10 +1,5 @@
 <div class="steps stack">
     <h3>{{ __('Page sections') }}</h3>
-    @if ($individual->isConnector())
-        <x-interpretation class="interpretation--start" name="{{ __('Page sections (connector)', [], 'en') }}" />
-    @else
-        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}" />
-    @endif
 
     <ol class="progress stack">
         @foreach ($individual->steps() as $step => $value)
@@ -23,6 +18,13 @@
             @endif
         @endforeach
     </ol>
+
+    @if ($individual->isConnector())
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}"
+            namespace="page_sections-connector" />
+    @else
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}" />
+    @endif
 
     @can('update', $individual)
         @if ($individual->checkStatus('draft'))

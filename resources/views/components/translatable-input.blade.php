@@ -12,7 +12,7 @@
                 @endif
                 @isset($interpretationName)
                     <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
-                        namespace="{{ isset($interpretationNameSpace) }}" />
+                        namespace="{{ $interpretationNameSpace }}" />
                 @endisset
                 <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'"
                     :required="$required" />
