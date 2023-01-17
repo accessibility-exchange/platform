@@ -28,7 +28,7 @@
                 <fieldset x-show="contactPerson == 'me'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation class="interpretation--start" name="{{ __('Contact information', [], 'en') }}"
-                        namespace="contact-information" />
+                        namespace="contact_information" />
                     <div class="field @error('email') field-error @enderror">
                         <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
                         <x-interpretation class="interpretation--start"
@@ -64,7 +64,7 @@
                 <fieldset x-show="contactPerson == 'support-person'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation class="interpretation--start" name="{{ __('Contact information', [], 'en') }}"
-                        namespace="contact-information" />
+                        namespace="contact_information" />
                     <div class="field @error('support_person_name') field-error @enderror">
                         <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
                         <x-interpretation class="interpretation--start"
@@ -134,7 +134,7 @@
                         <button class="secondary" name="save_and_previous"
                             value="1">{{ __('Save and previous') }}</button>
                         <x-interpretation class="interpretation--start" name="{{ __('Save and previous', [], 'en') }}"
-                            namespace="save-previous" />
+                            namespace="save_previous" />
                     </div>
                     <div>
                         <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

@@ -66,5 +66,5 @@
         </div>
     </x-expander>
     <x-interpretation class="interpretation--start" name="{{ __('Edit page translations', [], 'en') }}"
-        namespace="edit-translations" />
+        namespace="edit_translations" />
 </div>

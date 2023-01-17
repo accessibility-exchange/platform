@@ -11,8 +11,12 @@
                     <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
                 @endif
                 @isset($interpretationName)
-                    <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
-                        namespace="{{ $interpretationNameSpace }}" />
+                    @isset($interpretationNameSpace)
+                        <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
+                            namespace="{{ $interpretationNameSpace }}" />
+                    @else
+                        <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}" />
+                    @endisset
                 @endisset
                 <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'"
                     :required="$required" />

@@ -38,7 +38,7 @@
                     <x-hearth-label
                         for="region"><x-required>{{ __('Province or territory') }}</x-required></x-hearth-label>
                     <x-interpretation class="interpretation--start"
-                        name="{{ __('Province or territory (required)', [], 'en') }}" namespace="province-territory" />
+                        name="{{ __('Province or territory (required)', [], 'en') }}" namespace="province_territory" />
                     <x-hearth-select name="region" :options="$regions" :selected="old('region', $individual->region)" required />
                     <x-hearth-error for="region" />
                 </div>
@@ -88,7 +88,7 @@
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
                 )" :availableLanguages="$languages" />
                 <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
-                    namespace="add-language" />
+                    namespace="add_language" />
             </fieldset>
 
             @if ($individual->isConsultant())
@@ -149,7 +149,7 @@
                     <div>
                         <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
                         <x-interpretation class="interpretation--start" name="{{ __('Save and next', [], 'en') }}"
-                            namespace="save-next" />
+                            namespace="save_next" />
                     </div>
                 @else
                     <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

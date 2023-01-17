@@ -40,10 +40,10 @@
                 </p>
                 @can('publish', $individual)
                     <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
-                        namespace="publish-page" />
+                        namespace="publish_page" />
                 @else
                     <x-interpretation class="interpretation--start" name="{{ __('Publish page (not available)', [], 'en') }}"
-                        namespace="publish-page-disabled" />
+                        namespace="publish_page-disabled" />
                 @endcan
             @endcannot
             </p>

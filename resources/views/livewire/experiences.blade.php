@@ -44,6 +44,6 @@
     @if ($this->canAddMoreExperiences())
         <button class="secondary" type="button" wire:click="addExperience">{{ __('Add experience') }}</button>
         <x-interpretation class="interpretation--start" name="{{ __('Add experience', [], 'en') }}"
-            namespace="add-experience" />
+            namespace="add_experience" />
     @endif
 </div>

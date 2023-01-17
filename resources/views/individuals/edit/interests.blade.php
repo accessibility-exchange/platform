@@ -42,7 +42,7 @@
                         <button class="secondary" name="save_and_previous"
                             value="1">{{ __('Save and previous') }}</button>
                         <x-interpretation class="interpretation--start" name="{{ __('Save and previous', [], 'en') }}"
-                            namespace="save-previous" />
+                            namespace="save_previous" />
                     </div>
                     <div>
                         <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
@@ -52,7 +52,7 @@
                     <div>
                         <button name="save_and_next" value="1">{{ __('Save and next') }}</button>
                         <x-interpretation class="interpretation--start" name="{{ __('Save and next', [], 'en') }}"
-                            namespace="save-next" />
+                            namespace="save_next" />
                     </div>
                 @else
                     <button class="secondary" name="save_and_previous"
