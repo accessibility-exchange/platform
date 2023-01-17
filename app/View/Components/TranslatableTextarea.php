@@ -59,14 +59,14 @@ class TranslatableTextarea extends Component
     /**
      * The name for asl or lsq content.
      *
-     * @var string
+     * @var null|string
      */
     public ?string $interpretationName;
 
     /**
      * The namespace for asl or lsq content.
      *
-     * @var string
+     * @var null|string
      */
     public ?string $interpretationNameSpace;
 
