@@ -8,8 +8,10 @@
             </p>
             @guest
                 <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" namespace="welcome-guest" />
+            @else
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
             @endguest
-            <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
         </div>
     </x-slot>
 

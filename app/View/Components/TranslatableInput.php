@@ -59,23 +59,23 @@ class TranslatableInput extends Component
     /**
      * The name for asl or lsq content.
      *
-     * @var bool
+     * @var string
      */
-    public $interpretationName;
+    public ?string $interpretationName;
 
     /**
      * The namespace for asl or lsq content.
      *
-     * @var bool
+     * @var string
      */
-    public $interpretationNameSpace;
+    public ?string $interpretationNameSpace;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '', $required = false, $interpretationName = '', $interpretationNameSpace = '')
+    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '', $required = false, $interpretationName = null, $interpretationNameSpace = null)
     {
         $languages = $model->languages ?? config('locales.supported');
 
