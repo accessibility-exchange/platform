@@ -4,7 +4,7 @@
 [![Latest release](https://badgen.net/github/release/accessibility-exchange/platform)](https://github.com/accessibility-exchange/platform/releases/latest)
 [![Check status](https://badgen.net/github/checks/accessibility-exchange/platform/dev)](https://github.com/accessibility-exchange/platform/actions)
 [![Code coverage](https://badgen.net/codecov/c/github/accessibility-exchange/platform)](https://codecov.io/gh/accessibility-exchange/platform/)
-[![Localization status](https://badges.crowdin.net/accessibility-in-action/localized.svg)](https://crowdin.com/project/accessibility-in-action)
+[![Localization status](https://badges.crowdin.net/tae/localized.svg)](https://crowdin.com/project/tae)
 
 The Accessibility Exchange is a two-year initiative managed by the
 [Institute for Research and Development on Inclusion and Society (IRIS)](https://irisinstitute.ca/) that sets out to

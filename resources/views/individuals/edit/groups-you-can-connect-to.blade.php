@@ -57,7 +57,7 @@
                     <legend>
                         <x-required>{{ __('Please select the disability and/or Deaf groups that you can connect to.') }}</x-required>
                     </legend>
-                    <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $individual->base_disability_type ?? '')"
+                    <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $individual->base_disability_type) ?? ''"
                         x-model="baseDisabilityType" />
                     <x-hearth-error for="base_disability_type" />
                 </fieldset>

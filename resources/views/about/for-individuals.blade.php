@@ -8,6 +8,7 @@
             <span class="font-medium">{{ __('How this works for') }}</span><br />
             {{ __('individuals') }}
         </h1>
+        <x-interpretation name="{{ __('How this works for individuals', [], 'en') }}" />
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
@@ -16,8 +17,8 @@
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
-                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
+                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
             </div>
 
             <x-media-text>
@@ -31,6 +32,7 @@
                     <p><a
                             href="{{ localized_route('about.individual-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be a Consultation Participant', [], 'en') }}" />
                 </div>
             </x-media-text>
 
@@ -45,6 +47,7 @@
                     <p><a
                             href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Learn more about being an Accessibility Consultant') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be an Accessibility Consultant', [], 'en') }}" />
                 </div>
             </x-media-text>
 
@@ -59,6 +62,7 @@
                     <p><a
                             href="{{ localized_route('about.individual-community-connectors') }}">{{ __('Learn more about being a Community Connector') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be a Community Connector', [], 'en') }}" />
                 </div>
             </x-media-text>
         </x-section>
@@ -68,13 +72,13 @@
                 {{ __('Have more questions?') }}<br />
                 {{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
             </p>
+            <x-interpretation name="{{ __('Have more questions?', [], 'en') }}" namespace="questions" />
         </x-section>
 
         @guest
             <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>
@@ -86,6 +90,8 @@
                             </p>
                         </div>
                     </div>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
+                        namespace="join-individuals" />
                 </div>
             </x-section>
         @endguest

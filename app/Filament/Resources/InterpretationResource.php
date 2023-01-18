@@ -51,6 +51,7 @@ class InterpretationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->disableClick(),
+                Tables\Columns\TextColumn::make('namespace')->disableClick(),
                 Tables\Columns\TextColumn::make('context')
                     ->label(__('Show context'))
                     ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').' '.$record->name.'</span>')

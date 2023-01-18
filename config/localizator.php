@@ -29,6 +29,14 @@ return [
         'dirs' => ['database/seeders', 'resources/views', 'app'],
 
         /**
+         * Subdirectories which will be excluded.
+         * The values must be relative to the included directory paths.
+         */
+        'exclude' => [
+            //
+        ],
+
+        /**
          * Patterns by which files should be queried.
          * The values can be a regular expresion, glob, or just a string.
          */
