@@ -51,6 +51,8 @@
                 {{-- Upload a file --}}
             </fieldset>
 
+            <hr class="divider--thick">
+
             <fieldset class="stack">
                 <legend class="h4">{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
