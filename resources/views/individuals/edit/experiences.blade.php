@@ -14,7 +14,7 @@
             <x-interpretation class="interpretation--start" name="{{ __('Experiences', [], 'en') }}" />
             <hr class="divider--thick">
             <fieldset>
-                <legend>{{ __('Lived experience') }}</legend>
+                <legend class="h4">{{ __('Lived experience') }}</legend>
 
                 <div class="field @error('lived_experience') field--error @enderror">
                     <x-translatable-textarea name="lived_experience" :model="$individual" hinted="lived_experience-hint"
@@ -36,7 +36,7 @@
             <hr class="divider--thick">
 
             <fieldset>
-                <legend>{{ __('Skills and strengths') }}</legend>
+                <legend class="h4">{{ __('Skills and strengths') }}</legend>
 
                 <div class="field @error('skills_and_strengths') field--error @enderror">
                     <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths relevant to The Accessibility Exchange?') .
@@ -52,7 +52,7 @@
             </fieldset>
 
             <fieldset class="stack">
-                <legend>{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
+                <legend class="h4">{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
                 <x-interpretation class="interpretation--start"

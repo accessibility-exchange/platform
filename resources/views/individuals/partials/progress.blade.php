@@ -31,6 +31,8 @@
             <p class="stack">
                 @can('publish', $individual)
                     <button class="secondary" name="preview" value="1">{{ __('Preview page') }}</button>
+                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
+                        namespace="publish_page" />
                 @endcan
                 <button class="secondary" name="publish" value="1"
                     @cannot('publish', $individual) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
@@ -38,13 +40,8 @@
                 <p id="cannot-publish-explanation">
                     {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
                 </p>
-                @can('publish', $individual)
-                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
-                        namespace="publish_page" />
-                @else
-                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
-                        namespace="publish_page-disabled" />
-                @endcan
+                <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
+                    namespace="publish_page-disabled" />
             @endcannot
             </p>
         @else

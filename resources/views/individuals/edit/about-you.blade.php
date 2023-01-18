@@ -111,7 +111,7 @@
             <hr class="divider--thick">
 
             <fieldset>
-                <legend>{{ __('Social media links') }}</legend>
+                <legend class="h4">{{ __('Social media links') }}</legend>
                 <x-hearth-hint for="social_links">
                     {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
