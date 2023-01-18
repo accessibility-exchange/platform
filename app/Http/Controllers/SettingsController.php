@@ -50,6 +50,26 @@ class SettingsController extends Controller
         );
     }
 
+    public function matching(): View
+    {
+        return view('settings.matching.show');
+    }
+
+    public function howMatching(): View
+    {
+        return view('settings.matching.how-matching-works');
+    }
+
+    public function editMatching(): View
+    {
+        return view('settings.matching.edit');
+    }
+
+    // public function destroyMatching(): RedirectResponse
+    // {
+    //     return view('settings.matching.delete');
+    // }
+
     public function editAccessNeeds(): View
     {
         Gate::allowIf(fn ($user) => $user->context === 'individual');

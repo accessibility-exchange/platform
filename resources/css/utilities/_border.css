@@ -13,3 +13,7 @@
 .border--turquoise {
     border-block-start-color: var(--border-color-turquoise);
 }
+
+.border--teal {
+    border-block-start-color: var(--border-color-teal);
+}
