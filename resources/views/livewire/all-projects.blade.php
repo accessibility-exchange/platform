@@ -197,7 +197,8 @@
                 </fieldset>
             </x-expander>
             <div class="mt-6">
-                <button class="secondary" type="button" wire:click="selectNone()">{{ __('Select none') }}</button>
+                <button class="secondary" type="button"
+                    wire:click="selectNone()">{{ __('Clear filters') }}</button>
             </div>
         </div>
         <div class="md:pl-4">
