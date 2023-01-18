@@ -24,7 +24,9 @@
                             ' ' .
                             __('(optional)')" :shortLabel="__('lived experiences')" :hint="__(
                             'Feel free to self-identify your experiences of disability, if you feel it is relevant to your work.',
-                        )" :interpretationName="'What are your lived experiences of disability or other intersectional identities? (optional)'" />
+                        )"
+                        interpretationName="What are your lived experiences of disability or other intersectional identities?"
+                        interpretationNameSpace="your_lived_experience_disability_intersectional-optional" />
                     <x-hearth-error for="lived_experience" />
                 </div>
 
@@ -40,7 +42,9 @@
                     <x-translatable-textarea name="skills_and_strengths" :model="$individual" :label="__('What are your skills and strengths relevant to The Accessibility Exchange?') .
                         ' ' .
                         __('(optional)')"
-                        :shortLabel="__('skills and strengths')" :interpretationName="'What are your skills and strengths relevant to The Accessibility Exchange? (optional)'" />
+                        :shortLabel="__('skills and strengths')"
+                        interpretationName="What are your skills and strengths relevant to The Accessibility Exchange?"
+                        interpretationNameSpace="your_skills_and_strengths-optional" />
                     <x-hearth-error for="skills_and_strengths" />
                 </div>
 
@@ -52,7 +56,8 @@
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('Relevant experiences (optional)', [], 'en') }}" />
+                    name="{{ __('Relevant experiences (optional)', [], 'en') }}"
+                    namespace="relevant_experiences-optional" />
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
             </fieldset>
 

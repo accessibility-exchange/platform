@@ -17,8 +17,8 @@
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
-                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
+                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
             </div>
 
             <x-media-text>
@@ -27,12 +27,12 @@
                 </x-slot>
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
-                    <x-interpretation name="{{ __('Be a Consultation Participant', [], 'en') }}" />
                     <p>{{ __('As an individual with a disability, Deaf person, or a supporter, you can participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. You can also gain access to resources and training on how to do this.') }}
                     </p>
                     <p><a
                             href="{{ localized_route('about.individual-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be a Consultation Participant', [], 'en') }}" />
                 </div>
             </x-media-text>
 
@@ -42,12 +42,12 @@
                 </x-slot>
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
-                    <x-interpretation name="{{ __('Be an Accessibility Consultant', [], 'en') }}" />
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
                     </p>
                     <p><a
                             href="{{ localized_route('about.individual-accessibility-consultants') }}">{{ __('Learn more about being an Accessibility Consultant') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be an Accessibility Consultant', [], 'en') }}" />
                 </div>
             </x-media-text>
 
@@ -57,12 +57,12 @@
                 </x-slot>
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
-                    <x-interpretation name="{{ __('Be a Community Connector', [], 'en') }}" />
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
                     </p>
                     <p><a
                             href="{{ localized_route('about.individual-community-connectors') }}">{{ __('Learn more about being a Community Connector') }}</a>
                     </p>
+                    <x-interpretation name="{{ __('Be a Community Connector', [], 'en') }}" />
                 </div>
             </x-media-text>
         </x-section>
@@ -79,8 +79,6 @@
             <x-section class="full accent" aria-labelledby="join">
                 <div class="center center:wide stack stack:xl">
                     <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
-                        namespace="join-individuals" />
                     <div class="grid">
                         <div class="stack">
                             <h3>{{ __('Sign up online') }}</h3>
@@ -92,6 +90,8 @@
                             </p>
                         </div>
                     </div>
+                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
+                        namespace="join-individuals" />
                 </div>
             </x-section>
         @endguest

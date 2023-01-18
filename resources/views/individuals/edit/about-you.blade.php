@@ -22,7 +22,8 @@
                     <x-hearth-hint for="name">
                         {{ __('This is the name that will be displayed on your page. This does not have to be your legal name.') }}
                     </x-hearth-hint>
-                    <x-interpretation class="interpretation--start" name="{{ __('Name (required)', [], 'en') }}" />
+                    <x-interpretation class="interpretation--start" name="{{ __('Name', [], 'en') }}"
+                        namespace="name-required" />
                     <x-hearth-input name="name" type="text" :value="old('name', $individual->name)" required hinted />
                     <x-hearth-error for="name" />
                 </div>
@@ -37,16 +38,16 @@
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label
                         for="region"><x-required>{{ __('Province or territory') }}</x-required></x-hearth-label>
-                    <x-interpretation class="interpretation--start"
-                        name="{{ __('Province or territory (required)', [], 'en') }}" namespace="province_territory" />
+                    <x-interpretation class="interpretation--start" name="{{ __('Province or territory', [], 'en') }}"
+                        namespace="province_territory-required" />
                     <x-hearth-select name="region" :options="$regions" :selected="old('region', $individual->region)" required />
                     <x-hearth-error for="region" />
                 </div>
 
                 <div class="field @error('locality') field--error @enderror">
                     <x-hearth-label for="locality"><x-optional>{{ __('City or town') }}</x-optional></x-hearth-label>
-                    <x-interpretation class="interpretation--start"
-                        name="{{ __('City or town (optional)', [], 'en') }}" />
+                    <x-interpretation class="interpretation--start" name="{{ __('City or town', [], 'en') }}"
+                        namespace="city_town-required" />
                     <x-hearth-input name="locality" type="text"
                         value="{{ old('locality', $individual->locality) }}" />
                     <x-hearth-error for="locality" />
@@ -58,7 +59,7 @@
             <fieldset>
                 <div class="field @error('pronouns') field--error @enderror">
                     <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
-                        :hint="__('For example: he/him, she/her, they/them.')" :interpretationName="'Pronouns (optional)'" />
+                        :hint="__('For example: he/him, she/her, they/them.')" interpretationName="Pronouns" interpretationNameSpace="pronouns-optional" />
                     <x-hearth-error for="pronouns" />
                 </div>
             </fieldset>
@@ -70,7 +71,8 @@
                     <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :shortLabel="__('bio')" :model="$individual"
                         :hint="__(
                             'This can include information about your background, and why you are interested in accessibility.',
-                        )" :interpretationName="'Your bio (required)'" required />
+                        )" interpretationName="Your bio" interpretationNameSpace="your_bio-required"
+                        required />
                     <x-hearth-error for="bio" />
                 </div>
 
@@ -82,7 +84,8 @@
             <fieldset>
                 <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional></legend>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What language(s) are you comfortable working in? (optional)', [], 'en') }}" />
+                    name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}"
+                    namespace="working_languages-optional" />
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
                     !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
@@ -97,7 +100,8 @@
                         <x-required>{{ __('How can you help a regulated organization?') }}</x-required>
                     </legend>
                     <x-interpretation class="interpretation--start"
-                        name="{{ __('How can you help a regulated organization? (required)', [], 'en') }}" />
+                        name="{{ __('How can you help a regulated organization?', [], 'en') }}"
+                        namespace="how_can_you_help_regulated_organization-required" />
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
                     <x-hearth-error for="consulting_services" />
@@ -132,7 +136,8 @@
                 <x-hearth-hint
                     for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                 </x-hearth-hint>
-                <x-interpretation class="interpretation--start" name="{{ __('Website link (optional)', [], 'en') }}" />
+                <x-interpretation class="interpretation--start" name="{{ __('Website link', [], 'en') }}"
+                    namespace="website_link-optional" />
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" hinted />
                 <x-hearth-error for="website_link" />
             </div>

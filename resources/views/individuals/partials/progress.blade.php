@@ -42,7 +42,7 @@
                     <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
                         namespace="publish_page" />
                 @else
-                    <x-interpretation class="interpretation--start" name="{{ __('Publish page (not available)', [], 'en') }}"
+                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
                         namespace="publish_page-disabled" />
                 @endcan
             @endcannot
