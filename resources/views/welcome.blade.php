@@ -32,7 +32,7 @@
         </div>
         <x-interpretation name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
         <div class="frame">
-            <div class="stack interpretation__video" x-data="vimeoPlayer({
+            <div class="stack w-full" x-data="vimeoPlayer({
                 url: @if (locale() === 'en') 'https://vimeo.com/789855323'
                     @elseif (locale() === 'fr')
                     'https://vimeo.com/789772188'
