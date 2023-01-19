@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserContext;
 use App\Http\Requests\DestroyUserRequest;
 use App\Http\Requests\SaveUserContextRequest;
 use App\Http\Requests\SaveUserDetailsRequest;
@@ -146,6 +147,7 @@ class UserController extends Controller
         $data = $request->validated();
 
         session()->put('context', $data['context']);
+        session()->put('isNewOrganizationContext', empty(session()->get('invitation')) && (UserContext::Organization->value === $data['context'] || UserContext::RegulatedOrganization->value === $data['context']));
 
         return redirect(localized_route('register', ['step' => 3]));
     }
