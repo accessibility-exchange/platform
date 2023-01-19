@@ -32,7 +32,22 @@
         </div>
         <x-interpretation name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
         <div class="frame">
-            <x-placeholder />
+            <div class="stack interpretation__video" x-data="vimeoPlayer({
+                url: @if (locale() === 'en') 'https://vimeo.com/789855323'
+                    @elseif (locale() === 'fr')
+                    'https://vimeo.com/789772188'
+                    @elseif (locale() === 'asl')
+                    'https://vimeo.com/788810528/73b8c80ad8'
+                    @elseif (locale() === 'lsq')
+                    'https://vimeo.com/789829171' @endif,
+                byline: false,
+                pip: true,
+                portrait: false,
+                responsive: true,
+                speed: true,
+                title: false
+            })" @ended="player().setCurrentTime(0)">
+            </div>
         </div>
     </section>
 
@@ -43,7 +58,22 @@
         <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
             <x-slot name="media">
-                <x-placeholder width="915" height="515" />
+                <div class="stack w-full" x-data="vimeoPlayer({
+                    url: @if (locale() === 'en') 'https://vimeo.com/789854664'
+                        @elseif (locale() === 'fr')
+                        'https://vimeo.com/789823447'
+                        @elseif (locale() === 'asl')
+                        'https://vimeo.com/788815524/4485f30067'
+                        @elseif (locale() === 'lsq')
+                        'https://vimeo.com/789829171' @endif,
+                    byline: false,
+                    pip: true,
+                    portrait: false,
+                    responsive: true,
+                    speed: true,
+                    title: false
+                })" @ended="player().setCurrentTime(0)">
+                </div>
             </x-slot>
             <div class="flex h-full flex-col justify-center">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
@@ -55,7 +85,22 @@
         </x-media-text>
         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
             <x-slot name="media">
-                <x-placeholder width="915" height="515" />
+                <div class="stack w-full" x-data="vimeoPlayer({
+                    url: @if (locale() === 'en') 'https://vimeo.com/789854286'
+                        @elseif (locale() === 'fr')
+                        'https://vimeo.com/789770856'
+                        @elseif (locale() === 'asl')
+                        'https://vimeo.com/788820695/f357173576'
+                        @elseif (locale() === 'lsq')
+                        'https://vimeo.com/789829171' @endif,
+                    byline: false,
+                    pip: true,
+                    portrait: false,
+                    responsive: true,
+                    speed: true,
+                    title: false
+                })" @ended="player().setCurrentTime(0)">
+                </div>
             </x-slot>
             <div class="flex h-full flex-col justify-center">
                 <h3><a
@@ -69,7 +114,22 @@
         </x-media-text>
         <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
             <x-slot name="media">
-                <x-placeholder width="915" height="515" />
+                <div class="stack w-full" x-data="vimeoPlayer({
+                    url: @if (locale() === 'en') 'https://vimeo.com/789854538'
+                        @elseif (locale() === 'fr')
+                        'https://vimeo.com/789771460'
+                        @elseif (locale() === 'asl')
+                        'https://vimeo.com/788818374/779a5e9913'
+                        @elseif (locale() === 'lsq')
+                        'https://vimeo.com/789829171' @endif,
+                    byline: false,
+                    pip: true,
+                    portrait: false,
+                    responsive: true,
+                    speed: true,
+                    title: false
+                })" @ended="player().setCurrentTime(0)">
+                </div>
             </x-slot>
             <div class="flex h-full flex-col justify-center">
                 <h3><a
@@ -93,9 +153,6 @@
                 <x-interpretation name="{{ __('What do we mean when we say “disability”?', [], 'en') }}" />
                 {{-- TODO: add link to glossary definition --}}
                 {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
-            </div>
-            <div class="frame">
-                <x-placeholder />
             </div>
         </div>
     </section>

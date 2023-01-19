@@ -24,25 +24,20 @@
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('Who can be a :role?', ['role' => __('Consultation Participant')]) !!}</h2>
             <x-interpretation name="{{ __('Who can be a :role?', [], 'en') }}" />
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <p>{{ __('A person who brings lived experience of disability, a member of the Deaf community and/or a supporter of persons who are Deaf, disabled or both.') }}
-                    </p>
-                    <p>{{ __('Any of the following could be Consultation Participants:') }}
-                    <ul>
-                        <li>{{ 'persons with disabilities' }}</li>
-                        <li>{{ 'Deaf persons' }}</li>
-                        <li>{{ 'their supporters' }}</li>
-                        <li>{{ 'persons representing Disability organizations' }}</li>
-                        <li>{{ 'Disability support organizations' }}</li>
-                        <li>{{ 'broader civil society organizations.' }}</li>
-                    </ul>
-                    </p>
-                </div>
-            </x-media-text>
+            <div class="stack flex h-full flex-col justify-center items-center">
+                <p>{{ __('A person who brings lived experience of disability, a member of the Deaf community and/or a supporter of persons who are Deaf, disabled or both.') }}
+                </p>
+                <p>{{ __('Any of the following could be Consultation Participants:') }}
+                <ul class="flex flex-col w-1/2">
+                    <li>{{ 'persons with disabilities' }}</li>
+                    <li>{{ 'Deaf persons' }}</li>
+                    <li>{{ 'their supporters' }}</li>
+                    <li>{{ 'persons representing Disability organizations' }}</li>
+                    <li>{{ 'Disability support organizations' }}</li>
+                    <li>{{ 'broader civil society organizations.' }}</li>
+                </ul>
+                </p>
+            </div>
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
@@ -50,11 +45,8 @@
                 <h2 id="how">{!! __('How does being a :role work?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
                 <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
             </div>
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
+            <div class="grid">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Sign up for the website and share a bit about yourself or your organization') }}</h3>
                     <p>{{ __('If you are willing to share more about your lived experience, we can match you to governments and businesses who are eager to hear from someone like you.') }}
                     </p>
@@ -66,29 +58,19 @@
                     <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Wait for the website to match you with a project') }}</h3>
                     <p>{{ __('Our website will match you to a project once one looking for someone with your experience becomes available. Once there is a match, you will get an email or text message asking if you would like to participate - it’s up to you to say yes or no.') }}
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
+                <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Work directly with businesses and governments') }}</h3>
                     <p>{{ __('You can communicate directly with the business or government to figure out when and how to work on their accessibility project. You will be paid for your work.') }}</a>
                     </p>
                 </div>
-            </x-media-text>
+            </div>
         </x-section>
 
         {{-- <x-section aria-labelledby="faq">

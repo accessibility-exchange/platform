@@ -12,19 +12,29 @@
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
-        <x-placeholder />
-
+        <div class="stack w-full" x-data="vimeoPlayer({
+            url: @if (locale() === 'en') 'https://vimeo.com/789854664'
+                @elseif (locale() === 'fr')
+                'https://vimeo.com/789823447'
+                @elseif (locale() === 'asl')
+                'https://vimeo.com/788815524/4485f30067'
+                @elseif (locale() === 'lsq')
+                'https://vimeo.com/789829171' @endif,
+            byline: false,
+            pip: true,
+            portrait: false,
+            responsive: true,
+            speed: true,
+            title: false
+        })" @ended="player().setCurrentTime(0)">
+        </div>
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
                 <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
             </div>
-
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
+            <div class="grid">
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('As an individual with a disability, Deaf person, or a supporter, you can participate in consultations by organizations and businesses who are working on accessibility projects and get paid for this. You can also gain access to resources and training on how to do this.') }}
@@ -34,12 +44,7 @@
                     </p>
                     <x-interpretation name="{{ __('Be a Consultation Participant', [], 'en') }}" />
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
@@ -49,12 +54,7 @@
                     </p>
                     <x-interpretation name="{{ __('Be an Accessibility Consultant', [], 'en') }}" />
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
@@ -64,7 +64,7 @@
                     </p>
                     <x-interpretation name="{{ __('Be a Community Connector', [], 'en') }}" />
                 </div>
-            </x-media-text>
+            </div>
         </x-section>
 
         <x-section class="accent--color text-center">
