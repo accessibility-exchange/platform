@@ -19,6 +19,10 @@ select {
     width: 100%;
 }
 
+option {
+    background-color: var(--theme-body-background);
+}
+
 input {
     height: var(--space-12);
 }
