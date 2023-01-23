@@ -43,7 +43,7 @@
             </div>
             <div class="grid">
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Sign up for the website and build your Accessibility Consultant profile') }}</h3>
+                    <h3>{{ __('1. Sign up for the website and build your Accessibility Consultant profile') }}</h3>
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
@@ -56,13 +56,13 @@
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Find projects that are looking for an Accessibility Consultant') }}</h3>
+                    <h3>{{ __('2. Find projects that are looking for an Accessibility Consultant') }}</h3>
                     <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}
                     </p>
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Work directly with governments and businesses') }}</h3>
+                    <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
                     <p>{{ __('Coordinate directly with governments and businesses on what they would like you to help with.') }}</a>
                     </p>
                 </div>

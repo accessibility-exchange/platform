@@ -34,13 +34,13 @@
             </div>
             <div class="grid">
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Sign up and share more about your organization') }}</h3>
+                    <h3>{{ __('1. Sign up and share more about your organization') }}</h3>
                     <p>{{ __('This information will help potential Consultation Participants on the website like individuals with disabilities, and individuals who are Deaf learn about your organization.') }}
                     </p>
                 </div>
 
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Share more about your projects and who you are looking to engage') }}</h3>
+                    <h3>{{ __('2. Share more about your projects and who you are looking to engage') }}</h3>
                     <p>{{ __('Organizations can decide which criteria they would like the participants for a project to have. They then have a choice between:') }}
                     <ul>
                         <li>{{ __('creating an open project, where anyone who matches their criteria can sign up. ') }}
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Work directly with people on your accessibility project') }}</h3>
+                    <h3>{{ __('3. Work directly with people on your accessibility project') }}</h3>
                     <p>{{ __('Once individuals agree to work on your project as Consultation Participants, you can reach out to them directly to coordinate how and when to work together.') }}</a>
                     </p>
                 </div>

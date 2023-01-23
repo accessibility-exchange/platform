@@ -41,7 +41,7 @@
             <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
             <div class="grid">
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Sign up for the website and build your Community Connector profile') }}</h3>
+                    <h3>{{ __('1. Sign up for the website and build your Community Connector profile') }}</h3>
                     <p>{{ __('Share some information about yourself, including which communities you are connected to, so governments and businesses can get to know you and how you may be able to help them.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-community-connectors'))
@@ -54,13 +54,13 @@
                 </div>
 
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Find projects that are looking for a Community Connector') }}</h3>
+                    <h3>{{ __('2. Find projects that are looking for a Community Connector') }}</h3>
                     <p>{{ __('Access governments and businesses who are looking for a Community Connector to help with a project.') }}
                     </p>
                 </div>
 
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('Work directly with governments and businesses') }}</h3>
+                    <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
                     <p>{{ __('Coordinate directly with governments and businesses on what help they need and whom they are seeking.') }}</a>
                     </p>
                 </div>
