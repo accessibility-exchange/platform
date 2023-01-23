@@ -19,7 +19,7 @@
                 @elseif (locale() === 'asl')
                 'https://vimeo.com/788815524/4485f30067'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789829171' @endif,
+                'https://vimeo.com/789828003' @endif,
             byline: false,
             pip: true,
             portrait: false,

@@ -54,27 +54,10 @@
     <section class="stack stack:lg" aria-labelledby="how">
         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
 
-        <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
+        <p class="text-center">{{ __('This site is for three kinds of users. Select an option below to learn more.') }}
+        </p>
         <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <div class="stack w-full" x-data="vimeoPlayer({
-                    url: @if (locale() === 'en') 'https://vimeo.com/789854664'
-                        @elseif (locale() === 'fr')
-                        'https://vimeo.com/789823447'
-                        @elseif (locale() === 'asl')
-                        'https://vimeo.com/788815524/4485f30067'
-                        @elseif (locale() === 'lsq')
-                        'https://vimeo.com/789829171' @endif,
-                    byline: false,
-                    pip: true,
-                    portrait: false,
-                    responsive: true,
-                    speed: true,
-                    title: false
-                })" @ended="player().setCurrentTime(0)">
-                </div>
-            </x-slot>
+        <div class="grid">
             <div class="flex h-full flex-col justify-center">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
@@ -82,26 +65,6 @@
                 </p>
                 <x-interpretation class="interpretation--start" name="{{ __('For Individuals', [], 'en') }}" />
             </div>
-        </x-media-text>
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <div class="stack w-full" x-data="vimeoPlayer({
-                    url: @if (locale() === 'en') 'https://vimeo.com/789854286'
-                        @elseif (locale() === 'fr')
-                        'https://vimeo.com/789770856'
-                        @elseif (locale() === 'asl')
-                        'https://vimeo.com/788820695/f357173576'
-                        @elseif (locale() === 'lsq')
-                        'https://vimeo.com/789829171' @endif,
-                    byline: false,
-                    pip: true,
-                    portrait: false,
-                    responsive: true,
-                    speed: true,
-                    title: false
-                })" @ended="player().setCurrentTime(0)">
-                </div>
-            </x-slot>
             <div class="flex h-full flex-col justify-center">
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
@@ -111,26 +74,6 @@
                 <x-interpretation class="interpretation--start"
                     name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
             </div>
-        </x-media-text>
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <div class="stack w-full" x-data="vimeoPlayer({
-                    url: @if (locale() === 'en') 'https://vimeo.com/789854538'
-                        @elseif (locale() === 'fr')
-                        'https://vimeo.com/789771460'
-                        @elseif (locale() === 'asl')
-                        'https://vimeo.com/788818374/779a5e9913'
-                        @elseif (locale() === 'lsq')
-                        'https://vimeo.com/789829171' @endif,
-                    byline: false,
-                    pip: true,
-                    portrait: false,
-                    responsive: true,
-                    speed: true,
-                    title: false
-                })" @ended="player().setCurrentTime(0)">
-                </div>
-            </x-slot>
             <div class="flex h-full flex-col justify-center">
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
@@ -140,7 +83,7 @@
                 <x-interpretation class="interpretation--start"
                     name="{{ __('For Community Organizations', [], 'en') }}" />
             </div>
-        </x-media-text>
+        </div>
     </section>
 
     <section class="darker full" aria-labelledby="disability">

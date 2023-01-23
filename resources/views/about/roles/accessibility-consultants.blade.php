@@ -27,8 +27,9 @@
             <div class="stack flex h-full flex-col justify-center items-center">
                 <p>{{ __('Ideally, an Accessibility Consultant has:') }}
                 <ul class="flex flex-col w-1/2">
-                    <li>{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
-                    <li>{{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
+                    <li class="mx-auto">{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
+                    <li class="mx-auto">
+                        {{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
                     </li>
                 </ul>
                 </p>

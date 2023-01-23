@@ -27,8 +27,9 @@
             <div class="stack flex h-full flex-col justify-center items-center">
                 <p>{{ __('Ideally a Community Connector has:') }}
                 <ul class="flex flex-col w-1/2">
-                    <li>{{ __('lived experience of disability, or of being Deaf, or both') }}</li>
-                    <li>{{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).') }}
+                    <li class="mx-auto">{{ __('lived experience of disability, or of being Deaf, or both') }}</li>
+                    <li class="mx-auto">
+                        {{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).') }}
                     </li>
                 </ul>
                 </p>
