@@ -30,10 +30,6 @@ class EditInterpretation extends EditRecord
                 ->maxLength(255),
             Forms\Components\TextInput::make('namespace')
                 ->maxLength(255),
-            Forms\Components\Toggle::make('route_has_params')
-                ->label('Route has parameters')
-                ->columnSpan(2)
-                ->disabled(),
             Forms\Components\TextInput::make('video.asl')
                 ->label('ASL Video')
                 ->url()
