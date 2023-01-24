@@ -33,17 +33,18 @@
         </div>
         <fieldset class="mt-12">
             <legend>{{ __('Time') . ' ' . __('(required)') }}</legend>
+            <x-hearth-hint for="time_format">
+                {{ __('Please use the 24 hour clock time. For example, 13:00 is 1pm.') }}
+            </x-hearth-hint>
             <div class="flex gap-6">
                 <div class="field @error('start_time') field--error @enderror">
                     <x-hearth-label for="start_time">{{ __('Start time') }}</x-hearth-label>
-                    <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted />
-                    <x-hearth-hint for="start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
+                    <x-hearth-input class="w-full" name="start_time" :value="old('start_time', $meeting->start_time?->format('G:i'))" hinted="time_format-hint" />
                     <x-hearth-error for="start_time" />
                 </div>
                 <div class="field @error('end_time') field--error @enderror">
                     <x-hearth-label for="end_time">{{ __('End time') }}</x-hearth-label>
-                    <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted />
-                    <x-hearth-hint for="end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
+                    <x-hearth-input class="w-full" name="end_time" :value="old('end_time', $meeting->end_time?->format('G:i'))" hinted="time_format-hint" />
                     <x-hearth-error for="end_time" />
                 </div>
             </div>
