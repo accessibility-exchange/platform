@@ -33,9 +33,9 @@
 
             <fieldset>
                 <legend>{{ __('Where do you live?') }}</legend>
-                <x-interpretation class="interpretation--start" name="{{ __('Where do you live?', [], 'en') }}" />
+                <x-interpretation class="interpretation--start mt-0" name="{{ __('Where do you live?', [], 'en') }}" />
 
-                <div class="field @error('region') field--error @enderror">
+                <div class="field @error('region') field--error @enderror mt-10">
                     <x-hearth-label
                         for="region"><x-required>{{ __('Province or territory') }}</x-required></x-hearth-label>
                     <x-interpretation class="interpretation--start" name="{{ __('Province or territory', [], 'en') }}"
@@ -44,7 +44,7 @@
                     <x-hearth-error for="region" />
                 </div>
 
-                <div class="field @error('locality') field--error @enderror">
+                <div class="field @error('locality') field--error @enderror mt-10">
                     <x-hearth-label for="locality"><x-optional>{{ __('City or town') }}</x-optional></x-hearth-label>
                     <x-interpretation class="interpretation--start" name="{{ __('City or town', [], 'en') }}"
                         namespace="city_town-required" />
@@ -57,7 +57,7 @@
             <hr class="divider--thin">
 
             <fieldset>
-                <div class="field @error('pronouns') field--error @enderror">
+                <div class="field @error('pronouns') field--error @enderror mt-6">
                     <x-translatable-input name="pronouns" :model="$individual" :label="__('Pronouns') . ' ' . __('(optional)')" :shortLabel="__('pronouns')"
                         :hint="__('For example: he/him, she/her, they/them.')" interpretationName="Pronouns" interpretationNameSpace="pronouns-optional" />
                     <x-hearth-error for="pronouns" />
@@ -67,7 +67,7 @@
             <hr class="divider--thin">
 
             <fieldset>
-                <div class="field @error('bio') field--error @enderror">
+                <div class="field @error('bio') field--error @enderror mt-6">
                     <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :shortLabel="__('bio')" :model="$individual"
                         :hint="__(
                             'This can include information about your background, and why you are interested in accessibility.',
@@ -82,24 +82,27 @@
             <hr class="divider--thin">
 
             <fieldset>
-                <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional></legend>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}"
-                    namespace="working_languages-optional" />
-                <livewire:language-picker name="working_languages" :languages="old(
-                    'working_languages',
-                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
-                )" :availableLanguages="$languages" />
-                <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
-                    namespace="add_language" />
+                <div class="mt-6">
+                    <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional>
+                    </legend>
+                    <x-interpretation class="interpretation--start"
+                        name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}"
+                        namespace="working_languages-optional" />
+                    <livewire:language-picker name="working_languages" :languages="old(
+                        'working_languages',
+                        !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
+                    )" :availableLanguages="$languages" />
+                    <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
+                        namespace="add_language" />
+                </div>
             </fieldset>
 
             @if ($individual->isConsultant())
-                <fieldset class="field @error('consulting_services') field--error @enderror">
+                <fieldset class="@error('consulting_services') field--error @enderror">
                     <legend>
                         <x-required>{{ __('How can you help a regulated organization?') }}</x-required>
                     </legend>
-                    <x-interpretation class="interpretation--start"
+                    <x-interpretation class="interpretation--start mt-0"
                         name="{{ __('How can you help a regulated organization?', [], 'en') }}"
                         namespace="how_can_you_help_regulated_organization-required" />
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $individual->consulting_services ?? [])"
