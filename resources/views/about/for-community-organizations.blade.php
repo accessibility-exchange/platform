@@ -11,8 +11,22 @@
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
-        <x-placeholder />
-
+        <div class="stack w-full" x-data="vimeoPlayer({
+            url: @if (locale() === 'en') 'https://vimeo.com/789854538'
+                @elseif (locale() === 'fr')
+                'https://vimeo.com/789771460'
+                @elseif (locale() === 'asl')
+                'https://vimeo.com/788818374/779a5e9913'
+                @elseif (locale() === 'lsq')
+                'https://vimeo.com/789827141' @endif,
+            byline: false,
+            pip: true,
+            portrait: false,
+            responsive: true,
+            speed: true,
+            title: false
+        })" @ended="player().setCurrentTime(0)">
+        </div>
         <x-section class="stack:xl" aria-labelledby="definitions">
             <h2 class="text-center" id="definitions">{{ __('What do we mean when we say “Community organizations”?') }}
             </h2>
@@ -44,10 +58,7 @@
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
             </div>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
+            <div class="grid">
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be an Accessibility Consultant') }}</h3>
                     <p>{{ __('Help organizations and businesses design their consultations, and potentially help facilitate these consultations.') }}
@@ -56,12 +67,7 @@
                             href="{{ localized_route('about.organization-accessibility-consultants') }}">{{ __('Learn more about being an Accessibility Consultant') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Community Connector') }}</h3>
                     <p>{{ __('Connect members of your community with governments and businesses who are looking for Consultation Participants. Help them learn how to best work with your community.') }}
@@ -70,12 +76,7 @@
                             href="{{ localized_route('about.organization-community-connectors') }}">{{ __('Learn more about being a Community Connector') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Get input for your projects') }}</h3>
                     <p>{{ __('Recruit individuals who are Deaf or have disabilities to give input on your own projects.') }}
@@ -84,12 +85,7 @@
                             href="{{ localized_route('about.organization-get-input') }}">{{ __('Learn more about getting input for your projects') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Be a Consultation Participant') }}</h3>
                     <p>{{ __('Participate in consultations for organizations and businesses who are working on accessibility projects, and get paid for your participation.') }}
@@ -98,7 +94,7 @@
                             href="{{ localized_route('about.organization-consultation-participants') }}">{{ __('Learn more about being a Consultation Participant') }}</a>
                     </p>
                 </div>
-            </x-media-text>
+            </div>
         </x-section>
 
         <x-section class="accent--color text-center">
