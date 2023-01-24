@@ -32,7 +32,7 @@
                         <button type="button"
                             aria-describedby="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}-status"
                             x-bind:aria-expanded="expanded.toString()" x-on:click="expanded = !expanded">
-                            {{ __(':locale translation of :label', ['label' => $shortLabel ?? $label, 'locale' => get_language_exonym($language)]) }}
+                            {{ __('Add :locale translation of :label', ['label' => $shortLabel ?? $label, 'locale' => get_language_exonym($language)]) }}
                             @svg('heroicon-s-plus', ['x-show' => '! expanded'])
                             @svg('heroicon-s-minus', ['x-show' => 'expanded'])
                         </button>
@@ -47,7 +47,7 @@
                         )"
                             :hinted="$name . '-hint'" x-model="value"
                             x-on:keyup="badgeText = '{{ __('Content added, unsaved changes') }}'" :aria-labelledby="Str::slug(
-                                __(':locale translation of :label', [
+                                __('Add :locale translation of :label', [
                                     'label' => $shortLabel ?? $label,
                                     'locale' => get_language_exonym($language),
                                 ]),
