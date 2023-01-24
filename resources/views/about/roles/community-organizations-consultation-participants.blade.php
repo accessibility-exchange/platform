@@ -4,15 +4,9 @@
         <div class="center center:wide stack pt-4 pb-12">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
-                @if (request()->localizedRouteIs('about.individual-consultation-participants'))
-                    <li><a
-                            href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
-                    </li>
-                @elseif(request()->localizedRouteIs('about.organization-consultation-participants'))
-                    <li><a
-                            href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
-                    </li>
-                @endif
+                <li><a
+                        href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
+                </li>
             </ol>
             <h1 class="w-1/2">
                 {{ __('Consultation Participants') }}

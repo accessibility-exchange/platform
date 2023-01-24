@@ -58,14 +58,14 @@
         </p>
         <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
         <div class="grid">
-            <div class="flex h-full flex-col justify-center">
+            <div class="flex h-full flex-col">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
                 <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                 </p>
                 <x-interpretation class="interpretation--start" name="{{ __('For Individuals', [], 'en') }}" />
             </div>
-            <div class="flex h-full flex-col justify-center">
+            <div class="flex h-full flex-col">
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                 </h3>
@@ -74,7 +74,7 @@
                 <x-interpretation class="interpretation--start"
                     name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
             </div>
-            <div class="flex h-full flex-col justify-center">
+            <div class="flex h-full flex-col">
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                 </h3>
