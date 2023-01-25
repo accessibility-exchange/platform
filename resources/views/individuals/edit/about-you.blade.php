@@ -79,22 +79,20 @@
                 {{-- TODO: Upload a file. --}}
             </fieldset>
 
-            <hr class="divider--thin">
+            <hr class="divider--thin mb-12">
 
             <fieldset>
-                <div class="mt-6">
-                    <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional>
-                    </legend>
-                    <x-interpretation class="interpretation--start"
-                        name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}"
-                        namespace="working_languages-optional" />
-                    <livewire:language-picker name="working_languages" :languages="old(
-                        'working_languages',
-                        !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
-                    )" :availableLanguages="$languages" />
-                    <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
-                        namespace="add_language" />
-                </div>
+                <legend><x-optional>{{ __('What language(s) are you comfortable working in?') }}</x-optional>
+                </legend>
+                <x-interpretation class="interpretation--start mt-0"
+                    name="{{ __('What language(s) are you comfortable working in?', [], 'en') }}"
+                    namespace="working_languages-optional" />
+                <livewire:language-picker name="working_languages" :languages="old(
+                    'working_languages',
+                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
+                )" :availableLanguages="$languages" />
+                <x-interpretation class="interpretation--start" name="{{ __('Add another language', [], 'en') }}"
+                    namespace="add_language" />
             </fieldset>
 
             @if ($individual->isConsultant())
