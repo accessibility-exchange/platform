@@ -13,7 +13,9 @@ class SeederBackupData extends Command
      *
      * @var string
      */
-    protected $signature = 'db:seed:backup ${table}';
+    protected $signature = 'db:seed:backup
+                            {--all : Whether to backup all available tables}?
+                            {--table= : Backup specific table}?*';
 
     /**
      * The console command description.
@@ -29,16 +31,23 @@ class SeederBackupData extends Command
      */
     public function handle()
     {
-        $table = $this->argument('table');
+        $options = $this->options();
+
         $available_tables = array("identities", "interpretations", "resource_collections", "resources", "topics");
 
-        if (in_array($table, $available_tables)) {
-            Storage::disk('seeds')->put($table . ".json", DB::table($table)->get()->toJson());
+        if ($options['all']) {
+            foreach($available_tables as $table) {
+                Storage::disk('seeds')->put($table . ".json", DB::table($table)->get()->toJson());
+            }
+
+            return 0;
+        } elseif (isset($options['table']) && in_array($options['table'], $available_tables)) {
+            Storage::disk('seeds')->put($options['table'] . ".json", DB::table($options['table'])->get()->toJson());
 
             return 0;
         } else {
 
-            printf("Table '%s' is not in the list of available tables to backup.\r\n", $table);
+            printf("Must use option --all or --table=. See --help for more details.\r\n");
             return 1;
         }
 
