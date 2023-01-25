@@ -24,14 +24,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('db:refresh') // use custom command to make sure that the commands are chained
+        $schedule->command('db:refresh --backup') // use custom command to make sure that the commands are chained
             ->daily() // Run daily at midnight
             ->environments(['staging', 'dev', 'local']) // only run for APP_ENV tagged staging, dev, or local
             ->onOneServer(); // run only on a single server at once
 
-        $schedule->command('notifications:remove:old 30') // remove notifications older than 30 days old and read
-        ->daily() // Run daily at midnight
-        ->onOneServer(); // run only on a single server at once
+        $schedule->command('notifications:remove:old --days=30') // remove notifications older than 30 days old and read
+            ->daily() // Run daily at midnight
+            ->onOneServer(); // run only on a single server at once
     }
 
     /**
