@@ -63,7 +63,7 @@ Route::prefix('about')
         })->name('for-community-organizations');
 
         Route::multilingual('/for-community-organizations/consultation-participants', function () {
-            return view('about.roles.consultation-participants');
+            return view('about.roles.community-organizations-consultation-participants');
         })->name('organization-consultation-participants');
 
         Route::multilingual('/for-community-organizations/accessibility-consultants', function () {
@@ -146,7 +146,6 @@ Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->name('users.destroy');
 
 require __DIR__.'/admin.php';
-require __DIR__.'/identifiers.php';
 require __DIR__.'/block-list.php';
 require __DIR__.'/individuals.php';
 require __DIR__.'/defined-terms.php';

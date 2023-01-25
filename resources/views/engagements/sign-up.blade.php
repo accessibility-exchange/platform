@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Sign up for this engagement') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -31,4 +31,4 @@
             <button>{{ __('Confirm and sign up') }}</button>
         </form>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

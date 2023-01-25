@@ -79,11 +79,17 @@ class UpdateProjectRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        request()->mergeIfMissing([
+        $fallbacks = [
             'impacts' => [],
             'regions' => [],
             'outcome_analysis' => [],
-        ]);
+        ];
+
+        // Prepare input for validation
+        $this->mergeIfMissing($fallbacks);
+
+        // Prepare old input in case of validation failure
+        request()->mergeIfMissing($fallbacks);
     }
 
     public function withValidator(Validator $validator)

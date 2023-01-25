@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Federally regulated organizations') }}</x-slot>
     <x-slot name="header">
         <h1>
@@ -27,4 +27,4 @@
                 <p>{{ __('No federally regulated organizations found.') }}</p>
             @endforelse
         </div>
-    </x-app-wide-layout>
+    </x-app-layout>

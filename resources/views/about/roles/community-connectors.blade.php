@@ -1,56 +1,47 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide" header-class="full header--connectors stack">
     <x-slot name="title">{{ __('Community Connectors') }}</x-slot>
     <x-slot name="header">
-        <div class="full header--connectors -mt-12 py-12">
-            <div class="center center:wide">
-                <ol class="breadcrumbs" role="list">
-                    <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
-                    @if (request()->localizedRouteIs('about.individual-community-connectors'))
-                        <li><a
-                                href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
-                        </li>
-                    @elseif(request()->localizedRouteIs('about.organization-community-connectors'))
-                        <li><a
-                                href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
-                        </li>
-                    @endif
-                </ol>
-                <h1 class="w-1/2">
-                    {{ __('Community Connectors') }}
-                </h1>
-            </div>
+        <div class="center center:wide stack pt-4 pb-12">
+            <ol class="breadcrumbs" role="list">
+                <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
+                @if (request()->localizedRouteIs('about.individual-community-connectors'))
+                    <li><a
+                            href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
+                    </li>
+                @elseif(request()->localizedRouteIs('about.organization-community-connectors'))
+                    <li><a
+                            href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
+                    </li>
+                @endif
+            </ol>
+            <h1 class="w-1/2">
+                {{ __('Community Connectors') }}
+            </h1>
         </div>
     </x-slot>
 
-    <div class="-mb-8 space-y-16">
+    <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) !!}</h2>
             <x-interpretation name="{{ __('What experiences should I have to be a :role?', [], 'en') }}" />
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <p>{{ __('Ideally a Community Connector has:') }}
-                    <ul>
-                        <li>{{ __('lived experience of disability, or of being Deaf, or both') }}</li>
-                        <li>{{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).') }}
-                        </li>
-                    </ul>
-                    </p>
-                </div>
-            </x-media-text>
+            <div class="stack flex h-full flex-col justify-center items-center">
+                <p>{{ __('Ideally a Community Connector has:') }}
+                <ul class="flex flex-col w-1/2">
+                    <li class="mx-auto">{{ __('lived experience of disability, or of being Deaf, or both') }}</li>
+                    <li class="mx-auto">
+                        {{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).') }}
+                    </li>
+                </ul>
+                </p>
+            </div>
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
             <h2 class="text-center" id="how">{!! __('How does being a :role work?', ['role' => __('Community Connector')]) !!}</h2>
             <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Sign up for the website and build your Community Connector profile') }}</h3>
+            <div class="grid">
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('1. Sign up for the website and build your Community Connector profile') }}</h3>
                     <p>{{ __('Share some information about yourself, including which communities you are connected to, so governments and businesses can get to know you and how you may be able to help them.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-community-connectors'))
@@ -61,29 +52,19 @@
                     <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Find projects that are looking for a Community Connector') }}</h3>
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('2. Find projects that are looking for a Community Connector') }}</h3>
                     <p>{{ __('Access governments and businesses who are looking for a Community Connector to help with a project.') }}
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Work directly with governments and businesses') }}</h3>
+                <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
                     <p>{{ __('Coordinate directly with governments and businesses on what help they need and whom they are seeking.') }}</a>
                     </p>
                 </div>
-            </x-media-text>
+            </div>
         </x-section>
 
         {{-- <x-section aria-labelledby="faq">
@@ -119,4 +100,4 @@
             </x-section>
         @endguest
     </div>
-</x-app-wide-layout>
+</x-app-layout>

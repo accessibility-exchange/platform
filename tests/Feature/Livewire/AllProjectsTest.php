@@ -1,9 +1,8 @@
 <?php
 
 use App\Http\Livewire\AllProjects;
-use App\Models\Criterion;
-use App\Models\DisabilityType;
 use App\Models\Engagement;
+use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\MatchingStrategy;
 use App\Models\Meeting;
@@ -12,21 +11,21 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use Carbon\Carbon;
-use Database\Seeders\DisabilityTypeSeeder;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 
 test('test searchQuery property change', function () {
     $sampleProjectName = 'Sample Project';
     Project::factory()->create(['name->en' => $sampleProjectName]);
-    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => '']);
-    $allProjects->assertSee($sampleProjectName);
-
-    $allProjects->set('searchQuery', 'Test');
-    $allProjects->assertDontSee($sampleProjectName);
-
-    $allProjects->set('searchQuery', 'Sample');
-    $allProjects->assertSee($sampleProjectName);
+    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => ''])
+        ->assertSee($sampleProjectName)
+        ->set('searchQuery', 'Test')
+        ->assertDontSee($sampleProjectName)
+        ->set('searchQuery', 'Sample')
+        ->assertSee($sampleProjectName)
+        ->set('searchQuery', 'sample')
+        ->assertSee($sampleProjectName);
 });
 
 test('test statuses property change', function () {
@@ -169,9 +168,9 @@ test('test initiators property change', function () {
 });
 
 test('test seekingGroups property change', function () {
-    $this->seed(DisabilityTypeSeeder::class);
+    $this->seed(IdentitySeeder::class);
 
-    $disabilityTypeDeaf = DisabilityType::where('name->en', 'Deaf')->first();
+    $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
     $projectSeekingDeafExperienceName = 'Project Seeking Deaf Experience';
     $projectSeekingDeafExperience = Project::factory()->create([
         'name->en' => $projectSeekingDeafExperienceName,
@@ -181,13 +180,9 @@ test('test seekingGroups property change', function () {
         'matchable_type' => 'App\Models\Engagement',
         'matchable_id' => $engagementSeekingDeafExperience->id,
     ]);
-    $deafCriterion = Criterion::factory()->create([
-        'matching_strategy_id' => $matchingStrategySeekingDeafExperience->id,
-        'criteriable_type' => 'App\Models\DisabilityType',
-        'criteriable_id' => $disabilityTypeDeaf->id,
-    ]);
+    $matchingStrategySeekingDeafExperience->identities()->attach($disabilityTypeDeaf->id);
 
-    $disabilityTypeCognitive = DisabilityType::where('name->en', 'Cognitive disabilities')->first();
+    $disabilityTypeCognitive = Identity::where('name->en', 'Cognitive disabilities')->first();
     $projectSeekingCognitiveDisabilityExperienceName = 'Project Seeking Cognitive Disability Experience';
     $projectSeekingCognitiveDisabilityExperience = Project::factory()->create([
         'name->en' => $projectSeekingCognitiveDisabilityExperienceName,
@@ -197,11 +192,7 @@ test('test seekingGroups property change', function () {
         'matchable_type' => 'App\Models\Engagement',
         'matchable_id' => $engagementSeekingCognitiveDisabilityExperience->id,
     ]);
-    $cognitiveDisabilityCriterion = Criterion::factory()->create([
-        'matching_strategy_id' => $matchingStrategySeekingCognitiveDisabilityExperience->id,
-        'criteriable_type' => 'App\Models\DisabilityType',
-        'criteriable_id' => $disabilityTypeCognitive->id,
-    ]);
+    $matchingStrategySeekingCognitiveDisabilityExperience->identities()->attach($disabilityTypeCognitive->id);
 
     $allProjects = $this->livewire(AllProjects::class, ['seekingGroups' => []]);
     $allProjects->assertSee($projectSeekingDeafExperienceName);

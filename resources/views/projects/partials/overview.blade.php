@@ -1,6 +1,6 @@
 <h3>{{ __('Project goals') }}</h3>
 
-@markdown{{ $project->getWrittenTranslation('goals', $language) }}@endmarkdown
+{!! Str::markdown($project->getWrittenTranslation('goals', $language)) !!}
 
 <h3>{{ __('Engagements') }}</h3>
 
@@ -19,7 +19,7 @@
 
 <h4>{{ __('How the disability and Deaf communities will be impacted by the outcomes of this project') }}</h4>
 
-@markdown{{ $project->getWrittenTranslation('scope', $language) }}@endmarkdown
+{!! Str::markdown($project->getWrittenTranslation('scope', $language)) !!}
 
 <h4>{{ __('Geographical areas this project will impact') }}</h4>
 
@@ -42,7 +42,7 @@
 @if ($project->out_of_scope)
     <h4>{{ __('Not in this project') }}</h4>
 
-    @markdown{{ $project->getWrittenTranslation('out_of_scope', $language) }}@endmarkdown
+    {!! Str::markdown($project->getWrittenTranslation('out_of_scope', $language)) !!}
 @endif
 
 <h3>{{ __('Project timeframe') }}</h3>
@@ -64,7 +64,7 @@
 
     <h4>{{ __('Tangible outcomes of this project') }}</h4>
 
-    @markdown{{ $project->getWrittenTranslation('outcomes', $language) }}@endmarkdown
+    {!! Str::markdown($project->getWrittenTranslation('outcomes', $language)) !!}
 @endif
 
 <h4>{{ __('Project reports') }}</h4>

@@ -13,3 +13,8 @@ hr.divider--thick {
     border-block-start-width: var(--border-3);
     margin-block: var(--space-16) var(--space-12);
 }
+
+hr.divider--thin {
+    border-block-start-width: var(--border);
+    margin-block: var(--space-16) var(--space-12);
+}

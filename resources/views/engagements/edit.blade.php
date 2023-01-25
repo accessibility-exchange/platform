@@ -1,4 +1,4 @@
-<x-app-medium-layout>
+<x-app-layout page-width="medium">
     <x-slot name="title">{{ __('Edit engagement') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -53,17 +53,20 @@
                 <legend>
                     {{ __('Between which times during the day will the interviews take place?') }}
                 </legend>
+                <x-hearth-hint for="time_format">
+                    {{ __('Please use the 24 hour clock time. For example, 13:00 is 1pm.') }}
+                </x-hearth-hint>
                 <div class="flex gap-6">
                     <div class="field @error('window_start_time') field--error @enderror">
                         <x-hearth-label for="window_start_time">{{ __('Start time') }}</x-hearth-label>
-                        <x-hearth-input class="w-full" name="window_start_time" :value="old('window_start_time', $engagement->window_start_time?->format('G:i'))" hinted />
-                        <x-hearth-hint for="window_start_time">{{ __('For example, 9:00') }}</x-hearth-hint>
+                        <x-hearth-input class="w-full" name="window_start_time" :value="old('window_start_time', $engagement->window_start_time?->format('G:i'))"
+                            hinted="time_format-hint" />
                         <x-hearth-error for="window_start_time" />
                     </div>
                     <div class="field @error('window_end_time') field--error @enderror">
                         <x-hearth-label for="window_end_time">{{ __('End time') }}</x-hearth-label>
-                        <x-hearth-input class="w-full" name="window_end_time" :value="old('window_end_time', $engagement->window_end_time?->format('G:i'))" hinted />
-                        <x-hearth-hint for="window_end_time">{{ __('For example, 17:00') }}</x-hearth-hint>
+                        <x-hearth-input class="w-full" name="window_end_time" :value="old('window_end_time', $engagement->window_end_time?->format('G:i'))"
+                            hinted="time_format-hint" />
                         <x-hearth-error for="window_end_time" />
                     </div>
                 </div>
@@ -305,4 +308,4 @@
             </p>
         @endif
     </form>
-</x-app-medium-layout>
+</x-app-layout>

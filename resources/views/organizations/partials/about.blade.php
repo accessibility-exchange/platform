@@ -1,6 +1,6 @@
 <h3>{{ __('About the organization') }}</h3>
 
-@markdown{{ $organization->getWrittenTranslation('about', $language) }}@endmarkdown
+{!! Str::markdown($organization->getWrittenTranslation('about', $language)) !!}
 
 <h3>{{ __('Type of organization') }}</h3>
 
@@ -20,7 +20,7 @@
 
 <h4>{{ __('Urban, rural, or remote') }}</h4>
 <ul class="tags" role="list">
-    @foreach ($organization->areaTypes as $areaType)
+    @foreach ($organization->areaTypeConstituencies as $areaType)
         <li class="tag">
             {{ $areaType->name }}
         </li>

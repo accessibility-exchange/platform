@@ -1,32 +1,34 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">
         @section('title'){{ __('Manage project') }}@show
         </x-slot>
         <x-slot name="header">
-            <ol class="breadcrumbs" role="list">
-                <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-                @yield('breadcrumbs')
-            </ol>
-            <h1 id="project">
-                {{ $project->name }}
-            </h1>
-            <div class="flex flex-col gap-6 md:flex-row md:justify-between">
-                <div class="stack">
-                    <p><strong>{{ __('Project duration') }}</strong><br />
-                        {{ $project->start_date && $project->end_date ? $project->start_date->translatedFormat('F Y') . ' – ' . $project->end_date?->translatedFormat('F Y') : 'n/a' }}
-                    </p>
-                    <div class="badge badge--alt">{{ $project->status }}</div>
-                </div>
-                @can('update', $project)
-                    <div>
-                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
-                            {{ __('Edit project') }}</a>
+            <div class="center center:wide stack">
+                <ol class="breadcrumbs" role="list">
+                    <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+                    @yield('breadcrumbs')
+                </ol>
+                <h1 id="project">
+                    {{ $project->name }}
+                </h1>
+                <div class="flex flex-col gap-6 md:flex-row md:justify-between">
+                    <div class="stack">
+                        <p><strong>{{ __('Project duration') }}</strong><br />
+                            {{ $project->start_date && $project->end_date ? $project->start_date->translatedFormat('F Y') . ' – ' . $project->end_date?->translatedFormat('F Y') : 'n/a' }}
+                        </p>
+                        <div class="badge badge--alt">{{ $project->status }}</div>
                     </div>
-                @endcan
-                {{-- TODO: cancel project --}}
-                {{-- <div> --}}
-                {{-- <button class="borderless destructive">{{ __('Cancel project') }}</button> --}}
-                {{-- </div> --}}
+                    @can('update', $project)
+                        <div>
+                            <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
+                                {{ __('Edit project page') }}</a>
+                        </div>
+                    @endcan
+                    {{-- TODO: cancel project --}}
+                    {{-- <div> --}}
+                    {{-- <button class="borderless destructive">{{ __('Cancel project') }}</button> --}}
+                    {{-- </div> --}}
+                </div>
             </div>
         </x-slot>
 
@@ -92,4 +94,4 @@
             </x-manage-columns>
         </x-manage-grid>
     @show
-</x-app-wide-tabbed-layout>
+</x-app-layout>

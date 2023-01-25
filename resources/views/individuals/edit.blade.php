@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Edit your individual page') }}</x-slot>
     <x-slot name="header">
         <div class="repel">
@@ -31,4 +31,4 @@
     @else
         @include('individuals.edit.about-you')
     @endif
-</x-app-wide-layout>
+</x-app-layout>

@@ -197,11 +197,12 @@
                 </fieldset>
             </x-expander>
             <div class="mt-6">
-                <button class="secondary" type="button" wire:click="selectNone()">{{ __('Select none') }}</button>
+                <button class="secondary" type="button"
+                    wire:click="selectNone()">{{ __('Clear filters') }}</button>
             </div>
         </div>
         <div class="md:pl-4">
-            <div role="region" aria-labelledby="browse-all-projects" tabindex="0">
+            <section aria-labelledby="browse-all-projects">
                 <div class="projects stack">
                     @forelse($projects as $project)
                         <x-card.project :model="$project" :level="2" />
@@ -209,9 +210,9 @@
                         <p>{{ __('No projects found.') }}</p>
                     @endforelse
                 </div>
-            </div>
+            </section>
 
-            {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind') }}
+            {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
         </div>
     </div>
 </div>

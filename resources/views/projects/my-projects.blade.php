@@ -1,12 +1,14 @@
-<x-app-wide-tabbed-layout>
+<x-app-layout header-class="header--tabbed" page-width="wide">
     <x-slot name="title">{{ __('Projects') }}</x-slot>
     <x-slot name="header">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <h1 id="projects" itemprop="name">
-                {{ __('Projects') }}
-            </h1>
-            <a class="cta secondary"
-                href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+        <div class="center center:wide stack">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <h1 id="projects" itemprop="name">
+                    {{ __('Projects') }}
+                </h1>
+                <a class="cta secondary"
+                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+            </div>
         </div>
     </x-slot>
     @if (($user->context === 'organization' &&
@@ -88,4 +90,4 @@
             </p>
         </div>
     </div>
-</x-app-wide-tabbed-layout>
+</x-app-layout>

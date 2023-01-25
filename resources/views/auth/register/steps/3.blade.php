@@ -1,3 +1,9 @@
+@if (session()->get('isNewOrganizationContext'))
+    <p>
+        {{ __('Please enter your own name and email, rather than you organization’s. You will be able to create your organization in a later step.') }}
+    </p>
+@endif
+
 <form class="stack" method="POST" action="{{ localized_route('register-details') }}" novalidate>
     @csrf
 

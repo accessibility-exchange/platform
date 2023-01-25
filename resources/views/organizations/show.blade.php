@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $organization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
@@ -175,4 +175,4 @@
             @endif
         </div>
     </div>
-</x-app-wide-layout>
+</x-app-layout>

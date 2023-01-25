@@ -48,7 +48,7 @@ class AddEngagementConnector extends Component
     public function render()
     {
         return view('livewire.add-engagement-connector')
-            ->layout('layouts.app-medium');
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'medium']);
     }
 
     public function inviteConnector()

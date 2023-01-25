@@ -1,4 +1,4 @@
-<x-app-wide-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ $engagement->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
@@ -242,4 +242,4 @@
             @endif
         </x-hearth-alert>
     </div>
-</x-app-wide-layout>
+</x-app-layout>
