@@ -18,7 +18,7 @@
             <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
                 <fieldset>
                     <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
-                    <x-interpretation class="interpretation--start" name="{{ __('Contact person', [], 'en') }}"
+                    <x-interpretation class="interpretation--start mt-0" name="{{ __('Contact person', [], 'en') }}"
                         namespace="contact_person-required" />
 
                     <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
@@ -27,22 +27,22 @@
 
                 <fieldset x-show="contactPerson == 'me'">
                     <legend>{{ __('Contact information') }}</legend>
-                    <x-interpretation class="interpretation--start" name="{{ __('Contact information', [], 'en') }}"
-                        namespace="contact_information" />
-                    <div class="field @error('email') field-error @enderror">
+                    <x-interpretation class="interpretation--start mt-0"
+                        name="{{ __('Contact information', [], 'en') }}" namespace="contact_information" />
+                    <div class="field @error('email') field-error @enderror mt-10">
                         <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
+                        <x-hearth-hint for="email">
+                            {{ __('This is also the email you use to log into this account.') }}
+                        </x-hearth-hint>
                         <x-interpretation class="interpretation--start" name="{{ __('My email', [], 'en') }}"
                             namespace="my_email-required" />
                         <x-hearth-input name="email" type="email" :value="old(
                             'email',
                             !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
                         )" />
-                        <x-hearth-hint for="email">
-                            {{ __('This is also the email you use to log into this account.') }}
-                        </x-hearth-hint>
                         <x-hearth-error for="email" />
                     </div>
-                    <div class="field @error('phone') field-error @enderror">
+                    <div class="field @error('phone') field-error @enderror mt-10">
                         <x-hearth-label for="phone" :value="__('My phone number')" />
                         <x-interpretation class="interpretation--start" name="{{ __('My phone number', [], 'en') }}" />
                         <x-hearth-input name="phone" type="tel" :value="old(
@@ -121,9 +121,9 @@
                 </div>
             </div>
 
-            <fieldset class="field @error('meeting_types') field--error @enderror">
+            <fieldset class="@error('meeting_types') field--error @enderror">
                 <legend>{{ __('What types of meetings are you able to attend?') . ' ' . __('(required)') }}</legend>
-                <x-interpretation class="interpretation--start"
+                <x-interpretation class="interpretation--start mt-0"
                     name="{{ __('What types of meetings are you able to attend?', [], 'en') }}"
                     namespace="meeting_types_you_can_attend-required" />
                 <x-hearth-checkboxes name="meeting_types" :options="$meetingTypes" :checked="old('meeting_types', $individual->meeting_types ?? [])" />

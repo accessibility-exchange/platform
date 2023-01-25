@@ -57,7 +57,7 @@
                 <legend class="h4">{{ __('Relevant experiences') }} {{ __('(optional)') }}</legend>
                 <x-hearth-hint for="relevant_experiences">{{ __('This can be paid or volunteer work.') }}
                 </x-hearth-hint>
-                <x-interpretation class="interpretation--start"
+                <x-interpretation class="interpretation--start mt-0 mb-6"
                     name="{{ __('Relevant experiences (optional)', [], 'en') }}"
                     namespace="relevant_experiences-optional" />
                 <livewire:experiences name="relevant_experiences" :experiences="$individual->relevant_experiences ?? []" />
