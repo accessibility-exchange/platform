@@ -18,7 +18,7 @@ class ResourceCollectionSeeder extends Seeder
         $faker = \Faker\Factory::create('en_CA');
 
         // check if there is a JSON file that has stored data for the seeder
-        if (Storage::disk('seeds')->exists('resource_collections.json')) {
+        if (in_array(config('app.env'), ['testing', 'production']) !== true && Storage::disk('seeds')->exists('resource_collections.json')) {
             $resourceCollections = json_decode(Storage::disk('seeds')->get('resource_collections.json'), true);
 
             foreach ($resourceCollections as $resourceCollection) {

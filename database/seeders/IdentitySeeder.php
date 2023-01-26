@@ -11,7 +11,7 @@ class IdentitySeeder extends Seeder
     public function run()
     {
         // check if there is a JSON file that has stored data for the seeder
-        if (Storage::disk('seeds')->exists('identities.json')) {
+        if (in_array(config('app.env'), ['testing', 'production']) !== true && Storage::disk('seeds')->exists('identities.json')) {
             $identities = json_decode(Storage::disk('seeds')->get('identities.json'), true);
 
             foreach ($identities as $identity) {
