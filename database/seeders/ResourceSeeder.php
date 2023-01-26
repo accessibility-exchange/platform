@@ -7,6 +7,7 @@ use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\Sector;
+use App\Models\Organization;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,10 +22,22 @@ class ResourceSeeder extends Seeder
     {
 
         // check if there is a JSON file that has stored data for the seeder
-        if (Storage::disk('seeds')->exists('resources.json')) {
+        if (in_array(config('app.env'), ['testing', 'production']) !== true && Storage::disk('seeds')->exists('resources.json')) {
             $resources = json_decode(Storage::disk('seeds')->get('resources.json'), true);
 
             foreach ($resources as $resource) {
+                if ($resource['content_type_id']) {
+                    if (ContentType::where('id', $resource['content_type_id'])->doesntExist()) {
+                        printf("Skipping insert because content type with id %s is missing \r\n", $resource['content_type_id']);
+                        continue;
+                    }
+                }
+                if ($resource['organization_id']) {
+                    if (Organization::where('id', $resource['organization_id'])->doesntExist()) {
+                        printf("Skipping insert because organization with id %s is missing \r\n", $resource['organization_id']);
+                        continue;
+                    }
+                }
                 $item = Resource::firstOrCreate([
                     'title' => json_decode($resource['title'], true),
                     'slug' => json_decode($resource['slug'], true),
@@ -76,7 +89,6 @@ class ResourceSeeder extends Seeder
                     'phases' => $resource['phases'] ?? [],
                 ]);
 
-                // TODO how do we save and do the connected values?
                 if (isset($resource['type'])) {
                     $item->contentType()->associate($resource['type']);
                     $item->save();

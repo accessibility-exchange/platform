@@ -16,7 +16,7 @@ class TopicSeeder extends Seeder
     public function run()
     {
         // check if there is a JSON file that has stored data for the seeder
-        if (Storage::disk('seeds')->exists('topics.json')) {
+        if (in_array(config('app.env'), ['testing', 'production']) !== true && Storage::disk('seeds')->exists('topics.json')) {
             $topics = json_decode(Storage::disk('seeds')->get('topics.json'), true);
 
             foreach ($topics as $topic) {

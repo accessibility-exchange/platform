@@ -21,6 +21,7 @@ class DevSeeder extends Seeder
             DatabaseSeeder::class,
             ResourceCollectionSeeder::class,
             ResourceSeeder::class,
+            InterpretationSeeder::class,
         ]);
 
         $user = User::factory()
