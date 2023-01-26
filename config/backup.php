@@ -248,4 +248,21 @@ return [
         ],
     ],
 
+    'filament_seeders' => [
+        'tables' => [
+            'identities',
+            'interpretations',
+            'resource_collections',
+            'resources',
+            'topics',
+        ],
+        'classes' => [
+            'IdentitySeeder',
+            'InterpretationSeeder',
+            'ResourceCollectionSeeder',
+            'ResourceSeeder',
+            'TopicSeeder',
+        ]
+    ],
+
 ];
