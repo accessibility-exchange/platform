@@ -24,20 +24,16 @@
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant')]) !!}</h2>
             <x-interpretation name="{{ __('What experiences should I have to be an :role?', [], 'en') }}" />
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <p>{{ __('Ideally, an Accessibility Consultant has:') }}
-                    <ul>
-                        <li>{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
-                        <li>{{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
-                        </li>
-                    </ul>
-                    </p>
-                </div>
-            </x-media-text>
+            <div class="stack flex h-full flex-col justify-center items-center">
+                <p>{{ __('Ideally, an Accessibility Consultant has:') }}
+                <ul class="flex flex-col w-1/2">
+                    <li class="mx-auto">{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
+                    <li class="mx-auto">
+                        {{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
+                    </li>
+                </ul>
+                </p>
+            </div>
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
@@ -45,12 +41,9 @@
                 <h2 id="how">{!! __('How does being an :role work?', ['role' => __('Accessibility Consultant')]) !!}</h2>
                 <x-interpretation name="{{ __('How does being an :role work?', [], 'en') }}" />
             </div>
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Sign up for the website and build your Accessibility Consultant profile') }}</h3>
+            <div class="grid">
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('1. Sign up for the website and build your Accessibility Consultant profile') }}</h3>
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
@@ -61,29 +54,19 @@
                     <p><a href="{{ localized_route('about.privacy-policy') }}">{{ __('Read our privacy policy') }}</a>
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Find projects that are looking for an Accessibility Consultant') }}</h3>
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('2. Find projects that are looking for an Accessibility Consultant') }}</h3>
                     <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}
                     </p>
                 </div>
-            </x-media-text>
 
-            <x-media-text>
-                <x-slot name="media">
-                    <x-placeholder width="915" height="515" />
-                </x-slot>
-                <div class="stack flex h-full flex-col justify-center">
-                    <h3>{{ __('Work directly with governments and businesses') }}</h3>
+                <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
+                    <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
                     <p>{{ __('Coordinate directly with governments and businesses on what they would like you to help with.') }}</a>
                     </p>
                 </div>
-            </x-media-text>
+            </div>
         </x-section>
 
         {{-- <x-section aria-labelledby="faq">

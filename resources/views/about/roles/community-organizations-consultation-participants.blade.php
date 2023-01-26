@@ -5,7 +5,7 @@
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 <li><a
-                        href="{{ localized_route('about.for-individuals') }}">{{ __('How this works for individuals') }}</a>
+                        href="{{ localized_route('about.for-community-organizations') }}">{{ __('How this works for Community Organizations') }}</a>
                 </li>
             </ol>
             <h1 class="w-1/2">
@@ -39,8 +39,8 @@
             </div>
             <div class="grid">
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('1. Sign up for the website and share some information about yourself') }}</h3>
-                    <p>{{ __('Once you sign up, you can sign up for an orientation session to learn about what you can do on this website. You can also fill in information to facilitate a smoother collaboration with organizations, such as access needs, communication preferences, and consultation preferences.') }}
+                    <h3>{{ __('1. Sign up for the website and share some information about your organization') }}</h3>
+                    <p>{{ __('Once you sign up, you can sign up for an orientation session to learn about what you can do on this website. You can also fill in information about your organization so businesses and government can learn more about what you do and who you represent or serve.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-consultation-participants'))
                         <p><a
@@ -52,19 +52,14 @@
                 </div>
 
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
-                    <h3>{{ __('2. Find an engagement or get matched to one') }}</h3>
-                    <p>{{ __('You can join a consultation engagement in a few ways:') }}</p>
-                    <ul>
-                        <li>{{ __('Sign up for an open engagement') }}</li>
-                        <li>{{ __('Be invited by a Community Connector (someone with lived experience of disability or  is Deaf that organizations hire to help recruit)') }}
-                        </li>
-                        <li>{{ __('Be matched based on what your lived experiences are') }}</li>
-                    </ul>
+                    <h3>{{ __('2. Businesses and government can reach out to hire you') }}</h3>
+                    <p>{{ __('Businesses and government can find Community Organizations on this website, and use the contact information to directly reach out. From there, they can hire you consult with them.') }}
+                    </p>
                 </div>
 
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('3. Work directly with businesses and governments') }}</h3>
-                    <p>{{ __('Once you are a part of an engagement, you can communicate directly with the business or government to figure out how to work on their accessibility project. You will be paid for your work.') }}</a>
+                    <p>{{ __('You can communicate directly with the business or government to figure out how to work on their accessibility project. You will be paid for your work.') }}</a>
                     </p>
                 </div>
             </div>

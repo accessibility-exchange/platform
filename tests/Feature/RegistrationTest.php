@@ -30,6 +30,7 @@ test('new users can register', function () {
         ]);
     $response->assertRedirect(localized_route('register', ['step' => 3]));
     $response->assertSessionHas('context', 'individual');
+    $response->assertSessionHas('isNewOrganizationContext', false);
 
     $response = $this->from(localized_route('register', ['step' => 3]))
         ->withSession([
@@ -63,6 +64,70 @@ test('new users can register', function () {
         'name' => 'Test User',
         'email' => 'test@example.com',
         'context' => 'individual',
+    ])->post(localized_route('register-store'), [
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(localized_route('users.show-introduction'));
+});
+
+test('new users can register - organization', function () {
+    User::factory()->create(['email' => 'me@here.com']);
+
+    $response = $this->from(localized_route('register', ['step' => 1]))
+        ->post(localized_route('register-languages'), [
+            'locale' => 'en',
+        ]);
+    $response->assertRedirect(localized_route('register', ['step' => 2]));
+    $response->assertSessionHas('locale', 'en');
+
+    $response = $this->from(localized_route('register', ['step' => 2]))
+        ->withSession([
+            'locale' => 'en',
+        ])
+        ->post(localized_route('register-context'), [
+            'context' => 'organization',
+        ]);
+    $response->assertRedirect(localized_route('register', ['step' => 3]));
+    $response->assertSessionHas('context', 'organization');
+    $response->assertSessionHas('isNewOrganizationContext', true);
+
+    $response = $this->from(localized_route('register', ['step' => 3]))
+        ->withSession([
+            'locale' => 'en',
+            'context' => 'organization',
+        ])
+        ->post(localized_route('register-details'), [
+            'name' => 'Test User',
+            'email' => 'me@here.com',
+        ]);
+
+    $response->assertSessionHasErrors(['email']);
+    $response->assertRedirect(localized_route('register', ['step' => 3]));
+
+    $response = $this->from(localized_route('register', ['step' => 3]))
+        ->withSession([
+            'locale' => 'en',
+            'context' => 'organization',
+        ])
+        ->post(localized_route('register-details'), [
+            'name' => 'Test User',
+            'email' => 'test-org@example.com',
+        ]);
+
+    $response->assertRedirect(localized_route('register', ['step' => 4]));
+    $response->assertSessionHas('name', 'Test User');
+    $response->assertSessionHas('email', 'test-org@example.com');
+
+    $response = $this->withSession([
+        'locale' => 'en',
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'context' => 'organization',
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
@@ -109,6 +174,7 @@ test('users can register via invitation to (regulated) organization', function (
     ]);
 
     $response->assertSessionHas('context', 'regulated-organization');
+    $response->assertSessionHas('isNewOrganizationContext', false);
     $response->assertSessionHas('invitation', '1');
     $response->assertSessionHas('email', 'test@example.com');
 
