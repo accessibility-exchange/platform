@@ -41,23 +41,6 @@ class DatabaseRefresh extends Command
 
             $this->call('migrate:fresh', ['--force' => true]);
             $this->call('db:seed', ['--class' => 'DevSeeder', '--force' => true]);
-
-            print("Truncating filament tables:\r\n");
-
-            $truncate_tables = array("identities", "interpretations", "resource_collections", "resources", "topics");
-            foreach($truncate_tables as $table) {
-                printf("Truncating values in table %s.\r\n", $table);
-                DB::table($table)->delete();
-            }
-
-            print("\r\n");
-            print("Running filament seeders:\r\n");
-
-            $seeder_classes = array("IdentitySeeder", "InterpretationSeeder", "ResourceCollectionSeeder", "ResourceSeeder", "TopicSeeder");
-            foreach($seeder_classes as $seeder_class) {
-                printf("Running seeder %s.", $seeder_class);
-                $this->call('db:seed', ['--class' => $seeder_class]);
-            }
         }
 
         return 0;
