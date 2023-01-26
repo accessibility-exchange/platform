@@ -41,8 +41,8 @@
 
     /* Link on dark backgrounds */
     --link-dark-color: var(--theme-link-dark-color, var(--color-white));
-    --link-dark-color-hover: var(--theme-link-dark-color-hover, var(--color-grey-1));
-    --link-dark-color-visited: var(--theme-link-dark-color-visited, var(--color-turquoise-2));
+    --link-dark-color-hover: var(--theme-link-dark-color-hover, var(--color-turquoise-1));
+    --link-dark-color-visited: var(--theme-link-dark-color-visited, var(--color-turquoise-1));
     --link-dark-outline-focus: var(--theme-link-dark-outline-focus, var(--color-turquoise-1));
     --link-dark-color-active: var(--theme-link-dark-color-active, var(--color-turquoise-1));
     --link-dark-background-active: var(--theme-link-dark-background-active, var(--color-graphite-6));
