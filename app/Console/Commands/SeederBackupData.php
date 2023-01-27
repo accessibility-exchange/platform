@@ -17,7 +17,7 @@ class SeederBackupData extends Command
                             {--a|all : Whether to run through all available backups/restores in config}?
                             {--remove : Remove backed up files}?
                             {--restore : Restore the filament table}?
-                            {--t|table= : Create/remove specific table file}?*';
+                            {--t|table=* : Create/remove specific table file}?';
 
     /**
      * The console command description.
@@ -42,12 +42,15 @@ class SeederBackupData extends Command
             // if the table option is set only remove that tables file
             // else remove all found in the config
             if (isset($options['table'])) {
-                if (in_array($options['table'], $available_tables)) {
-                    Storage::disk('seeds')->delete($options['table'] . ".json");
-                } else {
-                    printf("You have might have misspelled the tablename.\r\nAvailable tables: %s\r\n", implode(', ', $available_tables));
-                    return 1;
+                foreach($options['table'] as $table) {
+                    if (in_array($table, $available_tables)) {
+                        Storage::disk('seeds')->delete($table . ".json");
+                    } else {
+                        printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
+                        return 1;
+                    }
                 }
+                return 0;
             } else {
                 foreach($available_tables as $table) {
                     Storage::disk('seeds')->delete($table . ".json");
@@ -96,14 +99,16 @@ class SeederBackupData extends Command
 
         // if table is set the default will be to backup the table
         } elseif (isset($options['table'])) {
-            if (in_array($options['table'], $available_tables)) {
-                printf("Backing up table seeder %s\r\n", $options['table']);
-                Storage::disk('seeds')->put($options['table'] . ".json", DB::table($options['table'])->get()->toJson());
-                return 0;
-            } else {
-                printf("You have might have misspelled the tablename.\r\nAvailable tables: %s\r\n", implode(', ', $available_tables));
-                return 1;
+            foreach($options['table'] as $table) {
+                if (in_array($table, $available_tables)) {
+                    printf("Backing up table seeder %s\r\n", $table);
+                    Storage::disk('seeds')->put($table . ".json", DB::table($table)->get()->toJson());
+                } else {
+                    printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
+                    return 1;
+                }
             }
+            return 0;
         } else {
             printf("Must use at least one option.\r\nTry php artisan help db:seed:backup\r\n");
             return 1;
