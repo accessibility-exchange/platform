@@ -22,6 +22,12 @@
                 @endif
             @endcan
         @endcan
+        @if (!$user->oriented_at)
+            <li>
+                <a
+                    href="https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez">{{ __('Sign up for an orientation session') }}</a>
+            </li>
+        @endif
         @can('viewAny', App\Models\Project::class)
             <li>
                 <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m running') }}</a>

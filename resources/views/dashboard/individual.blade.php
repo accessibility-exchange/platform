@@ -16,6 +16,12 @@
                 </li>
             @endcan
         @endif
+        @if (!$user->oriented_at)
+            <li>
+                <a
+                    href="https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez">{{ __('Sign up for an orientation session') }}</a>
+            </li>
+        @endif
         @can('viewAny', App\Models\Project::class)
             @if ($user->individual->isParticipant())
                 <li>
