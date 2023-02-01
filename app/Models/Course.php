@@ -56,12 +56,13 @@ class Course extends Model
 
     public function isFinished(?User $user): bool
     {
+        if ($this->modules->count() < 1) {
+            return false;
+        }
         $isFinished = true;
         foreach ($this->modules as $module) {
             $moduleUser = $module->users->find($user->id)?->getRelationValue('pivot');
-            if ($moduleUser?->finished_content_at) {
-                continue;
-            } else {
+            if (! $moduleUser?->finished_content_at) {
                 $isFinished = false;
                 break;
             }
