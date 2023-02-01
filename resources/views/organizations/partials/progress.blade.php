@@ -31,7 +31,12 @@
                     @cannot('publish', $organization) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
                 @cannot('publish', $organization)
                 <p id="cannot-publish-explanation">
-                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                    {!! Str::markdown(
+                        __(
+                            'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
+                            ['url' => 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez'],
+                        ),
+                    ) !!}
                 </p>
             @endcannot
             </p>
