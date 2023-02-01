@@ -5,8 +5,6 @@
             {{ __('Welcome to') }}<br />
             {{ __('The Accessibility Exchange') }}
         </h1>
-
-        <h2>{{ __('Create new regulated organization') }}</h2>
     </x-slot>
 
     <form class="stack" action="{{ localized_route('regulated-organizations.store-type') }}" method="post" novalidate>
