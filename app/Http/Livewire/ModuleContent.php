@@ -42,7 +42,7 @@ class ModuleContent extends Component
     {
         if (! $this->isStarted) {
             $course = $this->module->course;
-            if (! ($this->user->courses->find($course->id)?->getRelationValue('pivot'))) {
+            if (! ($this->user->courses->find($course->id))) {
                 $this->user->courses()->attach(
                     $course->id, ['started_at' => now()]
                 );

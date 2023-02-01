@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
+/** @property int $questions_count */
 class Quiz extends Model
 {
     use HasFactory;
     use HasTranslations;
 
     protected $attributes = [
-        'minimum_score' => 0.75,
+        'minimum_score' => 1,
     ];
 
     protected $fillable = [
@@ -39,9 +39,9 @@ class Quiz extends Model
             ->withTimestamps();
     }
 
-    public function questions(): HasMany
+    public function questions(): BelongsToMany
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsToMany(Question::class);
     }
 
     public function course(): BelongsTo

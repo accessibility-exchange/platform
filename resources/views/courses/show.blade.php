@@ -9,14 +9,14 @@
         <a href="{{ localized_route('resource-collections.index') }}">{{ __('Back') }}</a>
         <x-slot name="title">{{ $course->title }}</x-slot>
         <div class="flex justify-between">
-            <div>
+            {{-- <div>
                 {{ __('Author') }}
+            </div> --}}
+            <div>
+                {{ __('Resource type: Training') }}
             </div>
             <div>
-                {{ __('Resource type') . ': ' . __('Training') }}
-            </div>
-            <div>
-                {{ __('Published on') }}
+                {{ __('Published on: :created_at', ['created_at' => $course->created_at->isoFormat('MM, DD, YYYY')]) }}
             </div>
         </div>
     </div>
@@ -60,12 +60,12 @@
                 </div>
             @endforeach
         </div>
-        @if ($finishedCourse && !$receivedCertificate)
+        @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
             <form class="stack" action="{{ localized_route('quizzes.show', $course) }}" novalidate>
                 @csrf
                 <button>{{ __('Take Quiz') }}</button>
             </form>
-        @elseif(!$finishedCourse && !$receivedCertificate)
+        @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
             <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
         @elseif($receivedCertificate)
         @endif

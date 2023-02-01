@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->integer('minimum_choices');
+            $table->dropForeign(['quiz_id']);
+            $table->dropColumn('quiz_id');
         });
     }
 
@@ -26,7 +27,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->dropColumn('minimum_choices');
+            $table->foreignId('quiz_id')
+                ->constrained()
+                ->onDelete('cascade');
         });
     }
 };

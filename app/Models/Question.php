@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\LaravelOptions\Options;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Question extends Model
@@ -17,44 +15,24 @@ class Question extends Model
     protected $fillable = [
         'order',
         'question',
+        'choices',
+        'correct_choices',
     ];
 
     protected $casts = [
         'order' => 'integer',
         'question' => 'array',
+        'choices' => 'array',
+        'correct_choices' => 'array',
     ];
 
     public array $translatable = [
         'question',
+        'choices',
     ];
 
-    public function quiz(): BelongsTo
+    public function quizzes(): BelongsToMany
     {
-        return $this->belongsTo(Quiz::class);
-    }
-
-    public function choices(): HasMany
-    {
-        return $this->hasMany(Choice::class);
-    }
-
-    public function getChoices()
-    {
-        return Options::forModels(
-            Choice::query()->whereIn('id', $this->choices->modelKeys()),
-            label: fn (Choice $choice) => $choice->getTranslation('label', locale())
-        )->toArray();
-    }
-
-    public function getCorrectChoices()
-    {
-        $correctChoices = [];
-        foreach ($this->choices as $choice) {
-            if ($choice->is_answer) {
-                $correctChoices[] = $choice->id;
-            }
-        }
-
-        return $correctChoices;
+        return $this->belongsToMany(Quiz::class);
     }
 }

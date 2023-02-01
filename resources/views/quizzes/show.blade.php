@@ -5,25 +5,29 @@
         <x-slot name="title">{{ $title }}</x-slot>
     </div>
     <div class="stack ml-2 mr-2">
-        <form class="stack" action="{{ localized_route('quizzes.store-result', $course) }}" method="POST" novalidate>
+        <form class="stack" action="{{ localized_route('quizzes.show-result', $course) }}" method="POST" novalidate>
             @csrf
             @foreach ($questions as $question)
-                <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
-                    @if (session('wrongAnswers'))
-                        @if (in_array($question->id, session('wrongAnswers')))
-                            <x-banner type="error">
-                                {{ __('Please try again.') }}
-                            </x-banner>
-                        @else
-                            <x-banner type="success">
-                                {{ __('Correct answer!') }}
-                            </x-banner>
-                        @endif
+                @if (session('wrongAnswers'))
+                    @if (in_array($question->id, session('wrongAnswers')))
+                        <x-banner type="error">
+                            {{ __('Please try again.') }}
+                        </x-banner>
+                    @else
+                        <x-banner type="success">
+                            {{ __('Correct answer!') }}
+                        </x-banner>
                     @endif
+                @endif
+                <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
                     <legend>{{ $question->question . '?' }}</legend>
-                    <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->getChoices()" :checked="session('previousAnswers') && array_key_exists($question->id, session('previousAnswers'))
-                        ? session('previousAnswers')[$question->id]
-                        : []" />
+
+                    <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->choices" :checked="old(
+                        'questions.' . $question->id,
+                        session('previousAnswers') && array_key_exists($question->id, session('previousAnswers'))
+                            ? session('previousAnswers')[$question->id]
+                            : [],
+                    )" />
                     <x-hearth-error for="questions.{{ $question->id }}" />
                 </fieldset>
             @endforeach

@@ -17,7 +17,6 @@ class QuizController extends Controller
 
         return view('quizzes.show', [
             'course' => $course,
-            'quiz' => $quiz,
             'title' => $quiz->title,
             'questions' => $quiz->questions,
         ]);
@@ -28,16 +27,15 @@ class QuizController extends Controller
         $data = $request->validated();
         $user = Auth::user();
         $correctQuestions = 0;
-        $quiz = $course->quiz;
-        $quizWithCounts = $quiz->loadCount('questions');
+        $quiz = $course->quiz->loadCount('questions');
         $isPass = false;
         $validator = Validator::make([], []);
         $previousAnswers = [];
         $wrongAnswers = [];
 
-        foreach ($quizWithCounts->questions as $question) {
+        foreach ($quiz->questions as $question) {
             $previousAnswers[$question->id] = $data['questions'][$question->id];
-            if ($question->getCorrectChoices() == $data['questions'][$question->id]) {
+            if ($question->correct_choices == $data['questions'][$question->id]) {
                 $correctQuestions++;
             } else {
                 $validator->errors()->add('questions.'.$question->id, __('Wrong answer'));
@@ -45,38 +43,35 @@ class QuizController extends Controller
             }
         }
 
-        //@phpstan-ignore-next-line
-        if ($quizWithCounts->questions_count > 0) {
-            $quizScore = $correctQuestions / $quizWithCounts->questions_count;
-            $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');
-            if ($quizUser) {
-                $attempts = $quizUser->attempts;
-                $user->quizzes()->updateExistingPivot(
-                    $quiz->id, [
-                        'attempts' => $attempts + 1,
-                        'score' => $quizScore,
-                    ]
-                );
-            } else {
-                $user->quizzes()->attach(
-                    $quiz->id, [
-                        'attempts' => 1,
-                        'score' => $quizScore,
-                    ]
-                );
-            }
-            if ($quizScore >= $quiz->minimum_score) {
-                $isPass = true;
-                $user->courses()->updateExistingPivot(
-                    $quiz->course->id, [
-                        'received_certificate_at' => now(),
-                    ]
-                );
-            } else {
-                return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers])->withErrors($validator);
-            }
+        $quizScore = $correctQuestions / $quiz->questions_count;
+        $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');
+        if ($quizUser) {
+            $attempts = $quizUser->attempts;
+            $user->quizzes()->updateExistingPivot(
+                $quiz->id, [
+                    'attempts' => $attempts + 1,
+                    'score' => $quizScore,
+                ]
+            );
+        } else {
+            $user->quizzes()->attach(
+                $quiz->id, [
+                    'attempts' => 1,
+                    'score' => $quizScore,
+                ]
+            );
+        }
+        if ($quizScore >= $quiz->minimum_score) {
+            $isPass = true;
+            $user->courses()->updateExistingPivot(
+                $quiz->course->id, [
+                    'received_certificate_at' => now(),
+                ]
+            );
+        } else {
+            return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers])->withErrors($validator);
         }
 
-        return view('quizzes.store-result', ['quiz' => $quiz, 'results' => $isPass]);
+        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $isPass]);
     }
 }

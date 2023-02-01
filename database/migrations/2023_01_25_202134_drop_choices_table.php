@@ -13,9 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->dropColumn('minimum_choices');
-        });
+        Schema::drop('choices');
     }
 
     /**
@@ -25,8 +23,14 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('questions', function (Blueprint $table) {
-            $table->integer('minimum_choices');
+        Schema::create('choices', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('question_id')
+                ->constrained()
+                ->onDelete('cascade');
+            $table->json('label');
+            $table->boolean('is_answer');
+            $table->timestamps();
         });
     }
 };

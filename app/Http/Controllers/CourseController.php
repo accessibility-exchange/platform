@@ -14,6 +14,7 @@ class CourseController extends Controller
         $courseUser = $user->courses->find($course->id);
         $finishedCourse = $course->isFinished($user);
         $receivedCertificate = $courseUser?->getRelationValue('pivot')->received_certificate_at;
+        $hasQuiz = $course->quiz()->count() && $course->quiz?->questions()->count();
 
         return view('courses.show', [
             'user' => $user,
@@ -21,6 +22,7 @@ class CourseController extends Controller
             'modules' => $course->modules,
             'finishedCourse' => $finishedCourse,
             'receivedCertificate' => $receivedCertificate,
+            'hasQuiz' => $hasQuiz,
         ]);
     }
 }

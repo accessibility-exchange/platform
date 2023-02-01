@@ -1,5 +1,5 @@
 <x-slot name="title">
-    {{ __('Module') . '-' . $module->title }}
+    {{ __('Module - :title', ['title' => $module->title]) }}
 </x-slot>
 
 <x-slot name="header">

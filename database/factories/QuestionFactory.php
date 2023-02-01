@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Quiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +17,14 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'quiz_id' => Quiz::factory(),
             'order' => $this->faker->numberBetween(1, 5),
             'question' => ['en' => $this->faker->words(3, true)],
+            'choices' => ['en' => [
+                ['label' => $this->faker->words(3, true), 'value' => 0],
+                ['label' => $this->faker->words(3, true), 'value' => 1],
+                ['label' => $this->faker->words(3, true), 'value' => 2],
+            ]],
+            'correct_choices' => [1, 2],
         ];
     }
 }

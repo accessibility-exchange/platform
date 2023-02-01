@@ -13,5 +13,5 @@ Route::controller(QuizController::class)
         Route::multilingual('/courses/{course}/quiz/result', 'storeQuizResult')
             ->method('post')
             ->middleware('auth')
-            ->name('.store-result');
+            ->name('.show-result');
     });
