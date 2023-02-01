@@ -33,8 +33,8 @@
 
     /* Link */
     --link-color: var(--theme-link-color, var(--color-blue-6));
-    --link-color-hover: var(--theme-link-color-hover, var(--color-blue-7));
-    --link-color-visited: var(--theme-link-color-visited, var(--color-blue-8));
+    --link-color-hover: var(--theme-link-color-hover, var(--color-blue-8));
+    --link-color-visited: var(--theme-link-color-visited, var(--color-blue-7));
     --link-outline-focus: var(--theme-link-outline-focus, var(--color-blue-6));
     --link-color-active: var(--theme-link-color-active, var(--color-blue-7));
     --link-background-active: var(--theme-link-background-active, var(--color-grey-2));

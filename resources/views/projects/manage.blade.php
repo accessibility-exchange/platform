@@ -21,7 +21,7 @@
                     @can('update', $project)
                         <div>
                             <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil')
-                                {{ __('Edit project') }}</a>
+                                {{ __('Edit project page') }}</a>
                         </div>
                     @endcan
                     {{-- TODO: cancel project --}}

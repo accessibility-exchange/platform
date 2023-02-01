@@ -63,7 +63,7 @@ Route::prefix('about')
         })->name('for-community-organizations');
 
         Route::multilingual('/for-community-organizations/consultation-participants', function () {
-            return view('about.roles.consultation-participants');
+            return view('about.roles.community-organizations-consultation-participants');
         })->name('organization-consultation-participants');
 
         Route::multilingual('/for-community-organizations/accessibility-consultants', function () {
