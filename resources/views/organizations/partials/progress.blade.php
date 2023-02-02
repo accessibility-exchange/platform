@@ -34,7 +34,7 @@
                     {!! Str::markdown(
                         __(
                             'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                            ['url' => 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez'],
+                            ['url' => orientation_link('organization')],
                         ),
                     ) !!}
                 </p>

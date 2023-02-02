@@ -42,7 +42,7 @@
                                 {!! Str::markdown(
                                     __(
                                         'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                                        ['url' => 'https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez'],
+                                        ['url' => orientation_link('regulated-organization')],
                                     ),
                                 ) !!}
                             </p>
