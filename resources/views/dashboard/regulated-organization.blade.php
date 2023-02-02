@@ -24,8 +24,7 @@
         @endcan
         @if (!$user->oriented_at)
             <li>
-                <a
-                    href="https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez">{{ __('Sign up for an orientation session') }}</a>
+                <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)

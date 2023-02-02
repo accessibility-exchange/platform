@@ -18,8 +18,7 @@
         @endif
         @if (!$user->oriented_at)
             <li>
-                <a
-                    href="https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez">{{ __('Sign up for an orientation session') }}</a>
+                <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)
