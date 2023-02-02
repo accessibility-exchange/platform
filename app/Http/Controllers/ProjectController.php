@@ -114,22 +114,12 @@ class ProjectController extends Controller
 
     public function edit(Project $project): View
     {
-        $orientationLink = '#';
-        if (Auth::user()->context === 'regulated-organization') {
-            $orientationLink = 'https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez';
-        } elseif (Auth::user()->context === 'organization') {
-            $orientationLink = 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez';
-        } elseif (Auth::user()->context === 'individual') {
-            $orientationLink = 'https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez';
-        }
-
         return view('projects.edit', [
             'project' => $project,
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
-            'orientationLink' => $orientationLink,
         ]);
     }
 
