@@ -253,6 +253,7 @@ if (! function_exists('orientation_link')) {
             'individual' => 'https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez',
             'organization' => 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez',
             'regulated-organization' => 'https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez',
+            default => '#',
         };
     }
 }
