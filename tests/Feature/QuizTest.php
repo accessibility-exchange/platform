@@ -88,7 +88,6 @@ test('users can view quiz results on finishing it', function () {
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
         'score' => 0,
     ]);
 
@@ -107,10 +106,11 @@ test('users can view quiz results on finishing it', function () {
         ->from(localized_route('quizzes.show', $course))
         ->post(localized_route('quizzes.show-result', $course), $inputData);
 
+    $response->assertRedirect(localized_route('quizzes.show', $course));
+
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 2,
         'score' => 1,
     ]);
 
@@ -119,7 +119,7 @@ test('users can view quiz results on finishing it', function () {
         'course_id' => $course->id,
     ]);
     $this->assertNotNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->received_certificate_at);
-    $response->assertSee(__('Congratulations! You have passed the quiz.'));
+    $this->followRedirects($response)->assertSee(__('You have now completed this course.'));
 });
 
 test('when users pass the quiz in first attempt', function () {
@@ -145,14 +145,15 @@ test('when users pass the quiz in first attempt', function () {
         ->from(localized_route('quizzes.show', $course))
         ->post(localized_route('quizzes.show-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('quizzes.show', $course));
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
         'score' => 1,
     ]);
+
+    $this->followRedirects($response)->assertSee(__('You have now completed this course.'));
 });
 
 test('when users fail the quiz multiple times', function () {
@@ -181,7 +182,6 @@ test('when users fail the quiz multiple times', function () {
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
         'score' => 0,
     ]);
 
@@ -194,7 +194,8 @@ test('when users fail the quiz multiple times', function () {
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 2,
         'score' => 0,
     ]);
+
+    $this->followRedirects($response)->assertSee(__('You scored :score%. Please try again.', ['score' => 0]));
 });

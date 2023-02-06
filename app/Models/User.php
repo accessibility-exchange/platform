@@ -249,7 +249,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function quizzes(): BelongsToMany
     {
         return $this->belongsToMany(Quiz::class)
-            ->withPivot('attempts', 'score')
+            ->withPivot('score')
             ->withTimestamps();
     }
 

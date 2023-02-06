@@ -46,17 +46,14 @@ class QuizController extends Controller
         $quizScore = $correctQuestions / $quiz->questions_count;
         $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');
         if ($quizUser) {
-            $attempts = $quizUser->attempts;
             $user->quizzes()->updateExistingPivot(
                 $quiz->id, [
-                    'attempts' => $attempts + 1,
                     'score' => $quizScore,
                 ]
             );
         } else {
             $user->quizzes()->attach(
                 $quiz->id, [
-                    'attempts' => 1,
                     'score' => $quizScore,
                 ]
             );
@@ -68,10 +65,8 @@ class QuizController extends Controller
                     'received_certificate_at' => now(),
                 ]
             );
-        } else {
-            return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers])->withErrors($validator);
         }
 
-        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $isPass]);
+        return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers, 'isPass' => $isPass, 'score' => $quizScore])->withErrors($validator);
     }
 }
