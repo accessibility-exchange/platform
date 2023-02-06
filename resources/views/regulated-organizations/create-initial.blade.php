@@ -3,7 +3,13 @@
         {{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}
     </x-slot>
     <x-slot name="header">
-        <h1>{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}</h1>
+        @if ($type === 'government' || $type === 'public-sector')
+            <h1> {{ __("Tell us your organization's name") }} </h1>
+        @elseif ($type === 'business')
+            <h1> {{ __('Tell us your business name') }} </h1>
+        @else
+            <h1>{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}</h1>
+        @endif
     </x-slot>
 
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
