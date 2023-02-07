@@ -10,21 +10,21 @@
     </x-slot>
 
     <div class="stack">
-        <p>{{ __('Last updated: :date', ['date' => $modified->isoFormat('LL')]) }}</p>
+        <p>{{ __('Last updated: :date', ['date' => $modifiedAt->isoFormat('LL')]) }}</p>
 
         <p>{{ __('Please read these terms of service carefully.') }}</p>
 
         {!! Str::markdown(
             __(
                 'Institute for Research and Development on Inclusion and Society (“**IRIS**”, “**we**”, “**us**” or “**our**”)
-                        invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities,
-                        Deaf persons, and their supporters and people and organizations with expertise in supporting these communities
-                        to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations
-                        (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or
-                        other relevant services (the “**Service**”), which you can access at **[[:url](:url)]**
-                        or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy
-                        (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
-                ['url' => config('app.url')],
+                                invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities,
+                                Deaf persons, and their supporters and people and organizations with expertise in supporting these communities
+                                to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations
+                                (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or
+                                other relevant services (the “**Service**”), which you can access at **[[:url](:url)]**
+                                or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy
+                                (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
+                ['url' => $appURL],
             ),
         ) !!}
 
@@ -445,13 +445,13 @@
             <li>{!! Str::inlineMarkdown(
                 __(
                     '**Notices.** All notices or approvals required or permitted under these Terms will be in writing and delivered by email transmission, and in each instance will be deemed given upon receipt. All notices or approvals will be sent to IRIS at **[[:email](:email)]**. Notices to you may be made via either email or regular mail. The Platform may also provide notices to you of changes to these Terms or other matters by displaying notices or links to notices generally on the Platform.',
-                    ['email' => settings()->get('email', 'support@accessibilityexchange.ca')],
+                    ['email' => $email],
                 ),
             ) !!}</li>
             <li>{!! Str::inlineMarkdown(
                 __(
                     '**Modification.** We reserve the right, at our sole discretion, to change or modify portions of these Terms at any time. If we do this, we will post the changes on **[[:url](:url)]** and will indicate at the top of the Terms page the date these terms were last revised. We will also endeavor to notify you, either through the Platform user interface, in an email notification or through other reasonable means. Any such changes will become effective no earlier than fourteen (14) days after they are posted, except that changes addressing new functions of the Platform or changes made for legal reasons will be effective immediately. Your continued use of the Platform after the date any such changes become effective constitutes your acceptance of the new Terms.',
-                    ['url' => config('app.url')],
+                    ['url' => $appURL],
                 ),
             ) !!}</li>
         </ol>
@@ -459,7 +459,7 @@
         <h2>{{ __('QUESTIONS') }}</h2>
         {!! Str::markdown(
             __('If you have any questions, you understand that you may contact IRIS via email at **[[:email](:email)]**.', [
-                'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
+                'email' => $email,
             ]),
         ) !!}
     </div>

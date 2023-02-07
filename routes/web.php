@@ -25,7 +25,9 @@ Route::prefix('about')
     ->group(function () {
         Route::multilingual('/terms-of-service', function () {
             return view('about.terms-of-service', [
-                'modified' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
+                'appURL' => config('app.url'),
+                'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
+                'modifiedAt' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
             ]);
         })->name('terms-of-service');
 
