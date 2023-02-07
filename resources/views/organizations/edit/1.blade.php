@@ -10,7 +10,7 @@
         <div class="stack">
             <h2>
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
-                {{ __('About you') }}
+                {{ __('About your organization') }}
             </h2>
             <hr class="divider--thick">
             <h3>{{ __('Organization information') }}</h3>
