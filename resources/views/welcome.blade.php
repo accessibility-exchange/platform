@@ -3,8 +3,11 @@
     <x-slot name="header">
         <div class="center center:wide stack stack:lg">
             <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
-            <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}"
-                @guest namespace="welcome-guest" @endguest />
+            @auth
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+            @else
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" namespace="welcome-guest" />
+            @endauth
             <p class="h4">
                 {{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}
             </p>
