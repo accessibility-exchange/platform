@@ -101,11 +101,13 @@ test('in French and LSQ', function () {
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
 
+    $localizedName = __($interpretation->name, [], 'lsq');
+
     $toSee = [
         '<h1 itemprop="name">',
-        'Le Connecteur pour l’accessibilité',
+        $localizedName,
         '</h1>',
-        'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
+        'id="'.Str::slug($localizedName),
         'interpretation__video',
         $interpretation->getTranslation('video', 'lsq'),
     ];
@@ -130,11 +132,13 @@ test('do not fallback to ASL (asl)', function () {
     $response = $this->actingAs($user)->get(localized_route('welcome'));
     $response->assertStatus(200);
 
+    $localizedName = __($interpretation->name, [], 'lsq');
+
     $toSee = [
         '<h1 itemprop="name">',
-        'Le Connecteur pour l’accessibilité',
+        $localizedName,
         '</h1>',
-        'id="'.Str::slug('Le Connecteur pour l’accessibilité'),
+        'id="'.Str::slug($localizedName),
     ];
 
     $response->assertSeeInOrder($toSee, false);
