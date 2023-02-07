@@ -22,7 +22,7 @@
                 @endif
             @endcan
         @endcan
-        @if (!$user->regulatedOrganization->oriented_at)
+        @if (!$user->regulatedOrganization?->oriented_at)
             <li>
                 <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
