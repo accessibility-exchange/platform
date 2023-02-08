@@ -9,6 +9,7 @@ use App\Models\ResourceCollection;
 use App\Models\Sector;
 use App\Models\Organization;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ResourceSeeder extends Seeder {
@@ -28,6 +29,14 @@ class ResourceSeeder extends Seeder {
 
         // check if there is a JSON file that has stored data for the seeder
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+
+            // if trucate was set via seeder restore command then truncate the table prior to seeding data
+            if (config('seeder.truncate')) {
+                DB::statement("SET foreign_key_checks=0");
+                Resource::truncate();
+                DB::statement("SET foreign_key_checks=1");
+            }
+
             // TODO need to write handling of attachments
             if (false && Storage::disk('seeds')->exists(sprintf("resources.%s.json", $environment))) {
 

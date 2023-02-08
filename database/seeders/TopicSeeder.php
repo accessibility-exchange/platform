@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Topic;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TopicSeeder extends Seeder {
@@ -23,6 +24,14 @@ class TopicSeeder extends Seeder {
 
         // check if there is a JSON file that has stored data for the seeder
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+
+            // if trucate was set via seeder restore command then truncate the table prior to seeding data
+            if (config('seeder.truncate')) {
+                DB::statement("SET foreign_key_checks=0");
+                Topic::truncate();
+                DB::statement("SET foreign_key_checks=1");
+            }
+
             if (Storage::disk('seeds')->exists(sprintf("topics.%s.json", $environment))) {
 
                 $topics = json_decode(Storage::disk('seeds')->get(sprintf("topics.%s.json", $environment)), true);

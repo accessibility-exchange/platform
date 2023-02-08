@@ -263,6 +263,12 @@ return [
             // 'ResourceCollectionSeeder',
             // 'ResourceSeeder',
             'TopicSeeder',
+        ],
+        'environments' => [
+            'production',
+            'staging',
+            'local',
+            'dev',
         ]
     ],
 
