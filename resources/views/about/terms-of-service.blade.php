@@ -1,4 +1,4 @@
-<x-app-layout page-width="medium">
+<x-app-layout page-width="wide" bodyClass="tos">
     <x-slot name="title">{{ __('Terms of Service') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -10,20 +10,20 @@
     </x-slot>
 
     <div class="stack">
-        <p>{{ __('Last updated: :date', ['date' => $modifiedAt->isoFormat('LL')]) }}</p>
+        <p><strong>{{ __('Last updated: :date', ['date' => $modifiedAt->isoFormat('LL')]) }}</strong></p>
 
         <p>{{ __('Please read these terms of service carefully.') }}</p>
 
         {!! Str::markdown(
             __(
                 'Institute for Research and Development on Inclusion and Society (“**IRIS**”, “**we**”, “**us**” or “**our**”)
-                                invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities,
-                                Deaf persons, and their supporters and people and organizations with expertise in supporting these communities
-                                to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations
-                                (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or
-                                other relevant services (the “**Service**”), which you can access at **[[:url](:url)]**
-                                or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy
-                                (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
+                                        invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities,
+                                        Deaf persons, and their supporters and people and organizations with expertise in supporting these communities
+                                        to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations
+                                        (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or
+                                        other relevant services (the “**Service**”), which you can access at **[[:url](:url)]**
+                                        or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy
+                                        (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
                 ['url' => $appURL],
             ),
         ) !!}
