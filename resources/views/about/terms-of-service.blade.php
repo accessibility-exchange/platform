@@ -16,14 +16,7 @@
 
         {!! Str::markdown(
             __(
-                'Institute for Research and Development on Inclusion and Society (“**IRIS**”, “**we**”, “**us**” or “**our**”)
-                                        invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities,
-                                        Deaf persons, and their supporters and people and organizations with expertise in supporting these communities
-                                        to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations
-                                        (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or
-                                        other relevant services (the “**Service**”), which you can access at **[[:url](:url)]**
-                                        or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy
-                                        (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
+                'Institute for Research and Development on Inclusion and Society (“**IRIS**”, “**we**”, “**us**” or “**our**”) invites you (“**you**” or “**your**”) to join The Accessibility Exchange, a platform enabling people with disabilities, Deaf persons, and their supporters and people and organizations with expertise in supporting these communities to connect with one another and with federally regulated organizations (“**FROs**”) and other organizations (together with FROs, the “**Project Proponents**”), for the purpose of developing accessibility plans or other relevant services (the “**Service**”), which you can access at **[[:url](:url)]** or on our mobile applications (the “**Platform**”). These terms of service and the IRIS Privacy Policy (together, the “**Terms**”) govern your use of the Platform and represent a legally binding agreement between you and IRIS.',
                 ['url' => $appURL],
             ),
         ) !!}
@@ -444,8 +437,11 @@
             ) !!}</li>
             <li>{!! Str::inlineMarkdown(
                 __(
-                    '**Notices.** All notices or approvals required or permitted under these Terms will be in writing and delivered by email transmission, and in each instance will be deemed given upon receipt. All notices or approvals will be sent to IRIS at **[[:email](:email)]**. Notices to you may be made via either email or regular mail. The Platform may also provide notices to you of changes to these Terms or other matters by displaying notices or links to notices generally on the Platform.',
-                    ['email' => $email],
+                    '**Notices.** All notices or approvals required or permitted under these Terms will be in writing and delivered by email transmission, and in each instance will be deemed given upon receipt. All notices or approvals will be sent to IRIS at **[[:email](:mailto)]**. Notices to you may be made via either email or regular mail. The Platform may also provide notices to you of changes to these Terms or other matters by displaying notices or links to notices generally on the Platform.',
+                    [
+                        'email' => $email,
+                        'mailto' => "mailto:{$email}",
+                    ],
                 ),
             ) !!}</li>
             <li>{!! Str::inlineMarkdown(
@@ -458,8 +454,9 @@
 
         <h2>{{ __('QUESTIONS') }}</h2>
         {!! Str::markdown(
-            __('If you have any questions, you understand that you may contact IRIS via email at **[[:email](:email)]**.', [
+            __('If you have any questions, you understand that you may contact IRIS via email at **[[:email](:mailto)]**.', [
                 'email' => $email,
+                'mailto' => "mailto:{$email}",
             ]),
         ) !!}
     </div>
