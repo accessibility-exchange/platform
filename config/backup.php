@@ -248,19 +248,20 @@ return [
         ],
     ],
 
+    // TODO remove resources until we write in handling of attachments to other tables
     'filament_seeders' => [
         'tables' => [
             'identities',
             'interpretations',
-            'resource_collections',
-            'resources',
+            // 'resource_collections',
+            // 'resources',
             'topics',
         ],
         'classes' => [
             'IdentitySeeder',
             'InterpretationSeeder',
-            'ResourceCollectionSeeder',
-            'ResourceSeeder',
+            // 'ResourceCollectionSeeder',
+            // 'ResourceSeeder',
             'TopicSeeder',
         ]
     ],
