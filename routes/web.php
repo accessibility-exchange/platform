@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,11 @@ Route::prefix('about')
     ->name('about.')
     ->group(function () {
         Route::multilingual('/terms-of-service', function () {
-            return view('about.terms-of-service');
+            return view('about.terms-of-service', [
+                'appURL' => config('app.url'),
+                'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
+                'modifiedAt' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
+            ]);
         })->name('terms-of-service');
 
         Route::multilingual('/privacy-policy', function () {
