@@ -59,9 +59,16 @@
             </dl>
 
             @can('join', $engagement)
-                <a class="cta" href="{{ localized_route('engagements.sign-up', $engagement) }}">
-                    @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
-                </a>
+                <div class="flex flex-col">
+                    <a class="{{ $engagement->confirmedParticipants->count() === $engagement->ideal_participants ? 'cta disabled' : 'cta' }} mx-auto"
+                        href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                        tabindex="{{ $engagement->confirmedParticipants->count() === $engagement->ideal_participants ? '-1' : '0' }}">
+                        @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
+                    </a>
+                    @if ($engagement->confirmedParticipants->count() === $engagement->ideal_participants)
+                        <p>{{ __('All participant spots have been filled.') }}</p>
+                    @endif
+                </div>
             @endcan
 
             @can('participate', $engagement)

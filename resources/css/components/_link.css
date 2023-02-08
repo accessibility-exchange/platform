@@ -84,6 +84,14 @@ a.cta {
     width: auto;
 }
 
+a.cta.disabled {
+    background: transparent;
+    border: var(--border-2) dashed;
+    border-color: var(--cta-border-hover);
+    color: var(--cta-color-hover);
+    pointer-events: none;
+}
+
 a.cta:hover {
     background: var(--cta-background-hover);
     border-color: var(--cta-border-hover);
@@ -140,6 +148,14 @@ a.cta.secondary:focus:active {
     background: var(--cta-dark-background);
     border: var(--border-2) solid var(--cta-dark-border);
     color: var(--cta-dark-color);
+}
+
+.darker a.cta.disabled {
+    background: transparent;
+    background: var(--cta-dark-background-hover);
+    border-color: var(--cta-dark-border-hover);
+    color: var(--cta-dark-color-hover);
+    pointer-events: none;
 }
 
 .dark a.cta:hover,
