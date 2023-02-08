@@ -50,7 +50,7 @@
 
     <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters">
-            <h3 class="mb-6 mt-0">{{ __('Filters') }}</h3>
+            <h2 class="mb-6 mt-0">{{ __('Filters') }}</h2>
             <div class="mb-6">
                 <button class="secondary" type="button" wire:click="selectNone()">{{ __('Clear filters') }}</button>
             </div>
