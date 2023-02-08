@@ -22,6 +22,11 @@
                 @endif
             @endcan
         @endcan
+        @if (!$user->regulatedOrganization?->oriented_at)
+            <li>
+                <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
+            </li>
+        @endif
         @can('viewAny', App\Models\Project::class)
             <li>
                 <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m running') }}</a>
