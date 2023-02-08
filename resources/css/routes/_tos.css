@@ -1,0 +1,15 @@
+.tos {
+    counter-reset: section;
+    text-align: justify;
+}
+
+.tos h2 {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.tos h2::before {
+    content: counter(section) ".";
+    counter-increment: section;
+    text-align: start;
+}
