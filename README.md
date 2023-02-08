@@ -256,6 +256,82 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `production` branch.
 
+
+## Custom Artisan Commands
+
+### db:refresh
+
+#### Purpose
+
+(Excluded from running during tests or on production.)  
+
+* Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. [optional if `--backup` is used]  
+* Runs a fresh migration that will truncate all tables and run all migrations.  
+* Runs the **DevSeeder** seeder.  
+
+### deploy:global
+
+#### Purpose
+
+Runs other console commands in order and should be commands that are only run once accross multiple deploying container.  
+
+### deploy:local
+
+#### Purpose
+
+Runs other console commands in order and should be commands that should be run on each deploying container.  
+
+### notifications:remove:old
+
+#### Purpose
+
+Removes older notifications.
+
+#### Options
+
+`--days=` - _*required_ - The number of days which notifications older than will be deleted from the notifications database table.  
+
+### db:seed:backup
+
+#### Purpose
+
+Takes filament tables and backs them up to JSON files so that they can be used by seeders to repopulate the tables.  
+
+#### Options
+
+| option | Description |
+| --- | ---- |  
+| `--a\|all` | Whether to run through all available backups/restores in config. |  
+
+* When used by itself it backups all the tables found in config **backup.filament_seeders.tables**.  
+* When used with `--restore` option it will run all seeder classed found in **backup.filament_seeders.classes**.  
+---
+
+| option | Description |  
+| --- | ---- |  
+| `--remove` | Remove backed up files |  
+
+* When used by itself it will remove all of the backed up JSON files found in **backup.filament_seeders.tables**.  
+* When used with `--table=` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)  
+---
+
+| option | Description |  
+| --- | ---- |
+| `--restore` | Restore the filament table |  
+
+* Will not run during tests or on production.  
+* When used without options it will prompt with available classes found in **backup.filament_seeders.classes**, user can choose multiple by separating choices by commas and will run the chosen seeder classes.  
+* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**.  
+---
+
+| option | Description |  
+| --- | ---- |
+| `--t\|table=` | Create/remove specific table file |  
+
+* When used by itself it will backup the specified table(s) to a JSON file (can pass multiple values, each needs to be prefixed by `--table=`.)  
+* When used with `--remove` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)  
+
+
 ## License
 
 The Accessibility Exchange platform is available under the [BSD 3-Clause License](https://github.com/accessibility-exchange/platform/blob/main/LICENSE.md).
