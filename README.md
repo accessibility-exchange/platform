@@ -304,7 +304,19 @@ Takes filament tables and backs them up to JSON files so that they can be used b
 | `--a\|all` | Whether to run through all available backups/restores in config. |  
 
 * When used by itself it backups all the tables found in config **backup.filament_seeders.tables**.  
-* When used with `--restore` option it will run all seeder classed found in **backup.filament_seeders.classes**.  
+* When used with `--restore` option it will run all seeder classed found in **backup.filament_seeders.classes**.
+
+--- 
+
+| option | Description |  
+| --- | ---- |  
+| `--env` | Override the environment tag that is being handled. |  
+
+* Available environments are found in config **backup.filament_seeders.environments**.  
+* When used by default backup it will tag the json files with environment tag.  
+* When used with `--delete` option will change the files being deleted to those tagged with the specific environment.
+* When used with `--restore` option will restore from files tagged with the environment that you specify.  
+
 ---
 
 | option | Description |  
@@ -313,6 +325,7 @@ Takes filament tables and backs them up to JSON files so that they can be used b
 
 * When used by itself it will remove all of the backed up JSON files found in **backup.filament_seeders.tables**.  
 * When used with `--table=` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)  
+
 ---
 
 | option | Description |  
@@ -321,7 +334,16 @@ Takes filament tables and backs them up to JSON files so that they can be used b
 
 * Will not run during tests or on production.  
 * When used without options it will prompt with available classes found in **backup.filament_seeders.classes**, user can choose multiple by separating choices by commas and will run the chosen seeder classes.  
-* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**.  
+* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**. 
+
+---
+
+| option | Description |  
+| --- | ---- |
+| `--truncate` | Whether to truncate the table before seeding it. |  
+
+* When used with `--restore` it will truncate the tables before seeding them.  
+
 ---
 
 | option | Description |  

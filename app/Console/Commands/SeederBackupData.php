@@ -17,7 +17,8 @@ class SeederBackupData extends Command
                             {--a|all : Whether to run through all available backups/restores in config}?
                             {--remove : Remove backed up files}?
                             {--restore : Restore the filament table}?
-                            {--t|table=* : Create/remove specific table file}?';
+                            {--t|table=* : Create/remove specific table file}?
+                            {--truncate : Truncate the table before restoring}';
 
     /**
      * The console command description.
@@ -36,7 +37,11 @@ class SeederBackupData extends Command
         $options = $this->options();
 
         // option to use environment to restore or backup to different environment files
+<<<<<<< HEAD
         if (isset($options['env']) && in_array($options['env'], ['production', 'staging', 'local']) === true) {
+=======
+        if (isset($options['env']) && in_array($options['env'], config('backup.filament_seeders.environments')) === true) {
+>>>>>>> 1483-create-seedersreplication-for-data-addededited-via-the-admin-interfaces
             $environment = $options['env'];
         } else {
             $environment = config('app.env');
@@ -76,6 +81,10 @@ class SeederBackupData extends Command
                 $seeder_classes = config('backup.filament_seeders.classes');
 
                 config(['seeder.environment' => $environment]);
+<<<<<<< HEAD
+=======
+                config(['seeder.truncate' => $options['truncate']]);
+>>>>>>> 1483-create-seedersreplication-for-data-addededited-via-the-admin-interfaces
 
                 // run through all the seeder classes
                 // else provide a choice of which to restore
@@ -99,6 +108,10 @@ class SeederBackupData extends Command
                 }
 
                 config(['seeder.environment' => null]);
+<<<<<<< HEAD
+=======
+                config(['seeder.truncate' => false]);
+>>>>>>> 1483-create-seedersreplication-for-data-addededited-via-the-admin-interfaces
                 return 0;
             }
 

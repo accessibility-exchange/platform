@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ResourceCollection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ResourceCollectionSeeder extends Seeder {
@@ -24,6 +25,16 @@ class ResourceCollectionSeeder extends Seeder {
 
         // check if there is a JSON file that has stored data for the seeder
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+<<<<<<< HEAD
+=======
+
+            // if trucate was set via seeder restore command then truncate the table prior to seeding data
+            if (config('seeder.truncate')) {
+                DB::statement("SET foreign_key_checks=0");
+                ResourceCollection::truncate();
+                DB::statement("SET foreign_key_checks=1");
+            }
+>>>>>>> 1483-create-seedersreplication-for-data-addededited-via-the-admin-interfaces
             // TODO need to write handling of attachments
             if (false && Storage::disk('seeds')->exists(sprintf("resource_collections.%s.json", $environment))) {
 
