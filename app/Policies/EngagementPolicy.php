@@ -138,7 +138,6 @@ class EngagementPolicy
             && $user->individual?->isParticipant()
             && $engagement->signup_by_date > now()
             && ! $engagement->confirmedParticipants->contains($user->individual)
-            && $engagement->confirmedParticipants->count() < $engagement->ideal_participants
                 ? Response::allow()
                 : Response::deny();
     }

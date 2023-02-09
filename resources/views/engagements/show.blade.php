@@ -60,9 +60,8 @@
 
             @can('join', $engagement)
                 <div class="flex flex-col">
-                    <a class="{{ $engagement->confirmedParticipants->count() >= $engagement->ideal_participants ? 'cta disabled' : 'cta' }} mx-auto"
-                        href="{{ localized_route('engagements.sign-up', $engagement) }}"
-                        tabindex="{{ $engagement->confirmedParticipants->count() >= $engagement->ideal_participants ? '-1' : '0' }}">
+                    <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                        @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants) @ariaDisabled @endif>
                         @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
