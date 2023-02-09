@@ -58,7 +58,7 @@
                 @endif
             </dl>
 
-            @can('join', $engagement)
+            @can('requestToJoin', $engagement)
                 <div class="flex flex-col">
                     <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
                         @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants) @ariaDisabled @endif>
