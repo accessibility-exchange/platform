@@ -29,11 +29,6 @@ class ResourceSeeder extends Seeder {
 
         // check if there is a JSON file that has stored data for the seeder
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
-<<<<<<< HEAD
-            // TODO need to write handling of attachments
-            if (false && Storage::disk('seeds')->exists(sprintf("resources.%s.json", $environment))) {
-
-=======
 
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
@@ -45,7 +40,6 @@ class ResourceSeeder extends Seeder {
             // TODO need to write handling of attachments
             if (false && Storage::disk('seeds')->exists(sprintf("resources.%s.json", $environment))) {
 
->>>>>>> 1483-create-seedersreplication-for-data-addededited-via-the-admin-interfaces
                 $resources = json_decode(Storage::disk('seeds')->get(sprintf("resources.%s.json", $environment)), true);
 
 
