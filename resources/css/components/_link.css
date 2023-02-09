@@ -84,6 +84,15 @@ a.cta {
     width: auto;
 }
 
+a[aria-disabled="true"] {
+    background: var(--btn-disabled-background);
+    border-color: var(--btn-disabled-border);
+    border-style: dashed;
+    border-width: var(--border-2);
+    color: var(--btn-disabled-color);
+    cursor: not-allowed;
+}
+
 a.cta:hover {
     background: var(--cta-background-hover);
     border-color: var(--cta-border-hover);

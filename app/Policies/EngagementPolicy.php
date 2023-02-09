@@ -132,12 +132,19 @@ class EngagementPolicy
             : Response::deny();
     }
 
-    public function join(User $user, Engagement $engagement): Response
+    public function requestToJoin(User $user, Engagement $engagement): Response
     {
         return $engagement->recruitment === 'open-call'
             && $user->individual?->isParticipant()
             && $engagement->signup_by_date > now()
             && ! $engagement->confirmedParticipants->contains($user->individual)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function join(User $user, Engagement $engagement): Response
+    {
+        return $user->can('requestToJoin', $engagement)
             && $engagement->confirmedParticipants->count() < $engagement->ideal_participants
                 ? Response::allow()
                 : Response::deny();

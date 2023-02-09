@@ -169,10 +169,6 @@ button.nav-button:active {
     color: var(--btn-borderless-color-active);
 }
 
-button.nav-button svg {
-    height: 1.25em;
-}
-
 button.nav-button .indicator {
     display: none;
 }
