@@ -16,14 +16,13 @@ class TopicSeeder extends Seeder {
     public function run() {
 
         // option to use environment to restore or backup to different environment files
-        if (config('seeder.environment') !== null && in_array(config('seeder.environment'), ['production', 'staging', 'local']) === true) {
+        if (config('seeder.environment') !== null && in_array(config('seeder.environment'), config('backup.filament_seeders.environments')) === true) {
             $environment = config('seeder.environment');
         } else {
             $environment = config('app.env');
         }
 
-        // check if there is a JSON file that has stored data for the seeder
-        if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+        if (Storage::disk('seeds')->exists(sprintf("topics.%s.json", $environment))) {
 
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
@@ -32,35 +31,29 @@ class TopicSeeder extends Seeder {
                 DB::statement("SET foreign_key_checks=1");
             }
 
-            if (Storage::disk('seeds')->exists(sprintf("topics.%s.json", $environment))) {
+            $topics = json_decode(Storage::disk('seeds')->get(sprintf("topics.%s.json", $environment)), true);
 
-                $topics = json_decode(Storage::disk('seeds')->get(sprintf("topics.%s.json", $environment)), true);
-
-                foreach ($topics as $topic) {
-                    Topic::firstOrCreate([
-                        'name' => json_decode($topic['name'], true),
-                    ]);
-                }
-            } else {
-                print("Seeder file wasn't found, using default values\r\n");
-                $topics = [
-                    __('Accessible consultation'),
-                    __('Intersectional outreach'),
-                    __('Contracts'),
-                    __('Privacy'),
-                    __('Disability knowledge'),
-                ];
-
-                foreach ($topics as $topic) {
-                    Topic::firstOrCreate([
-                        'name->en' => $topic,
-                        'name->fr' => trans($topic, [], 'fr'),
-                    ]);
-                }
+            foreach ($topics as $topic) {
+                Topic::firstOrCreate([
+                    'name' => json_decode($topic['name'], true),
+                ]);
             }
         } else {
-            $environment = config('app.env');
-            printf("Seeder cannot be run on environment: %s\r\n", $environment);
+            print("Seeder file wasn't found, using default values\r\n");
+            $topics = [
+                __('Accessible consultation'),
+                __('Intersectional outreach'),
+                __('Contracts'),
+                __('Privacy'),
+                __('Disability knowledge'),
+            ];
+
+            foreach ($topics as $topic) {
+                Topic::firstOrCreate([
+                    'name->en' => $topic,
+                    'name->fr' => trans($topic, [], 'fr'),
+                ]);
+            }
         }
     }
 }
