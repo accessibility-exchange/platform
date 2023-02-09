@@ -28,6 +28,7 @@ class DeployGlobal extends Command
     public function handle(): int
     {
         $this->call('optimize:clear');
+        $this->call('event:clear');
         $this->call('icons:clear');
         $this->call('view:clear');
         $this->call('route:clear');
