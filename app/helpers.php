@@ -245,3 +245,15 @@ if (! function_exists('contact_information')) {
         );
     }
 }
+
+if (! function_exists('orientation_link')) {
+    function orientation_link(string $userType): string
+    {
+        return match ($userType) {
+            App\Enums\UserContext::Individual->value => 'https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez',
+            App\Enums\UserContext::Organization->value => 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez',
+            App\Enums\UserContext::RegulatedOrganization->value => 'https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez',
+            default => '#',
+        };
+    }
+}

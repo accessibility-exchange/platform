@@ -31,7 +31,7 @@
 
     /* Link */
     --theme-link-color: var(--color-turquoise-1);
-    --theme-link-color-hover: var(--color-turquoise-2);
+    --theme-link-color-hover: var(--color-grey-1);
     --theme-link-color-visited: var(--color-turquoise-2);
     --theme-link-outline-focus: var(--color-turquoise-1);
     --theme-link-color-active: var(--color-turquoise-1);

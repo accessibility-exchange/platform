@@ -186,12 +186,7 @@ return [
             __('Preview'),
             __('Publish project'),
             __('Once you publish your project, others can find it.'),
-            __(':language translation of project goals'),
             __('Unsaved content'),
-            __(':language translation of how communities will be impacted'),
-            __(':language translation of what is out of scope'),
-            __(':language translation of who is going through the results'),
-            __(':language translation of tangible outcomes of this project'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1229%3A13916
         'create new project - 4' => [
@@ -717,7 +712,6 @@ return [
             __('Upload a file'),
             __('You can upload videos, images, audio, or other files.'),
             __('Browse file'),
-            __(':language translation of your bio'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2613%3A68551
         'Consultant Community Connector / create profile - 9' => [
@@ -725,11 +719,6 @@ return [
             __('(such as broken limb, gestational diabetes)'),
             __('Which groups can you connect to?'),
             __('People who identify with one or more of the 2SLGBTQIA+ identities'),
-        ],
-        // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1725%3A47554
-        'Consultant Community Connector / create profile - 8' => [
-            __(':language translation of your lived experience'),
-            __(':language translation of your skills and strengths'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1125%3A16052
         'Consultant Community Connector / preview profile' => [
@@ -748,7 +737,6 @@ return [
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=1295%3A15858
         'Comm org - create your page - 1' => [
             __('Communities your organization serves'),
-            __(':language translation of about your organization'),
         ],
         // https://www.figma.com/file/AXufBnFAVHvGdsxnQMVhNF/The-Accessibility-Exchange-Wireframes?node-id=2560%3A65260
         'Rep orgs' => [

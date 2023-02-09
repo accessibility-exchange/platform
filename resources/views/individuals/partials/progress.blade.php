@@ -39,7 +39,12 @@
                         namespace="publish_page" />
                 @else
                 <p id="cannot-publish-explanation">
-                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                    {!! Str::markdown(
+                        __(
+                            'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
+                            ['url' => orientation_link(Auth::user()->context)],
+                        ),
+                    ) !!}
                 </p>
                 <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
                     namespace="publish_page-disabled" />

@@ -1,2 +1,24 @@
 name: "IRIS Accessibility Exchange"
 health: /
+cronjobs:
+  - name: schedule
+    schedule: "* * * * *"
+    command: "/usr/local/bin/php artisan schedule:run"
+readiness:
+  delay: 60
+  period: 10
+  timeout: 30
+  failure: 6
+  success: 1
+liveness:
+  delay: 600
+  period: 10
+  timeout: 30
+  failure: 6
+  success: 1
+startup:
+  delay: 120
+  period: 10
+  timeout: 30
+  failure: 12
+  success: 1
