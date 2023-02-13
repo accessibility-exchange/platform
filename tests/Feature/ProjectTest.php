@@ -648,8 +648,8 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
-    $response->assertDontSee('Projects I am contracted for');
-    $response->assertSee('Projects I am participating in');
+    $response->assertDontSee('Involved as a Community Connector');
+    $response->assertSee('Involved as a Consultation Participant');
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-running-projects'));
     $response->assertNotFound();
@@ -663,7 +663,7 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
-    $response->assertSee('Projects I am contracted for');
+    $response->assertSee('Involved as a Community Connector');
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertOk();
@@ -674,8 +674,8 @@ test('registered users can access my projects page', function () {
 
     $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
-    $response->assertDontSee('Projects I am participating in');
-    $response->assertSee('Projects I am contracted for');
+    $response->assertDontSee('Involved as a Consultation Participant');
+    $response->assertSee('Involved as a Community Connector');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
     RegulatedOrganization::factory()
@@ -686,8 +686,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertSee('Projects I am running');
-    $response->assertDontSee('Projects I am contracted for');
-    $response->assertDontSee('Projects I am participating in');
+    $response->assertDontSee('Involved as a Community Connector');
+    $response->assertDontSee('Involved as a Consultation Participant');
 
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertNotFound();
@@ -704,8 +704,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertSee('Projects I am running');
-    $response->assertDontSee('Projects I am contracted for');
-    $response->assertDontSee('Projects I am participating in');
+    $response->assertDontSee('Involved as a Community Connector');
+    $response->assertDontSee('Involved as a Consultation Participant');
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
     $response->assertNotFound();
@@ -723,8 +723,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertSee('Projects I am running');
-    $response->assertSee('Projects I am contracted for');
-    $response->assertDontSee('Projects I am participating in');
+    $response->assertSee('Involved as a Community Connector');
+    $response->assertDontSee('Involved as a Consultation Participant');
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
     $response->assertNotFound();
@@ -742,8 +742,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertSee('Projects I am running');
-    $response->assertSee('Projects I am contracted for');
-    $response->assertSee('Projects I am participating in');
+    $response->assertSee('Involved as a Community Connector');
+    $response->assertSee('Involved as a Consultation Participant');
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
     $response->assertOk();
@@ -761,8 +761,8 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
     $response->assertOk();
     $response->assertSee('Projects I am running');
-    $response->assertDontSee('Projects I am contracted for');
-    $response->assertSee('<h2>Projects I am participating in</h2>', false);
+    $response->assertDontSee('Involved as a Community Connector');
+    $response->assertSee('<h2>Involved as a Consultation Participant</h2>', false);
 
     $traineeUser = User::factory()->create(['context' => 'training-participant']);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
