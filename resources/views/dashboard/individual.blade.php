@@ -12,7 +12,7 @@
             @can('viewAny', App\Models\Project::class)
                 <li>
                     <a
-                        href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
+                        href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Involved as a Community Connector') }}</a>
                 </li>
             @endcan
         @endif
@@ -24,7 +24,8 @@
         @can('viewAny', App\Models\Project::class)
             @if ($user->individual->isParticipant())
                 <li>
-                    <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m participating in') }}</a>
+                    <a
+                        href="{{ localized_route('projects.my-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>
                 </li>
             @endif
         @endcan
