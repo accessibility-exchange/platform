@@ -22,6 +22,7 @@ class ProductionSeeder extends Seeder
             // Seed known resource collections and resources
             ResourceCollectionSeeder::class,
             ResourceSeeder::class,
+            InterpretationSeeder::class,
         ]);
     }
 }

@@ -12,7 +12,8 @@ class NotificationsRemoveOld extends Command
      *
      * @var string
      */
-    protected $signature = 'notifications:remove:old ${days}';
+    protected $signature = 'notifications:remove:old
+                            {--days= : How many days before today to delete notifications}';
 
     /**
      * The console command description.
@@ -28,7 +29,7 @@ class NotificationsRemoveOld extends Command
      */
     public function handle()
     {
-        $days = $this->argument('days');
+        $days = $this->option('days');
 
         if (is_numeric($days) && $days > 1) {
             DB::table('notifications')->where('read_at', '<', DB::raw('DATE_SUB(NOW(), INTERVAL '.$days.' day)'))->delete();
