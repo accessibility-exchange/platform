@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseRefresh extends Command
 {
@@ -11,7 +12,8 @@ class DatabaseRefresh extends Command
      *
      * @var string
      */
-    protected $signature = 'db:refresh';
+    protected $signature = 'db:refresh
+                            {--backup : Whether to backup first}?';
 
     /**
      * The console command description.
@@ -27,8 +29,16 @@ class DatabaseRefresh extends Command
      */
     public function handle()
     {
+        $options = $this->options();
+
         // Don't run command in production or testing environment
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+
+            // whether to backup seeds first
+            if ($options['backup']) {
+                $this->call('db:seed:backup', ['--all' => true]);
+            }
+
             $this->call('migrate:fresh', ['--force' => true]);
             $this->call('db:seed', ['--class' => 'DevSeeder', '--force' => true]);
         }
