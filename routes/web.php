@@ -136,14 +136,19 @@ Route::multilingual('/people-and-organizations/consultants', function () {
     'can:viewAny,App\Models\Organization',
 ])->name('people-and-organizations.consultants');
 
-Route::multilingual('/people-and-organizations/connectors', function () {
-    return 'The Community Consultants page is not yet available.';
-})->middleware([
-    'auth',
-    'verified',
-    'can:viewAny,App\Models\Individual',
-    'can:viewAny,App\Models\Organization',
-])->name('people-and-organizations.connectors');
+/*
+ * TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+ * See: https://github.com/accessibility-exchange/platform/issues/305
+ */
+// TODO:
+// Route::multilingual('/people-and-organizations/connectors', function () {
+//     return 'The Community Consultants page is not yet available.';
+// })->middleware([
+//     'auth',
+//     'verified',
+//     'can:viewAny,App\Models\Individual',
+//     'can:viewAny,App\Models\Organization',
+// ])->name('people-and-organizations.connectors');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
