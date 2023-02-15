@@ -4,22 +4,23 @@ namespace Database\Seeders;
 
 use App\Models\ContentType;
 use App\Models\Impact;
+use App\Models\Organization;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\Sector;
-use App\Models\Organization;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ResourceSeeder extends Seeder {
+class ResourceSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
-
+    public function run()
+    {
         // option to use environment to restore or backup to different environment files
         if (config('seeder.environment') !== null && in_array(config('seeder.environment'), config('backup.filament_seeders.environments')) === true) {
             $environment = config('seeder.environment');
@@ -28,28 +29,28 @@ class ResourceSeeder extends Seeder {
         }
 
         // TODO need to write handling of attachments
-        if (false && Storage::disk('seeds')->exists(sprintf("resources.%s.json", $environment))) {
-
+        if (false && Storage::disk('seeds')->exists(sprintf('resources.%s.json', $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
-                DB::statement("SET foreign_key_checks=0");
+                DB::statement('SET foreign_key_checks=0');
                 Resource::truncate();
-                DB::statement("SET foreign_key_checks=1");
+                DB::statement('SET foreign_key_checks=1');
             }
 
-            $resources = json_decode(Storage::disk('seeds')->get(sprintf("resources.%s.json", $environment)), true);
-
+            $resources = json_decode(Storage::disk('seeds')->get(sprintf('resources.%s.json', $environment)), true);
 
             foreach ($resources as $resource) {
                 if ($resource['content_type_id']) {
                     if (ContentType::where('id', $resource['content_type_id'])->doesntExist()) {
                         printf("Skipping insert because content type with id %s is missing \r\n", $resource['content_type_id']);
+
                         continue;
                     }
                 }
                 if ($resource['organization_id']) {
                     if (Organization::where('id', $resource['organization_id'])->doesntExist()) {
                         printf("Skipping insert because organization with id %s is missing \r\n", $resource['organization_id']);
+
                         continue;
                     }
                 }
@@ -66,7 +67,7 @@ class ResourceSeeder extends Seeder {
                 ]);
             }
         } else {
-            print("Seeder file wasn't found, using default values\r\n");
+            echo "Seeder file wasn't found, using default values\r\n";
             $resources = [
                 [
                     'title' => ['en' => 'The Accessible Canada Act, Accessibility Regulations and Standards'],

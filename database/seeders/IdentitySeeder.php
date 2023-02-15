@@ -7,9 +7,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class IdentitySeeder extends Seeder {
-    public function run() {
-
+class IdentitySeeder extends Seeder
+{
+    public function run()
+    {
         // option to use environment to restore or backup to different environment files
         if (config('seeder.environment') !== null && in_array(config('seeder.environment'), config('backup.filament_seeders.environments')) === true) {
             $environment = config('seeder.environment');
@@ -17,16 +18,15 @@ class IdentitySeeder extends Seeder {
             $environment = config('app.env');
         }
 
-        if (Storage::disk('seeds')->exists(sprintf("identities.%s.json", $environment))) {
-
+        if (Storage::disk('seeds')->exists(sprintf('identities.%s.json', $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
-                DB::statement("SET foreign_key_checks=0");
+                DB::statement('SET foreign_key_checks=0');
                 Identity::truncate();
-                DB::statement("SET foreign_key_checks=1");
+                DB::statement('SET foreign_key_checks=1');
             }
 
-            $identities = json_decode(Storage::disk('seeds')->get(sprintf("identities.%s.json", $environment)), true);
+            $identities = json_decode(Storage::disk('seeds')->get(sprintf('identities.%s.json', $environment)), true);
 
             foreach ($identities as $identity) {
                 Identity::firstOrCreate([
@@ -36,7 +36,7 @@ class IdentitySeeder extends Seeder {
                 ]);
             }
         } else {
-            print("Seeder file wasn't found, using default values\r\n");
+            echo "Seeder file wasn't found, using default values\r\n";
             $identities = [
                 [
                     'name' => __('Children (under 15)'),
