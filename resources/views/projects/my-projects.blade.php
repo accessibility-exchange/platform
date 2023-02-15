@@ -19,23 +19,25 @@
             ($user->individual->isConsultant() || $user->individual->isConnector()) &&
             $user->individual->isParticipant()))
         @if ($user->context === 'organization' ||
-            ($user->context === 'individual' && $user->individual->roles && sizeof($user->individual->roles) > 1) ||
-            ($user->indiviudal?->inProgressContractedProjects &&
-                sizeof($user->indiviudal->inProgressContractedProjects) > 0 &&
+            ($user->context === 'individual' && $user->individual->roles && sizeof($user->individual?->roles ?? []) > 1) ||
+            ($user->individual?->inProgressContractedProjects &&
+                sizeof($user->individual?->inProgressContractedProjects ?? []) > 0 &&
                 $user->individual?->inProgressParticipatingProjects &&
-                sizeof($user->individual->inProgressParticipatingProjects) > 0))
+                sizeof($user->individual?->inProgressParticipatingProjects ?? []) > 0))
             <nav class="nav--tabbed" aria-labelledby="projects">
                 <div class="center center:wide">
                     <ul class="-mt-4 flex gap-6" role="list">
                         @if ($user->context === 'organization')
-                            {{-- @if ($user->organization->isConsultant() || $user->organization->isConnector())
-                                <li class="w-full">
-                                    <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                        :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                                        {{ __('Involved as an Accessibility Consultant') }}
-                                    </x-nav-link>
-                                </li>
-                            @endif --}}
+                            {{-- currently there's no project and engagement level consultants; check Github issue #1539
+                                @if ($user->organization->isConsultant() || $user->organization->isConnector())
+                                    <li class="w-full">
+                                        <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
+                                            :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                                            {{ __('Involved as an Accessibility Consultant') }}
+                                        </x-nav-link>
+                                    </li>
+                                @endif
+                            --}}
                             @if ($user->organization->isConnector())
                                 <li class="w-full">
                                     <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
