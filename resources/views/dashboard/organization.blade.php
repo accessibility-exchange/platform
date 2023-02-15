@@ -26,12 +26,12 @@
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)
-            @if ($memberable->isConnector() || $memberable->isConsultant())
+            @if ($memberable->isConnector() || $memberable->isConsultant() || $memberable->inProgressContractedProjects)
                 <li>
                     <a href="{{ localized_route('projects.my-projects') }}">{{ __('Involved as a Community Connector') }}</a>
                 </li>
             @endif
-            @if ($memberable->isParticipant())
+            @if ($memberable->isParticipant() || $memberable->inProgressParticipatingProjects)
                 <li>
                     <a
                         href="{{ !$memberable->isConnector() && !$memberable->isConsultant() ? localized_route('projects.my-projects') : localized_route('projects.my-participating-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>
