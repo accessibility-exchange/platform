@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizResultRequest;
+use App\Mail\QuizResults;
 use App\Models\Course;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class QuizController extends Controller
@@ -14,11 +16,18 @@ class QuizController extends Controller
     public function show(Course $course): View
     {
         $quiz = $course->quiz;
+        $receivedCertificate = Auth::user()->courses->find($course->id)->getRelationValue('pivot')->received_certificate_at;
+        $score = Auth::user()->quizzes->find($quiz->id)?->getRelationValue('pivot')->score;
+        if ($score) {
+            $score = round($score * 100);
+        }
 
         return view('quizzes.show', [
             'course' => $course,
             'title' => $quiz->title,
             'questions' => $quiz->questions,
+            'receivedCertificate' => $receivedCertificate,
+            'score' => $score,
         ]);
     }
 
@@ -65,6 +74,7 @@ class QuizController extends Controller
                     'received_certificate_at' => now(),
                 ]
             );
+            Mail::to($user->email)->send(new QuizResults($quiz, $user->name));
         }
 
         return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers, 'isPass' => $isPass, 'score' => $quizScore])->withErrors($validator);

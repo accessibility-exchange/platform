@@ -17,7 +17,6 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'order' => $this->faker->numberBetween(1, 5),
             'question' => ['en' => $this->faker->words(3, true)],
             'choices' => ['en' => [
                 ['label' => $this->faker->words(3, true), 'value' => 0],

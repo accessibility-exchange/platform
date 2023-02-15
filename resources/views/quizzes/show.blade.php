@@ -5,12 +5,13 @@
         <x-slot name="title">{{ $title }}</x-slot>
     </div>
     <div class="stack ml-2 mr-2">
-        @if (session('isPass') !== null)
+        @if (session('isPass') !== null || $receivedCertificate)
             <h1>{{ __('Quiz results') }}</h1>
-            @if (session('isPass'))
-                <h3>{{ __('Congratulations! You have passed the quiz with :score%.', ['score' => session('score') * 100]) }}
+            @if (session('isPass') || $receivedCertificate)
+                <h3>{{ __('Congratulations! You have passed the quiz with :score%.', ['score' => $score]) }}
                 </h3>
-                <p>{{ __('You have now completed this course.') }}</p>
+                <p>{{ __('You have now completed this course. Your certificate of completion has been sent to your email.') }}
+                </p>
                 <div class="flex gap-3">
                     @livewire('email-results', ['quiz' => $course->quiz])
                     <form action="{{ localized_route('courses.show', $course) }}">
@@ -20,7 +21,7 @@
                     </form>
                 </div>
             @elseif (!session('isPass'))
-                <h3>{{ __('You scored :score%. Please try again.', ['score' => session('score') * 100]) }}</h3>
+                <h3>{{ __('You scored :score%. Please try again.', ['score' => $score]) }}</h3>
             @endif
             <hr class="divider--thick" />
         @else
@@ -29,7 +30,7 @@
         @if (session('isPass'))
             @foreach ($questions as $question)
                 <fieldset class="field question">
-                    <legend>{{ $question->order . '. ' . $question->question . '?' }}</legend>
+                    <legend>{{ $question->question . '?' }}</legend>
                     @if (in_array($question->id, session('wrongAnswers')))
                         <x-banner type="error">
                             {{ __('Wrong answer.') }}
@@ -63,13 +64,13 @@
                     <hr class="divider--thin" />
                 </fieldset>
             @endforeach
-        @else
+        @elseif (!$receivedCertificate)
             <form class="stack" action="{{ localized_route('quizzes.show-result', $course) }}" method="POST"
                 novalidate>
                 @csrf
                 @foreach ($questions as $question)
                     <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
-                        <legend>{{ $question->order . '. ' . $question->question . '?' }}</legend>
+                        <legend>{{ $question->question . '?' }}</legend>
                         @if (session('wrongAnswers'))
                             @if (in_array($question->id, session('wrongAnswers')))
                                 <x-banner type="error">

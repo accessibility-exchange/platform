@@ -33,11 +33,8 @@ class StoreQuizResultRequest extends FormRequest
 
     public function messages()
     {
-        $messages = [];
-        foreach ($this->course->quiz->questions as $question) {
-            $messages['questions.'.$question->id.'.required'] = __('You must answer this question');
-        }
-
-        return $messages;
+        return [
+            'questions.*' => __('You must answer this question'),
+        ];
     }
 }

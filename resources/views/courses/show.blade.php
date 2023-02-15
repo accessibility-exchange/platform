@@ -9,9 +9,9 @@
         <a href="{{ localized_route('resource-collections.index') }}">{{ __('Back') }}</a>
         <x-slot name="title">{{ $course->title }}</x-slot>
         <div class="flex justify-between">
-            {{-- <div>
-                {{ __('Author') }}
-            </div> --}}
+            <div>
+                {{ __('Author: :author', ['author' => $course->author ?? $course->organization?->name]) }}
+            </div>
             <div>
                 {{ __('Resource type: Training') }}
             </div>
