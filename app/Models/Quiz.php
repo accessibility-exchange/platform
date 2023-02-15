@@ -21,11 +21,13 @@ class Quiz extends Model
     protected $fillable = [
         'minimum_score',
         'title',
+        'order',
     ];
 
     protected $casts = [
         'minimum_score' => 'float',
         'title' => 'array',
+        'order' => 'array',
     ];
 
     public array $translatable = [
@@ -47,5 +49,19 @@ class Quiz extends Model
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function getQuestionsInOrder()
+    {
+        if ($this->order) {
+            $orderedQuestions = collect([]);
+            foreach ($this->order as $id) {
+                $orderedQuestions->push(Question::find($id));
+            }
+
+            return $orderedQuestions->merge($this->questions)->unique('id')->values();
+        }
+
+        return $this->questions;
     }
 }

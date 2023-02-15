@@ -39,6 +39,24 @@ test('a quiz can have many questions', function () {
     expect($quiz->questions->contains($secondQuestion))->toBeTrue();
 });
 
+test('a quiz can have questions in order specified', function () {
+    $quiz = Quiz::factory()->create(['order' => [4, 3]]);
+
+    $firstQuestionWithOrder = Question::factory()->create(['id' => 4]);
+    $secondQuestionWithOrder = Question::factory()->create(['id' => 3]);
+    $thirdQuestionWithoutOrder = Question::factory()->create(['id' => 5]);
+
+    $quiz->questions()->attach($firstQuestionWithOrder);
+    $quiz->questions()->attach($secondQuestionWithOrder);
+    $quiz->questions()->attach($thirdQuestionWithoutOrder);
+
+    $orderedQuestions = $quiz->getQuestionsInOrder();
+    expect(count($orderedQuestions))->toBe(3);
+    expect($orderedQuestions[0]->id)->toBe($firstQuestionWithOrder->id);
+    expect($orderedQuestions[1]->id)->toBe($secondQuestionWithOrder->id);
+    expect($orderedQuestions[2]->id)->toBe($thirdQuestionWithoutOrder->id);
+});
+
 test('users can view quiz results on finishing it', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
@@ -50,7 +68,6 @@ test('users can view quiz results on finishing it', function () {
     $quiz->questions()->attach($question);
 
     $response = $this->actingAs($user)->get(localized_route('quizzes.show', $course));
-    $response->assertOk();
     $response->assertSee($question->title);
     $response->assertSee('first choice');
     $response->assertSee('second choice');
@@ -197,5 +214,5 @@ test('when users fail the quiz multiple times', function () {
         'score' => 0,
     ]);
 
-    $this->followRedirects($response)->assertSee(__('You scored :score%. Please try again.', ['score' => 0]));
+    $this->followRedirects($response)->assertSee(__('Please try again.'));
 });

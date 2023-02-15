@@ -28,9 +28,9 @@
             <h1>{{ __('Quiz') }}</h1>
         @endif
         @if (session('isPass'))
-            @foreach ($questions as $question)
+            @foreach ($questions as $key => $question)
                 <fieldset class="field question">
-                    <legend>{{ $question->question . '?' }}</legend>
+                    <legend>{{ $key + 1 . '. ' . $question->question . '?' }}</legend>
                     @if (in_array($question->id, session('wrongAnswers')))
                         <x-banner type="error">
                             {{ __('Wrong answer.') }}
@@ -68,9 +68,9 @@
             <form class="stack" action="{{ localized_route('quizzes.show-result', $course) }}" method="POST"
                 novalidate>
                 @csrf
-                @foreach ($questions as $question)
+                @foreach ($questions as $key => $question)
                     <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
-                        <legend>{{ $question->question . '?' }}</legend>
+                        <legend>{{ $key + 1 . '. ' . $question->question . '?' }}</legend>
                         @if (session('wrongAnswers'))
                             @if (in_array($question->id, session('wrongAnswers')))
                                 <x-banner type="error">

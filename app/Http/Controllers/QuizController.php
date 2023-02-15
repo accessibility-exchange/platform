@@ -25,7 +25,7 @@ class QuizController extends Controller
         return view('quizzes.show', [
             'course' => $course,
             'title' => $quiz->title,
-            'questions' => $quiz->questions,
+            'questions' => $quiz->getQuestionsInOrder(),
             'receivedCertificate' => $receivedCertificate,
             'score' => $score,
         ]);
