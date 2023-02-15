@@ -269,7 +269,7 @@ return [
             'staging',
             'local',
             'dev',
-        ]
+        ],
     ],
 
 ];

@@ -7,13 +7,15 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ResourceCollectionSeeder extends Seeder {
+class ResourceCollectionSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         $faker = \Faker\Factory::create('en_CA');
 
         // option to use environment to restore or backup to different environment files
@@ -24,16 +26,15 @@ class ResourceCollectionSeeder extends Seeder {
         }
 
         // TODO need to write handling of attachments
-        if (false && Storage::disk('seeds')->exists(sprintf("resource_collections.%s.json", $environment))) {
-
+        if (false && Storage::disk('seeds')->exists(sprintf('resource_collections.%s.json', $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
-                DB::statement("SET foreign_key_checks=0");
+                DB::statement('SET foreign_key_checks=0');
                 ResourceCollection::truncate();
-                DB::statement("SET foreign_key_checks=1");
+                DB::statement('SET foreign_key_checks=1');
             }
 
-            $resourceCollections = json_decode(Storage::disk('seeds')->get(sprintf("resource_collections.%s.json", $environment)), true);
+            $resourceCollections = json_decode(Storage::disk('seeds')->get(sprintf('resource_collections.%s.json', $environment)), true);
 
             foreach ($resourceCollections as $resourceCollection) {
                 ResourceCollection::firstOrCreate([
@@ -43,7 +44,7 @@ class ResourceCollectionSeeder extends Seeder {
                 ]);
             }
         } else {
-            print("Seeder file wasn't found, using default values\r\n");
+            echo "Seeder file wasn't found, using default values\r\n";
             $resourceCollections = [
                 [
                     'title' => 'The Accessible Canada Act',
