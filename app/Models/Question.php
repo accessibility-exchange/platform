@@ -13,14 +13,12 @@ class Question extends Model
     use HasTranslations;
 
     protected $fillable = [
-        'order',
         'question',
         'choices',
         'correct_choices',
     ];
 
     protected $casts = [
-        'order' => 'integer',
         'question' => 'array',
         'choices' => 'array',
         'correct_choices' => 'array',
