@@ -2,7 +2,7 @@
     <x-quick-links>
         @if ($user->individual->isConnector() ||
             $user->individual->isConsultant() ||
-            $user->individual->inProgressContractedProjects)
+            $user->individual->inProgressContractedProjects()->count())
             <li>
                 @if ($user->individual->checkStatus('published'))
                     <a href="{{ localized_route('individuals.show', $user->individual) }}">{{ __('My public page') }}</a>
@@ -24,7 +24,7 @@
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)
-            @if ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects)
+            @if ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())
                 <li>
                     <a
                         href="{{ localized_route('projects.my-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>

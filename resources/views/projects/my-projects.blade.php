@@ -17,13 +17,11 @@
             $user->organization->isParticipant())) ||
         ($user->context === 'individual' &&
             ($user->individual->isConsultant() || $user->individual->isConnector()) &&
-            $user->individual->isParticipant()))
+            ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())))
         @if ($user->context === 'organization' ||
-            ($user->context === 'individual' && $user->individual->roles && sizeof($user->individual?->roles ?? []) > 1) ||
-            ($user->individual?->inProgressContractedProjects &&
-                sizeof($user->individual?->inProgressContractedProjects ?? []) > 0 &&
-                $user->individual?->inProgressParticipatingProjects &&
-                sizeof($user->individual?->inProgressParticipatingProjects ?? []) > 0))
+            ($user->context === 'individual' && count($user->individual?->roles ?? []) > 1) ||
+            ($user->individual?->inProgressContractedProjects()->count() &&
+                $user->individual?->inProgressParticipatingProjects()->count()))
             <nav class="nav--tabbed" aria-labelledby="projects">
                 <div class="center center:wide">
                     <ul class="-mt-4 flex gap-6" role="list">
