@@ -23,8 +23,13 @@ class UserProjectsController extends Controller
                 $section = 'participating';
             } elseif ($userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count())) {
                 $section = 'contracted';
-            } elseif ($user->organization) {
-                $user->organization->load('projects');
+            }
+        }
+
+        if ($user->organization) {
+            $projectable = $user->organization;
+            if (! $projectable->isConsultant() && ! $projectable->isParticipant() && ! $projectable->isConnector()) {
+                $projectable->load('projects');
             }
         }
 
