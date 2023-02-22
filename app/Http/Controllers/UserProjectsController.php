@@ -17,18 +17,14 @@ class UserProjectsController extends Controller
             $projectable->load('projects');
         }
 
-        if ($user->organization) {
-            $projectable = $user->organization;
-            if ($projectable->isParticipant() || $projectable->inProgressParticipatingProjects()->count()) {
+        if (in_array($user->context, ['individual', 'organization'])) {
+            $userContext = $user->individual ?? $user->organization;
+            if ($userContext && ($userContext->isParticipant() || $userContext->inProgressParticipatingProjects()->count())) {
                 $section = 'participating';
-            } else {
+            } elseif ($userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count())) {
+                $section = 'contracted';
+            } elseif ($user->organization) {
                 $projectable->load('projects');
-            }
-        }
-
-        if ($user->context === 'individual') {
-            if ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count()) {
-                $section = 'participating';
             }
         }
 
