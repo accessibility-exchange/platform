@@ -39,7 +39,7 @@
                             @if ($user->organization->isConnector())
                                 <li class="w-full">
                                     <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                        :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                                        :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
                                         {{ __('Involved as a Community Connector') }}
                                     </x-nav-link>
                                 </li>
@@ -47,13 +47,7 @@
                             @if ($user->organization->isParticipant())
                                 <li class="w-full">
                                     <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                        :href="$user->organization->isConsultant() ||
-                                        $user->organization->isConnector()
-                                            ? localized_route('projects.my-participating-projects')
-                                            : localized_route('projects.my-projects')" :active="$user->organization->isConsultant() ||
-                                        $user->organization->isConnector()
-                                            ? request()->localizedRouteIs('projects.my-participating-projects')
-                                            : request()->localizedRouteIs('projects.my-projects')">
+                                        :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
                                         {{ __('Involved as a Consultation Participant') }}
                                     </x-nav-link>
                                 </li>
@@ -68,7 +62,7 @@
                         @if ($user->context === 'individual')
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                    :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                                    :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
                                     {{ __('Involved as a Consultation Participant') }}
                                 </x-nav-link>
                             </li>

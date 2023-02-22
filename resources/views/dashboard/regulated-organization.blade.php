@@ -29,7 +29,7 @@
         @endif
         @can('viewAny', App\Models\Project::class)
             <li>
-                <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m running') }}</a>
+                <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
             </li>
         @endcan
     </x-quick-links>

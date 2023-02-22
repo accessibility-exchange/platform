@@ -714,7 +714,7 @@ test('registered users can access my projects page', function () {
     $response->assertNotFound();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertNotFound();
+    $response->assertOk();
 
     $organization->roles = ['connector'];
     $organization->save();
@@ -730,7 +730,7 @@ test('registered users can access my projects page', function () {
     $response->assertNotFound();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    $response->assertOk();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
@@ -749,7 +749,7 @@ test('registered users can access my projects page', function () {
     $response->assertOk();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    $response->assertOk();
 
     $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
     $response->assertOk();
