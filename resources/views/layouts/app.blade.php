@@ -37,6 +37,7 @@
     </main>
 
     @include('layouts.footer')
+    @include('partials.hubspot')
 </body>
 
 </html>
