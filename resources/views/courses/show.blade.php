@@ -24,7 +24,7 @@
                 {{ __('Resource type: Training') }}
             </div>
             <div>
-                {{ __('Published on: :created_at', ['created_at' => $course->created_at->isoFormat('MM, DD, YYYY')]) }}
+                {{ __('Published on: :created_at', ['created_at' => $course->created_at->isoFormat('LL')]) }}
             </div>
         </div>
     </div>
@@ -57,6 +57,8 @@
                             </a>
                             @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
                                 <span class="badge">{{ __('completed') }}</span>
+                            @elseif ($user->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
+                                <span class="badge">{{ __('In progress') }}</span>
                             @endif
                         </div>
                         <div class="flex items-center gap-1">

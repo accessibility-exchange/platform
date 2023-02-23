@@ -59,6 +59,18 @@ test('users can take the quiz for courses once they finish all the modules in th
     $user->modules()->attach(
         $module->id, [
             'started_content_at' => now(),
+        ]
+    );
+
+    $user->refresh();
+
+    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
+    $response->assertOk();
+    $response->assertSee(__('not available yet'));
+    $response->assertSee(__('In progress'));
+
+    $user->modules()->updateExistingPivot(
+        $module->id, [
             'finished_content_at' => now(),
         ]
     );
