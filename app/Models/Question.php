@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Question extends Model
@@ -14,26 +13,24 @@ class Question extends Model
     use HasTranslations;
 
     protected $fillable = [
-        'order',
         'question',
+        'choices',
+        'correct_choices',
     ];
 
     protected $casts = [
-        'order' => 'integer',
         'question' => 'array',
+        'choices' => 'array',
+        'correct_choices' => 'array',
     ];
 
     public array $translatable = [
         'question',
+        'choices',
     ];
 
-    public function quiz(): BelongsTo
+    public function quizzes(): BelongsToMany
     {
-        return $this->belongsTo(Quiz::class);
-    }
-
-    public function choices(): HasMany
-    {
-        return $this->hasMany(Choice::class);
+        return $this->belongsToMany(Quiz::class);
     }
 }

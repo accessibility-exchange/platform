@@ -50,6 +50,14 @@ class DevSeeder extends Seeder
                 'context' => 'organization',
             ]);
 
+        $trainingUser = User::factory()
+            ->create([
+                'name' => 'Training User',
+                'email' => 'info+training@accessibilityexchange.ca',
+                'email_verified_at' => now(),
+                'context' => 'training-participant',
+            ]);
+
         $this->call([
             TestDataSeeder::class,
         ]);
