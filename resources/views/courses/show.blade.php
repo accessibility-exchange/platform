@@ -1,6 +1,14 @@
 <x-app-layout page-width="wide">
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
+        @if ($receivedCertificate)
+            <div class="notification flex justify-between">
+                <div class="my-auto">
+                    {{ __('You now have completed this course.') }}
+                </div>
+                @livewire('email-results', ['quiz' => $course->quiz])
+            </div>
+        @endif
         <h1>
             {{ $course->title }}
         </h1>
@@ -41,7 +49,7 @@
         <div class="grid">
             @foreach ($modules as $module)
                 <div class="flex flex-col">
-                    <div>
+                    <div class="card">
                         <div class="flex items-center justify-between">
                             <a
                                 href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
