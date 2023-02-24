@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserContext;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +19,10 @@ class UserProjectsController extends Controller
             $projectable->load('projects');
         }
 
-        if (in_array($user->context, ['individual', 'organization'])) {
-            $userContext = $user->individual ?? $user->organization;
-            if ($userContext && ($userContext->isParticipant() || $userContext->inProgressParticipatingProjects()->count())) {
+        if (in_array($user->context, [UserContext::Individual->value, UserContext::Organization->value])) {
+            if ($this->isParticipant($user)) {
                 $section = 'participating';
-            } elseif ($userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count())) {
+            } elseif ($this->isContractor($user)) {
                 $section = 'contracted';
             }
         }
@@ -35,8 +36,8 @@ class UserProjectsController extends Controller
 
         return view('projects.my-projects', [
             'user' => $user,
-            'projectable' => $projectable ?? null,
-            'section' => $section ?? null,
+            'projectable' => $projectable,
+            'section' => $section,
         ]);
     }
 
@@ -44,12 +45,11 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, ['individual', 'organization'])) {
-            $userContext = $user->individual ?? $user->organization;
-            if ($userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count())) {
+        if (in_array($user->context, [UserContext::Individual->value, UserContext::Organization->value])) {
+            if ($this->isContractor($user)) {
                 return view('projects.my-projects', [
                     'user' => $user,
-                    'projectable' => $user->organization ?? null,
+                    'projectable' => $user->organization,
                     'section' => 'contracted',
                 ]);
             }
@@ -63,11 +63,10 @@ class UserProjectsController extends Controller
         $user = Auth::user();
 
         if (in_array($user->context, ['individual', 'organization'])) {
-            $userContext = $user->individual ?? $user->organization;
-            if ($userContext && ($userContext->isParticipant() || $userContext->inProgressParticipatingProjects()->count())) {
+            if ($this->isParticipant($user)) {
                 return view('projects.my-projects', [
                     'user' => $user,
-                    'projectable' => $user->organization ?? null,
+                    'projectable' => $user->organization,
                     'section' => 'participating',
                 ]);
             }
@@ -89,5 +88,19 @@ class UserProjectsController extends Controller
         }
 
         abort(404);
+    }
+
+    public function isParticipant(User $user): bool
+    {
+        $userContext = $user->{$user->context};
+
+        return $userContext && ($userContext->isParticipant() || $userContext->inProgressParticipatingProjects()->count());
+    }
+
+    public function isContractor(User $user): bool
+    {
+        $userContext = $user->{$user->context};
+
+        return $userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count());
     }
 }
