@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Translatable\HasTranslations;
 
 class Module extends Model
@@ -36,12 +35,9 @@ class Module extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
-    }
-
-    public function quiz(): HasOne
-    {
-        return $this->hasOne(Quiz::class);
+        return $this->belongsToMany(User::class)
+            ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
+            ->withTimestamps();
     }
 
     public function course(): BelongsTo

@@ -20,6 +20,10 @@ class ModuleFactory extends Factory
             'title' => ['en' => $this->faker->words(3, true)],
             'description' => ['en' => $this->faker->sentence(4)],
             'introduction' => ['en' => $this->faker->sentence(5)],
+            'video' => [
+                'en' => 'https://vimeo.com/766454375',
+                'fr' => 'https://vimeo.com/766455246',
+            ],
         ];
     }
 }

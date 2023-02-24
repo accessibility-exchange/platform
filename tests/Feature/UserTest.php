@@ -262,7 +262,7 @@ test('user has pivot tables for module, course and quiz', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
     $module = Module::factory()->for($course)->create();
-    $quiz = Quiz::factory()->for($module)->create();
+    $quiz = Quiz::factory()->for($course)->create();
 
     $user->modules()->sync($module->id);
     $user->quizzes()->sync($quiz->id);

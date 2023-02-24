@@ -59,6 +59,8 @@
             redirect-url="{{ localized_route('dashboard') }}" />
         <x-login-link :user-attributes="['context' => 'regulated-organization']" label="Sign in as regulated organization user"
             redirect-url="{{ localized_route('dashboard') }}" />
+        <x-login-link :user-attributes="['context' => 'training-participant']" label="Sign in as training participant user"
+            redirect-url="{{ localized_route('dashboard') }}" />
         @endenv
     </x-auth-card>
 </x-guest-layout>
