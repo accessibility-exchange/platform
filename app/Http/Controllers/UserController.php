@@ -136,6 +136,28 @@ class UserController extends Controller
         ]);
     }
 
+    public function trainings(): View
+    {
+        $user = Auth::user();
+        $courses = $user->courses;
+        $inProgressCourses = [];
+        $completedCourses = [];
+
+        foreach ($courses as $course) {
+            if ($course?->getRelationValue('pivot')->received_certificate_at) {
+                $completedCourses[] = $course;
+            } else {
+                $inProgressCourses[] = $course;
+            }
+        }
+
+        return view('dashboard.trainings', [
+            'user' => $user,
+            'inProgressCourses' => $inProgressCourses,
+            'completedCourses' => $completedCourses,
+        ]);
+    }
+
     /**
      * Store a new user's context in the session.
      *

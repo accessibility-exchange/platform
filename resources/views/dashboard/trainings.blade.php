@@ -8,7 +8,7 @@
         <div class="mt-6 grid">
             @if ($inProgressCourses)
                 @foreach ($inProgressCourses as $course)
-                    <div class="card w-fit">
+                    <div class="card">
                         <div>
                             <h3><a href="{{ localized_route('courses.show', $course) }}">{{ $course->title }}</a></h3>
                         </div>

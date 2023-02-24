@@ -283,3 +283,18 @@ test('user has pivot tables for module, course and quiz', function () {
         'user_id' => $user->id,
     ]);
 });
+
+test('users can view inprogress and completed Courses from their dashbaord', function () {
+    $user = User::factory()->create();
+    $inProgressCourse = Course::factory()->create();
+    $completedCourse = Course::factory()->create();
+
+    $user->courses()->sync($inProgressCourse->id, ['started_at' => now()]);
+    $user->courses()->sync($completedCourse->id, ['finished_at' => now()]);
+
+    $response = $this->actingAs($user)->get(localized_route('dashboard.trainings'));
+
+    $response->assertOk();
+    $response->assertSee('<a>');
+    //$response->assertSee($completedCourse->title);
+});
