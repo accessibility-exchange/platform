@@ -36,8 +36,8 @@ class UserProjectsController extends Controller
 
         return view('projects.my-projects', [
             'user' => $user,
-            'projectable' => $projectable,
-            'section' => $section,
+            'projectable' => $projectable ?? null,
+            'section' => $section ?? null,
         ]);
     }
 

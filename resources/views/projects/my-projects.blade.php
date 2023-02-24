@@ -11,22 +11,21 @@
             </div>
         </div>
     </x-slot>
-    @if (($user->context === '{{ \App\Enums\UserContext::Organization->value }}' &&
+    @if (($user->context === \App\Enums\UserContext::Organization->value &&
         ($user->organization->isConsultant() ||
             $user->organization->isConnector() ||
             $user->organization->isParticipant())) ||
-        ($user->context === '{{ \App\Enums\UserContext::Individual->value }}' &&
+        ($user->context === \App\Enums\UserContext::Individual->value &&
             ($user->individual->isConsultant() || $user->individual->isConnector()) &&
             ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())))
-        @if ($user->context === '{{ \App\Enums\UserContext::Organization->value }}' ||
-            ($user->context === '{{ \App\Enums\UserContext::Individual->value }}' &&
-                count($user->individual?->roles ?? []) > 1) ||
+        @if ($user->context === \App\Enums\UserContext::Organization->value ||
+            ($user->context === \App\Enums\UserContext::Individual->value && count($user->individual?->roles ?? []) > 1) ||
             ($user->individual?->inProgressContractedProjects()->count() &&
                 $user->individual?->inProgressParticipatingProjects()->count()))
             <nav class="nav--tabbed" aria-labelledby="projects">
                 <div class="center center:wide">
                     <ul class="-mt-4 flex gap-6" role="list">
-                        @if ($user->context === '{{ \App\Enums\UserContext::Organization->value }}')
+                        @if ($user->context === \App\Enums\UserContext::Organization->value)
                             {{-- currently there's no project and engagement level consultants; check Github issue #1539
                                 @if ($user->organization->isConsultant() || $user->organization->isConnector())
                                     <li class="w-full">
@@ -60,7 +59,7 @@
                                 </x-nav-link>
                             </li>
                         @endif
-                        @if ($user->context === '{{ \App\Enums\UserContext::Individual->value }}')
+                        @if ($user->context === \App\Enums\UserContext::Individual->value)
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                     :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
