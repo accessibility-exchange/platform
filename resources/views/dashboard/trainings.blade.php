@@ -12,8 +12,10 @@
                         <div>
                             <h3><a href="{{ localized_route('courses.show', $course) }}">{{ $course->title }}</a></h3>
                         </div>
-                        <div>{{ __('Training by') }}</div>
-                        <div>{{ __('Language:') . ' ' . locale() }}</div>
+                        <div>
+                            {{ __('Training by: :author', ['author' => $course->author ?? $course->organization?->name]) }}
+                        </div>
+                        <div>{{ __('Language: :locale', ['locale' => locale()]) }}</div>
                         <span class="badge">{{ __('In progress') }}</span>
                     </div>
                 @endforeach
@@ -29,8 +31,10 @@
                         <div>
                             <h3><a href="{{ localized_route('courses.show', $course) }}">{{ $course->title }}</a></h3>
                         </div>
-                        <div>{{ __('Training by') }}</div>
-                        <div>{{ __('Language:') . ' ' . locale() }}</div>
+                        <div>
+                            {{ __('Training by: :author', ['author' => $course->author ?? $course->organization?->name]) }}
+                        </div>
+                        <div>{{ __('Language: :locale', ['locale' => locale()]) }}</div>
                         <span class="badge">{{ __('Completed') }}</span>
                     </div>
                     <div class="mt-6 mb-4">
