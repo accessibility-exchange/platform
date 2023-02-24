@@ -19,6 +19,13 @@
         @endforeach
     </ol>
 
+    @if ($individual->isConnector())
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}"
+            namespace="page_sections-connector" />
+    @else
+        <x-interpretation class="interpretation--start" name="{{ __('Page sections', [], 'en') }}" />
+    @endif
+
     @can('update', $individual)
         @if ($individual->checkStatus('draft'))
             <p class="stack">
@@ -27,11 +34,21 @@
                 @endcan
                 <button class="secondary" name="publish" value="1"
                     @cannot('publish', $individual) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
-                @cannot('publish', $individual)
+                @can('publish', $individual)
+                    <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
+                        namespace="publish_page" />
+                @else
                 <p id="cannot-publish-explanation">
-                    {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                    {!! Str::markdown(
+                        __(
+                            'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
+                            ['url' => orientation_link(Auth::user()->context)],
+                        ),
+                    ) !!}
                 </p>
-            @endcannot
+                <x-interpretation class="interpretation--start" name="{{ __('Publish page', [], 'en') }}"
+                    namespace="publish_page-disabled" />
+            @endcan
             </p>
         @else
             <p class="stack">

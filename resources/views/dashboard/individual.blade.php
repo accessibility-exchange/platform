@@ -2,8 +2,12 @@
     <x-quick-links>
         @if ($user->individual->isConnector() || $user->individual->isConsultant())
             <li>
-                <a
-                    href="{{ $user->individual->checkStatus('draft') ? localized_route('individuals.edit', $user->individual) : localized_route('individuals.show', $user->individual) }}">{{ __('Public page') }}</a>
+                @if ($user->individual->checkStatus('published'))
+                    <a href="{{ localized_route('individuals.show', $user->individual) }}">{{ __('My public page') }}</a>
+                @else
+                    <a
+                        href="{{ localized_route('individuals.edit', $user->individual) }}">{{ __('Edit my public page') }}</a>
+                @endif
             </li>
             @can('viewAny', App\Models\Project::class)
                 <li>
@@ -11,6 +15,11 @@
                         href="{{ $user->individual->isParticipant() ? localized_route('projects.my-contracted-projects') : localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
                 </li>
             @endcan
+        @endif
+        @if (!$user->oriented_at)
+            <li>
+                <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
+            </li>
         @endif
         @can('viewAny', App\Models\Project::class)
             @if ($user->individual->isParticipant())

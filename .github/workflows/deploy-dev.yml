@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           env: dev
       - name: Deploy stack
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOSTNAME }}
           username: ${{ secrets.SSH_USERNAME }}

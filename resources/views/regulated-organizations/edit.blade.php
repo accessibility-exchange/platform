@@ -39,7 +39,12 @@
                                 @cannot('publish', $regulatedOrganization) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
                             @cannot('publish', $regulatedOrganization)
                             <p id="cannot-publish-explanation">
-                                {{ __('You must attend an orientation session and fill in all the required information before you can publish your page.') }}
+                                {!! Str::markdown(
+                                    __(
+                                        'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
+                                        ['url' => orientation_link(Auth::user()->context)],
+                                    ),
+                                ) !!}
                             </p>
                         @endcannot
 
@@ -168,7 +173,7 @@
                 </div>
 
                 <div class="field @error('contact_person_vrs') field-error @enderror">
-                    <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $regulatedOrganization->contact_person_vrs ?? false)" />
+                    <x-hearth-checkbox name="contact_person_vrs" :checked="old('contact_person_vrs', $regulatedOrganization->contact_person_vrs) ?? false" />
                     <x-hearth-label for="contact_person_vrs" :value="__('They require Video Relay Service (VRS) for phone calls')" />
                     <x-hearth-error for="contact_person_vrs" />
                 </div>

@@ -57,11 +57,25 @@ class TranslatableTextarea extends Component
     public $required;
 
     /**
+     * The name for asl or lsq content.
+     *
+     * @var null|string
+     */
+    public ?string $interpretationName;
+
+    /**
+     * The namespace for asl or lsq content.
+     *
+     * @var null|string
+     */
+    public ?string $interpretationNameSpace;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '', $required = false)
+    public function __construct($name, $label, $hint = null, $model = null, $shortLabel = '', $required = false, $interpretationName = null, $interpretationNameSpace = null)
     {
         $languages = $model->languages ?? config('locales.supported');
 
@@ -77,6 +91,8 @@ class TranslatableTextarea extends Component
         $this->model = $model;
         $this->languages = $languages;
         $this->required = $required;
+        $this->interpretationName = $interpretationName;
+        $this->interpretationNameSpace = $interpretationNameSpace;
     }
 
     /**

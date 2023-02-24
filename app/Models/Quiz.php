@@ -6,26 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
+/** @property int $questions_count */
 class Quiz extends Model
 {
     use HasFactory;
     use HasTranslations;
 
     protected $attributes = [
-        'minimum_score' => 0.75,
+        'minimum_score' => 1,
     ];
 
     protected $fillable = [
         'minimum_score',
         'title',
+        'order',
     ];
 
     protected $casts = [
         'minimum_score' => 'float',
         'title' => 'array',
+        'order' => 'array',
     ];
 
     public array $translatable = [
@@ -35,22 +37,31 @@ class Quiz extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->withPivot('attempts', 'score')
+            ->withPivot('score')
             ->withTimestamps();
     }
 
-    public function questions(): HasMany
+    public function questions(): BelongsToMany
     {
-        return $this->hasMany(Question::class);
-    }
-
-    public function module(): BelongsTo
-    {
-        return $this->belongsTo(Module::class);
+        return $this->belongsToMany(Question::class);
     }
 
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function getQuestionsInOrder()
+    {
+        if ($this->order) {
+            $orderedQuestions = collect([]);
+            foreach ($this->order as $id) {
+                $orderedQuestions->push(Question::find($id));
+            }
+
+            return $orderedQuestions->merge($this->questions)->unique('id')->values();
+        }
+
+        return $this->questions;
     }
 }

@@ -50,7 +50,10 @@
 
     <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters">
-            <h2 class="visually-hidden">{{ __('Filters') }}</h2>
+            <h2 class="mb-6 mt-0">{{ __('Filters') }}</h2>
+            <div class="mb-6">
+                <button class="secondary" type="button" wire:click="selectNone()">{{ __('Clear filters') }}</button>
+            </div>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Status') }}</x-slot>
                 <fieldset class="filter__options field @error('status') field--error @enderror">
@@ -196,9 +199,6 @@
                     <x-hearth-error for="recruitment" />
                 </fieldset>
             </x-expander>
-            <div class="mt-6">
-                <button class="secondary" type="button" wire:click="selectNone()">{{ __('Select none') }}</button>
-            </div>
         </div>
         <div class="md:pl-4">
             <section aria-labelledby="browse-all-projects">

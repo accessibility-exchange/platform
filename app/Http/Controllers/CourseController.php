@@ -8,19 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
-    public function index(): View
-    {
-        return view('courses.index', [
-            'courses' => Course::all(),
-        ]);
-    }
-
     public function show(Course $course): View
     {
         $user = Auth::user();
         $courseUser = $user->courses->find($course->id);
-        $finishedCourse = $courseUser?->getRelationValue('pivot')->finished_at;
+        $finishedCourse = $course->isFinished($user);
         $receivedCertificate = $courseUser?->getRelationValue('pivot')->received_certificate_at;
+        $hasQuiz = $course->quiz()->count() && $course->quiz?->questions()->count();
 
         return view('courses.show', [
             'user' => $user,
@@ -28,6 +22,7 @@ class CourseController extends Controller
             'modules' => $course->modules,
             'finishedCourse' => $finishedCourse,
             'receivedCertificate' => $receivedCertificate,
+            'hasQuiz' => $hasQuiz,
         ]);
     }
 }

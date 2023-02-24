@@ -28,9 +28,16 @@ class DeployGlobal extends Command
     public function handle(): int
     {
         $this->call('optimize:clear');
+        $this->call('event:clear');
         $this->call('icons:clear');
+        $this->call('view:clear');
+        $this->call('route:clear');
+        $this->call('config:clear');
         $this->call('event:cache');
         $this->call('icons:cache');
+        $this->call('view:cache');
+        $this->call('route:cache');
+        $this->call('config:cache');
         $this->call('google-fonts:fetch');
         $this->call('optimize');
         $this->call('migrate', ['--step' => true, '--force' => true]);

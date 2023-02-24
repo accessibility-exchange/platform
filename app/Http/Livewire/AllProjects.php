@@ -10,6 +10,7 @@ use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Project;
 use App\Models\Sector;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
@@ -61,8 +62,8 @@ class AllProjects extends Component
         return view('livewire.all-projects', [
             'projects' => Project::status('published')
                     ->when($this->searchQuery, function ($query, $searchQuery) {
-                        $query->where('name->en', 'like', '%'.$searchQuery.'%')
-                            ->orWhere('name->fr', 'like', '%'.$searchQuery.'%');
+                        $query->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                            ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
                     })
                     ->when($this->statuses, function ($query, $statuses) {
                         $query->statuses($statuses);

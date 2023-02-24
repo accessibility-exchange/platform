@@ -1,3 +1,3 @@
 <div>
-    <button wire:click="$emit('send')">{{ __('Email certificate of completion') }}</button>
+    <button wire:click="$emit('send')">{{ __('Email your certificate again') }}</button>
 </div>

@@ -4,7 +4,7 @@
 ])
 
 <x-card class="resource" title-class="h4">
-    <x-slot name="title"><a href="#TODO">{{ $model->title }}</a>
+    <x-slot name="title"><a href="{{ localized_route('courses.show', $model) }}">{{ $model->title }}</a>
     </x-slot>
     <p><strong>{{ __('Training') }}</strong></p>
     @if ($model->introduction)

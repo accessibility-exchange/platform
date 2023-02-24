@@ -2,7 +2,6 @@
 
 use App\Models\Choice;
 use App\Models\Course;
-use App\Models\Module;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
@@ -21,13 +20,6 @@ test('a quiz can belong to many users', function () {
     expect($quiz->users->contains($anotherUser))->toBeTrue();
 });
 
-test('a quiz can belong to a module', function () {
-    $module = Module::factory()->for(Course::factory()->create())->create();
-    $quiz = Quiz::factory()->for($module)->create();
-
-    expect($quiz->module->id)->toBe($module->id);
-});
-
 test('a quiz can belong to a course', function () {
     $course = Course::factory()->create();
     $quiz = Quiz::factory()->for($course)->create();
@@ -38,83 +30,105 @@ test('a quiz can belong to a course', function () {
 test('a quiz can have many questions', function () {
     $quiz = Quiz::factory()->create();
 
-    $firstQuestion = Question::factory()->for($quiz)->create();
-    $secondQuestion = Question::factory()->for($quiz)->create();
+    $firstQuestion = Question::factory()->create();
+    $secondQuestion = Question::factory()->create();
+
+    $quiz->questions()->attach($firstQuestion);
+    $quiz->questions()->attach($secondQuestion);
 
     expect($quiz->questions->contains($firstQuestion))->toBeTrue();
     expect($quiz->questions->contains($secondQuestion))->toBeTrue();
+});
+
+test('a quiz can have questions in order specified', function () {
+    $quiz = Quiz::factory()->create(['order' => [4, 3]]);
+
+    $firstQuestionWithOrder = Question::factory()->create(['id' => 4]);
+    $secondQuestionWithOrder = Question::factory()->create(['id' => 3]);
+    $thirdQuestionWithoutOrder = Question::factory()->create(['id' => 5]);
+
+    $quiz->questions()->attach($firstQuestionWithOrder);
+    $quiz->questions()->attach($secondQuestionWithOrder);
+    $quiz->questions()->attach($thirdQuestionWithoutOrder);
+
+    $orderedQuestions = $quiz->getQuestionsInOrder();
+    expect(count($orderedQuestions))->toBe(3);
+    expect($orderedQuestions[0]->id)->toBe($firstQuestionWithOrder->id);
+    expect($orderedQuestions[1]->id)->toBe($secondQuestionWithOrder->id);
+    expect($orderedQuestions[2]->id)->toBe($thirdQuestionWithoutOrder->id);
 });
 
 test('users can view quiz results on finishing it', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
     $user->courses()->attach(
-        $course->id, ['started_at' => now(), 'finished_at' => now()]
+        $course->id, ['started_at' => now()]
     );
     $quiz = Quiz::factory()->for($course)->create();
-    $firstQuestion = Question::factory()->for($quiz)->create(['minimum_choices' => 2]);
-    $firstQuestionCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
-    $firstQuestionWrongChoice = Choice::factory()->for($firstQuestion)->create();
+    $question = Question::factory()->create(['choices' => ['en' => [['label' => 'first choice', 'value' => 0], ['label' => 'second choice', 'value' => 1], ['label' => 'third choice', 'value' => 2]]]]);
+    $quiz->questions()->attach($question);
 
-    $secondQuestion = Question::factory()->for($quiz)->create();
-    $secondQuestionCorrectChoice = Choice::factory()->for($secondQuestion)->create(['is_answer' => true]);
-    $secondQuestionWrongChoice = Choice::factory()->for($secondQuestion)->create();
+    $response = $this->actingAs($user)->get(localized_route('quizzes.show', $course));
+    $response->assertSee($question->title);
+    $response->assertSee('first choice');
+    $response->assertSee('second choice');
+    $response->assertSee('third choice');
 
-    $response = $this->actingAs($user)->get(localized_route('quizzes.show', $quiz));
-    $response->assertOk();
-    $response->assertSee($firstQuestion->title);
-    $response->assertSee($firstQuestionCorrectChoice->label);
-    $response->assertSee($firstQuestionWrongChoice->label);
-    $response->assertSee($secondQuestion->title);
-    $response->assertSee($secondQuestionCorrectChoice->label);
-    $response->assertSee($secondQuestionWrongChoice->label);
-
+    // when no choice is selected
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->value],
+        'questions' => [
+            $question->id => [
+            ],
+        ],
     ];
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
 
-    $response->assertSessionHasErrors(['question_'.$secondQuestion->id => 'You must enter your question '.$secondQuestion->id.'.']);
+    $response->assertSessionHasErrors();
 
+    // when wrong choice is selected
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id],
-        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->id],
+        'questions' => [
+            $question->id => [
+                1,
+            ],
+        ],
     ];
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
-        'score' => 0.5,
+        'score' => 0,
     ]);
-    $response->assertSee(__('You have not passed the quiz.'));
-
-    $firstQuestionAnotherCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id, $firstQuestionAnotherCorrectChoice->id],
-        'question_'.$secondQuestion->id => [$secondQuestionCorrectChoice->id],
+        'questions' => [
+            $question->id => [
+                1,
+                2,
+            ],
+        ],
     ];
 
     $user->refresh();
 
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
+
+    $response->assertRedirect(localized_route('quizzes.show', $course));
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 2,
         'score' => 1,
     ]);
 
@@ -123,72 +137,83 @@ test('users can view quiz results on finishing it', function () {
         'course_id' => $course->id,
     ]);
     $this->assertNotNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->received_certificate_at);
-    $response->assertSee(__('Congratulations! You have passed the quiz.'));
+    $this->followRedirects($response)->assertSee(__('You have now completed this course.'));
 });
 
 test('when users pass the quiz in first attempt', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
     $user->courses()->attach(
-        $course->id, ['started_at' => now(), 'finished_at' => now()]
+        $course->id, ['started_at' => now()]
     );
     $quiz = Quiz::factory()->for($course)->create();
-    $firstQuestion = Question::factory()->for($quiz)->create();
-    $firstQuestionCorrectChoice = Choice::factory()->for($firstQuestion)->create(['is_answer' => true]);
+    $question = Question::factory()->create(['choices' => ['en' => [['label' => 'first choice', 'value' => 0], ['label' => 'second choice', 'value' => 1], ['label' => 'third choice', 'value' => 2]]]]);
+    $quiz->questions()->attach($question);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionCorrectChoice->id],
+        'questions' => [
+            $question->id => [
+                1,
+                2,
+            ],
+        ],
     ];
-    $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response = $this->actingAs($user)
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
+
+    $response->assertRedirect(localized_route('quizzes.show', $course));
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
         'score' => 1,
     ]);
+
+    $this->followRedirects($response)->assertSee(__('You have now completed this course.'));
 });
 
 test('when users fail the quiz multiple times', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
     $user->courses()->attach(
-        $course->id, ['started_at' => now(), 'finished_at' => now()]
+        $course->id, ['started_at' => now()]
     );
     $quiz = Quiz::factory()->for($course)->create();
-    $firstQuestion = Question::factory()->for($quiz)->create();
-    $firstQuestionWrongChoice = Choice::factory()->for($firstQuestion)->create();
+    $question = Question::factory()->create(['choices' => ['en' => [['label' => 'first choice', 'value' => 0], ['label' => 'second choice', 'value' => 1], ['label' => 'third choice', 'value' => 2]]]]);
+    $quiz->questions()->attach($question);
 
     $inputData = [
-        'question_'.$firstQuestion->id => [$firstQuestionWrongChoice->id],
+        'questions' => [
+            $question->id => [
+                0,
+            ],
+        ],
     ];
     $response = $this->actingAs($user)
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 1,
         'score' => 0,
     ]);
 
     $response = $this->actingAs($user->refresh())
-        ->from(localized_route('quizzes.show', $quiz))
-        ->post(localized_route('quizzes.show-result', $quiz), $inputData);
+        ->from(localized_route('quizzes.show', $course))
+        ->post(localized_route('quizzes.show-result', $course), $inputData);
 
-    $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors();
 
     $this->assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
-        'attempts' => 2,
         'score' => 0,
     ]);
+
+    $this->followRedirects($response)->assertSee(__('Please try again.'));
 });

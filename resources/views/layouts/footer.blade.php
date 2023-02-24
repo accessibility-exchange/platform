@@ -26,6 +26,8 @@
             <div class="switcher grow:2">
                 <div class="stack" id="contact" tabindex="-1">
                     <h2>{{ __('Contact') }}</h2>
+                    <x-interpretation class="interpretation--start" name="{{ __('Contact', [], 'en') }}"
+                        namespace="contact-footer" />
                     <address class="stack">
                         <h3>{{ __('Email') }}</h3>
                         <p><a
@@ -39,17 +41,24 @@
                         ]) !!}</h3>
                         <p>{{ phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}</p>
                         <h3>{{ __('Mailing Address') }}</h3>
-                        @markdown{{ settings()->get('address', "The Accessibility Exchange ℅ IRIS  \n1 University Avenue, 3rd Floor  \nToronto, ON M5J 2P1") }}@endmarkdown
+                        {!! nl2br(
+                            settings()->get(
+                                'address',
+                                "The Accessibility Exchange ℅ IRIS\n1 University Avenue, 3rd Floor\nToronto, ON M5J 2P1",
+                            ),
+                        ) !!}
                     </address>
                 </div>
                 <nav class="stack" aria-labelledby="social">
                     <h2 id="social">{{ __('Social Media') }}</h2>
                     <ul class="stack" role="list">
-                        <li><a href="https://www.linkedin.com/company/the-accessibility-exchange/"
+                        <li><a href="{{ settings()->get('linkedin', 'https://www.linkedin.com/company/the-accessibility-exchange/') }}"
                                 rel="external">LinkedIn</a></li>
-                        <li><a href="https://www.facebook.com/AccessXchange" rel="external">Facebook</a></li>
-                        <li><a href="https://twitter.com/AccessXchange" rel="external">Twitter</a></li>
-                        <li><a href="https://www.youtube.com/channel/UC-mIk4Xk04wF4urFSKZQOAA"
+                        <li><a href="{{ settings()->get('facebook', 'https://www.facebook.com/AccessXchange') }}"
+                                rel="external">Facebook</a></li>
+                        <li><a href="{{ settings()->get('twitter', 'https://twitter.com/AccessXchange') }}"
+                                rel="external">Twitter</a></li>
+                        <li><a href="{{ settings()->get('youtube', 'https://www.youtube.com/channel/UC-mIk4Xk04wF4urFSKZQOAA') }}"
                                 rel="external">YouTube</a></li>
                     </ul>
                 </nav>

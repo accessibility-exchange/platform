@@ -1,5 +1,5 @@
 <x-slot name="title">
-    {{ __('Module') . '-' . $module->title }}
+    {{ __('Module - :title', ['title' => $module->title]) }}
 </x-slot>
 
 <x-slot name="header">
@@ -13,7 +13,7 @@
 <div>
     <div class="stack ml-2 mr-2">
         <div class="stack w-full" wire:ignore x-data="vimeoPlayer({
-            url: '{{ $module->video }}',
+            url: '{{ $module->video[locale()] }}',
             byline: false,
             pip: true,
             portrait: false,

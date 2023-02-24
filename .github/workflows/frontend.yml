@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.1"
       - uses: actions/checkout@v3
       - uses: technote-space/get-diff-action@v6
         id: git-diff
@@ -26,12 +23,19 @@ jobs:
             package-lock.json
             **/*.css
             **/*.js"
+      - uses: shivammathur/setup-php@v2
+        if: steps.git-diff.outputs.diff
+        with:
+          php-version: "8.1"
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
+      - name: Install Dependencies
+        if: steps.git-diff.outputs.diff
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - uses: actions/setup-node@v3
         if: steps.git-diff.outputs.diff
         with:
@@ -55,9 +59,6 @@ jobs:
       - name: Copy .env
         if: steps.git-diff.outputs.diff
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - name: Install Dependencies
-        if: steps.git-diff.outputs.diff
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate keys
         if: steps.git-diff.outputs.diff
         run: |

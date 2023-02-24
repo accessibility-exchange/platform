@@ -21,6 +21,7 @@ class DevSeeder extends Seeder
             DatabaseSeeder::class,
             ResourceCollectionSeeder::class,
             ResourceSeeder::class,
+            InterpretationSeeder::class,
         ]);
 
         $user = User::factory()
@@ -47,6 +48,14 @@ class DevSeeder extends Seeder
                 'email' => 'info+organization@accessibilityexchange.ca',
                 'email_verified_at' => now(),
                 'context' => 'organization',
+            ]);
+
+        $trainingUser = User::factory()
+            ->create([
+                'name' => 'Training User',
+                'email' => 'info+training@accessibilityexchange.ca',
+                'email_verified_at' => now(),
+                'context' => 'training-participant',
             ]);
 
         $this->call([

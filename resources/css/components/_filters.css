@@ -12,6 +12,6 @@
 }
 
 .search-and-filter-results {
-    margin-block: var(--space-6);
+    margin-block: var(--space-4);
     min-height: var(--space-9);
 }

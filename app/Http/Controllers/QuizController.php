@@ -3,80 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizResultRequest;
-use App\Models\Quiz;
+use App\Mail\QuizResults;
+use App\Models\Course;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class QuizController extends Controller
 {
-    public function show(Quiz $quiz): View
+    public function show(Course $course): View
     {
-        $questions = $quiz->questions;
+        $quiz = $course->quiz;
+        $receivedCertificate = Auth::user()->courses->find($course->id)->getRelationValue('pivot')->received_certificate_at;
+        $score = Auth::user()->quizzes->find($quiz->id)?->getRelationValue('pivot')->score;
+        if ($score) {
+            $score = round($score * 100);
+        }
 
         return view('quizzes.show', [
-            'quiz' => $quiz,
+            'course' => $course,
             'title' => $quiz->title,
-            'questions' => $questions,
+            'questions' => $quiz->getQuestionsInOrder(),
+            'receivedCertificate' => $receivedCertificate,
+            'score' => $score,
         ]);
     }
 
-    public function storeQuizResult(StoreQuizResultRequest $request, Quiz $quiz): View
+    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View | RedirectResponse
     {
         $data = $request->validated();
         $user = Auth::user();
-
-        $numberOfQuestions = 0;
-        $quizScore = 0;
+        $correctQuestions = 0;
+        $quiz = $course->quiz->loadCount('questions');
+        $isPass = false;
+        $validator = Validator::make([], []);
+        $previousAnswers = [];
+        $wrongAnswers = [];
 
         foreach ($quiz->questions as $question) {
-            $numberOfQuestions++;
-            if (count(array_intersect($question->getCorrectChoices(), $data['question_'.$question->id])) >= $question->minimum_choices) {
-                $quizScore++;
+            $previousAnswers[$question->id] = $data['questions'][$question->id];
+            if ($question->correct_choices == $data['questions'][$question->id]) {
+                $correctQuestions++;
+            } else {
+                $validator->errors()->add('questions.'.$question->id, __('Wrong answer'));
+                $wrongAnswers[] = $question->id;
             }
         }
-        $quizResults = $quizScore / $numberOfQuestions >= $quiz->minimum_score;
-        $quizUser = $user->quizzes->where('id', $quiz->id)->first()->pivot ?? null;
-        if ($quizScore / $numberOfQuestions >= $quiz->minimum_score) {
-            if ($quizUser) {
-                $attempts = $quizUser->attempts;
-                $user->quizzes()->updateExistingPivot(
-                    $quiz->id, [
-                        'attempts' => $attempts + 1,
-                        'score' => $quizScore / $numberOfQuestions,
-                    ]
-                );
-            } else {
-                $user->quizzes()->attach(
-                    $quiz->id, [
-                        'attempts' => 1,
-                        'score' => $quizScore / $numberOfQuestions,
-                    ]
-                );
-            }
+
+        $quizScore = $correctQuestions / $quiz->questions_count;
+        $quizUser = $quiz->users->find($user->id)?->getRelationValue('pivot');
+        if ($quizUser) {
+            $user->quizzes()->updateExistingPivot(
+                $quiz->id, [
+                    'score' => $quizScore,
+                ]
+            );
+        } else {
+            $user->quizzes()->attach(
+                $quiz->id, [
+                    'score' => $quizScore,
+                ]
+            );
+        }
+        if ($quizScore >= $quiz->minimum_score) {
+            $isPass = true;
             $user->courses()->updateExistingPivot(
                 $quiz->course->id, [
                     'received_certificate_at' => now(),
                 ]
             );
-        } else {
-            if ($quizUser) {
-                $attempts = $quizUser->attempts;
-                $user->quizzes()->updateExistingPivot(
-                    $quiz->id, [
-                        'attempts' => $attempts + 1,
-                        'score' => $quizScore / $numberOfQuestions,
-                    ]
-                );
-            } else {
-                $user->quizzes()->attach(
-                    $quiz->id, [
-                        'attempts' => 1,
-                        'score' => $quizScore / $numberOfQuestions,
-                    ]
-                );
-            }
+            Mail::to($user->email)->send(new QuizResults($quiz, $user->name));
         }
 
-        return view('quizzes.show-result', ['quiz' => $quiz, 'results' => $quizResults]);
+        return redirect(localized_route('quizzes.show', $course))->with(['previousAnswers' => $previousAnswers, 'wrongAnswers' => $wrongAnswers, 'isPass' => $isPass, 'score' => $quizScore])->withErrors($validator);
     }
 }

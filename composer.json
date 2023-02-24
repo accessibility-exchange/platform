@@ -6,7 +6,7 @@
         "framework",
         "laravel"
     ],
-    "version": "1.0.0-alpha.5",
+    "version": "1.0.0-alpha.9",
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -20,7 +20,6 @@
         "filament/filament": "^2.16",
         "fluid-project/hearth": "^3.0",
         "fruitcake/laravel-cors": "^3.0",
-        "graham-campbell/markdown": "^14.0",
         "guzzlehttp/guzzle": "^7.5",
         "hedronium/spaceless-blade": "^3.0",
         "laravel/framework": "^9.10",
@@ -31,6 +30,7 @@
         "makeabledk/laravel-eloquent-status": "^2.0",
         "propaganistas/laravel-phone": "^4.3",
         "ralphjsmit/livewire-urls": "^1.1",
+        "reworck/filament-settings": "^0.3.0",
         "spatie/laravel-backup": "^8.1",
         "spatie/laravel-ciphersweet": "^1.0.2",
         "spatie/laravel-collection-macros": "^7.11",
@@ -50,7 +50,7 @@
         "worksome/request-factories": "^2.0"
     },
     "require-dev": {
-        "amirami/localizator": "^0.9.1@alpha",
+        "amirami/localizator": "^0.11.0-alpha@alpha",
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.19",
@@ -118,8 +118,7 @@
         "analyze": "vendor/bin/phpstan analyse",
         "format": "vendor/bin/pint",
         "localize": [
-            "rm -f -- resources/lang/en.json",
-            "@php artisan localize en,fr",
+            "@php artisan localize en,fr --remove-missing",
             "cp -r resources/lang/fr/* resources/lang/lsq",
             "cp resources/lang/fr.json resources/lang/lsq.json"
         ],

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,11 @@ Route::prefix('about')
     ->name('about.')
     ->group(function () {
         Route::multilingual('/terms-of-service', function () {
-            return view('about.terms-of-service');
+            return view('about.terms-of-service', [
+                'appURL' => config('app.url'),
+                'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
+                'modifiedAt' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
+            ]);
         })->name('terms-of-service');
 
         Route::multilingual('/privacy-policy', function () {
@@ -63,7 +68,7 @@ Route::prefix('about')
         })->name('for-community-organizations');
 
         Route::multilingual('/for-community-organizations/consultation-participants', function () {
-            return view('about.roles.consultation-participants');
+            return view('about.roles.community-organizations-consultation-participants');
         })->name('organization-consultation-participants');
 
         Route::multilingual('/for-community-organizations/accessibility-consultants', function () {
@@ -131,14 +136,19 @@ Route::multilingual('/people-and-organizations/consultants', function () {
     'can:viewAny,App\Models\Organization',
 ])->name('people-and-organizations.consultants');
 
-Route::multilingual('/people-and-organizations/connectors', function () {
-    return 'The Community Consultants page is not yet available.';
-})->middleware([
-    'auth',
-    'verified',
-    'can:viewAny,App\Models\Individual',
-    'can:viewAny,App\Models\Organization',
-])->name('people-and-organizations.connectors');
+/*
+ * TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+ * See: https://github.com/accessibility-exchange/platform/issues/305
+ */
+// TODO:
+// Route::multilingual('/people-and-organizations/connectors', function () {
+//     return 'The Community Consultants page is not yet available.';
+// })->middleware([
+//     'auth',
+//     'verified',
+//     'can:viewAny,App\Models\Individual',
+//     'can:viewAny,App\Models\Organization',
+// ])->name('people-and-organizations.connectors');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')

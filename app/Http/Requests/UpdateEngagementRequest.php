@@ -241,7 +241,7 @@ class UpdateEngagementRequest extends FormRequest
             'accepted_formats' => [],
             'other_accepted_formats' => false,
             'other_accepted_format' => [],
-            'paid' => false,
+            'paid' => true,
         ];
 
         // Prepare input for validation

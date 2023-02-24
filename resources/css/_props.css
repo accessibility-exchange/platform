@@ -33,8 +33,8 @@
 
     /* Link */
     --link-color: var(--theme-link-color, var(--color-blue-6));
-    --link-color-hover: var(--theme-link-color-hover, var(--color-blue-7));
-    --link-color-visited: var(--theme-link-color-visited, var(--color-blue-8));
+    --link-color-hover: var(--theme-link-color-hover, var(--color-blue-8));
+    --link-color-visited: var(--theme-link-color-visited, var(--color-blue-7));
     --link-outline-focus: var(--theme-link-outline-focus, var(--color-blue-6));
     --link-color-active: var(--theme-link-color-active, var(--color-blue-7));
     --link-background-active: var(--theme-link-background-active, var(--color-grey-2));
@@ -97,6 +97,8 @@
     /* Banner */
     --banner-error-background: var(--theme-banner-error-background, var(--color-red-7));
     --banner-error-color: var(--theme-banner-error-color, var(--color-white));
+    --banner-success-background: var(--theme-alert-background-success, var(--color-green-1));
+    --banner-success-color: var(--theme-alert-color-success, var(--color-graphite-8));
     --banner-warning-background: var(--theme-banner-warning-background, var(--color-yellow-3));
     --banner-warning-color: var(--theme-banner-warning-color, var(--color-black));
 

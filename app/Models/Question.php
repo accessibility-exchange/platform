@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\LaravelOptions\Options;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Translatable\HasTranslations;
 
 class Question extends Model
@@ -19,29 +17,25 @@ class Question extends Model
     ];
 
     protected $fillable = [
-        'minimum_choices',
-        'order',
         'question',
+        'choices',
+        'correct_choices',
     ];
 
     protected $casts = [
-        'minimum_choices' => 'integer',
-        'order' => 'integer',
         'question' => 'array',
+        'choices' => 'array',
+        'correct_choices' => 'array',
     ];
 
     public array $translatable = [
         'question',
+        'choices',
     ];
 
-    public function quiz(): BelongsTo
+    public function quizzes(): BelongsToMany
     {
-        return $this->belongsTo(Quiz::class);
-    }
-
-    public function choices(): HasMany
-    {
-        return $this->hasMany(Choice::class);
+        return $this->belongsToMany(Quiz::class);
     }
 
     public function getChoices()

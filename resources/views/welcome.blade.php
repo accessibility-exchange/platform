@@ -3,7 +3,11 @@
     <x-slot name="header">
         <div class="center center:wide stack stack:lg">
             <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
-            <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+            @auth
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+            @else
+                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" namespace="welcome-guest" />
+            @endauth
             <p class="h4">
                 {{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}
             </p>
@@ -30,50 +34,57 @@
             </div>
         </div>
         <div class="frame">
-            <x-placeholder />
+            <div class="stack w-full" x-data="vimeoPlayer({
+                url: @if (locale() === 'en') 'https://vimeo.com/789855323'
+                    @elseif (locale() === 'fr')
+                    'https://vimeo.com/789772188'
+                    @elseif (locale() === 'asl')
+                    'https://vimeo.com/788810528/73b8c80ad8'
+                    @elseif (locale() === 'lsq')
+                    'https://vimeo.com/789829171' @endif,
+                byline: false,
+                pip: true,
+                portrait: false,
+                responsive: true,
+                speed: true,
+                title: false
+            })" @ended="player().setCurrentTime(0)">
+            </div>
         </div>
     </section>
 
     <section class="stack stack:lg" aria-labelledby="how">
         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
         <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
-
-        <p>{{ __('This site is for three kinds of users. Select an option below to learn more.') }}</p>
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <x-placeholder width="915" height="515" />
-            </x-slot>
-            <div class="flex h-full flex-col justify-center">
+        <p class="text-center">{{ __('This site is for three kinds of users. Select an option below to learn more.') }}
+        </p>
+        <div class="grid">
+            <div class="flex h-full flex-col">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
+                <x-interpretation class="interpretation--start" name="{{ __('For Individuals', [], 'en') }}" />
                 <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                 </p>
             </div>
-        </x-media-text>
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <x-placeholder width="915" height="515" />
-            </x-slot>
-            <div class="flex h-full flex-col justify-center">
+            <div class="flex h-full flex-col">
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                 </h3>
+                <x-interpretation class="interpretation--start"
+                    name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
                 <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                 </p>
             </div>
-        </x-media-text>
-        <x-media-text mediaWidth="md:w-2/3" textWidth="md:w-1/3" first="text">
-            <x-slot name="media">
-                <x-placeholder width="915" height="515" />
-            </x-slot>
-            <div class="flex h-full flex-col justify-center">
+            <div class="flex h-full flex-col">
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                 </h3>
+                <x-interpretation class="interpretation--start"
+                    name="{{ __('For Community Organizations', [], 'en') }}" />
                 <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                 </p>
             </div>
-        </x-media-text>
+        </div>
     </section>
 
     <section class="darker full" aria-labelledby="disability">
@@ -86,9 +97,6 @@
                 </p>
                 {{-- TODO: add link to glossary definition --}}
                 {{-- <p><a class="font-medium" href="">{{ __('Learn more about disability') }}</a></p> --}}
-            </div>
-            <div class="frame">
-                <x-placeholder />
             </div>
         </div>
     </section>

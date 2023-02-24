@@ -58,10 +58,16 @@
                 @endif
             </dl>
 
-            @can('join', $engagement)
-                <a class="cta" href="{{ localized_route('engagements.sign-up', $engagement) }}">
-                    @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
-                </a>
+            @can('requestToJoin', $engagement)
+                <div class="flex flex-col">
+                    <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                        @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants) @ariaDisabled aria-describedby="engagement-full-explanation" @endif>
+                        @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
+                    </a>
+                    @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
+                        <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
+                    @endif
+                </div>
             @endcan
 
             @can('participate', $engagement)
