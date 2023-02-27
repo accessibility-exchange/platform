@@ -41,6 +41,9 @@
                 <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
             </li>
         @endcan
+        <li>
+            <a href="{{ localized_route('dashboard.trainings') }}">{{ __('My trainings') }}</a>
+        </li>
     </x-quick-links>
     <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
         @include('dashboard.partials.notifications', [

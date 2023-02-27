@@ -117,6 +117,10 @@ Route::multilingual('/dashboard/notifications/all', [UserController::class, 'all
     ->middleware(['auth', 'onboard'])
     ->name('dashboard.notifications-all');
 
+Route::multilingual('/dashboard/trainings', [UserController::class, 'trainings'])
+    ->middleware(['auth'])
+    ->name('dashboard.trainings');
+
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->middleware([
