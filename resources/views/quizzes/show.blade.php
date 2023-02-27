@@ -6,7 +6,7 @@
     </div>
     <div class="stack ml-2 mr-2">
         @if (session('isPass') !== null || $receivedCertificate)
-            <h1>{{ __('Quiz results') }}</h1>
+            <h1>{{ __(':title results', ['title' => $title]) }}</h1>
             @if (session('isPass') || $receivedCertificate)
                 <h3>{{ __('Congratulations! You have passed the quiz with :score%.', ['score' => $score]) }}
                 </h3>
@@ -25,7 +25,7 @@
             @endif
             <hr class="divider--thick" />
         @else
-            <h1>{{ __('Quiz') }}</h1>
+            <h1>{{ $title }}</h1>
         @endif
         @if (session('isPass'))
             @foreach ($questions as $key => $question)
