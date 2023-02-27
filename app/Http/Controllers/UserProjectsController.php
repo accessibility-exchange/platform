@@ -19,7 +19,7 @@ class UserProjectsController extends Controller
             $projectable->load('projects');
         }
 
-        if (in_array($user->context, [UserContext::Individual->value, UserContext::Organization->value])) {
+        if ($this->isIndividualOrOrganizationUser($user)) {
             if ($this->isParticipant($user)) {
                 $section = 'participating';
             } elseif ($this->isContractor($user)) {
@@ -45,7 +45,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, [UserContext::Individual->value, UserContext::Organization->value])) {
+        if ($this->isIndividualOrOrganizationUser($user)) {
             if ($this->isContractor($user)) {
                 return view('projects.my-projects', [
                     'user' => $user,
@@ -62,7 +62,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, ['individual', 'organization'])) {
+        if ($this->isIndividualOrOrganizationUser($user)) {
             if ($this->isParticipant($user)) {
                 return view('projects.my-projects', [
                     'user' => $user,
@@ -79,7 +79,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, ['organization', 'regulated-organization'])) {
+        if (in_array($user->context, [UserContext::Organization->value, UserContext::RegulatedOrganization->value])) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->regulated_organization ?? $user->organization,
@@ -102,5 +102,10 @@ class UserProjectsController extends Controller
         $userContext = $user->{$user->context};
 
         return $userContext && ($userContext->isConsultant() || $userContext->isConnector() || $userContext->inProgressContractedProjects()->count());
+    }
+
+    public function isIndividualOrOrganizationUser(User $user): bool
+    {
+        return in_array($user->context, [UserContext::Individual->value, UserContext::Organization->value]);
     }
 }
