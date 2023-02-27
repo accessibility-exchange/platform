@@ -131,6 +131,7 @@
     ":role Invitation": ":role Invitation",
     ":service": ":service",
     ":signLanguage (with :locale)": ":signLanguage (with :locale)",
+    ":title results": ":title results",
     "A :type with this name already exists.": "A :type with this name already exists.",
     "about": "about",
     "About": "About",
