@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Choice;
 use App\Models\Course;
 use App\Models\Question;
 use App\Models\Quiz;

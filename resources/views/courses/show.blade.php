@@ -44,7 +44,7 @@
         @endif
         <p>{{ $course->introduction }}</p>
     </div>
-    <div class="stack ml-2 mr-2">
+    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
         <h2>{{ __('Modules') }}</h2>
         <div class="grid">
             @foreach ($modules as $module)
@@ -70,11 +70,19 @@
                 </div>
             @endforeach
         </div>
-        @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
-            <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
-        @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
-            <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
-        @elseif($receivedCertificate)
-        @endif
     </div>
+    @if (!$receivedCertificate)
+        <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+            <h2>{{ __('Quiz') }}</h2>
+            @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
+                <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
+            @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
+                <p class="mb-6">
+                    {{ __('Once you are done watching the videos for all the modules, you can take this quiz. Upon passing this quiz, you can receive your certificate of completion.') }}
+                <p>
+                    <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
+                @elseif($receivedCertificate)
+            @endif
+        </div>
+    @endif
 </x-app-layout>
