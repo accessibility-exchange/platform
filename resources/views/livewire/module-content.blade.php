@@ -3,7 +3,7 @@
 </x-slot>
 
 <x-slot name="header">
-    <a href="{{ localized_route('courses.show', $module->course->id) }}">{{ __('Back') }} >
+    <a href="{{ localized_route('courses.show', $module->course) }}">{{ __('Back') }} >
         {{ $module->course->title }}</a>
     <h1 id="module-title">
         {{ $module->title }}

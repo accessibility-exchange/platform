@@ -71,10 +71,7 @@
             @endforeach
         </div>
         @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
-            <form class="stack" action="{{ localized_route('quizzes.show', $course) }}" novalidate>
-                @csrf
-                <button>{{ __('Take Quiz') }}</button>
-            </form>
+            <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
         @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
             <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
         @elseif($receivedCertificate)
