@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Course;
 use App\Models\Question;
 use App\Models\Quiz;
+use Faker\Generator;
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
@@ -16,6 +17,8 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = app(Generator::class);
+
         Course::factory()
             ->hasModules(3)
             ->has(Quiz::factory()
@@ -29,6 +32,7 @@ class CourseSeeder extends Seeder
             )
             ->create([
                 'title' => 'Sample course',
+                'author' => $faker->company(),
             ]);
     }
 }
