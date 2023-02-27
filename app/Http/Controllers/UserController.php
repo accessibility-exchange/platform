@@ -144,7 +144,7 @@ class UserController extends Controller
         $completedCourses = [];
 
         foreach ($courses as $course) {
-            if ($course?->getRelationValue('pivot')->received_certificate_at) {
+            if ($course->getRelationValue('pivot')->received_certificate_at) {
                 $completedCourses[] = $course;
             } else {
                 $inProgressCourses[] = $course;
