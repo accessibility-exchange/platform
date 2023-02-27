@@ -71,19 +71,21 @@
             @endforeach
         </div>
     </div>
-    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
-        <h2>{{ __('Quiz') }}</h2>
-        @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
-            <form class="stack" action="{{ localized_route('quizzes.show', $course) }}" novalidate>
-                @csrf
-                <button>{{ __('Take Quiz') }}</button>
-            </form>
-        @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
-            <p class="mb-6">
-                {{ __('Once you are done watching the videos for all the modules, you can take this quiz. Upon passing this quiz, you can receive your certificate of completion.') }}
-            <p>
-                <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
-            @elseif($receivedCertificate)
-        @endif
-    </div>
+    @if (!$receivedCertificate)
+        <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+            <h2>{{ __('Quiz') }}</h2>
+            @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
+                <form class="stack" action="{{ localized_route('quizzes.show', $course) }}" novalidate>
+                    @csrf
+                    <button>{{ __('Take Quiz') }}</button>
+                </form>
+            @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
+                <p class="mb-6">
+                    {{ __('Once you are done watching the videos for all the modules, you can take this quiz. Upon passing this quiz, you can receive your certificate of completion.') }}
+                <p>
+                    <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
+                @elseif($receivedCertificate)
+            @endif
+        </div>
+    @endif
 </x-app-layout>
