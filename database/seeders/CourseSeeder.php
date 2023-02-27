@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Question;
+use App\Models\Quiz;
 use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
@@ -13,6 +16,19 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Course::factory()
+            ->hasModules(3)
+            ->has(Quiz::factory()
+                ->has(Question::factory(5))
+                ->state(function (array $attributes, Course $course) {
+                    return [
+                        'title' => "{$course->title} quiz",
+                        'minimum_score' => '0.75',
+                    ];
+                })
+            )
+            ->create([
+                'title' => 'Sample course',
+            ]);
     }
 }
