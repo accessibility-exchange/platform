@@ -60,7 +60,7 @@
         "vite-plugin-static-copy": "^0.12.0"
     },
     "dependencies": {
-        "@alpinejs/mask": "^3.10.5",
+        "@alpinejs/mask": "^3.11.1",
         "@popperjs/core": "^2.11.6",
         "@vimeo/player": "^2.18.0",
         "alpinejs": "^3.11.1",
