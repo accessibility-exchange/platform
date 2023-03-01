@@ -427,6 +427,16 @@ class EngagementController extends Controller
 
     public function manage(Engagement $engagement)
     {
+        if (! $engagement->isManageable()) {
+            if (is_null($engagement->format)) {
+                return redirect(localized_route('engagements.show-format-selection', $engagement));
+            }
+
+            if (is_null($engagement->recruitment)) {
+                return redirect(localized_route('engagements.show-recruitment-selection', $engagement));
+            }
+        }
+
         $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
         $connectorInvitee = null;
         if ($connectorInvitation) {
