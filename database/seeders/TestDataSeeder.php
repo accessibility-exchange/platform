@@ -48,7 +48,7 @@ class TestDataSeeder extends Seeder
                         'instagram' => 'https://www.instagram.com/',
                         'facebook' => 'https://www.facebook.com/',
                     ],
-                    'consulting_services' => ['booking-providers', 'planning-consultation', 'writing-reports'],
+                    'consulting_services' => ['booking-providers', 'designing-consultation', 'writing-reports'],
                     'lived_experience' => [
                         'en' => 'Knows from lived experience as a person who has used a wheelchair for more than 2 decades how the built environment can either restrict or enable independence and fulfillment.',
                     ],
@@ -98,7 +98,7 @@ class TestDataSeeder extends Seeder
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
                     'working_languages' => ['asl', 'en'],
-                    'consulting_services' => ['planning-consultation'],
+                    'consulting_services' => ['designing-consultation'],
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
                         'twitter' => 'https://twitter.com/',
