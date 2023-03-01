@@ -48,7 +48,7 @@
         "postcss-logical": "^5.0.4",
         "prettier": "^2.8.0",
         "stylelint": "^14.13.0",
-        "stylelint-config-prettier": "^9.0.4",
+        "stylelint-config-prettier": "^9.0.5",
         "stylelint-config-standard": "^28.0.0",
         "stylelint-order": "^5.0.0",
         "stylelint-use-logical-spec": "^4.1.0",
