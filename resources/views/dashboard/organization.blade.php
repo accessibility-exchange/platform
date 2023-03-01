@@ -26,15 +26,18 @@
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)
-            @if ($memberable->isConnector() || $memberable->isConsultant())
-                <li>
-                    <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m contracted for') }}</a>
-                </li>
-            @endif
-            @if ($memberable->isParticipant())
+            @if ($memberable->isConnector() ||
+                $memberable->isConsultant() ||
+                $memberable->inProgressContractedProjects()->count())
                 <li>
                     <a
-                        href="{{ !$memberable->isConnector() && !$memberable->isConsultant() ? localized_route('projects.my-projects') : localized_route('projects.my-participating-projects') }}">{{ __('Projects I’m participating in') }}</a>
+                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Involved as a Community Connector') }}</a>
+                </li>
+            @endif
+            @if ($memberable->isParticipant() || $memberable->inProgressParticipatingProjects()->count())
+                <li>
+                    <a
+                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>
                 </li>
             @endif
             <li>
