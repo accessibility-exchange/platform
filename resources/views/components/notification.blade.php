@@ -7,6 +7,8 @@
         {!! Str::markdown($body) !!}
     </div>
 
+    {{ $contact ?? '' }}
+
     <x-notification.actions :notification="$notification">
         {{ $actions ?? '' }}
     </x-notification.actions>
