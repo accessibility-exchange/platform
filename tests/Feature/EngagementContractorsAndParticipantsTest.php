@@ -894,12 +894,12 @@ test('individual can choose not to share their non-anonymizable access needs whe
 
     Notification::assertSentTo(
         $admin,
-        function (AccessNeedsFacilitationRequested $notification, $channels) use ($admin) {
+        function (AccessNeedsFacilitationRequested $notification, $channels) {
             expect($notification->toMail()->subject)->toBe(__(':name requires access needs facilitation', ['name' => $this->participant->name]));
             $renderedMail = $notification->toMail($this->project)->render();
             $this->assertStringContainsString(__('Please contact :name to facilitate their access needs being met on the engagement', ['name' => $this->participant->name]), $renderedMail);
-            expect($notification->toArray($admin)['individual_id'])->toEqual($this->participant->id);
-            expect($notification->toArray($admin)['engagement_id'])->toEqual($this->engagement->id);
+            expect($notification->toArray()['individual_id'])->toEqual($this->participant->id);
+            expect($notification->toArray()['engagement_id'])->toEqual($this->engagement->id);
             expect($notification->engagement->id)->toBe($this->engagement->id);
 
             return $notification->user->id === $this->participant->user->id;

@@ -31,7 +31,7 @@ class AccessNeedsFacilitationRequested extends PlatformNotification
             );
     }
 
-    public function toArray(User $notifiable): array
+    public function toArray(): array
     {
         return [
             'individual_id' => $this->user->individual->id,
