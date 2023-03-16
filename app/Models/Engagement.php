@@ -205,6 +205,26 @@ class Engagement extends Model
         );
     }
 
+    public function isManageable(): bool
+    {
+        $manageableRules = [
+            'format' => [
+                'required_unless:who,organization',
+            ],
+            'recruitment' => [
+                'required_unless:who,organization',
+            ],
+        ];
+
+        try {
+            Validator::validate($this->toArray(), $manageableRules);
+        } catch (ValidationException $exception) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function isPreviewable(): bool
     {
         $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];

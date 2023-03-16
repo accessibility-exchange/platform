@@ -11,61 +11,72 @@
             </div>
         </div>
     </x-slot>
-    @if (($user->context === 'organization' &&
+    @if (($user->context === \App\Enums\UserContext::Organization->value &&
         ($user->organization->isConsultant() ||
             $user->organization->isConnector() ||
             $user->organization->isParticipant())) ||
-        ($user->context === 'individual' &&
+        ($user->context === \App\Enums\UserContext::Individual->value &&
             ($user->individual->isConsultant() || $user->individual->isConnector()) &&
-            $user->individual->isParticipant()))
-        <nav class="nav--tabbed" aria-labelledby="projects">
-            <div class="center center:wide">
-                <ul class="-mt-4 flex gap-6" role="list">
-                    @if ($user->context === 'organization')
-                        @if ($user->organization->isConsultant() || $user->organization->isConnector())
+            ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())))
+        @if ($user->context === \App\Enums\UserContext::Organization->value ||
+            ($user->context === \App\Enums\UserContext::Individual->value && count($user->individual?->roles ?? []) > 1) ||
+            ($user->individual?->inProgressContractedProjects()->count() &&
+                $user->individual?->inProgressParticipatingProjects()->count()))
+            <nav class="nav--tabbed" aria-labelledby="projects">
+                <div class="center center:wide">
+                    <ul class="-mt-4 flex gap-6" role="list">
+                        @if ($user->context === \App\Enums\UserContext::Organization->value)
+                            {{-- currently there's no project and engagement level consultants; check Github issue #1539
+                                @if ($user->organization->isConsultant() || $user->organization->isConnector())
+                                    <li class="w-full">
+                                        <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
+                                            :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                                            {{ __('Involved as an Accessibility Consultant') }}
+                                        </x-nav-link>
+                                    </li>
+                                @endif
+                            --}}
+                            @if ($user->organization->isConnector())
+                                <li class="w-full">
+                                    <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
+                                        :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
+                                        {{ __('Involved as a Community Connector') }}
+                                    </x-nav-link>
+                                </li>
+                            @endif
+                            @if ($user->organization->isParticipant())
+                                <li class="w-full">
+                                    <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
+                                        :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
+                                        {{ __('Involved as a Consultation Participant') }}
+                                    </x-nav-link>
+                                </li>
+                            @endif
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                    :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                                    {{ __('Projects I am contracted for') }}
+                                    :href="localized_route('projects.my-running-projects')" :active="request()->localizedRouteIs('projects.my-running-projects')">
+                                    {{ __('Projects I am running') }}
                                 </x-nav-link>
                             </li>
                         @endif
-                        @if ($user->organization->isParticipant())
+                        @if ($user->context === \App\Enums\UserContext::Individual->value)
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                    :href="$user->organization->isConsultant() || $user->organization->isConnector()
-                                        ? localized_route('projects.my-participating-projects')
-                                        : localized_route('projects.my-projects')" :active="$user->organization->isConsultant() || $user->organization->isConnector()
-                                        ? request()->localizedRouteIs('projects.my-participating-projects')
-                                        : request()->localizedRouteIs('projects.my-projects')">
-                                    {{ __('Projects I am participating in') }}
+                                    :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
+                                    {{ __('Involved as a Consultation Participant') }}
+                                </x-nav-link>
+                            </li>
+                            <li class="w-full">
+                                <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
+                                    :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
+                                    {{ __('Involved as a Community Connector') }}
                                 </x-nav-link>
                             </li>
                         @endif
-                        <li class="w-full">
-                            <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                :href="localized_route('projects.my-running-projects')" :active="request()->localizedRouteIs('projects.my-running-projects')">
-                                {{ __('Projects I am running') }}
-                            </x-nav-link>
-                        </li>
-                    @endif
-                    @if ($user->context === 'individual')
-                        <li class="w-full">
-                            <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                                {{ __('Projects I am participating in') }}
-                            </x-nav-link>
-                        </li>
-                        <li class="w-full">
-                            <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
-                                :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
-                                {{ __('Projects I am contracted for') }}
-                            </x-nav-link>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-        </nav>
+                    </ul>
+                </div>
+            </nav>
+        @endif
     @endif
 
     @switch($user->context)

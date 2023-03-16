@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AccessSupport;
+use App\Models\Engagement;
 use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
@@ -61,6 +62,28 @@ test('other users cannot manage access needs', function () {
     $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
 
     $response->assertForbidden();
+});
+
+test('access needs save redirect', function () {
+    $this->seed(AccessSupportSeeder::class);
+
+    $engagement = Engagement::factory()->create();
+    $user = User::factory()->create(['context' => 'individual']);
+
+    // access needs page without engagement parameter
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
+    $response->assertOk();
+    $response->assertSee('<button>'.__('Save').'</button>', false);
+
+    // access needs page with invalid engagement parameter
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => 1000]));
+    $response->assertOk();
+    $response->assertSee('<button>'.__('Save').'</button>', false);
+
+    // access needs page with valid engagement parameter
+    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => $engagement->id]));
+    $response->assertOk();
+    $response->assertSeeText(__('Save and back to confirm access needs'));
 });
 
 test('individual users can manage communication and consultation preferences', function () {

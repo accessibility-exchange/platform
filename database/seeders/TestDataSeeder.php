@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ProvinceOrTerritory;
+use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Language;
+use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -19,11 +22,13 @@ class TestDataSeeder extends Seeder
     {
         $individualsForTesting = [
             [
-                'name' => 'Mostafa Ayhan',
-                'email' => 'ayhan@accessibilityexchange.ca',
-                'preferred_contact_person' => 'me',
-                'phone' => '4165064567',
-                'preferred_contact_method' => 'email',
+                'user' => [
+                    'name' => 'Mostafa Ayhan',
+                    'email' => 'ayhan@accessibilityexchange.ca',
+                    'preferred_contact_person' => 'me',
+                    'phone' => '4165064567',
+                    'preferred_contact_method' => 'email',
+                ],
                 'constituentLanguages' => ['tr', 'ar', 'hi', 'fa'],
                 'ethnoracial' => ['Middle Eastern'],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
@@ -48,7 +53,7 @@ class TestDataSeeder extends Seeder
                         'instagram' => 'https://www.instagram.com/',
                         'facebook' => 'https://www.facebook.com/',
                     ],
-                    'consulting_services' => ['booking-providers', 'planning-consultation', 'writing-reports'],
+                    'consulting_services' => ['booking-providers', 'designing-consultation', 'writing-reports'],
                     'lived_experience' => [
                         'en' => 'Knows from lived experience as a person who has used a wheelchair for more than 2 decades how the built environment can either restrict or enable independence and fulfillment.',
                     ],
@@ -64,10 +69,12 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'K Torres',
-                'email' => 'k@accessibilityexchange.ca',
-                'preferred_contact_person' => 'me',
-                'preferred_contact_method' => 'email',
+                'user' => [
+                    'name' => 'K Torres',
+                    'email' => 'k@accessibilityexchange.ca',
+                    'preferred_contact_person' => 'me',
+                    'preferred_contact_method' => 'email',
+                ],
                 'constituentLanguages' => ['asl', 'lsq', 'en', 'fr'],
                 'ethnoracial' => [],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
@@ -98,7 +105,7 @@ class TestDataSeeder extends Seeder
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
                     'working_languages' => ['asl', 'en'],
-                    'consulting_services' => ['planning-consultation'],
+                    'consulting_services' => ['designing-consultation'],
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
                         'twitter' => 'https://twitter.com/',
@@ -119,10 +126,12 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'Han Roy',
-                'email' => 'Han@accessibilityexchange.ca',
-                'preferred_contact_person' => 'me',
-                'preferred_contact_method' => 'email',
+                'user' => [
+                    'name' => 'Han Roy',
+                    'email' => 'Han@accessibilityexchange.ca',
+                    'preferred_contact_person' => 'me',
+                    'preferred_contact_method' => 'email',
+                ],
                 'constituentLanguages' => ['en', 'fr', 'moh', 'cr', 'iu', 'oj'],
                 'ethnoracial' => [],
                 'ageBrackets' => ['Working age adults (15–64)', 'Older people (65+)'],
@@ -178,12 +187,13 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'Rose Wilson',
-                'email' => 'Rose@accessibilityexchange.ca',
-
-                'preferred_contact_person' => 'me',
-                'phone' => '6476041456',
-                'preferred_contact_method' => 'email',
+                'user' => [
+                    'name' => 'Rose Wilson',
+                    'email' => 'Rose@accessibilityexchange.ca',
+                    'preferred_contact_person' => 'me',
+                    'phone' => '6476041456',
+                    'preferred_contact_method' => 'email',
+                ],
                 'constituentLanguages' => ['fr'],
                 'ethnoracial' => ['Black', 'Asian', 'Middle Eastern'],
                 'ageBrackets' => ['Working age adults (15–64)'],
@@ -232,15 +242,17 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'Alan Chang',
-                'email' => 'Alan@accessibilityexchange.ca',
-                'preferred_contact_person' => 'me',
-                'preferred_contact_method' => 'email',
+                'user' => [
+                    'name' => 'Alan Chang',
+                    'email' => 'Alan@accessibilityexchange.ca',
+                    'preferred_contact_person' => 'me',
+                    'preferred_contact_method' => 'email',
+                ],
                 'constituentLanguages' => ['en', 'zh', 'yue'],
                 'ethnoracial' => ['Black', 'Asian'],
                 'ageBrackets' => ['Older people (65+)'],
                 'genderIdentities' => [],
-                '' => [],
+                'constituencies' => [],
                 'indigenousIdentities' => [],
                 'areaTypes' => ['Urban areas'],
                 'disabilityTypes' => [
@@ -295,60 +307,23 @@ class TestDataSeeder extends Seeder
         ];
 
         foreach ($individualsForTesting as $individualUser) {
-            $page = array_pop($individualUser);
-            $impacts = array_pop($individualUser);
-            $sectors = array_pop($individualUser);
-            $livedExperiences = array_pop($individualUser);
-            $disabilityTypes = array_pop($individualUser);
-            $areaTypes = array_pop($individualUser);
-            $indigenousIdentities = array_pop($individualUser);
-            $constituencies = array_pop($individualUser);
-            $genderIdentities = array_pop($individualUser);
-            $ageGroups = array_pop($individualUser);
-            $ethnoracialIdentities = array_pop($individualUser);
-            $constituentLanguages = array_pop($individualUser);
-            $user = User::factory()->create($individualUser);
-            foreach ($impacts as $name) {
-                $item = Impact::firstWhere('name->en', $name);
-                $user->individual->impactsOfInterest()->attach($item->id);
-            }
-            foreach ($sectors as $name) {
-                $item = Sector::firstWhere('name->en', $name);
-                $user->individual->sectorsOfInterest()->attach($item->id);
-            }
-            foreach ($livedExperiences as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($disabilityTypes as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($areaTypes as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($indigenousIdentities as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($constituencies as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($genderIdentities as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($ageGroups as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($ethnoracialIdentities as $name) {
-                $item = Identity::withoutGlobalScope(ReachableIdentityScope::class)->firstWhere('name->en', $name);
-                $user->individual->identityConnections()->attach($item->id);
-            }
-            foreach ($constituentLanguages as $code) {
+            $user = User::factory()->create($individualUser['user'] ?? []);
+            $user->individual->impactsOfInterest()->attach(Impact::whereIn('name->en', $individualUser['impacts'] ?? [])->get()->modelKeys());
+            $user->individual->sectorsOfInterest()->attach(Sector::whereIn('name->en', $individualUser['sectors'] ?? [])->get()->modelKeys());
+            $user->individual->identityConnections()->attach(
+                Identity::withoutGlobalScope(ReachableIdentityScope::class)
+                    ->whereIn('name->en', $individualUser['livedExperiences'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['disabilityTypes'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['areaTypes'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['indigenousIdentities'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['constituencies'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['genderIdentities'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['ageGroups'] ?? [])
+                    ->orWhereIn('name->en', $individualUser['ethnoracialIdentities'] ?? [])
+                    ->get()
+                    ->modelKeys()
+            );
+            foreach ($individualUser['constituentLanguages'] ?? [] as $code) {
                 $language = Language::firstOrCreate(
                     ['code' => $code],
                     [
@@ -360,14 +335,16 @@ class TestDataSeeder extends Seeder
                 );
                 $user->individual->languageConnections()->attach($language->id);
             }
-            $user->individual->update($page);
+            $user->individual->update($individualUser['individualDetails'] ?? []);
         }
 
         $frosForTesting = [
             [
-                'name' => 'Jannet Chow',
-                'email' => 'chow@accessibilityexchange.ca',
-                'context' => 'regulated-organization',
+                'user' => [
+                    'name' => 'Jannet Chow',
+                    'email' => 'chow@accessibilityexchange.ca',
+                    'context' => 'regulated-organization',
+                ],
                 'froSector' => 'Transportation',
                 'froDetails' => [
                     'published_at' => now(),
@@ -395,9 +372,11 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'Murlio Durado',
-                'email' => 'md@accessibilityexchange.ca',
-                'context' => 'regulated-organization',
+                'user' => [
+                    'name' => 'Murlio Durado',
+                    'email' => 'md@accessibilityexchange.ca',
+                    'context' => 'regulated-organization',
+                ],
                 'froSector' => 'Federal government programs and services',
                 'froDetails' => [
                     'published_at' => now(),
@@ -425,9 +404,11 @@ class TestDataSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'Ali Selim',
-                'email' => 'aselim@accessibilityexchange.ca',
-                'context' => 'regulated-organization',
+                'user' => [
+                    'name' => 'Ali Selim',
+                    'email' => 'aselim@accessibilityexchange.ca',
+                    'context' => 'regulated-organization',
+                ],
                 'froSector' => 'Crown corporations',
                 'froDetails' => [
                     'published_at' => now(),
@@ -455,171 +436,183 @@ class TestDataSeeder extends Seeder
         ];
 
         foreach ($frosForTesting as $froUser) {
-            $froData = array_pop($froUser);
-            $sectorName = array_pop($froUser);
-            $user = User::factory()->create($froUser);
             $fro = RegulatedOrganization::factory()
-                ->hasAttached($user, ['role' => 'admin'])
-                ->create($froData);
-            $item = Sector::where('name->en', $sectorName)->first();
-            $fro->sectors()->attach($item->id);
+                ->hasAttached(User::factory()->state($froUser['user'] ?? []), ['role' => 'admin'])
+                ->create($froUser['froDetails'] ?? []);
+            $fro->sectors()->attach(Sector::where('name->en', $froUser['froSector'] ?? '')->first()->id);
         }
 
         $orgsForTesting = [
-            //            [
-            //                'name' => '',
-            //                'organization' => [
-            //
-            //                ],
-            //            ],
+            // [
+            //     'user' => [
+            //         'name' => '',
+            //     ],
+            //     'organization' => [
+
+            //     ],
+            // ],
         ];
 
         foreach ($orgsForTesting as $orgUser) {
-            $orgData = array_pop($orgData);
-            $user = User::factory()->create($orgUser);
             $org = Organization::factory()
-                ->hasAttached($user, ['role' => 'admin'])
-                ->create($orgData);
+                ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => 'admin'])
+                ->create($orgUser['organization'] ?? []);
         }
 
-        $regions = [
-            'AB',
-            'BC',
-            'MB',
-            'NB',
-            'NL',
-            'NT',
-            'NS',
-            'NU',
-            'ON',
-            'PE',
-            'QC',
-            'SK',
-            'YT',
-        ];
+        $regions = array_column(ProvinceOrTerritory::cases(), 'value');
 
         $projectsForTesting = [
             [
-                'name' => ['en' => 'BlueSky Airlines Accessibility project'],
-                'languages' => ['en', 'fr'],
-                'goals' => ['en' => 'In this project we focus on online ticketing and check in services on the BlueSky website. We want to make sure these online services are fully accessible for customers with diverse needs.'],
-                'scope' => ['en' => 'In this project aims to engage a diverse group of our potential customers who may have different lived experiences of disability and being Deaf. Particularly, we would like to work with individuals who use assistive technologies, such as screen readers to access our website and use our online services. '],
-                'regions' => $regions,
-                'out_of_scope' => ['en' => 'Accessibility of the physical services at check-in, and experiences inside the airplanes is out of scope for this project.'],
-                'start_date' => '2023-06-01',
-                'end_date' => '2023-09-30',
-                'outcome_analysis' => ['internal'],
-                'outcomes' => ['en' => 'An accessibility report with a set of recommendations for change on the BlueSky website. '],
-                'public_outcomes' => true,
-                'team_size' => ['en' => '5'],
-                'team_has_disability_or_deaf_lived_experience' => false,
-                'contact_person_name' => 'Mario Miller',
-                'contact_person_email' => 'mm@accessibilityexchange.ca',
-                'preferred_contact_method' => 'email',
-                'contact_person_response_time' => ['en' => '48 hours'],
-                'estimate_requested_at' => now(),
-                'estimate_returned_at' => now(),
-                'estimate_approved_at' => now(),
-                'agreement_received_at' => now(),
-                'organization' => RegulatedOrganization::where('name->en', 'BlueSky Airlines')->first(),
-                'impact' => Impact::where('name->en', 'Information and communication technologies')->first(),
+                'project' => [
+                    'name' => ['en' => 'BlueSky Airlines Accessibility project'],
+                    'languages' => ['en', 'fr'],
+                    'goals' => ['en' => 'In this project we focus on online ticketing and check in services on the BlueSky website. We want to make sure these online services are fully accessible for customers with diverse needs.'],
+                    'scope' => ['en' => 'In this project aims to engage a diverse group of our potential customers who may have different lived experiences of disability and being Deaf. Particularly, we would like to work with individuals who use assistive technologies, such as screen readers to access our website and use our online services. '],
+                    'regions' => $regions,
+                    'out_of_scope' => ['en' => 'Accessibility of the physical services at check-in, and experiences inside the airplanes is out of scope for this project.'],
+                    'start_date' => now(),
+                    'end_date' => now()->addMonths(5),
+                    'outcome_analysis' => ['internal'],
+                    'outcomes' => ['en' => 'An accessibility report with a set of recommendations for change on the BlueSky website. '],
+                    'public_outcomes' => true,
+                    'team_size' => ['en' => '5'],
+                    'team_has_disability_or_deaf_lived_experience' => false,
+                    'contact_person_name' => 'Mario Miller',
+                    'contact_person_email' => 'mm@accessibilityexchange.ca',
+                    'preferred_contact_method' => 'email',
+                    'contact_person_response_time' => ['en' => '48 hours'],
+                    'estimate_requested_at' => now(),
+                    'estimate_returned_at' => now(),
+                    'estimate_approved_at' => now(),
+                    'agreement_received_at' => now(),
+                ],
+                'organization' => 'BlueSky Airlines',
+                'impact' => 'Information and communication technologies',
             ],
             [
-                'name' => ['en' => 'Agriculture and Agri-Food Canada (AAFC) Accessibility project'],
-                'languages' => ['en', 'fr'],
-                'goals' => ['en' => 'In this project we will work on the accessibility of delivering information about our new programs and services to our members.'],
-                'scope' => ['en' => 'We aim to engage people with disabilities who are involved in the agriculture and agri-food related industries and businesses. '],
-                'regions' => $regions,
-                'out_of_scope' => ['en' => 'Design and delivery of programs and services	Accessibility and inclusion of work spaces, employment strategies, and agricultural tools and equipment is out of scope for this project. '],
-                'start_date' => '2023-06-01',
-                'end_date' => '2024-09-30',
-                'outcome_analysis' => ['internal'],
-                'outcomes' => ['en' => 'A final online report will be available on our website. '],
-                'public_outcomes' => true,
-                'team_size' => ['en' => '3'],
-                'team_has_disability_or_deaf_lived_experience' => false,
-                'contact_person_name' => 'Cecilia Leyva',
-                'contact_person_email' => 'cl@accessibilityexchange.ca',
-                'preferred_contact_method' => 'email',
-                'contact_person_response_time' => ['en' => '5 business days'],
-                'organization' => RegulatedOrganization::where('name->en', 'Agriculture and Agri-Food Canada')->first(),
-                'impact' => Impact::where('name->en', 'Programs and services')->first(),
+                'project' => [
+                    'name' => ['en' => 'Agriculture and Agri-Food Canada (AAFC) Accessibility project'],
+                    'languages' => ['en', 'fr'],
+                    'goals' => ['en' => 'In this project we will work on the accessibility of delivering information about our new programs and services to our members.'],
+                    'scope' => ['en' => 'We aim to engage people with disabilities who are involved in the agriculture and agri-food related industries and businesses. '],
+                    'regions' => $regions,
+                    'out_of_scope' => ['en' => 'Design and delivery of programs and services	Accessibility and inclusion of work spaces, employment strategies, and agricultural tools and equipment is out of scope for this project. '],
+                    'start_date' => now()->addMonth(),
+                    'end_date' => now()->addMonths(6),
+                    'outcome_analysis' => ['internal'],
+                    'outcomes' => ['en' => 'A final online report will be available on our website. '],
+                    'public_outcomes' => true,
+                    'team_size' => ['en' => '3'],
+                    'team_has_disability_or_deaf_lived_experience' => false,
+                    'contact_person_name' => 'Cecilia Leyva',
+                    'contact_person_email' => 'cl@accessibilityexchange.ca',
+                    'preferred_contact_method' => 'email',
+                    'contact_person_response_time' => ['en' => '5 business days'],
+                ],
+                'organization' => 'Agriculture and Agri-Food Canada',
+                'impact' => 'Programs and services',
 
             ],
             [
-                'name' => ['en' => 'Accessibility at Canada Post'],
-                'languages' => ['en', 'fr'],
-                'goals' => ['en' => 'In this project we are focusing on the customer experience at Canada Post retail offices across the country.'],
-                'scope' => ['en' => 'We look forward to working with people with disabilities who have used Canada Post offices in their towns or cities to send mail or a parcel. '],
-                'regions' => $regions,
-                'out_of_scope' => ['en' => 'Accessibility of Canada post online services and mail boxes are out of scope for this project. '],
-                'start_date' => '2023-06-01',
-                'end_date' => '2025-09-30',
-                'outcome_analysis' => ['internal'],
-                'outcomes' => ['en' => 'A final online report will be available on our website. '],
-                'public_outcomes' => true,
-                'team_size' => ['en' => '10'],
-                'team_has_disability_or_deaf_lived_experience' => true,
-                'contact_person_name' => 'Ian Thompson',
-                'contact_person_email' => 'it@accessibilityexchange.ca',
-                'preferred_contact_method' => 'email',
-                'contact_person_response_time' => ['en' => '24 hours'],
-                'organization' => RegulatedOrganization::where('name->en', 'Canada Post')->first(),
-                'impact' => Impact::where('name->en', 'Buildings and public spaces')->first(),
+                'project' => [
+                    'name' => ['en' => 'Accessibility at Canada Post'],
+                    'languages' => ['en', 'fr'],
+                    'goals' => ['en' => 'In this project we are focusing on the customer experience at Canada Post retail offices across the country.'],
+                    'scope' => ['en' => 'We look forward to working with people with disabilities who have used Canada Post offices in their towns or cities to send mail or a parcel. '],
+                    'regions' => $regions,
+                    'out_of_scope' => ['en' => 'Accessibility of Canada post online services and mail boxes are out of scope for this project. '],
+                    'start_date' => now()->subMonths(6),
+                    'end_date' => now()->subMonth(),
+                    'outcome_analysis' => ['internal'],
+                    'outcomes' => ['en' => 'A final online report will be available on our website. '],
+                    'public_outcomes' => true,
+                    'team_size' => ['en' => '10'],
+                    'team_has_disability_or_deaf_lived_experience' => true,
+                    'contact_person_name' => 'Ian Thompson',
+                    'contact_person_email' => 'it@accessibilityexchange.ca',
+                    'preferred_contact_method' => 'email',
+                    'contact_person_response_time' => ['en' => '24 hours'],
+                ],
+                'organization' => 'Canada Post',
+                'impact' => 'Buildings and public spaces',
             ],
         ];
 
         foreach ($projectsForTesting as $project) {
-            $impact = array_pop($project);
-            $fro = array_pop($project);
-            $project = Project::factory()->create(array_merge(['projectable_id' => $fro->id], $project));
-            $project->impacts()->attach($impact->id);
+            $proj = Project::factory()->create(array_merge(['projectable_id' => RegulatedOrganization::where('name->en', $project['organization'])->first()->id], $project['project']));
+            $proj->impacts()->attach(Impact::where('name->en', $project['impact'])->first()->id);
         }
 
         $connectorUser = User::whereBlind('email', 'email_index', 'ayhan@accessibilityexchange.ca')->first();
 
         $engagementsForTesting = [
             [
-                'name' => ['en' => 'Workshop'],
-                'languages' => config('locales.supported'),
-                'who' => 'individuals',
-                'format' => 'workshop',
-                'recruitment' => 'open-call',
-                'ideal_participants' => 25,
-                'minimum_participants' => 15,
-                'paid' => true,
-                'description' => ['en' => 'This is what we are doing'],
-                'signup_by_date' => '2022-10-02',
-                'published_at' => now(),
+                'engagement' => [
+                    'name' => ['en' => 'Workshop'],
+                    'languages' => config('locales.supported'),
+                    'who' => 'individuals',
+                    'format' => 'workshop',
+                    'recruitment' => 'open-call',
+                    'ideal_participants' => 25,
+                    'minimum_participants' => 15,
+                    'paid' => true,
+                    'description' => ['en' => 'This is what we are doing'],
+                    'signup_by_date' => now()->addMonth(),
+                    'published_at' => now(),
+                ],
+                'meetings' => [
+                    [
+                        'title' => 'Workshop 1',
+                        'date' => now()->addMonths(2),
+                    ],
+                ],
             ],
             [
-                'name' => ['en' => 'Focus Group'],
-                'languages' => config('locales.supported'),
-                'who' => 'individuals',
-                'format' => 'focus-group',
-                'recruitment' => 'connector',
-                'ideal_participants' => 25,
-                'minimum_participants' => 15,
-                'paid' => true,
-                'description' => ['en' => 'This is what we are doing'],
-                'signup_by_date' => '2022-10-02',
-                'published_at' => now(),
-                'individual_connector_id' => $connectorUser->individual->id,
+                'engagement' => [
+                    'name' => ['en' => 'Focus Group'],
+                    'languages' => config('locales.supported'),
+                    'who' => 'individuals',
+                    'format' => 'focus-group',
+                    'recruitment' => 'connector',
+                    'ideal_participants' => 25,
+                    'minimum_participants' => 15,
+                    'paid' => true,
+                    'description' => ['en' => 'This is what we are doing'],
+                    'signup_by_date' => now()->addMonth(),
+                    'published_at' => now(),
+                    'individual_connector_id' => $connectorUser->individual->id,
+                ],
+                'meetings' => [
+                    [
+                        'title' => 'Focus Group 1',
+                        'date' => now()->addMonths(2),
+                    ],
+                ],
             ],
             [
-                'name' => ['en' => 'Expert Analysis'],
-                'languages' => config('locales.supported'),
-                'who' => 'organization',
-                'paid' => true,
-                'description' => ['en' => 'This is what we are doing'],
-                'published_at' => now(),
+                'engagement' => [
+                    'name' => ['en' => 'Expert Analysis'],
+                    'languages' => config('locales.supported'),
+                    'who' => 'organization',
+                    'paid' => true,
+                    'description' => ['en' => 'This is what we are doing'],
+                    'published_at' => now(),
+                ],
             ],
         ];
 
         $project = Project::find(1);
 
         foreach ($engagementsForTesting as $engagement) {
-            $project->engagements()->create($engagement);
+            $eng = Engagement::factory()
+                ->for($project)
+                ->create($engagement['engagement']);
+
+            foreach ($engagement['meetings'] ?? [] as $meeting) {
+                Meeting::factory()
+                    ->for($eng)
+                    ->create($meeting);
+            }
         }
     }
 }

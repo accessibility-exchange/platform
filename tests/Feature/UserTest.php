@@ -262,7 +262,7 @@ test('user has pivot tables for module, course and quiz', function () {
     $user = User::factory()->create();
     $course = Course::factory()->create();
     $module = Module::factory()->for($course)->create();
-    $quiz = Quiz::factory()->for($module)->create();
+    $quiz = Quiz::factory()->for($course)->create();
 
     $user->modules()->sync($module->id);
     $user->quizzes()->sync($quiz->id);
@@ -282,4 +282,24 @@ test('user has pivot tables for module, course and quiz', function () {
         'course_id' => $course->id,
         'user_id' => $user->id,
     ]);
+});
+
+test('users can view inprogress and completed Courses from their dashbaord', function () {
+    $user = User::factory()->create();
+    $inProgressCourse = Course::factory()->create(['author' => 'Author 1']);
+    $completedCourse = Course::factory()->create(['author' => 'Author 2']);
+
+    Quiz::factory()->for(Course::find($inProgressCourse->id))->create();
+    Quiz::factory()->for(Course::find($completedCourse->id))->create();
+
+    $user->courses()->attach($inProgressCourse->id, ['started_at' => now()]);
+    $user->courses()->attach($completedCourse->id, ['received_certificate_at' => now()]);
+
+    $response = $this->actingAs($user)->get(localized_route('dashboard.trainings'));
+
+    $response->assertOk();
+    $response->assertSee('Author 1');
+    $response->assertSee('Author 2');
+    $response->assertSee('In progress');
+    $response->assertSee('Completed');
 });
