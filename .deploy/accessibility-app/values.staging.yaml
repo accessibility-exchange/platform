@@ -5,7 +5,7 @@ disks:
     name: accessibility-app-data
 env:
   APP_NAME: "The Accessibility Exchange"
-  APP_ENV: "development"
+  APP_ENV: "staging"
   APP_DEBUG: "false"
   APP_URL: "https://staging.accessibilityexchange.ca"
   APP_SERVICE: "staging.accessibilityexchange.ca"

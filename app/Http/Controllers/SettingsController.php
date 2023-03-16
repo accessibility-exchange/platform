@@ -19,6 +19,7 @@ use App\Http\Requests\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
 use App\Models\AccessSupport;
+use App\Models\Engagement;
 use App\Models\Impact;
 use App\Models\PaymentType;
 use App\Models\Sector;
@@ -96,6 +97,7 @@ class SettingsController extends Controller
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'guessedSpokenOrWrittenLanguage' => $individual->first_language && ! is_signed_language($individual->first_language) ? $individual->first_language : false,
             'guessedSignedLanguage' => $individual->first_language && is_signed_language($individual->first_language) ? $individual->first_language : false,
+            'returnToEngagement' => Engagement::find(request()->input('engagement'))?->id,
         ]);
     }
 
@@ -151,6 +153,10 @@ class SettingsController extends Controller
         $individual->accessSupports()->sync($access_supports);
 
         flash(__('Your access needs have been updated.'), 'success');
+
+        if (isset($data['return_to_engagement'])) {
+            return redirect(localized_route('engagements.confirm-access-needs', ['engagement' => $data['return_to_engagement']]));
+        }
 
         return redirect(localized_route('settings.edit-access-needs'));
     }

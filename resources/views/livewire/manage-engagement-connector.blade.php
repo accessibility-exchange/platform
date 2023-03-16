@@ -45,6 +45,11 @@
                 {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
         </div>
 
+        {{--
+            TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+            See: https://github.com/accessibility-exchange/platform/issues/305
+        --}}
+        {{--
         <hr />
 
         <h3>{{ __('Browse for an Community Connector') }}</h3>
@@ -55,6 +60,7 @@
             <a class="cta secondary"
                 href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
         </p>
+        --}}
 
         <hr class="divider--thick" />
     @endif
