@@ -1,18 +1,18 @@
-# For more information: https://laravel.com/docs/sail
 version: '3'
 services:
 
   platform.proxy:
     build:
       context: ./.local-deploy/accessibility-proxy/
-      dockerfile: Dockerfile.proxy
+      dockerfile: Dockerfile
       args:
         SSL_SUBJECT: "/C=CA/ST=Organization State/L=Organization City/O=Organization Name/OU=Organization Unit/CN=platform.test"
     container_name: platform.proxy
     depends_on:
-      - platform.test
+      platform.test:
+        condition: service_healthy
     networks:
-      - sail
+      - network.platform.proxy
     ports:
       - 80:80
       - 443:443
@@ -23,11 +23,9 @@ services:
       dockerfile: ./.deploy/accessibility-app/Dockerfile
       args:
         CIPHERSWEET_KEY: '${CIPHERSWEET_KEY}'
-    # container_name: platform.test
-    deploy:
-      replicas: 4
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+    container_name: platform.test
+    # extra_hosts:
+    #   - 'host.docker.internal:host-gateway'
     env_file: .env
     environment:
       USER_ID: 1000 # change to your numerical user id so that you can work on files in real time and have write privileges
@@ -38,17 +36,24 @@ services:
       - './database:/app/database'
       - './routes:/app/routes'
       - './tests:/app/tests'
-      - 'app-storage:/opt/data'
+      - 'volume.platform.test:/opt/data'
       - './.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh' # create different entrypoint file
       - './.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes' # add include for http & https blocks
       - './.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf' # replace primary nginx config
     networks:
-      - sail
+      - network.platform.mail
+      - network.platform.mysql
+      - network.platform.proxy
+      - network.platform.redis
     depends_on:
-      - platform.mysql
-      - platform.redis
-      - platform.meilisearch
-      - platform.selenium
+      platform.mysql:
+        condition: service_healthy
+      platform.redis:
+        condition: service_healthy
+      platform.meilisearch:
+        condition: service_healthy
+      platform.selenium:
+        condition: service_started
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:8080"]
       retries: 3
@@ -63,10 +68,10 @@ services:
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     volumes:
-      - 'sail-mysql:/bitnami/mysql/data'
+      - 'volume.platform.mysql:/bitnami/mysql/data'
       - '.local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf'
     networks:
-      - sail
+      - network.platform.mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
       retries: 3
@@ -82,9 +87,9 @@ services:
       REDIS_PASSWORD: '${REDIS_PASSWORD}'
       REDIS_PORT: '${REDIS_PORT}'
     volumes:
-      - 'sail-redis:/data'
+      - 'volume.platform.redis:/data'
     networks:
-      - sail
+      - network.platform.redis
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       retries: 3
@@ -96,9 +101,9 @@ services:
     ports:
       - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
     volumes:
-      - 'sail-meilisearch:/data.ms'
+      - 'volume.platform.meilisearch:/data.ms'
     networks:
-      - sail
+      - network.platform.mail
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
       retries: 3
@@ -111,7 +116,7 @@ services:
       - '${FORWARD_MAILHOG_PORT:-1025}:1025'
       - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
     networks:
-      - sail
+      - network.platform.mail
 
   platform.selenium:
     container_name: platform.selenium
@@ -119,11 +124,16 @@ services:
     volumes:
       - '/dev/shm:/dev/shm'
     networks:
-      - sail
+      - network.platform.mail
+
 networks:
-  sail:
+  network.platform.mail:
+  network.platform.mysql:
+  network.platform.proxy:
+  network.platform.redis:
+
 volumes:
-  app-storage:
-  sail-mysql:
-  sail-redis:
-  sail-meilisearch:
+  volume.platform.test:
+  volume.platform.mysql:
+  volume.platform.redis:
+  volume.platform.meilisearch:
