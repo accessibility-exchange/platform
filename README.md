@@ -128,6 +128,7 @@ of how some key tasks can be carried out using Sail:
 - [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
 - [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
 
+
 ### Local development setup using Laravel Valet
 
 1. Install [Homebrew](https://brew.sh).
@@ -229,6 +230,107 @@ of how some key tasks can be carried out using Sail:
     ```
     
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
+
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
+of how some key tasks can be carried out using Valet:
+
+- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
+
+
+### Local development setup using docker compose:
+1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
+2. Clone the repository:
+
+    ```bash
+    git clone https://github.com/accessibility-exchange/platform.git
+    cd platform
+    ```
+
+3. Create a `.env` file from the included example file:
+
+    ```bash
+    cp .env.example .env
+    ```
+   
+    Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
+    ```
+
+4. Build you applicate container that will be used to generate keys:  
+
+    ```bash
+    docker compose -f docker-compose.local.yml build platform.test
+    ```
+
+5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+
+    ```bash
+    docker run --rm --entrypoint '' platform-platform.test openssl rand -hex 32
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
+    ```
+
+6.  Generate an application key:
+
+    ```bash
+    docker run --rm --entrypoint '' platform-platform.test php artisan key:generate --show
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    APP_KEY="<your key>"
+    ```
+
+7. Generate your database password:
+
+    ```bash
+    docker run --rm --entrypoint '' platform-platform.test openssl rand -hex 32
+    ```
+    
+    Add it to your `.env` file:
+    
+    ```dotenv
+    DB_PASSWORD="<your key>"
+    ```
+
+8. Alter the numerical IDs that PHP will run as in the application container:
+    Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
+
+    Find your local user ID & GROUP (Linux & MacOS):
+
+    ```bash
+    ls -ln
+    ```
+
+    You will see output like below. In the below case user is `1000` and group id is `1001`.
+
+    ```bash
+    total 1124
+    drwxr-xr-x 18 1000 1001   4096 Mar 20 12:56 app
+    -rwxr-xr-x  1 1000 1001   1686 Nov  2 12:10 artisan
+    ```
+
+    Add them to your `.env` file:
+
+    ```dotenv
+    WWWUSER=<your user id>
+    WWWGROUP=<your group id>
+    ```
+
+9.  Start up the entire stack:
+   
+   ```bash
+   docker compose -f docker-compose.local.yml up -d
+   ```
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
 of how some key tasks can be carried out using Valet:
