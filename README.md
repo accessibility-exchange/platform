@@ -18,30 +18,29 @@ at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
 
-The platform is built as a progressive web application using the [Laravel 8](https://laravel.com/docs/8.x) framework.
+The platform is built as a progressive web application using the [Laravel 9](https://laravel.com/docs/9.x) framework.
 
 ## Installation
 
-For general deployment information, please see the Laravel 8.x [deployment documentation](https://laravel.com/docs/8.x/deployment).
+For general deployment information, please see the Laravel 9.x [deployment documentation](https://laravel.com/docs/9.x/deployment).
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/8.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/9.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
 
-The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/8.x/deployment#optimization).
+The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/9.x/deployment#optimization).
 
 ## Development environments
 
 In development environments, a deployment should be followed by running a fresh migration and the development database seeder:
 
 ```bash
-php artisan migrate:fresh --force
-php artisan db:seed DevSeeder --force
+php artisan migrate:fresh --seeder DevSeeder
 ```
 
-**NOTE: This will overwrite all existing database tables.**
+_**NOTE:** This will overwrite all existing database tables._
 
 ## Production environments
 
@@ -77,7 +76,7 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     ```dotenv
     APP_ENV=local
     ```
-    
+
 5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
     ```bash
@@ -102,7 +101,7 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     sail composer install
     sail npm install
     ```
-    
+
 8. Generate an application key:
 
     ```bash
@@ -133,11 +132,11 @@ of how some key tasks can be carried out using Sail:
 
 1. Install [Homebrew](https://brew.sh).
 2. Install PHP 8.1 via Homebrew:
-   
+
    ```bash
    brew install php@8.1
    ```
-   
+
 3. Install [Composer](https://getcomposer.org/).
 4. Install Valet:
 
@@ -158,7 +157,7 @@ of how some key tasks can be carried out using Sail:
     ```bash
     cp .env.example .env
     ```
-   
+
     Then, change the `APP_ENV` value to `local`:
 
     ```dotenv
@@ -172,7 +171,7 @@ of how some key tasks can be carried out using Sail:
     ```
 
     Add it to your `.env` file:
-    
+
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
     ```
@@ -189,7 +188,7 @@ of how some key tasks can be carried out using Sail:
      ```bash
      php artisan key:generate
      ```
- 
+
 11. Create a database:
 
     ```bash
@@ -200,7 +199,7 @@ of how some key tasks can be carried out using Sail:
 
      ```bash
      php artisan migrate
-     ``` 
+     ```
 
 13. Download the application fonts:
 
@@ -220,7 +219,7 @@ of how some key tasks can be carried out using Sail:
     brew install mailhog
     brew services start mailhog
     ```
-    
+
     Then, make sure that your `.env` file contains the following values:
 
     ```dotenv
@@ -228,7 +227,7 @@ of how some key tasks can be carried out using Sail:
     MAIL_HOST=127.0.0.1
     MAIL_PORT=1025
     ```
-    
+
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
@@ -351,37 +350,57 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
     that have been prototyped and gone through one or more co-design sessions.
 - Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
     must be named according to the format `feat/<feature>`.
-- Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+- Before opening a pull request, developers should run `composer format && composer analyze && composer test-coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+  - May need to enabled the XDEBUG coverage mode before running tests, for example `XDEBUG_MODE=coverage composer test-coverage`.
+  - May also want to run the tests in parallel to improve speed, for example `php artisan test --parallel` or `XDEBUG_MODE=coverage php artisan test --coverage --parallel`
 - Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 - The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined features that
     are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `production` branch.
 
+## Supported application environments
+
+The application environment is set by specifying the `APP_ENV` environment variable. See [Environment Configuration](https://laravel.com/docs/9.x/configuration#environment-configuration) docs for more information.
+
+| `APP_ENV` | Description |
+| --- | ---- |
+| local | For local development; i.e. on a developers machine. |
+| dev | For nightly builds build and deployed from the "dev" branch. |
+| staging | For deploys from the "staging" branch. Used to test changes in a production like environment before going live. |
+| production | For deploys from the "production" branch. The live production released code. |
+
+Amongst other things, the application environment can be used to prevent tasks from running or requiring confirmation before running, e.g. in production running `php artisan migrate:fresh` requires confirmation. It can also be used to limit output in blade templates using the `@env()` or `@production` directives (See: [Environment Directives](https://laravel.com/docs/9.x/blade#environment-directives) docs)
 
 ## Custom Artisan Commands
 
 ### db:refresh
 
+_**NOTE:** Excluded from running during tests or on production._
+
 #### Purpose
 
-(Excluded from running during tests or on production.)  
+* Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. [optional, run if `--backup` is used]
+* Runs a fresh migration that will truncate all tables and run all migrations.
+* Runs the **DevSeeder** seeder.
 
-* Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. [optional if `--backup` is used]  
-* Runs a fresh migration that will truncate all tables and run all migrations.  
-* Runs the **DevSeeder** seeder.  
+#### Options
+
+| option | Description |
+| --- | ---- |
+| `--backup` | Whether to Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. |
 
 ### deploy:global
 
 #### Purpose
 
-Runs other console commands in order and should be commands that are only run once accross multiple deploying container.  
+Runs other console commands in order and should be commands that are only run once across multiple deploying container.
 
 ### deploy:local
 
 #### Purpose
 
-Runs other console commands in order and should be commands that should be run on each deploying container.  
+Runs other console commands in order and should be commands that should be run on each deploying container.
 
 ### notifications:remove:old
 
@@ -391,69 +410,71 @@ Removes older notifications.
 
 #### Options
 
-`--days=` - _*required_ - The number of days which notifications older than will be deleted from the notifications database table.  
+| option | Description |
+| --- | ---- |
+| `--days=` | _*required_ - The number of days which notifications older than will be deleted from the notifications database table. |
 
 ### db:seed:backup
 
 #### Purpose
 
-Takes filament tables and backs them up to JSON files so that they can be used by seeders to repopulate the tables.  
+Takes filament tables and backs them up to JSON files so that they can be used by seeders to repopulate the tables.
 
 #### Options
 
 | option | Description |
-| --- | ---- |  
-| `--a\|all` | Whether to run through all available backups/restores in config. |  
+| --- | ---- |
+| `--a\|all` | Whether to run through all available backups/restores in config. |
 
-* When used by itself it backups all the tables found in config **backup.filament_seeders.tables**.  
+* When used by itself it backups all the tables found in config **backup.filament_seeders.tables**.
 * When used with `--restore` option it will run all seeder classed found in **backup.filament_seeders.classes**.
 
---- 
+---
 
-| option | Description |  
-| --- | ---- |  
-| `--env` | Override the environment tag that is being handled. |  
+| option | Description |
+| --- | ---- |
+| `--env` | Override the environment tag that is being handled. |
 
-* Available environments are found in config **backup.filament_seeders.environments**.  
-* When used by default backup it will tag the json files with environment tag.  
+* Available environments are found in config **backup.filament_seeders.environments**.
+* When used by default backup it will tag the json files with environment tag.
 * When used with `--delete` option will change the files being deleted to those tagged with the specific environment.
-* When used with `--restore` option will restore from files tagged with the environment that you specify.  
+* When used with `--restore` option will restore from files tagged with the environment that you specify.
 
 ---
 
-| option | Description |  
-| --- | ---- |  
-| `--remove` | Remove backed up files |  
-
-* When used by itself it will remove all of the backed up JSON files found in **backup.filament_seeders.tables**.  
-* When used with `--table=` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)  
-
----
-
-| option | Description |  
+| option | Description |
 | --- | ---- |
-| `--restore` | Restore the filament table |  
+| `--remove` | Remove backed up files |
 
-* Will not run during tests or on production.  
-* When used without options it will prompt with available classes found in **backup.filament_seeders.classes**, user can choose multiple by separating choices by commas and will run the chosen seeder classes.  
-* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**. 
-
----
-
-| option | Description |  
-| --- | ---- |
-| `--truncate` | Whether to truncate the table before seeding it. |  
-
-* When used with `--restore` it will truncate the tables before seeding them.  
+* When used by itself it will remove all of the backed up JSON files found in **backup.filament_seeders.tables**.
+* When used with `--table=` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)
 
 ---
 
-| option | Description |  
+| option | Description |
 | --- | ---- |
-| `--t\|table=` | Create/remove specific table file |  
+| `--restore` | Restore the filament table |
 
-* When used by itself it will backup the specified table(s) to a JSON file (can pass multiple values, each needs to be prefixed by `--table=`.)  
-* When used with `--remove` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)  
+* Will not run during tests or on production.
+* When used without options it will prompt with available classes found in **backup.filament_seeders.classes**, user can choose multiple by separating choices by commas and will run the chosen seeder classes.
+* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**.
+
+---
+
+| option | Description |
+| --- | ---- |
+| `--truncate` | Whether to truncate the table before seeding it. |
+
+* When used with `--restore` it will truncate the tables before seeding them.
+
+---
+
+| option | Description |
+| --- | ---- |
+| `--t\|table=` | Create/remove specific table file |
+
+* When used by itself it will backup the specified table(s) to a JSON file (can pass multiple values, each needs to be prefixed by `--table=`.)
+* When used with `--remove` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)
 
 
 ## License

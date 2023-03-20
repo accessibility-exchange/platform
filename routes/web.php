@@ -117,6 +117,10 @@ Route::multilingual('/dashboard/notifications/all', [UserController::class, 'all
     ->middleware(['auth', 'onboard'])
     ->name('dashboard.notifications-all');
 
+Route::multilingual('/dashboard/trainings', [UserController::class, 'trainings'])
+    ->middleware(['auth'])
+    ->name('dashboard.trainings');
+
 Route::multilingual('/people-and-organizations', function () {
     return view('people-and-organizations');
 })->middleware([
@@ -136,14 +140,19 @@ Route::multilingual('/people-and-organizations/consultants', function () {
     'can:viewAny,App\Models\Organization',
 ])->name('people-and-organizations.consultants');
 
-Route::multilingual('/people-and-organizations/connectors', function () {
-    return 'The Community Consultants page is not yet available.';
-})->middleware([
-    'auth',
-    'verified',
-    'can:viewAny,App\Models\Individual',
-    'can:viewAny,App\Models\Organization',
-])->name('people-and-organizations.connectors');
+/*
+ * TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+ * See: https://github.com/accessibility-exchange/platform/issues/305
+ */
+// TODO:
+// Route::multilingual('/people-and-organizations/connectors', function () {
+//     return 'The Community Consultants page is not yet available.';
+// })->middleware([
+//     'auth',
+//     'verified',
+//     'can:viewAny,App\Models\Individual',
+//     'can:viewAny,App\Models\Organization',
+// ])->name('people-and-organizations.connectors');
 
 Route::multilingual('/account/delete', [UserController::class, 'destroy'])
     ->method('delete')
@@ -167,3 +176,6 @@ require __DIR__.'/memberships.php';
 require __DIR__.'/invitations.php';
 require __DIR__.'/fortify.php';
 require __DIR__.'/settings.php';
+require __DIR__.'/courses.php';
+require __DIR__.'/modules.php';
+require __DIR__.'/quizzes.php';

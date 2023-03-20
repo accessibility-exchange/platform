@@ -131,6 +131,10 @@ Route::controller(EngagementController::class)
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('confirm-access-needs');
 
+        Route::multilingual('/{engagement}/access-needs-permissions', 'editAccessNeedsPermissions')
+            ->middleware(['auth', 'can:participate,engagement'])
+            ->name('edit-access-needs-permissions');
+
         Route::multilingual('/{engagement}/store-access-needs-permissions', 'storeAccessNeedsPermissions')
             ->method('post')
             ->middleware(['auth', 'can:participate,engagement'])

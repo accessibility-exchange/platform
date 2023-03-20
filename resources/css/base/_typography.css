@@ -16,7 +16,9 @@ body {
 * + h3,
 * + .h3,
 * + h4,
-* + .h4 {
+* + .h4,
+* + h5,
+* + .h5 {
     margin-block-start: 1em;
 }
 
@@ -36,7 +38,9 @@ h2 a,
 h3 a,
 .h3 a,
 h4 a,
-.h4 a {
+.h4 a,
+h5 a,
+.h5 a {
     font-weight: inherit;
 }
 
@@ -73,7 +77,8 @@ h4,
     font-weight: var(--font-semibold);
 }
 
-h5 {
+h5,
+.h5 {
     @apply text-base;
 
     margin-block-end: 0;

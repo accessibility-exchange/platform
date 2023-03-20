@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@commitlint/cli": "^17.3.0",
-        "@commitlint/config-conventional": "^17.1.0",
+        "@commitlint/config-conventional": "^17.4.4",
         "@shufo/prettier-plugin-blade": "^1.8.0",
         "@tailwindcss/typography": "^0.5.9",
         "autoprefixer": "^10.4.13",
@@ -43,12 +43,12 @@
         "npm-run-all": "^4.1.5",
         "postcss": "^8.4.19",
         "postcss-custom-media": "^9.0.1",
-        "postcss-import": "^15.0.0",
+        "postcss-import": "^15.1.0",
         "postcss-import-ext-glob": "^2.1.1",
-        "postcss-logical": "^5.0.4",
+        "postcss-logical": "^6.1.0",
         "prettier": "^2.8.0",
         "stylelint": "^14.13.0",
-        "stylelint-config-prettier": "^9.0.4",
+        "stylelint-config-prettier": "^9.0.5",
         "stylelint-config-standard": "^28.0.0",
         "stylelint-order": "^5.0.0",
         "stylelint-use-logical-spec": "^4.1.0",
@@ -60,7 +60,7 @@
         "vite-plugin-static-copy": "^0.12.0"
     },
     "dependencies": {
-        "@alpinejs/mask": "^3.10.5",
+        "@alpinejs/mask": "^3.11.1",
         "@popperjs/core": "^2.11.6",
         "@vimeo/player": "^2.18.0",
         "alpinejs": "^3.11.1",

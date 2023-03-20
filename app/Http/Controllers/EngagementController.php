@@ -26,6 +26,8 @@ use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Models\User;
+use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantInvited;
@@ -42,6 +44,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Notification;
 use Spatie\LaravelOptions\Options;
 
 class EngagementController extends Controller
@@ -427,6 +430,16 @@ class EngagementController extends Controller
 
     public function manage(Engagement $engagement)
     {
+        if (! $engagement->isManageable()) {
+            if (is_null($engagement->format)) {
+                return redirect(localized_route('engagements.show-format-selection', $engagement));
+            }
+
+            if (is_null($engagement->recruitment)) {
+                return redirect(localized_route('engagements.show-recruitment-selection', $engagement));
+            }
+        }
+
         $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
         $connectorInvitee = null;
         if ($connectorInvitation) {
@@ -617,7 +630,9 @@ class EngagementController extends Controller
 
     public function confirmAccessNeeds(Engagement $engagement): RedirectResponse|View
     {
-        if (url()->previous() !== localized_route('engagements.sign-up', $engagement)) {
+        $engagementIndividual = $engagement->participants()->find(Auth::user()->individual->id);
+
+        if ($engagementIndividual?->getRelationValue('pivot')->status !== 'confirmed' || isset($engagementIndividual?->pivot->share_access_needs)) {
             return redirect(localized_route('engagements.show', $engagement));
         }
 
@@ -625,6 +640,29 @@ class EngagementController extends Controller
             'project' => $engagement->project,
             'engagement' => $engagement,
             'individual' => Auth::user()->individual,
+            'hasIdentifiableAccessNeeds' => Auth::user()->individual->accessSupports->where('anonymizable', false)->count() >= 1,
+        ]);
+    }
+
+    public function editAccessNeedsPermissions(Engagement $engagement): RedirectResponse|View
+    {
+        if (url()->previous() !== localized_route('engagements.confirm-access-needs', $engagement)) {
+            return redirect(localized_route('engagements.show', $engagement));
+        }
+
+        $identifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false);
+
+        if ($identifiableAccessSupports->count() === 0) {
+            $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => false]]);
+
+            return redirect(localized_route('engagements.show', $engagement));
+        }
+
+        return view('engagements.access-needs-permissions', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+            'identifiableAccessSupports' => $identifiableAccessSupports,
         ]);
     }
 
@@ -634,9 +672,21 @@ class EngagementController extends Controller
             'share_access_needs' => 'required|boolean',
         ]);
 
-        $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => $request->input('share_access_needs')]]);
+        $data = [
+            'status' => 'confirmed',
+            'share_access_needs' => $request->input('share_access_needs'),
+        ];
+
+        $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => $data]);
 
         flash(__('Your preference for sharing your access needs has been saved.'), 'success');
+
+        $identifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false);
+
+        if (! $request->input('share_access_needs') && $identifiableAccessSupports->count()) {
+            $administrators = User::whereAdministrator()->get();
+            Notification::send($administrators, new AccessNeedsFacilitationRequested(Auth::user(), $engagement));
+        }
 
         return redirect(localized_route('engagements.show', $engagement));
     }

@@ -100,6 +100,9 @@
     --theme-banner-error-background: var(--bg);
     --theme-banner-error-color: var(--fg);
     --theme-banner-error-border: var(--fg);
+    --theme-banner-success-background: var(--bg);
+    --theme-banner-success-color: var(--fg);
+    --theme-banner-success-border: var(--fg);
     --theme-banner-warning-background: var(--bg);
     --theme-banner-warning-color: var(--fg);
     --theme-banner-warning-border: var(--fg);

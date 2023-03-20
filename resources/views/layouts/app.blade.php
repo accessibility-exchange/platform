@@ -37,6 +37,9 @@
     </main>
 
     @include('layouts.footer')
+    @env(['dev', 'local'])
+    @include('partials.hubspot')
+    @endenv
 </body>
 
 </html>

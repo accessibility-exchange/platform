@@ -46,13 +46,15 @@
         @endif
     </x-slot>
 
-    @if ($user->context === 'administrator')
+    @if ($user->context === \App\Enums\UserContext::Administrator->value)
         @include('dashboard.administrator')
-    @elseif ($user->context === 'individual')
+    @elseif ($user->context === \App\Enums\UserContext::Individual->value)
         @include('dashboard.individual')
-    @elseif($user->context === 'organization')
+    @elseif($user->context === \App\Enums\UserContext::Organization->value)
         @include('dashboard.organization')
-    @elseif ($user->context === 'regulated-organization')
+    @elseif ($user->context === \App\Enums\UserContext::RegulatedOrganization->value)
         @include('dashboard.regulated-organization')
+    @elseif ($user->context === \App\Enums\UserContext::TrainingParticipant->value)
+        @include('dashboard.training-participant')
     @endif
 </x-app-layout>

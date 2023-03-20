@@ -58,6 +58,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             ],
             'postal_code' => 'nullable|string|max:7',
             'additional_needs_or_concerns' => 'nullable|exists:access_supports,id',
+            'return_to_engagement' => 'nullable',
         ];
     }
 
