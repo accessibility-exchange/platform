@@ -83,6 +83,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                     return request('has_ethnoracial_identity_connections') == 1
                         && ! request('has_other_ethnoracial_identity_connection');
                 }),
+                'exclude_if:has_ethnoracial_identity_connections,false',
             ],
             'ethnoracial_identity_connections.*' => 'exists:identities,id',
             'has_other_ethnoracial_identity_connection' => 'nullable|boolean',
@@ -101,12 +102,12 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'base_disability_type' => null,
             'disability_and_deaf_connections' => [],
             'area_type_connections' => [],
-            'nb_gnc_fluid_identity' => 0,
+            'nb_gnc_fluid_identity' => '0',
             'gender_and_sexuality_connections' => [],
             'indigenous_connections' => [],
             'age_bracket_connections' => [],
             'ethnoracial_identity_connections' => [],
-            'has_other_ethnoracial_identity_connection' => 0,
+            'has_other_ethnoracial_identity_connection' => '0',
         ];
 
         // Prepare input for validation
