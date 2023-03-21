@@ -52,7 +52,8 @@
         </ul>
     @endif
 
-    @if ($individual->indigenousConnections->count() || $individual->ethnoracialIdentityConnections->count())
+    @if ($individual->hasConnections('indigenousConnections') ||
+        $individual->hasConnections('ethnoracialIdentityConnections'))
         <h4>{{ __('Ethno-racial groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -68,7 +69,8 @@
         </ul>
     @endif
 
-    @if ($individual->genderAndSexualityConnections->count() || $individual->statusConnections->count())
+    @if ($individual->hasConnections('genderAndSexualityConnections') ||
+        $individual->hasConnections('statusConnections'))
         <h4>{{ __('Other identity groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -81,7 +83,7 @@
         </ul>
     @endif
 
-    @if ($individual->extra_attributes->has_age_brackets)
+    @if ($individual->hasConnections('ageBracketConnections'))
         <h4>{{ __('Age groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -91,7 +93,7 @@
         </ul>
     @endif
 
-    @if ($individual->languageConnections->count() > 0)
+    @if ($individual->hasConnections('languageConnections'))
         <h4>{{ __('Language groups') }}</h4>
 
         <ul class="tags" role="list">
