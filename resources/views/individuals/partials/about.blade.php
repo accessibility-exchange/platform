@@ -34,11 +34,11 @@
         @endcan
     </h3>
 
-    <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
-
     @if ($individual->extra_attributes->get('cross_disability_and_deaf_connections'))
         <p>{{ __(':name can connect to any disability and/or Deaf group', ['name' => $individual->name]) }}</p>
     @else
+        <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
+
         <ul class="tags" role="list">
             @foreach ($individual->disabilityAndDeafConnections as $disabilityType)
                 <li class="tag">{{ $disabilityType->name }}</li>
@@ -69,7 +69,7 @@
     @endif
 
     @if ($individual->genderAndSexualityConnections->count() || $individual->statusConnections->count())
-        <h3>{{ __('Other identity groups') }}</h3>
+        <h4>{{ __('Other identity groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->statusConnections as $statusIdentity)
@@ -82,7 +82,7 @@
     @endif
 
     @if ($individual->extra_attributes->has_age_brackets)
-        <h3>{{ __('Age groups') }}</h3>
+        <h4>{{ __('Age groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->ageBracketConnections as $ageBracket)
@@ -92,7 +92,7 @@
     @endif
 
     @if ($individual->languageConnections->count() > 0)
-        <h3>{{ __('Language groups') }}</h3>
+        <h4>{{ __('Language groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->languageConnections as $language)
