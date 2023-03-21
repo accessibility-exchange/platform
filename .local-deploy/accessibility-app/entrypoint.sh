@@ -28,7 +28,7 @@ rsync -a /app/storage/ $FILES_PATH
 rm -rf /app/storage
 
 ## sync files from container cache to permanent storage then remove container cache
-rsync -a /app/bootstrap/cache/ $CACHE_PATH
+rsync -a --del /app/bootstrap/cache/ $CACHE_PATH
 rm -rf /app/bootstrap/cache
 
 ## create symlinks from permanent storage & cache to application directory folders
