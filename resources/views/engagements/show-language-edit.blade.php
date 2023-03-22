@@ -22,10 +22,7 @@
     <p>{{ __('Please select the languages that your engagement information can be translated into by your organization.') }}
     </p>
 
-    <x-hearth-alert :title="__('Recommendation')" x-show="true">
-        <p>{{ __('Although it is not compulsory, we highly recommend that you include English, French, American Sign Language (ASL), and Langue des signes québécoise (LSQ) translations of your content.') }}
-        </p>
-    </x-hearth-alert>
+    @include('partials.translations-recommendation')
 
     <h2>{{ __('Translations') }}</h2>
 
