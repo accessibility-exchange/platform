@@ -4,10 +4,6 @@
     flex-direction: column;
 }
 
-.interpretation__video {
-    width: 100%;
-}
-
 .interpretation.interpretation--end {
     align-items: flex-end;
 }
