@@ -84,7 +84,7 @@ class RegulatedOrganizationController extends Controller
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
         $data['preferred_contact_method'] = 'email';
-        $data['languages'] = config('locales.supported');
+        $data['languages'] = get_supported_locales(false);
 
         $regulatedOrganization = RegulatedOrganization::create($data);
 

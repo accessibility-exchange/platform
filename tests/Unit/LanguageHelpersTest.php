@@ -5,6 +5,11 @@ test('identify a signed language', function () {
     expect(is_signed_language('en'))->toBeFalse();
 });
 
+test('get supported locales', function () {
+    expect(get_supported_locales())->toMatchArray(config('locales.supported'));
+    expect(get_supported_locales(false))->toEqualCanonicalizing(['en', 'fr']);
+});
+
 test('get available languages', function () {
     $languages = get_available_languages();
 
