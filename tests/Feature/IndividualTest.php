@@ -106,6 +106,26 @@ test('individuals can edit their roles', function () {
     $response->assertSee('Your roles have been saved.');
 });
 
+test('flash message after individual role change', function ($initialRoles, $newRoles, $expected) {
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $individual->fill([
+        'roles' => $initialRoles,
+    ]);
+    $individual->save();
+    $individual->refresh();
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => $newRoles,
+        ]);
+    $response->assertSessionHasNoErrors();
+
+    expect(flash()->class)->toBe($expected['class']);
+    expect(flash()->message)->toBe($expected['message']($individual));
+})->with('individualRoleChange');
+
 test('users can create individual pages', function () {
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);
@@ -417,12 +437,14 @@ test('individuals with connector role can represent individuals with disabilitie
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
     expect($this->livedExperience->communityConnectors)->toHaveCount(1);
+    expect($individual->other_disability_connection)->toEqual('Something not listed');
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$this->livedExperience->id],
         'disability_and_deaf' => false,
         'base_disability_type' => null,
         'area_type_connections' => [$this->areaType->id],
+        'has_other_disability_connection' => null,
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -430,6 +452,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual->refresh();
 
     expect($individual->extra_attributes->get('disability_and_deaf_connections'))->toBeNull();
+    expect($individual->other_disability_connection)->toBeEmpty();
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {

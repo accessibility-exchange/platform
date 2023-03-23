@@ -84,10 +84,13 @@ class IndividualController extends Controller
 
         $newRoles = $individual->fresh()->roles;
 
-        if ((in_array('connector', $oldRoles) || in_array('consultant', $oldRoles)) && ! in_array('connector', $newRoles) && ! in_array('consultant', $newRoles)) {
+        $connectorRole = IndividualRole::CommunityConnector->value;
+        $consultantRole = IndividualRole::AccessibilityConsultant->value;
+
+        if ((in_array($connectorRole, $oldRoles) || in_array($consultantRole, $oldRoles)) && ! in_array($connectorRole, $newRoles) && ! in_array($consultantRole, $newRoles)) {
             $individual->unpublish(true);
             flash(__('Your roles have been saved.'), 'success');
-        } elseif ((! in_array('consultant', $oldRoles) && in_array('consultant', $newRoles)) || (! in_array('connector', $oldRoles) && in_array('connector', $newRoles))) {
+        } elseif (count($oldRoles) && ((! in_array($consultantRole, $oldRoles) && in_array($consultantRole, $newRoles)) || (! in_array($connectorRole, $oldRoles) && in_array($connectorRole, $newRoles)))) {
             flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.').' <a href="'.localized_route('individuals.edit', $individual).'">'.__('Review page').'</a>', 'warning');
         } else {
             flash(__('Your roles have been saved.'), 'success');
