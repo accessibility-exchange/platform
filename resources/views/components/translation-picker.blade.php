@@ -8,7 +8,7 @@
                 class="flex h-14 w-full items-center justify-between border border-x-0 border-b-0 border-solid first-of-type:border-t-0">
                 <p class="repel w-full"><span x-text="language.exonym"></span><button class="secondary" type="button"
                         x-bind:data-index="index" @click="removeLanguage($event)"
-                        x-show="languages.length > 1 && language.code !== '{{ locale() }}' && canRemove(language.code)">{{ __('Remove') }}<span
+                        x-show="languages.length > 1 && language.code !== '{{ get_written_language_for_signed_language(locale()) }}' && canRemove(language.code)">{{ __('Remove') }}<span
                             class="visually-hidden" x-text="language.exonym"></span></button></p>
 
                 <input name="languages[]" type="hidden" x-bind:value="language.code" />
