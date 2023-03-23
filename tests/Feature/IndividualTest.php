@@ -106,6 +106,26 @@ test('individuals can edit their roles', function () {
     $response->assertSee('Your roles have been saved.');
 });
 
+test('flash message after individual role change', function ($initialRoles, $newRoles, $expected) {
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $individual->fill([
+        'roles' => $initialRoles,
+    ]);
+    $individual->save();
+    $individual->refresh();
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => $newRoles,
+        ]);
+    $response->assertSessionHasNoErrors();
+
+    expect(flash()->class)->toBe($expected['class']);
+    expect(flash()->message)->toBe($expected['message']($individual));
+})->with('individualRoleChange');
+
 test('users can create individual pages', function () {
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);
