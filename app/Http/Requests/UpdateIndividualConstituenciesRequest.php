@@ -44,7 +44,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             ],
             'disability_and_deaf_connections.*' => 'exists:identities,id',
             'has_other_disability_connection' => 'nullable|boolean',
-            'other_disability_connection' => 'nullable|array|exclude_if:base_disability_type,cross_disability_and_deaf|exclude_unless:other_disability,true',
+            'other_disability_connection' => 'nullable|array|exclude_if:base_disability_type,cross_disability_and_deaf|exclude_unless:has_other_disability_connection,true',
             'other_disability_connection.*' => 'nullable|string|max:255',
             'area_type_connections' => 'required|array|min:1',
             'area_type_connections.*' => 'exists:identities,id',
