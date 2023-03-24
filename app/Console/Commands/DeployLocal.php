@@ -28,7 +28,12 @@ class DeployLocal extends Command
     public function handle(): int
     {
         $this->call('storage:link');
-
+        $this->call('optimize:clear');
+        $this->call('icons:clear');
+        $this->call('icons:cache');
+        $this->call('event:cache');
+        $this->call('optimize');
+        $this->call('livewire:discover')
         return 0;
     }
 }
