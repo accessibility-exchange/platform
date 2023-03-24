@@ -18,7 +18,7 @@ env:
   SESSION_LIFETIME: "120"
   SAIL_XDEBUG_MODE: "develop,debug,coverage"
   FILES_PATH: "/opt/data/storage"
-  CACHE_PATH: "/opt/data/cache"
+  # CACHE_PATH: "/opt/data/cache" removed per https://github.com/accessibility-exchange/platform/issues/1596
 ### Place those values in Vault
 # secrets:
 #   APP_KEY: ""
