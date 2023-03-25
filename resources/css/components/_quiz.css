@@ -1,0 +1,19 @@
+.correct-answer {
+    color: var(--color-green-7);
+}
+
+.correct-answer svg {
+    color: var(--fg, var(--color-green-7));
+}
+
+.wrong-answer {
+    color: var(--color-red-8);
+}
+
+.wrong-answer svg {
+    color: var(--fg, var(--color-red-8));
+}
+
+.question > .banner p {
+    justify-content: flex-start;
+}

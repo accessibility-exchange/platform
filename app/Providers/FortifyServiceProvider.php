@@ -82,7 +82,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return view('auth.register', [
                 'contexts' => Options::forEnum(UserContext::class)
-                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator || $context === UserContext::TrainingParticipant)
+                    ->reject(fn (UserContext $context) => $context === UserContext::Administrator)
                     ->append(fn (UserContext $context) => ['hint' => $context->description()])
                     ->toArray(),
             ]);
