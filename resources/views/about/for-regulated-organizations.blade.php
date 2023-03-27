@@ -54,9 +54,6 @@
                     <h3>{{ __('Access resources and trainings') }}</h3>
                     <p>{{ __('We have a hub of resources and trainings. The materials can help you and your team deepen your understanding of disability and inclusion.') }}
                     </p>
-                    <p><a
-                            href="{{ localized_route('resource-collections.index') }}">{{ __('Go to our Resource Hub') }}</a>
-                    </p>
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">

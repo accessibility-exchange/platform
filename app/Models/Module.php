@@ -36,6 +36,7 @@ class Module extends Model
         'title',
         'description',
         'introduction',
+        'video',
         'slug',
     ];
 

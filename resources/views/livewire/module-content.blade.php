@@ -13,7 +13,7 @@
 <div>
     <div class="stack ml-2 mr-2">
         <div class="stack w-full" wire:ignore x-data="vimeoPlayer({
-            url: '{{ $module->video[locale()] }}',
+            url: '{{ $module->video }}',
             byline: false,
             pip: true,
             portrait: false,
