@@ -35,6 +35,7 @@ class Course extends Model
     public array $translatable = [
         'title',
         'introduction',
+        'video',
         'slug',
     ];
 
