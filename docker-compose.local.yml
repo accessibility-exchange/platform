@@ -55,7 +55,7 @@ services:
       platform.selenium:
         condition: service_started
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:8080"]
+      test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:8080/nginx_status"]
       retries: 3
       timeout: 5s
 
