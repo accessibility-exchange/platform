@@ -15,15 +15,13 @@
 
 <form class="stack" wire:submit.prevent="inviteConnector">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
-        @clear-flash-message.window="visible = false"
-        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
-        <div x-show="visible" x-transition:leave.duration.500ms>
-            @if (session()->has('message'))
-                <x-hearth-alert type="success">
-                    {!! Str::markdown(session('message')) !!}
-                </x-hearth-alert>
-            @endif
-        </div>
+        @clear-flash-message.window="visible = false" <div x-show="visible" x-transition:leave.duration.500ms>
+        @if (session()->has('message'))
+            <x-hearth-alert type="success">
+                {!! Str::markdown(session('message')) !!}
+            </x-hearth-alert>
+        @endif
+    </div>
     </div>
 
     <p>{{ __('Once you have hired a Community Connector, please add their information here.') }}</p>
