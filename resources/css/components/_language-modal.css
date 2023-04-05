@@ -1,0 +1,79 @@
+.language-modal,
+.language-modal h2 {
+    color: var(--color-white);
+}
+
+.language-modal p[lang="fr"] {
+    font-style: italic;
+}
+
+.language-modal.modal-wrapper {
+    backdrop-filter: blur(25px);
+    background: rgb(15 17 56 / 80%);
+}
+
+.language-modal .modal {
+    background: transparent;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-block: var(--space-8);
+}
+
+.language-modal .logo {
+    height: var(--space-14);
+    min-height: var(--space-14);
+    width: auto;
+}
+
+.language-modal nav {
+    padding-block-end: var(--space-10);
+}
+
+.language-modal nav .grid {
+    --grid-cell-min-width: min(35vw, var(--space-60));
+
+    margin-block-start: var(--space-8);
+}
+
+.language-modal .signed {
+    height: var(--space-8);
+    min-height: var(--space-8);
+    width: auto;
+}
+
+.language-modal .video--desktop {
+    display: none;
+    max-width: 963px;
+}
+
+@media (min-width: 48rem) {
+    .language-modal .modal {
+        max-width: var(--max-w-max);
+    }
+
+    .language-modal .logo {
+        height: var(--space-13);
+    }
+
+    .language-modal nav {
+        padding-block-end: var(--space-29);
+    }
+
+    .language-modal nav .grid {
+        --grid-cell-min-width: var(--space-36);
+
+        margin-block-start: var(--space-16);
+    }
+
+    .language-modal .cta {
+        height: 100%;
+    }
+
+    .language-modal .video--desktop {
+        display: block;
+    }
+
+    .language-modal .video--mobile {
+        display: none;
+    }
+}

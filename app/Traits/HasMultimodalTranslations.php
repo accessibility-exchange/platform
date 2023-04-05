@@ -4,11 +4,6 @@ namespace App\Traits;
 
 trait HasMultimodalTranslations
 {
-    /**
-     * @param  string  $attribute
-     * @param  string  $code
-     * @return string
-     */
     public function getWrittenTranslation(string $attribute, string $code = ''): string
     {
         /** If no language code was passed, return the default attribute. */

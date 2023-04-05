@@ -9,43 +9,31 @@ class TranslatableTextarea extends Component
 {
     /**
      * The name for the input.
-     *
-     * @var string
      */
     public string $name;
 
     /**
      * The label for the input.
-     *
-     * @var string
      */
     public string $label;
 
     /**
      * A short label for the input (used to label alternate language fields).
-     *
-     * @var string
      */
     public string $shortLabel;
 
     /**
      * The hint for the input.
-     *
-     * @var string|null
      */
     public ?string $hint;
 
     /**
      * The languages supported by the input.
-     *
-     * @var array
      */
     public array $languages;
 
     /**
      * The model to which the input field belongs.
-     *
-     * @var mixed
      */
     public mixed $model;
 
@@ -58,15 +46,11 @@ class TranslatableTextarea extends Component
 
     /**
      * The name for asl or lsq content.
-     *
-     * @var null|string
      */
     public ?string $interpretationName;
 
     /**
      * The namespace for asl or lsq content.
-     *
-     * @var null|string
      */
     public ?string $interpretationNameSpace;
 
@@ -97,8 +81,6 @@ class TranslatableTextarea extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View
      */
     public function render(): View
     {

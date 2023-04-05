@@ -20,6 +20,7 @@
                 @elseif (locale() === 'lsq')
                 'https://vimeo.com/789827141' @endif,
             byline: false,
+            dnt: true,
             pip: true,
             portrait: false,
             responsive: true,

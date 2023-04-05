@@ -10,7 +10,6 @@ if (! function_exists('settings')) {
      *
      * @param  string|null  $key The setting key.
      * @param  mixed|null  $default A default value for the setting.
-     * @return mixed
      */
     function settings(string $key = null, mixed $default = null): mixed
     {
@@ -27,7 +26,6 @@ if (! function_exists('get_available_languages')) {
      * Get available languages.
      *
      * @param  bool  $all Should all languages be shown? Otherwise, only supported locales will be included.
-     * @return array
      */
     function get_available_languages(bool $all = false, bool $signed = true): array
     {
@@ -123,7 +121,6 @@ if (! function_exists('is_signed_language')) {
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
      * @param  string  $code An ISO 639 code.
-     * @return bool
      */
     function is_signed_language(string $code): bool
     {
@@ -174,7 +171,6 @@ if (! function_exists('get_signed_language_for_written_language')) {
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
      * @param  string  $code An ISO 639 code.
-     * @return string
      */
     function get_signed_language_for_written_language(string $code): string
     {
