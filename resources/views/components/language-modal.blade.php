@@ -29,10 +29,14 @@
                         </ul>
                     </nav>
 
-                    <p class="text-center" lang="en">
-                        {{ __('You can always change this by selecting the language menu.', [], 'en') }}</p>
-                    <p class="text-center" lang="fr">
-                        {{ __('You can always change this by selecting the language menu.', [], 'fr') }}</p>
+                    <div>
+                        <p class="text-center" lang="en">
+                            {{ __('You can always change this by selecting the language menu.', [], 'en') }}
+                        </p>
+                        <p class="text-center" lang="fr">
+                            {{ __('You can always change this by selecting the language menu.', [], 'fr') }}
+                        </p>
+                    </div>
 
                     {{--
                             Using two instances of the video player for desktop and mobile.
