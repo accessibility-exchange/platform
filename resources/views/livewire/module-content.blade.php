@@ -15,6 +15,7 @@
         <div class="stack w-full" wire:ignore x-data="vimeoPlayer({
             url: '{{ $module->video }}',
             byline: false,
+            dnt: true,
             pip: true,
             portrait: false,
             responsive: true,
