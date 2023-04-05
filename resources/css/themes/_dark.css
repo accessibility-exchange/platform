@@ -271,6 +271,11 @@
     --theme-definition-color: var(--color-black);
     --theme-definition-shadow: 0 0 0.625rem rgb(0 0 0 / 50%);
 
+    /* Cookie Consent */
+    --theme-cookie-consent-background: var(--color-graphite-7);
+    --theme-cookie-consent-color: var(--color-grey-1);
+    --theme-cookie-consent-shadow: 0 0 10px rgb(0 0 0 / 50%);
+
     /* Box */
     --theme-box-color: var(--color-white);
     --theme-box-background: var(--color-graphite-7);

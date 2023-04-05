@@ -200,7 +200,8 @@ module.exports = {
             72: "18rem",
             80: "20rem",
             96: "24rem",
-            192: "48rem"
+            192: "48rem",
+            240: "60rem"
         },
         ringOffsetWidth: {
             3: "3px"
