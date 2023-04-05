@@ -17,15 +17,11 @@ class Interpretation extends Component
 
     /**
      * The identifier name used to reference the Interpretation and videos.
-     *
-     * @var string
      */
     public string $name;
 
     /**
      * The explicit namespace to organize the interpretation under
-     *
-     * @var null|string
      */
     public ?string $namespace;
 

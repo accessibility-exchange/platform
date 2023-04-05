@@ -33,8 +33,6 @@ class DefinedTerm extends Model
 
     /**
      * The attributes that are translatable.
-     *
-     * @var array
      */
     public array $translatable = [
         'term',
