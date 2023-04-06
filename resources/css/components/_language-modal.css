@@ -36,6 +36,10 @@
     margin-block-start: var(--space-8);
 }
 
+.language-modal .cta:focus {
+    --cta-outline: var(--color-grey-2);
+}
+
 .language-modal .signed {
     height: var(--space-8);
     min-height: var(--space-8);

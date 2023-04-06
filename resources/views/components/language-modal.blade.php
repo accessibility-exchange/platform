@@ -1,7 +1,7 @@
 @unless(session()->missing('_token') || session()->has('language-confirmed'))
     <div x-data="modal()" x-init="showModal();">
         <template x-teleport="body">
-            <div class="modal-wrapper language-modal dark" x-show="showingModal" @keydown.escape.window="hideModal">
+            <div class="modal-wrapper language-modal darker" x-show="showingModal" @keydown.escape.window="hideModal">
                 <div class="modal stack flex flex-col">
                     @svg('tae-logo-mono-no-text', ['class' => 'language-modal__logo'])
                     <h2>
