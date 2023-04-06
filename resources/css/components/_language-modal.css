@@ -15,6 +15,7 @@
 .language-modal .modal {
     background: transparent;
     max-height: 100vh;
+    max-width: 100vw;
     overflow-y: auto;
     padding-block: var(--space-8);
 }
@@ -47,15 +48,9 @@
 }
 
 @media (min-width: 48rem) {
-    .language-modal .modal {
-        max-width: var(--max-w-max);
-    }
-
-    .language-modal .logo {
-        height: var(--space-13);
-    }
-
     .language-modal nav {
+        display: flex;
+        justify-content: center;
         padding-block-end: var(--space-29);
     }
 
@@ -63,6 +58,8 @@
         --grid-cell-min-width: var(--space-36);
 
         margin-block-start: var(--space-16);
+        max-width: var(--max-w-6xl);
+        width: 100%;
     }
 
     .language-modal .cta {
