@@ -2,7 +2,7 @@
     <div x-data="modal()" x-init="showModal();">
         <template x-teleport="body">
             <div class="modal-wrapper language-modal dark" x-show="showingModal" @keydown.escape.window="hideModal">
-                <div class="modal stack flex flex-col" @click.outside="hideModal">
+                <div class="modal stack flex flex-col">
                     @svg('tae-logo-mono-no-text', ['class' => 'language-modal__logo'])
                     <h2>
                         <p class="text-center" lang="en">{{ __('Welcome to the Accessibility Exchange', [], 'en') }}</p>
