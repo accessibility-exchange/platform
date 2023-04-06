@@ -19,7 +19,7 @@
     padding-block: var(--space-8);
 }
 
-.language-modal .logo {
+.language-modal__logo {
     height: var(--space-14);
     min-height: var(--space-14);
     width: auto;
