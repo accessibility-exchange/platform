@@ -31,7 +31,7 @@
                                     <li class="w-full">
                                         <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                             :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                                            {{ __('Involved as an Accessibility Consultant') }}
+                                            {{ __('Involved in as an Accessibility Consultant') }}
                                         </x-nav-link>
                                     </li>
                                 @endif
@@ -40,7 +40,7 @@
                                 <li class="w-full">
                                     <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                         :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
-                                        {{ __('Involved as a Community Connector') }}
+                                        {{ __('Involved in as a Community Connector') }}
                                     </x-nav-link>
                                 </li>
                             @endif
@@ -48,7 +48,7 @@
                                 <li class="w-full">
                                     <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                         :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
-                                        {{ __('Involved as a Consultation Participant') }}
+                                        {{ __('Involved in as a Consultation Participant') }}
                                     </x-nav-link>
                                 </li>
                             @endif
@@ -63,13 +63,13 @@
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                     :href="localized_route('projects.my-participating-projects')" :active="request()->localizedRouteIs('projects.my-participating-projects')">
-                                    {{ __('Involved as a Consultation Participant') }}
+                                    {{ __('Involved in as a Consultation Participant') }}
                                 </x-nav-link>
                             </li>
                             <li class="w-full">
                                 <x-nav-link class="inline-flex w-full items-center justify-center border-t-0"
                                     :href="localized_route('projects.my-contracted-projects')" :active="request()->localizedRouteIs('projects.my-contracted-projects')">
-                                    {{ __('Involved as a Community Connector') }}
+                                    {{ __('Involved in as a Community Connector') }}
                                 </x-nav-link>
                             </li>
                         @endif
