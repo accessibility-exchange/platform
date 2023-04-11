@@ -68,6 +68,8 @@ class TranslatableTextarea extends Component
             array_unshift($languages, locale());
         }
 
+        $languages = to_written_languages($languages);
+
         $this->name = $name;
         $this->label = $label;
         $this->shortLabel = $shortLabel ? $shortLabel : $label;

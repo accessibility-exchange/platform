@@ -181,6 +181,26 @@ if (! function_exists('get_signed_language_for_written_language')) {
     }
 }
 
+if (! function_exists('to_written_languages')) {
+    /**
+     * Convert all signed languages to their most closely corresponding written language.
+     * If a code other than ASL or LSQ is passed, it will be returned without modification.
+     *
+     * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
+     *
+     * @param  array<string>  $codes
+     * @return array<string>  An array of ISO 639 codes
+     */
+    function to_written_languages(array $codes): array
+    {
+        foreach ($codes as $key => $code) {
+            $codes[$key] = get_written_language_for_signed_language($code);
+        }
+
+        return array_unique($codes);
+    }
+}
+
 if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.

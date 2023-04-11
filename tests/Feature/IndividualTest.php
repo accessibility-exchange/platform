@@ -977,3 +977,74 @@ test('identities can be attached to an individual', function () {
     expect($individual->identities->pluck('id')->toArray())->toContain($disabilityOrDeafIdentity->id);
     expect($individual->identities->count())->toEqual(1);
 });
+
+test('individuals with signed language can update about info', function () {
+    $individual = Individual::factory()
+        ->hasUser([
+            'locale' => 'asl',
+        ])
+        ->create([
+            'languages' => ['asl'],
+            'roles' => ['connector'],
+        ]);
+
+    $user = $individual->user;
+
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
+    $response->assertOk();
+    $response->assertSee('name="pronouns[en]"', false);
+    $response->assertSee('name="bio[en]"', false);
+    $response->assertDontSee('name="pronouns[asl]"', false);
+    $response->assertDontSee('name="bio[asl]"', false);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+        'name' => $user->name,
+        'region' => 'NS',
+        'pronouns' => ['en' => 'they/them'],
+        'bio' => ['en' => 'This is my bio.'],
+        'save' => __('Save'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $individual = $individual->refresh();
+
+    expect($individual->getTranslation('pronouns', 'en'))->toEqual('they/them');
+    expect($individual->getTranslation('bio', 'en'))->toEqual('This is my bio.');
+});
+
+test('individuals with signed language can update about experiences', function () {
+    $individual = Individual::factory()
+        ->hasUser([
+            'locale' => 'asl',
+        ])
+        ->create([
+            'languages' => ['asl'],
+            'roles' => ['connector'],
+        ]);
+
+    $user = $individual->user;
+
+    // // http://platform.test/asl/individuals/fannie-heaney/edit?step=3
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', [
+        'individual' => $individual,
+        'step' => 3,
+    ]));
+
+    $response->assertOk();
+    $response->assertSee('name="lived_experience[en]"', false);
+    $response->assertSee('name="skills_and_strengths[en]"', false);
+    $response->assertDontSee('name="lived_experience[asl]"', false);
+    $response->assertDontSee('name="skills_and_strengths[asl]"', false);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+        'lived_experience' => ['en' => 'My lived experiences.'],
+        'skills_and_strengths' => ['en' => 'My skills and strengths.'],
+        'save' => __('Save'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $individual = $individual->refresh();
+
+    expect($individual->getTranslation('lived_experience', 'en'))->toEqual('My lived experiences.');
+    expect($individual->getTranslation('skills_and_strengths', 'en'))->toEqual('My skills and strengths.');
+});
