@@ -1024,7 +1024,6 @@ test('individuals with signed language can update about experiences', function (
 
     $user = $individual->user;
 
-    // // http://platform.test/asl/individuals/fannie-heaney/edit?step=3
     $response = $this->actingAs($user)->get(localized_route('individuals.edit', [
         'individual' => $individual,
         'step' => 3,
