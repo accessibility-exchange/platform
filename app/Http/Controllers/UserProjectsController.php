@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProjectInvolvement;
 use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -21,9 +22,9 @@ class UserProjectsController extends Controller
 
         if ($this->isIndividualOrOrganizationUser($user)) {
             if ($this->isParticipant($user)) {
-                $section = 'participating';
+                $section = ProjectInvolvement::Participating->value;
             } elseif ($this->isContractor($user)) {
-                $section = 'contracted';
+                $section = ProjectInvolvement::Contracted->value;
             }
         }
 
@@ -83,7 +84,7 @@ class UserProjectsController extends Controller
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->regulated_organization ?? $user->organization,
-                'section' => 'running',
+                'section' => ProjectInvolvement::Running->value,
             ]);
         }
 
