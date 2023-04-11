@@ -31,13 +31,13 @@
                 $memberable->inProgressContractedProjects()->count())
                 <li>
                     <a
-                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Involved as a Community Connector') }}</a>
+                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>
                 </li>
             @endif
             @if ($memberable->isParticipant() || $memberable->inProgressParticipatingProjects()->count())
                 <li>
                     <a
-                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>
+                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Projects involved in as a Consultation Participant') }}</a>
                 </li>
             @endif
             <li>
