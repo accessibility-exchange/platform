@@ -46,6 +46,9 @@
         @if ($individual->other_disability_type_connection)
             <li class="tag">{{ $individual->other_disability_type_connection }}</li>
         @endif
+        @if ($individual->other_disability_connection)
+            <li class="tag">{{ $individual->other_disability_connection }}</li>
+        @endif
         @foreach ($individual->livedExperienceConnections as $livedExperience)
             <li class="tag">{{ $livedExperience->name }}</li>
         @endforeach
