@@ -4,7 +4,7 @@
     </x-slot>
     <x-slot name="header">
         @if ($type === 'government' || $type === 'public-sector')
-            <h1> {{ __("Tell us your organization's name") }} </h1>
+            <h1> {{ __('Tell us your organization’s name') }} </h1>
         @elseif ($type === 'business')
             <h1> {{ __('Tell us your business name') }} </h1>
         @else
