@@ -1,9 +1,12 @@
 <?php
 
+use App\Enums\IdentityCluster;
 use App\Http\Livewire\AddEngagementConnector;
 use App\Models\Engagement;
+use App\Models\Identity;
 use App\Models\Invitation;
 use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
@@ -216,4 +219,81 @@ test('registered organization can be invited to be an engagement’s community c
 
     expect($engagement->fresh()->organizationalConnector->id)->toEqual($organization->id);
     $this->assertModelMissing($databaseNotification);
+});
+
+test('only publishable orgs are available to choose as a community connector', function () {
+    $this->seed(IdentitySeeder::class);
+    $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
+    $fro = RegulatedOrganization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => 'regulated-organization']),
+            ['role' => 'admin']
+        )
+        ->create();
+
+    $orgNotOriented = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => 'organization']),
+            ['role' => 'admin']
+        )
+        ->create([
+            'roles' => ['connector'],
+            'oriented_at' => null,
+        ]);
+
+    $orgNotPublishable = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => 'organization']),
+            ['role' => 'admin']
+        )
+        ->create([
+            'roles' => ['connector'],
+        ]);
+
+    $orgSuspended = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => 'organization']),
+            ['role' => 'admin']
+        )
+        ->create([
+            'roles' => ['connector'],
+            'published_at' => now(),
+            'about' => 'About',
+            'contact_person_name' => 'Contact',
+            'region' => 'AB',
+            'locality' => 'Medicine Hat',
+            'preferred_contact_method' => 'email',
+            'staff_lived_experience' => false,
+            'suspended_at' => now(),
+        ]);
+    $orgSuspended->constituentIdentities()->attach($areaIdentity);
+
+    $organization = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => 'organization']),
+            ['role' => 'admin']
+        )
+        ->create([
+            'roles' => ['connector'],
+            'published_at' => now(),
+            'about' => 'About',
+            'contact_person_name' => 'Contact',
+            'region' => 'AB',
+            'locality' => 'Medicine Hat',
+            'preferred_contact_method' => 'email',
+            'staff_lived_experience' => false,
+        ]);
+    $organization->constituentIdentities()->attach($areaIdentity);
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+
+    $this->actingAs($fro->users->first());
+    $this->livewire(AddEngagementConnector::class, [
+        'engagement' => $engagement,
+        'who' => 'organization',
+    ])
+        ->assertDontSee($orgNotOriented->name)
+        ->assertDontSee($orgNotPublishable->name)
+        ->assertDontSee($orgSuspended->name)
+        ->assertSee($organization->name);
 });

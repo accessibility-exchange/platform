@@ -11,101 +11,102 @@
 
 <div class="stack">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
-        @clear-flash-message.window="visible = false" <div x-show="visible" x-transition:leave.duration.500ms>
-        @if (session()->has('message'))
-            <x-hearth-alert type="success">
-                {!! Str::markdown(session('message')) !!}
-            </x-hearth-alert>
-        @endif
-    </div>
-</div>
-
-@if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
-    <h2>{{ __('Find a Community Connector') }}</h2>
-
-    <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
-    </p>
-
-    <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
-
-    <p>{!! __(
-        'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
-        [
-            'browse' => '<a href="' . localized_route('projects.all-projects') . '">' . __('browse projects') . '</a>',
-        ],
-    ) !!}
-    </p>
-
-    <div class="field">
-        <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
-            wire:click="updateStatus" />
-        <x-hearth-label for="seeking_community_connector">
-            {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
+        @clear-flash-message.window="visible = false">
+        <div x-show="visible" x-transition:leave.duration.500ms>
+            @if (session()->has('message'))
+                <x-hearth-alert type="success">
+                    {!! Str::markdown(session('message')) !!}
+                </x-hearth-alert>
+            @endif
+        </div>
     </div>
 
-    {{--
-            TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
-            See: https://github.com/accessibility-exchange/platform/issues/305
-        --}}
-    {{--
-        <hr />
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <h2>{{ __('Find a Community Connector') }}</h2>
 
-        <h3>{{ __('Browse for an Community Connector') }}</h3>
+        <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
+        </p>
 
-        <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
+        <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
+
+        <p>{!! __(
+            'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
+            [
+                'browse' => '<a href="' . localized_route('projects.all-projects') . '">' . __('browse projects') . '</a>',
+            ],
+        ) !!}
+        </p>
+
+        <div class="field">
+            <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
+                wire:click="updateStatus" />
+            <x-hearth-label for="seeking_community_connector">
+                {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
+        </div>
+
+        {{--
+                TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+                See: https://github.com/accessibility-exchange/platform/issues/305
+            --}}
+        {{--
+            <hr />
+
+            <h3>{{ __('Browse for an Community Connector') }}</h3>
+
+            <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
+
+            <p>
+                <a class="cta secondary"
+                    href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
+            </p>
+            --}}
+
+        <hr class="divider--thick" />
+    @endif
+
+    <h2>{{ __('Manage Community Connector') }}</h2>
+
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}
+        </p>
 
         <p>
-            <a class="cta secondary"
-                href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
+            <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
+                @svg('heroicon-o-plus-circle')
+                {{ __('Add Community Connector') }}
+            </a>
         </p>
-        --}}
+    @else
+        @if ($invitation)
+            @if ($invitation->type === 'individual')
+                @if ($invitee)
+                    <x-card.individual level="3" :model="$invitee" />
+                @else
+                    <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
+                @endif
+            @elseif($invitation->type === 'organization')
+                <x-card.organization level="3" :model="$invitee" />
+            @endif
+            <button class="borderless destructive" wire:click="cancelInvitation">
+                @svg('heroicon-s-x') {{ __('Cancel invitation') }}
+            </button>
+        @elseif($engagement->connector || $engagement->organizationalConnector)
+            @if ($engagement->connector)
+                <x-card.individual level="3" :model="$engagement->connector" />
+            @elseif($engagement->organizationalConnector)
+                <x-card.organization level="3" :model="$engagement->organizationalConnector" />
+            @endif
+            <button class="borderless destructive" wire:click="removeConnector">
+                @svg('heroicon-s-trash') {{ __('Remove') }}
+            </button>
+        @endif
+    @endif
 
     <hr class="divider--thick" />
-@endif
-
-<h2>{{ __('Manage Community Connector') }}</h2>
-
-@if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
-    <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}
-    </p>
 
     <p>
-        <a class="cta secondary" href="{{ localized_route('engagements.add-connector', $engagement) }}">
-            @svg('heroicon-o-plus-circle')
-            {{ __('Add Community Connector') }}
+        <a class="cta secondary" href="{{ localized_route('engagements.manage', $engagement) }}">
+            @svg('heroicon-o-arrow-left') {{ __('Back') }}
         </a>
     </p>
-@else
-    @if ($invitation)
-        @if ($invitation->type === 'individual')
-            @if ($invitee)
-                <x-card.individual level="3" :model="$invitee" />
-            @else
-                <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
-            @endif
-        @elseif($invitation->type === 'organization')
-            <x-card.organization level="3" :model="$invitee" />
-        @endif
-        <button class="borderless destructive" wire:click="cancelInvitation">
-            @svg('heroicon-s-x') {{ __('Cancel invitation') }}
-        </button>
-    @elseif($engagement->connector || $engagement->organizationalConnector)
-        @if ($engagement->connector)
-            <x-card.individual level="3" :model="$engagement->connector" />
-        @elseif($engagement->organizationalConnector)
-            <x-card.organization level="3" :model="$engagement->organizationalConnector" />
-        @endif
-        <button class="borderless destructive" wire:click="removeConnector">
-            @svg('heroicon-s-trash') {{ __('Remove') }}
-        </button>
-    @endif
-@endif
-
-<hr class="divider--thick" />
-
-<p>
-    <a class="cta secondary" href="{{ localized_route('engagements.manage', $engagement) }}">
-        @svg('heroicon-o-arrow-left') {{ __('Back') }}
-    </a>
-</p>
 </div>

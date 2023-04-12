@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Routing\Route;
 use Livewire\Component;
 
@@ -81,6 +82,12 @@ class ManageEngagementConnector extends Component
         $this->authorize('update', $this->engagement);
 
         $this->invitation->delete();
+
+        $notifications = DatabaseNotification::where('data->invitation_id', $this->invitation->id)->get();
+
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
 
         $this->invitation = null;
 
