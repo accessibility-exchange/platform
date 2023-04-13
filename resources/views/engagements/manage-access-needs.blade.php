@@ -55,6 +55,27 @@
                         </tr>
                     @endunless
                 @endforeach
+                @foreach ($otherAccessNeeds as $otherAccessNeed)
+                    <tr>
+                        <td>{{ $otherAccessNeed }}</td>
+                        <td>
+                            <ul role="list">
+                                @foreach ($participants as $participant)
+                                    @if ($participant->other_access_need === $otherAccessNeed)
+                                        <li>
+                                            @if ($participant->pivot->share_access_needs)
+                                                <a
+                                                    href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
+                                            @else
+                                                {{ __('Anonymous participant') }}
+                                            @endif
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </td>
+                    </tr>
+                @endforeach
             </table>
         </div>
     </div>
