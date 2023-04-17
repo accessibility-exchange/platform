@@ -640,7 +640,7 @@ class EngagementController extends Controller
             'project' => $engagement->project,
             'engagement' => $engagement,
             'individual' => Auth::user()->individual,
-            'hasIdentifiableAccessNeeds' => Auth::user()->individual->accessSupports->where('anonymizable', false)->count() >= 1,
+            'hasIdentifiableAccessNeeds' => Auth::user()->individual->accessSupports->where('anonymizable', false)->count() >= 1 || ! blank(Auth::user()->individual->other_access_need),
         ]);
     }
 
@@ -652,7 +652,7 @@ class EngagementController extends Controller
 
         $identifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false);
 
-        if ($identifiableAccessSupports->count() === 0) {
+        if ($identifiableAccessSupports->count() === 0 && blank(Auth::user()->individual->other_access_need)) {
             $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => ['status' => 'confirmed', 'share_access_needs' => false]]);
 
             return redirect(localized_route('engagements.show', $engagement));
@@ -681,9 +681,10 @@ class EngagementController extends Controller
 
         flash(__('Your preference for sharing your access needs has been saved.'), 'success');
 
-        $identifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false);
+        $hasIdentifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false)->count()
+            || ! blank(Auth::user()->individual->other_access_need);
 
-        if (! $request->input('share_access_needs') && $identifiableAccessSupports->count()) {
+        if (! $request->input('share_access_needs') && $hasIdentifiableAccessSupports) {
             $administrators = User::whereAdministrator()->get();
             Notification::send($administrators, new AccessNeedsFacilitationRequested(Auth::user(), $engagement));
         }
@@ -721,6 +722,7 @@ class EngagementController extends Controller
             'participants' => $engagement->participants,
             'anonymizableAccessNeeds' => $engagement->accessNeeds()->where('anonymizable', true)->get()->unique()->sortBy('name'),
             'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(fn ($item) => $item->id !== $printVersion->id)->sortBy('name'),
+            'otherAccessNeeds' => $engagement->participants->pluck('other_access_need')->unique()->filter(),
             'invitations' => collect([]),
             'printVersion' => $printVersion,
             'additionalConcerns' => $additionalConcerns,

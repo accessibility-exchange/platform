@@ -59,13 +59,21 @@
             </dl>
 
             @can('requestToJoin', $engagement)
-                <div class="flex flex-col">
+                <div class="stack flex flex-col">
                     <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
-                        @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants) @ariaDisabled aria-describedby="engagement-full-explanation" @endif>
+                        @cannot('join', $engagement) @ariaDisabled aria-describedby="engagement-full-explanation" @endcannot>
                         @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
+                    @elseif ($engagement->paid &&
+                        (auth()->user()->individual?->paymentTypes()->count() === 0 &&
+                            blank(auth()->user()->individual?->other_payment_type)))
+                        <p id="engagement-full-explanation">{!! Str::inlineMarkdown(
+                            __('You must fill out your [payment information](:url) before you can sign up.', [
+                                'url' => localized_route('settings.edit-payment-information'),
+                            ]),
+                        ) !!}</p>
                     @endif
                 </div>
             @endcan
