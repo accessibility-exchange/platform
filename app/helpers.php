@@ -131,6 +131,22 @@ if (! function_exists('is_signed_language')) {
     }
 }
 
+if (! function_exists('get_supported_locales')) {
+    /**
+     * Get supported locales. Mostly used to filter out signed locales.
+     *
+     * @param  bool  $signed Determines if signed locales (e.g. asl, lsq) are included.
+     */
+    function get_supported_locales(bool $signed = true): array
+    {
+        if ($signed) {
+            return config('locales.supported');
+        }
+
+        return array_filter(config('locales.supported'), fn ($locale) => ! is_signed_language($locale));
+    };
+}
+
 if (! function_exists('get_written_language_for_signed_language')) {
     /**
      * Get the written language which most closely corresponds to a signed language.

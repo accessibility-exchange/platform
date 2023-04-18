@@ -1,0 +1,5 @@
+[x-data^="vimeoPlayer"] {
+    border-color: var(--border-color-lavender);
+    border-style: solid;
+    border-width: var(--border-5);
+}

@@ -6,7 +6,7 @@
                 @svg('tae-sign-language', 'icon--xl')
                 {{ __('Sign Language video') }}
             </button>
-            <div class="stack interpretation__video" x-data="vimeoPlayer({
+            <div class="stack width:full" x-data="vimeoPlayer({
                 url: '{{ $videoSrc }}',
                 byline: false,
                 pip: true,
@@ -14,8 +14,8 @@
                 responsive: true,
                 speed: true,
                 title: false
-            })" x-init="$watch('expanded', value => togglePlayback(value))"
-                @ended="player().setCurrentTime(0)" x-show="expanded" x-cloak>
+            })" x-init="$watch('expanded', value => togglePlayback(value))" @ended="player().setCurrentTime(0)"
+                x-show="expanded" x-cloak>
             </div>
         @endif
     </div>

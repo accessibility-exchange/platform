@@ -20,7 +20,7 @@
 
         <div role="alert">
             <x-hearth-alert type="warning" x-cloak
-                x-show="(initialRoles.includes('consultant') || initialRoles.includes('connector')) && !roles.includes('consultant') && !roles.includes('connector')">
+                x-show="(initialRoles.includes('{{ App\Enums\IndividualRole::AccessibilityConsultant->value }}') || initialRoles.includes('{{ App\Enums\IndividualRole::CommunityConnector->value }}')) && !roles.includes('{{ App\Enums\IndividualRole::AccessibilityConsultant->value }}') && !roles.includes('{{ App\Enums\IndividualRole::CommunityConnector->value }}')">
                 {{ __('By selecting Consultation Participant as your only role, your role no longer will include the Accessibility Consultant or Community Connector roles. You do not need a profile to be a Consultation Participant, so your profile will be unpublished and saved, and will no longer be visible by other members of The Accessibility Exchange. However, if you edit your role to add the Accessibility Consultant or Community Connector roles again, you will be able to publish your profile again all your saved information will be restored.') }}
             </x-hearth-alert>
         </div>

@@ -30,7 +30,7 @@ class TranslationManager extends Component
     public function __construct($model = null)
     {
         $this->model = $model;
-        $this->availableLanguages = Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray();
+        $this->availableLanguages = Options::forArray(get_available_languages(true, false))->nullable(__('Choose a language…'))->toArray();
     }
 
     /**

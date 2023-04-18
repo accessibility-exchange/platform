@@ -1,17 +1,11 @@
-.correct-answer {
-    color: var(--color-green-7);
-}
-
+.correct-answer,
 .correct-answer svg {
-    color: var(--fg, var(--color-green-7));
+    color: var(--theme-color-success, var(--color-green-7));
 }
 
-.wrong-answer {
-    color: var(--color-red-8);
-}
-
+.wrong-answer,
 .wrong-answer svg {
-    color: var(--fg, var(--color-red-8));
+    color: var(--theme-color-error, var(--color-red-8));
 }
 
 .question > .banner p {
