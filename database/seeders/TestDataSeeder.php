@@ -39,7 +39,7 @@ class TestDataSeeder extends Seeder
                 'disabilityTypes' => [],
                 'livedExperiences' => [],
                 'sectors' => ['Transportation', 'Financial services', 'Federal government programs and services'],
-                'impacts' => ['Buildings and public spaces', 'Buying goods, services, facilities'],
+                'impacts' => ['The built environment', 'The procurement of goods, services and facilities'],
                 'individualDetails' => [
                     'published_at' => now(),
                     'roles' => ['consultant', 'connector'],
@@ -93,9 +93,9 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
+                    'The built environment',
                     'Information and communication technologies',
-                    'Buying goods, services, facilities',
+                    'The procurement of goods, services and facilities',
                     'Transportation',
                 ],
                 'individualDetails' => [
@@ -156,9 +156,9 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
+                    'The built environment',
                     'Information and communication technologies',
-                    'Buying goods, services, facilities',
+                    'The procurement of goods, services and facilities',
                     'Transportation',
                 ],
                 'individualDetails' => [
@@ -212,9 +212,9 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
+                    'The built environment',
                     'Information and communication technologies',
-                    'Buying goods, services, facilities',
+                    'The procurement of goods, services and facilities',
                     'Transportation',
                 ],
                 'individualDetails' => [
@@ -272,9 +272,9 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
+                    'The built environment',
                     'Information and communication technologies',
-                    'Buying goods, services, facilities',
+                    'The procurement of goods, services and facilities',
                     'Transportation',
                 ],
                 'individualDetails' => [
@@ -510,7 +510,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
                 'organization' => 'Agriculture and Agri-Food Canada',
-                'impact' => 'Programs and services',
+                'impact' => 'The design and delivery of programs and services',
 
             ],
             [
@@ -534,7 +534,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '24 hours'],
                 ],
                 'organization' => 'Canada Post',
-                'impact' => 'Buildings and public spaces',
+                'impact' => 'The built environment',
             ],
         ];
 
