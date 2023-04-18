@@ -15,29 +15,20 @@ class SectorSeeder extends Seeder
     public function run()
     {
         $sectors = [
-            'transportation' => [
-                'name' => __('Transportation'),
-                'description' => __('Trains, airplanes, and buses'),
+            'federal-government' => [
+                'name' => __('Government of Canada'),
+                'description' => __('Including government departments, agencies and Crown Corporations'),
             ],
-            'financial-services' => [
-                'name' => __('Financial services'),
-                'description' => __('Banks and credit unions'),
+            'regulated-private-sector' => [
+                'name' => __('Parts of the private sector that the Government of Canada regulates'),
+                'description' => __('Banks, federal transportation network (airlines, rail, road and marine transportation providers that cross provincial or international borders), and the broadcasting and telecommunications sectors'),
             ],
-            'telecommunications' => [
-                'name' => __('Telecommunications'),
-                'description' => __('Phone and internet providers'),
+            'military-law-enforcement' => [
+                'name' => __('The Canadian Forces and the Royal Canadian Mounted Police'),
             ],
-            'broadcasting' => [
-                'name' => __('Broadcasting'),
-                'description' => __('Radio and television'),
-            ],
-            'government-programs-and-services' => [
-                'name' => __('Federal government programs and services'),
-                'description' => __('For example: the Canada Revenue Agency, the Immigration and Refugee Board of Canada, and Service Canada'),
-            ],
-            'crown-corporations' => [
-                'name' => __('Crown corporations'),
-                'description' => __('For example: Canada Post, the Canada Council for the Arts'),
+            'parliamentary' => [
+                'name' => __('Parliamentary entities'),
+                'description' => __('House of Commons, Senate, Library of Parliament, Parliamentary Protective Service'),
             ],
         ];
 
@@ -47,10 +38,10 @@ class SectorSeeder extends Seeder
                     'en' => $sector['name'],
                     'fr' => trans($sector['name'], [], 'fr'),
                 ],
-                'description' => [
+                'description' => isset($sector['description']) ? [
                     'en' => $sector['description'],
                     'fr' => trans($sector['description'], [], 'fr'),
-                ],
+                ] : null,
             ]);
         }
     }
