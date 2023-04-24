@@ -15,19 +15,41 @@ class ImpactSeeder extends Seeder
     public function run()
     {
         $impacts = [
-            __('Employment'),
-            __('Buildings and public spaces'),
-            __('Information and communication technologies'),
-            __('Communication, other than information and communication technologies'),
-            __('Buying goods, services, facilities'),
-            __('Programs and services'),
-            __('Transportation'),
+            'employment' => [
+                'name' => __('Employment'),
+            ],
+            'built-environment' => [
+                'name' => __('The built environment'),
+                'description' => __('Buildings and public spaces'),
+            ],
+            'information' => [
+                'name' => __('Information and communication technologies'),
+            ],
+            'communication' => [
+                'name' => __('Communication, other than information and communication technologies'),
+            ],
+            'procurement' => [
+                'name' => __('The procurement of goods, services and facilities'),
+            ],
+            'design-deliver-services' => [
+                'name' => __('The design and delivery of programs and services'),
+            ],
+            'transportation' => [
+                'name' => __('Transportation'),
+                'description' => __('Airlines, as well as rail, road and marine transportation providers that cross provincial or international borders'),
+            ],
         ];
 
         foreach ($impacts as $impact) {
             Impact::firstOrCreate([
-                'name->en' => $impact,
-                'name->fr' => trans($impact, [], 'fr'),
+                'name' => [
+                    'en' => $impact['name'],
+                    'fr' => trans($impact['name'], [], 'fr'),
+                ],
+                'description' => isset($impact['description']) ? [
+                    'en' => $impact['description'],
+                    'fr' => trans($impact['description'], [], 'fr'),
+                ] : null,
             ]);
         }
     }

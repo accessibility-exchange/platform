@@ -975,30 +975,30 @@ test('test project compensations scope', function () {
 
 test('test project sectors scope', function () {
     $this->seed(SectorSeeder::class);
-    $transportationSector = Sector::where('name->en', 'Transportation')->first();
-    $transportationRegulatedOrganization = RegulatedOrganization::factory()->create();
-    $transportationRegulatedOrganization->sectors()->save($transportationSector);
-    $transportationProject = Project::factory()->create(['projectable_id' => $transportationRegulatedOrganization->id]);
+    $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
+    $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
+    $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
+    $regulatedPrivateProject = Project::factory()->create(['projectable_id' => $privateRegulatedOrganization->id]);
 
-    $telecommunicationSector = Sector::where('name->en', 'Telecommunications')->first();
-    $telecommunicationRegulatedOrganization = RegulatedOrganization::factory()->create();
-    $telecommunicationRegulatedOrganization->sectors()->save($telecommunicationSector);
-    $telecommunicationProject = Project::factory()->create(['projectable_id' => $telecommunicationRegulatedOrganization->id]);
+    $parliamentarySector = Sector::where('name->en', 'Parliamentary entities')->first();
+    $parliamentaryOrganization = RegulatedOrganization::factory()->create();
+    $parliamentaryOrganization->sectors()->save($parliamentarySector);
+    $parliamentaryProject = Project::factory()->create(['projectable_id' => $parliamentaryOrganization->id]);
 
-    $sectorQuery = Project::sectors([$transportationSector->id])->get();
+    $sectorQuery = Project::sectors([$regulatedPrivateSector->id])->get();
 
-    expect($sectorQuery->contains($transportationProject))->toBeTrue();
-    expect($sectorQuery->contains($telecommunicationProject))->toBeFalse();
+    expect($sectorQuery->contains($regulatedPrivateProject))->toBeTrue();
+    expect($sectorQuery->contains($parliamentaryProject))->toBeFalse();
 
-    $sectorQuery = Project::sectors([$telecommunicationSector->id])->get();
+    $sectorQuery = Project::sectors([$parliamentarySector->id])->get();
 
-    expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
-    expect($sectorQuery->contains($transportationProject))->toBeFalse();
+    expect($sectorQuery->contains($parliamentaryProject))->toBeTrue();
+    expect($sectorQuery->contains($regulatedPrivateProject))->toBeFalse();
 
-    $sectorQuery = Project::sectors([$transportationSector->id, $telecommunicationSector->id])->get();
+    $sectorQuery = Project::sectors([$regulatedPrivateSector->id, $parliamentarySector->id])->get();
 
-    expect($sectorQuery->contains($transportationProject))->toBeTrue();
-    expect($sectorQuery->contains($telecommunicationProject))->toBeTrue();
+    expect($sectorQuery->contains($regulatedPrivateProject))->toBeTrue();
+    expect($sectorQuery->contains($parliamentaryProject))->toBeTrue();
 });
 
 test('test project areas of impact scope', function () {
