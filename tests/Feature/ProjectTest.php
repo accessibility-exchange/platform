@@ -1007,7 +1007,7 @@ test('test project areas of impact scope', function () {
     $employmentImpactProject = Project::factory()->create();
     $employmentImpactProject->impacts()->attach($employmentImpact->id);
 
-    $communicationImpact = Impact::where('name->en', 'Communication, other than information and communication technologies')->first();
+    $communicationImpact = Impact::where('name->en', 'Communications')->first();
     $communicationImpactProject = Project::factory()->create();
     $communicationImpactProject->impacts()->attach($communicationImpact->id);
 

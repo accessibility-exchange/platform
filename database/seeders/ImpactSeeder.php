@@ -19,24 +19,22 @@ class ImpactSeeder extends Seeder
                 'name' => __('Employment'),
             ],
             'built-environment' => [
-                'name' => __('The built environment'),
-                'description' => __('Buildings and public spaces'),
-            ],
-            'information' => [
-                'name' => __('Information and communication technologies'),
+                'name' => __('Built environment'),
             ],
             'communication' => [
-                'name' => __('Communication, other than information and communication technologies'),
+                'name' => __('Communications'),
+            ],
+            'information' => [
+                'name' => __('Information technology'),
             ],
             'procurement' => [
-                'name' => __('The procurement of goods, services and facilities'),
+                'name' => __('Procurement'),
             ],
-            'design-deliver-services' => [
-                'name' => __('The design and delivery of programs and services'),
+            'policy-programs' => [
+                'name' => __('Policy and programs'),
             ],
-            'transportation' => [
-                'name' => __('Transportation'),
-                'description' => __('Airlines, as well as rail, road and marine transportation providers that cross provincial or international borders'),
+            'service-delivery' => [
+                'name' => __('Service delivery'),
             ],
         ];
 
