@@ -308,7 +308,7 @@ test('test compensations property change', function () {
 
 test('test sectors property change', function () {
     $this->seed(SectorSeeder::class);
-    $regulatedPrivateSector = Sector::where('name->en', 'Parts of the private sector that the Government of Canada regulates')->first();
+    $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
     $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
     $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
     $regulatedPrivateProjectName = 'Regulated Private Sector Project';

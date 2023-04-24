@@ -20,8 +20,8 @@ class SectorSeeder extends Seeder
                 'description' => __('Including government departments, agencies and Crown Corporations'),
             ],
             'regulated-private-sector' => [
-                'name' => __('Parts of the private sector that the Government of Canada regulates'),
-                'description' => __('Banks, federal transportation network (airlines, rail, road and marine transportation providers that cross provincial or international borders), and the broadcasting and telecommunications sectors'),
+                'name' => __('Federally Regulated private sector'),
+                'description' => __('Banks, federal transportation network (airlines, rail, road and marine transportation providers that cross provincial or international borders), atomic energy, postal and courier services, the broadcasting and telecommunications sectors'),
             ],
             'military-law-enforcement' => [
                 'name' => __('The Canadian Forces and the Royal Canadian Mounted Police'),

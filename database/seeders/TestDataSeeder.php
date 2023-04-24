@@ -38,7 +38,7 @@ class TestDataSeeder extends Seeder
                 'areaTypes' => ['Urban areas'],
                 'disabilityTypes' => [],
                 'livedExperiences' => [],
-                'sectors' => ['Government of Canada', 'Parts of the private sector that the Government of Canada regulates'],
+                'sectors' => ['Government of Canada', 'Federally Regulated private sector'],
                 'impacts' => ['The built environment', 'The procurement of goods, services and facilities'],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -86,7 +86,7 @@ class TestDataSeeder extends Seeder
                 'livedExperiences' => [],
                 'sectors' => [
                     'Government of Canada',
-                    'Parts of the private sector that the Government of Canada regulates',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
@@ -146,7 +146,7 @@ class TestDataSeeder extends Seeder
                 ],
                 'sectors' => [
                     'Government of Canada',
-                    'Parts of the private sector that the Government of Canada regulates',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
@@ -199,7 +199,7 @@ class TestDataSeeder extends Seeder
                 'livedExperiences' => [],
                 'sectors' => [
                     'Government of Canada',
-                    'Parts of the private sector that the Government of Canada regulates',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
@@ -256,7 +256,7 @@ class TestDataSeeder extends Seeder
                 ],
                 'sectors' => [
                     'Government of Canada',
-                    'Parts of the private sector that the Government of Canada regulates',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
@@ -333,7 +333,7 @@ class TestDataSeeder extends Seeder
                     'email' => 'chow@accessibilityexchange.ca',
                     'context' => 'regulated-organization',
                 ],
-                'froSector' => 'Parts of the private sector that the Government of Canada regulates',
+                'froSector' => 'Federally Regulated private sector',
                 'froDetails' => [
                     'published_at' => now(),
                     'type' => 'business',

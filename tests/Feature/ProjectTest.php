@@ -975,7 +975,7 @@ test('test project compensations scope', function () {
 
 test('test project sectors scope', function () {
     $this->seed(SectorSeeder::class);
-    $regulatedPrivateSector = Sector::where('name->en', 'Parts of the private sector that the Government of Canada regulates')->first();
+    $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
     $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
     $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
     $regulatedPrivateProject = Project::factory()->create(['projectable_id' => $privateRegulatedOrganization->id]);
