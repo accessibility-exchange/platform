@@ -39,7 +39,7 @@ class TestDataSeeder extends Seeder
                 'disabilityTypes' => [],
                 'livedExperiences' => [],
                 'sectors' => ['Government of Canada', 'Federally Regulated private sector'],
-                'impacts' => ['The built environment', 'The procurement of goods, services and facilities'],
+                'impacts' => ['Built environment', 'Procurement'],
                 'individualDetails' => [
                     'published_at' => now(),
                     'roles' => ['consultant', 'connector'],
@@ -90,10 +90,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'The built environment',
-                    'Information and communication technologies',
-                    'The procurement of goods, services and facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -150,10 +150,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'The built environment',
-                    'Information and communication technologies',
-                    'The procurement of goods, services and facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -203,10 +203,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'The built environment',
-                    'Information and communication technologies',
-                    'The procurement of goods, services and facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -260,10 +260,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'impacts' => [
                     'Employment',
-                    'The built environment',
-                    'Information and communication technologies',
-                    'The procurement of goods, services and facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -475,7 +475,7 @@ class TestDataSeeder extends Seeder
                     'agreement_received_at' => now(),
                 ],
                 'organization' => 'BlueSky Airlines',
-                'impact' => 'Information and communication technologies',
+                'impact' => 'Information technology',
             ],
             [
                 'project' => [
@@ -498,7 +498,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
                 'organization' => 'Agriculture and Agri-Food Canada',
-                'impact' => 'The design and delivery of programs and services',
+                'impact' => 'Policy and programs',
 
             ],
             [
@@ -522,7 +522,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '24 hours'],
                 ],
                 'organization' => 'Canada Post',
-                'impact' => 'The built environment',
+                'impact' => 'Built environment',
             ],
         ];
 
