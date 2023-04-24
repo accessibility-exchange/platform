@@ -42,7 +42,10 @@ class AddEngagementConnector extends Component
     public function mount()
     {
         $this->project = $this->engagement->project;
-        $this->organizations = Options::forModels(Organization::query()->whereJsonContains('roles', 'connector'))->nullable(__('Choose a community organization…'))->toArray();
+        $filtered = Organization::query()->whereJsonContains('roles', 'connector')->get()->filter(function ($organization) {
+            return $organization->isPublishable();
+        });
+        $this->organizations = Options::forModels($filtered->all())->nullable(__('Choose a community organization…'))->toArray();
     }
 
     public function render()

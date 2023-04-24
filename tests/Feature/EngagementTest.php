@@ -8,6 +8,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Meeting;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -555,6 +556,79 @@ test('engagement participants can be listed by administrator or community connec
 
     $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
+});
+
+test('other access needs show in manage participants', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    // user no other access needs
+    $noOtherAccessNeedsUser = User::factory()->create();
+    $noOtherAccessNeedsUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
+    $noOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+    $response->assertViewHas('otherAccessNeeds');
+    expect($response['otherAccessNeeds'])->toBeEmpty();
+
+    // user with other access needs
+    $otherAccessNeed = 'custom access need';
+    $otherAccessNeedsUser = User::factory()->create();
+    $otherAccessNeedsUser->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_access_need' => $otherAccessNeed,
+    ]);
+    $otherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+    $response->assertViewHas('otherAccessNeeds');
+    expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed]));
+
+    // second user with same other access needs. $otherAccessNeeds shouldn't have duplicates
+    $secondOtherAccessNeedsUser = User::factory()->create();
+    $secondOtherAccessNeedsUser->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_access_need' => $otherAccessNeed,
+    ]);
+    $secondOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+    $response->assertViewHas('otherAccessNeeds');
+    expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed]));
+
+    // third user with different other access needs.
+    $differentOtherAccessNeed = 'different custom access need';
+    $thirdOtherAccessNeedsUser = User::factory()->create();
+    $thirdOtherAccessNeedsUser->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_access_need' => $differentOtherAccessNeed,
+    ]);
+    $thirdOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($thirdOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response->assertOk();
+    $response->assertViewHas('otherAccessNeeds');
+    expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed, $differentOtherAccessNeed]));
 });
 
 test('project can show upcoming engagements', function () {

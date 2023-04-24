@@ -33,23 +33,22 @@
                 </p>
             </div>
         </div>
-        <div class="frame">
-            <div class="stack w-full" x-data="vimeoPlayer({
-                url: @if (locale() === 'en') 'https://vimeo.com/789855323'
-                    @elseif (locale() === 'fr')
-                    'https://vimeo.com/789772188'
-                    @elseif (locale() === 'asl')
-                    'https://vimeo.com/788810528/73b8c80ad8'
-                    @elseif (locale() === 'lsq')
-                    'https://vimeo.com/789829171' @endif,
-                byline: false,
-                pip: true,
-                portrait: false,
-                responsive: true,
-                speed: true,
-                title: false
-            })" @ended="player().setCurrentTime(0)">
-            </div>
+        <div class="stack w-full" x-data="vimeoPlayer({
+            url: @if (locale() === 'en') 'https://vimeo.com/789855323'
+                @elseif (locale() === 'fr')
+                'https://vimeo.com/789772188'
+                @elseif (locale() === 'asl')
+                'https://vimeo.com/788810528/73b8c80ad8'
+                @elseif (locale() === 'lsq')
+                'https://vimeo.com/789829171' @endif,
+            byline: false,
+            dnt: true,
+            pip: true,
+            portrait: false,
+            responsive: true,
+            speed: true,
+            title: false
+        })" @ended="player().setCurrentTime(0)">
         </div>
     </section>
 

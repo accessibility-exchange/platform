@@ -5,7 +5,7 @@
     border-block-end: var(--border) solid var(--header-tabbed-border-color);
     border-inline: 0;
     left: calc(50% - 50vw);
-    margin-block-start: calc(-1 * var(--space-12));
+    margin-block-start: calc(-1 * var(--space-0));
     padding-block: var(--space-12);
     position: relative;
     width: 100vw;

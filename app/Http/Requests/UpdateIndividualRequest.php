@@ -14,8 +14,6 @@ class UpdateIndividualRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -24,8 +22,6 @@ class UpdateIndividualRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -36,8 +32,8 @@ class UpdateIndividualRequest extends FormRequest
                 'required',
                 new Enum(ProvinceOrTerritory::class),
             ],
-            'pronouns' => 'nullable|array:'.implode(',', $this->individual->languages),
-            'bio' => 'required|array:'.implode(',', $this->individual->languages).'|required_array_keys:'.$this->individual->user->locale,
+            'pronouns' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
+            'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.get_written_language_for_signed_language($this->individual->user->locale),
             'bio.*' => 'nullable|string',
             'bio.en' => 'required_without:bio.fr',
             'bio.fr' => 'required_without:bio.en',

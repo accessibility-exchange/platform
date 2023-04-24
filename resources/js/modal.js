@@ -1,4 +1,3 @@
-
 export default () => ({
     showingModal: false,
     showModal: function () {
@@ -9,8 +8,8 @@ export default () => ({
         document.body.style.width = "100%";
         this.$nextTick(() => {
             const elems = document.querySelectorAll("body > *");
-            Array.prototype.forEach.call(elems, elem => {
-                if (elem.className !== "modal-wrapper") {
+            Array.prototype.forEach.call(elems, (elem) => {
+                if (!elem.classList.contains("modal-wrapper")) {
                     elem.setAttribute("inert", "");
                 }
             });
@@ -24,8 +23,8 @@ export default () => ({
         document.body.style.width = "";
         window.scrollTo(0, parseInt(scrollY || "0") * -1);
         const elems = document.querySelectorAll("body > *");
-        Array.prototype.forEach.call(elems, elem => {
-            if (elem.className !== "modal-wrapper") {
+        Array.prototype.forEach.call(elems, (elem) => {
+            if (!elem.classList.contains("modal-wrapper")) {
                 elem.removeAttribute("inert");
             }
         });

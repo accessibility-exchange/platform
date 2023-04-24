@@ -3,7 +3,7 @@
         {{ __('Create new :type', ['type' => App\Enums\OrganizationType::labels()[$type]]) }}
     </x-slot>
     <x-slot name="header">
-        <h1>{{ __('Create new :type', ['type' => App\Enums\OrganizationType::labels()[$type]]) }}</h1>
+        <h1>{{ __('Tell us your organization’s name') }}</h1>
     </x-slot>
 
     <form class="stack" action="{{ localized_route('organizations.store') }}" method="post" novalidate>

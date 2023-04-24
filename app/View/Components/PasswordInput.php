@@ -14,8 +14,6 @@ class PasswordInput extends Component
 
     /**
      * The name of the form input.
-     *
-     * @var string
      */
     public string $name;
 
@@ -35,8 +33,6 @@ class PasswordInput extends Component
 
     /**
      * Whether the form input has validation errors.
-     *
-     * @var bool
      */
     public bool $invalid;
 

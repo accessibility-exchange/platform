@@ -111,8 +111,6 @@ class RegulatedOrganization extends Model
 
     /**
      * The attributes that are translatable.
-     *
-     * @var array
      */
     public array $translatable = [
         'name',
@@ -180,8 +178,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the individual's social links.
-     *
-     * @return array
      */
     public function getSocialLinksAttribute(): array
     {
@@ -194,8 +190,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the individual's accessibility and inclusion links.
-     *
-     * @return array
      */
     public function getAccessibilityAndInclusionLinksAttribute(): array
     {
@@ -208,8 +202,6 @@ class RegulatedOrganization extends Model
 
     /**
      * The sectors that belong to the federally regulated organization.
-     *
-     * @return BelongsToMany
      */
     public function sectors(): BelongsToMany
     {
@@ -218,8 +210,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the projects that belong to this federally regulated organization.
-     *
-     * @return MorphMany
      */
     public function projects(): MorphMany
     {
@@ -236,8 +226,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the projects that belong to this regulated organization that are in progress.
-     *
-     * @return MorphMany
      */
     public function inProgressProjects(): MorphMany
     {
@@ -252,8 +240,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the projects that belong to this regulated organization that have been completed.
-     *
-     * @return MorphMany
      */
     public function completedProjects(): MorphMany
     {
@@ -264,8 +250,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Get the projects that belong to this regulated organization that haven't started yet.
-     *
-     * @return MorphMany
      */
     public function upcomingProjects(): MorphMany
     {
@@ -276,8 +260,6 @@ class RegulatedOrganization extends Model
 
     /**
      * Has the user added any details to the regulated organization?
-     *
-     * @return bool
      */
     public function hasAddedDetails(): bool
     {

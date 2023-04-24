@@ -146,6 +146,7 @@ class EngagementPolicy
     {
         return $user->can('requestToJoin', $engagement)
             && $engagement->confirmedParticipants->count() < $engagement->ideal_participants
+            && (! $engagement->paid || $user->individual?->paymentTypes()->count() > 0 || ! blank($user->individual->other_payment_type))
                 ? Response::allow()
                 : Response::deny();
     }

@@ -11,8 +11,7 @@
 
 <div class="stack">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
-        @clear-flash-message.window="visible = false"
-        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
+        @clear-flash-message.window="visible = false">
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
@@ -46,21 +45,21 @@
         </div>
 
         {{--
-            TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
-            See: https://github.com/accessibility-exchange/platform/issues/305
-        --}}
+                TODO: After #305 has been completed, uncommment the following markup to allow browsing the community connectors
+                See: https://github.com/accessibility-exchange/platform/issues/305
+            --}}
         {{--
-        <hr />
+            <hr />
 
-        <h3>{{ __('Browse for an Community Connector') }}</h3>
+            <h3>{{ __('Browse for an Community Connector') }}</h3>
 
-        <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
+            <p>{{ __('Go through our listings of Community Connectors on this website.') }}</p>
 
-        <p>
-            <a class="cta secondary"
-                href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
-        </p>
-        --}}
+            <p>
+                <a class="cta secondary"
+                    href="{{ localized_route('people-and-organizations.connectors') }}">{{ __('Browse Community Connectors') }}</a>
+            </p>
+            --}}
 
         <hr class="divider--thick" />
     @endif

@@ -2,8 +2,10 @@
 
 use App\Models\AccessSupport;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
@@ -15,10 +17,12 @@ use App\Notifications\ParticipantInvited;
 use App\Notifications\ParticipantJoined;
 use App\Notifications\ParticipantLeft;
 use Database\Seeders\IdentitySeeder;
+use Database\Seeders\PaymentTypeSeeder;
 use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     $this->seed(IdentitySeeder::class);
+    $this->seed(PaymentTypeSeeder::class);
 
     $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
@@ -44,7 +48,8 @@ beforeEach(function () {
 
     $this->participantUser = User::factory()->create();
     $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->participant = $this->participantUser->individual->fresh();
+    $this->participantUser->individual->paymentTypes()->attach(PaymentType::first());
+    $this->participant = $this->participantUser->individual->refresh();
 
     $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
     $this->participantOrganizationUser = User::factory()->create(['context' => 'organization']);
@@ -605,6 +610,20 @@ test('individual participant cannot sign up to an engagement if participant list
     $response->assertForbidden();
 });
 
+test('individual participant cannot sign up to a paid engagement if their payment information is not available', function () {
+    $noPaymentUser = User::factory()->create();
+    $noPaymentUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->refresh();
+
+    $response = $this->actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertForbidden();
+});
+
 test('individual can sign up to open call engagement', function () {
     Notification::fake();
 
@@ -671,6 +690,44 @@ test('individual can sign up to open call engagement', function () {
     $engagement_individual = $this->engagement->participants->first()->pivot;
     expect($engagement_individual->status)->toBeTruthy();
     expect($engagement_individual->share_access_needs)->toBeFalsy();
+});
+
+test('individual can sign up to a volunteer engagement without their payment information set', function () {
+    $noPaymentUser = User::factory()->create();
+    $noPaymentUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
+
+    $this->engagement->update([
+        'recruitment' => 'open-call',
+        'paid' => false,
+    ]);
+    $this->engagement->refresh();
+
+    $response = $this->actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+});
+
+test('individual can sign up to a paid engagement with other payment information', function () {
+    $otherPaymentUser = User::factory()->create();
+    $otherPaymentUser->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_payment_type' => 'Money Order',
+    ]);
+
+    $this->engagement->update([
+        'recruitment' => 'open-call',
+    ]);
+    $this->engagement->refresh();
+
+    $response = $this->actingAs($otherPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
+    $response->assertOk();
+
+    $response = $this->actingAs($otherPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
+    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 });
 
 test('individual can edit their access needs when signing up to an open call engagement', function () {
@@ -882,6 +939,83 @@ test('individual can choose not to share their non-anonymizable access needs whe
     $response->assertOk();
     $response->assertDontSeeText($anonAccessNeed->name);
     $response->assertSeeText($accessNeed->name);
+
+    // don't share access needs
+    $response = $this->actingAs($this->participantUser)
+        ->from(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+    expect(flash()->class)->toBe('success');
+    expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
+
+    Notification::assertSentTo(
+        $admin,
+        function (AccessNeedsFacilitationRequested $notification, $channels) {
+            expect($notification->toMail()->subject)->toBe(__(':name requires access needs facilitation', ['name' => $this->participant->name]));
+            $renderedMail = $notification->toMail($this->project)->render();
+            $this->assertStringContainsString(__('Please contact :name to facilitate their access needs being met on the engagement', ['name' => $this->participant->name]), $renderedMail);
+            expect($notification->toArray()['individual_id'])->toEqual($this->participant->id);
+            expect($notification->toArray()['engagement_id'])->toEqual($this->engagement->id);
+            expect($notification->engagement->id)->toBe($this->engagement->id);
+
+            return $notification->user->id === $this->participant->user->id;
+        }
+    );
+
+    // redirect to engagement page
+    $response = $this->actingAs($this->participantUser)
+        ->from(localized_route('engagements.show', $this->engagement))
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    $response = $this->actingAs($this->participantUser)
+        ->from(localized_route('engagements.show', $this->engagement))
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
+    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    // confirm engagement_individual values
+    $this->engagement->refresh();
+    $engagement_individual = $this->engagement->participants->first()->pivot;
+    expect($engagement_individual->status)->toBeTruthy();
+    expect($engagement_individual->share_access_needs)->toBeFalsy();
+});
+
+test('individual can choose not to share their other access needs when signing up to an open call engagement', function () {
+    $this->seed(AccessSupportSeeder::class);
+    Notification::fake();
+
+    $admin = User::factory()->create([
+        'email_verified_at' => now(),
+        'context' => 'administrator',
+    ]);
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->refresh();
+
+    // sign up for engagement and set access needs
+    $this->engagement->participants()->save($this->participantUser->individual, ['status' => 'confirmed']);
+    $otherAccessNeed = 'custom access need';
+    $this->participantUser->individual->update(['other_access_need' => $otherAccessNeed]);
+    $this->participantUser->individual->save();
+    $this->participantUser->refresh();
+
+    // access confirm access needs page
+    $response = $this->actingAs($this->participantUser)
+        ->from(localized_route('engagements.sign-up', $this->engagement))
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
+    $response->assertOk();
+    $response->assertDontSeeText('No access needs found.');
+    $response->assertSeeText($otherAccessNeed);
+    $response->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false);
+    $response->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+
+    // access edit access needs permissions page
+    $response = $this->actingAs($this->participantUser)
+        ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
+    $response->assertOk();
+    $response->assertSeeText($otherAccessNeed);
 
     // don't share access needs
     $response = $this->actingAs($this->participantUser)

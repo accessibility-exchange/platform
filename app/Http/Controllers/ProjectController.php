@@ -92,7 +92,6 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Project  $project
      * @return \Illuminate\View\View
      */
     public function show(Project $project): View
@@ -125,10 +124,6 @@ class ProjectController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  UpdateProjectRequest  $request
-     * @param  Project  $project
-     * @return RedirectResponse
      */
     public function update(UpdateProjectRequest $request, Project $project): RedirectResponse
     {
@@ -146,10 +141,6 @@ class ProjectController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  UpdateProjectTeamRequest  $request
-     * @param  Project  $project
-     * @return RedirectResponse
      */
     public function updateTeam(UpdateProjectTeamRequest $request, Project $project): RedirectResponse
     {
@@ -163,10 +154,6 @@ class ProjectController extends Controller
 
     /**
      * Update the specified resource's status.
-     *
-     * @param  Request  $request
-     * @param  Project  $project
-     * @return RedirectResponse
      */
     public function updatePublicationStatus(Request $request, Project $project): RedirectResponse
     {
@@ -181,10 +168,6 @@ class ProjectController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  DestroyProjectRequest  $request
-     * @param  Project  $project
-     * @return RedirectResponse
      */
     public function destroy(DestroyProjectRequest $request, Project $project): RedirectResponse
     {
@@ -197,10 +180,6 @@ class ProjectController extends Controller
 
     /**
      * Display the management UI for the specified resource.
-     *
-     * @param  Request  $request
-     * @param  Project  $project
-     * @return View
      */
     public function manage(Request $request, Project $project): View
     {

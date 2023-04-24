@@ -8,8 +8,6 @@ class UpdateIndividualExperiencesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,14 +16,12 @@ class UpdateIndividualExperiencesRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
-            'lived_experience' => 'nullable|array:'.implode(',', $this->individual->languages),
-            'skills_and_strengths' => 'nullable|array:'.implode(',', $this->individual->languages),
+            'lived_experience' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
+            'skills_and_strengths' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
             'relevant_experiences.*.title' => 'nullable|required_with:relevant_experiences.*.organization,relevant_experiences.*.start_year,relevant_experiences.*.end_year,relevant_experiences.*.current|string',
             'relevant_experiences.*.organization' => 'nullable|required_with:relevant_experiences.*.title|string',
             'relevant_experiences.*.start_year' => 'nullable|required_with:relevant_experiences.*.title|digits:4|integer|min:1900|max:'.(date('Y')),

@@ -14,7 +14,7 @@
             @can('viewAny', App\Models\Project::class)
                 <li>
                     <a
-                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Involved as a Community Connector') }}</a>
+                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>
                 </li>
             @endcan
         @endif
@@ -27,7 +27,7 @@
             @if ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())
                 <li>
                     <a
-                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Involved as a Consultation Participant') }}</a>
+                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Projects involved in as a Consultation Participant') }}</a>
                 </li>
             @endif
         @endcan
