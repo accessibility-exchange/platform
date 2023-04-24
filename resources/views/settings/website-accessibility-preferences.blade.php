@@ -56,6 +56,11 @@
             <x-hearth-hint for="text_to_speech">
                 {{ __('You can play the page in spoken language. You can also highlight parts of this page, and they will be read out.') }}
                 <div>
+                    {{--
+                        See: https://github.com/accessibility-exchange/platform/issues/1633
+                        The issue is that FF doesn't properly report seleciton boundaries which are needed for the TTS
+                        selection reading.
+                    --}}
                     <strong>{{ __('For the best results, please use Google Chrome, Safari, or Microsoft Edge.') }}</strong>
                 </div>
             </x-hearth-hint>
