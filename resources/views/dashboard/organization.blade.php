@@ -26,9 +26,7 @@
             </li>
         @endif
         @can('viewAny', App\Models\Project::class)
-            @if ($memberable->isConnector() ||
-                $memberable->isConsultant() ||
-                $memberable->inProgressContractedProjects()->count())
+            @if ($memberable->isConnector() || $memberable->inProgressContractedProjects()->count())
                 <li>
                     <a
                         href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>

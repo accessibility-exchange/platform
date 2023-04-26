@@ -1,8 +1,6 @@
 <div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
-        @if ($user->individual->isConnector() ||
-            $user->individual->isConsultant() ||
-            $user->individual->inProgressContractedProjects()->count())
+        @if ($user->individual->isConnector() || $user->individual->isConsultant())
             <li>
                 @if ($user->individual->checkStatus('published'))
                     <a href="{{ localized_route('individuals.show', $user->individual) }}">{{ __('My public page') }}</a>
@@ -11,13 +9,15 @@
                         href="{{ localized_route('individuals.edit', $user->individual) }}">{{ __('Edit my public page') }}</a>
                 @endif
             </li>
-            @can('viewAny', App\Models\Project::class)
+        @endif
+        @can('viewAny', App\Models\Project::class)
+            @if ($user->individual->isConnector() || $user->individual->inProgressContractedProjects()->count())
                 <li>
                     <a
                         href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>
                 </li>
-            @endcan
-        @endif
+            @endif
+        @endcan
         @if (!$user->oriented_at)
             <li>
                 <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
