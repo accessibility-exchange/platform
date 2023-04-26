@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,19 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 */
 
 // Database connection check
-Route::get('/db', function() {
+Route::get('/db', function () {
     try {
         DB::connection()->getPdo();
-        return Response("Connection successful", 200)
+
+        return Response('Connection successful', 200)
         ->header('Content-Type', 'text/plain');
     } catch (\Exception $e) {
-        return Response("Error connecting to database.", 500)
+        return Response('Error connecting to database.', 500)
         ->header('Content-Type', 'text/plain');
     }
 });
 
 // plain web check NGINX & PHP working
-Route::get('/', function() {
-    return Response("Connection successful", 200)
+Route::get('/', function () {
+    return Response('Connection successful', 200)
     ->header('Content-Type', 'text/plain');
 });
