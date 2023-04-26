@@ -8,6 +8,11 @@
             @endif
         @endforeach
     </p>
-    <p><span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
-        {{ $model->display_region }}</p>
+    <p>
+        <span class="font-semibold">{{ __('Location') }}:</span>
+        @if ($model->locality)
+            {{ $model->locality }},
+        @endif
+        {{ $model->display_region }}
+    </p>
 </x-card>

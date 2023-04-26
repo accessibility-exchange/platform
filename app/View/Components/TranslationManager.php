@@ -10,15 +10,11 @@ class TranslationManager extends Component
 {
     /**
      * The model to which the translations belong.
-     *
-     * @var mixed
      */
     public mixed $model;
 
     /**
      * The languages available for translation.
-     *
-     * @var array
      */
     public array $availableLanguages = [];
 
@@ -35,8 +31,6 @@ class TranslationManager extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View
      */
     public function render(): View
     {

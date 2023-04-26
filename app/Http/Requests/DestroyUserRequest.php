@@ -10,8 +10,6 @@ class DestroyUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -20,8 +18,6 @@ class DestroyUserRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -33,7 +29,6 @@ class DestroyUserRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param  Validator  $validator
      * @return void
      */
     public function withValidator(Validator $validator)

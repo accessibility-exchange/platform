@@ -308,39 +308,39 @@ test('test compensations property change', function () {
 
 test('test sectors property change', function () {
     $this->seed(SectorSeeder::class);
-    $transportationSector = Sector::where('name->en', 'Transportation')->first();
-    $transportationRegulatedOrganization = RegulatedOrganization::factory()->create();
-    $transportationRegulatedOrganization->sectors()->save($transportationSector);
-    $transportationProjectName = 'Transportation Project';
-    $transportationProject = Project::factory()->create([
-        'name->en' => $transportationProjectName,
-        'projectable_id' => $transportationRegulatedOrganization->id,
+    $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
+    $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
+    $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
+    $regulatedPrivateProjectName = 'Regulated Private Sector Project';
+    $regulatedPrivateProject = Project::factory()->create([
+        'name->en' => $regulatedPrivateProjectName,
+        'projectable_id' => $privateRegulatedOrganization->id,
     ]);
 
-    $telecommunicationSector = Sector::where('name->en', 'Telecommunications')->first();
-    $telecommunicationRegulatedOrganization = RegulatedOrganization::factory()->create();
-    $telecommunicationRegulatedOrganization->sectors()->save($telecommunicationSector);
-    $telecommunicationProjectName = 'Telecommunication Project';
-    $telecommunicationProject = Project::factory()->create([
-        'name->en' => $telecommunicationProjectName,
-        'projectable_id' => $telecommunicationRegulatedOrganization->id,
+    $parliamentarySector = Sector::where('name->en', 'Parliamentary entities')->first();
+    $parliamentaryOrganization = RegulatedOrganization::factory()->create();
+    $parliamentaryOrganization->sectors()->save($parliamentarySector);
+    $parliamentaryProjectName = 'Parliamentary Project';
+    $parliamentaryProject = Project::factory()->create([
+        'name->en' => $parliamentaryProjectName,
+        'projectable_id' => $parliamentaryOrganization->id,
     ]);
 
     $allProjects = $this->livewire(AllProjects::class, ['sectors' => []]);
-    $allProjects->assertSee($transportationProjectName);
-    $allProjects->assertSee($telecommunicationProjectName);
+    $allProjects->assertSee($regulatedPrivateProjectName);
+    $allProjects->assertSee($parliamentaryProjectName);
 
-    $allProjects->set('sectors', [$transportationSector->id]);
-    $allProjects->assertSee($transportationProjectName);
-    $allProjects->assertDontSee($telecommunicationProjectName);
+    $allProjects->set('sectors', [$regulatedPrivateSector->id]);
+    $allProjects->assertSee($regulatedPrivateProjectName);
+    $allProjects->assertDontSee($parliamentaryProjectName);
 
-    $allProjects->set('sectors', [$telecommunicationSector->id]);
-    $allProjects->assertDontSee($transportationProjectName);
-    $allProjects->assertSee($telecommunicationProjectName);
+    $allProjects->set('sectors', [$parliamentarySector->id]);
+    $allProjects->assertDontSee($regulatedPrivateProjectName);
+    $allProjects->assertSee($parliamentaryProjectName);
 
-    $allProjects->set('sectors', [$transportationSector->id, $telecommunicationSector->id]);
-    $allProjects->assertSee($transportationProjectName);
-    $allProjects->assertSee($telecommunicationProjectName);
+    $allProjects->set('sectors', [$regulatedPrivateSector->id, $parliamentarySector->id]);
+    $allProjects->assertSee($regulatedPrivateProjectName);
+    $allProjects->assertSee($parliamentaryProjectName);
 });
 
 test('test impacts property change', function () {
@@ -352,7 +352,7 @@ test('test impacts property change', function () {
     ]);
     $employmentImpactProject->impacts()->attach($employmentImpact->id);
 
-    $communicationImpact = Impact::where('name->en', 'Communication, other than information and communication technologies')->first();
+    $communicationImpact = Impact::where('name->en', 'Communications')->first();
     $communicationImpactProjectName = 'Communication Imapct Project';
     $communicationImpactProject = Project::factory()->create([
         'name->en' => $communicationImpactProjectName,

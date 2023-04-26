@@ -34,6 +34,7 @@
             <div class="stack w-full" x-data="vimeoPlayer({
                 url: '{{ $course->video }}',
                 byline: false,
+                dnt: true,
                 pip: true,
                 portrait: false,
                 responsive: true,

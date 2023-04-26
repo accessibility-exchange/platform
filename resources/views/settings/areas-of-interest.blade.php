@@ -1,12 +1,12 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('Areas of interest') }}</x-slot>
+    <x-slot name="title">{{ __('Areas of accessibility you are interested in') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('dashboard') }}">{{ __('My dashboard') }}</a></li>
             <li><a href="{{ localized_route('settings.show') }}">{{ __('Settings') }}</a></li>
         </ol>
         <h1>
-            {{ __('Areas of interest') }}
+            {{ __('Areas of accessibility you are interested in') }}
         </h1>
         <p>
             {{ __('This information will be used to match you to Regulated Organizations that you are interested in.') }}
@@ -20,14 +20,15 @@
         @method('put')
 
         <fieldset class="field @error('sectors') field--error @enderror">
-            <legend>{{ __('What types of Regulated Organizations are you interested in?') . ' ' . __('(optional)') }}
+            <legend>
+                {{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?') . ' ' . __('(optional)') }}
             </legend>
             <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
         </fieldset>
 
         <fieldset class="field @error('impacts') field--error @enderror">
             <legend>
-                {{ __('What areas would you most like to impact within a Regulated Organization?') . ' ' . __('(optional)') }}
+                {{ __('What areas of accessibility planning and design are you most interested in consulting on?') . ' ' . __('(optional)') }}
             </legend>
             <x-hearth-hint for="impacts">
                 {{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}

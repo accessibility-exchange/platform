@@ -12,8 +12,6 @@ class UpdateMembershipRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -39,7 +37,6 @@ class UpdateMembershipRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param  Validator  $validator
      * @return void
      */
     public function withValidator(Validator $validator)
