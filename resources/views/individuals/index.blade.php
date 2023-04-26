@@ -25,7 +25,10 @@
                     @endif
                 </p>
                 <p>
-                    <strong class="font-semibold">{{ __('Location') }}:</strong> {{ $individual->locality }},
+                    <strong class="font-semibold">{{ __('Location') }}:</strong>
+                    @if ($individual->locality)
+                        {{ $individual->locality }},
+                    @endif
                     {{ get_region_name($individual->region, ['CA'], locale()) }}
                 </p>
             </x-card>
