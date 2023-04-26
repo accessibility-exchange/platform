@@ -15,8 +15,7 @@
 
 <form class="stack" wire:submit.prevent="inviteConnector">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
-        @clear-flash-message.window="visible = false"
-        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
+        @clear-flash-message.window="visible = false">
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
@@ -60,8 +59,8 @@
                     <x-hearth-error for="organization" />
                 </div>
             @endif
+        </fieldset>
     @endif
-    </fieldset>
     <hr class="divider--thick" />
     <div class="flex flex-row gap-6">
         <a class="cta secondary" href="{{ localized_route('engagements.manage-connector', $engagement) }}">

@@ -18,7 +18,6 @@ class ExitController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
      * @return void
      */
     public function __construct(StatefulGuard $guard)
@@ -28,9 +27,6 @@ class ExitController extends Controller
 
     /**
      * Destroy an authenticated session and exit to a third-party website.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function exit(Request $request): RedirectResponse
     {

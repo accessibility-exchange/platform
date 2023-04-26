@@ -34,23 +34,25 @@
         @endcan
     </h3>
 
-    @if ($individual->extra_attributes->get('cross_disability_and_deaf_connections'))
-        <p>{{ __(':name can connect to any disability and/or Deaf group', ['name' => $individual->name]) }}</p>
-    @else
-        <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
+    <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
 
-        <ul class="tags" role="list">
-            @foreach ($individual->disabilityAndDeafConnections as $disabilityType)
-                <li class="tag">{{ $disabilityType->name }}</li>
-            @endforeach
-            @if ($individual->other_disability_type_connection)
-                <li class="tag">{{ $individual->other_disability_type_connection }}</li>
-            @endif
-            @foreach ($individual->livedExperienceConnections as $livedExperience)
-                <li class="tag">{{ $livedExperience->name }}</li>
-            @endforeach
-        </ul>
-    @endif
+    <ul class="tags" role="list">
+        @if ($individual->extra_attributes->get('cross_disability_and_deaf_connections'))
+            <li class="tag">{{ __('Any group') }}</li>
+        @endif
+        @foreach ($individual->disabilityAndDeafConnections as $disabilityType)
+            <li class="tag">{{ $disabilityType->name }}</li>
+        @endforeach
+        @if ($individual->other_disability_type_connection)
+            <li class="tag">{{ $individual->other_disability_type_connection }}</li>
+        @endif
+        @if ($individual->other_disability_connection)
+            <li class="tag">{{ $individual->other_disability_connection }}</li>
+        @endif
+        @foreach ($individual->livedExperienceConnections as $livedExperience)
+            <li class="tag">{{ $livedExperience->name }}</li>
+        @endforeach
+    </ul>
 
     @if ($individual->hasConnections('indigenousConnections') ||
         $individual->hasConnections('ethnoracialIdentityConnections'))

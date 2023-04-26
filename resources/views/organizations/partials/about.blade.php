@@ -40,7 +40,7 @@
     <p>{{ __('As an Accessibility Consultant, we can help with:') }}</p>
     <ul>
         @foreach ($organization->consulting_services as $service)
-            <li>{{ __('consulting-services.' . $service) }}</li>
+            <li>{{ App\Enums\ConsultingService::labels()[$service] }}</li>
         @endforeach
     </ul>
 @endif

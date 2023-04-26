@@ -17,7 +17,6 @@ class PasswordResetResponse implements PasswordResetResponseContract
     /**
      * Create a new response instance.
      *
-     * @param  string  $status
      * @return void
      */
     public function __construct(string $status)
@@ -29,7 +28,6 @@ class PasswordResetResponse implements PasswordResetResponseContract
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function toResponse($request): RedirectResponse
     {

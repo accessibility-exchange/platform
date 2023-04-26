@@ -15,10 +15,10 @@
             <hr class="divider--thick">
             <fieldset class="field @error('sectors') field--error @enderror">
                 <legend>
-                    {{ __('What sectors of Federally Regulated Organizations are you interested in working with?') . ' ' . __('(optional)') }}
+                    {{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?') . ' ' . __('(optional)') }}
                 </legend>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What sectors of Federally Regulated Organizations are you interested in working with?', [], 'en') }}"
+                    name="{{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?', [], 'en') }}"
                     namespace="regulated_organization_sectors_you_are_interested_working-optional" />
                 <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
                 <x-hearth-error for="sectors" />
@@ -26,13 +26,13 @@
 
             <fieldset class="field @error('impacts') field--error @enderror">
                 <legend>
-                    {{ __('What areas of the Accessible Canada Act are you most interested in working on?') . ' ' . __('(optional)') }}
+                    {{ __('What areas of accessibility planning and design are you most interested in consulting on?') . ' ' . __('(optional)') }}
                 </legend>
                 <x-hearth-hint for="impacts">
                     {{ __('These are the seven areas listed within the Accessible Canada Act. Federally regulated organizations must work to improve their accessibility in all of these areas.') }}
                 </x-hearth-hint>
                 <x-interpretation class="interpretation--start"
-                    name="{{ __('What areas of the Accessible Canada Act are you most interested in working on?', [], 'en') }}"
+                    name="{{ __('What areas of accessibility planning and design are you most interested in consulting on?', [], 'en') }}"
                     namespace="areas_of_accessible_canada_act_you_are_interested_working-optional" />
                 <x-hearth-checkboxes name="impacts" :options="$impacts" :checked="old('impacts', $individual->impactsOfInterest->pluck('id')->toArray())" />
                 <x-hearth-error for="impacts" />

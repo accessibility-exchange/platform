@@ -3,8 +3,10 @@
     grid-gap: var(--space-6);
 }
 
-@supports (width: min(20rem, 100%)) {
+@supports (width: min(var(--space-80), 100%)) {
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+        --grid-cell-min-width: var(--space-80);
+
+        grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-cell-min-width), 100%), 1fr));
     }
 }

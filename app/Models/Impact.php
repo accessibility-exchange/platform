@@ -18,6 +18,7 @@ class Impact extends Model implements Selectable
      */
     protected $fillable = [
         'name',
+        'description',
     ];
 
     /**
@@ -27,6 +28,7 @@ class Impact extends Model implements Selectable
      */
     protected $casts = [
         'name' => 'array',
+        'description' => 'array',
     ];
 
     /**
@@ -36,13 +38,15 @@ class Impact extends Model implements Selectable
      */
     public $translatable = [
         'name',
+        'description',
     ];
 
     public function toSelectOption(): SelectOption
     {
         return new SelectOption(
             $this->getTranslation('name', locale()),
-            $this->id
+            $this->id,
+            ['hint' => $this->getTranslation('description', locale())]
         );
     }
 }

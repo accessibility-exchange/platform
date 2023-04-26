@@ -43,8 +43,6 @@ class UserController extends Controller
 
     /**
      * Show an introduction page for the logged-in user.
-     *
-     * @return View
      */
     public function showIntroduction(): View
     {
@@ -65,9 +63,6 @@ class UserController extends Controller
 
     /**
      * Update the logged-in user's introduction status.
-     *
-     * @param  UpdateUserIntroductionStatusRequest  $request
-     * @return RedirectResponse
      */
     public function updateIntroductionStatus(UpdateUserIntroductionStatusRequest $request): RedirectResponse
     {
@@ -90,8 +85,6 @@ class UserController extends Controller
 
     /**
      * Show the dashboard view for the logged-in user.
-     *
-     * @return View
      */
     public function dashboard(): View
     {
@@ -160,9 +153,6 @@ class UserController extends Controller
 
     /**
      * Store a new user's context in the session.
-     *
-     * @param  SaveUserContextRequest  $request
-     * @return RedirectResponse
      */
     public function saveContext(SaveUserContextRequest $request): RedirectResponse
     {
@@ -176,9 +166,6 @@ class UserController extends Controller
 
     /**
      * Store a new user's details in the session.
-     *
-     * @param  SaveUserDetailsRequest  $request
-     * @return RedirectResponse
      */
     public function saveDetails(SaveUserDetailsRequest $request): RedirectResponse
     {
@@ -193,7 +180,6 @@ class UserController extends Controller
     /**
      * Destroy a given user.
      *
-     * @param  DestroyUserRequest  $request
      * @return RedirectResponse
      */
     public function destroy(DestroyUserRequest $request)

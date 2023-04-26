@@ -29,10 +29,17 @@
                 <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">{{ $support->name }}
                 </li>
             @empty
-                <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
-                    {{ __('No access needs found.') }}
-                </li>
+                @if (blank(Auth::user()->individual->other_access_need))
+                    <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
+                        {{ __('No access needs found.') }}
+                    </li>
+                @endif
             @endforelse
+            @unless(blank(Auth::user()->individual->other_access_need))
+                <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
+                    {{ Auth::user()->individual->other_access_need }}
+                </li>
+            @endunless
         </ul>
 
         <form class="mt-12 flex flex-row gap-6"
