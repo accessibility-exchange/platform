@@ -39,9 +39,10 @@
     </main>
 
     @include('layouts.footer')
+    @include('cookie-consent::index')
+
     @env(['dev', 'local'])
     @include('partials.hubspot')
-    @include('cookie-consent::index')
     @endenv
 </body>
 
