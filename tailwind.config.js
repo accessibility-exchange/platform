@@ -125,6 +125,7 @@ module.exports = {
             2: "2px",
             3: "3px",
             4: "4px",
+            5: "5px",
             6: "6px",
             8: "8px"
         },
@@ -180,11 +181,13 @@ module.exports = {
             10: "2.5rem",
             11: "2.75rem",
             12: "3rem",
+            13: "3.25rem",
             14: "3.5rem",
             16: "4rem",
             20: "5rem",
             24: "6rem",
             28: "7rem",
+            29: "7.25rem",
             32: "8rem",
             36: "9rem",
             40: "10rem",
@@ -197,7 +200,8 @@ module.exports = {
             72: "18rem",
             80: "20rem",
             96: "24rem",
-            192: "48rem"
+            192: "48rem",
+            240: "60rem"
         },
         ringOffsetWidth: {
             3: "3px"

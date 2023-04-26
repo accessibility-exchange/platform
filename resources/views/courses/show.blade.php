@@ -32,8 +32,9 @@
         <h2>{{ __('About this course') }}</h2>
         @if ($course->video)
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ $course->video[locale()] }}',
+                url: '{{ $course->video }}',
                 byline: false,
+                dnt: true,
                 pip: true,
                 portrait: false,
                 responsive: true,

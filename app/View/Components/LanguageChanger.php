@@ -12,7 +12,6 @@ class LanguageChanger extends Component
     /**
      * Create a new component instance.
      *
-     * @param  mixed  $model
      * @return void
      */
     public function __construct(mixed $model)
@@ -22,8 +21,6 @@ class LanguageChanger extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View
      */
     public function render(): View
     {

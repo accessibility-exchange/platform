@@ -31,7 +31,7 @@ class QuizController extends Controller
         ]);
     }
 
-    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View | RedirectResponse
+    public function storeQuizResult(StoreQuizResultRequest $request, Course $course): View|RedirectResponse
     {
         $data = $request->validated();
         $user = Auth::user();

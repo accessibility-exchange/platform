@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Website accessibility preferences') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -55,6 +55,14 @@
             <legend>{{ __('Text to speech') }}</legend>
             <x-hearth-hint for="text_to_speech">
                 {{ __('You can play the page in spoken language. You can also highlight parts of this page, and they will be read out.') }}
+                <div>
+                    {{--
+                        See: https://github.com/accessibility-exchange/platform/issues/1633
+                        The issue is that FF doesn't properly report seleciton boundaries which are needed for the TTS
+                        selection reading.
+                    --}}
+                    <strong>{{ __('For the best results, please use Google Chrome, Safari, or Microsoft Edge.') }}</strong>
+                </div>
             </x-hearth-hint>
             <x-hearth-radio-buttons name="text_to_speech" :options="\Spatie\LaravelOptions\Options::forArray([0 => __('Off'), 1 => __('On')])->toArray()" :checked="old('text_to_speech', $user->text_to_speech ?? false)"
                 hinted="text_to_speech-hint" />

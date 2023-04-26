@@ -8,12 +8,12 @@ use App\Models\Organization;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\Sector;
-use App\Models\Organization;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ResourceSeeder extends Seeder {
+class ResourceSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
@@ -80,8 +80,8 @@ class ResourceSeeder extends Seeder {
                     ],
                     'phases' => ['design'],
                     'type' => ContentType::firstWhere('name->en', 'Guidelines and best practices'),
-                    'sectors' => [Sector::firstWhere('name->en', 'Federal government programs and services')->id],
-                    'impacts' => [Impact::firstWhere('name->en', 'Programs and services')->id, Impact::firstWhere('name->en', 'Communication, other than information and communication technologies')->id],
+                    'sectors' => [Sector::firstWhere('name->en', 'Government of Canada')->id],
+                    'impacts' => [Impact::firstWhere('name->en', 'Policy and programs')->id, Impact::firstWhere('name->en', 'Communications')->id],
                     'topics' => [],
                     'resourceCollections' => [ResourceCollection::firstWhere('title->en', 'The Accessible Canada Act')->id],
                 ],
@@ -90,8 +90,8 @@ class ResourceSeeder extends Seeder {
                     'author' => ['en' => 'ARCH Disability Law Centre'],
                     'url' => ['en' => 'https://archdisabilitylaw.ca/an-introduction-to-the-accessible-canada-act/'],
                     'phases' => ['design'],
-                    'sectors' => [Sector::firstWhere('name->en', 'Federal government programs and services')->id],
-                    'impacts' => [Impact::firstWhere('name->en', 'Programs and services')->id, Impact::firstWhere('name->en', 'Communication, other than information and communication technologies')->id],
+                    'sectors' => [Sector::firstWhere('name->en', 'Government of Canada')->id],
+                    'impacts' => [Impact::firstWhere('name->en', 'Policy and programs')->id, Impact::firstWhere('name->en', 'Communications')->id],
                     'topics' => [],
                     'resourceCollections' => [ResourceCollection::firstWhere('title->en', 'The Accessible Canada Act')->id],
                 ],
@@ -127,9 +127,6 @@ class ResourceSeeder extends Seeder {
                     $item->resourceCollections()->attach($resource['resourceCollections']);
                 }
             }
-        } else {
-            $environment = config('app.env');
-            printf("Seeder cannot be run on environment: %s\r\n", $environment);
         }
     }
 }

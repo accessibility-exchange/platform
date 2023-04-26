@@ -23,7 +23,6 @@ test('new Interpretation instance', function () {
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee('interpretation__video');
 
     $interpretation = Interpretation::firstWhere('name', 'The Accessibility Exchange');
 
@@ -49,7 +48,6 @@ test('existing Interpretation instance', function () {
         'The Accessibility Exchange',
         '</h1>',
         'id="'.Str::slug('The Accessibility Exchange'),
-        'interpretation__video',
         $interpretation->getTranslation('video', 'asl'),
     ];
 
@@ -108,7 +106,6 @@ test('in French and LSQ', function () {
         $localizedName,
         '</h1>',
         'id="'.Str::slug($localizedName),
-        'interpretation__video',
         $interpretation->getTranslation('video', 'lsq'),
     ];
 
@@ -142,7 +139,6 @@ test('do not fallback to ASL (asl)', function () {
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee('interpretation__video');
     $response->assertDontSee($interpretation->getTranslation('video', 'asl'));
 });
 
@@ -170,7 +166,6 @@ test('do not fallback to LSQ (lsq)', function () {
     ];
 
     $response->assertSeeInOrder($toSee, false);
-    $response->assertDontSee('interpretation__video');
     $response->assertDontSee($interpretation->getTranslation('video', 'lsq'));
 });
 
@@ -178,8 +173,6 @@ test('no Interpretation without sign language translations setting enabled', fun
     $user = User::factory()->create();
     $response = $this->get(localized_route('welcome'));
     $response->assertStatus(200);
-
-    $response->assertDontSee('interpretation__video');
 
     $interpretations = Interpretation::all();
 

@@ -106,6 +106,26 @@ test('individuals can edit their roles', function () {
     $response->assertSee('Your roles have been saved.');
 });
 
+test('flash message after individual role change', function ($initialRoles, $newRoles, $expected) {
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $individual->fill([
+        'roles' => $initialRoles,
+    ]);
+    $individual->save();
+    $individual->refresh();
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.save-roles'), [
+            'roles' => $newRoles,
+        ]);
+    $response->assertSessionHasNoErrors();
+
+    expect(flash()->class)->toBe($expected['class']);
+    expect(flash()->message)->toBe($expected['message']($individual));
+})->with('individualRoleChange');
+
 test('users can create individual pages', function () {
     $this->seed(ImpactSeeder::class);
     $this->seed(SectorSeeder::class);
@@ -417,12 +437,14 @@ test('individuals with connector role can represent individuals with disabilitie
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
     expect($this->livedExperience->communityConnectors)->toHaveCount(1);
+    expect($individual->other_disability_connection)->toEqual('Something not listed');
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$this->livedExperience->id],
         'disability_and_deaf' => false,
         'base_disability_type' => null,
         'area_type_connections' => [$this->areaType->id],
+        'has_other_disability_connection' => null,
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
@@ -430,6 +452,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual->refresh();
 
     expect($individual->extra_attributes->get('disability_and_deaf_connections'))->toBeNull();
+    expect($individual->other_disability_connection)->toBeEmpty();
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
@@ -953,4 +976,74 @@ test('identities can be attached to an individual', function () {
 
     expect($individual->identities->pluck('id')->toArray())->toContain($disabilityOrDeafIdentity->id);
     expect($individual->identities->count())->toEqual(1);
+});
+
+test('individuals with signed language can update about info', function () {
+    $individual = Individual::factory()
+        ->hasUser([
+            'locale' => 'asl',
+        ])
+        ->create([
+            'languages' => ['asl'],
+            'roles' => ['connector'],
+        ]);
+
+    $user = $individual->user;
+
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
+    $response->assertOk();
+    $response->assertSee('name="pronouns[en]"', false);
+    $response->assertSee('name="bio[en]"', false);
+    $response->assertDontSee('name="pronouns[asl]"', false);
+    $response->assertDontSee('name="bio[asl]"', false);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+        'name' => $user->name,
+        'region' => 'NS',
+        'pronouns' => ['en' => 'they/them'],
+        'bio' => ['en' => 'This is my bio.'],
+        'save' => __('Save'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $individual = $individual->refresh();
+
+    expect($individual->getTranslation('pronouns', 'en'))->toEqual('they/them');
+    expect($individual->getTranslation('bio', 'en'))->toEqual('This is my bio.');
+});
+
+test('individuals with signed language can update about experiences', function () {
+    $individual = Individual::factory()
+        ->hasUser([
+            'locale' => 'asl',
+        ])
+        ->create([
+            'languages' => ['asl'],
+            'roles' => ['connector'],
+        ]);
+
+    $user = $individual->user;
+
+    $response = $this->actingAs($user)->get(localized_route('individuals.edit', [
+        'individual' => $individual,
+        'step' => 3,
+    ]));
+
+    $response->assertOk();
+    $response->assertSee('name="lived_experience[en]"', false);
+    $response->assertSee('name="skills_and_strengths[en]"', false);
+    $response->assertDontSee('name="lived_experience[asl]"', false);
+    $response->assertDontSee('name="skills_and_strengths[asl]"', false);
+
+    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+        'lived_experience' => ['en' => 'My lived experiences.'],
+        'skills_and_strengths' => ['en' => 'My skills and strengths.'],
+        'save' => __('Save'),
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $individual = $individual->refresh();
+
+    expect($individual->getTranslation('lived_experience', 'en'))->toEqual('My lived experiences.');
+    expect($individual->getTranslation('skills_and_strengths', 'en'))->toEqual('My skills and strengths.');
 });

@@ -37,18 +37,25 @@
     <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
 
     <ul class="tags" role="list">
+        @if ($individual->extra_attributes->get('cross_disability_and_deaf_connections'))
+            <li class="tag">{{ __('Any group') }}</li>
+        @endif
         @foreach ($individual->disabilityAndDeafConnections as $disabilityType)
             <li class="tag">{{ $disabilityType->name }}</li>
         @endforeach
         @if ($individual->other_disability_type_connection)
             <li class="tag">{{ $individual->other_disability_type_connection }}</li>
         @endif
+        @if ($individual->other_disability_connection)
+            <li class="tag">{{ $individual->other_disability_connection }}</li>
+        @endif
         @foreach ($individual->livedExperienceConnections as $livedExperience)
             <li class="tag">{{ $livedExperience->name }}</li>
         @endforeach
     </ul>
 
-    @if ($individual->indigenousConnections->count() || $individual->ethnoracialIdentityConnections->count())
+    @if ($individual->hasConnections('indigenousConnections') ||
+        $individual->hasConnections('ethnoracialIdentityConnections'))
         <h4>{{ __('Ethno-racial groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -64,8 +71,9 @@
         </ul>
     @endif
 
-    @if ($individual->genderAndSexualityConnections->count() || $individual->statusConnections->count())
-        <h3>{{ __('Other identity groups') }}</h3>
+    @if ($individual->hasConnections('genderAndSexualityConnections') ||
+        $individual->hasConnections('statusConnections'))
+        <h4>{{ __('Other identity groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->statusConnections as $statusIdentity)
@@ -77,8 +85,8 @@
         </ul>
     @endif
 
-    @if ($individual->extra_attributes->has_age_brackets)
-        <h3>{{ __('Age groups') }}</h3>
+    @if ($individual->hasConnections('ageBracketConnections'))
+        <h4>{{ __('Age groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->ageBracketConnections as $ageBracket)
@@ -87,8 +95,8 @@
         </ul>
     @endif
 
-    @if ($individual->languageConnections->count() > 0)
-        <h3>{{ __('Language groups') }}</h3>
+    @if ($individual->hasConnections('languageConnections'))
+        <h4>{{ __('Language groups') }}</h4>
 
         <ul class="tags" role="list">
             @foreach ($individual->languageConnections as $language)

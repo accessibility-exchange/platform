@@ -5,6 +5,11 @@ test('identify a signed language', function () {
     expect(is_signed_language('en'))->toBeFalse();
 });
 
+test('get supported locales', function () {
+    expect(get_supported_locales())->toMatchArray(config('locales.supported'));
+    expect(get_supported_locales(false))->toEqualCanonicalizing(['en', 'fr']);
+});
+
 test('get available languages', function () {
     $languages = get_available_languages();
 
@@ -48,4 +53,9 @@ test('get written language for signed language', function () {
 test('get signed language for written language', function () {
     expect(get_signed_language_for_written_language('en'))->toEqual('asl');
     expect(get_signed_language_for_written_language('fr'))->toEqual('lsq');
+});
+
+test('convert signed languages to written languages', function () {
+    expect(to_written_languages(['asl', 'lsq']))->toEqual(['en', 'fr']);
+    expect(to_written_languages(['lsq', 'asl', 'en', 'fr']))->toEqual(['fr', 'en']);
 });

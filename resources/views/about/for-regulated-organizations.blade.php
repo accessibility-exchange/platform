@@ -20,6 +20,7 @@
                 @elseif (locale() === 'lsq')
                 'https://vimeo.com/789826246' @endif,
             byline: false,
+            dnt: true,
             pip: true,
             portrait: false,
             responsive: true,
@@ -53,9 +54,6 @@
                 <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-green-5 pt-8">
                     <h3>{{ __('Access resources and trainings') }}</h3>
                     <p>{{ __('We have a hub of resources and trainings. The materials can help you and your team deepen your understanding of disability and inclusion.') }}
-                    </p>
-                    <p><a
-                            href="{{ localized_route('resource-collections.index') }}">{{ __('Go to our Resource Hub') }}</a>
                     </p>
                 </div>
 
