@@ -40,8 +40,6 @@
             <li><a
                     href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a>
             </li>
-        @endif
-        @if ($user->context === 'individual')
             <li><a
                     href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
             </li>

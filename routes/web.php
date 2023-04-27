@@ -117,6 +117,10 @@ Route::multilingual('/dashboard/notifications/all', [UserController::class, 'all
     ->middleware(['auth', 'onboard'])
     ->name('dashboard.notifications-all');
 
+Route::multilingual('/dashboard/collaboration-preferences', [UserController::class, 'collaborationPreferences'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.collaboration-preferences');
+
 Route::multilingual('/dashboard/trainings', [UserController::class, 'trainings'])
     ->middleware(['auth'])
     ->name('dashboard.trainings');
