@@ -88,7 +88,7 @@
                                         __(
                                             'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
                                             [
-                                                'get_estimate' => localized_route('projects.manage', $project),
+                                                'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project),
                                             ],
                                         ),
                                     ) !!}

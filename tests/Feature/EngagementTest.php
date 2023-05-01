@@ -1,11 +1,14 @@
 <?php
 
 use App\Enums\IdentityCluster;
+use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
 use App\Models\Engagement;
 use App\Models\Identity;
+use App\Models\Impact;
+use App\Models\Individual;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\PaymentType;
@@ -160,7 +163,7 @@ test('guests cannot view engagements', function () {
 test('users with regulated organization admin role can edit engagements', function () {
     $this->seed(DatabaseSeeder::class);
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -414,7 +417,7 @@ test('users with regulated organization admin role can manage engagements', func
 
 test('users without regulated organization admin role cannot manage engagements', function () {
     $user = User::factory()->create([
-        'context' => 'regulated-organization',
+        'context' => UserContext::RegulatedOrganization->value,
     ]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -459,7 +462,7 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
     $regulatedOrganization = $project->projectable;
     $regulatedOrganization->update($projectableData);
     $regulatedOrganization = $regulatedOrganization->fresh();
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']
@@ -499,6 +502,75 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
     expect($engagement->checkStatus(new EngagementStatus('published')))->toEqual($expected);
 })->with('engagementIsPublishable');
 
+test('admins can see engagement if it isPreviewable()', function () {
+    $this->seed(ImpactSeeder::class);
+    $project = Project::factory()->create([
+        'contact_person_phone' => '4165555555',
+        'contact_person_response_time' => ['en' => '48 hours'],
+        'preferred_contact_method' => 'required',
+        'team_trainings' => [
+            [
+                'date' => date('Y-m-d', time()),
+                'name' => 'test training',
+                'trainer_name' => 'trainer',
+                'trainer_url' => 'http://example.com',
+            ],
+        ],
+        'published_at' => now(),
+    ]);
+    $project->impacts()->attach(Impact::first()->id);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+    $individualUser = Individual::factory()->create()->user;
+    $adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    // Fill data so that we don't hit a Database Integrity constraint violation during creation
+    $engagement = Engagement::factory()->create(['project_id' => $project->id, 'published_at' => null]);
+    $engagement->fill([
+        'name' => ['en' => 'Workshop'],
+        'languages' => ['en', 'fr', 'asl', 'sql'],
+        'who' => 'organization',
+        'paid' => true,
+        'description' => ['en' => 'This is what we are doing'],
+        'signup_by_date' => '2022-10-02',
+    ]);
+
+    $engagement->save();
+    $engagement = $engagement->fresh();
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    expect($engagement->isPreviewable())->toBeTrue();
+
+    //Access draft engagement as Regulated Organization admin
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements']->contains($engagement))->toBeTrue();
+
+    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.show', $engagement));
+    $response->assertOk();
+
+    //Access draft engagement as site admin
+    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements']->contains($engagement))->toBeTrue();
+
+    $response = $this->actingAs($adminUser)->get(localized_route('engagements.show', $engagement));
+    $response->assertOk();
+
+    //Access draft engagement as an Individual user
+    $response = $this->actingAs($individualUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements']->contains($engagement))->toBeFalse();
+
+    $response = $this->actingAs($individualUser)->get(localized_route('engagements.show', $engagement));
+    $response->assertNotFound();
+});
+
 test('engagement participants can be listed by administrator or community connector', function () {
     $user = User::factory()->create();
 
@@ -508,7 +580,7 @@ test('engagement participants can be listed by administrator or community connec
     $individualConnector = $connectorUser->individual->fresh();
 
     $connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
-    $connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $connectorOrganization->users()->attach(
         $connectorOrganizationUser,
         ['role' => 'admin']
@@ -518,7 +590,7 @@ test('engagement participants can be listed by administrator or community connec
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']
@@ -563,7 +635,7 @@ test('other access needs show in manage participants', function () {
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']
@@ -632,7 +704,7 @@ test('other access needs show in manage participants', function () {
 });
 
 test('project can show upcoming engagements', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
