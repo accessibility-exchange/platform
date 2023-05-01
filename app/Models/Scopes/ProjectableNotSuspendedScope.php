@@ -20,7 +20,7 @@ class ProjectableNotSuspendedScope implements Scope
                     $projectableBuilder->whereHas('users', function (Builder $userQuery) {
                         $userQuery->where('user_id', auth()->user()->id);
                     })
-                    ->orWhereNull('suspended_at');
+                        ->orWhereNull('suspended_at');
                 }
             );
         }

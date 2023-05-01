@@ -42,9 +42,9 @@ class Course extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
-        ->generateSlugsFrom(function (Course $model, $locale): string {
-            return $this->generateSlugs($model, $locale, 'title');
-        })
+            ->generateSlugsFrom(function (Course $model, $locale): string {
+                return $this->generateSlugs($model, $locale, 'title');
+            })
             ->saveSlugsTo('slug');
     }
 

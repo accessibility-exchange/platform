@@ -43,9 +43,9 @@ class Module extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
-        ->generateSlugsFrom(function (Module $model, $locale): string {
-            return $this->generateSlugs($model, $locale, 'title');
-        })
+            ->generateSlugsFrom(function (Module $model, $locale): string {
+                return $this->generateSlugs($model, $locale, 'title');
+            })
             ->saveSlugsTo('slug');
     }
 
