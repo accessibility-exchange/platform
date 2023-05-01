@@ -28,18 +28,6 @@ use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
-    // /**
-    //  * Register any application services.
-    //  *
-    //  * @return void
-    //  */
-    // public function register()
-    // {
-    //     $this->app->singleton(Settings::class, function () {
-    //         return Settings::make(storage_path('app/settings.json'));
-    //     });
-    // }
-
     /**
      * Bootstrap any application services.
      *
@@ -75,11 +63,6 @@ class AppServiceProvider extends ServiceProvider
                     ->icon('heroicon-s-clipboard-check')
                     ->sort(-1),
             ]);
-            // Filament::registerNavigationGroups([
-            //     NavigationGroup::make()
-            //         ->label('Settings')
-            //         ->collapsed(false),
-            // ]);
         });
 
         Flare::determineVersionUsing(function () {
