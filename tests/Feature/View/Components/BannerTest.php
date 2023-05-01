@@ -4,7 +4,7 @@ use App\View\Components\Banner;
 
 test('banner renders with appropriate icons', function () {
     $view = $this->withViewErrors([])
-    ->component(Banner::class);
+        ->component(Banner::class);
 
     $view->assertSee('class="banner banner--info"', false);
     $view->assertSee('d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"', false);

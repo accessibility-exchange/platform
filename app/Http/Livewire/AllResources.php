@@ -85,6 +85,6 @@ class AllResources extends Component
             'sectorsData' => Options::forModels(Sector::class)->toArray(),
             'topicsData' => Options::forModels(Topic::class)->toArray(),
         ])
-        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack full header--resources', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack full header--resources', 'pageWidth' => 'wide']);
     }
 }

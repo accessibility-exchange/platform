@@ -20,15 +20,15 @@ Route::get('/db', function () {
         DB::connection()->getPdo();
 
         return Response('Connection successful', 200)
-        ->header('Content-Type', 'text/plain');
+            ->header('Content-Type', 'text/plain');
     } catch (\Exception $e) {
         return Response('Error connecting to database.', 500)
-        ->header('Content-Type', 'text/plain');
+            ->header('Content-Type', 'text/plain');
     }
 });
 
 // plain web check NGINX & PHP working
 Route::get('/', function () {
     return Response('Connection successful', 200)
-    ->header('Content-Type', 'text/plain');
+        ->header('Content-Type', 'text/plain');
 });
