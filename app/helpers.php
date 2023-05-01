@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -13,11 +14,7 @@ if (! function_exists('settings')) {
      */
     function settings(string $key = null, mixed $default = null): mixed
     {
-        if ($key === null) {
-            return app(Settings::class);
-        }
-
-        return app(Settings::class)->get($key, $default);
+        return app(GeneralSettings::class)->$key ?? $default;
     }
 }
 
@@ -264,8 +261,8 @@ if (! function_exists('context_from_model')) {
 if (! function_exists('contact_information')) {
     function contact_information(): string
     {
-        $email = settings()->get('email', 'support@accessibilityexchange.ca');
-        $phone = phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA');
+        $email = settings('email');
+        $phone = phone(settings('phone'), 'CA')->formatForCountry('CA');
 
         return Str::markdown(
             '**'

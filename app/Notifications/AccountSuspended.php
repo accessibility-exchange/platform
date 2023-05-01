@@ -29,8 +29,8 @@ class AccountSuspended extends PlatformNotification
             ->content(
                 __('Your account on the Accessibility Exchange has been suspended.').' '.$this->getCapabilities($this->account).' '.__('Please contact us at :email or :phone if you need further assistance.',
                     [
-                        'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
-                        'phone' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA'),
+                        'email' => settings('email'),
+                        'phone' => phone(settings('phone'), 'CA')->formatForCountry('CA'),
                     ]
                 )
             )

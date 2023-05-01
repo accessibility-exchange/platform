@@ -10,7 +10,6 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\EngagementObserver;
 use App\Observers\UserObserver;
-use App\Settings;
 use App\Statuses\EngagementStatus;
 use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
@@ -20,29 +19,26 @@ use App\Statuses\UserStatus;
 use Blade;
 use Composer\InstalledVersions;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
-use Reworck\FilamentSettings\FilamentSettings;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton(Settings::class, function () {
-            return Settings::make(storage_path('app/settings.json'));
-        });
-    }
+    // /**
+    //  * Register any application services.
+    //  *
+    //  * @return void
+    //  */
+    // public function register()
+    // {
+    //     $this->app->singleton(Settings::class, function () {
+    //         return Settings::make(storage_path('app/settings.json'));
+    //     });
+    // }
 
     /**
      * Bootstrap any application services.
@@ -79,6 +75,11 @@ class AppServiceProvider extends ServiceProvider
                     ->icon('heroicon-s-clipboard-check')
                     ->sort(-1),
             ]);
+            // Filament::registerNavigationGroups([
+            //     NavigationGroup::make()
+            //         ->label('Settings')
+            //         ->collapsed(false),
+            // ]);
         });
 
         Flare::determineVersionUsing(function () {
@@ -94,41 +95,5 @@ class AppServiceProvider extends ServiceProvider
         Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
         Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);
-
-        FilamentSettings::setFormFields([
-            TextInput::make('email')
-                ->label(__('Support email'))
-                ->default('support@accessibilityexchange.ca')
-                ->required()
-                ->email(),
-            TextInput::make('phone')
-                ->label(__('Support phone'))
-                ->default('1 (888) 867-0053')
-                ->required(),
-            Textarea::make('address')
-                ->label(__('Mailing address'))
-                ->default("The Accessibility Exchange ℅ IRIS  \n1 University Avenue, 3rd Floor  \nToronto, ON M5J 2P1")
-                ->required(),
-            TextInput::make('facebook')
-                ->label(__('Facebook page'))
-                ->default('https://facebook.com/AccessXchange')
-                ->required()
-                ->activeUrl(),
-            TextInput::make('linkedin')
-                ->label(__('LinkedIn page'))
-                ->default('https://linkedin.com/company/the-accessibility-exchange/')
-                ->required()
-                ->activeUrl(),
-            TextInput::make('twitter')
-                ->label(__('Twitter page'))
-                ->default('https://twitter.com/AccessXchange')
-                ->required()
-                ->activeUrl(),
-            TextInput::make('youtube')
-                ->label(__('YouTube page'))
-                ->default('https://www.youtube.com/channel/UC-mIk4Xk04wF4urFSKZQOAA')
-                ->required()
-                ->activeUrl(),
-        ]);
     }
 }
