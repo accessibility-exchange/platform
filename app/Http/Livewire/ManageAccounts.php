@@ -47,7 +47,7 @@ class ManageAccounts extends Component
         return view('livewire.manage-accounts', [
             'accounts' => $accounts->paginate(20),
         ])
-        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function flash(string $message)

@@ -86,8 +86,8 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
             ->name('password.reset');
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->middleware('guest')
-        ->name('password.email');
+            ->middleware('guest')
+            ->name('password.email');
 
         Route::multilingual('/reset-password', [NewPasswordController::class, 'store'])
             ->method('post')
