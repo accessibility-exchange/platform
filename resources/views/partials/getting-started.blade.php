@@ -63,7 +63,8 @@
                 <span class="badge">{{ __('Attended') }}</span>
             @elseif (Auth::user()->checkStatus('pending'))
                 <span class="badge">{{ __('Not attended yet') }}</span>
-                <x-expander :level="4">
+                {{-- <x-expander :level="4"> --}}
+                <x-expander type="disclosure" :level="4">
                     <x-slot name="summary">{{ __('I’ve gone to orientation, why isn’t this updated?') }}</x-slot>
                     {!! Str::markdown(
                         __(
