@@ -1,0 +1,10 @@
+main .getting-started.box {
+    box-shadow: var(--card-shadow);
+    padding: var(--space-11);
+}
+
+.getting-started__list-item + .getting-started__list-item {
+    border-block-start: var(--border) solid var(--divider-color);
+    margin-block-start: var(--space-8);
+    padding-block-start: var(--space-8);
+}

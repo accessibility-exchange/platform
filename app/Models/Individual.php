@@ -340,6 +340,33 @@ class Individual extends Model implements CipherSweetEncrypted
             ->orderBy('start_date');
     }
 
+    public function inProgress(): bool
+    {
+        if ($this->identityConnections->count() > 0) {
+            return true;
+        }
+
+        $attributes = $this->only([
+            'pronouns',
+            'bio',
+            'region',
+            'locality',
+            'working_languages',
+            'consulting_services',
+            'social_links',
+            'website_link',
+            'other_disability_connection',
+            'other_ethnoracial_identity_connection',
+            'connection_lived_experience',
+            'lived_experience',
+            'skills_and_strengths',
+            'relevant_experiences',
+            'meeting_types',
+        ]);
+
+        return count(array_filter($attributes, fn ($attr) => ! blank($attr))) || count($this->extra_attributes->all());
+    }
+
     public function isPreviewable(): bool
     {
         $rules = [
@@ -389,6 +416,29 @@ class Individual extends Model implements CipherSweetEncrypted
             }
 
             return true;
+        }
+
+        return false;
+    }
+
+    public function needsGettingStarted(): bool
+    {
+        /*
+
+            Individual (CP): No collaboration preferences entered (only payment info required) || not approved
+            Individual (CC): Public page not publishable || not approved || public page not published
+            Individual (AC): same as CC
+
+        */
+
+        if (! $this->user->checkStatus('approved')) {
+            return true;
+        }
+
+        if ($this->isParticipant()) {
+            return (bool) ($this->paymentTypes()->count() === 0 || blank($this->other_payment_type));
+        } elseif ($this->isConnector() || $this->isConsultant()) {
+            return ! $this->checkStatus('published');
         }
 
         return false;

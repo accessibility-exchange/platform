@@ -375,6 +375,28 @@ class Organization extends Model
         return true;
     }
 
+    public function needsGettingStarted(): bool
+    {
+        /*
+
+        Community Org (CP): org admin && (Org page not publishable || not approved || org page not published)
+        Community Org (CC): org admin && (Org page not publishable || not approved || org page not published)
+        Community Org (AC): same as CC
+        Community Org (CP, CC, AC): org member && not approved
+
+        */
+
+        if (! $this->user->checkStatus('approved')) {
+            return true;
+        }
+
+        if ($this->user->isAdminstratorOf($this)) {
+            return ! $this->checkStatus('published');
+        }
+
+        return false;
+    }
+
     public function blocks(): MorphToMany
     {
         return $this->morphToMany(User::class, 'blockable');
