@@ -65,7 +65,7 @@
      --}}
 
     @if (!$user->checkStatus('suspended') &&
-        ($user->individual?->needsGettingStarted() ||
+        (!$user->individual?->isReady() ||
             $user->orgnaization?->needsGettingStarted() ||
             $user->regulated_organization?->needsGettingStarted()))
         @include('partials.getting-started')

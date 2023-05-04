@@ -9,6 +9,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\PaymentType;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
@@ -1047,3 +1048,17 @@ test('individuals with signed language can update about experiences', function (
     expect($individual->getTranslation('lived_experience', 'en'))->toEqual('My lived experiences.');
     expect($individual->getTranslation('skills_and_strengths', 'en'))->toEqual('My skills and strengths.');
 });
+
+test('Individual isReady()', function ($userData, $indData, $hasPaymentTypes, $expected) {
+    $individual = Individual::factory()
+        ->forUser($userData)
+        ->create($indData);
+
+    if ($hasPaymentTypes) {
+        $this->seed(PaymentTypeSeeder::class);
+        $individual->paymentTypes()->attach(PaymentType::first());
+    }
+
+    expect($individual->isReady())->toEqual($expected);
+
+})->with('individualIsReady')->only();

@@ -421,27 +421,21 @@ class Individual extends Model implements CipherSweetEncrypted
         return false;
     }
 
-    public function needsGettingStarted(): bool
+    public function isReady(): bool
     {
-        /*
-
-            Individual (CP): No collaboration preferences entered (only payment info required) || not approved
-            Individual (CC): Public page not publishable || not approved || public page not published
-            Individual (AC): same as CC
-
-        */
-
-        if (! $this->user->checkStatus('approved')) {
-            return true;
+        if ($this->user->checkStatus('pending')) {
+            return false;
         }
 
-        if ($this->isParticipant()) {
-            return (bool) ($this->paymentTypes()->count() === 0 || blank($this->other_payment_type));
-        } elseif ($this->isConnector() || $this->isConsultant()) {
-            return ! $this->checkStatus('published');
+        if ($this->isParticipant() && $this->paymentTypes()->count() === 0 && blank($this->other_payment_type)) {
+            return false;
         }
 
-        return false;
+        if (($this->isConnector() || $this->isConsultant()) && $this->checkStatus('draft')) {
+            return false;
+        }
+
+        return true;
     }
 
     public function isParticipant(): bool
