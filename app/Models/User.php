@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -311,6 +312,30 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function isAdministratorOf(mixed $model): bool
     {
         return $model->hasAdministratorWithEmail($this->email);
+    }
+
+    public function hasTasksToComplete(): bool
+    {
+        if ($this->checkStatus('pending')) {
+            return true;
+        }
+
+        if ($this->checkStatus('suspended')) {
+            return false;
+        }
+
+        return match ($this->context) {
+            UserContext::Individual->value => ! $this->individual?->isReady(),
+            UserContext::Organization->value => $this->organization
+                && (! $this->organization->checkStatus('suspended'))
+                && $this->isAdministratorOf($this->organization)
+                && $this->organization->checkStatus('draft'),
+            UserContext::RegulatedOrganization->value => $this->regulatedOrganization
+                && (! $this->regulatedOrganization->checkStatus('suspended'))
+                && $this->isAdministratorOf($this->regulatedOrganization)
+                && ($this->regulatedOrganization->checkStatus('draft') || $this->regulatedOrganization->projects()->count() === 0),
+            default => false,
+        };
     }
 
     public function blockedOrganizations(): MorphToMany

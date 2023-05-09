@@ -46,29 +46,8 @@
         @endif
     </x-slot>
 
-    {{--
-
-        When to show Getting started:
-
-        Individual (CP): No collaboration preferences entered (only payment is required) || not approved
-        Individual (CC): Public page not publishable || not approved || public page not published
-        Individual (AC): same as CC
-        Community Org (CP): org admin && (Org page not publishable || not approved || org page not published)
-        Community Org (CC): org admin && (Org page not publishable || not approved || org page not published)
-        Community Org (AC): same as CC
-        Community Org (CP, CC, AC): org member && not approved
-        FRO: org admin && (Org page not publishable || not approved || org page not published || no projects created)
-        FRO: org member && not approved
-        Admin: Never
-        Training: Never
-
-     --}}
-
-    @if (!$user->checkStatus('suspended') &&
-        (!$user->individual?->isReady() ||
-            $user->orgnaization?->needsGettingStarted() ||
-            $user->regulated_organization?->needsGettingStarted()))
-        @include('partials.getting-started')
+    @if ($user->hasTasksToComplete())
+        @include('dashboard.getting-started')
     @endif
 
     @if ($user->context === \App\Enums\UserContext::Administrator->value)

@@ -340,7 +340,7 @@ class Individual extends Model implements CipherSweetEncrypted
             ->orderBy('start_date');
     }
 
-    public function inProgress(): bool
+    public function isInProgress(): bool
     {
         if ($this->identityConnections->count() > 0) {
             return true;

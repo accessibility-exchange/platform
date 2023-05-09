@@ -1049,16 +1049,28 @@ test('individuals with signed language can update about experiences', function (
     expect($individual->getTranslation('skills_and_strengths', 'en'))->toEqual('My skills and strengths.');
 });
 
-test('Individual isReady()', function ($userData, $indData, $hasPaymentTypes, $expected) {
+test('Individual isInProgress()', function ($data, $withIdentity, $expected) {
+    $individual = Individual::factory()
+        ->create($data);
+
+    if ($withIdentity) {
+        $individual->identityConnections()->attach(Identity::first());
+    }
+
+    expect($individual->isInProgress())->toEqual($expected);
+
+})->with('individualIsInProgress');
+
+test('Individual isReady()', function ($userData, $indData, $withPaymentTypes, $expected) {
     $individual = Individual::factory()
         ->forUser($userData)
         ->create($indData);
 
-    if ($hasPaymentTypes) {
+    if ($withPaymentTypes) {
         $this->seed(PaymentTypeSeeder::class);
         $individual->paymentTypes()->attach(PaymentType::first());
     }
 
     expect($individual->isReady())->toEqual($expected);
 
-})->with('individualIsReady')->only();
+})->with('individualIsReady');

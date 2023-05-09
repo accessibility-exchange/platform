@@ -324,6 +324,29 @@ class Organization extends Model
         return ! is_null($this->region);
     }
 
+    public function isInProgress(): bool
+    {
+        if ($this->constituentIdentities->count() > 0) {
+            return true;
+        }
+
+        $attributes = $this->only([
+            'region',
+            'locality',
+            'about',
+            'service_areas',
+            'working_languages',
+            'consulting_services',
+            'social_links',
+            'website_link',
+            'other_disability_constituency',
+            'other_ethnoracial_identity_constituency',
+            'staff_lived_experience',
+        ]);
+
+        return count(array_filter($attributes, fn ($attr) => ! blank($attr))) || count($this->extra_attributes->all());
+    }
+
     public function isPreviewable(): bool
     {
         $rules = [
@@ -373,28 +396,6 @@ class Organization extends Model
         }
 
         return true;
-    }
-
-    public function needsGettingStarted(): bool
-    {
-        /*
-
-        Community Org (CP): org admin && (Org page not publishable || not approved || org page not published)
-        Community Org (CC): org admin && (Org page not publishable || not approved || org page not published)
-        Community Org (AC): same as CC
-        Community Org (CP, CC, AC): org member && not approved
-
-        */
-
-        if (! $this->user->checkStatus('approved')) {
-            return true;
-        }
-
-        if ($this->user->isAdminstratorOf($this)) {
-            return ! $this->checkStatus('published');
-        }
-
-        return false;
     }
 
     public function blocks(): MorphToMany

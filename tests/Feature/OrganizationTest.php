@@ -1140,3 +1140,15 @@ test('organization can have many courses', function () {
     expect($organization->courses->contains($courseOne))->toBeTrue();
     expect($organization->courses->contains($courseOne))->toBeTrue();
 });
+
+test('Organization isInProgress()', function ($data, $withConstituentIdentity, $expected) {
+    $this->seed(IdentitySeeder::class);
+    $organization = Organization::factory()
+        ->create($data);
+
+    if ($withConstituentIdentity) {
+        $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
+    }
+
+    expect($organization->isInProgress())->toEqual($expected);
+})->with('organizationIsInProgress');
