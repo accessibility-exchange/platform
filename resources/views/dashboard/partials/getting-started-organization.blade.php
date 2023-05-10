@@ -96,4 +96,20 @@
             <span class="badge">{{ __('Ready to publish') }}</span>
         @endif
     </li>
+    <li class="getting-started__list-item stack">
+        <h3>
+            <a class="counter__item"
+                href="{{ localized_route('projects.show-language-selection', Auth::user()->organization) }}">{{ __('Create your first project') }}</a>
+        </h3>
+        <p>
+            {{ __('Plan and share your project with others on this website.') }}
+        </p>
+        @if (Auth::user()->organization->publishedProjects()->count())
+            <span class="badge">{{ __('Completed') }}</span>
+        @elseif (Auth::user()->organization->draftProjects()->count())
+            <span class="badge">{{ __('In progress') }}</span>
+        @else
+            <span class="badge">{{ __('Not yet started') }}</span>
+        @endif
+    </li>
 @endcan
