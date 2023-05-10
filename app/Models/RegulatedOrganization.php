@@ -320,26 +320,6 @@ class RegulatedOrganization extends Model
         return true;
     }
 
-    // public function needsGettingStarted(): bool
-    // {
-    //     /*
-
-    //     FRO: org admin && (Org page not publishable || not approved || org page not published || no projects created)
-    //     FRO: org member && not approved
-
-    //     */
-
-    //     if (! $this->user->checkStatus('approved')) {
-    //         return true;
-    //     }
-
-    //     if ($this->user->isAdminstratorOf($this)) {
-    //         return ! ($this->checkStatus('published') && $this->projects()->count());
-    //     }
-
-    //     return false;
-    // }
-
     public function blocks(): MorphToMany
     {
         return $this->morphToMany(User::class, 'blockable');

@@ -30,11 +30,7 @@
                 actionUrl="{{ localized_route('settings.invite-to-invitationable') }}" />
         @endif
     </div>
-    {{--
-        Notifications
-        - Customize this website's accessibility (ind:all, com:all, fro:all)
-        - Invite others to your organization (com:admin, fro:admin)
-     --}}
+
     <ol class="getting-started__list counter stack" role="list">
         @if ($user->context === App\Enums\UserContext::Individual->value)
             @include('dashboard.partials.getting-started-individual')
