@@ -9,6 +9,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Organization;
+use App\Models\Project;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
@@ -1119,6 +1120,49 @@ test('organizational relationships to projects can be derived from both projects
     expect($participatingEngagementProject->organizationalParticipants->pluck('id')->toArray())
         ->toHaveCount(1)
         ->toContain($organization->id);
+});
+
+test('organizations projects functions based on project state', function () {
+    $organization = Organization::factory()->create([
+        'roles' => ['consultant', 'connector', 'participant'],
+        'published_at' => now(),
+    ]);
+
+    $draftProject = Project::factory()->create(['published_at' => null]);
+    $inProgressProject = Project::factory()->create();
+    $upcomingProject = Project::factory()->create([
+        'start_date' => now()->addMonth(),
+        'end_date' => now()->addMonths(12),
+    ]);
+    $completedProject = Project::factory()->create([
+        'start_date' => now()->subMonths(12),
+        'end_date' => now()->subMonth(),
+    ]);
+
+    $organization->projects()->saveMany([
+        $draftProject,
+        $inProgressProject,
+        $upcomingProject,
+        $completedProject,
+    ]);
+
+    expect($organization->projects)->toHaveCount(4);
+    expect($organization->projects->modelKeys())->toContain($draftProject->id, $inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($organization->draftProjects)->toHaveCount(1);
+    expect($organization->draftProjects->modelKeys())->toContain($draftProject->id);
+
+    expect($organization->publishedProjects)->toHaveCount(3);
+    expect($organization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($organization->inProgressProjects)->toHaveCount(2);
+    expect($organization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+
+    expect($organization->upcomingProjects)->toHaveCount(1);
+    expect($organization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);
+
+    expect($organization->completedProjects)->toHaveCount(1);
+    expect($organization->completedProjects->modelKeys())->toContain($completedProject->id);
 });
 
 test('organizations have slugs in both languages even if only one is provided', function () {

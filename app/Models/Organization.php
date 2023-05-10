@@ -196,6 +196,13 @@ class Organization extends Model
             ->orderBy('start_date');
     }
 
+    public function publishedProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereNotNull('published_at')
+            ->orderBy('start_date');
+    }
+
     public function inProgressProjects(): MorphMany
     {
         return $this->morphMany(Project::class, 'projectable')

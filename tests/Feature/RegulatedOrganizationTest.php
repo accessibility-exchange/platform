@@ -2,6 +2,7 @@
 
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Invitation;
+use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
@@ -768,6 +769,48 @@ test('regulated organization cannot be previewed until publishable', function ()
     $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
     $response->assertOk();
 });
+
+test('regulated organizations projects functions based on project state', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'published_at' => now(),
+    ]);
+
+    $draftProject = Project::factory()->create(['published_at' => null]);
+    $inProgressProject = Project::factory()->create();
+    $upcomingProject = Project::factory()->create([
+        'start_date' => now()->addMonth(),
+        'end_date' => now()->addMonths(12),
+    ]);
+    $completedProject = Project::factory()->create([
+        'start_date' => now()->subMonths(12),
+        'end_date' => now()->subMonth(),
+    ]);
+
+    $regulatedOrganization->projects()->saveMany([
+        $draftProject,
+        $inProgressProject,
+        $upcomingProject,
+        $completedProject,
+    ]);
+
+    expect($regulatedOrganization->projects)->toHaveCount(4);
+    expect($regulatedOrganization->projects->modelKeys())->toContain($draftProject->id, $inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($regulatedOrganization->draftProjects)->toHaveCount(1);
+    expect($regulatedOrganization->draftProjects->modelKeys())->toContain($draftProject->id);
+
+    expect($regulatedOrganization->publishedProjects)->toHaveCount(3);
+    expect($regulatedOrganization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($regulatedOrganization->inProgressProjects)->toHaveCount(2);
+    expect($regulatedOrganization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+
+    expect($regulatedOrganization->upcomingProjects)->toHaveCount(1);
+    expect($regulatedOrganization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);
+
+    expect($regulatedOrganization->completedProjects)->toHaveCount(1);
+    expect($regulatedOrganization->completedProjects->modelKeys())->toContain($completedProject->id);
+})->only();
 
 test('regulated organizations have slugs in both languages even if only one is provided', function () {
     $regulatedOrg = RegulatedOrganization::factory()->create();
