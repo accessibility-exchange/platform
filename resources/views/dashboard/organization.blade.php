@@ -25,7 +25,7 @@
                 <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
         @endif
-        @can('viewAny', App\Models\Project::class)
+        @if ($memberable && $user->can('viewAny', App\Models\Project::class))
             @if ($memberable->isConnector() || $memberable->inProgressContractedProjects()->count())
                 <li>
                     <a
@@ -41,7 +41,7 @@
             <li>
                 <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
             </li>
-        @endcan
+        @endif
         <li>
             <a href="{{ localized_route('dashboard.trainings') }}">{{ __('My trainings') }}</a>
         </li>
