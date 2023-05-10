@@ -72,6 +72,19 @@ dataset('userHasTasksToComplete', function () {
             ],
             $noTasksToComplete,
         ],
+        'user is organization; organization not approved' => [
+            [
+                'user' => [
+                    'context' => UserContext::Organization->value,
+                ],
+                'org' => [
+                    'oriented_at' => null,
+                    'validated_at' => null,
+                    'published_at' => now(),
+                ],
+            ],
+            $hasTasksToComplete,
+        ],
         'user is organization; organization is suspended' => [
             [
                 'user' => [
@@ -124,6 +137,20 @@ dataset('userHasTasksToComplete', function () {
             ],
             $noTasksToComplete,
         ],
+        'user is regulated organization; regulated organization not approved' => [
+            [
+                'user' => [
+                    'context' => UserContext::RegulatedOrganization->value,
+                ],
+                'org' => [
+                    'oriented_at' => null,
+                    'validated_at' => null,
+                    'published_at' => now(),
+                ],
+                'withProject' => true,
+            ],
+            $hasTasksToComplete,
+        ],
         'user is regulated organization; regulated organization is suspended' => [
             [
                 'user' => [
@@ -133,6 +160,7 @@ dataset('userHasTasksToComplete', function () {
                     'suspended_at' => now(),
                     'published_at' => now(),
                 ],
+                'withProject' => true,
             ],
             $noTasksToComplete,
         ],
@@ -145,6 +173,7 @@ dataset('userHasTasksToComplete', function () {
                     'published_at' => now(),
                 ],
                 'orgRole' => 'member',
+                'withProject' => true,
             ],
             $noTasksToComplete,
         ],

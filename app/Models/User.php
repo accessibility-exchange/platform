@@ -316,7 +316,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function hasTasksToComplete(): bool
     {
-        if ($this->checkStatus('pending')) {
+        if ($this->checkStatus('pending') && $this->context === UserContext::Individual->value) {
             return true;
         }
 
@@ -329,11 +329,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
             UserContext::Organization->value => $this->organization
                 && (! $this->organization->checkStatus('suspended'))
                 && $this->isAdministratorOf($this->organization)
-                && $this->organization->checkStatus('draft'),
+                && ($this->organization->checkStatus('pending') || $this->organization->checkStatus('draft')),
             UserContext::RegulatedOrganization->value => $this->regulatedOrganization
                 && (! $this->regulatedOrganization->checkStatus('suspended'))
                 && $this->isAdministratorOf($this->regulatedOrganization)
-                && ($this->regulatedOrganization->checkStatus('draft') || $this->regulatedOrganization->projects()->count() === 0),
+                && ($this->regulatedOrganization->checkStatus('pending') || $this->regulatedOrganization->checkStatus('draft') || $this->regulatedOrganization->publishedProjects()->count() === 0),
             default => false,
         };
     }
