@@ -60,6 +60,7 @@ class RegulatedOrganization extends Model
         'oriented_at',
         'validated_at',
         'suspended_at',
+        'dismissed_invite_prompt_at',
         'name',
         'type',
         'languages',

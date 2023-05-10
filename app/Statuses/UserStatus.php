@@ -18,4 +18,9 @@ class UserStatus extends \Makeable\EloquentStatus\Status
     {
         return $query->whereNotNull('suspended_at');
     }
+
+    public function dismissedCustomizationPrompt($query)
+    {
+        return $query->whereNotNull('dismissed_customize_prompt_at');
+    }
 }

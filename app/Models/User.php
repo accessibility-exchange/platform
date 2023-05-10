@@ -75,6 +75,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'accepted_privacy_policy_at',
         'oriented_at',
         'suspended_at',
+        'dismissed_customize_prompt_at',
     ];
 
     protected $hidden = [

@@ -87,6 +87,14 @@
     gap: var(--space-2);
 }
 
+.alert.alert--prompt .actions {
+    gap: var(--space-7);
+}
+
+.alert.alert--prompt .cta {
+    min-width: var(--space-40);
+}
+
 @media (min-width: 48rem) {
     .alert .title {
         font-size: var(--text-xl);

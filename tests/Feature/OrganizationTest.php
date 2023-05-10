@@ -1196,3 +1196,48 @@ test('Organization isInProgress()', function ($data, $withConstituentIdentity, $
 
     expect($organization->isInProgress())->toEqual($expected);
 })->with('organizationIsInProgress');
+
+test('organization status checks return expected state', function () {
+    $organization = Organization::factory()->create([
+        'published_at' => null,
+        'oriented_at' => null,
+        'validated_at' => null,
+        'suspended_at' => null,
+        'dismissed_invite_prompt_at' => null,
+    ]);
+
+    expect($organization->checkStatus('draft'))->toBeTrue();
+    expect($organization->checkStatus('published'))->toBeFalse();
+    expect($organization->checkStatus('pending'))->toBeTrue();
+    expect($organization->checkStatus('approved'))->toBeFalse();
+    expect($organization->checkStatus('suspended'))->toBeFalse();
+    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
+
+    $organization->published_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('draft'))->toBeFalse();
+    expect($organization->checkStatus('published'))->toBeTrue();
+
+    $organization->oriented_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('pending'))->toBeFalse();
+    expect($organization->checkStatus('approved'))->toBeFalse();
+
+    $organization->validated_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('pending'))->toBeFalse();
+    expect($organization->checkStatus('approved'))->toBeTrue();
+
+    $organization->suspended_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('suspended'))->toBeTrue();
+
+    $organization->dismissed_invite_prompt_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
+});

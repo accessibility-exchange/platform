@@ -334,3 +334,32 @@ test('User hasTasksToComplete()', function ($data, $expected) {
 
     expect($user->hasTasksToComplete())->toEqual($expected);
 })->with('userHasTasksToComplete');
+
+test('user status checks return expected state', function () {
+    $user = User::factory()->create([
+        'oriented_at' => null,
+        'suspended_at' => null,
+        'dismissed_customize_prompt_at' => null,
+    ]);
+
+    expect($user->checkStatus('pending'))->toBeTrue();
+    expect($user->checkStatus('approved'))->toBeFalse();
+    expect($user->checkStatus('suspended'))->toBeFalse();
+    expect($user->checkStatus('dismissedCustomizationPrompt'))->toBeFalse();
+
+    $user->oriented_at = now();
+    $user->save();
+
+    expect($user->checkStatus('pending'))->toBeFalse();
+    expect($user->checkStatus('approved'))->toBeTrue();
+
+    $user->suspended_at = now();
+    $user->save();
+
+    expect($user->checkStatus('suspended'))->toBeTrue();
+
+    $user->dismissed_customize_prompt_at = now();
+    $user->save();
+
+    expect($user->checkStatus('dismissedCustomizationPrompt'))->toBeTrue();
+});

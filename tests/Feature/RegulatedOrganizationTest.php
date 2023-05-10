@@ -810,7 +810,7 @@ test('regulated organizations projects functions based on project state', functi
 
     expect($regulatedOrganization->completedProjects)->toHaveCount(1);
     expect($regulatedOrganization->completedProjects->modelKeys())->toContain($completedProject->id);
-})->only();
+});
 
 test('regulated organizations have slugs in both languages even if only one is provided', function () {
     $regulatedOrg = RegulatedOrganization::factory()->create();
@@ -832,4 +832,49 @@ test('notifications can be routed for regulated organizations', function () {
 
     expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
     expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
+});
+
+test('regulated organization status checks return expected state', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'published_at' => null,
+        'oriented_at' => null,
+        'validated_at' => null,
+        'suspended_at' => null,
+        'dismissed_invite_prompt_at' => null,
+    ]);
+
+    expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
+    expect($regulatedOrganization->checkStatus('published'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('pending'))->toBeTrue();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('suspended'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
+
+    $regulatedOrganization->published_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('draft'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
+
+    $regulatedOrganization->oriented_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('pending'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeFalse();
+
+    $regulatedOrganization->validated_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('pending'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeTrue();
+
+    $regulatedOrganization->suspended_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('suspended'))->toBeTrue();
+
+    $regulatedOrganization->dismissed_invite_prompt_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });
