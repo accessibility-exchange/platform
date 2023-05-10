@@ -335,7 +335,6 @@ class Organization extends Model
             'locality',
             'about',
             'service_areas',
-            'working_languages',
             'consulting_services',
             'social_links',
             'website_link',

@@ -13,7 +13,6 @@ dataset('organizationIsInProgress', function () {
         'locality' => null,
         'about' => null,
         'service_areas' => null,
-        'working_languages' => null,
         'consulting_services' => null,
         'social_links' => null,
         'website_link' => null,
@@ -28,7 +27,6 @@ dataset('organizationIsInProgress', function () {
         'locality' => 'Halifax',
         'about' => 'About this org',
         'service_areas' => ['NS'],
-        'working_languages' => ['en'],
         'consulting_services' => [
             'designing-consultation',
             'running-consultation',
