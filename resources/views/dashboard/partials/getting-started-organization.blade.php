@@ -9,7 +9,7 @@
         </p>
         @if (Auth::user()->organization->isPublishable())
             <span class="badge">{{ __('Completed') }}</span>
-        @elseif (Auth::user()->organization->inProgress())
+        @elseif (Auth::user()->organization->isInProgress())
             <span class="badge">{{ __('In progress') }}</span>
         @else
             <span class="badge">{{ __('Not started yet') }}</span>
@@ -27,9 +27,9 @@
     <p>
         {{ __('Click the link above to sign up for an orientation session. (This will lead you to an external site, and when you’re done it will bring you back automatically.)') }}
     </p>
-    @if (Auth::user()->checkStatus('approved'))
+    @if (Auth::user()->organization->checkStatus('approved'))
         <span class="badge">{{ __('Attended') }}</span>
-    @elseif (Auth::user()->checkStatus('pending'))
+    @elseif (Auth::user()->organization->checkStatus('pending'))
         <span class="badge">{{ __('Not attended yet') }}</span>
         <x-expander type="disclosure" :level="4">
             <x-slot name="summary">{{ __('I’ve gone to orientation, why isn’t this updated?') }}</x-slot>
@@ -44,39 +44,42 @@
 </li>
 
 @can('update', $memberable)
-    <li class="getting-started__list-item stack">
-        <h3 class="counter__item">{{ __('Fill out and return your application') }}</h3>
-        <p>
-            @php
-                $roles = [];
-                if (Auth::user()->organization->isConsultant()) {
-                    $roles[] = __('Accessibility Consultant');
-                }
-                if (Auth::user()->organization->isConnector()) {
-                    $roles[] = __('Community Connector');
-                }
-            @endphp
-            {{ trans_choice('Please fill out and return your application for your :role role. You must return this and have it approved before you can attend orientation. You can find the application in the link below, or in the email we sent you.|Please fill out and return your application for your :role and :otherRole roles. You must return this and have it approved before you can attend orientation. You can find the applications in the links below, or in the email we sent you.', count($roles), ['role' => $roles[0], 'otherRole' => $roles[1] ?? '']) }}
-        </p>
-        <ul role="list">
-            @if (Auth::user()->organization->isConsultant())
-                <li>
-                    <a href="{{ settings('ac_application') }}">
-                        {{ __('Application for Accessibility Consultant') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
-                    </a>
-                </li>
-            @endif
-            @if (Auth::user()->organization->isConnector())
-                <li>
-                    <a href="{{ settings('cc_application') }}">
-                        {{ __('Application for Community Connector') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
-                    </a>
-                </li>
-            @endif
-        </ul>
-    </li>
+    @if (Auth::user()->organization->isConnector() || Auth::user()->organization->isConsultant())
+        <li class="getting-started__list-item stack">
+            <h3 class="counter__item">{{ __('Fill out and return your application') }}</h3>
+            <p>
+                @php
+                    $roles = [];
+                    if (Auth::user()->organization->isConsultant()) {
+                        $roles[] = __('Accessibility Consultant');
+                    }
+                    if (Auth::user()->organization->isConnector()) {
+                        $roles[] = __('Community Connector');
+                    }
+                @endphp
+
+                {{ trans_choice('Please fill out and return your application for your :role role. You must return this and have it approved before you can attend orientation. You can find the application in the link below, or in the email we sent you.|Please fill out and return your application for your :role and :otherRole roles. You must return this and have it approved before you can attend orientation. You can find the applications in the links below, or in the email we sent you.', count($roles), ['role' => $roles[0], 'otherRole' => $roles[1] ?? '']) }}
+            </p>
+            <ul role="list">
+                @if (Auth::user()->organization->isConsultant())
+                    <li>
+                        <a href="{{ settings('ac_application') }}">
+                            {{ __('Application for Accessibility Consultant') }}
+                            @svg('heroicon-o-external-link', 'ml-1')
+                        </a>
+                    </li>
+                @endif
+                @if (Auth::user()->organization->isConnector())
+                    <li>
+                        <a href="{{ settings('cc_application') }}">
+                            {{ __('Application for Community Connector') }}
+                            @svg('heroicon-o-external-link', 'ml-1')
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        </li>
+    @endif
     <li class="getting-started__list-item stack">
         <h3>
             <a class="counter__item"
@@ -85,7 +88,7 @@
         <p>
             {{ __('Once your account has been approved, you can review and publish your organization’s page. You must have completed all the previous steps.') }}
         </p>
-        @if (Auth::user()->checkStatus('pending'))
+        @if (Auth::user()->organization->checkStatus('pending'))
             <span class="badge">{{ __('Not yet approved') }}</span>
         @elseif (Auth::user()->organization->checkStatus('published'))
             <span class="badge">{{ __('Published') }}</span>
