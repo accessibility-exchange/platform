@@ -8,3 +8,7 @@ main .getting-started.box {
     margin-block-start: var(--space-8);
     padding-block-start: var(--space-8);
 }
+
+[data-theme="dark"] .getting-started .icon--green {
+    color: var(--color-green-2);
+}

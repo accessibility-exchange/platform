@@ -105,6 +105,7 @@
     --theme-alert-color-warning: var(--color-graphite-8);
     --theme-alert-background-success: var(--color-green-2);
     --theme-alert-color-success: var(--color-graphite-8);
+    --theme-alert-background-prompt: var(--color-graphite-6);
 
     /* Hint */
     --theme-hint-color: var(--color-grey-2);

@@ -82,6 +82,10 @@
     color: var(--alert-color-success);
 }
 
+.alert--prompt {
+    background: var(--alert-background-prompt);
+}
+
 .alert .actions {
     display: flex;
     gap: var(--space-2);
