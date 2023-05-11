@@ -145,8 +145,6 @@ class RegulatedOrganizationController extends Controller
     {
         $data = $request->validated();
 
-        $data = $request->validated();
-
         if (isset($data['accessibility_and_inclusion_links'])) {
             $data['accessibility_and_inclusion_links'] = array_filter(array_map('array_filter', $data['accessibility_and_inclusion_links']));
         }

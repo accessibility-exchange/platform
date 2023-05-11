@@ -1,4 +1,4 @@
-<x-app-layout page-width="wide" bodyClass="tos">
+<x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Terms of Service') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -9,7 +9,7 @@
         </h1>
     </x-slot>
 
-    <div class="stack">
+    <div class="counter stack">
         <p><strong>{{ __('Last updated: :date', ['date' => $modifiedAt->isoFormat('LL')]) }}</strong></p>
 
         <p>{{ __('Please read these terms of service carefully.') }}</p>
@@ -24,7 +24,7 @@
         <p>{{ __('By clicking to accept the Terms or otherwise using the Platform you agree to be bound by these Terms.') }}
         </p>
 
-        <h2>{{ __('Definitions') }}</h2>
+        <h2 class="counter__item">{{ __('Definitions') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -82,7 +82,8 @@
             <li>{!! Str::inlineMarkdown(__('“**User Content**” has the meaning set out in Section 7(a) of these Terms.')) !!}</li>
         </ol>
 
-        <h2>{{ __('IRIS IS NOT A PARTY TO ANY PROJECT OR PROJECT AGREEMENT [UNLESS EXPLICITLY STATED OTHERWISE]') }}
+        <h2 class="counter__item">
+            {{ __('IRIS IS NOT A PARTY TO ANY PROJECT OR PROJECT AGREEMENT [UNLESS EXPLICITLY STATED OTHERWISE]') }}
         </h2>
         <ol class="stack" type="a">
             <li class="stack">
@@ -129,7 +130,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('ACCESS AND USE OF THE PLATFORM') }}</h2>
+        <h2 class="counter__item">{{ __('ACCESS AND USE OF THE PLATFORM') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -158,7 +159,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('PRIVACY AND CONFIDENTIALITY.') }}</h2>
+        <h2 class="counter__item">{{ __('PRIVACY AND CONFIDENTIALITY.') }}</h2>
         {!! Str::markdown(
             __(
                 'IRIS respects your right to privacy. Any personal information collected in connection with your registering on and use of the Platform shall be done in accordance with [IRIS’ Privacy Policy](:url), which forms part of these Terms. User is responsible for its compliance with all applicable privacy laws and covenants that all personal data and information provided to IRIS or uploaded to the Platform is provided in compliance with applicable laws.',
@@ -166,11 +167,11 @@
             ),
         ) !!}
 
-        <h2>{{ __('SECURITY.') }}</h2>
+        <h2 class="counter__item">{{ __('SECURITY.') }}</h2>
         <p>{{ __('IRIS has implemented security policies and practices that are designed to protect the security and integrity of the Platform; however, IRIS does not guarantee the security of the Platform or the security or integrity of any communications between you and the Platform. You acknowledge that you alone are responsible for ensuring you have a secure connection to access the Platform and implementing security safeguards to protect yourself when accessing and using the Platform, including taking precautions against viruses, worms, trojan horses and other items of a disabling or destructive nature.') }}
         </p>
 
-        <h2>{{ __('CONDITIONS OF USE.') }}</h2>
+        <h2 class="counter__item">{{ __('CONDITIONS OF USE.') }}</h2>
         <ol class="stack" type="a">
             <li>
                 {!! Str::markdown(__('**Unauthorized uses of the Platform.** You agree not to:')) !!}
@@ -226,7 +227,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('USER CONTENT.') }}</h2>
+        <h2 class="counter__item">{{ __('USER CONTENT.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __('You are solely responsible for all Content that you Upload or make available to IRIS (“**User Content**”).'),
@@ -241,7 +242,7 @@
             </li>
         </ol>
 
-        <h2>{{ __('THIRD PARTY CONTENT AND SERVICES.') }}</h2>
+        <h2 class="counter__item">{{ __('THIRD PARTY CONTENT AND SERVICES.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -260,7 +261,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('INTELLECTUAL PROPERTY RIGHTS.') }}</h2>
+        <h2 class="counter__item">{{ __('INTELLECTUAL PROPERTY RIGHTS.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::markdown(
                 __(
@@ -276,7 +277,7 @@
             </li>
         </ol>
 
-        <h2>{{ __('LICENSES.') }}</h2>
+        <h2 class="counter__item">{{ __('LICENSES.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -300,7 +301,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('USER REPRESENTATIONS.') }}</h2>
+        <h2 class="counter__item">{{ __('USER REPRESENTATIONS.') }}</h2>
         <ol class="stack" type="a">
             <li>{{ __('You understand and agree that your participation in the Platform is entirely voluntary, and that you are under no obligation to agree to these Terms unless you wish to access the Platform.') }}
             </li>
@@ -314,7 +315,7 @@
             </li>
         </ol>
 
-        <h2>{{ __('INDEMNITY AND RELEASE.') }}</h2>
+        <h2 class="counter__item">{{ __('INDEMNITY AND RELEASE.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -327,7 +328,7 @@
             </li>
         </ol>
 
-        <h2>{{ __('DISCLAIMER OF WARRANTIES.') }}</h2>
+        <h2 class="counter__item">{{ __('DISCLAIMER OF WARRANTIES.') }}</h2>
         <p>{{ __('YOUR USE OF THE PLATFORM IS AT YOUR SOLE RISK. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE PLATFORM IS PROVIDED ON AN “AS IS”, “WITH ALL FAULTS” AND “AS AVAILABLE” BASIS AND AT USER’S SOLE RISK. IRIS EXPRESSLY DISCLAIMS ALL REPRESENTATIONS AND WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES AND CONDITIONS OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IRIS MAKES NO WARRANTY THAT (I) THE PLATFORM WILL MEET YOUR REQUIREMENTS, (II) THE PLATFORM WILL BE UNINTERRUPTED, TIMELY, UNFAILINGLY SECURE, OR ERROR-FREE, (III) INFORMATION OBTAINED FROM YOUR USE OF THE PLATFORM WILL BE ACCURATE, ERROR FREE, RELIABLE, OR MEET THE NEEDS OF OR REQUIREMENTS OF USERS; (IV) WILL ALWAYS BE AVAILABLE, ACCESSIBLE, UNINTERRUPTED, TIMELY, SECURE OR FREE OF MALICIOUS CODE OR VIRUS; (IV) INFORMATION OR MATERIALS OBTAINED BY YOU THROUGH THE PLATFORM WILL MEET YOUR EXPECTATIONS.') }}
         </p>
         <p>{{ __('ANY SERVICE CONTENT DOWNLOADED OR OTHERWISE OBTAINED THROUGH THE USE OF THE PLATFORM IS DONE AT YOUR OWN DISCRETION AND RISK AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER SYSTEM OR LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY SUCH MATERIAL.') }}
@@ -335,7 +336,7 @@
         <p>{{ __('NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM IRIS OR THROUGH ACCESS TO OR USE OF THE PLATFORM OR SERVICES SHALL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THE TERMS OF SERVICE.') }}
         </p>
 
-        <h2>{{ __('LIMITATION OF LIABILITY.') }}</h2>
+        <h2 class="counter__item">{{ __('LIMITATION OF LIABILITY.') }}</h2>
         <p>{{ __('YOU EXPRESSLY UNDERSTAND AND AGREE THAT IRIS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY DAMAGES, OR DAMAGES FOR LOSS OF PROFITS INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF GOODWILL, USE, DATA OR OTHER INTANGIBLE LOSSES (EVEN IF IRIS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES), WHETHER BASED ON CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY OR OTHERWISE, INCLUDING BUT NOT LIMITED TO THOSE DAMAGES RESULTING FROM: (I) THE USE OR THE INABILITY TO USE THE PLATFORM; (II) THE COST OF PROCUREMENT OF SUBSTITUTE GOODS AND SERVICES RESULTING FROM ANY GOODS, DATA, INFORMATION OR SERVICES PURCHASED OR OBTAINED OR MESSAGES RECEIVED OR TRANSACTIONS ENTERED INTO THROUGH OR FROM THE PLATFORM; (III) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR TRANSMISSIONS OR DATA; (IV) STATEMENTS OR CONDUCT OF ANY THIRD PARTY ON THE PLATFORM; (V) ANY ACTION YOU TAKE BASED ON THE INFORMATION YOU RECEIVE IN THROUGH OR FROM PLATFORM; (VI) YOUR FAILURE TO KEEP YOUR PASSWORD OR ACCOUNT DETAILS SECURE AND CONFIDENTIAL; (VII) THE IMPROPER AUTHORIZATION FOR THE PLATFORM BY SOMEONE CLAIMING SUCH AUTHORITY; OR (VII) ANY OTHER MATTER RELATING TO THE PLATFORM.') }}
         </p>
         {!! Str::markdown(
@@ -348,11 +349,11 @@
         <p>{{ __('IF YOU ARE DISSATISFIED WITH ANY PORTION OF THE PLATFORM OR WITH THESE TERMS OF SERVICE, YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USE OF THE PLATFORM.') }}
         </p>
 
-        <h2>{{ __('USER DISPUTES.') }}</h2>
+        <h2 class="counter__item">{{ __('USER DISPUTES.') }}</h2>
         <p>{{ __('You agree that you are solely responsible for your interactions with any other user in connection with the Platform and that IRIS will have no liability or responsibility with respect thereto. IRIS reserves the right, but has no obligation, to become involved in any way with disputes between you and any other user of the Platform.') }}
         </p>
 
-        <h2>{{ __('TERMINATION.') }}</h2>
+        <h2 class="counter__item">{{ __('TERMINATION.') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -389,11 +390,11 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('SURVEYS.') }}</h2>
+        <h2 class="counter__item">{{ __('SURVEYS.') }}</h2>
         <p>{{ __('IRIS desires to continually improve the Platform or Service and may, in accordance with the IRIS Privacy Policy, contact you regarding your use of the Platform or Service. IRIS may also contact you about other studies it has conducted, is conducting, or may conduct in the future, or other services it offers or may offer in the future.') }}
         </p>
 
-        <h2>{{ __('GENERAL') }}</h2>
+        <h2 class="counter__item">{{ __('GENERAL') }}</h2>
         <ol class="stack" type="a">
             <li>{!! Str::inlineMarkdown(
                 __(
@@ -452,7 +453,7 @@
             ) !!}</li>
         </ol>
 
-        <h2>{{ __('QUESTIONS') }}</h2>
+        <h2 class="counter__item">{{ __('QUESTIONS') }}</h2>
         {!! Str::markdown(
             __('If you have any questions, you understand that you may contact IRIS via email at **[[:email](:mailto)]**.', [
                 'email' => $email,

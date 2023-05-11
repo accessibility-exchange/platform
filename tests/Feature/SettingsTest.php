@@ -11,6 +11,22 @@ test('only administrative users can access the settings page', function () {
 
     $response = $this->actingAs($administrator)->get(route('filament.pages.settings'));
     $response->assertSuccessful();
-    $response->assertSeeInOrder(['Support email', 'Support phone', 'Mailing address', 'Facebook page', 'LinkedIn page', 'Twitter page',
-        'YouTube page', ]);
+    $response->assertSeeInOrder([
+        'Website settings',
+        'Contact',
+        'Support email',
+        'Support phone',
+        'Mailing address',
+        'Social media',
+        'Facebook page',
+        'LinkedIn page',
+        'Twitter page',
+        'YouTube page',
+        'Registration',
+        'Individual orientation',
+        'Community organization orientation',
+        'Federally regulated organization orientation',
+        'Accessibility consultant application',
+        'Community connector application',
+    ]);
 });

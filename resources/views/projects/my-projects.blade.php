@@ -85,7 +85,7 @@
         @break
 
         @case('regulated-organization')
-            @include('projects.my-projects.running')
+            @includeWhen($projectable, 'projects.my-projects.running')
         @break
 
         @default

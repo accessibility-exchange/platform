@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -74,6 +75,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'accepted_privacy_policy_at',
         'oriented_at',
         'suspended_at',
+        'dismissed_customize_prompt_at',
     ];
 
     protected $hidden = [
@@ -311,6 +313,30 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function isAdministratorOf(mixed $model): bool
     {
         return $model->hasAdministratorWithEmail($this->email);
+    }
+
+    public function hasTasksToComplete(): bool
+    {
+        if ($this->checkStatus('pending') && $this->context === UserContext::Individual->value) {
+            return true;
+        }
+
+        if ($this->checkStatus('suspended')) {
+            return false;
+        }
+
+        return match ($this->context) {
+            UserContext::Individual->value => ! $this->individual?->isReady(),
+            UserContext::Organization->value => $this->organization
+                && (! $this->organization->checkStatus('suspended'))
+                && $this->isAdministratorOf($this->organization)
+                && ($this->organization->checkStatus('pending') || $this->organization->checkStatus('draft')),
+            UserContext::RegulatedOrganization->value => $this->regulatedOrganization
+                && (! $this->regulatedOrganization->checkStatus('suspended'))
+                && $this->isAdministratorOf($this->regulatedOrganization)
+                && ($this->regulatedOrganization->checkStatus('pending') || $this->regulatedOrganization->checkStatus('draft') || $this->regulatedOrganization->publishedProjects()->count() === 0),
+            default => false,
+        };
     }
 
     public function blockedOrganizations(): MorphToMany
