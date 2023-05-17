@@ -87,11 +87,12 @@
                             {{ __('Engagements') }}
                         </x-nav-link>
                     </li>
-                    <li>
+                    {{-- TODO: Enable when there is the ability to upload reports --}}
+                    {{-- <li>
                         <x-nav-link :href="localized_route('projects.show-outcomes', $project)" :active="request()->localizedRouteIs('projects.show-outcomes')">
                             {{ __('Outcomes and reports') }}
                         </x-nav-link>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
         </div>

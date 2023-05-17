@@ -13,8 +13,7 @@
 
 <div class="space-y-12">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
-        @clear-flash-message.window="visible = false"
-        @remove-flash-message.window="setTimeout(() => visible = false, 5000)">
+        @clear-flash-message.window="visible = false">
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">

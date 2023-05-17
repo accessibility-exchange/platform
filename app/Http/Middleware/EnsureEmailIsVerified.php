@@ -13,11 +13,6 @@ class EnsureEmailIsVerified
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $redirectToRoute
-     * @return Response|RedirectResponse|null
      */
     public function handle(Request $request, Closure $next, string $redirectToRoute = null): Response|RedirectResponse|null
     {

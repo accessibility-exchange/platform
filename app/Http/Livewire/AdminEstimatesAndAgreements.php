@@ -59,8 +59,6 @@ class AdminEstimatesAndAgreements extends Component
         session()->flash('message', __('The estimate for “:project” has been marked as returned.', ['project' => $project->getTranslation('name', locale())]));
 
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 
     public function markAgreementReceived(int $id)
@@ -76,7 +74,5 @@ class AdminEstimatesAndAgreements extends Component
         session()->flash('message', __('The agreement for “:project” has been marked as received.', ['project' => $project->getTranslation('name', locale())]));
 
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 }

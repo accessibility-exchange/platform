@@ -54,3 +54,8 @@ test('get signed language for written language', function () {
     expect(get_signed_language_for_written_language('en'))->toEqual('asl');
     expect(get_signed_language_for_written_language('fr'))->toEqual('lsq');
 });
+
+test('convert signed languages to written languages', function () {
+    expect(to_written_languages(['asl', 'lsq']))->toEqual(['en', 'fr']);
+    expect(to_written_languages(['lsq', 'asl', 'en', 'fr']))->toEqual(['fr', 'en']);
+});
