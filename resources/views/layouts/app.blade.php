@@ -8,6 +8,8 @@
 <body class="{{ $bodyClass }}">
     @include('layouts.header')
 
+    <x-language-modal />
+
     <!-- Main Content -->
     <main id="main">
         <div @class([
@@ -37,6 +39,8 @@
     </main>
 
     @include('layouts.footer')
+    @include('cookie-consent::index')
+
     @env(['dev', 'local'])
     @include('partials.hubspot')
     @endenv

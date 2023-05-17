@@ -356,6 +356,11 @@
     --tts-selection-controller-border-color-active: var(--theme-btn-primary-border-active, var(--color-blue-6));
     --tts-selection-controller-color-active: var(--theme-btn-primary-color-active, var(--color-blue-6));
 
+    /* Cookie Consent */
+    --cookie-consent-background: var(--theme-cookie-consent-background, var(--color-blue-8));
+    --cookie-consent-color: var(--theme-cookie-consent-color, var(--color-white));
+    --cookie-consent-shadow: var(--theme-cookie-consent-shadow, 0 0 10px rgb(0 0 0 / 15%));
+
     /* Footer */
     --footer-border: var(--theme-footer-border, transparent);
 

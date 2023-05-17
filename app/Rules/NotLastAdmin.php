@@ -9,15 +9,11 @@ class NotLastAdmin implements Rule
 {
     /**
      * The membership under validation.
-     *
-     * @var Membership
      */
     private Membership $membership;
 
     /**
      * Constructor.
-     *
-     * @param  Membership  $membership
      */
     public function __construct(Membership $membership)
     {
@@ -29,7 +25,6 @@ class NotLastAdmin implements Rule
      *
      * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
      */
     public function passes($attribute, $value): bool
     {
@@ -38,8 +33,6 @@ class NotLastAdmin implements Rule
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {

@@ -33,8 +33,6 @@ class Sector extends Model implements Selectable
 
     /**
      * The attributes that are translatable.
-     *
-     * @var array
      */
     public array $translatable = [
         'name',

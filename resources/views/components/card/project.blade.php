@@ -9,8 +9,10 @@
     </x-slot>
     <p>
         <strong>{{ __('Project by :projectable', ['projectable' => $model->projectable->name]) }}</strong><br />
-        <span class="font-semibold">{{ __('Sector:') }}</span>
-        {{ implode(', ',$model->projectable->sectors()->pluck('name')->toArray()) }}
+        @if ($model->projectable->sectors()->count())
+            <span class="font-semibold">{{ __('Sector:') }}</span>
+            {{ implode(', ',$model->projectable->sectors()->pluck('name')->toArray()) }}
+        @endif
     </p>
     <p class="flex flex-wrap gap-3">
         <span class="badge">{{ $model->status }}</span>

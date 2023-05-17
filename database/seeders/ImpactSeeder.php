@@ -15,19 +15,39 @@ class ImpactSeeder extends Seeder
     public function run()
     {
         $impacts = [
-            __('Employment'),
-            __('Buildings and public spaces'),
-            __('Information and communication technologies'),
-            __('Communication, other than information and communication technologies'),
-            __('Buying goods, services, facilities'),
-            __('Programs and services'),
-            __('Transportation'),
+            'employment' => [
+                'name' => __('Employment'),
+            ],
+            'built-environment' => [
+                'name' => __('Built environment'),
+            ],
+            'communication' => [
+                'name' => __('Communications'),
+            ],
+            'information' => [
+                'name' => __('Information technology'),
+            ],
+            'procurement' => [
+                'name' => __('Procurement'),
+            ],
+            'policy-programs' => [
+                'name' => __('Policy and programs'),
+            ],
+            'service-delivery' => [
+                'name' => __('Service delivery'),
+            ],
         ];
 
         foreach ($impacts as $impact) {
             Impact::firstOrCreate([
-                'name->en' => $impact,
-                'name->fr' => trans($impact, [], 'fr'),
+                'name' => [
+                    'en' => $impact['name'],
+                    'fr' => trans($impact['name'], [], 'fr'),
+                ],
+                'description' => isset($impact['description']) ? [
+                    'en' => $impact['description'],
+                    'fr' => trans($impact['description'], [], 'fr'),
+                ] : null,
             ]);
         }
     }

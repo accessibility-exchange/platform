@@ -17,7 +17,10 @@
                     </ul>
                 </nav>
             @endif
-            @include('components.navigation')
+            {{-- Don't show if no session available (i.e on error pages like 404) --}}
+            @unless(session()->missing('_token'))
+                @include('components.navigation')
+            @endunless
         </div>
     </div>
     @stack('banners')

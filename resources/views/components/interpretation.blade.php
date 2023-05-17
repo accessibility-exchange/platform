@@ -9,6 +9,7 @@
             <div class="stack width:full" x-data="vimeoPlayer({
                 url: '{{ $videoSrc }}',
                 byline: false,
+                dnt: true,
                 pip: true,
                 portrait: false,
                 responsive: true,

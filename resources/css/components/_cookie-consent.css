@@ -1,0 +1,14 @@
+.cookie-consent__content {
+    box-shadow: var(--cookie-consent-shadow);
+    max-width: var(--space-240);
+    padding: var(--space-8);
+}
+
+.cookie-consent__content.darker {
+    background-color: var(--cookie-consent-background);
+    color: var(--cookie-consent-color);
+}
+
+button.cookie-consent__agree {
+    padding-inline: var(--space-16);
+}

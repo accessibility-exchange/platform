@@ -11,6 +11,8 @@
         @include('partials.help-bar')
     </header>
 
+    <x-language-modal />
+
     <!-- Main Content -->
     <main id="main">
         <div class="cover">

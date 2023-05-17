@@ -55,7 +55,6 @@ class ManageAccounts extends Component
         $this->dispatchBrowserEvent('clear-flash-message');
         session()->flash('message', $message);
         $this->dispatchBrowserEvent('add-flash-message');
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 
     public function search()

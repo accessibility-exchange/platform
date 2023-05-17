@@ -296,6 +296,11 @@
     --theme-expander-color-active: var(--bg);
     --theme-expander-border-active: var(--interactive);
 
+    /* Cookie Consent */
+    --theme-cookie-consent-background: var(--bg);
+    --theme-cookie-consent-color: var(--fg);
+    --theme-cookie-consent-shadow: 0 0 0 var(--border) var(--fg);
+
     /* Footer */
     --theme-footer-border: var(--divider-color);
 

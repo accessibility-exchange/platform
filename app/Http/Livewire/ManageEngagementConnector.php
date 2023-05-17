@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Routing\Route;
 use Livewire\Component;
 
@@ -74,8 +75,6 @@ class ManageEngagementConnector extends Component
         session()->flash('message', __('Your engagement has been updated.'));
 
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 
     public function cancelInvitation()
@@ -84,6 +83,12 @@ class ManageEngagementConnector extends Component
 
         $this->invitation->delete();
 
+        $notifications = DatabaseNotification::where('data->invitation_id', $this->invitation->id)->get();
+
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+
         $this->invitation = null;
 
         $this->dispatchBrowserEvent('clear-flash-message');
@@ -91,8 +96,6 @@ class ManageEngagementConnector extends Component
         session()->flash('message', __('Your invitation has been cancelled.'));
 
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 
     public function removeConnector()
@@ -114,7 +117,5 @@ class ManageEngagementConnector extends Component
         session()->flash('message', __('Your Community Connector has been removed.'));
 
         $this->dispatchBrowserEvent('add-flash-message');
-
-        $this->dispatchBrowserEvent('remove-flash-message');
     }
 }

@@ -38,8 +38,8 @@ class TestDataSeeder extends Seeder
                 'areaTypes' => ['Urban areas'],
                 'disabilityTypes' => [],
                 'livedExperiences' => [],
-                'sectors' => ['Transportation', 'Financial services', 'Federal government programs and services'],
-                'impacts' => ['Buildings and public spaces', 'Buying goods, services, facilities'],
+                'sectors' => ['Government of Canada', 'Federally Regulated private sector'],
+                'impacts' => ['Built environment', 'Procurement'],
                 'individualDetails' => [
                     'published_at' => now(),
                     'roles' => ['consultant', 'connector'],
@@ -62,7 +62,7 @@ class TestDataSeeder extends Seeder
                     ],
                     'website_link' => 'https://www.Mysite.com',
                     'bio' => [
-                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free envirnment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
+                        'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free environment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
                     ],
                     'meeting_types' => ['in_person', 'web_conference', 'phone'],
                     'connection_lived_experience' => 'yes-all',
@@ -85,18 +85,15 @@ class TestDataSeeder extends Seeder
                 'disabilityTypes' => ['Deaf'],
                 'livedExperiences' => [],
                 'sectors' => [
-                    'Transportation',
-                    'Financial services',
-                    'Telecommunications',
-                    'Broadcasting',
-                    'Crown corporations',
+                    'Government of Canada',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
-                    'Information and communication technologies',
-                    'Buying goods, services, facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -119,7 +116,7 @@ class TestDataSeeder extends Seeder
                         'en' => 'I have been part of many different focus groups and advisory committees to make provincial services and programs more accessible and inclusive for the Deaf as well as the 2SLGBTQIA+ community. ',
                     ],
                     'bio' => [
-                        'en' => 'As a Deaf trans person I can bring in unique intersections of experinces to any conversation revolving around the issues of accessibility and inclusion. I have been one of the few people leading the inclusion and equaity efforts in my region. ',
+                        'en' => 'As a Deaf trans person I can bring in unique intersections of experiences to any conversation revolving around the issues of accessibility and inclusion. I have been one of the few people leading the inclusion and equaity efforts in my region. ',
                     ],
                     'meeting_types' => ['in_person', 'web_conference', 'phone'],
                     'connection_lived_experience' => 'yes-all',
@@ -148,18 +145,15 @@ class TestDataSeeder extends Seeder
                     'Supporters',
                 ],
                 'sectors' => [
-                    'Transportation',
-                    'Financial services',
-                    'Telecommunications',
-                    'Broadcasting',
-                    'Crown corporations',
+                    'Government of Canada',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
-                    'Information and communication technologies',
-                    'Buying goods, services, facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -204,18 +198,15 @@ class TestDataSeeder extends Seeder
                 'disabilityTypes' => [],
                 'livedExperiences' => [],
                 'sectors' => [
-                    'Transportation',
-                    'Financial services',
-                    'Telecommunications',
-                    'Broadcasting',
-                    'Crown corporations',
+                    'Government of Canada',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
-                    'Information and communication technologies',
-                    'Buying goods, services, facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -264,18 +255,15 @@ class TestDataSeeder extends Seeder
                     'Supporters',
                 ],
                 'sectors' => [
-                    'Transportation',
-                    'Financial services',
-                    'Telecommunications',
-                    'Broadcasting',
-                    'Crown corporations',
+                    'Government of Canada',
+                    'Federally Regulated private sector',
                 ],
                 'impacts' => [
                     'Employment',
-                    'Buildings and public spaces',
-                    'Information and communication technologies',
-                    'Buying goods, services, facilities',
-                    'Transportation',
+                    'Built environment',
+                    'Information technology',
+                    'Procurement',
+                    'Service delivery',
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
@@ -294,11 +282,11 @@ class TestDataSeeder extends Seeder
                         'en' => 'I have supported both my parents who suffered from dementia later in life. ',
                     ],
                     'skills_and_strengths' => [
-                        'en' => 'Many years of working directly with individuals in the disability community who also have inetrsecting identities.  ',
+                        'en' => 'Many years of working directly with individuals in the disability community who also have intersecting identities.',
                     ],
                     'website_link' => 'https://www.Mysite.com',
                     'bio' => [
-                        'en' => 'I am a second generation Chinese who is advocating for senior immigrants who may suffer from alzheimers and dementia ',
+                        'en' => 'I am a second generation Chinese who is advocating for senior immigrants who may suffer from Alzheimer’s and dementia',
                     ],
                     'meeting_types' => ['in_person', 'web_conference', 'phone'],
                     'connection_lived_experience' => 'yes-some',
@@ -345,7 +333,7 @@ class TestDataSeeder extends Seeder
                     'email' => 'chow@accessibilityexchange.ca',
                     'context' => 'regulated-organization',
                 ],
-                'froSector' => 'Transportation',
+                'froSector' => 'Federally Regulated private sector',
                 'froDetails' => [
                     'published_at' => now(),
                     'type' => 'business',
@@ -377,7 +365,7 @@ class TestDataSeeder extends Seeder
                     'email' => 'md@accessibilityexchange.ca',
                     'context' => 'regulated-organization',
                 ],
-                'froSector' => 'Federal government programs and services',
+                'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
                     'type' => 'government',
@@ -409,7 +397,7 @@ class TestDataSeeder extends Seeder
                     'email' => 'aselim@accessibilityexchange.ca',
                     'context' => 'regulated-organization',
                 ],
-                'froSector' => 'Crown corporations',
+                'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
                     'type' => 'public-sector',
@@ -487,7 +475,7 @@ class TestDataSeeder extends Seeder
                     'agreement_received_at' => now(),
                 ],
                 'organization' => 'BlueSky Airlines',
-                'impact' => 'Information and communication technologies',
+                'impact' => 'Information technology',
             ],
             [
                 'project' => [
@@ -510,7 +498,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
                 'organization' => 'Agriculture and Agri-Food Canada',
-                'impact' => 'Programs and services',
+                'impact' => 'Policy and programs',
 
             ],
             [
@@ -534,7 +522,7 @@ class TestDataSeeder extends Seeder
                     'contact_person_response_time' => ['en' => '24 hours'],
                 ],
                 'organization' => 'Canada Post',
-                'impact' => 'Buildings and public spaces',
+                'impact' => 'Built environment',
             ],
         ];
 
