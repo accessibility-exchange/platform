@@ -68,6 +68,7 @@ class Organization extends Model
         'oriented_at',
         'validated_at',
         'suspended_at',
+        'dismissed_invite_prompt_at',
         'name',
         'type',
         'languages',
@@ -193,6 +194,13 @@ class Organization extends Model
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereNull('published_at')
+            ->orderBy('start_date');
+    }
+
+    public function publishedProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereNotNull('published_at')
             ->orderBy('start_date');
     }
 
@@ -322,6 +330,28 @@ class Organization extends Model
     public function hasAddedDetails(): bool
     {
         return ! is_null($this->region);
+    }
+
+    public function isInProgress(): bool
+    {
+        if ($this->constituentIdentities->count() > 0) {
+            return true;
+        }
+
+        $attributes = $this->only([
+            'region',
+            'locality',
+            'about',
+            'service_areas',
+            'consulting_services',
+            'social_links',
+            'website_link',
+            'other_disability_constituency',
+            'other_ethnoracial_identity_constituency',
+            'staff_lived_experience',
+        ]);
+
+        return count(array_filter($attributes, fn ($attr) => ! blank($attr))) || count($this->extra_attributes->all());
     }
 
     public function isPreviewable(): bool

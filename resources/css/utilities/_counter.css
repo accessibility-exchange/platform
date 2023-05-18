@@ -1,0 +1,8 @@
+.counter {
+    counter-reset: count;
+}
+
+.counter__item::before {
+    content: counter(count) ". ";
+    counter-increment: count;
+}

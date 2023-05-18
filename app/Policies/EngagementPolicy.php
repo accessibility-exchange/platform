@@ -36,8 +36,14 @@ class EngagementPolicy
             ]));
         }
 
-        // Drafts cannot be viewed.
+        // Previewable drafts can be viewed by their team members or platform administrators.
         if ($engagement->checkStatus('draft')) {
+            if ($engagement->isPreviewable()) {
+                return $user->isMemberOf($engagement->project->projectable) || $user->isAdministrator()
+                    ? Response::allow()
+                    : Response::denyAsNotFound();
+            }
+
             return Response::denyAsNotFound();
         }
 

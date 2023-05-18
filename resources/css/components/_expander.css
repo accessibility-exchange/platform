@@ -84,3 +84,19 @@
 .expander .title button svg {
     width: 1.5em;
 }
+
+/* Disclosure variant */
+
+.expander.expander--disclosure .title + * {
+    margin-block-start: 0;
+}
+
+.expander.expander--disclosure .title button {
+    padding-inline: 0;
+    width: auto;
+}
+
+.expander.expander--disclosure .title button::before,
+.expander.expander--disclosure .title button:active::before {
+    border-block-start: none;
+}

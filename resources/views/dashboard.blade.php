@@ -46,6 +46,10 @@
         @endif
     </x-slot>
 
+    @if ($user->hasTasksToComplete())
+        @include('dashboard.getting-started')
+    @endif
+
     @if ($user->context === \App\Enums\UserContext::Administrator->value)
         @include('dashboard.administrator')
     @elseif ($user->context === \App\Enums\UserContext::Individual->value)

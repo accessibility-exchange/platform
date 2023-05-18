@@ -8,6 +8,11 @@
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
+        @if ($engagement->checkStatus('draft'))
+            @push('banners')
+                <x-banner type="warning" icon="">{{ __('You are previewing your engagement page.') }}</x-banner>
+            @endpush
+        @endif
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             <li>

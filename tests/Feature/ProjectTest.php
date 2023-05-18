@@ -267,6 +267,31 @@ test('users can view projects', function () {
     $response->assertOk();
 });
 
+test('incomplete users cannot view projects page', function ($context, $redirectRoute) {
+    $user = User::factory()->create(['context' => $context]);
+
+    $response = $this->actingAs($user)->get(localized_route('projects.my-projects'));
+    $response->assertRedirect(localized_route($redirectRoute));
+
+    $response = $this->actingAs($user)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.my-participating-projects'));
+    $response->assertNotFound();
+
+    $response = $this->actingAs($user)->get(localized_route('projects.my-running-projects'));
+    $response->assertNotFound();
+})->with([
+    'organization context' => [
+        'organization',
+        'organizations.show-type-selection',
+    ],
+    'regulated-organization context' => [
+        'regulated-organization',
+        'regulated-organizations.show-type-selection',
+    ],
+]);
+
 test('notifications can be routed for projects', function () {
     $project = Project::factory()->create([
         'contact_person_name' => faker()->name(),

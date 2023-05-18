@@ -32,4 +32,9 @@ class OrganizationStatus extends \Makeable\EloquentStatus\Status
     {
         return $query->whereNotNull('suspended_at');
     }
+
+    public function dismissedInvitePrompt($query)
+    {
+        return $query->whereNotNull('dismissed_invite_prompt_at');
+    }
 }
