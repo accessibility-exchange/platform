@@ -6,7 +6,7 @@
             <li><a
                     href="{{ localized_route('projects.show', $engagement->project) }}">{{ $engagement->project->name }}</a>
             </li>
-            <li><a href="{{ localized_route('engagements.show', $engagement) }}">{{ $engagement->name }}</a></li>
+            <li><a href="{{ localized_route('engagements.manage', $engagement) }}">{{ $engagement->name }}</a></li>
         </ol>
         <h1>
             {{ __('Edit engagement details') }}

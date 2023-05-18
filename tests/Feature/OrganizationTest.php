@@ -9,6 +9,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Organization;
+use App\Models\Project;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
@@ -1121,6 +1122,49 @@ test('organizational relationships to projects can be derived from both projects
         ->toContain($organization->id);
 });
 
+test('organizations projects functions based on project state', function () {
+    $organization = Organization::factory()->create([
+        'roles' => ['consultant', 'connector', 'participant'],
+        'published_at' => now(),
+    ]);
+
+    $draftProject = Project::factory()->create(['published_at' => null]);
+    $inProgressProject = Project::factory()->create();
+    $upcomingProject = Project::factory()->create([
+        'start_date' => now()->addMonth(),
+        'end_date' => now()->addMonths(12),
+    ]);
+    $completedProject = Project::factory()->create([
+        'start_date' => now()->subMonths(12),
+        'end_date' => now()->subMonth(),
+    ]);
+
+    $organization->projects()->saveMany([
+        $draftProject,
+        $inProgressProject,
+        $upcomingProject,
+        $completedProject,
+    ]);
+
+    expect($organization->projects)->toHaveCount(4);
+    expect($organization->projects->modelKeys())->toContain($draftProject->id, $inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($organization->draftProjects)->toHaveCount(1);
+    expect($organization->draftProjects->modelKeys())->toContain($draftProject->id);
+
+    expect($organization->publishedProjects)->toHaveCount(3);
+    expect($organization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($organization->inProgressProjects)->toHaveCount(2);
+    expect($organization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+
+    expect($organization->upcomingProjects)->toHaveCount(1);
+    expect($organization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);
+
+    expect($organization->completedProjects)->toHaveCount(1);
+    expect($organization->completedProjects->modelKeys())->toContain($completedProject->id);
+});
+
 test('organizations have slugs in both languages even if only one is provided', function () {
     $organization = Organization::factory()->create();
     expect($organization->getTranslation('slug', 'fr', false))
@@ -1139,4 +1183,61 @@ test('organization can have many courses', function () {
 
     expect($organization->courses->contains($courseOne))->toBeTrue();
     expect($organization->courses->contains($courseOne))->toBeTrue();
+});
+
+test('Organization isInProgress()', function ($data, $withConstituentIdentity, $expected) {
+    $this->seed(IdentitySeeder::class);
+    $organization = Organization::factory()
+        ->create($data);
+
+    if ($withConstituentIdentity) {
+        $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
+    }
+
+    expect($organization->isInProgress())->toEqual($expected);
+})->with('organizationIsInProgress');
+
+test('organization status checks return expected state', function () {
+    $organization = Organization::factory()->create([
+        'published_at' => null,
+        'oriented_at' => null,
+        'validated_at' => null,
+        'suspended_at' => null,
+        'dismissed_invite_prompt_at' => null,
+    ]);
+
+    expect($organization->checkStatus('draft'))->toBeTrue();
+    expect($organization->checkStatus('published'))->toBeFalse();
+    expect($organization->checkStatus('pending'))->toBeTrue();
+    expect($organization->checkStatus('approved'))->toBeFalse();
+    expect($organization->checkStatus('suspended'))->toBeFalse();
+    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
+
+    $organization->published_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('draft'))->toBeFalse();
+    expect($organization->checkStatus('published'))->toBeTrue();
+
+    $organization->oriented_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('pending'))->toBeFalse();
+    expect($organization->checkStatus('approved'))->toBeFalse();
+
+    $organization->validated_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('pending'))->toBeFalse();
+    expect($organization->checkStatus('approved'))->toBeTrue();
+
+    $organization->suspended_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('suspended'))->toBeTrue();
+
+    $organization->dismissed_invite_prompt_at = now();
+    $organization->save();
+
+    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });

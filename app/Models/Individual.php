@@ -340,6 +340,33 @@ class Individual extends Model implements CipherSweetEncrypted
             ->orderBy('start_date');
     }
 
+    public function isInProgress(): bool
+    {
+        if ($this->identityConnections->count() > 0) {
+            return true;
+        }
+
+        $attributes = $this->only([
+            'pronouns',
+            'bio',
+            'region',
+            'locality',
+            'working_languages',
+            'consulting_services',
+            'social_links',
+            'website_link',
+            'other_disability_connection',
+            'other_ethnoracial_identity_connection',
+            'connection_lived_experience',
+            'lived_experience',
+            'skills_and_strengths',
+            'relevant_experiences',
+            'meeting_types',
+        ]);
+
+        return count(array_filter($attributes, fn ($attr) => ! blank($attr))) || count($this->extra_attributes->all());
+    }
+
     public function isPreviewable(): bool
     {
         $rules = [
@@ -392,6 +419,23 @@ class Individual extends Model implements CipherSweetEncrypted
         }
 
         return false;
+    }
+
+    public function isReady(): bool
+    {
+        if ($this->user->checkStatus('pending')) {
+            return false;
+        }
+
+        if ($this->isParticipant() && $this->paymentTypes()->count() === 0 && blank($this->other_payment_type)) {
+            return false;
+        }
+
+        if (($this->isConnector() || $this->isConsultant()) && $this->checkStatus('draft')) {
+            return false;
+        }
+
+        return true;
     }
 
     public function isParticipant(): bool

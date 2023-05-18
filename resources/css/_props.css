@@ -122,6 +122,7 @@
     --alert-background-success: var(--theme-alert-background-success, var(--color-green-1));
     --alert-border-success: var(--theme-alert-border-success, var(--alert-background-success));
     --alert-color-success: var(--theme-alert-color-success, var(--color-graphite-8));
+    --alert-background-prompt: var(--theme-alert-background-prompt, var(--alert-background));
 
     /* Hint */
     --hint-color: var(--theme-hint-color, var(--color-graphite-7));

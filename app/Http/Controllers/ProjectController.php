@@ -107,7 +107,7 @@ class ProjectController extends Controller
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
-            'engagements' => $user->can('manage', $project) ? $project->allEngagements : $project->engagements,
+            'engagements' => $user->can('manage', $project) || $user->isAdministrator() ? $project->allEngagements : $project->engagements,
         ]);
     }
 

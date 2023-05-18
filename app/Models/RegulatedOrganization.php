@@ -60,6 +60,7 @@ class RegulatedOrganization extends Model
         'oriented_at',
         'validated_at',
         'suspended_at',
+        'dismissed_invite_prompt_at',
         'name',
         'type',
         'languages',
@@ -221,6 +222,13 @@ class RegulatedOrganization extends Model
     {
         return $this->morphMany(Project::class, 'projectable')
             ->whereNull('published_at')
+            ->orderBy('start_date');
+    }
+
+    public function publishedProjects(): MorphMany
+    {
+        return $this->morphMany(Project::class, 'projectable')
+            ->whereNotNull('published_at')
             ->orderBy('start_date');
     }
 

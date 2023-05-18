@@ -1,6 +1,9 @@
 <h3>{{ __('Groups in the disability and Deaf community') }}</h3>
 
 <ul class="tags" role="list">
+    @if ($organization->extra_attributes->get('cross_disability_and_deaf_constituencies'))
+        <li class="tag">{{ __('Any group') }}</li>
+    @endif
     @foreach ($organization->disabilityAndDeafConstituencies as $constituency)
         <li class="tag">{{ $constituency->name }}</li>
     @endforeach
