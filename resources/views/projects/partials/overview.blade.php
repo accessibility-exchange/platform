@@ -59,9 +59,22 @@
     </div>
 </div>
 
-@if ($project->outcomes)
-    <h3>{{ __('Project outcome') }}</h3>
+<h3>{{ __('Project outcome') }}</h3>
 
+@if ($project->outcome_analysis || $project->outcome_analysis_other)
+    <h4>{{ __('Who’s responsible for going through results and producing an outcome') }}</h4>
+
+    <ul>
+        @foreach ($project->outcome_analysis ?? [] as $outcome_analysis)
+            <li>{{ \App\Enums\OutcomeAnalyzer::labels()[$outcome_analysis] }}</li>
+        @endforeach
+        @if ($project->outcome_analysis_other)
+            <li>{{ $project->outcome_analysis_other }}</li>
+        @endif
+    </ul>
+@endif
+
+@if ($project->outcomes)
     <h4>{{ __('Tangible outcomes of this project') }}</h4>
 
     {!! Str::markdown($project->getWrittenTranslation('outcomes', $language)) !!}
