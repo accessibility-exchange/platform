@@ -1,0 +1,36 @@
+name: Mirror branches to GitLab
+
+on:
+  push:
+    branches:
+      - dev
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - dev
+  repository:
+    paths:
+      - 'accessibility-exchange/platform/**'
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "${{ vars.GIT_USER }}"
+          git config --global user.email "${{ vars.GIT_EMAIL }}"
+          git remote add gitlab ${{ vars.GITLAB_URL }}
+
+      - name: Push to GitLab
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GITLAB_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+          git push gitlab HEAD:development
