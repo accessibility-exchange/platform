@@ -1,14 +1,14 @@
-name: Mirror dev to GitLab
+name: Mirror production to GitLab
 
 on:
   push:
     branches:
-      - dev
+      - production
     tags:
       - '*'
   pull_request:
     branches:
-      - dev
+      - production
 
 jobs:
   mirror:
@@ -31,4 +31,4 @@ jobs:
           echo "${{ secrets.GITLAB_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-          git push gitlab HEAD:development
+          git push gitlab HEAD:production
