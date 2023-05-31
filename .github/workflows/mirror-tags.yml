@@ -1,9 +1,9 @@
-name: Mirror staging to GitLab
+name: Mirror tags to GitLab
 
 on:
   push:
-    branches:
-      - staging
+    tags:
+      - '*'
 
 jobs:
   mirror:
@@ -25,7 +25,7 @@ jobs:
         with:
             ssh-private-key: ${{ secrets.GITLAB_SSH_KEY }}
 
-      - name: Push to GitLab
+      - name: Push tags to GitLab
         run: |
           ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
-          git push gitlab staging:staging
+          git push --atomic gitlab --tags
