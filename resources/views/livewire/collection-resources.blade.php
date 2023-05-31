@@ -13,7 +13,7 @@
         </h1>
 
         @if ($resourceCollection->description)
-            {!! Str::markdown($resourceCollection->description) !!}
+            {!! Str::markdown($resourceCollection->description, SAFE_MARKDOWN_OPTIONS) !!}
         @endif
     </div>
 </x-slot>

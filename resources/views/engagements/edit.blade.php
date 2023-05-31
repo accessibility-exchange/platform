@@ -297,12 +297,10 @@
             @endif
         </div>
         @if (!$engagement->hasEstimateAndAgreement())
-            {!! Str::markdown(
-                __(
-                    'You must [approve your estimate and return your signed agreement](:estimates_and_agreements) before you can publish your engagement.',
-                    ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)],
-                ),
-            ) !!}
+            {{ safe_markdown(
+                'You must [approve your estimate and return your signed agreement](:estimates_and_agreements) before you can publish your engagement.',
+                ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)],
+            ) }}
         @else
             <p>{{ __('Once you publish your engagement details, anyone on this website will be able to access it.') }}
             </p>

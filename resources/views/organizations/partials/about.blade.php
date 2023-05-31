@@ -1,6 +1,6 @@
 <h3>{{ __('About the organization') }}</h3>
 
-{!! Str::markdown($organization->getWrittenTranslation('about', $language)) !!}
+{{ $organization->getWrittenTranslation('about', $language) }}
 
 <h3>{{ __('Type of organization') }}</h3>
 

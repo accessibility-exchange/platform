@@ -8,6 +8,6 @@
     </x-slot>
     <p><strong>{{ __('Training') }}</strong></p>
     @if ($model->introduction)
-        {!! Str::markdown($model->introduction) !!}
+        {!! Str::markdown($model->introduction, SAFE_MARKDOWN_OPTIONS) !!}
     @endif
 </x-card>

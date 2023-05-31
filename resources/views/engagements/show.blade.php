@@ -74,11 +74,11 @@
                     @elseif ($engagement->paid &&
                         (auth()->user()->individual?->paymentTypes()->count() === 0 &&
                             blank(auth()->user()->individual?->other_payment_type)))
-                        <p id="engagement-full-explanation">{!! Str::inlineMarkdown(
-                            __('You must fill out your [payment information](:url) before you can sign up.', [
+                        <p id="engagement-full-explanation">
+                            {{ safe_inlineMarkdown('You must fill out your [payment information](:url) before you can sign up.', [
                                 'url' => localized_route('settings.edit-payment-information'),
-                            ]),
-                        ) !!}</p>
+                            ]) }}
+                        </p>
                     @endif
                 </div>
             @endcan
@@ -108,7 +108,7 @@
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Description') }}</h2>
 
-        {!! Str::markdown($engagement->description) !!}
+        {{ $engagement->description }}
 
         <hr class="divider--thick" />
 
@@ -116,15 +116,15 @@
 
         <h3>{{ __('Location') }}</h3>
 
-        {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
 
         <h3>{{ __('Disability or Deaf group') }}</h3>
 
-        {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->disability_and_deaf_group_summary" />
 
         <h3>{{ __('Other identities') }}</h3>
 
-        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
 
         <hr class="divider--thick" />
 
@@ -241,9 +241,9 @@
 
             <p class="mb-12">
                 @if ($engagement->paid)
-                    {!! Str::inlinemarkdown(__('This engagement is a **paid** opportunity.')) !!}
+                    {{ safe_inlinemarkdown('This engagement is a **paid** opportunity.') }}
                 @else
-                    {!! Str::inlineMarkdown(__('This engagement is a **volunteer** opportunity.')) !!}
+                    {{ safe_inlineMarkdown('This engagement is a **volunteer** opportunity.') }}
                 @endif
             </p>
         @endif

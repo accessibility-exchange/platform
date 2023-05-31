@@ -35,9 +35,6 @@
         @include('auth.register.steps.1')
     @endif
 
-    <p>
-        {!! __('If you already have an account, please :sign_in', [
-            'sign_in' => '<a href="' . localized_route('login') . '">' . __('sign in.') . '</a>',
-        ]) !!}
-    </p>
+    {{ safe_markdown('If you already have an account, please [sign in](:url).', ['url' => localized_route('login')]) }}
+
 </x-app-layout>
