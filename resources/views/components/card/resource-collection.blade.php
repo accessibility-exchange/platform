@@ -9,5 +9,5 @@
     <p><strong>{{ __('Collection') }}</strong></p>
     @isset($model->description)
         {!! Str::markdown($model->description, SAFE_MARKDOWN_OPTIONS) !!}
-        @endif
-    </x-card>
+    @endisset
+</x-card>
