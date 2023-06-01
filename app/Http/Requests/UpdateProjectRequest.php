@@ -83,10 +83,14 @@ class UpdateProjectRequest extends FormRequest
             'impacts' => [],
             'regions' => [],
             'outcome_analysis' => [],
+            'other' => 0,
         ];
 
         // Prepare input for validation
         $this->mergeIfMissing($fallbacks);
+        if (! $this['other']) {
+            $this->merge(['outcome_analysis_other' => []]);
+        }
 
         // Prepare old input in case of validation failure
         request()->mergeIfMissing($fallbacks);
