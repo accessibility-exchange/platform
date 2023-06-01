@@ -241,7 +241,7 @@
 
             <p class="mb-12">
                 @if ($engagement->paid)
-                    {{ safe_inlinemarkdown('This engagement is a **paid** opportunity.') }}
+                    {{ safe_inlineMarkdown('This engagement is a **paid** opportunity.') }}
                 @else
                     {{ safe_inlineMarkdown('This engagement is a **volunteer** opportunity.') }}
                 @endif
