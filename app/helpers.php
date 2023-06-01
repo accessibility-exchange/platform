@@ -335,8 +335,6 @@ if (! function_exists('safe_inlineMarkdown')) {
 if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
-        safe_inlinemarkdown('test');
-
         return match ($userType) {
             App\Enums\UserContext::Individual->value => settings('individual_orientation'),
             App\Enums\UserContext::Organization->value => settings('org_orientation'),
