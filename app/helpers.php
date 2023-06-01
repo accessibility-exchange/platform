@@ -265,23 +265,23 @@ define('SAFE_MARKDOWN_OPTIONS', [
 ]);
 
 if (! function_exists('safe_link_replacement')) {
-    function safe_link_replacement($value)
+    function safe_link_replacement(string $string): string
     {
-        if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            $value = htmlentities($value);
+        if (filter_var($string, FILTER_VALIDATE_EMAIL)) {
+            $string = htmlentities($string);
 
-            return "<a href=\"mailto:{$value}\">{$value}</a>";
+            return "<a href=\"mailto:{$string}\">{$string}</a>";
         }
 
-        if (filter_var($value, FILTER_VALIDATE_URL)) {
-            $value = htmlentities($value);
+        if (filter_var($string, FILTER_VALIDATE_URL)) {
+            $string = htmlentities($string);
 
-            return "<a href=\"{$value}\">{$value}</a>";
+            return "<a href=\"{$string}\">{$string}</a>";
         }
 
-        $value = htmlentities($value);
+        $string = htmlentities($string);
 
-        return "&lt;{$value}&gt;";
+        return "&lt;{$string}&gt;";
     }
 }
 
@@ -335,6 +335,8 @@ if (! function_exists('safe_inlineMarkdown')) {
 if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
+        safe_inlinemarkdown('test');
+
         return match ($userType) {
             App\Enums\UserContext::Individual->value => settings('individual_orientation'),
             App\Enums\UserContext::Organization->value => settings('org_orientation'),
