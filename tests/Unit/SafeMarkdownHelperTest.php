@@ -94,8 +94,8 @@ test('safe markdown conversion', function ($args, $expected) {
         'Injected &lt;strong&gt;should escape&lt;/strong&gt;',
     ],
     'Unescaped replacement' => [
-        ['Test <strong>[:text](:!url)</strong>', ['text' => '**my** <em>link</em>', 'url' => 'http://example.com?fruit=apple&condiment=cinamon']],
-        'Test &lt;strong&gt;<a href="http://example.com?fruit=apple&condiment=cinamon">**my** &lt;em&gt;link&lt;/em&gt;</a>&lt;/strong&gt;',
+        ['Test <strong>:text</strong>; :!other', ['text' => '**content:** <em>escaped</em>', 'other' => '<span class="someClass">unescaped</span>']],
+        'Test &lt;strong&gt;**content:** &lt;em&gt;escaped&lt;/em&gt;&lt;/strong&gt;; <span class="someClass">unescaped</span>',
     ],
     'Same replacement used as both escaped and unescaped' => [
         ['Escaped (:text); Unescaped (:!text)', ['text' => '**my** <em>link</em>']],

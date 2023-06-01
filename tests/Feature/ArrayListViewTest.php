@@ -26,6 +26,7 @@ test('Array list with multiple items', function () {
         '<ul role="list">',
         '<li>Item 1</li>',
         '<li>Item 2</li>',
+        '</ul>',
     ], false);
 
     $view->assertDontSee('<p>', false);
