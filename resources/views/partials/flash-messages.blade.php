@@ -2,7 +2,7 @@
     <x-live-region>
         @if (flash()->message)
             <x-hearth-alert :type="flash()->class" :title="Str::contains(flash()->message, __('You are previewing your')) ? __('Draft') : null">
-                {{ safe_markdown(flash()->message) }}
+                <p>{{ flash()->message }}</p>
             </x-hearth-alert>
         @endif
 
