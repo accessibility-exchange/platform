@@ -31,12 +31,10 @@
                     @cannot('publish', $organization) @ariaDisabled aria-describedby="cannot-publish-explanation" @endcannot>{{ __('Publish page') }}</button>
                 @cannot('publish', $organization)
                 <p id="cannot-publish-explanation">
-                    {!! Str::markdown(
-                        __(
-                            'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                            ['url' => orientation_link(Auth::user()->context)],
-                        ),
-                    ) !!}
+                    {{ safe_inlineMarkdown(
+                        'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
+                        ['url' => orientation_link(Auth::user()->context)],
+                    ) }}
                 </p>
             @endcannot
             </p>

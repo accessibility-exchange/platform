@@ -20,7 +20,7 @@ class EstimateRequested extends Notification
         $this->project = Project::find($notification->data['project_id']);
         $this->projectable = $this->project->projectable;
         $this->title = __('New estimate request');
-        $this->body = __('[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).', [
+        $this->body = safe_markdown('[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).', [
             'projectable' => $this->projectable->getTranslation('name', locale()),
             'projectable_url' => localized_route($this->projectable->getRoutePrefix().'.show', $this->projectable),
             'project' => $this->project->getTranslation('name', locale()),

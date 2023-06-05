@@ -50,7 +50,7 @@ trait HasMultipageEditingAndPublishing
         } elseif ($request->input('save_and_next')) {
             return redirect(localized_route($this->getRoutePrefix().'.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step + 1]));
         } elseif ($request->input('preview')) {
-            flash(__('You have successfully saved your draft :item page.', ['item' => $this->getSingularName()]).' <a href="'.localized_route($this->getRoutePrefix().'.edit', $this).'">'.__('Return to edit mode').'</a>', 'success');
+            flash(__('You have successfully saved your draft :item page.', ['item' => $this->getSingularName()]), 'success');
 
             return redirect(localized_route($this->getRoutePrefix().'.show', $this));
         } elseif ($request->input('publish')) {

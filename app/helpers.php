@@ -3,6 +3,7 @@
 use App\Settings;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Arr;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
@@ -258,20 +259,76 @@ if (! function_exists('context_from_model')) {
     }
 }
 
-if (! function_exists('contact_information')) {
-    function contact_information(): string
-    {
-        $email = settings('email');
-        $phone = phone(settings('phone'), 'CA')->formatForCountry('CA');
+define('SAFE_MARKDOWN_OPTIONS', [
+    'html_input' => 'escape',
+    'allow_unsafe_links' => false,
+]);
 
-        return Str::markdown(
-            '**'
-            .__('Email').':** ['.$email.'](mailto:'.$email.')  '
-            ."\n"
-            .'**'.__('Call or :vrs', [
-                'vrs' => '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">'.__('VRS').'</a>',
-            ]).':** '.$phone
-        );
+if (! function_exists('safe_link_replacement')) {
+    function safe_link_replacement(string $string): string
+    {
+        if (filter_var($string, FILTER_VALIDATE_EMAIL)) {
+            $string = htmlentities($string);
+
+            return "<a href=\"mailto:{$string}\">{$string}</a>";
+        }
+
+        if (filter_var($string, FILTER_VALIDATE_URL)) {
+            $string = htmlentities($string);
+
+            return "<a href=\"{$string}\">{$string}</a>";
+        }
+
+        $string = htmlentities($string);
+
+        return "&lt;{$string}&gt;";
+    }
+}
+
+// The placeholder replacement is based off of the makeReplacements method from Laravel's
+// framework/src/Illuminate/Translation/Translator.php
+// See: https://github.com/laravel/framework/blob/4d4898878d1ba52d6689506527d1d4bfa24d57f2/src/Illuminate/Translation/Translator.php#L227
+// Original License: MIT (https://github.com/laravel/framework/tree/4d4898878d1ba52d6689506527d1d4bfa24d57f2#license)
+if (! function_exists('html_replacements')) {
+    function html_replacements(string $string, array $replacements = []): string
+    {
+        if (empty($replacements)) {
+            return $string;
+        }
+
+        $replace_pairs = [];
+
+        foreach ($replacements as $key => $value) {
+            $replace_pairs[":{$key}"] = htmlentities($value);
+            $replace_pairs[":!{$key}"] = $value;
+            // Replaces `<:placeholder>` in the $string when the $string has
+            // already been processed, with HTML characters such
+            // as `<` and `>` replaced by entities.
+            $linkReplacement = safe_link_replacement($value);
+            $replace_pairs["&lt;:{$key}&gt;"] = $linkReplacement;
+            $replace_pairs["<:{$key}>"] = $linkReplacement;
+        }
+
+        return strtr($string, $replace_pairs);
+    }
+}
+
+if (! function_exists('safe_markdown')) {
+    function safe_markdown(string $string, array $replacements = [], ?string $locale = null, bool $inline = false): HtmlString
+    {
+        $markdownFuncName = $inline ? 'inlineMarkdown' : 'markdown';
+
+        $localized = __($string, [], $locale);
+        $html = Str::$markdownFuncName($localized, SAFE_MARKDOWN_OPTIONS);
+
+        return new HtmlString(html_replacements($html, $replacements));
+    }
+}
+
+if (! function_exists('safe_inlineMarkdown')) {
+    function safe_inlineMarkdown(string $string, array $replacements = [], ?string $locale = null): HtmlString
+    {
+        return safe_markdown($string, $replacements, $locale, true);
     }
 }
 

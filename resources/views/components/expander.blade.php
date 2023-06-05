@@ -14,6 +14,6 @@
         </button>
     </x-heading>
     <div class="stack" x-show="expanded" x-cloak>
-        {!! $slot ?? '' !!}
+        {{ $slot }}
     </div>
 </div>

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Str;
 
 class RegulatedOrganizationPolicy
 {
@@ -17,10 +16,7 @@ class RegulatedOrganizationPolicy
     public function before(User $user, string $ability): null|Response
     {
         if ($user->checkStatus('suspended') && $ability !== 'view') {
-            return Response::deny(Str::markdown(
-                __('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.')
-                .contact_information()
-            ));
+            return Response::deny(__('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.'));
         }
 
         return null;

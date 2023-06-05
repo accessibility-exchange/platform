@@ -2,9 +2,11 @@
 
 use App\Enums\IdentityCluster;
 use App\Models\Identity;
+use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\User;
 use Database\Seeders\IdentitySeeder;
+use Database\Seeders\LanguageSeeder;
 
 beforeEach(function () {
     $this->seed(IdentitySeeder::class);
@@ -113,3 +115,46 @@ test('mutually exclusive identities can be synced to a matching strategy', funct
     expect($this->strategy->hasIdentity($gender))->toBeFalse();
     expect($this->strategy->hasIdentity($ethnoracial))->toBeFalse();
 });
+
+test('matching strategy location type accessor', function ($data, $expected) {
+    $matchingStrategy = MatchingStrategy::factory()->create($data);
+
+    expect($matchingStrategy->location_type)->toBe($expected);
+})->with('matchingStrategyLocationType');
+
+test('matching strategy location summary accessor', function ($data, $expected) {
+    $matchingStrategy = MatchingStrategy::factory()->create($data);
+    // location_summary is sorted, but not re-indexed. array_values used to re-index
+    // because the toEqual check compares keys and values, and wouldn't consider the sort
+    // order otherwise.
+    expect(array_values($matchingStrategy->location_summary))->toEqual($expected);
+})->with('matchingStrategyLocationSummary');
+
+test('matching strategy disability and deaf group summary accessor', function ($data, $attachIdentity, $expected = []) {
+    $matchingStrategy = MatchingStrategy::factory()->create($data);
+    if ($attachIdentity) {
+        $identity = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
+        $matchingStrategy->syncRelatedIdentities(IdentityCluster::DisabilityAndDeaf, $identity->id);
+        $expected = [$identity->name];
+    }
+    expect(array_values($matchingStrategy->disability_and_deaf_group_summary))->toEqual($expected);
+})->with('matchingStrategyDisabilityAndDeafGroupSummary');
+
+test('matching strategy other identities summary accessor', function ($data, $identities, $expected = null) {
+    $this->seed(LanguageSeeder::class);
+    $matchingStrategy = MatchingStrategy::factory()->create($data);
+    $expectedIdentities = [];
+
+    foreach ($identities as $identity) {
+        if ($identity instanceof Identity) {
+            $matchingStrategy->identities()->attach($identity);
+            $expectedIdentities[] = $identity->name;
+        } else {
+            $languageIdentity = Language::where('name->en', $identity)->first();
+            $matchingStrategy->languages()->attach($languageIdentity);
+            $expectedIdentities[] = $languageIdentity->name;
+        }
+    }
+
+    expect($matchingStrategy->other_identities_summary)->toEqual($expected ?? $expectedIdentities);
+})->with('matchingStrategyOtherIdentitiesSummary');

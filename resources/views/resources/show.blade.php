@@ -67,7 +67,7 @@
         @if ($resource->summary)
             <h2>{{ __('Summary') }}</h2>
 
-            {!! Str::markdown($resource->summary) !!}
+            {!! Str::markdown($resource->summary, SAFE_MARKDOWN_OPTIONS) !!}
         @endif
 
         <h2>{{ __('Links to resource') }}</h2>

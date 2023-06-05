@@ -30,7 +30,8 @@
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">
-                {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+                <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
+
                 <button class="secondary" type="button" @click="editing = !editing">
                     @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Location') }}</span>
                 </button>
@@ -73,7 +74,7 @@
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">
-                {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+                <x-array-list-view :data="$engagement->matchingStrategy->disability_and_deaf_group_summary" />
                 <button class="secondary" type="button" @click="editing = !editing">
                     @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span
                         class="sr-only">{{ __('Disability or Deaf group') }}</span>
@@ -116,7 +117,8 @@
         <h3>{{ __('Other identities') }}</h3>
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
-            <div class="stack" x-show="!editing">{!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+            <div class="stack" x-show="!editing">
+                <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
                 <button class="secondary" type="button" @click="editing = !editing">
                     @svg('heroicon-o-pencil', 'mr-1') {{ __('Edit') }} <span class="sr-only">{{ __('Other identities') }}</span>
                 </button>

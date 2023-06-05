@@ -15,7 +15,7 @@ class EstimateReturned extends Notification
     {
         $this->project = Project::find($notification->data['project_id']);
         $this->title = __('Your estimate has been returned');
-        $this->body = __('Your estimate for **:project**, along with a project agreement for to sign, has been sent to [:contact](mailto::contact).', [
+        $this->body = safe_markdown('Your estimate for **:project**, along with a project agreement for to sign, has been sent to <:contact>.', [
             'project' => $this->project->getTranslation('name', locale()),
             'contact' => $this->project->contact_person_email,
         ]);

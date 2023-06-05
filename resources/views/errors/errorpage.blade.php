@@ -3,7 +3,7 @@
         <h1>@yield('code'): @yield('title')</h1>
     </x-slot>
 
-    <p>@yield('message')</p>
+    <div class="stack">@yield('message')</div>
     @auth()
         <p><a href="{{ localized_route('dashboard') }}">{{ __('Return to dashboard') }}</a></p>
     @else

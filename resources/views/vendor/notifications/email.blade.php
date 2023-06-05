@@ -1,12 +1,12 @@
 @component('mail::message')
 {{-- Greeting --}}
 @if (! empty($greeting))
-# {{ $greeting }}
+<h1>{{ $greeting }}</h1>
 @else
 @if ($level === 'error')
-# @lang('mail.error')
+<h1>@lang('mail.error')</h1>
 @else
-# @lang('mail.greeting')
+<h1>@lang('mail.greeting')</h1>
 @endif
 @endif
 
@@ -55,7 +55,7 @@
     [
         'actionText' => $actionText,
     ]
-) <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
+) <span class="break-all"><a href="{{ $actionUrl }}">{{ $displayableActionUrl }}</a></span>
 @endslot
 @endisset
 @endcomponent
