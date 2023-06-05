@@ -365,12 +365,6 @@
     /* Footer */
     --footer-border: var(--theme-footer-border, transparent);
 
-    /* Defined term */
-    --defined-term-color: var(--theme-defined-term-color, var(--color-blue-6));
-    --definition-background: var(--theme-definition-background, var(--color-grey-2));
-    --definition-color: var(--theme-definition-color, var(--color-black));
-    --definition-shadow: var(--theme-definition-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
-
     /* Box */
     --box-color: var(--theme-box-color, var(--color-black));
     --box-background: var(--theme-box-background, var(--color-white));
