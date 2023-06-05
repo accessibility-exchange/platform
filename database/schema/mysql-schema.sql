@@ -40,99 +40,97 @@ DROP TABLE IF EXISTS `all_individual_contracted_projects`;
 /*!50001 DROP VIEW IF EXISTS `all_individual_contracted_projects`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `all_individual_contracted_projects` (
-  `agreement_received_at` tinyint NOT NULL,
-  `ancestor_id` tinyint NOT NULL,
-  `consultant_name` tinyint NOT NULL,
-  `consultant_responsibilities` tinyint NOT NULL,
-  `contact_person_email` tinyint NOT NULL,
-  `contact_person_name` tinyint NOT NULL,
-  `contact_person_phone` tinyint NOT NULL,
-  `contact_person_response_time` tinyint NOT NULL,
-  `contact_person_vrs` tinyint NOT NULL,
-  `created_at` tinyint NOT NULL,
-  `end_date` tinyint NOT NULL,
-  `estimate_approved_at` tinyint NOT NULL,
-  `estimate_or_agreement_updated_at` tinyint NOT NULL,
-  `estimate_requested_at` tinyint NOT NULL,
-  `estimate_returned_at` tinyint NOT NULL,
-  `goals` tinyint NOT NULL,
-  `id` tinyint NOT NULL,
-  `individual_consultant_id` tinyint NOT NULL,
-  `languages` tinyint NOT NULL,
-  `name` tinyint NOT NULL,
-  `organizational_consultant_id` tinyint NOT NULL,
-  `out_of_scope` tinyint NOT NULL,
-  `outcome_analysis` tinyint NOT NULL,
-  `outcome_analysis_other` tinyint NOT NULL,
-  `outcomes` tinyint NOT NULL,
-  `preferred_contact_method` tinyint NOT NULL,
-  `projectable_id` tinyint NOT NULL,
-  `projectable_type` tinyint NOT NULL,
-  `public_outcomes` tinyint NOT NULL,
-  `published_at` tinyint NOT NULL,
-  `regions` tinyint NOT NULL,
-  `scope` tinyint NOT NULL,
-  `seeking_consultant` tinyint NOT NULL,
-  `start_date` tinyint NOT NULL,
-  `team_has_disability_or_deaf_lived_experience` tinyint NOT NULL,
-  `team_size` tinyint NOT NULL,
-  `team_trainings` tinyint NOT NULL,
-  `updated_at` tinyint NOT NULL,
-  `laravel_foreign_key` tinyint NOT NULL,
-  `laravel_model` tinyint NOT NULL,
-  `laravel_placeholders` tinyint NOT NULL,
-  `laravel_with` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `all_individual_contracted_projects` AS SELECT
+ 1 AS `agreement_received_at`,
+  1 AS `ancestor_id`,
+  1 AS `consultant_name`,
+  1 AS `consultant_responsibilities`,
+  1 AS `contact_person_email`,
+  1 AS `contact_person_name`,
+  1 AS `contact_person_phone`,
+  1 AS `contact_person_response_time`,
+  1 AS `contact_person_vrs`,
+  1 AS `created_at`,
+  1 AS `end_date`,
+  1 AS `estimate_approved_at`,
+  1 AS `estimate_or_agreement_updated_at`,
+  1 AS `estimate_requested_at`,
+  1 AS `estimate_returned_at`,
+  1 AS `goals`,
+  1 AS `id`,
+  1 AS `individual_consultant_id`,
+  1 AS `languages`,
+  1 AS `name`,
+  1 AS `organizational_consultant_id`,
+  1 AS `out_of_scope`,
+  1 AS `outcome_analysis`,
+  1 AS `outcome_analysis_other`,
+  1 AS `outcomes`,
+  1 AS `preferred_contact_method`,
+  1 AS `projectable_id`,
+  1 AS `projectable_type`,
+  1 AS `public_outcomes`,
+  1 AS `published_at`,
+  1 AS `regions`,
+  1 AS `scope`,
+  1 AS `seeking_consultant`,
+  1 AS `start_date`,
+  1 AS `team_has_disability_or_deaf_lived_experience`,
+  1 AS `team_size`,
+  1 AS `team_trainings`,
+  1 AS `updated_at`,
+  1 AS `laravel_foreign_key`,
+  1 AS `laravel_model`,
+  1 AS `laravel_placeholders`,
+  1 AS `laravel_with` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `all_organization_contracted_projects`;
 /*!50001 DROP VIEW IF EXISTS `all_organization_contracted_projects`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE TABLE `all_organization_contracted_projects` (
-  `agreement_received_at` tinyint NOT NULL,
-  `ancestor_id` tinyint NOT NULL,
-  `consultant_name` tinyint NOT NULL,
-  `consultant_responsibilities` tinyint NOT NULL,
-  `contact_person_email` tinyint NOT NULL,
-  `contact_person_name` tinyint NOT NULL,
-  `contact_person_phone` tinyint NOT NULL,
-  `contact_person_response_time` tinyint NOT NULL,
-  `contact_person_vrs` tinyint NOT NULL,
-  `created_at` tinyint NOT NULL,
-  `end_date` tinyint NOT NULL,
-  `estimate_approved_at` tinyint NOT NULL,
-  `estimate_or_agreement_updated_at` tinyint NOT NULL,
-  `estimate_requested_at` tinyint NOT NULL,
-  `estimate_returned_at` tinyint NOT NULL,
-  `goals` tinyint NOT NULL,
-  `id` tinyint NOT NULL,
-  `individual_consultant_id` tinyint NOT NULL,
-  `languages` tinyint NOT NULL,
-  `name` tinyint NOT NULL,
-  `organizational_consultant_id` tinyint NOT NULL,
-  `out_of_scope` tinyint NOT NULL,
-  `outcome_analysis` tinyint NOT NULL,
-  `outcome_analysis_other` tinyint NOT NULL,
-  `outcomes` tinyint NOT NULL,
-  `preferred_contact_method` tinyint NOT NULL,
-  `projectable_id` tinyint NOT NULL,
-  `projectable_type` tinyint NOT NULL,
-  `public_outcomes` tinyint NOT NULL,
-  `published_at` tinyint NOT NULL,
-  `regions` tinyint NOT NULL,
-  `scope` tinyint NOT NULL,
-  `seeking_consultant` tinyint NOT NULL,
-  `start_date` tinyint NOT NULL,
-  `team_has_disability_or_deaf_lived_experience` tinyint NOT NULL,
-  `team_size` tinyint NOT NULL,
-  `team_trainings` tinyint NOT NULL,
-  `updated_at` tinyint NOT NULL,
-  `laravel_foreign_key` tinyint NOT NULL,
-  `laravel_model` tinyint NOT NULL,
-  `laravel_placeholders` tinyint NOT NULL,
-  `laravel_with` tinyint NOT NULL
-) ENGINE=MyISAM */;
+/*!50001 CREATE VIEW `all_organization_contracted_projects` AS SELECT
+ 1 AS `agreement_received_at`,
+  1 AS `ancestor_id`,
+  1 AS `consultant_name`,
+  1 AS `consultant_responsibilities`,
+  1 AS `contact_person_email`,
+  1 AS `contact_person_name`,
+  1 AS `contact_person_phone`,
+  1 AS `contact_person_response_time`,
+  1 AS `contact_person_vrs`,
+  1 AS `created_at`,
+  1 AS `end_date`,
+  1 AS `estimate_approved_at`,
+  1 AS `estimate_or_agreement_updated_at`,
+  1 AS `estimate_requested_at`,
+  1 AS `estimate_returned_at`,
+  1 AS `goals`,
+  1 AS `id`,
+  1 AS `individual_consultant_id`,
+  1 AS `languages`,
+  1 AS `name`,
+  1 AS `organizational_consultant_id`,
+  1 AS `out_of_scope`,
+  1 AS `outcome_analysis`,
+  1 AS `outcome_analysis_other`,
+  1 AS `outcomes`,
+  1 AS `preferred_contact_method`,
+  1 AS `projectable_id`,
+  1 AS `projectable_type`,
+  1 AS `public_outcomes`,
+  1 AS `published_at`,
+  1 AS `regions`,
+  1 AS `scope`,
+  1 AS `seeking_consultant`,
+  1 AS `start_date`,
+  1 AS `team_has_disability_or_deaf_lived_experience`,
+  1 AS `team_size`,
+  1 AS `team_trainings`,
+  1 AS `updated_at`,
+  1 AS `laravel_foreign_key`,
+  1 AS `laravel_model`,
+  1 AS `laravel_placeholders`,
+  1 AS `laravel_with` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `blind_indexes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -161,22 +159,6 @@ CREATE TABLE `blockables` (
   KEY `blockables_user_id_foreign` (`user_id`),
   KEY `blockables_blockable_type_blockable_id_index` (`blockable_type`,`blockable_id`),
   CONSTRAINT `blockables_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `choices`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `choices` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `question_id` bigint unsigned NOT NULL,
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `label` json NOT NULL,
-  `is_answer` tinyint(1) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `choices_question_id_foreign` (`question_id`),
-  CONSTRAINT `choices_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `communication_tools`;
@@ -225,7 +207,6 @@ CREATE TABLE `course_user` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `started_at` datetime DEFAULT NULL,
-  `finished_at` datetime DEFAULT NULL,
   `received_certificate_at` datetime DEFAULT NULL,
   `user_id` bigint unsigned NOT NULL,
   `course_id` bigint unsigned NOT NULL,
@@ -247,6 +228,8 @@ CREATE TABLE `courses` (
   `title` json NOT NULL,
   `introduction` json NOT NULL,
   `video` json DEFAULT NULL,
+  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -490,6 +473,7 @@ CREATE TABLE `impacts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `name` json NOT NULL,
+  `description` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -785,6 +769,7 @@ CREATE TABLE `modules` (
   `description` json NOT NULL,
   `introduction` json NOT NULL,
   `video` json DEFAULT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `modules_course_id_foreign` (`course_id`),
   CONSTRAINT `modules_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
@@ -873,6 +858,7 @@ CREATE TABLE `organizations` (
   `preferred_contact_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `preferred_notification_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `notification_settings` json DEFAULT NULL,
+  `dismissed_invite_prompt_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -943,19 +929,33 @@ CREATE TABLE `projects` (
   KEY `projects_projectable_type_projectable_id_index` (`projectable_type`,`projectable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `question_quiz`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `question_quiz` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `question_id` bigint unsigned NOT NULL,
+  `quiz_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_quiz_question_id_foreign` (`question_id`),
+  KEY `question_quiz_quiz_id_foreign` (`quiz_id`),
+  CONSTRAINT `question_quiz_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `question_quiz_quiz_id_foreign` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `questions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `quiz_id` bigint unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `order` int NOT NULL,
   `question` json NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `questions_quiz_id_foreign` (`quiz_id`),
-  CONSTRAINT `questions_quiz_id_foreign` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE
+  `choices` json NOT NULL,
+  `correct_choices` json NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `quiz_user`;
@@ -965,7 +965,6 @@ CREATE TABLE `quiz_user` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `attempts` int DEFAULT NULL,
   `answers` json DEFAULT NULL,
   `score` double(8,2) DEFAULT NULL,
   `user_id` bigint unsigned NOT NULL,
@@ -988,6 +987,7 @@ CREATE TABLE `quizzes` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `minimum_score` double(8,2) NOT NULL,
   `title` json DEFAULT NULL,
+  `order` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `quizzes_module_id_foreign` (`module_id`),
   KEY `quizzes_course_id_foreign` (`course_id`),
@@ -1040,6 +1040,7 @@ CREATE TABLE `regulated_organizations` (
   `notification_settings` json DEFAULT NULL,
   `oriented_at` timestamp NULL DEFAULT NULL,
   `suspended_at` timestamp NULL DEFAULT NULL,
+  `dismissed_invite_prompt_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1154,6 +1155,21 @@ CREATE TABLE `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `settings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `group` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locked` tinyint(1) NOT NULL,
+  `payload` json NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `settings_group_index` (`group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `topics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1201,12 +1217,12 @@ CREATE TABLE `users` (
   `joinable_id` bigint unsigned DEFAULT NULL,
   `accepted_privacy_policy_at` timestamp NULL DEFAULT NULL,
   `accepted_terms_of_service_at` timestamp NULL DEFAULT NULL,
+  `dismissed_customize_prompt_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_joinable_type_joinable_id_index` (`joinable_type`,`joinable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-/*!50001 DROP TABLE IF EXISTS `all_individual_contracted_projects`*/;
 /*!50001 DROP VIEW IF EXISTS `all_individual_contracted_projects`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1220,7 +1236,6 @@ CREATE TABLE `users` (
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
-/*!50001 DROP TABLE IF EXISTS `all_organization_contracted_projects`*/;
 /*!50001 DROP VIEW IF EXISTS `all_organization_contracted_projects`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1374,3 +1389,22 @@ INSERT INTO `migrations` VALUES (130,'2022_11_29_010044_create_resource_topic_ta
 INSERT INTO `migrations` VALUES (131,'2022_12_09_192148_add_organization_id_column_to_resources_table',9);
 INSERT INTO `migrations` VALUES (132,'2022_12_10_210658_update_description_column_in_resource_collections_table',9);
 INSERT INTO `migrations` VALUES (133,'2022_12_11_201445_remove_user_id_column_from_resource_collections_table',10);
+INSERT INTO `migrations` VALUES (134,'2022_12_08_193312_drop_value_column_from_choices_table',11);
+INSERT INTO `migrations` VALUES (135,'2022_12_14_083707_create_settings_table',11);
+INSERT INTO `migrations` VALUES (136,'2022_12_21_184920_remove_finished_at_from_course_user_table',11);
+INSERT INTO `migrations` VALUES (137,'2023_01_25_202134_drop_choices_table',11);
+INSERT INTO `migrations` VALUES (138,'2023_01_26_043044_add_choices_and_correct_choices_columns_to_questions_table',11);
+INSERT INTO `migrations` VALUES (139,'2023_01_27_015926_create_question_quiz_table',11);
+INSERT INTO `migrations` VALUES (140,'2023_01_27_025738_remove_quiz_id_from_questions_table',11);
+INSERT INTO `migrations` VALUES (141,'2023_02_06_213028_drop_attempts_column_from_quiz_user_table',11);
+INSERT INTO `migrations` VALUES (142,'2023_02_14_185236_remove_order_column_from_questions_table',11);
+INSERT INTO `migrations` VALUES (143,'2023_02_14_190146_add_order_column_to_quizzes_table',11);
+INSERT INTO `migrations` VALUES (144,'2023_02_14_205104_add_author_column_to_courses_table',11);
+INSERT INTO `migrations` VALUES (145,'2023_02_27_135909_add_slug_column_courses_table',11);
+INSERT INTO `migrations` VALUES (146,'2023_02_27_143224_add_slug_column_modules_table',11);
+INSERT INTO `migrations` VALUES (147,'2023_04_18_114553_add_description_to_impacts_table',11);
+INSERT INTO `migrations` VALUES (148,'2023_05_01_180138_create_general_settings',11);
+INSERT INTO `migrations` VALUES (149,'2023_05_01_201239_add_registration_links_to_general_settings',11);
+INSERT INTO `migrations` VALUES (150,'2023_05_09_132308_add_dismiss_customization_status_to_users_table',11);
+INSERT INTO `migrations` VALUES (151,'2023_05_09_141054_add_dismiss_invite_status_to_organizations_table',11);
+INSERT INTO `migrations` VALUES (152,'2023_05_09_141124_add_dismiss_invite_status_to_regulated_organizations_table',11);
