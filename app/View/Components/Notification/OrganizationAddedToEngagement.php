@@ -15,7 +15,7 @@ class OrganizationAddedToEngagement extends Notification
     {
         $this->engagement = Engagement::find($notification->data['engagement_id']);
         $this->title = __('Your organization has been added to an engagement', ['engagement' => $this->engagement->getTranslation('name', locale())]);
-        $this->body = __('Your organization has been added to the engagement “:engagement”', ['engagement' => $this->engagement->getTranslation('name', locale())]).'.';
+        $this->body = __('Your organization has been added to the engagement “:engagement”.', ['engagement' => $this->engagement->getTranslation('name', locale())]);
 
         parent::__construct($notification);
     }

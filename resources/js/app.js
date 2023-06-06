@@ -1,5 +1,4 @@
 import "./bootstrap";
-import "./DefinedTerm.js";
 
 import Alpine from "alpinejs";
 import mask from "@alpinejs/mask";

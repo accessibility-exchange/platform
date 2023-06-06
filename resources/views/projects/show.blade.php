@@ -23,15 +23,15 @@
         </ol>
         <h1 id="project">{{ $project->name }}</h1>
         <div class="stack">
-            <p class="h4">{!! __('Accessibility project by :projectable', [
-                'projectable' =>
-                    '<a href="' .
-                    localized_route('regulated-organizations.show', $project->projectable) .
-                    '">' .
-                    $project->projectable->name .
-                    '</a>',
-            ]) !!}</p>
-            <p>{!! $project->timeframe() !!}</p>
+            <p class="h4">
+                {{ safe_inlineMarkdown('Accessibility project by [:projectable](:url)', [
+                    'projectable' => $project->projectable->name,
+                    'url' => localized_route('regulated-organizations.show', $project->projectable),
+                ]) }}
+            </p>
+
+            <p><x-timeframe :start="$project->start_date" :end="$project->end_date" /></p>
+
             <div class="repel">
                 <span class="badge">{{ $project->status }}</span>
                 @can('manage', $project)
@@ -98,19 +98,10 @@
         </div>
         <div class="stack">
             @if (request()->localizedRouteIs('projects.show'))
-                <h2 class="repel">{{ __('Project overview') }} @can('update', $project)
-                        <a class="cta secondary" href="{{ localized_route('projects.edit', $project) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project overview') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('Project overview')" :model="$project" :href="localized_route('projects.edit', $project)" />
                 @include('projects.partials.overview')
             @elseif(request()->localizedRouteIs('projects.show-team'))
-                <h2 class="repel">{{ __('Project team') }} @can('update', $project)
-                        <a class="cta secondary"
-                            href="{{ localized_route('projects.edit', ['project' => $project, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Project team') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('Project team')" :model="$project" :href="localized_route('projects.edit', ['project' => $project, 'step' => 2])" />
                 @include('projects.partials.team')
             @elseif(request()->localizedRouteIs('projects.show-engagements'))
                 <h2>{{ __('Engagements') }}</h2>

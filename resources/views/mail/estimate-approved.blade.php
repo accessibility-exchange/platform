@@ -1,9 +1,9 @@
 @component('mail::message')
-{{ __(':projectable has approved an estimate for their project **:project**.', ['projectable' => $projectable->name, 'project' => $project->name]) }}
+{{ safe_markdown(':projectable has approved an estimate for their project **:project**.', ['projectable' => $projectable->name, 'project' => $project->name]) }}
 
 @component('mail::button', ['url' => localized_route('projects.show', $project)])
 {{ __('Review project details') }}
 @endcomponent
 
-{{ __('They have been instructed to send their signed agreement to [support@accessibilityexchange.ca](mailto:support@accessibilityexchange.ca).') }}
+{{ safe_markdown('They have been instructed to send their signed agreement to <:email>.', ['email' => settings('email')]) }}
 @endcomponent

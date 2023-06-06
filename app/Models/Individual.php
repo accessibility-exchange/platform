@@ -30,6 +30,7 @@ use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -39,6 +40,11 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use TheIconic\NameParser\Parser as NameParser;
 
+/**
+ * App\Models\Individual
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class Individual extends Model implements CipherSweetEncrypted
 {
     use UsesCipherSweet;

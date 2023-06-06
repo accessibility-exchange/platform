@@ -25,7 +25,7 @@
     @endif
 
     @if ($project->consultant_responsibilities)
-        {!! Str::markdown($project->getWrittenTranslation('consultant_responsibilities', $language)) !!}
+        {{ $project->getWrittenTranslation('consultant_responsibilities', $language) }}
     @endif
 @endif
 

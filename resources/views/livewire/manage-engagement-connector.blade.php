@@ -15,7 +15,7 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
-                    {!! Str::markdown(session('message')) !!}
+                    {{ session('message') }}
                 </x-hearth-alert>
             @endif
         </div>
@@ -29,13 +29,10 @@
 
         <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
 
-        <p>{!! __(
-            'This will show Community Connectors on the :browse page that you are looking, and that they are welcome to reach out.',
-            [
-                'browse' => '<a href="' . localized_route('projects.all-projects') . '">' . __('browse projects') . '</a>',
-            ],
-        ) !!}
-        </p>
+        {{ safe_markdown(
+            'This will show Community Connectors on the [browse projects](:url) page that you are looking, and that they are welcome to reach out.',
+            ['url' => localized_route('projects.all-projects')],
+        ) }}
 
         <div class="field">
             <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"

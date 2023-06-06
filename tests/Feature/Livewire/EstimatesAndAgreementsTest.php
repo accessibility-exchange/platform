@@ -75,7 +75,8 @@ test('estimate can be marked as returned', function () {
     $response = $this->actingAs($projectManager)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your estimate has been returned');
-    $response->assertSee("Your estimate for <strong>{$project->name}</strong>, along with a project agreement for to sign", false);
+    $projectName = htmlentities($project->name);
+    $response->assertSee("Your estimate for <strong>{$projectName}</strong>, along with a project agreement for to sign", false);
 });
 
 test('agreement can be marked as received', function () {
@@ -113,7 +114,8 @@ test('agreement can be marked as received', function () {
     $response = $this->actingAs($projectManager)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your agreement has been received');
-    $response->assertSee("Your agreement has been received for <strong>{$project->name}</strong>", false);
+    $projectName = htmlentities($project->name);
+    $response->assertSee("Your agreement has been received for <strong>{$projectName}</strong>", false);
 });
 
 test('projects can be searched by organization name', function () {

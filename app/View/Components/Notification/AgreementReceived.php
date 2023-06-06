@@ -15,7 +15,7 @@ class AgreementReceived extends Notification
     {
         $this->project = Project::find($notification->data['project_id']);
         $this->title = __('Your agreement has been received');
-        $this->body = __('Your agreement has been received for **:project**. You can now publish your project page and engagement details.', [
+        $this->body = safe_markdown('Your agreement has been received for **:project**. You can now publish your project page and engagement details.', [
             'project' => $this->project->getTranslation('name', locale()),
         ]);
 

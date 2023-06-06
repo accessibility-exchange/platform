@@ -12,7 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
+/**
+ * App\Models\MatchingStrategy
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class MatchingStrategy extends Model
 {
     use HasFactory;
@@ -92,7 +98,7 @@ class MatchingStrategy extends Model
     public function locationType(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 if (! empty($this->regions)) {
                     return 'regions';
                 }
@@ -108,22 +114,25 @@ class MatchingStrategy extends Model
     public function locationSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 if (count($this->regions ?? [])) {
-                    if (count($this->regions) === 13) {
-                        return __('All provinces and territories');
+                    if (count($this->regions) === count(ProvinceOrTerritory::cases())) {
+                        return [__('All provinces and territories')];
                     } else {
                         $regions = Arr::map($this->regions, fn ($region) => ProvinceOrTerritory::labels()[$region]);
 
-                        return implode("  \n", Arr::sort($regions));
+                        return Arr::sort($regions);
                     }
                 } elseif (count($this->locations ?? [])) {
-                    $locations = Arr::map($this->locations ?? [], fn ($location) => $location['locality'].', '.ProvinceOrTerritory::labels()[$location['region']]);
+                    $locations = Arr::map(
+                        $this->locations ?? [],
+                        fn ($location) => __(':locality, :region', ['locality' => $location['locality'], 'region' => ProvinceOrTerritory::labels()[$location['region']]])
+                    );
 
-                    return implode("  \n", Arr::sort($locations));
+                    return Arr::sort($locations);
                 }
 
-                return __('All provinces and territories');
+                return [__('All provinces and territories')];
             },
         );
     }
@@ -131,14 +140,14 @@ class MatchingStrategy extends Model
     public function disabilityAndDeafGroupSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 if ($this->hasDisabilityTypes()) {
-                    return implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->pluck('name')->toArray());
+                    return $this->identities()->whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->pluck('name')->toArray();
                 } elseif ($this->cross_disability_and_deaf) {
-                    return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
+                    return [__('Cross disability (includes people with disabilities, Deaf people, and supporters)')];
                 }
 
-                return __('Cross disability (includes people with disabilities, Deaf people, and supporters)');
+                return [__('Cross disability (includes people with disabilities, Deaf people, and supporters)')];
             },
         );
     }
@@ -146,16 +155,16 @@ class MatchingStrategy extends Model
     public function otherIdentitiesSummary(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 return match ($this->extra_attributes->get('other_identity_type', null)) {
-                    'age-bracket' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Age)->pluck('name')->toArray()),
-                    'gender-and-sexual-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->pluck('name')->toArray()),
-                    'indigenous-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray()),
-                    'ethnoracial-identity' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray()),
-                    'refugee-or-immigrant' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray()),
-                    'first-language' => implode("  \n", $this->languages->map(fn ($language) => $language->name)->toArray()),
-                    'area-type' => implode("  \n", $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray()),
-                    default => __('Intersectional').' - '.__('This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.'),
+                    'age-bracket' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Age)->pluck('name')->toArray(),
+                    'gender-and-sexual-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->pluck('name')->toArray(),
+                    'indigenous-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray(),
+                    'ethnoracial-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray(),
+                    'refugee-or-immigrant' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray(),
+                    'first-language' => $this->languages->map(fn ($language) => $language->name)->toArray(),
+                    'area-type' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray(),
+                    default => [__('Intersectional - This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.')],
                 };
             },
         );

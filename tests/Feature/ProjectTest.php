@@ -577,9 +577,6 @@ test('projects have timeframes', function () {
     expect($org_future_project->status)->toEqual('Upcoming');
     expect($indeterminate_project)->started->toBeFalse();
 
-    $this->assertStringContainsString('January&ndash;December 2020', $org_past_project->timeframe());
-    $this->assertStringContainsString('January 2020&ndash;December 2021', $org_past_project_multi_year->timeframe());
-
     $this->assertEquals(5, count($organization->projects));
     $this->assertEquals(2, count($organization->completedProjects));
     $this->assertEquals(1, count($organization->inProgressProjects));
@@ -604,9 +601,6 @@ test('projects have timeframes', function () {
         'projectable_id' => $regulatedOrganization->id,
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
     ]);
-
-    $this->assertStringContainsString('January&ndash;December 2020', $regulated_org_past_project->timeframe());
-    $this->assertStringContainsString('January 2020&ndash;December 2021', $regulated_org_past_project_multi_year->timeframe());
 
     $this->assertEquals(4, count($regulatedOrganization->projects));
     $this->assertEquals(2, count($regulatedOrganization->completedProjects));

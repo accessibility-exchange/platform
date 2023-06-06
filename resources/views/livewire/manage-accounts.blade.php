@@ -17,7 +17,7 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
-                    {!! Str::markdown(session('message')) !!}
+                    {{ session('message') }}
                 </x-hearth-alert>
             @endif
         </div>

@@ -40,6 +40,11 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 
+/**
+ * App\Models\Organization
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class Organization extends Model
 {
     use CascadesDeletes;

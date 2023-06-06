@@ -7,5 +7,7 @@
     <x-slot name="title"><a href="{{ localized_route('resource-collections.show', $model) }}">{{ $model->title }}</a>
     </x-slot>
     <p><strong>{{ __('Collection') }}</strong></p>
-    {!! Str::markdown($model->description) !!}
+    @isset($model->description)
+        {!! Str::markdown($model->description, SAFE_MARKDOWN_OPTIONS) !!}
+    @endisset
 </x-card>

@@ -114,12 +114,7 @@
         </nav>
         <div class="stack">
             @if (request()->localizedRouteIs('regulated-organizations.show'))
-                <h2 class="repel">{{ __('About') }} @can('update', $regulatedOrganization)
-                        <a class="cta secondary"
-                            href="{{ localized_route('regulated-organizations.edit', $regulatedOrganization) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('About')" :model="$regulatedOrganization" :href="localized_route('regulated-organizations.edit', $regulatedOrganization)" />
                 @include('regulated-organizations.partials.about')
             @elseif(request()->localizedRouteIs('regulated-organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)

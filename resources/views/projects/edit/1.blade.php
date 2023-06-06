@@ -64,12 +64,9 @@
 
             <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('other', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
                 <legend>
-                    {{ __('Who will be going through the results from this project and writing a report?') . ' ' . __('(required)') }}
+                    {{ __('Who will be going through the results and producing an outcome?') . ' ' . __('(required)') }}
                 </legend>
-                <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forArray([
-                    'internal' => __('Internal team'),
-                    'external' => __('External team'),
-                ])->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
+                <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forEnum(App\Enums\OutcomeAnalyzer::class)->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
                     <x-hearth-checkbox name="other" :checked="old(
                         'other',
