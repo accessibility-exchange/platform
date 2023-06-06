@@ -12,7 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
+/**
+ * App\Models\MatchingStrategy
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class MatchingStrategy extends Model
 {
     use HasFactory;
