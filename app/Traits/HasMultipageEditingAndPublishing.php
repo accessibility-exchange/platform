@@ -15,7 +15,7 @@ trait HasMultipageEditingAndPublishing
 
     public function publish(): void
     {
-        $this->published_at = date('Y-m-d h:i:s', time());
+        $this->published_at = now();
         $this->save();
         flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success');
     }
