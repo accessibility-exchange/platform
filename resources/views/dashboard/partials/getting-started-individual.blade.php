@@ -24,6 +24,11 @@
     <p>
         {{ __('This will help people know what to expect when working with you.') }}
     </p>
+    @if (Auth::user()->individual->paymentTypes->count() || !blank(Auth::user()->individual->other_payment_type))
+        <span class="badge">{{ __('Completed') }}</span>
+    @else
+        <span class="badge">{{ __('Incomplete') }}</span>
+    @endif
 </li>
 <li class="getting-started__list-item stack">
     <h3>
