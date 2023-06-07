@@ -27,7 +27,7 @@
         novalidate>
         <x-translation-picker />
 
-        <p class="repel" x-data>
+        <p class="repel">
             <a class="cta secondary" href="{{ localized_route('projects.manage', $project) }}">{{ __('Cancel') }}</a>
             <button>{{ __('Next') }}</button>
         </p>

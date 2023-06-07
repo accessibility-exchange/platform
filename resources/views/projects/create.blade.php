@@ -16,7 +16,7 @@
             <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :short-label="__('project name')" :model="new App\Models\Project()" />
         </fieldset>
 
-        <p class="repel" x-data>
+        <p class="repel">
             <a class="cta secondary"
                 href="{{ localized_route('projects.show-language-selection') }}">{{ session()->has('ancestor') ? __('Back') : __('Cancel') }}</a>
             <button>{{ __('Create') }}</button>
