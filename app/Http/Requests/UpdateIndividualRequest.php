@@ -64,14 +64,14 @@ class UpdateIndividualRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'bio.*' => __('bio'),
+            'region' => __('province or territory'),
         ];
     }
 
     public function messages(): array
     {
         $messages = [
-            'bio.*.required_without' => 'You must enter your :attribute.',
+            'bio.*.required_without' => 'You must enter your bio.',
         ];
 
         foreach ($this->social_links as $key => $value) {
