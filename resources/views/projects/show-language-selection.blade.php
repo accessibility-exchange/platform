@@ -24,7 +24,7 @@
         </h2>
         <x-translation-picker />
 
-        <p class="repel" x-data>
+        <p class="repel">
             <a class="cta secondary"
                 href="{{ session()->has('ancestor') ? localized_route('projects.show-context-selection') : localized_route('dashboard') }}">{{ session()->has('ancestor') ? __('Back') : __('Cancel') }}</a>
             <button>{{ __('Next') }}</button>

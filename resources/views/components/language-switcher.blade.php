@@ -3,7 +3,7 @@
         @svg('tae-language', 'icon--2xl') <span>{{ __('hearth::nav.languages') }}</span>
     </x-slot>
 
-    <x-slot name="content" x-data>
+    <x-slot name="content">
         @foreach ($locales as $key => $locale)
             <li>
                 <x-nav-link hreflang="{{ get_written_language_for_signed_language($key) }}" rel="alternate"
