@@ -17,6 +17,12 @@
         @endforeach
     </ul>
     @if ($this->canAddMoreLinks())
-        <button class="secondary" type="button" wire:click="addLink">{{ __('Add another link') }}</button>
+        <button class="secondary" type="button" wire:click="addLink">
+            @if (count($links))
+                {{ __('Add another link') }}
+            @else
+                {{ __('Add link') }}
+            @endif
+        </button>
     @endif
 </div>
