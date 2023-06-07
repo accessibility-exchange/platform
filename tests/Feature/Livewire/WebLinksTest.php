@@ -4,8 +4,12 @@ use App\Http\Livewire\WebLinks;
 
 test('link can be added', function () {
     $this->livewire(WebLinks::class, ['links' => []])
+        ->assertSee(__('Add link'))
+        ->assertDontSee(__('Add another link'))
         ->call('addLink')
-        ->assertSet('links', [['title' => '', 'url' => '']]);
+        ->assertSet('links', [['title' => '', 'url' => '']])
+        ->assertSee(__('Add another link'))
+        ->assertDontSee(__('Add link'));
 });
 
 test('no more than five links can be added', function () {
