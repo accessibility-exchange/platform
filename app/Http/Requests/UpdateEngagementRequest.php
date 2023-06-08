@@ -41,24 +41,28 @@ class UpdateEngagementRequest extends FormRequest
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
                 Rule::requiredIf($this->engagement->format === 'interviews'),
                 'date',
+                'before:window_end_date',
             ],
             'window_end_date' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
                 Rule::requiredIf($this->engagement->format === 'interviews'),
                 'date',
+                'after:window_start_date',
             ],
             'window_start_time' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
                 Rule::requiredIf($this->engagement->format === 'interviews'),
                 'date_format:G:i',
+                'before:window_end_time',
             ],
             'window_end_time' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
                 Rule::requiredIf($this->engagement->format === 'interviews'),
                 'date_format:G:i',
+                'after:window_start_time',
             ],
             'timezone' => [
                 'nullable',
@@ -164,12 +168,14 @@ class UpdateEngagementRequest extends FormRequest
                 Rule::excludeIf(! in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
                 Rule::requiredIf(in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
                 'date',
+                'before:complete_by_date',
             ],
             'complete_by_date' => [
                 'nullable',
                 Rule::excludeIf(! in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
                 Rule::requiredIf(in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
                 'date',
+                'after:materials_by_date',
             ],
             'document_languages' => [
                 'nullable',
@@ -232,6 +238,14 @@ class UpdateEngagementRequest extends FormRequest
 
         $validator->sometimes('other_accepted_format.fr', 'required_without:other_accepted_format.en', function ($input) {
             return ! $input->other_accepted_formats === false;
+        });
+
+        $validator->sometimes('signup_by_date', 'before:window_start_date', function ($input) {
+            return ! blank($input->window_start_date);
+        });
+
+        $validator->sometimes('signup_by_date', 'before:materials_by_date', function ($input) {
+            return ! blank($input->materials_by_date);
         });
     }
 

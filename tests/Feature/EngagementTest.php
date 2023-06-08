@@ -342,6 +342,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
         'accepted_formats' => ['writing', 'audio', 'video'],
+        'signup_by_date' => '2022-10-31',
     ]));
 
     $response->assertSessionHasNoErrors();
