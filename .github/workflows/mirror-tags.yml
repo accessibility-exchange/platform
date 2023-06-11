@@ -1,0 +1,31 @@
+name: Mirror tags to GitLab
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  mirror:
+    if: github.repository == 'accessibility-exchange/platform'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "${{ vars.GIT_USER }}"
+          git config --global user.email "${{ vars.GIT_EMAIL }}"
+          git remote add gitlab ${{ vars.GITLAB_URL }}
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+            ssh-private-key: ${{ secrets.GITLAB_SSH_KEY }}
+
+      - name: Push tags to GitLab
+        run: |
+          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+          git push --atomic gitlab --tags

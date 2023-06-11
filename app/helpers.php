@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -13,11 +14,7 @@ if (! function_exists('settings')) {
      */
     function settings(string $key = null, mixed $default = null): mixed
     {
-        if ($key === null) {
-            return app(Settings::class);
-        }
-
-        return app(Settings::class)->get($key, $default);
+        return app(GeneralSettings::class)->$key ?? $default;
     }
 }
 
@@ -264,8 +261,8 @@ if (! function_exists('context_from_model')) {
 if (! function_exists('contact_information')) {
     function contact_information(): string
     {
-        $email = settings()->get('email', 'support@accessibilityexchange.ca');
-        $phone = phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA');
+        $email = settings('email');
+        $phone = phone(settings('phone'), 'CA')->formatForCountry('CA');
 
         return Str::markdown(
             '**'
@@ -282,9 +279,9 @@ if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
         return match ($userType) {
-            App\Enums\UserContext::Individual->value => 'https://share.hsforms.com/161eyaBsQS-iv1z0TZLwdQwdfpez',
-            App\Enums\UserContext::Organization->value => 'https://share.hsforms.com/1sB6UV4gvQlC_0QxQ3q3z1Adfpez',
-            App\Enums\UserContext::RegulatedOrganization->value => 'https://share.hsforms.com/1gGf9TjhaQ0uaqcnyJfSDlwdfpez',
+            App\Enums\UserContext::Individual->value => settings('individual_orientation'),
+            App\Enums\UserContext::Organization->value => settings('org_orientation'),
+            App\Enums\UserContext::RegulatedOrganization->value => settings('fro_orientation'),
             default => '#',
         };
     }

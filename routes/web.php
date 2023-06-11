@@ -26,7 +26,7 @@ Route::prefix('about')
         Route::multilingual('/terms-of-service', function () {
             return view('about.terms-of-service', [
                 'appURL' => config('app.url'),
-                'email' => settings()->get('email', 'support@accessibilityexchange.ca'),
+                'email' => settings('email'),
                 'modifiedAt' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
             ]);
         })->name('terms-of-service');
@@ -116,6 +116,10 @@ Route::multilingual('/dashboard/notifications', [UserController::class, 'notific
 Route::multilingual('/dashboard/notifications/all', [UserController::class, 'allNotifications'])
     ->middleware(['auth', 'onboard'])
     ->name('dashboard.notifications-all');
+
+Route::multilingual('/dashboard/collaboration-preferences', [UserController::class, 'collaborationPreferences'])
+    ->middleware(['auth', 'onboard'])
+    ->name('dashboard.collaboration-preferences');
 
 Route::multilingual('/dashboard/trainings', [UserController::class, 'trainings'])
     ->middleware(['auth'])

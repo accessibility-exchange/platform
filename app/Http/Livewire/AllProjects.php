@@ -61,42 +61,42 @@ class AllProjects extends Component
     {
         return view('livewire.all-projects', [
             'projects' => Project::status('published')
-                    ->when($this->searchQuery, function ($query, $searchQuery) {
-                        $query->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                            ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
-                    })
-                    ->when($this->statuses, function ($query, $statuses) {
-                        $query->statuses($statuses);
-                    })
-                    ->when($this->seekings, function ($query, $seekings) {
-                        $query->seekings($seekings);
-                    })
-                    ->when($this->initiators, function ($query, $initiators) {
-                        $query->initiators($initiators);
-                    })
-                    ->when($this->seekingGroups, function ($query, $seekingGroups) {
-                        $query->seekingDisabilityAndDeafGroups($seekingGroups);
-                    })
-                    ->when($this->meetingTypes, function ($query, $meetingTypes) {
-                        $query->meetingTypes($meetingTypes);
-                    })
-                    ->when($this->locations, function ($query, $locations) {
-                        $query->locations($locations);
-                    })
-                    ->when($this->compensations, function ($query, $compensations) {
-                        $query->compensations($compensations);
-                    })
-                    ->when($this->sectors, function ($query, $sectors) {
-                        $query->sectors($sectors);
-                    })
-                    ->when($this->impacts, function ($query, $impacts) {
-                        $query->areasOfImpact($impacts);
-                    })
-                    ->when($this->recruitmentMethods, function ($query, $recruitmentMethods) {
-                        $query->recruitmentMethods($recruitmentMethods);
-                    })
-                    ->orderBy('published_at', 'desc')
-                    ->paginate(20),
+                ->when($this->searchQuery, function ($query, $searchQuery) {
+                    $query->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                })
+                ->when($this->statuses, function ($query, $statuses) {
+                    $query->statuses($statuses);
+                })
+                ->when($this->seekings, function ($query, $seekings) {
+                    $query->seekings($seekings);
+                })
+                ->when($this->initiators, function ($query, $initiators) {
+                    $query->initiators($initiators);
+                })
+                ->when($this->seekingGroups, function ($query, $seekingGroups) {
+                    $query->seekingDisabilityAndDeafGroups($seekingGroups);
+                })
+                ->when($this->meetingTypes, function ($query, $meetingTypes) {
+                    $query->meetingTypes($meetingTypes);
+                })
+                ->when($this->locations, function ($query, $locations) {
+                    $query->locations($locations);
+                })
+                ->when($this->compensations, function ($query, $compensations) {
+                    $query->compensations($compensations);
+                })
+                ->when($this->sectors, function ($query, $sectors) {
+                    $query->sectors($sectors);
+                })
+                ->when($this->impacts, function ($query, $impacts) {
+                    $query->areasOfImpact($impacts);
+                })
+                ->when($this->recruitmentMethods, function ($query, $recruitmentMethods) {
+                    $query->recruitmentMethods($recruitmentMethods);
+                })
+                ->orderBy('published_at', 'desc')
+                ->paginate(20),
             'statusesData' => [
                 ['value' => 'upcoming', 'label' => __('Upcoming')],
                 ['value' => 'inProgress', 'label' => __('In Progress')],
@@ -123,7 +123,7 @@ class AllProjects extends Component
             'impactedAreasData' => Options::forModels(Impact::class)->toArray(),
             'recruitmentMethodsData' => Options::forEnum(EngagementRecruitment::class)->toArray(),
         ])
-        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

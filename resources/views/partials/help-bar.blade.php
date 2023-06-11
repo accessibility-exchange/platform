@@ -14,12 +14,12 @@
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 __('VRS') .
                                 '</a>',
-                        ]) !!}:</span>&nbsp;{{ phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
+                        ]) !!}:</span>&nbsp;{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
                     @svg('heroicon-o-mail')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
-                        href="mailto:{{ settings()->get('email', 'support@accessibilityexchange.ca') }}">
-                        {{ settings()->get('email', 'support@accessibilityexchange.ca') }}
+                        href="mailto:{{ settings('email') }}">
+                        {{ settings('email') }}
                     </a>
                 </div>
             </div>

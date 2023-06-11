@@ -24,21 +24,21 @@ class AdminEstimatesAndAgreements extends Component
     {
         return view('livewire.admin-estimates-and-agreements', [
             'projects' => Project::whereNotNull('estimate_requested_at')
-                    ->with('projectable')
-                    ->when($this->searchQuery, function ($query, $searchQuery) {
-                        $query->whereHasMorph(
-                            'projectable',
-                            [Organization::class, RegulatedOrganization::class],
-                            function (Builder $projectableQuery) use ($searchQuery) {
-                                $projectableQuery
-                                    ->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                                    ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
-                            });
-                    })
-                    ->orderBy('estimate_or_agreement_updated_at', 'desc')
-                    ->paginate(20),
+                ->with('projectable')
+                ->when($this->searchQuery, function ($query, $searchQuery) {
+                    $query->whereHasMorph(
+                        'projectable',
+                        [Organization::class, RegulatedOrganization::class],
+                        function (Builder $projectableQuery) use ($searchQuery) {
+                            $projectableQuery
+                                ->where(DB::raw('lower(name->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                                ->orWhere(DB::raw('lower(name->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                        });
+                })
+                ->orderBy('estimate_or_agreement_updated_at', 'desc')
+                ->paginate(20),
         ])
-        ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
 
     public function search()

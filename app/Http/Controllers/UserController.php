@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateUserIntroductionStatusRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use function localized_route;
 
@@ -126,6 +127,15 @@ class UserController extends Controller
             'user' => $user,
             'notifications' => $user->allNotifications(),
             'unreadCount' => $user->allUnreadNotifications()->count(),
+        ]);
+    }
+
+    public function collaborationPreferences(): View
+    {
+        Gate::allowIf(fn ($user) => $user->context === 'individual');
+
+        return view('dashboard.collaboration-preferences', [
+            'individual' => Auth::user()->individual,
         ]);
     }
 

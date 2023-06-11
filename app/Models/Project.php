@@ -428,10 +428,10 @@ class Project extends Model
         foreach ($meetingTypes as $meetingType) {
             $query->$method('engagements', function (Builder $engagementQuery) use ($meetingType) {
                 $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
-                ->whereJsonContains('meeting_types', $meetingType)
-                ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
-                    $meetingQuery->whereJsonContains('meeting_types', $meetingType);
-                });
+                    ->whereJsonContains('meeting_types', $meetingType)
+                    ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
+                        $meetingQuery->whereJsonContains('meeting_types', $meetingType);
+                    });
             });
 
             $method = 'orWhereHas';
@@ -510,7 +510,7 @@ class Project extends Model
             $query->$method('engagements', function (Builder $engagementQuery) use ($location) {
                 $engagementQuery->whereHas('matchingStrategy', function (Builder $matchingStrategyQuery) use ($location) {
                     $matchingStrategyQuery->whereJsonContains('regions', $location)
-                    ->orWhereJsonContains('locations', ['region' => $location]);
+                        ->orWhereJsonContains('locations', ['region' => $location]);
                 });
             });
 

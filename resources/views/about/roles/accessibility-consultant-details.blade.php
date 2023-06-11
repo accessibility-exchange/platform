@@ -103,7 +103,7 @@
                         </div>
                         <div class="stack">
                             <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings()->get('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA')]) }}
+                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
                             </p>
                         </div>
                     </div>

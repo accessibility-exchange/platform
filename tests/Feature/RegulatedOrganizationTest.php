@@ -2,6 +2,7 @@
 
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Invitation;
+use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
@@ -769,6 +770,48 @@ test('regulated organization cannot be previewed until publishable', function ()
     $response->assertOk();
 });
 
+test('regulated organizations projects functions based on project state', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'published_at' => now(),
+    ]);
+
+    $draftProject = Project::factory()->create(['published_at' => null]);
+    $inProgressProject = Project::factory()->create();
+    $upcomingProject = Project::factory()->create([
+        'start_date' => now()->addMonth(),
+        'end_date' => now()->addMonths(12),
+    ]);
+    $completedProject = Project::factory()->create([
+        'start_date' => now()->subMonths(12),
+        'end_date' => now()->subMonth(),
+    ]);
+
+    $regulatedOrganization->projects()->saveMany([
+        $draftProject,
+        $inProgressProject,
+        $upcomingProject,
+        $completedProject,
+    ]);
+
+    expect($regulatedOrganization->projects)->toHaveCount(4);
+    expect($regulatedOrganization->projects->modelKeys())->toContain($draftProject->id, $inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($regulatedOrganization->draftProjects)->toHaveCount(1);
+    expect($regulatedOrganization->draftProjects->modelKeys())->toContain($draftProject->id);
+
+    expect($regulatedOrganization->publishedProjects)->toHaveCount(3);
+    expect($regulatedOrganization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
+
+    expect($regulatedOrganization->inProgressProjects)->toHaveCount(2);
+    expect($regulatedOrganization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+
+    expect($regulatedOrganization->upcomingProjects)->toHaveCount(1);
+    expect($regulatedOrganization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);
+
+    expect($regulatedOrganization->completedProjects)->toHaveCount(1);
+    expect($regulatedOrganization->completedProjects->modelKeys())->toContain($completedProject->id);
+});
+
 test('regulated organizations have slugs in both languages even if only one is provided', function () {
     $regulatedOrg = RegulatedOrganization::factory()->create();
     expect($regulatedOrg->getTranslation('slug', 'fr', false))
@@ -789,4 +832,49 @@ test('notifications can be routed for regulated organizations', function () {
 
     expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($regulatedOrganization->contact_person_phone);
     expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
+});
+
+test('regulated organization status checks return expected state', function () {
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'published_at' => null,
+        'oriented_at' => null,
+        'validated_at' => null,
+        'suspended_at' => null,
+        'dismissed_invite_prompt_at' => null,
+    ]);
+
+    expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
+    expect($regulatedOrganization->checkStatus('published'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('pending'))->toBeTrue();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('suspended'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
+
+    $regulatedOrganization->published_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('draft'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
+
+    $regulatedOrganization->oriented_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('pending'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeFalse();
+
+    $regulatedOrganization->validated_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('pending'))->toBeFalse();
+    expect($regulatedOrganization->checkStatus('approved'))->toBeTrue();
+
+    $regulatedOrganization->suspended_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('suspended'))->toBeTrue();
+
+    $regulatedOrganization->dismissed_invite_prompt_at = now();
+    $regulatedOrganization->save();
+
+    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });

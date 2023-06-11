@@ -6,14 +6,23 @@ use App\Enums\ProjectInvolvement;
 use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class UserProjectsController extends Controller
 {
-    public function show(): Response|View
+    public function show(): Response|View|RedirectResponse
     {
         $user = Auth::user();
+
+        if ($user->context === UserContext::Organization->value && ! $user->organization) {
+            return redirect(localized_route('organizations.show-type-selection'));
+        }
+
+        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization) {
+            return redirect(localized_route('regulated-organizations.show-type-selection'));
+        }
 
         if ($user->regulated_organization) {
             $projectable = $user->regulated_organization;
@@ -80,7 +89,7 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if (in_array($user->context, [UserContext::Organization->value, UserContext::RegulatedOrganization->value])) {
+        if (in_array($user->context, [UserContext::Organization->value, UserContext::RegulatedOrganization->value]) && $user->{$user->context}) {
             return view('projects.my-projects', [
                 'user' => $user,
                 'projectable' => $user->regulated_organization ?? $user->organization,
