@@ -43,9 +43,8 @@ if (! function_exists('get_available_languages')) {
                 $languages,
                 function ($language) {
                     return
-                        (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
-                        || ! strpos($language, '_')
-                        || in_array($language, [
+                        ! ((str_starts_with($language, 'en_') || str_starts_with($language, 'fr_')))
+                        && ! in_array($language, [
                             'ase',
                             'egy',
                             'grc',
