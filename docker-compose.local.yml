@@ -20,7 +20,7 @@ services:
   platform.test:
     build:
       context: ./
-      dockerfile: ./.deploy/accessibility-app/Dockerfile
+      dockerfile: ./.kube/app/Dockerfile
       args:
         CIPHERSWEET_KEY: '${CIPHERSWEET_KEY}'
     container_name: platform.test
