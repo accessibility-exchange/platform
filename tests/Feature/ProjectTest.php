@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\TeamRole;
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -18,9 +20,9 @@ use Database\Seeders\SectorSeeder;
 use function Pest\Faker\faker;
 
 test('users with organization or regulated organization admin role can create projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($user->projects())->toHaveCount(0);
@@ -72,9 +74,9 @@ test('users with organization or regulated organization admin role can create pr
     ]);
     $response->assertSessionHas('ancestor', $previous_project->id);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $response = $this->actingAs($user)->get(localized_route('projects.create'));
@@ -129,10 +131,10 @@ test('users with organization or regulated organization admin role can create pr
 });
 
 test('users without regulated organization admin role cannot create projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     $response = $this->actingAs($user)->get(localized_route('projects.create'));
@@ -144,11 +146,11 @@ test('users without regulated organization admin role cannot create projects', f
 
 test('projects can be published and unpublished', function () {
     $this->seed(ImpactSeeder::class);
-    $adminUser = User::factory()->create(['context' => 'regulated-organization']);
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($adminUser, ['role' => 'admin'])
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($adminUser, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -211,8 +213,8 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
     $user = User::factory()->create(['context' => $context]);
     $orgModel = $context === 'organization' ? Organization::class : RegulatedOrganization::class;
     $organization = $orgModel::factory()
-        ->hasAttached($adminUser, ['role' => 'admin'])
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($adminUser, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $organization->update($projectableData);
     $organization = $organization->fresh();
@@ -236,7 +238,7 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 
 test('users can view projects', function () {
     $user = User::factory()->create();
-    $adminUser = User::factory()->create(['context' => 'regulated-organization', 'phone' => '19024444567']);
+    $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'phone' => '19024444567']);
     $regulatedOrganization = RegulatedOrganization::factory()->create([
         'contact_person_name' => $adminUser->name,
         'contact_person_email' => $adminUser->email,
@@ -265,6 +267,102 @@ test('users can view projects', function () {
 
     $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
     $response->assertOk();
+});
+
+test('users can view project engagements', function () {
+    $user = User::factory()->create();
+    $adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $orgAdminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'phone' => '19024444567']);
+    $orgMemberUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($orgAdminUser, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($orgMemberUser, ['role' => TeamRole::Member->value])
+        ->create([
+            'contact_person_name' => $orgAdminUser->name,
+            'contact_person_email' => $orgAdminUser->email,
+            'contact_person_phone' => $orgAdminUser->phone,
+            'preferred_contact_method' => $orgAdminUser->preferred_contact_method,
+        ]);
+
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+        'contact_person_name' => $regulatedOrganization->contact_person_name,
+        'contact_person_email' => $regulatedOrganization->contact_person_email,
+        'contact_person_phone' => $regulatedOrganization->contact_person_phone,
+        'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
+    ]);
+
+    $publishedEngagement = Engagement::factory()
+        ->for($project)
+        ->has(Meeting::factory())
+        ->create([
+            'name' => ['en' => 'Published'],
+            'description' => ['en' => 'Published engagment'],
+            'signup_by_date' => now(),
+        ]);
+
+    $previewableEngagement = Engagement::factory()
+        ->for($project)
+        ->has(Meeting::factory())
+        ->create([
+            'name' => ['en' => 'Previewable'],
+            'description' => ['en' => 'Previewable engagment'],
+            'signup_by_date' => now(),
+            'published_at' => null,
+        ]);
+
+    $unpreviewableEngagement = Engagement::factory()
+        ->for($project)
+        ->create([
+            'name' => ['en' => 'Previewable'],
+            'description' => ['en' => 'Previewable engagment'],
+            'published_at' => null,
+        ]);
+
+    // Org admin
+    $response = $this->actingAs($orgAdminUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(3);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id, $unpreviewableEngagement->id);
+
+    $response = $this->actingAs($orgAdminUser)->get(localized_route('projects.show-engagements', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(3);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id, $unpreviewableEngagement->id);
+
+    // Org member
+    $response = $this->actingAs($orgMemberUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(1);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
+
+    $response = $this->actingAs($orgMemberUser)->get(localized_route('projects.show-engagements', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(1);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
+
+    // Site admin
+    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(2);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id);
+
+    $response = $this->actingAs($adminUser)->get(localized_route('projects.show-engagements', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(2);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id);
+
+    // Site user
+    $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(1);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
+
+    $response = $this->actingAs($user)->get(localized_route('projects.show-engagements', $project));
+    $response->assertOk();
+    expect($response['engagements'])->toHaveCount(1);
+    expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 });
 
 test('incomplete users cannot view projects page', function ($context, $redirectRoute) {
@@ -320,9 +418,9 @@ test('guests cannot view projects', function () {
 test('users with regulated organization admin role can edit projects', function () {
     $this->seed(ImpactSeeder::class);
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -436,10 +534,10 @@ test('users with regulated organization admin role can edit projects', function 
 });
 
 test('users without regulated organization admin role cannot edit projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -463,9 +561,9 @@ test('users without regulated organization admin role cannot edit projects', fun
 });
 
 test('users with regulated organization admin role can manage projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -482,9 +580,9 @@ test('users with regulated organization admin role can manage projects', functio
 });
 
 test('users without regulated organization admin role cannot manage projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -495,9 +593,9 @@ test('users without regulated organization admin role cannot manage projects', f
 });
 
 test('users with regulated organization admin role can delete projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -514,10 +612,10 @@ test('users with regulated organization admin role can delete projects', functio
 });
 
 test('users without regulated organization admin role cannot delete projects', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -696,9 +794,9 @@ test('registered users can access my projects page', function () {
     $response->assertDontSee('Involved in as a Consultation Participant');
     $response->assertDontSee('Involved in as a Community Connector');
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
     $regulatedOrganizationUser = $regulatedOrganizationUser->fresh();
 
@@ -714,9 +812,9 @@ test('registered users can access my projects page', function () {
     $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'));
     $response->assertNotFound();
 
-    $organizationUser = User::factory()->create(['context' => 'organization']);
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
     $organizationUser = $organizationUser->fresh();
 
@@ -783,7 +881,7 @@ test('registered users can access my projects page', function () {
     $response->assertDontSee('Involved in as a Community Connector');
     $response->assertSee('Involved in as a Consultation Participant');
 
-    $traineeUser = User::factory()->create(['context' => 'training-participant']);
+    $traineeUser = User::factory()->create(['context' => UserContext::TrainingParticipant->value]);
     $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
     $response->assertForbidden();
 });
