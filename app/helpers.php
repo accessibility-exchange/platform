@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
     /**
-     * Retrieve a setting from the settings Valuestore.
+     * Retrieve a setting from the general settings table.
      *
      * @param  string|null  $key The setting key.
      * @param  mixed|null  $default A default value for the setting.
