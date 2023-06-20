@@ -3,6 +3,7 @@
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
+use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Models\Engagement;
@@ -126,6 +127,16 @@ test('flash message after individual role change', function ($initialRoles, $new
     expect(flash()->class)->toBe($expected['class']);
     expect(flash()->message)->toBe($expected['message']($individual));
 })->with('individualRoleChange');
+
+test('save roles request validation errors', function ($data, $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create(['roles' => null]);
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.save-roles'), $data);
+    $response->assertSessionHasErrors($errors);
+})->with('saveIndividualRolesRequestValidationErrors');
 
 test('users can create individual pages', function () {
     $this->seed(ImpactSeeder::class);
@@ -692,6 +703,59 @@ test('users can not edit others individual pages', function () {
         'region' => 'NL',
     ]);
     $response->assertForbidden();
+});
+
+test('update individual request validation errors', function ($data, $errors) {
+    $roles = [
+        IndividualRole::CommunityConnector,
+        IndividualRole::ConsultationParticipant,
+    ];
+
+    if (array_key_exists('consulting_services', $data)) {
+        $roles[] = IndividualRole::AccessibilityConsultant;
+    }
+
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create(['roles' => $roles]);
+
+    $baseData = [
+        'name' => $individual->name,
+        'region' => $individual->region,
+        'bio' => ['en' => 'base bio'],
+    ];
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.update', $individual), array_merge($baseData, $data));
+    $response->assertSessionHasErrors($errors);
+})->with('updateIndividualRequestValidationErrors');
+
+test('updating social links without an array should ignore the change', function () {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+            'social_links' => [
+                'facebook' => 'https://facebook.com',
+            ],
+        ]);
+
+    $response = $this->actingAs($individual->user)
+        ->put(localized_route('individuals.update', $individual), [
+            'name' => $individual->name,
+            'region' => $individual->region,
+            'bio' => ['en' => 'base bio'],
+            'social_links' => 'https://google.ca',
+        ]);
+    $response->assertSessionHasNoErrors();
+    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
+
+    $individual->refresh();
+    expect($individual->social_links)->toHaveCount(1);
+    expect($individual->social_links['facebook'])->toBe('https://facebook.com');
 });
 
 test('users can delete individual pages', function () {

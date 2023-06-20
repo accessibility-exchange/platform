@@ -8,6 +8,10 @@ class AddNotificationableRequest extends FormRequest
 {
     public function authorize(): bool
     {
+        if (! is_callable($this->input('notificationable_type').'::find')) {
+            return false;
+        }
+
         $notificationable = $this->input('notificationable_type')::find($this->input('notificationable_id'));
 
         return $notificationable && $this->user()->can('receiveNotifications');

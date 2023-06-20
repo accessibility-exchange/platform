@@ -41,6 +41,8 @@ class SaveIndividualRolesRequest extends FormRequest
     {
         return [
             'roles.required' => __('You must select what you would like to do on the website.'),
+            'roles.array' => __('You must select what you would like to do on the website.'),
+            'roles.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid role to perform on the website.'),
         ];
     }
 }
