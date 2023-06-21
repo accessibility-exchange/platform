@@ -50,7 +50,7 @@ RUN pecl install -o -f redis && \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
