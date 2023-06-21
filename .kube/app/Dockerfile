@@ -63,13 +63,9 @@ COPY . $APP_DIR
 RUN composer install
 
 RUN . /root/.nvm/nvm.sh && \
-    . /root/.nvm/bash_completion && \
-    nvm --version && \
-    echo $NODE_VERSION && \
-    nvm ls-remote | grep v$NODE_VERSION
+    nvm --version
 
 RUN . /root/.nvm/nvm.sh && \
-    . /root/.nvm/bash_completion && \
     nvm install $NODE_VERSION && \
     npm ci
 
