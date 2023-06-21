@@ -64,8 +64,11 @@ RUN composer install
 
 RUN . /root/.nvm/nvm.sh && \
     . /root/.nvm/bash_completion && \
-    nvm install $NODE_VERSION && \
-    npm install
+    nvm install $NODE_VERSION
+
+RUN . /root/.nvm/nvm.sh && \
+    . /root/.nvm/bash_completion && \
+    npm ci
 
 RUN chown www-data:root $APP_DIR/public/ -R
 
