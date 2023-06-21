@@ -1,6 +1,8 @@
 FROM php:8.1-fpm
 
 ENV PHP_VERSION 8.1
+ENV NODE_VERSION 16
+
 ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
 
@@ -49,9 +51,6 @@ RUN pecl install -o -f redis && \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-RUN . /root/.nvm/nvm.sh && \
-    . /root/.nvm/bash_completion && \
-    nvm install
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
@@ -63,7 +62,10 @@ COPY . $APP_DIR
 
 RUN composer install
 
-RUN npm install
+RUN . /root/.nvm/nvm.sh && \
+    . /root/.nvm/bash_completion && \
+    nvm install $NODE_VERSION && \
+    npm install
 
 RUN chown www-data:root $APP_DIR/public/ -R
 
