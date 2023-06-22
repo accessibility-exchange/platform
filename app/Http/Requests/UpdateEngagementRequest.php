@@ -234,6 +234,14 @@ class UpdateEngagementRequest extends FormRequest
 
     public function withValidator($validator)
     {
+        $validator->sometimes('other_accepted_format.en', 'required_without:other_accepted_format.fr', function ($input) {
+            return $input->other_accepted_formats === false;
+        });
+
+        $validator->sometimes('other_accepted_format.fr', 'required_without:other_accepted_format.en', function ($input) {
+            return ! $input->other_accepted_formats === false;
+        });
+
         $validator->sometimes('signup_by_date', 'before:window_start_date', function ($input) {
             return ! blank($input->window_start_date);
         });

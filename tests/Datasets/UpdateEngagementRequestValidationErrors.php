@@ -603,7 +603,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
-                'without' => ['other_accepted_format'],
+                'without' => ['other_accepted_format.en'],
             ],
         ],
         'Open to other formats is not a boolean' => [
