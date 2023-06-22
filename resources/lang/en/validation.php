@@ -96,6 +96,7 @@ return [
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
+    'postal_code' => 'You must enter a valid Canadian postal code.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'You must enter your :attribute.',

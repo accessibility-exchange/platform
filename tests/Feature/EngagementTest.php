@@ -1,6 +1,8 @@
 <?php
 
+use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
+use App\Enums\MeetingType;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
@@ -397,6 +399,49 @@ test('users without regulated organization admin role cannot edit engagements', 
     ]);
     $response->assertForbidden();
 });
+
+test('update engagement request validation errors', function ($state, $errors, $modifiers = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $format = $modifiers['format'] ?? EngagementFormat::Workshop->value;
+    $engagement = Engagement::factory()->create([
+        'project_id' => $project->id,
+        'format' => $format,
+    ]);
+
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $formatTransformer = match ($format) {
+        EngagementFormat::Interviews->value => 'formatInterview',
+        EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value => 'formatAsync',
+        default => null
+    };
+
+    if ($formatTransformer) {
+        $requestFactory = $requestFactory->$formatTransformer();
+    }
+
+    $meetingTypeTransformer = match ($modifiers['meetingType'] ?? '') {
+        MeetingType::InPerson->value => 'meetingInPerson',
+        MeetingType::Phone->value, EngagementFormat::OtherAsync->value => 'meetingPhone',
+        MeetingType::WebConference->value, EngagementFormat::OtherAsync->value => 'meetingWebConference',
+        default => null
+    };
+
+    if ($meetingTypeTransformer) {
+        $requestFactory = $requestFactory->$meetingTypeTransformer();
+    }
+
+    $data = $requestFactory->without($modifiers['without'] ?? [])->create($state);
+
+    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), $data);
+    $response->assertSessionHasErrors($errors);
+})->with('updateEngagementRequestValidationErrors');
 
 test('users with regulated organization admin role can manage engagements', function () {
     $this->seed(IdentitySeeder::class);
