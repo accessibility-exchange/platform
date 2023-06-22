@@ -48,4 +48,5 @@
         </div>
     </div>
     <input name="{{ $name }}" type="hidden" x-bind:value="getDate" />
+    <x-hearth-error for="{{ $name }}" />
 </fieldset>
