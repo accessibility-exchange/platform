@@ -430,8 +430,8 @@ test('update engagement request validation errors', function ($state, $errors, $
 
     $meetingTypeTransformer = match ($modifiers['meetingType'] ?? '') {
         MeetingType::InPerson->value => 'meetingInPerson',
-        MeetingType::Phone->value, EngagementFormat::OtherAsync->value => 'meetingPhone',
-        MeetingType::WebConference->value, EngagementFormat::OtherAsync->value => 'meetingWebConference',
+        MeetingType::Phone->value => 'meetingPhone',
+        MeetingType::WebConference->value => 'meetingWebConference',
         default => null
     };
 

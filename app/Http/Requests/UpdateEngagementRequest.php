@@ -158,7 +158,7 @@ class UpdateEngagementRequest extends FormRequest
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 Rule::requiredIf($this->engagement->format === 'interviews' && in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                'phone:CA',
+                'phone:CA,US',
             ],
             'additional_phone_information' => [
                 'nullable',

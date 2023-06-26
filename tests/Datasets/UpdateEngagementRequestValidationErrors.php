@@ -360,7 +360,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
             ],
         ],
         'Meeting phone number is invalid' => [
-            ['meeting_phone' => '1-800-call-now'],
+            ['meeting_phone' => '1800123456'],
             fn () => ['meeting_phone' => __('validation.phone', ['attribute' => __('meeting phone number')])],
             [
                 'format' => EngagementFormat::Interviews->value,

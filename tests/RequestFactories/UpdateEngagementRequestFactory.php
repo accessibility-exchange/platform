@@ -16,7 +16,6 @@ class UpdateEngagementRequestFactory extends RequestFactory
             'name' => ['en' => 'Workshop'],
             'description' => ['en' => $this->faker->paragraph()],
             'signup_by_date' => now()->addMonth(1),
-            // 'signup_by_date' => $this->faker->dateTimeBetween('+1 months', '+6 months')->format('Y-m-d'),
             'paid' => $this->faker->boolean(50),
         ];
     }
@@ -30,7 +29,6 @@ class UpdateEngagementRequestFactory extends RequestFactory
             'locality' => $this->faker->city(),
             'region' => $this->faker->randomElement(ProvinceOrTerritory::class)->value,
             'postal_code' => $this->faker->regexify('[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] ?\d[ABCEGHJ-NPRSTV-Z]\d'),
-            // 'postal_code' => $this->faker->postalcode(),
             'directions' => $this->faker->boolean(50) ? ['en' => $this->faker->paragraph()] : null,
         ]);
     }
@@ -50,7 +48,7 @@ class UpdateEngagementRequestFactory extends RequestFactory
     {
         return $this->state([
             'meeting_types' => [MeetingType::Phone->value],
-            'meeting_phone' => $this->faker->phoneNumber(),
+            'meeting_phone' => '1 (888) 867-0053',
             'additional_phone_information' => $this->faker->boolean(50) ? ['en' => $this->faker->paragraph()] : null,
         ]);
     }

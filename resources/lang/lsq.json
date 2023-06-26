@@ -1808,6 +1808,7 @@
     "Text": "Texte",
     "Text message": "Message texte",
     "Text to speech": "Synthèse vocale",
+    "The :attribute format is not valid.": "",
     "The :attribute is not in the right format.": "Le champ :attribute n'est pas au bon format.",
     "The :projectable sends out a list of questions, and you can can respond to them at your own pace.": "Dans ce cas, l':projectable vous enverra une liste de questions et vous pourrez y répondre à votre propre rythme.",
     "The Accessibility Exchange": "Connecteur pour l’accessibilité",
