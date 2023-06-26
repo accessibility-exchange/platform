@@ -56,10 +56,12 @@ test('create invitation validation errors', function ($data, $errors) {
         'email' => 'invitation.sent.test@example.com',
     ]);
 
-    $postData = array_merge($data, [
+    $postData = array_merge([
+        'email' => 'invitation.user.test@example.com',
+        'role' => TeamRole::Member->value,
         'invitationable_id' => $regulatedOrganization->id,
         'invitationable_type' => get_class($regulatedOrganization),
-    ]);
+    ], $data);
 
     $response = $this->actingAs($user)->post(localized_route('invitations.create'), $postData);
 

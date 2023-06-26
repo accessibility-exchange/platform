@@ -6,6 +6,7 @@ use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
+use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -705,13 +706,13 @@ test('users can not edit others individual pages', function () {
     $response->assertForbidden();
 });
 
-test('update individual request validation errors', function ($data, $errors) {
+test('update individual request validation errors', function ($state, $errors, $without = []) {
     $roles = [
         IndividualRole::CommunityConnector,
         IndividualRole::ConsultationParticipant,
     ];
 
-    if (array_key_exists('consulting_services', $data)) {
+    if (array_key_exists('consulting_services', $state)) {
         $roles[] = IndividualRole::AccessibilityConsultant;
     }
 
@@ -719,14 +720,10 @@ test('update individual request validation errors', function ($data, $errors) {
         ->for(User::factory())
         ->create(['roles' => $roles]);
 
-    $baseData = [
-        'name' => $individual->name,
-        'region' => $individual->region,
-        'bio' => ['en' => 'base bio'],
-    ];
+    $data = UpdateIndividualRequest::factory()->without($without ?? [])->create($state);
 
     $response = $this->actingAs($individual->user)
-        ->put(localized_route('individuals.update', $individual), array_merge($baseData, $data));
+        ->put(localized_route('individuals.update', $individual), $data);
     $response->assertSessionHasErrors($errors);
 })->with('updateIndividualRequestValidationErrors');
 

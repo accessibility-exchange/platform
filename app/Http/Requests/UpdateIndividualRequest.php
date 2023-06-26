@@ -9,9 +9,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualRequest extends FormRequest
 {
+    use HasFactory;
+
     /**
      * Determine if the user is authorized to make this request.
      */

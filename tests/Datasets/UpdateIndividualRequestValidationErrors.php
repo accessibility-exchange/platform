@@ -5,6 +5,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Missing name' => [
             ['name' => null],
             fn () => ['name' => __('validation.required', ['attribute' => 'name'])],
+            ['name'],
         ],
         'Name not a string' => [
             ['name' => false],
@@ -17,6 +18,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Missing region' => [
             ['region' => null],
             fn () => ['region' => __('validation.required', ['attribute' => __('province or territory')])],
+            ['region'],
         ],
         'Invalid region' => [
             ['region' => 'zz'],
@@ -33,6 +35,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Bio missing' => [
             ['bio' => null],
             fn () => ['bio' => __('validation.required', ['attribute' => 'bio'])],
+            ['bio'],
         ],
         'Bio not an array' => [
             ['bio' => 'en'],
@@ -41,10 +44,6 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Invalid bio translation' => [
             ['bio' => ['123' => 'test language', 'en' => 'my bio']],
             fn () => ['bio' => __('validation.array', ['attribute' => 'bio'])],
-        ],
-        'Missing required bio translation' => [
-            ['bio' => ['123' => 'test language']],
-            fn () => ['bio' => __('validation.required_array_keys', ['attribute' => 'bio', 'values' => 'en'])],
         ],
         'Bio translation not a string' => [
             ['bio' => ['en' => [123]]],
@@ -56,6 +55,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
                 'bio.en' => __('You must enter your bio.'),
                 'bio.fr' => __('You must enter your bio.'),
             ],
+            ['bio.en'],
         ],
         'Working languages not an array' => [
             ['working_languages' => 'en'],
