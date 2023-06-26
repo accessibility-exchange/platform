@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 
 dataset('matchingStrategyLocationType', function () {
@@ -17,7 +18,7 @@ dataset('matchingStrategyLocationType', function () {
                     ],
                 ],
             ],
-            'localities',
+            LocationType::Localities->value,
         ],
         'with regions' => [
             ['regions' => [ProvinceOrTerritory::Ontario->value]],
@@ -33,7 +34,7 @@ dataset('matchingStrategyLocationType', function () {
                 ],
                 'regions' => [ProvinceOrTerritory::Ontario->value],
             ],
-            'regions',
+            LocationType::Regions->value,
         ],
     ];
 });

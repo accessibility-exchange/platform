@@ -2,6 +2,8 @@
 
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
+use App\Enums\IdentityType;
+use App\Enums\LocationType;
 use App\Enums\MeetingType;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
@@ -180,7 +182,7 @@ test('users with regulated organization admin role can edit engagements', functi
     $response->assertOk();
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
-        'location_type' => 'localities',
+        'location_type' => LocationType::Localities->value,
         'regions' => $engagement->matchingStrategy->regions ?? [],
         'locations' => [
             [
@@ -193,7 +195,7 @@ test('users with regulated organization admin role can edit engagements', functi
             Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first()->id,
         ],
         'intersectional' => 0,
-        'other_identity_type' => 'age-bracket',
+        'other_identity_type' => IdentityType::AgeBracket->value,
         'age_brackets' => [Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->id],
     ]);
 
@@ -209,7 +211,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'gender-and-sexual-identity',
+        'other_identity_type' => IdentityType::GenderAndSexualIdentity->value,
         'nb_gnc_fluid_identity' => 1,
         'gender_and_sexual_identities' => [Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()->id],
     ]);
@@ -227,7 +229,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'indigenous-identity',
+        'other_identity_type' => IdentityType::IndigenousIdentity->value,
         'indigenous_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->get()->modelKeys(),
     ]);
 
@@ -243,7 +245,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'ethnoracial-identity',
+        'other_identity_type' => IdentityType::EthnoracialIdentity->value,
         'ethnoracial_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('id')->toArray(),
     ]);
 
@@ -259,7 +261,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'refugee-or-immigrant',
+        'other_identity_type' => IdentityType::RefugeeOrImmigrant->value,
     ]);
 
     $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
@@ -274,7 +276,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'first-language',
+        'other_identity_type' => IdentityType::FirstLanguage->value,
         'first_languages' => ['fr', 'lsq'],
     ]);
 
@@ -289,7 +291,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
-        'other_identity_type' => 'area-type',
+        'other_identity_type' => IdentityType::AreaType->value,
         'area_types' => Identity::whereJsonContains('clusters', IdentityCluster::Area)->pluck('id')->toArray(),
     ]);
 
@@ -442,6 +444,25 @@ test('update engagement request validation errors', function ($state, $errors, $
     $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), $data);
     $response->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
+
+test('update engagement selection criteria request validation errors', function ($state, $errors, $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $requestFactory = UpdateEngagementSelectionCriteriaRequest::factory();
+
+    $data = $requestFactory->without($without ?? [])->create($state);
+    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    $response->assertSessionHasErrors($errors);
+})->with('updateEngagementSelectionCriteriaRequestValidationErrors');
 
 test('users with regulated organization admin role can manage engagements', function () {
     $this->seed(IdentitySeeder::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -20,7 +21,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'location_type' => 'required|in:regions,localities',
+            'location_type' => ['required', new Enum(LocationType::class)],
             'regions' => 'nullable|array|required_if:location_type,regions|exclude_if:location_type,localities',
             'regions.*' => [new Enum(ProvinceOrTerritory::class)],
             'locations' => 'nullable|array|required_if:location_type,localities|exclude_if:location_type,regions',
@@ -40,7 +41,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
                 'boolean',
                 Rule::requiredIf(function () {
                     return request('other_identity_type') === 'gender-and-sexual-identity'
-                        && count(request('gender_and_sexual_identities') ?? []) === 0;
+                        && (! is_array(request('gender_and_sexual_identities')) || count(request('gender_and_sexual_identities')) === 0);
                 }),
                 'exclude_unless:other_identity_type,gender-and-sexual-identity',
             ],
@@ -72,6 +73,13 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'nb_gnc_fluid_identity' => __('Non-binary/Gender non-conforming/Gender fluid identity'),
+        ];
+    }
+
     public function messages(): array
     {
         return [
@@ -80,11 +88,19 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'locations.*.locality' => __('You must enter a city or town.'),
             'locations.required_if' => __('You must enter at least one city or town.'),
             'regions.required_if' => __('You must choose at least one province or territory.'),
+            'regions.*.Illuminate\Validation\Rules\Enum' => __('You must choose a valid province or territory'),
             'disability_types.required_if' => __('One or more Disability or Deaf groups are required.'),
+            'disability_types.*.exists' => __('You must select a valid Disability or Deaf group.'),
+            'age_brackets.*.exists' => __('You must select a valid age bracket.'),
             'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group.'),
             'gender_and_sexual_identities.required' => __('You must select at least one gender or sexual identity group.'),
+            'gender_and_sexual_identities.*.exists' => __('You must select a valid gender or sexual identity.'),
             'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group.'),
-
+            'indigenous_identities.*.exists' => __('You must select a valid indigenous identity.'),
+            'ethnoracial_identities.*.exists' => __('You must select a valid ethnoracial identity.'),
+            'first_languages.*.in' => __('You must select a valid first language.'),
+            'area_types.*.exists' => __('You must select a valid area type.'),
+            'other_identity_type.required_if' => __('If you are looking for a group with a specific experience or identity, you must select which type of experience or identity you are looking for.'),
         ];
     }
 

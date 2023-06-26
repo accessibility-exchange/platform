@@ -38,7 +38,7 @@
             </div>
 
             <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
-                <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? 'regions') }}' }">
+                <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? App\Enums\LocationType::Regions->value) }}' }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
                             {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
@@ -48,7 +48,7 @@
                     </fieldset>
 
                     <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()" x-cloak
-                        x-show="locationType == 'regions'">
+                        x-show="locationType == '{{ App\Enums\LocationType::Regions->value }}'">
                         <legend>{{ __('Specific provinces or territories') }}</legend>
                         <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
                         <div class="stack mt-8" x-cloak>
@@ -61,7 +61,7 @@
                     </fieldset>
 
                     <fieldset class="field @error('locations') field--error @enderror" x-cloak
-                        x-show="locationType == 'localities'">
+                        x-show="locationType == '{{ App\Enums\LocationType::Localities->value }}'">
                         <legend>{{ __('Specific cities or towns') }}</legend>
                         <livewire:locations :locations="old('locations', $engagement->matchingStrategy->locations ?? [])" />
                         <x-hearth-error for="locations" />
@@ -152,7 +152,7 @@
                     </div>
                     <div x-show="intersectional == 0" x-cloak>
                         <fieldset class="field @error('age_brackets') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'age-bracket'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::AgeBracket->value }}'">
                             <legend>{{ __('What age group are you interested in engaging?') }}</legend>
                             <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old(
                                 'age_brackets',
@@ -161,7 +161,7 @@
                             <x-hearth-error for="age_brackets" />
                         </fieldset>
                         <fieldset class="field @error('gender_and_sexual_identities') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'gender-and-sexual-identity'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::GenderAndSexualIdentity->value }}'">
                             <legend>
                                 {{ __('What group that has been marginalized based on gender or sexual identity are you interested in engaging?') }}
                             </legend>
@@ -181,7 +181,7 @@
                             <x-hearth-error for="gender_and_sexual_identities" />
                         </fieldset>
                         <fieldset class="field @error('indigenous_identities') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'indigenous-identity'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::IndigenousIdentity->value }}'">
                             <legend>
                                 {{ __('What Indigenous group are you interested in engaging?') }}
                             </legend>
@@ -192,7 +192,7 @@
                             <x-hearth-error for="indigenous_identities" />
                         </fieldset>
                         <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'ethnoracial-identity'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::EthnoracialIdentity->value }}'">
                             <legend>{{ __('What ethno-racial group are you interested in engaging?') }}</legend>
                             <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
                                 'ethnoracial_identities',
@@ -201,7 +201,7 @@
                             <x-hearth-error for="ethnoracial_identities" />
                         </fieldset>
                         <fieldset class="field @error('first_languages') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'first-language'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::FirstLanguage->value }}'">
                             <legend>
                                 {{ __('What first languages are used by the people you’re interested in engaging?') }}
                             </legend>
@@ -212,7 +212,7 @@
                             <x-hearth-error for="first_languages" />
                         </fieldset>
                         <fieldset class="field @error('area_types') field--error @enderror" x-cloak
-                            x-show="otherIdentityType == 'area-type'">
+                            x-show="otherIdentityType == '{{ App\Enums\IdentityType::AreaType->value }}'">
                             <legend>{{ __('Where do the people you’re interested in engaging live?') }}</legend>
                             <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                             <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old(

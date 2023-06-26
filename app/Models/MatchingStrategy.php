@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\IdentityCluster;
+use App\Enums\IdentityType;
+use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\HasSchemalessAttributes;
@@ -100,10 +102,10 @@ class MatchingStrategy extends Model
         return Attribute::make(
             get: function () {
                 if (! empty($this->regions)) {
-                    return 'regions';
+                    return LocationType::Regions->value;
                 }
                 if (! empty($this->locations)) {
-                    return 'localities';
+                    return LocationType::Localities->value;
                 }
 
                 return null;
@@ -157,13 +159,13 @@ class MatchingStrategy extends Model
         return Attribute::make(
             get: function () {
                 return match ($this->extra_attributes->get('other_identity_type', null)) {
-                    'age-bracket' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Age)->pluck('name')->toArray(),
-                    'gender-and-sexual-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->pluck('name')->toArray(),
-                    'indigenous-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray(),
-                    'ethnoracial-identity' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray(),
-                    'refugee-or-immigrant' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray(),
-                    'first-language' => $this->languages->map(fn ($language) => $language->name)->toArray(),
-                    'area-type' => $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray(),
+                    IdentityType::AgeBracket->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Age)->pluck('name')->toArray(),
+                    IdentityType::GenderAndSexualIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->pluck('name')->toArray(),
+                    IdentityType::IndigenousIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray(),
+                    IdentityType::EthnoracialIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray(),
+                    IdentityType::RefugeeOrImmigrant->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray(),
+                    IdentityType::FirstLanguage->value => $this->languages->map(fn ($language) => $language->name)->toArray(),
+                    IdentityType::AreaType->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray(),
                     default => [__('Intersectional - This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.')],
                 };
             },
