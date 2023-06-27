@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -20,7 +21,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'location_type' => 'required|in:regions,localities',
+            'location_type' => ['required', new Enum(LocationType::class)],
             'regions' => 'nullable|array|required_if:location_type,regions|exclude_if:location_type,localities',
             'regions.*' => [new Enum(ProvinceOrTerritory::class)],
             'locations' => 'nullable|array|required_if:location_type,localities|exclude_if:location_type,regions',
@@ -40,7 +41,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
                 'boolean',
                 Rule::requiredIf(function () {
                     return request('other_identity_type') === 'gender-and-sexual-identity'
-                        && count(request('gender_and_sexual_identities') ?? []) === 0;
+                        && (! is_array(request('gender_and_sexual_identities')) || count(request('gender_and_sexual_identities')) === 0);
                 }),
                 'exclude_unless:other_identity_type,gender-and-sexual-identity',
             ],
@@ -72,19 +73,57 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'age_brackets' => __('age group'),
+            'age_brackets.*' => __('age group'),
+            'area_types' => __('area type'),
+            'area_types.*' => __('area type'),
+            'disability_types' => __('Disability or Deaf group'),
+            'disability_types.*' => __('Disability or Deaf group'),
+            'ethnoracial_identities' => __('ethnoracial group'),
+            'ethnoracial_identities.*' => __('ethnoracial group'),
+            'first_languages' => __('first language'),
+            'first_languages.*' => __('first language'),
+            'gender_and_sexual_identities' => __('gender or sexual identity group'),
+            'gender_and_sexual_identities.*' => __('gender or sexual identity group'),
+            'ideal_participants' => __('ideal number of participants'),
+            'indigenous_identities' => __('Indigenous group'),
+            'indigenous_identities.*' => __('Indigenous group'),
+            'minimum_participants' => __('minimum number of participants'),
+            'nb_gnc_fluid_identity' => __('Non-binary/Gender non-conforming/Gender fluid identity'),
+        ];
+    }
+
     public function messages(): array
     {
         return [
-            'minimum_participants.lte' => __('The minimum number of participants is more than the ideal number of participants. Please enter a minimum that is less than or the same as the ideal number of participants.'),
+            'minimum_participants.required' => __('You must enter a :attribute.'),
+            'minimum_participants.lte' => __('Please enter a :attribute that is less than or the same as the ideal number of participants.'),
+            'minimum_participants.integer' => __('The :attribute must be a number.'),
             'locations.*.region' => __('You must enter a province or territory.'),
             'locations.*.locality' => __('You must enter a city or town.'),
             'locations.required_if' => __('You must enter at least one city or town.'),
             'regions.required_if' => __('You must choose at least one province or territory.'),
-            'disability_types.required_if' => __('One or more Disability or Deaf groups are required.'),
-            'gender_and_sexual_identities.required_if' => __('You must select at least one gender or sexual identity group.'),
-            'gender_and_sexual_identities.required' => __('You must select at least one gender or sexual identity group.'),
-            'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group.'),
-
+            'regions.*.Illuminate\Validation\Rules\Enum' => __('You must choose a valid province or territory'),
+            'disability_types.required_if' => __('If you are looking for a specific :attribute, you must select at least one.'),
+            'disability_types.*.exists' => __('You must select a valid :attribute.'),
+            'age_brackets.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'age_brackets.*.exists' => __('You must select a valid :attribute.'),
+            'gender_and_sexual_identities.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'gender_and_sexual_identities.required' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'gender_and_sexual_identities.*.exists' => __('You must select a valid :attribute.'),
+            'nb_gnc_fluid_identity.required' => __('If you are interested in engaging a specific :attribute, you must select at least one.', ['attribute' => __('gender or sexual identity group')]),
+            'indigenous_identities.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'indigenous_identities.*.exists' => __('You must select a valid :attribute.'),
+            'ethnoracial_identities.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'ethnoracial_identities.*.exists' => __('You must select a valid :attribute.'),
+            'first_languages.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'first_languages.*.in' => __('You must select a valid :attribute.'),
+            'area_types.required_if' => __('If you are interested in engaging a specific :attribute, you must select at least one.'),
+            'area_types.*.exists' => __('You must select a valid :attribute.'),
+            'other_identity_type.required_if' => __('If you are looking for a group with a specific experience or identity, you must select which type of experience or identity you are looking for.'),
         ];
     }
 

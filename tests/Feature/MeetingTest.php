@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\MeetingType;
+use App\Enums\UserContext;
+use App\Http\Requests\MeetingRequest;
 use App\Models\Engagement;
 use App\Models\Meeting;
 use App\Models\Project;
@@ -132,6 +135,40 @@ test('meetings can be edited', function () {
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });
+
+test('Meeting request validation errors', function ($state, $errors, $modifiers = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->has(Project::factory()->has(Engagement::factory()->has(Meeting::factory())))
+        ->create();
+
+    $engagement = $regulatedOrganization->projects->first()->engagements->first();
+    $meeting = $engagement->meetings->first();
+
+    $requestFactory = MeetingRequest::factory();
+
+    $meetingTypeTransformer = match ($modifiers['meetingType'] ?? '') {
+        MeetingType::InPerson->value => 'inPerson',
+        MeetingType::Phone->value => 'phone',
+        MeetingType::WebConference->value => 'webConference',
+        default => null
+    };
+
+    if ($meetingTypeTransformer) {
+        $requestFactory = $requestFactory->$meetingTypeTransformer();
+    }
+
+    $data = $requestFactory->without($modifiers['without'] ?? [])->create($state);
+
+    // create meeting
+    $response = $this->actingAs($user)->post(localized_route('meetings.store', $engagement), $data);
+    $response->assertSessionHasErrors($errors);
+
+    // update existing meeting
+    $response = $this->actingAs($user)->post(localized_route('meetings.update', ['meeting' => $meeting, 'engagement' => $engagement]), $data);
+    $response->assertSessionHasErrors($errors);
+})->with('meetingRequestValidationErrors');
 
 test('meetings can be deleted', function () {
     $this->seed(IdentitySeeder::class);

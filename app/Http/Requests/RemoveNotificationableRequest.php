@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class RemoveNotificationableRequest extends FormRequest
 {
@@ -15,7 +16,20 @@ class RemoveNotificationableRequest extends FormRequest
     {
         return [
             'notificationable_type' => 'required|string|in:App\Models\Organization,App\Models\RegulatedOrganization',
-            'notificationable_id' => 'required|integer|exists:'.$this->input('notificationable_type').',id',
+            'notificationable_id' => 'required|integer',
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->sometimes('notificationable_id', 'exists:'.$this->input('notificationable_type').',id', function ($input) {
+            return isset($input->notificationable_type) && in_array(
+                $input->notificationable_type,
+                [
+                    'App\Models\Organization',
+                    'App\Models\RegulatedOrganization',
+                ]
+            );
+        });
     }
 }

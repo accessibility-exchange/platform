@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 if (! function_exists('settings')) {
     /**
-     * Retrieve a setting from the settings Valuestore.
+     * Retrieve a setting from the general settings table.
      *
      * @param  string|null  $key The setting key.
      * @param  mixed|null  $default A default value for the setting.
@@ -43,9 +43,8 @@ if (! function_exists('get_available_languages')) {
                 $languages,
                 function ($language) {
                     return
-                        (! str_starts_with($language, 'en') && ! str_starts_with($language, 'fr'))
-                        || ! strpos($language, '_')
-                        || in_array($language, [
+                        ! ((str_starts_with($language, 'en_') || str_starts_with($language, 'fr_')))
+                        && ! in_array($language, [
                             'ase',
                             'egy',
                             'grc',
