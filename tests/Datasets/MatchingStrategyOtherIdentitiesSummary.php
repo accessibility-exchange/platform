@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IdentityCluster;
+use App\Enums\IdentityType;
 use App\Models\Identity;
 
 dataset('matchingStrategyOtherIdentitiesSummary', function () {
@@ -12,43 +13,43 @@ dataset('matchingStrategyOtherIdentitiesSummary', function () {
         ],
         'with age-bracket identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'age-bracket'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::AgeBracket->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()],
         ],
         'with gender-and-sexual-identity identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'gender-and-sexual-identity'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::GenderAndSexualIdentity->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()],
         ],
         'with indigenous-identity identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'indigenous-identity'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::IndigenousIdentity->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->first()],
         ],
         'with ethnoracial-identity identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'ethnoracial-identity'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::EthnoracialIdentity->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first()],
         ],
         'with refugee-or-immigrant identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'refugee-or-immigrant'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::RefugeeOrImmigrant->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::Status)->first()],
         ],
         'with area-type identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'area-type'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::AreaType->value],
             ],
             fn () => [Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()],
         ],
         'with first-language identities' => [
             [
-                'extra_attributes' => ['other_identity_type' => 'first-language'],
+                'extra_attributes' => ['other_identity_type' => IdentityType::FirstLanguage->value],
             ],
             ['English'],
         ],
