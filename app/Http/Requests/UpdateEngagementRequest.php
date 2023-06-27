@@ -335,7 +335,6 @@ class UpdateEngagementRequest extends FormRequest
             'signup_by_date' => __('You must enter a :attribute.'),
             'signup_by_date.date' => __('Please enter a valid date for the :attribute.'),
             'signup_by_date.before' => __('The :attribute must be before the :date.'),
-            'signup_by_date.before' => __('The :attribute must be before the :date.'),
         ];
     }
 }
