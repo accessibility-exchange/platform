@@ -202,7 +202,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'intersectional' => false,
                 'other_identity_type' => IdentityType::IndigenousIdentity->value,
             ],
-            fn () => ['indigenous_identities' => __('If you are interested in engaging a specific :attribute, you must select at least one.', ['attribute' => __('indigenous group')])],
+            fn () => ['indigenous_identities' => __('If you are interested in engaging a specific :attribute, you must select at least one.', ['attribute' => __('Indigenous group')])],
             ['indigenous_identities'],
         ],
         'Indigenous identities is not an array' => [
@@ -211,7 +211,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'other_identity_type' => IdentityType::IndigenousIdentity->value,
                 'indigenous_identities' => 1,
             ],
-            fn () => ['indigenous_identities' => __('validation.array', ['attribute' => __('indigenous group')])],
+            fn () => ['indigenous_identities' => __('validation.array', ['attribute' => __('Indigenous group')])],
         ],
         'Indigenous identity is invalid' => [
             [
@@ -219,7 +219,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'other_identity_type' => IdentityType::IndigenousIdentity->value,
                 'indigenous_identities' => [1000],
             ],
-            fn () => ['indigenous_identities.0' => __('You must select a valid :attribute.', ['attribute' => __('indigenous group')])],
+            fn () => ['indigenous_identities.0' => __('You must select a valid :attribute.', ['attribute' => __('Indigenous group')])],
         ],
         'Ethnoracial identities missing' => [
             [

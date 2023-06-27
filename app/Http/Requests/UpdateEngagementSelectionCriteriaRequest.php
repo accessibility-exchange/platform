@@ -89,8 +89,8 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'gender_and_sexual_identities' => __('gender or sexual identity group'),
             'gender_and_sexual_identities.*' => __('gender or sexual identity group'),
             'ideal_participants' => __('ideal number of participants'),
-            'indigenous_identities' => __('indigenous group'),
-            'indigenous_identities.*' => __('indigenous group'),
+            'indigenous_identities' => __('Indigenous group'),
+            'indigenous_identities.*' => __('Indigenous group'),
             'minimum_participants' => __('minimum number of participants'),
             'nb_gnc_fluid_identity' => __('Non-binary/Gender non-conforming/Gender fluid identity'),
         ];
