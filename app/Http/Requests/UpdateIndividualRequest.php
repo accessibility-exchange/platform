@@ -74,13 +74,16 @@ class UpdateIndividualRequest extends FormRequest
     public function messages(): array
     {
         $messages = [
-            'bio.*.required_without' => __('You must enter your bio.'),
+            'bio.required_array_keys' => __('Your bio must be provided in at least English or French.'),
+            'bio.*.required_without' => __('Your bio must be provided in at least English or French.'),
+            'bio.array' => __('Your bio must be provided in at least English or French.'),
             'consulting_services.*.Illuminate\Validation\Rules\Enum' => __('The selected consulting service is invalid'),
-            'website_link.active_url' => __('You must enter a valid website address for :key.', ['key' => __('Website link')]),
+            'pronouns.array' => __('Your pronouns must be provided in at least English or French.'),
+            'website_link.active_url' => __('You must enter a valid website link.'),
         ];
 
         foreach ($this->social_links as $key => $value) {
-            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid link for :key.', ['key' => Str::studly($key)]);
         }
 
         return $messages;

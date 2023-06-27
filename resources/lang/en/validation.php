@@ -107,7 +107,7 @@ return [
     'required_with_all' => 'The :attribute field is required when :values are present.',
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
-    'phone' => 'The :attribute is not a valid phone number.',
+    'phone' => 'The :attribute is not a valid number.',
     'prohibits' => 'The :attribute field is prohibited when :other is present.',
     'prohibited' => 'The :attribute field is prohibited.',
     'prohibited_if' => 'The :attribute field is prohibited when :other is :value.',
@@ -124,7 +124,7 @@ return [
     'timezone' => 'The :attribute must be a valid zone.',
     'unique' => 'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute format is invalid.',
+    'url' => 'The :attribute is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     /*

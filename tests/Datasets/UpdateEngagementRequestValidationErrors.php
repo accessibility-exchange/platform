@@ -10,15 +10,15 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Name is missing' => [
             ['name' => null],
             fn () => [
-                'name.en' => __('An engagement name must be provided in at least one language.'),
-                'name.fr' => __('An engagement name must be provided in at least one language.'),
+                'name.en' => __('An engagement name must be provided in at least English or French.'),
+                'name.fr' => __('An engagement name must be provided in at least English or French.'),
             ],
         ],
         'Name is missing required translation' => [
             'state' => ['name' => ['es' => 'el contrato']],
             'errors' => fn () => [
-                'name.en' => __('An engagement name must be provided in at least one language.'),
-                'name.fr' => __('An engagement name must be provided in at least one language.'),
+                'name.en' => __('An engagement name must be provided in at least English or French.'),
+                'name.fr' => __('An engagement name must be provided in at least English or French.'),
             ],
             ['without' => ['name']],
         ],
@@ -29,15 +29,15 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Description is missing' => [
             ['description' => null],
             fn () => [
-                'description.en' => __('An engagement description must be provided in at least one language.'),
-                'description.fr' => __('An engagement description must be provided in at least one language.'),
+                'description.en' => __('An engagement description must be provided in at least English or French.'),
+                'description.fr' => __('An engagement description must be provided in at least English or French.'),
             ],
         ],
         'Description is missing required translation' => [
             'state' => ['description' => ['es' => 'descripción']],
             'errors' => fn () => [
-                'description.en' => __('An engagement description must be provided in at least one language.'),
-                'description.fr' => __('An engagement description must be provided in at least one language.'),
+                'description.en' => __('An engagement description must be provided in at least English or French.'),
+                'description.fr' => __('An engagement description must be provided in at least English or French.'),
             ],
             ['without' => ['description']],
         ],
@@ -47,7 +47,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Window start date is missing' => [
             ['window_start_date' => null],
-            fn () => ['window_start_date' => __('validation.required', ['attribute' => __('start date')])],
+            fn () => ['window_start_date' => __('You must enter a :attribute', ['attribute' => __('start date')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -67,8 +67,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'window_end_date' => now()->subWeek(),
             ],
             fn () => [
-                'window_start_date' => __('validation.before', ['attribute' => __('start date'), 'date' => __('end date')]),
-                'window_end_date' => __('validation.after', ['attribute' => __('end date'), 'date' => __('start date')]),
+                'window_start_date' => __('The :attribute must be before the :date.', ['attribute' => __('start date'), 'date' => __('end date')]),
+                'window_end_date' => __('The :attribute must be after the :date.', ['attribute' => __('end date'), 'date' => __('start date')]),
             ],
             [
                 'format' => EngagementFormat::Interviews->value,
@@ -77,7 +77,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Window end date is missing' => [
             ['window_end_date' => null],
-            fn () => ['window_end_date' => __('validation.required', ['attribute' => __('end date')])],
+            fn () => ['window_end_date' => __('You must enter a :attribute', ['attribute' => __('end date')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -93,7 +93,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Window start time is missing' => [
             ['window_start_time' => null],
-            fn () => ['window_start_time' => __('validation.required', ['attribute' => __('start time')])],
+            fn () => ['window_start_time' => __('You must enter a :attribute', ['attribute' => __('start time')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -113,8 +113,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'window_end_time' => '8:00',
             ],
             fn () => [
-                'window_start_time' => __('validation.before', ['attribute' => __('start time'), 'date' => __('end time')]),
-                'window_end_time' => __('validation.after', ['attribute' => __('end time'), 'date' => __('start time')]),
+                'window_start_time' => __('The :attribute must be before the :date.', ['attribute' => __('start time'), 'date' => __('end time')]),
+                'window_end_time' => __('The :attribute must be after the :date.', ['attribute' => __('end time'), 'date' => __('start time')]),
             ],
             [
                 'format' => EngagementFormat::Interviews->value,
@@ -123,7 +123,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Window end time is missing' => [
             ['window_end_time' => null],
-            fn () => ['window_end_time' => __('validation.required', ['attribute' => __('end time')])],
+            fn () => ['window_end_time' => __('You must enter a :attribute', ['attribute' => __('end time')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -139,7 +139,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Timezone is missing' => [
             ['timezone' => null],
-            fn () => ['timezone' => __('validation.required', ['attribute' => 'timezone'])],
+            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => 'timezone'])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -147,7 +147,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Timezone is invalid' => [
             ['timezone' => 'my timezone'],
-            fn () => ['timezone' => __('validation.timezone', ['attribute' => 'timezone'])],
+            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => 'timezone'])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -204,12 +204,12 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting types is missing' => [
             ['meeting_types' => null],
-            fn () => ['meeting_types' => __('validation.required', ['attribute' => 'meeting types'])],
+            fn () => ['meeting_types' => __('You must select at least one way to attend the meeting.', ['attribute' => 'meeting types'])],
             [
                 'format' => EngagementFormat::Interviews->value,
             ],
         ],
-        'Meeting types is an array' => [
+        'Meeting types is not an array' => [
             ['meeting_types' => MeetingType::InPerson->value],
             fn () => ['meeting_types' => __('validation.array', ['attribute' => 'meeting types'])],
             [
@@ -329,7 +329,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting url is missing' => [
             ['meeting_url' => null],
-            fn () => ['meeting_url' => __('You must provide a :attribute.', ['attribute' => __('link to join the meeting')])],
+            fn () => ['meeting_url' => __('You must enter a :attribute.', ['attribute' => __('link to join the meeting')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::WebConference->value,
@@ -353,7 +353,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting phone number is missing' => [
             ['meeting_phone' => null],
-            fn () => ['meeting_phone' => __('validation.required', ['attribute' => __('meeting phone number')])],
+            fn () => ['meeting_phone' => __('validation.required', ['attribute' => __('phone number to join the meeting')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::Phone->value,
@@ -361,7 +361,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting phone number is invalid' => [
             ['meeting_phone' => '1800123456'],
-            fn () => ['meeting_phone' => __('validation.phone', ['attribute' => __('meeting phone number')])],
+            fn () => ['meeting_phone' => __('validation.phone', ['attribute' => __('phone number to join the meeting')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::Phone->value,
@@ -377,7 +377,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Materials by date missing - interviews' => [
             ['materials_by_date' => null],
-            fn () => ['materials_by_date' => __('validation.required', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('You must enter a :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -385,7 +385,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Materials by date is invalid - interviews' => [
             ['materials_by_date' => 'someday'],
-            fn () => ['materials_by_date' => __('validation.date', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -397,8 +397,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'complete_by_date' => now()->addMonth(4),
             ],
             fn () => [
-                'materials_by_date' => __('validation.before', ['attribute' => __('sent by date'), 'date' => __('due date')]),
-                'complete_by_date' => __('validation.after', ['attribute' => __('due date'), 'date' => __('sent by date')]),
+                'materials_by_date' => __('The :attribute must be before the :date.', ['attribute' => __('date for materials to be sent by'), 'date' => __('due date')]),
+                'complete_by_date' => __('The :attribute must be after the :date.', ['attribute' => __('due date'), 'date' => __('date for materials to be sent by')]),
             ],
             [
                 'format' => EngagementFormat::Interviews->value,
@@ -407,14 +407,14 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Materials by date missing - other-async' => [
             ['materials_by_date' => null],
-            fn () => ['materials_by_date' => __('validation.required', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('You must enter a :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::OtherAsync->value,
             ],
         ],
         'Materials by date is invalid - other-async' => [
             ['materials_by_date' => 'someday'],
-            fn () => ['materials_by_date' => __('validation.date', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::OtherAsync->value,
             ],
@@ -425,8 +425,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'complete_by_date' => now()->addMonth(4),
             ],
             fn () => [
-                'materials_by_date' => __('validation.before', ['attribute' => __('sent by date'), 'date' => __('due date')]),
-                'complete_by_date' => __('validation.after', ['attribute' => __('due date'), 'date' => __('sent by date')]),
+                'materials_by_date' => __('The :attribute must be before the :date.', ['attribute' => __('date for materials to be sent by'), 'date' => __('due date')]),
+                'complete_by_date' => __('The :attribute must be after the :date.', ['attribute' => __('due date'), 'date' => __('date for materials to be sent by')]),
             ],
             [
                 'format' => EngagementFormat::OtherAsync->value,
@@ -434,14 +434,14 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Materials by date missing - survey' => [
             ['materials_by_date' => null],
-            fn () => ['materials_by_date' => __('validation.required', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('You must enter a :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::Survey->value,
             ],
         ],
         'Materials by date is invalid - survey' => [
             ['materials_by_date' => 'someday'],
-            fn () => ['materials_by_date' => __('validation.date', ['attribute' => __('sent by date')])],
+            fn () => ['materials_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::Survey->value,
             ],
@@ -452,8 +452,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'complete_by_date' => now()->addMonth(4),
             ],
             fn () => [
-                'materials_by_date' => __('validation.before', ['attribute' => __('sent by date'), 'date' => __('due date')]),
-                'complete_by_date' => __('validation.after', ['attribute' => __('due date'), 'date' => __('sent by date')]),
+                'materials_by_date' => __('The :attribute must be before the :date.', ['attribute' => __('date for materials to be sent by'), 'date' => __('due date')]),
+                'complete_by_date' => __('The :attribute must be after the :date.', ['attribute' => __('due date'), 'date' => __('date for materials to be sent by')]),
             ],
             [
                 'format' => EngagementFormat::Survey->value,
@@ -461,7 +461,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Complete by date missing - interviews' => [
             ['complete_by_date' => null],
-            fn () => ['complete_by_date' => __('validation.required', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('You must enter a :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -469,7 +469,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Complete by date is invalid - interviews' => [
             ['complete_by_date' => 'someday'],
-            fn () => ['complete_by_date' => __('validation.date', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -477,28 +477,28 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Complete by date missing - other-async' => [
             ['complete_by_date' => null],
-            fn () => ['complete_by_date' => __('validation.required', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('You must enter a :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::OtherAsync->value,
             ],
         ],
         'Complete by date is invalid - other-async' => [
             ['complete_by_date' => 'someday'],
-            fn () => ['complete_by_date' => __('validation.date', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::OtherAsync->value,
             ],
         ],
         'Complete by date missing - survey' => [
             ['complete_by_date' => null],
-            fn () => ['complete_by_date' => __('validation.required', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('You must enter a :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::Survey->value,
             ],
         ],
         'Complete by date is invalid - survey' => [
             ['complete_by_date' => 'someday'],
-            fn () => ['complete_by_date' => __('validation.date', ['attribute' => __('due date')])],
+            fn () => ['complete_by_date' => __('Please enter a valid :attribute.', ['attribute' => __('due date')])],
             [
                 'format' => EngagementFormat::Survey->value,
             ],
@@ -597,8 +597,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'other_accepted_format' => ['es' => 'la escritura'],
             ],
             fn () => [
-                'other_accepted_format.en' => __('The other accepted format must be provided in at least one language.'),
-                'other_accepted_format.fr' => __('The other accepted format must be provided in at least one language.'),
+                'other_accepted_format.en' => __('The other accepted format must be provided in at least English or French.'),
+                'other_accepted_format.fr' => __('The other accepted format must be provided in at least English or French.'),
             ],
             [
                 'format' => EngagementFormat::Interviews->value,
@@ -620,18 +620,18 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Signup by date is missing' => [
             ['signup_by_date' => null],
-            fn () => ['signup_by_date' => __('validation.required', ['attribute' => __('sign up deadline')])],
+            fn () => ['signup_by_date' => __('You must enter a :attribute.', ['attribute' => __('sign up deadline')])],
         ],
         'Signup by date is an invalid date' => [
             ['signup_by_date' => 'someday'],
-            fn () => ['signup_by_date' => __('validation.date', ['attribute' => __('sign up deadline')])],
+            fn () => ['signup_by_date' => __('Please enter a valid date for the :attribute.', ['attribute' => __('sign up deadline')])],
         ],
         'Signup by date after window start date' => [
             [
                 'window_start_date' => now()->addMonth(1),
                 'signup_by_date' => now()->addMonth(2),
             ],
-            fn () => ['signup_by_date' => __('validation.before', ['attribute' => __('sign up deadline'), 'date' => __('start date')])],
+            fn () => ['signup_by_date' => __('The :attribute must be before the :date.', ['attribute' => __('sign up deadline'), 'date' => __('start date')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -642,7 +642,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'materials_by_date' => now()->addMonth(1),
                 'signup_by_date' => now()->addMonth(2),
             ],
-            fn () => ['signup_by_date' => __('validation.before', ['attribute' => __('sign up deadline'), 'date' => __('sent by date')])],
+            fn () => ['signup_by_date' => __('The :attribute must be before the :date.', ['attribute' => __('sign up deadline'), 'date' => __('date for materials to be sent by')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,

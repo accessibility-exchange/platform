@@ -4,15 +4,15 @@ dataset('storeInvitationRequestValidationErrors', function () {
     return [
         'missing email' => [
             ['email' => null],
-            fn () => ['email' => __('The user’s email address is missing.')],
+            fn () => ['email' => __('You must enter an email address.')],
         ],
         'invitation already sent' => [
             ['email' => 'invitation.sent.test@example.com'],
-            fn () => ['email' => __('validation.unique', ['attribute' => __('email address')])],
+            fn () => ['email' => __('This member has already been invited.')],
         ],
         'user already a member' => [
             ['email' => 'invitation.existing.member.test@example.com'],
-            fn () => ['email' => __('This user already belongs to this team.')],
+            fn () => ['email' => __('This member already belongs to this organization.')],
         ],
         'role missing' => [
             ['role' => null],

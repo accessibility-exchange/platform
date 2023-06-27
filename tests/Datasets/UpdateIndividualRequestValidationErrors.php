@@ -26,11 +26,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Pronouns translation not an array' => [
             ['pronouns' => 'She'],
-            fn () => ['pronouns' => __('validation.array', ['attribute' => 'pronouns'])],
+            fn () => ['pronouns' => __('Your pronouns must be provided in at least English or French.')],
         ],
         'Invalid pronoun translation' => [
             ['pronouns' => ['es' => 'Ella']],
-            fn () => ['pronouns' => __('validation.array', ['attribute' => 'pronouns'])],
+            fn () => ['pronouns' => __('Your pronouns must be provided in at least English or French.')],
         ],
         'Bio missing' => [
             ['bio' => null],
@@ -39,11 +39,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Bio not an array' => [
             ['bio' => 'en'],
-            fn () => ['bio' => __('validation.array', ['attribute' => 'bio'])],
+            fn () => ['bio' => __('Your bio must be provided in at least English or French.')],
         ],
         'Invalid bio translation' => [
             ['bio' => ['123' => 'test language', 'en' => 'my bio']],
-            fn () => ['bio' => __('validation.array', ['attribute' => 'bio'])],
+            fn () => ['bio' => __('Your bio must be provided in at least English or French.')],
         ],
         'Bio translation not a string' => [
             ['bio' => ['en' => [123]]],
@@ -52,8 +52,9 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Bio missing required translation' => [
             ['bio' => ['es' => 'biografía']],
             fn () => [
-                'bio.en' => __('You must enter your bio.'),
-                'bio.fr' => __('You must enter your bio.'),
+                'bio' => __('Your bio must be provided in at least English or French.'),
+                'bio.en' => __('Your bio must be provided in at least English or French.'),
+                'bio.fr' => __('Your bio must be provided in at least English or French.'),
             ],
             ['bio.en'],
         ],
@@ -71,11 +72,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Social link is not an active URL' => [
             ['social_links' => ['Test' => 'https://example.fake/']],
-            fn () => ['social_links.Test' => __('You must enter a valid website address for :key.', ['key' => 'Test'])],
+            fn () => ['social_links.Test' => __('You must enter a valid link for :key.', ['key' => 'Test'])],
         ],
         'Website link is not an active URL' => [
             ['website_link' => 'https://example.fake/'],
-            fn () => ['website_link' => __('You must enter a valid website address for :key.', ['key' => __('Website link')])],
+            fn () => ['website_link' => __('You must enter a valid website link.')],
         ],
     ];
 });

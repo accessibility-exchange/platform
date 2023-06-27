@@ -114,16 +114,18 @@ class MeetingRequest extends FormRequest
             'end_time' => __('meeting end time'),
             'date' => __('meeting date'),
             'timezone' => __('meeting time zone'),
+            'locality' => __('city or town'),
             'region' => __('province or territory'),
             'meeting_url' => __('link to join the meeting'),
-            'meeting_phone' => __('meeting phone number'),
+            'meeting_phone' => __('phone number to join the meeting'),
         ];
     }
 
     public function messages(): array
     {
         return [
-            'title.*.required_without' => __('A meeting title must be provided in at least one language.'),
+            'date.required' => __('You must enter a :attribute'),
+            'title.*.required_without' => __('A meeting title must be provided in at least English or French.'),
             'meeting_types.required' => __('You must indicate at least one way for participants to attend the meeting.'),
             'meeting_types.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid meeting type.'),
             'street_address.required' => __('You must enter a :attribute for the meeting location.'),
@@ -131,9 +133,14 @@ class MeetingRequest extends FormRequest
             'region.required' => __('You must enter a :attribute for the meeting location.'),
             'postal_code.required' => __('You must enter a :attribute for the meeting location.'),
             'meeting_software.required' => __('You must indicate the :attribute.'),
-            'meeting_url.required' => __('You must provide a :attribute.'),
+            'meeting_url.required' => __('You must enter a :attribute.'),
+            'meeting_phone.required' => __('You must enter a :attribute.'),
+            'start_time.required' => __('You must enter a :attribute'),
             'start_time.date_format' => __('The :attribute format is not valid.'),
+            'start_time.before' => __('The :attribute must be before the :date.'),
+            'end_time.required' => __('You must enter a :attribute'),
             'end_time.date_format' => __('The :attribute format is not valid.'),
+            'end_time.after' => __('The :attribute must be after the :date.'),
         ];
     }
 }

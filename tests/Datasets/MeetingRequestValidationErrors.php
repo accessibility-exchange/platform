@@ -7,8 +7,8 @@ dataset('meetingRequestValidationErrors', function () {
         'Title missing required translation' => [
             ['title' => ['es' => 'la sesión']],
             fn () => [
-                'title.en' => __('A meeting title must be provided in at least one language.'),
-                'title.fr' => __('A meeting title must be provided in at least one language.'),
+                'title.en' => __('A meeting title must be provided in at least English or French.'),
+                'title.fr' => __('A meeting title must be provided in at least English or French.'),
             ],
             [
                 'meetingType' => MeetingType::InPerson->value,
@@ -22,7 +22,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Date missing' => [
             ['date' => null],
-            fn () => ['date' => __('validation.required', ['attribute' => __('meeting date')])],
+            fn () => ['date' => __('You must enter a :attribute', ['attribute' => __('meeting date')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['date'],
@@ -35,7 +35,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Start time missing' => [
             ['start_time' => null],
-            fn () => ['start_time' => __('validation.required', ['attribute' => __('meeting start time')])],
+            fn () => ['start_time' => __('You must enter a :attribute', ['attribute' => __('meeting start time')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['start_time'],
@@ -52,14 +52,14 @@ dataset('meetingRequestValidationErrors', function () {
                 'end_time' => '7:00',
             ],
             fn () => [
-                'start_time' => __('validation.before', ['attribute' => __('meeting start time'), 'date' => __('meeting end time')]),
-                'end_time' => __('validation.after', ['attribute' => __('meeting end time'), 'date' => __('meeting start time')]),
+                'start_time' => __('The :attribute must be before the :date.', ['attribute' => __('meeting start time'), 'date' => __('meeting end time')]),
+                'end_time' => __('The :attribute must be after the :date.', ['attribute' => __('meeting end time'), 'date' => __('meeting start time')]),
             ],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'End time missing' => [
             ['end_time' => null],
-            fn () => ['end_time' => __('validation.required', ['attribute' => __('meeting end time')])],
+            fn () => ['end_time' => __('You must enter a :attribute', ['attribute' => __('meeting end time')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['end_time'],
@@ -103,7 +103,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Locality missing' => [
             ['locality' => null],
-            fn () => ['locality' => __('You must enter a :attribute for the meeting location.', ['attribute' => 'locality'])],
+            fn () => ['locality' => __('You must enter a :attribute for the meeting location.', ['attribute' => __('city or town')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['locality'],
@@ -111,7 +111,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Locality is not a string' => [
             ['locality' => 1234],
-            fn () => ['locality' => __('validation.string', ['attribute' => 'locality'])],
+            fn () => ['locality' => __('validation.string', ['attribute' => __('city or town')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Region missing' => [
@@ -165,7 +165,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting url missing' => [
             ['meeting_url' => null],
-            fn () => ['meeting_url' => __('You must provide a :attribute.', ['attribute' => __('link to join the meeting')])],
+            fn () => ['meeting_url' => __('You must enter a :attribute.', ['attribute' => __('link to join the meeting')])],
             [
                 'meetingType' => MeetingType::WebConference->value,
                 'without' => ['meeting_url'],
@@ -183,7 +183,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting phone missing' => [
             ['meeting_phone' => null],
-            fn () => ['meeting_phone' => __('validation.required', ['attribute' => __('meeting phone number')])],
+            fn () => ['meeting_phone' => __('You must enter a :attribute.', ['attribute' => __('phone number to join the meeting')])],
             [
                 'meetingType' => MeetingType::Phone->value,
                 'without' => ['meeting_phone'],
@@ -191,10 +191,10 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting phone is not a valid phone number' => [
             ['meeting_phone' => '1800123456'],
-            fn () => ['meeting_phone' => __('validation.phone', ['attribute' => __('meeting phone number')])],
+            fn () => ['meeting_phone' => __('validation.phone', ['attribute' => __('phone number to join the meeting')])],
             ['meetingType' => MeetingType::Phone->value],
         ],
-        'additional_phone_information' => [
+        'Additional phone information is not an array' => [
             ['additional_phone_information' => 'Press option 1.'],
             fn () => ['additional_phone_information' => __('validation.array', ['attribute' => 'additional phone information'])],
             ['meetingType' => MeetingType::Phone->value],

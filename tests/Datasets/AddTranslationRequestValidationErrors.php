@@ -13,13 +13,13 @@ dataset('addTranslationRequestValidationErrors', function () {
         ],
         'missing new language' => [
             ['new_language' => null],
-            fn () => ['new_language' => __('Please select a language that :model will be translated to.', ['model' => 'Tester'])],
+            fn () => ['new_language' => __('Please select a language.', ['model' => 'Tester'])],
         ],
         'new language not a string' => [
             ['new_language' => 30],
-            fn () => ['new_language' => __('Please select a language that :model will be translated to.', ['model' => 'Tester'])],
+            fn () => ['new_language' => __('Please select a language.', ['model' => 'Tester'])],
         ],
-        'new language invalid' => [
+        'new language already in use' => [
             ['new_language' => 'en'],
             fn () => ['new_language' => __(':model is already translatable into :language.', ['model' => 'Tester', 'language' => get_language_exonym('en')])],
         ],

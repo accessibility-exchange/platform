@@ -38,8 +38,9 @@ class StoreInvitationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => __('The user’s email address is missing.'),
-            'email.not_in' => __('This user already belongs to this team.'),
+            'email.required' => __('You must enter an email address.'),
+            'email.unique' => __('This member has already been invited.'),
+            'email.not_in' => __('This member already belongs to this organization.'),
             'role.required' => __('The user’s role is missing.'),
         ];
     }

@@ -43,8 +43,8 @@ class AddTranslationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'new_language.required' => __('Please select a language that :model will be translated to.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name]),
-            'new_language.string' => __('Please select a language that :model will be translated to.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name]),
+            'new_language.required' => __('Please select a language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name]),
+            'new_language.string' => __('Please select a language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name]),
             'new_language.not_in' => __(':model is already translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_language_exonym($this->get('new_language') ?? '')]),
         ];
     }
