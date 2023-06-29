@@ -30,6 +30,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Spatie\LaravelOptions\Options;
 
 class SettingsController extends Controller
@@ -196,7 +197,7 @@ class SettingsController extends Controller
         $individual = $user->individual;
 
         if (
-            isset($data['email']) && $data['email'] !== $user->email && $user instanceof MustVerifyEmail
+            isset($data['email']) && Str::lower($data['email']) !== $user->email && $user instanceof MustVerifyEmail
         ) {
             $this->updateVerifiedUser($user, $data['email']);
         }

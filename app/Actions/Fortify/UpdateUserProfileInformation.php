@@ -2,10 +2,11 @@
 
 namespace App\Actions\Fortify;
 
+use App\Rules\UniqueUserEmail;
 use App\Traits\UserEmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -25,12 +26,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                new UniqueUserEmail($user->id),
             ],
         ])->validateWithBag('updateProfileInformation');
 
         if (
-            $input['email'] !== $user->email &&
+            Str::lower($input['email']) !== $user->email &&
             $user instanceof MustVerifyEmail
         ) {
             $this->updateVerifiedUser($user, $input['email']);
