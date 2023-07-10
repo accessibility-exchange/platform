@@ -104,10 +104,18 @@ class ProjectController extends Controller
             $language = false;
         }
 
+        if ($user->can('manage', $project)) {
+            $engagements = $project->allEngagements;
+        } elseif ($user->isAdministrator()) {
+            $engagements = $project->allEngagements->filter(fn ($engagement) => $engagement->isPreviewable());
+        } else {
+            $engagements = $project->engagements;
+        }
+
         return view('projects.show', [
             'language' => $language ?? locale(),
             'project' => $project,
-            'engagements' => $user->can('manage', $project) || $user->isAdministrator() ? $project->allEngagements : $project->engagements,
+            'engagements' => $engagements,
         ]);
     }
 

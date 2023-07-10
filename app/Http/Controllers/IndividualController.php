@@ -31,6 +31,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
@@ -91,7 +92,7 @@ class IndividualController extends Controller
             $individual->unpublish(true);
             flash(__('Your roles have been saved.'), 'success');
         } elseif (count($oldRoles) && ((! in_array($consultantRole, $oldRoles) && in_array($consultantRole, $newRoles)) || (! in_array($connectorRole, $oldRoles) && in_array($connectorRole, $newRoles)))) {
-            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.').' <a href="'.localized_route('individuals.edit', $individual).'">'.__('Review page').'</a>', 'warning');
+            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning');
         } else {
             flash(__('Your roles have been saved.'), 'success');
         }
@@ -307,7 +308,7 @@ class IndividualController extends Controller
 
         if (
             $data['email'] !== ''
-                && $data['email'] !== $user->email
+                && Str::lower($data['email']) !== $user->email
                 && $user instanceof MustVerifyEmail
         ) {
             $this->updateVerifiedUser($user, $data['email']);

@@ -1,4 +1,4 @@
-{!! Str::markdown($individual->getWrittenTranslation('bio', $language)) !!}
+{{ $individual->getWrittenTranslation('bio', $language) }}
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
@@ -23,16 +23,7 @@
 @endif
 
 @if ($individual->isConnector())
-    <h3 class="repel">{{ __('As a Community Connector, :name can connect to:', ['name' => $individual->firstName]) }}
-        @can('update', $individual)
-            <p><a class="cta secondary"
-                    href="{{ localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                    {!! __('Edit :section', [
-                        'section' => '<span class="visually-hidden">' . __('groups you can connect to') . '</span>',
-                    ]) !!}</a>
-            </p>
-        @endcan
-    </h3>
+    <x-section-heading level="3" :name="__('As a Community Connector, :name can connect to:', ['name' => $individual->firstName])" :model="$individual" :href="localized_route('individuals.edit', ['individual' => $individual, 'step' => 2])" :linkText="__('groups you can connect to')" />
 
     <h4>{{ __('Groups in the disability and Deaf community') }}</h4>
 

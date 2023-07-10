@@ -16,8 +16,10 @@
 
     <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="experiences">
-            <h2 class="text-center" id="experiences">{!! __('Who can be a :role?', ['role' => __('Consultation Participant')]) !!}</h2>
-            <x-interpretation name="{{ __('Who can be a :role?', [], 'en') }}" />
+            <h2 class="text-center" id="experiences">
+                {{ __('Who can be a :role?', ['role' => __('Consultation Participant')]) }}</h2>
+            <x-interpretation
+                name="{{ __('Who can be a :role?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}" />
             <div class="stack flex h-full flex-col justify-center items-center">
                 <p>{{ __('Any of the following could be Consultation Participants:') }}
                 <ul class="flex flex-col w-1/2">
@@ -34,8 +36,11 @@
 
         <x-section class="stack:lg" aria-labelledby="how">
             <div class="text-center">
-                <h2 id="how">{!! __('How does being a :role work?', ['role' => '<strong>' . __('Consultation Participant') . '</strong>']) !!}</h2>
-                <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
+                <h2 id="how">
+                    {{ safe_inlineMarkdown('How does being a **:role** work?', ['role' => __('Consultation Participant')]) }}
+                </h2>
+                <x-interpretation
+                    name="{{ __('How does being a :role work?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}" />
             </div>
             <div class="grid">
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">

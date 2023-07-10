@@ -257,6 +257,45 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `production` branch.
 
+### Working with markdown
+
+In other Laravel applications you may see methods such as [`Str::markdown()`](https://laravel.com/docs/9.x/helpers#method-str-markdown)
+and [`Str::inlineMarkdown()`](https://laravel.com/docs/9.x/helpers#method-str-inline-markdown) used. In general we attempt
+to avoid using these methods and instead favour using the provided `safe_markdown()` and `safe_inlineMarkdown` helpers. These
+methods will escape HTML used in a markdown string, strip unsafe links, and escape replacements. They are also tied into
+the localization system, and will populate their strings into the string packages, just as `__()` would.
+
+The `safe_markdown()` and `safe_inlineMarkdown()` methods should not be called with `{!!  !!}` as their output will safely
+pass through `{{  }}`. This provides an additional layer of protection in cases where you may have mixed types output
+to the template or make a mistake.
+
+```php
+{{ safe_markdown('**hello :location**', ['location' => '**World**']) }}
+{{-- <p><strong>Hello **World**</strong></p> --}}
+```
+
+If you need to unescape a replacement you can use a `!` at the start of the placeholder name (e.g. `:!placeholder`).
+
+```php
+{{ safe_markdown('**hello :!location**', ['location' => '<em>World</em>']) }}
+{{-- <p><strong>Hello <em>World</em></strong></p> --}}
+```
+
+There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
+resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
+`SAFE_MARKDOWN_OPTIONS` argument to escape HTML and remove unsafe links.
+
+```php
+{!! Str::markdown('<em>Hello **World**</em>', SAFE_MARKDOWN_OPTIONS) !!}
+{{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}
+```
+
+#### Mail notification templates
+
+By default Laravel supports a mixture of markdown and HTML in mail notification templates. However, in this application
+we've modified the templates to only support HTML. This aligns the behaviour of the mail templates with that of the site's
+blade templates.
+
 ## Supported application environments
 
 The application environment is set by specifying the `APP_ENV` environment variable. See [Environment Configuration](https://laravel.com/docs/9.x/configuration#environment-configuration) docs for more information.

@@ -9,9 +9,12 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualRequest extends FormRequest
 {
+    use HasFactory;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -34,9 +37,9 @@ class UpdateIndividualRequest extends FormRequest
             ],
             'pronouns' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
             'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.get_written_language_for_signed_language($this->individual->user->locale),
-            'bio.*' => 'nullable|string',
             'bio.en' => 'required_without:bio.fr',
             'bio.fr' => 'required_without:bio.en',
+            'bio.*' => 'nullable|string',
             'working_languages' => 'nullable|array',
             'consulting_services' => [
                 'nullable',
@@ -56,7 +59,7 @@ class UpdateIndividualRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'social_links' => array_map('normalize_url', $this->social_links ?? []),
+            'social_links' => array_map('normalize_url', is_array($this->social_links) ? $this->social_links : []),
             'website_link' => normalize_url($this->website_link),
         ]);
     }
@@ -64,18 +67,23 @@ class UpdateIndividualRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'bio.*' => __('bio'),
+            'region' => __('province or territory'),
         ];
     }
 
     public function messages(): array
     {
         $messages = [
-            'bio.*.required_without' => 'You must enter your :attribute.',
+            'bio.required_array_keys' => __('Your bio must be provided in at least English or French.'),
+            'bio.*.required_without' => __('Your bio must be provided in at least English or French.'),
+            'bio.array' => __('Your bio must be provided in at least English or French.'),
+            'consulting_services.*.Illuminate\Validation\Rules\Enum' => __('The selected consulting service is invalid'),
+            'pronouns.array' => __('Your pronouns must be provided in at least English or French.'),
+            'website_link.active_url' => __('You must enter a valid website link.'),
         ];
 
         foreach ($this->social_links as $key => $value) {
-            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid website address for :key.', ['key' => Str::studly($key)]);
+            $messages['social_links.'.$key.'.active_url'] = __('You must enter a valid link for :key.', ['key' => Str::studly($key)]);
         }
 
         return $messages;

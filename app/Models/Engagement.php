@@ -21,10 +21,16 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
+/**
+ * App\Models\Engagement
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class Engagement extends Model
 {
     use HasFactory;

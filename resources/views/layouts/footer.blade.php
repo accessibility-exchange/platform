@@ -32,15 +32,16 @@
                         <h3>{{ __('Email') }}</h3>
                         <p><a href="mailto:{{ settings('email') }}">{{ settings('email') }}</a>
                         </p>
-                        <h3>{!! __('Call or :vrs', [
+                        <h3>{{ safe_inlineMarkdown('Call or :!vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
-                                __('VRS') .
+                                htmlentities(__('VRS')) .
                                 '</a>',
-                        ]) !!}</h3>
+                        ]) }}
+                        </h3>
                         <p>{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}</p>
                         <h3>{{ __('Mailing Address') }}</h3>
-                        {!! nl2br(settings('address')) !!}
+                        {!! nl2br(htmlentities(settings('address'))) !!}
                     </address>
                 </div>
                 <nav class="stack" aria-labelledby="social">

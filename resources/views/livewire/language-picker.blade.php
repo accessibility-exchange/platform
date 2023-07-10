@@ -8,6 +8,7 @@
                     <button class="secondary" type="button" aria-describedby='{{ "{$name}_{$i}" }}'
                         wire:click="removeLanguage({{ $i }})">{{ __('Remove this language') }}</button>
                 @endif
+                <x-hearth-error for="{{ $name }}.{{ $i }}" />
             </li>
         @endforeach
     </ul>

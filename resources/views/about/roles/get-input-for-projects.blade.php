@@ -30,7 +30,7 @@
     <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="how">
             <div class="center text-center">
-                <h2 id="how">{!! __('How does getting input for your projects work?') !!}</h2>
+                <h2 id="how">{{ __('How does getting input for your projects work?') }}</h2>
             </div>
             <div class="grid">
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">

@@ -33,12 +33,10 @@
         <span class="badge">{{ __('Not attended yet') }}</span>
         <x-expander type="disclosure" :level="4">
             <x-slot name="summary">{{ __('I’ve gone to orientation, why isn’t this updated?') }}</x-slot>
-            {!! Str::markdown(
-                __(
-                    'We may have not updated this status in our system yet. Please wait a few days before seeing this status update. If you have further questions, please [contact us](:url).',
-                    ['url' => '#footer-contact'],
-                ),
-            ) !!}
+            {{ safe_markdown(
+                'We may have not updated this status in our system yet. Please wait a few days before seeing this status update. If you have further questions, please [contact us](:url).',
+                ['url' => '#footer-contact'],
+            ) }}
         </x-expander>
     @endif
 </li>

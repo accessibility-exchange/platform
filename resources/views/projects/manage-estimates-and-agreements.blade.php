@@ -66,9 +66,10 @@
         </div>
         <div class="stack w-full md:w-1/2">
             <h3>{{ __('Agreements') }}</h3>
-            <p>{!! __('The agreement will be sent with your estimate. Please sign this agreement and send it to :email.', [
-                'email' => Str::inlineMarkdown('<' . settings('email') . '>'),
-            ]) !!}</p>
+            {{ safe_markdown(
+                'The agreement will be sent with your estimate. Please sign this agreement and send it to <:email>.',
+                ['email' => settings('email')],
+            ) }}
             <p><strong>{{ __('Status') }}</strong></p>
             <p>
                 <span class="badge">

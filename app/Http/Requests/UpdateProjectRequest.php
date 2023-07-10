@@ -71,7 +71,7 @@ class UpdateProjectRequest extends FormRequest
             'name.*.required_without' => __('A project name must be provided in at least one language.'),
             'goals.*.required_without' => __('Project goals must be provided in at least one language.'),
             'scope.*.required_without' => __('Project scope must be provided in at least one language.'),
-            'outcome_analysis.required' => __('You must identify who will be going through the results from this project and writing a report.'),
+            'outcome_analysis.required' => __('You must identify who will be going through the results and producing an outcome.'),
             'outcomes.*.required_without' => __('Tangible outcomes must be provided in at least one language.'),
             'public_outcomes.required' => __('You must indicate if the reports will be publicly available.'),
         ];
@@ -83,10 +83,14 @@ class UpdateProjectRequest extends FormRequest
             'impacts' => [],
             'regions' => [],
             'outcome_analysis' => [],
+            'other' => 0,
         ];
 
         // Prepare input for validation
         $this->mergeIfMissing($fallbacks);
+        if (! $this['other']) {
+            $this->merge(['outcome_analysis_other' => []]);
+        }
 
         // Prepare old input in case of validation failure
         request()->mergeIfMissing($fallbacks);

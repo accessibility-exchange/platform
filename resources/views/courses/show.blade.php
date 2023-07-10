@@ -43,7 +43,9 @@
             })" @ended="player().setCurrentTime(0)">
             </div>
         @endif
-        <p>{{ $course->introduction }}</p>
+        @if ($course->introduction)
+            {!! Str::markdown($course->introduction, SAFE_MARKDOWN_OPTIONS) !!}
+        @endif
     </div>
     <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
         <h2>{{ __('Modules') }}</h2>

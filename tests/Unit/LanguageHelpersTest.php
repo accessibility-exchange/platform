@@ -21,12 +21,29 @@ test('get available languages', function () {
 test('get all available languages', function () {
     $languages = get_available_languages(true);
 
-    expect(array_shift($languages))->toEqual('English');
-    expect(array_shift($languages))->toEqual('American Sign Language');
-
     expect($languages)->toHaveKey('es');
+    expect($languages)->toHaveKey('asl');
+    expect($languages)->toHaveKey('lsq');
+    expect(isset($languages['ase']))->toBeFalse();
+    expect(isset($languages['egy']))->toBeFalse();
     expect(isset($languages['en_CA']))->toBeFalse();
     expect(isset($languages['fr_CA']))->toBeFalse();
+
+    expect(array_shift($languages))->toEqual('English');
+    expect(array_shift($languages))->toEqual('American Sign Language');
+});
+
+test('get all available unsigned languages', function () {
+    $languages = get_available_languages(true, false);
+
+    expect($languages)->toHaveKey('es');
+    expect(isset($languages['asl']))->toBeFalse();
+    expect(isset($languages['lsq']))->toBeFalse();
+    expect(isset($languages['en_CA']))->toBeFalse();
+    expect(isset($languages['fr_CA']))->toBeFalse();
+
+    expect(array_shift($languages))->toEqual('English');
+    expect(array_shift($languages))->toEqual('French');
 });
 
 test('get a signed language exonym', function () {

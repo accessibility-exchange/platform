@@ -22,8 +22,10 @@
 
     <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="experiences">
-            <h2 class="text-center" id="experiences">{!! __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) !!}</h2>
-            <x-interpretation name="{{ __('What experiences should I have to be a :role?', [], 'en') }}" />
+            <h2 class="text-center" id="experiences">
+                {{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) }}</h2>
+            <x-interpretation
+                name="{{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector', [], 'en')], 'en') }}" />
             <div class="stack flex h-full flex-col justify-center items-center">
                 <p>{{ __('Ideally a Community Connector has:') }}
                 <ul class="flex flex-col w-1/2">
@@ -37,8 +39,10 @@
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
-            <h2 class="text-center" id="how">{!! __('How does being a :role work?', ['role' => __('Community Connector')]) !!}</h2>
-            <x-interpretation name="{{ __('How does being a :role work?', [], 'en') }}" />
+            <h2 class="text-center" id="how">
+                {{ __('How does being a :role work?', ['role' => __('Community Connector')]) }}</h2>
+            <x-interpretation
+                name="{{ __('How does being a :role work?', ['role' => __('Community Connector', [], 'en')], 'en') }}" />
             <div class="grid">
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and build your Community Connector profile') }}</h3>

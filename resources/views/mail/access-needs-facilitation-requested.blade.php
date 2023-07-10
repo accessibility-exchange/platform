@@ -1,5 +1,14 @@
 @component('mail::message')
-{{ __('Please contact :name to facilitate their access needs being met on the engagement [:engagement](:engagement-url).', ['name' => $individual->name, 'engagement' => $engagement->name, 'engagement-url' => localized_route('engagements.show', $engagement)]) }}
+{{
+    safe_markdown(
+        'Please contact :name to facilitate their access needs being met on the engagement [:engagement](:engagement-url).',
+        [
+            'name' => $individual->name,
+            'engagement' => $engagement->name,
+            'engagement-url' => localized_route('engagements.show', $engagement)
+        ]
+    )
+}}
 
 @component('mail::panel')
 <h2>

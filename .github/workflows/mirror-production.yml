@@ -1,0 +1,33 @@
+name: Mirror production to GitLab
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  mirror:
+    if: github.repository == 'accessibility-exchange/platform'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "${{ vars.GIT_USER }}"
+          git config --global user.email "${{ vars.GIT_EMAIL }}"
+          git remote add gitlab ${{ vars.GITLAB_URL }}
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+            ssh-private-key: ${{ secrets.GITLAB_SSH_KEY }}
+
+      - name: Push to GitLab
+        run: |
+          ssh-keyscan git.kube.v1.colab.coop >> ~/.ssh/known_hosts
+          git push gitlab production:production
