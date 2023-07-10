@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
+use App\Rules\UniqueUserEmail;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,7 +33,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->ignore($this->user()->id),
+                new UniqueUserEmail($this->user()->id),
             ],
             'phone' => 'required_if:vrs,true|nullable|phone:CA',
             'vrs' => 'nullable|boolean',

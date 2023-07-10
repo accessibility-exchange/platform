@@ -31,6 +31,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spatie\LaravelOptions\Options;
 
 class IndividualController extends Controller
@@ -307,7 +308,7 @@ class IndividualController extends Controller
 
         if (
             $data['email'] !== ''
-                && $data['email'] !== $user->email
+                && Str::lower($data['email']) !== $user->email
                 && $user instanceof MustVerifyEmail
         ) {
             $this->updateVerifiedUser($user, $data['email']);
