@@ -205,6 +205,10 @@ button.nav-button .indicator {
     z-index: 1;
 }
 
+.secondary .nav-link {
+    display: inline-block;
+}
+
 @media (min-width: 48rem) {
     .primary ul,
     .languages ul ul,

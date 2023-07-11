@@ -1,7 +1,7 @@
 <div class="with-sidebar">
-    <nav class="stack" aria-labelledby="skip-to">
+    <nav class="secondary stack" aria-labelledby="skip-to">
         <h3 id="skip-to">{{ __('Skip to:') }}</h3>
-        <ul class="stack" role="list">
+        <ul role="list">
             <li>
                 <x-nav-link :href="'#' . Str::slug(__('Projects and engagements by other organizations'))">{{ __('Projects and engagements by other organizations') }}</x-nav-link>
             </li>
