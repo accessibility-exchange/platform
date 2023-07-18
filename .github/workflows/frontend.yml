@@ -39,7 +39,7 @@ jobs:
       - uses: actions/setup-node@v3
         if: steps.git-diff.outputs.diff
         with:
-          node-version: "16"
+          node-version-file: ".nvmrc"
       - name: Cache node modules
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
