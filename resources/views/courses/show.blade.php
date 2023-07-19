@@ -55,7 +55,7 @@
             @foreach ($modules as $module)
                 <div class="flex flex-col">
                     <div class="card">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between gap-8">
                             <a
                                 href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
                                 {{ $module->title }}
