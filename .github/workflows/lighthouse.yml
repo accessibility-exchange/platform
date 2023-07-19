@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v3
         if: steps.git-diff.outputs.diff
         with:
-          node-version: "16"
+          node-version-file: ".nvmrc"
       - name: Cache node modules
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
@@ -76,11 +76,11 @@ jobs:
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
-      - name: Use Node 16.x
+      - name: Use Node from .nvmrc file
         if: steps.git-diff.outputs.diff
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version-file: ".nvmrc"
       - name: Run Lighthouse CI
         if: steps.git-diff.outputs.diff
         run: |

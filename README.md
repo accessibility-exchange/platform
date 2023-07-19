@@ -29,6 +29,9 @@ The platform requires the following:
 -   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/9.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
+-   [Node](https://nodejs.org) >= 18
+
+Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
 The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/9.x/deployment#optimization).
 
@@ -124,8 +127,8 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 of how some key tasks can be carried out using Sail:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `sail npm <command>`.
+- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `sail artisan <command>`.
 
 ### Local development setup using Laravel Valet
 
@@ -178,8 +181,15 @@ of how some key tasks can be carried out using Sail:
 9. Install Composer and NPM dependencies:
 
     ```bash
+    # install composer dependencies
     composer install
-    npm install
+
+    # To use the version of npm specified in .nvmrc.
+    # requires https://github.com/nvm-sh/nvm
+    nvm use
+
+    # install node dependencies
+    npm ci
     ```
 
 10. Generate an application key:
@@ -233,8 +243,9 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 of how some key tasks can be carried out using Valet:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
+- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
+- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `php artisan <command>`.
 
 ### Running tests
 
