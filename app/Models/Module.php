@@ -57,7 +57,7 @@ class Module extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->withPivot('started_content_at', 'finished_content_at', 'completed_at')
+            ->withPivot('started_content_at', 'finished_content_at')
             ->withTimestamps();
     }
 
