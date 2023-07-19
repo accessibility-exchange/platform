@@ -61,9 +61,9 @@
                                 {{ $module->title }}
                             </a>
                             @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
-                                <span class="badge">{{ __('completed') }}</span>
+                                <span class="badge shrink-0">{{ __('completed') }}</span>
                             @elseif ($user->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
-                                <span class="badge">{{ __('In progress') }}</span>
+                                <span class="badge shrink-0">{{ __('In progress') }}</span>
                             @endif
                         </div>
                         <div class="flex items-center gap-1">
