@@ -76,6 +76,9 @@
                 @endforeach
             </ol>
         @elseif (!$receivedCertificate)
+            <!-- Form Validation Errors -->
+            @include('partials.validation-errors')
+
             <form class="stack" action="{{ localized_route('quizzes.show-result', $course) }}" method="POST"
                 novalidate>
                 @csrf
