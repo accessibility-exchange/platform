@@ -1,6 +1,7 @@
 name: Mirror tags to GitLab
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - '*'

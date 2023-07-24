@@ -1,6 +1,7 @@
 name: Mirror production to GitLab
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - production
