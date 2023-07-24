@@ -8,9 +8,13 @@
     </x-slot>
     <p><strong>{{ __('Federally regulated organization') }}</strong></p>
     <p>
-        <span class="font-semibold">{{ __('Sector:') }}</span>
-        {{ implode(', ',$model->sectors()->pluck('name')->toArray()) }}<br />
-        <span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
-        {{ $model->display_region }}
+        @if ($model->sectors()->count())
+            <span class="font-semibold">{{ __('Sector:') }}</span>
+            {{ implode(', ',$model->sectors()->pluck('name')->toArray()) }}<br />
+        @endif
+        @isset($model->locality)
+            <span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},
+            {{ $model->display_region }}
+        @endisset
     </p>
 </x-card>
