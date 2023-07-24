@@ -1,6 +1,7 @@
 name: Mirror dev to GitLab
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
