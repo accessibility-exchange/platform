@@ -1,6 +1,9 @@
-<x-app-layout page-width="wide">
+<x-app-layout body-class="course" page-width="wide">
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
+        <ol class="breadcrumbs" role="list">
+            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+        </ol>
         @if ($receivedCertificate)
             <div class="notification flex justify-between">
                 <div class="my-auto">
@@ -14,7 +17,6 @@
         </h1>
     </x-slot>
     <div class="stack ml-2 mr-2">
-        <a href="{{ localized_route('resource-collections.index') }}">{{ __('Back') }}</a>
         <x-slot name="title">{{ $course->title }}</x-slot>
         <div class="flex justify-between">
             <div>
@@ -47,21 +49,24 @@
             {!! Str::markdown($course->introduction, SAFE_MARKDOWN_OPTIONS) !!}
         @endif
     </div>
-    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+    <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
         <h2>{{ __('Modules') }}</h2>
         <div class="grid">
             @foreach ($modules as $module)
-                <div class="flex flex-col">
+                <div class="grid">
+                    {{-- <div class="flex flex-col"> --}}
                     <div class="card">
-                        <div class="flex items-center justify-between">
-                            <a
-                                href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
-                                {{ $module->title }}
-                            </a>
+                        <div class="flex items-start justify-between gap-8">
+                            <h3>
+                                <a
+                                    href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
+                                    {{ $module->title }}
+                                </a>
+                            </h3>
                             @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
-                                <span class="badge">{{ __('completed') }}</span>
+                                <span class="badge shrink-0">{{ __('completed') }}</span>
                             @elseif ($user->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
-                                <span class="badge">{{ __('In progress') }}</span>
+                                <span class="badge shrink-0">{{ __('In progress') }}</span>
                             @endif
                         </div>
                         <div class="flex items-center gap-1">
@@ -75,7 +80,7 @@
         </div>
     </div>
     @if (!$receivedCertificate)
-        <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+        <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
             <h2>{{ __('Quiz') }}</h2>
             @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
                 <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>

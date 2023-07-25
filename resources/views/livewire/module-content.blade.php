@@ -3,8 +3,10 @@
 </x-slot>
 
 <x-slot name="header">
-    <a href="{{ localized_route('courses.show', $module->course) }}">{{ __('Back') }} >
-        {{ $module->course->title }}</a>
+    <ol class="breadcrumbs" role="list">
+        <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+        <li><a href="{{ localized_route('courses.show', $module->course) }}">{{ $module->course->title }}</a></li>
+    </ol>
     <h1 id="module-title">
         {{ $module->title }}
     </h1>

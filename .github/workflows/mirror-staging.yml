@@ -1,6 +1,7 @@
 name: Mirror staging to GitLab
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - staging
@@ -23,7 +24,7 @@ jobs:
           git remote add gitlab ${{ vars.GITLAB_URL }}
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: webfactory/ssh-agent@v0.8.0
         with:
             ssh-private-key: ${{ secrets.GITLAB_SSH_KEY }}
 
