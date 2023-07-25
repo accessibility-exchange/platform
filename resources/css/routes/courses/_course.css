@@ -1,0 +1,5 @@
+@supports (width: min(var(--space-100), 100%)) {
+    .course .grid {
+        --grid-cell-min-width: var(--space-100);
+    }
+}
