@@ -24,18 +24,21 @@ class Course extends Model
         'title',
         'introduction',
         'video',
+        'author',
     ];
 
     protected $casts = [
         'title' => 'array',
         'introduction' => 'array',
         'video' => 'array',
+        'author' => 'array',
     ];
 
     public array $translatable = [
         'title',
         'introduction',
         'video',
+        'author',
         'slug',
     ];
 
@@ -45,7 +48,8 @@ class Course extends Model
             ->generateSlugsFrom(function (Course $model, $locale): string {
                 return $this->generateSlugs($model, $locale, 'title');
             })
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->slugsShouldBeNoLongerThan(250);
     }
 
     public function getRouteKeyName(): string

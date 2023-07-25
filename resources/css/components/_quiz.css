@@ -8,6 +8,11 @@
     color: var(--theme-color-error, var(--color-red-8));
 }
 
+.questions {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
 .question > .banner p {
     justify-content: flex-start;
 }
