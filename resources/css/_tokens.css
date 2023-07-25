@@ -1,4 +1,4 @@
-/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 7/19/2023.
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 7/25/2023.
     Tokens location: ./tailwind.config.js */
 :root {
     --space-0: 0;
@@ -33,6 +33,7 @@
     --space-72: 18rem;
     --space-80: 20rem;
     --space-96: 24rem;
+    --space-100: 25rem;
     --space-192: 48rem;
     --space-240: 60rem;
     --space-px: 1px;

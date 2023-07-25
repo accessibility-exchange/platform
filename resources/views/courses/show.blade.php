@@ -1,4 +1,4 @@
-<x-app-layout page-width="wide">
+<x-app-layout body-class="course" page-width="wide">
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
@@ -53,13 +53,16 @@
         <h2>{{ __('Modules') }}</h2>
         <div class="grid">
             @foreach ($modules as $module)
-                <div class="flex flex-col">
+                <div class="grid">
+                    {{-- <div class="flex flex-col"> --}}
                     <div class="card">
                         <div class="flex items-start justify-between gap-8">
-                            <a
-                                href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
-                                {{ $module->title }}
-                            </a>
+                            <h3>
+                                <a
+                                    href="{{ localized_route('modules.module-content', ['course' => $course, 'module' => $module]) }}">
+                                    {{ $module->title }}
+                                </a>
+                            </h3>
                             @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
                                 <span class="badge shrink-0">{{ __('completed') }}</span>
                             @elseif ($user->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
