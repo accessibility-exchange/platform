@@ -30,7 +30,7 @@
     "devDependencies": {
         "@commitlint/cli": "^17.6.6",
         "@commitlint/config-conventional": "^17.6.1",
-        "@shufo/prettier-plugin-blade": "^1.8.13",
+        "@shufo/prettier-plugin-blade": "^1.10.1",
         "@tailwindcss/typography": "^0.5.9",
         "autoprefixer": "^10.4.14",
         "eslint": "^8.44.0",
