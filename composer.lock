@@ -11292,30 +11292,29 @@
         },
         {
             "name": "worksome/request-factories",
-            "version": "v2.5.0",
+            "version": "v2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/worksome/request-factories.git",
-                "reference": "59016791b5fb9cf77eb777bfaeef7b47d21ebcdc"
+                "reference": "ea20f3a73c63334d543636aa7464583d62faa71b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/worksome/request-factories/zipball/59016791b5fb9cf77eb777bfaeef7b47d21ebcdc",
-                "reference": "59016791b5fb9cf77eb777bfaeef7b47d21ebcdc",
+                "url": "https://api.github.com/repos/worksome/request-factories/zipball/ea20f3a73c63334d543636aa7464583d62faa71b",
+                "reference": "ea20f3a73c63334d543636aa7464583d62faa71b",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.0 || ^9.0",
-                "php": "^8.0 || ^8.1"
+                "illuminate/contracts": "^8.0 || ^9.0 || ^10.0",
+                "php": "^8.0"
             },
             "require-dev": {
                 "nunomaduro/collision": "^5.10 || ^6.0",
                 "nunomaduro/larastan": "^1.0 || ^2.0",
-                "orchestra/testbench": "^6.22 || ^7.0",
+                "orchestra/testbench": "^6.22 || ^7.0 || ^8.0",
                 "pestphp/pest": "^1.21",
-                "pestphp/pest-plugin-laravel": "^1.1",
-                "worksome/coding-style": "0.17.0",
-                "worksome/pest-plugin-silence": "^0.1"
+                "pestphp/pest-plugin-laravel": "^1.4",
+                "worksome/coding-style": "0.17.0"
             },
             "type": "library",
             "extra": {
@@ -11354,7 +11353,7 @@
             ],
             "support": {
                 "issues": "https://github.com/worksome/request-factories/issues",
-                "source": "https://github.com/worksome/request-factories/tree/v2.5.0"
+                "source": "https://github.com/worksome/request-factories/tree/v2.6.0"
             },
             "funding": [
                 {
@@ -11362,7 +11361,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-15T11:48:41+00:00"
+            "time": "2023-03-01T11:17:26+00:00"
         }
     ],
     "packages-dev": [
