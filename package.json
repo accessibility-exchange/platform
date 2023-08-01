@@ -1,6 +1,7 @@
 {
     "name": "@accessibility-exchange/platform",
     "private": true,
+    "type": "module",
     "scripts": {
         "build": "npm run props && vite build",
         "dev": "vite",
