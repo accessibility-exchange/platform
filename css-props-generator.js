@@ -5,7 +5,7 @@ import {default as config} from "./tailwind.config.js";
 /*
   Converts the tailwind config elements into custom props.
 */
-export const generateCSSProps = () => {
+export const generateCSSProps = async () => {
     let result = "";
 
     const groups = [
@@ -69,7 +69,7 @@ export const generateCSSProps = () => {
   `;
 
     // Make the CSS readable to help people with auto-complete in their editors
-    result = prettier.format(result, {parser: "scss", tabWidth: 4});
+    result = await prettier.format(result, {parser: "scss", tabWidth: 4});
 
     // Push this file into the CSS dir, ready to go
     writeFileSync("./resources/css/_tokens.css", result);
