@@ -1,11 +1,11 @@
-const fs = require("fs");
-const prettier = require("prettier");
-const config = require("./tailwind.config.js");
+import { writeFileSync } from "node:fs";
+import * as prettier from "prettier";
+import {default as config} from "./tailwind.config.js";
 
 /*
   Converts the tailwind config elements into custom props.
 */
-const generateCSSProps = () => {
+export const generateCSSProps = () => {
     let result = "";
 
     const groups = [
@@ -72,8 +72,7 @@ const generateCSSProps = () => {
     result = prettier.format(result, {parser: "scss", tabWidth: 4});
 
     // Push this file into the CSS dir, ready to go
-    fs.writeFileSync("./resources/css/_tokens.css", result);
+    writeFileSync("./resources/css/_tokens.css", result);
 };
 
 generateCSSProps();
-module.exports = generateCSSProps;

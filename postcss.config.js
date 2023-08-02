@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     plugins: {
         "postcss-import-ext-glob": {},
         "postcss-import": {},
@@ -6,4 +6,4 @@ module.exports = {
         tailwindcss: {},
         autoprefixer: {}
     }
-};
+}
