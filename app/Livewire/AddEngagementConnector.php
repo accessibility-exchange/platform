@@ -120,7 +120,7 @@ class AddEngagementConnector extends Component
 
         $this->engagement->save();
 
-        flash(__('invitation.create_invitation_succeeded'), 'success');
+        flash(__('invitation.create_invitation_succeeded'), 'success|'.__('invitation.create_invitation_succeeded', [], 'en'));
 
         return redirect(localized_route('engagements.manage-connector', $this->engagement));
     }

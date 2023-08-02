@@ -23,6 +23,9 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>
+        @if ($user->isAdministrator())
+            <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-administrator" />
+        @endif
         @if ($user->individual)
             <p>
                 <strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}

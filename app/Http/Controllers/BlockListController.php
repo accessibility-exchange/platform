@@ -22,6 +22,7 @@ class BlockListController extends Controller
 
         if ($blockable->blockedBy(request()->user())) {
             flash(__(':blockable is already on your block list.', ['blockable' => $blockable->name]), 'warning');
+            flash(__(':blockable is already on your block list.', ['blockable' => $blockable->name]), 'warning|'.__('Already on your block list', [], 'en'));
 
             return redirect(localized_route('dashboard'));
         }
@@ -38,7 +39,7 @@ class BlockListController extends Controller
             request()->user()->blockedIndividuals()->attach($blockable);
         }
 
-        flash(__('You have successfully blocked :blockable.', ['blockable' => $blockable->name]), 'success');
+        flash(__('You have successfully blocked :blockable.', ['blockable' => $blockable->name]), 'success|'.__('You have successfully blocked.', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }
@@ -50,7 +51,7 @@ class BlockListController extends Controller
         $blockable = $data['blockable_type']::find($data['blockable_id']);
 
         if (! $blockable->blockedBy(request()->user())) {
-            flash(__(':blockable could not be unblocked because it was not on your block list.', ['blockable' => $blockable->name]), 'warning');
+            flash(__(':blockable could not be unblocked because it was not on your block list.', ['blockable' => $blockable->name]), 'warning|'.__('Could not be blocked because it was not on your block list.', [], 'en'));
 
             return redirect(localized_route('dashboard'));
         }
@@ -67,7 +68,7 @@ class BlockListController extends Controller
             request()->user()->blockedIndividuals()->detach($blockable);
         }
 
-        flash(__('You have successfully unblocked :blockable.', ['blockable' => $blockable->name]), 'success');
+        flash(__('You have successfully unblocked :blockable.', ['blockable' => $blockable->name]), 'success|'.__('You have successfully unblocked.', [], 'en'));
 
         return redirect(localized_route('block-list.show'));
     }

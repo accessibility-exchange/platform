@@ -117,7 +117,7 @@ class OrganizationController extends Controller
         $organization->fill($request->validated());
         $organization->save();
 
-        flash(__('Your roles have been saved.'), 'success');
+        flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }
@@ -326,7 +326,7 @@ class OrganizationController extends Controller
     {
         $organization->delete();
 
-        flash(__('organization.destroy_succeeded'), 'success');
+        flash(__('organization.destroy_succeeded'), 'success|'.__('organization.destroy_succeeded', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }

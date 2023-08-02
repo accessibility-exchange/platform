@@ -39,7 +39,7 @@ class ContractorInvitationController extends Controller
 
         flash(
             __('You have joined :invitationable as a :role', ['invitationable' => $invitation->invitationable->name, 'role' => $invitation->role]),
-            'success'
+            'success|'.__('You have joined.', [], 'en')
         );
 
         return redirect(localized_route('dashboard'));
@@ -81,7 +81,9 @@ class ContractorInvitationController extends Controller
                     'role' => $invitation->role,
                     'invitationable' => $invitation->invitationable->name,
                 ]),
-            'success'
+            $invitation->type === 'individual'
+                ? 'success|'.__('You have declined your invitation to work.', [], 'en')
+                : 'success|'.__('You have declined an invitation on behalf of your organization.', [], 'en')
         );
 
         return redirect(localized_route('dashboard'));

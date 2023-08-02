@@ -91,7 +91,7 @@ class EngagementController extends Controller
 
         session()->forget('languages');
 
-        flash(__('Your engagement has been created.'), 'success');
+        flash(__('Your engagement has been created.'), 'success|'.__('Your engagement has been created.', [], 'en'));
 
         $redirect = match ($engagement->who) {
             'organization' => localized_route('engagements.show-criteria-selection', $engagement),
@@ -115,7 +115,7 @@ class EngagementController extends Controller
         $engagement->fill($request->validated());
         $engagement->save();
 
-        flash(__('Your engagement has been updated.'), 'success');
+        flash(__('Your engagement has been updated.'), 'success|'.__('Your engagement has been updated.', [], 'en'));
 
         $engagement = $engagement->fresh();
 
@@ -140,7 +140,7 @@ class EngagementController extends Controller
         $engagement->fill($request->validated());
         $engagement->save();
 
-        flash(__('Your engagement has been updated.'), 'success');
+        flash(__('Your engagement has been updated.'), 'success|'.__('Your engagement has been updated.', [], 'en'));
 
         return redirect(localized_route('engagements.show-criteria-selection', $engagement));
     }
@@ -343,7 +343,7 @@ class EngagementController extends Controller
 
         $matchingStrategy->save();
 
-        flash(__('Your participant selection criteria have been updated.'), 'success');
+        flash(__('Your participant selection criteria have been updated.'), 'success|'.__('Your participant selection criteria have been updated.', [], 'en'));
 
         return redirect(localized_route('engagements.manage', $engagement));
     }
@@ -385,7 +385,7 @@ class EngagementController extends Controller
         $engagement->fill($request->validated());
         $engagement->save();
 
-        flash(__('Your engagement translations have been updated.'), 'success');
+        flash(__('Your engagement translations have been updated.'), 'success|'.__('Your engagement translations have been updated.', [], 'en'));
 
         return redirect(localized_route('engagements.manage', $engagement));
     }
@@ -410,10 +410,10 @@ class EngagementController extends Controller
         if ($request->input('publish')) {
             if ($engagement->fresh()->isPublishable()) {
                 $engagement->update(['published_at' => now()]);
-                flash(__('Your engagement has been published.'), 'success');
+                flash(__('Your engagement has been published.'), 'success|'.__('Your engagement has been published.', [], 'en'));
             }
         } else {
-            flash(__('Your engagement has been updated.'), 'success');
+            flash(__('Your engagement has been updated.'), 'success|'.__('Your engagement has been updated.', [], 'en'));
         }
 
         return redirect(localized_route('engagements.manage', $engagement));
@@ -495,7 +495,7 @@ class EngagementController extends Controller
 
         $organization->notify(new OrganizationAddedToEngagement($engagement));
 
-        flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success');
+        flash(__('You have successfully added :organization as the Community Organization you are consulting with for this engagement.', ['organization' => Organization::find($validated['organization_id'])->getTranslation('name', locale())]), 'success|'.__('You have successfully added the Community Organization you are consulting with for this engagement.', [], 'en'));
 
         return redirect(localized_route('engagements.manage-organization', $engagement));
     }
@@ -510,7 +510,7 @@ class EngagementController extends Controller
 
         $organization->notify(new OrganizationRemovedFromEngagement($engagement));
 
-        flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success');
+        flash(__('You have successfully removed :organization as the Community Organization for this engagement.', ['organization' => $organization->getTranslation('name', locale())]), 'success|'.__('You have successfully removed the Community Organization for this engagement.', [], 'en'));
 
         return redirect(localized_route('engagements.manage-organization', $engagement));
     }
@@ -594,7 +594,7 @@ class EngagementController extends Controller
             Mail::to($invitation->email)->send(new ContractorInvitation($invitation));
         }
 
-        flash(__('invitation.create_invitation_succeeded'), 'success');
+        flash(__('invitation.create_invitation_succeeded'), 'success|'.__('invitation.create_invitation_succeeded', [], 'en'));
 
         return redirect(localized_route('engagements.manage-participants', $engagement));
     }
@@ -614,7 +614,7 @@ class EngagementController extends Controller
 
         $engagement->project->notify(new ParticipantJoined($engagement));
 
-        flash(__('You have successfully signed up for this engagement.'), 'success');
+        flash(__('You have successfully signed up for this engagement.'), 'success|'.__('You have successfully signed up for this engagement.', [], 'en'));
 
         return redirect(localized_route('engagements.confirm-access-needs', $engagement));
     }
@@ -670,7 +670,7 @@ class EngagementController extends Controller
 
         $engagement->participants()->syncWithoutDetaching([Auth::user()->individual->id => $data]);
 
-        flash(__('Your preference for sharing your access needs has been saved.'), 'success');
+        flash(__('Your preference for sharing your access needs has been saved.'), 'success|'.__('Your preference for sharing your access needs has been saved.', [], 'en'));
 
         $hasIdentifiableAccessSupports = Auth::user()->individual->accessSupports->where('anonymizable', false)->count()
             || ! blank(Auth::user()->individual->other_access_need);
@@ -697,7 +697,7 @@ class EngagementController extends Controller
 
         $engagement->project->notify(new ParticipantLeft($engagement));
 
-        flash(__('You have successfully left this engagement.'), 'success');
+        flash(__('You have successfully left this engagement.'), 'success|'.__('You have successfully left this engagement.', [], 'en'));
 
         return redirect(localized_route('engagements.show', $engagement));
     }

@@ -1,8 +1,9 @@
 <div class="stack notification">
     @if (!$read)
-        <span class="notification-dot absolute top-14 left-10"></span>
+        <span class="notification-dot absolute left-10 top-14"></span>
     @endif
     <h3 class="h4">{{ $title }}</h3>
+    <x-interpretation name="{{ $interpretation }}" namespace="notification_message" />
     <div class="content stack">
         {{ $body }}
     </div>

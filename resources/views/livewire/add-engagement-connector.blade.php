@@ -19,6 +19,10 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
+                    @if (session()->has('message-interpretation'))
+                        <x-interpretation name="{{ session('message-interpretation') }}"
+                            namespace="add-engagement-connector" />
+                    @endif
                     {{ session('message') }}
                 </x-hearth-alert>
             @endif

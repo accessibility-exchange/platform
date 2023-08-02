@@ -26,7 +26,7 @@ class InvitationController extends Controller
 
         Mail::to($validated['email'])->send(new InvitationMessage($invitation));
 
-        flash(__('invitation.create_invitation_succeeded'), 'success');
+        flash(__('invitation.create_invitation_succeeded'), 'success|'.__('invitation.create_invitation_succeeded', [], 'en'));
 
         return redirect(localized_route('settings.edit-roles-and-permissions'));
     }
@@ -39,7 +39,7 @@ class InvitationController extends Controller
 
         flash(
             __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
-            'success'
+            'success|'.__('invitation.accept_invitation_succeeded', [], 'en')
         );
 
         return redirect(localized_route('dashboard'));
@@ -53,7 +53,7 @@ class InvitationController extends Controller
 
         flash(
             __('invitation.decline_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
-            'success'
+            'success|'.__('invitation.decline_invitation_succeeded', [], 'en')
         );
 
         return redirect(localized_route('dashboard'));
@@ -67,7 +67,7 @@ class InvitationController extends Controller
 
         $invitation->delete();
 
-        flash(__('invitation.cancel_invitation_succeeded'), 'success');
+        flash(__('invitation.cancel_invitation_succeeded'), 'success|'.__('invitation.cancel_invitation_succeeded', [], 'en'));
 
         return redirect(localized_route('settings.edit-roles-and-permissions'));
     }

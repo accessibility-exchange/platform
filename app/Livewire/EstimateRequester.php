@@ -27,7 +27,7 @@ class EstimateRequester extends StatusUpdater
 
     public function notify(): void
     {
-        flash($this->successMessage, 'success');
+        flash($this->successMessage, 'success|'.__('You have successfully submitted an estimate request.', [], 'en'));
 
         $administrators = User::whereAdministrator()->get();
         Notification::send($administrators, new EstimateRequested($this->model));

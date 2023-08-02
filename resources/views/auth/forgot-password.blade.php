@@ -10,6 +10,8 @@
             {{ __('Reset your password') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Reset your password', [], 'en') }}" />
+
         <div class="stack">
             <h4>
                 {{ __('Please reset your password for The Accessibility Exchange') }}

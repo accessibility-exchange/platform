@@ -84,7 +84,7 @@ class ProjectController extends Controller
 
         session()->forget(['ancestor', 'languages']);
 
-        flash(__('Your project has been created.'), 'success');
+        flash(__('Your project has been created.'), 'success|'.__('Your project has been created.', [], 'en'));
 
         return redirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
     }
@@ -181,7 +181,7 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        flash(__('Your project has been deleted.'), 'success');
+        flash(__('Your project has been deleted.'), 'success|'.__('Your project has been deleted.', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }

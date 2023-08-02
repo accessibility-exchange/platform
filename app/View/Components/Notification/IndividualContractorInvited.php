@@ -30,6 +30,7 @@ class IndividualContractorInvited extends Notification
                 'invitationable' => $this->invitationable->getTranslation('name', locale()),
             ]
         );
+        $this->interpretation = __('You have been invited as a', [], 'en');
 
         parent::__construct($notification);
     }
@@ -43,6 +44,7 @@ class IndividualContractorInvited extends Notification
             'body' => $this->body,
             'invitationable' => $this->invitationable,
             'invitation' => $this->invitation,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

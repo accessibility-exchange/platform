@@ -17,7 +17,7 @@ trait HasMultipageEditingAndPublishing
     {
         $this->published_at = now();
         $this->save();
-        flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success');
+        flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success|'.__('Congratulations! Your have successfully published your page.', [], 'en'));
     }
 
     public function unpublish($silent = false): void
@@ -25,7 +25,7 @@ trait HasMultipageEditingAndPublishing
         $this->published_at = null;
         $this->save();
         if (! $silent) {
-            flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success');
+            flash(__('Your :model page has been unpublished.', ['model' => $this->getSingularName()]), 'success|'.__('Your page has been unpublished.', [], 'en'));
         }
     }
 
@@ -37,9 +37,9 @@ trait HasMultipageEditingAndPublishing
 
         if (is_null($request->input('preview')) && is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
-                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success|'.__('You have successfully saved your draft page.', [], 'en'));
             } else {
-                flash(__('You have successfully saved your :model page.', ['model' => $this->getSingularName()]), 'success');
+                flash(__('You have successfully saved your :model page.', ['model' => $this->getSingularName()]), 'success|'.__('You have successfully saved your page.', [], 'en'));
             }
         }
 
@@ -50,7 +50,7 @@ trait HasMultipageEditingAndPublishing
         } elseif ($request->input('save_and_next')) {
             return redirect(localized_route($this->getRoutePrefix().'.edit', [$this->getRoutePlaceholder() => $this, 'step' => $step + 1]));
         } elseif ($request->input('preview')) {
-            flash(__('You have successfully saved your draft :item page.', ['item' => $this->getSingularName()]), 'success');
+            flash(__('You have successfully saved your draft :item page.', ['item' => $this->getSingularName()]), 'success|'.__('You have successfully saved your draft page.', [], 'en'));
 
             return redirect(localized_route($this->getRoutePrefix().'.show', $this));
         } elseif ($request->input('publish')) {
