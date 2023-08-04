@@ -49,8 +49,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 ENV NODE_VERSION 16
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-    && apt install -y nodejs \
-    && npm install -g npm
+    && apt install -y nodejs npm
 
 COPY $KUBE_DIR/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
