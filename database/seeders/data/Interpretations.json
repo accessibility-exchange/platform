@@ -302,6 +302,10 @@
                 "namespace": "join"
             },
             {
+                "name": "Join our accessibility community",
+                "namespace": "join-with_pricing"
+            },
+            {
                 "name": "Contact",
                 "namespace": "contact-footer"
             }

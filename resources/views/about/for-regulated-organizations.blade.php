@@ -79,29 +79,7 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                    <div class="grid">
-                        <div class="stack">
-                            <h3 class="h4">{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        {{-- <div class="stack">
-                            <h3 class="h4">{{ __('Request an introductory phone call') }}</h3>
-                            <p><a class="cta" href="#TODO"> {{ __('Request a call') }}</a></p>
-                        </div> --}}
-                        <div class="stack">
-                            <h3 class="h4">{{ __('Learn about our pricing') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('about.pricing') }}">
-                                    {{ __('Go to pricing') }}</a></p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join', ['withPricing' => true])
     </div>
 
 </x-app-layout>

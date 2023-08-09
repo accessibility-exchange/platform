@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--connectors stack">
     <x-slot name="title">{{ __('Community Connectors') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack pt-4 pb-12">
+        <div class="center center:wide stack pb-12 pt-4">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 @if (request()->localizedRouteIs('about.individual-community-connectors'))
@@ -26,9 +26,9 @@
                 {{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) }}</h2>
             <x-interpretation
                 name="{{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector', [], 'en')], 'en') }}" />
-            <div class="stack flex h-full flex-col justify-center items-center">
+            <div class="stack flex h-full flex-col items-center justify-center">
                 <p>{{ __('Ideally a Community Connector has:') }}
-                <ul class="flex flex-col w-1/2">
+                <ul class="flex w-1/2 flex-col">
                     <li class="mx-auto">{{ __('lived experience of disability, or of being Deaf, or both') }}</li>
                     <li class="mx-auto">
                         {{ __('a network and is able to conduct effective outreach to people with disabilities and Deaf persons in particular geographic communities and social groups (for example, Indigenous communities).') }}
@@ -81,24 +81,6 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                    <div class="grid">
-                        <div class="stack">
-                            <h3>{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        <div class="stack">
-                            <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join')
     </div>
 </x-app-layout>

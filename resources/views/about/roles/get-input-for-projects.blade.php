@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--regulated-organization">
     <x-slot name="title">{{ __('Get input for your projects') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack pt-4 pb-12">
+        <div class="center center:wide stack pb-12 pt-4">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 @if (request()->localizedRouteIs('about.regulated-organization-get-input'))
@@ -67,24 +67,7 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <div class="grid">
-                        <div class="stack">
-                            <h3>{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        <div class="stack">
-                            <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join')
     </div>
 
 </x-app-layout>

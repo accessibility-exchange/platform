@@ -107,13 +107,5 @@
         </p>
     </section>
 
-    @guest
-        <section class="full accent" aria-labelledby="join">
-            <div class="center center:wide stack stack:xl text-center">
-                <h2 id="join">{{ __('Join our accessibility community') }}</h2>
-                <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-            </div>
-        </section>
-    @endguest
+    @include('partials.join')
 </x-app-layout>
