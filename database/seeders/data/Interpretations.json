@@ -1,0 +1,786 @@
+{
+    "dashboard": {
+        "interpretations": [
+            {
+                "name": "My dashboard",
+                "namespace": "dashboard-administrator"
+            },
+            {
+                "name": "Notifications",
+                "namespace": "dashboard_notifications"
+            },
+            {
+                "name": "A new verification link has been sent to the email address you provided.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your password has been changed.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have enabled two-factor authentication.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "New recovery codes have been generated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have disabled two-factor authentication.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your information has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Already on your block list",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Already on your block list",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully blocked.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Could not be blocked because it was not on your block list.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully unblocked.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have joined.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have declined your invitation to work.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have declined an invitation on behalf of your organization.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your engagement has been created.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your engagement has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your engagement has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your participant selection criteria have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your engagement translations have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your engagement has been published.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully added the Community Organization you are consulting with for this engagement.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully removed :organization as the Community Organization for this engagement.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your invitation has been sent.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully signed up for this engagement.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your preference for sharing your access needs has been saved.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully left this engagement.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your roles have been saved.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Please review your page. There is some information for your new role that you will have to fill in.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your individual page has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have joined the team.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have declined your invitation to join the team.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "The invitation has been cancelled.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your meeting has been created.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your meeting has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your meeting has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Already on your notification list.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully added to your list.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Could not be removed because it was not on your notification list.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully removed from your notification list.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your organization has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your project has been created.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your project has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your federally regulated organization has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your federally regulated organization has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your access needs have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your communication and consultation preferences have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your language preferences have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your payment information has been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your areas of interest have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your website accessibility preferences have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your notification preferences have been updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Language added.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Language removed.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your account has been deleted.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your email address has been verified.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully approved your estimate.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully submitted an estimate request.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "The notification has been marked as read.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Status updated.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Congratulations! Your have successfully published your page.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "Your page has been unpublished.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully saved your draft page.",
+                "namespace": "flash-messages"
+            },
+            {
+                "name": "You have successfully saved your page.",
+                "namespace": "flash-messages"
+            }
+        ]
+    },
+    "welcome": {
+        "interpretations": [
+            {
+                "name": "The Accessibility Exchange"
+            },
+            {
+                "name": "The Accessibility Exchange",
+                "namespace": "welcome-guest"
+            },
+            {
+                "name": "What is the Accessibility Exchange?"
+            },
+            {
+                "name": "How does this work?"
+            },
+            {
+                "name": "For Individuals"
+            },
+            {
+                "name": "For Federally Regulated Organizations"
+            },
+            {
+                "name": "For Community Organizations"
+            },
+            {
+                "name": "What do we mean when we say “disability”?"
+            },
+            {
+                "name": "Developed in partnership"
+            },
+            {
+                "name": "Join our accessibility community",
+                "namespace": "join"
+            },
+            {
+                "name": "Contact",
+                "namespace": "contact-footer"
+            }
+        ]
+    },
+    "about.for-community-organizations": {
+        "interpretations": [
+            {
+                "name": "What do we mean when we say “Community organizations”?"
+            },
+            {
+                "name": "What you can do on this website"
+            }
+        ]
+    },
+    "about.for-individuals": {
+        "interpretations": [
+            {
+                "name": "How this works for individuals"
+            },
+            {
+                "name": "What you can do on this website"
+            },
+            {
+                "name": "Be a Consultation Participant"
+            },
+            {
+                "name": "Be an Accessibility Consultant"
+            },
+            {
+                "name": "Be a Community Connector"
+            }
+        ]
+    },
+    "about.for-regulated-organizations": {
+        "interpretations": [
+            {
+                "name": "What you can do on this website"
+            }
+        ]
+    },
+    "about.individual-accessibility-consultants": {
+        "interpretations": [
+            {
+                "name": "What experiences should I have to be an Accessibility Consultant?"
+            },
+            {
+                "name": "How does being an Accessibility Consultant work?"
+            }
+        ]
+    },
+    "about.individual-community-connectors": {
+        "interpretations": [
+            {
+                "name": "What experiences should I have to be a Community Connector?"
+            },
+            {
+                "name": "How does being a Community Connector work?"
+            }
+        ]
+    },
+    "about.organization-consultation-participants": {
+        "interpretations": [
+            {
+                "name": "Who can be a Consultation Participant?"
+            },
+            {
+                "name": "How does being a Consultation Participant work?"
+            }
+        ]
+    },
+    "about.individual-consultation-participants": {
+        "interpretations": [
+            {
+                "name": "Who can be a Consultation Participant?"
+            },
+            {
+                "name": "How does being a Consultation Participant work?"
+            }
+        ]
+    },
+    "about.individual-accessibility-consultants-what-we-ask-for": {
+        "interpretations": [
+            {
+                "name": "Have more questions?",
+                "namespace": "questions"
+            }
+        ]
+    },
+    "password.request": {
+        "interpretations": [
+            {
+                "name": "Reset your password"
+            }
+        ]
+    },
+    "dashboard.notifications-all": {
+        "interpretations": [
+            {
+                "name": "Notification message",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Requires access needs facilitation",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Account approved",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Account suspended",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Account suspension lifted",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Your agreement has been received",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "New estimate approval",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "New estimate request",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Your estimate has been returned",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "You have been invited as a",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Your organization has been added to an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Your organization has been invited",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "Your organization has been removed from an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 new person accepted their invitation for an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 new person accepted your invitation for an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 person declined their invitation for an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 person declined your invitation for an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "You have been invited as a Consultation Participant",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 new person signed up for an engagement",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "1 participant left an engagement",
+                "namespace": "notification_message"
+            }
+        ]
+    },
+    "individuals.edit": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Pronouns",
+                "namespace": "pronouns-optional"
+            },
+            {
+                "name": "Your bio",
+                "namespace": "your_bio-required"
+            },
+            {
+                "name": "What are your lived experiences of disability or other intersectional identities?",
+                "namespace": "your_lived_experience_disability_intersectional-optional"
+            },
+            {
+                "name": "What are your skills and strengths relevant to The Accessibility Exchange?",
+                "namespace": "your_skills_and_strengths-optional"
+            },
+            {
+                "name": "Edit page translations",
+                "namespace": "edit_translations"
+            },
+            {
+                "name": "About you"
+            },
+            {
+                "name": "Name",
+                "namespace": "name-required"
+            },
+            {
+                "name": "Where do you live?"
+            },
+            {
+                "name": "Province or territory",
+                "namespace": "province_territory-required"
+            },
+            {
+                "name": "City or town",
+                "namespace": "city_town-required"
+            },
+            {
+                "name": "What language(s) are you comfortable working in?",
+                "namespace": "working_languages-optional"
+            },
+            {
+                "name": "Add another language",
+                "namespace": "add_language"
+            },
+            {
+                "name": "How can you help a regulated organization?",
+                "namespace": "how_can_you_help_regulated_organization-required"
+            },
+            {
+                "name": "Social media links",
+                "namespace": "working_languages-optional"
+            },
+            {
+                "name": "Website link",
+                "namespace": "website_link-optional"
+            },
+            {
+                "name": "Save",
+                "namespace": "save"
+            },
+            {
+                "name": "Save and next",
+                "namespace": "save_next"
+            },
+            {
+                "name": "Communication and consultation preferences"
+            },
+            {
+                "name": "Contact person",
+                "namespace": "contact_person-required"
+            },
+            {
+                "name": "Contact information",
+                "namespace": "contact_information"
+            },
+            {
+                "name": "My email",
+                "namespace": "my_email-required"
+            },
+            {
+                "name": "My phone number"
+            },
+            {
+                "name": "I require Video Relay Service (VRS) for phone calls"
+            },
+            {
+                "name": "Contact information",
+                "namespace": "contact_information"
+            },
+            {
+                "name": "My support person’s name",
+                "namespace": "my_support_person_name-required"
+            },
+            {
+                "name": "My support person’s email",
+                "namespace": "my_support_person_email-required"
+            },
+            {
+                "name": "My support person’s phone number"
+            },
+            {
+                "name": "My support person requires Video Relay Service (VRS) for phone calls"
+            },
+            {
+                "name": "Preferred contact method",
+                "namespace": "preferred_contact_method-required"
+            },
+            {
+                "name": "What types of meetings are you able to attend?",
+                "namespace": "meeting_types_you_can_attend-required"
+            },
+            {
+                "name": "Save and previous",
+                "namespace": "save_previous"
+            },
+            {
+                "name": "Experiences"
+            },
+            {
+                "name": "Relevant experiences (optional)",
+                "namespace": "relevant_experiences-optional"
+            },
+            {
+                "name": "Interests"
+            },
+            {
+                "name": "What types of Regulated Organization are you interested consulting with on accessibility planning and design?",
+                "namespace": "regulated_organization_sectors_you_are_interested_working-optional"
+            },
+            {
+                "name": "What areas of accessibility planning and design are you most interested in consulting on?",
+                "namespace": "areas_of_accessible_canada_act_you_are_interested_working-optional"
+            },
+            {
+                "name": "Page sections",
+                "namespace": "page_sections-connector"
+            },
+            {
+                "name": "Page sections"
+            },
+            {
+                "name": "Publish page",
+                "namespace": "publish_page"
+            },
+            {
+                "name": "Sorry, some errors were found in your submission. Please correct these errors and try again.",
+                "namespace": "errors_found_message"
+            }
+        ]
+    },
+    "admin.manage-accounts": {
+        "interpretations": [
+            {
+                "name": "Account has been approved.",
+                "namespace": "manage-accounts"
+            },
+            {
+                "name": "Account has been suspended.",
+                "namespace": "manage-accounts"
+            },
+            {
+                "name": "The suspension has been lifted.",
+                "namespace": "manage-accounts"
+            },
+            {
+                "name": "An organization has been approved.",
+                "namespace": "manage-accounts"
+            },
+            {
+                "name": "An organization and its users have been suspended.",
+                "namespace": "manage-accounts"
+            },
+            {
+                "name": "The suspension of an organization and its users has been lifted.",
+                "namespace": "manage-accounts"
+            }
+        ]
+    },
+    "admin.estimates-and-agreements": {
+        "interpretations": [
+            {
+                "name": "The estimate has been marked as returned.",
+                "namespace": "add-estimates-and-agreements"
+            },
+            {
+                "name": "The agreement has been marked as received.",
+                "namespace": "add-estimates-and-agreements"
+            }
+        ]
+    },
+    "engagements.manage-connector": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Your engagement has been updated.",
+                "namespace": "manage-engagement-connector"
+            },
+            {
+                "name": "Your invitation has been cancelled.",
+                "namespace": "manage-engagement-connector"
+            },
+            {
+                "name": "Your Community Connector has been removed.",
+                "namespace": "manage-engagement-connector"
+            }
+        ]
+    },
+    "quizzes.show": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Accessible meetings have the following in place:",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814604569"
+                }
+            },
+            {
+                "name": "Choices for: Accessible meetings have the following in place:",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814604506"
+                }
+            },
+            {
+                "name": "American Sign Language is a universal language.",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814604625"
+                }
+            },
+            {
+                "name": "Choices for: American Sign Language is a universal language.",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814604600"
+                }
+            },
+            {
+                "name": "What does a respectful accommodation look like?",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814604754"
+                }
+            },
+            {
+                "name": "Choices for: What does a respectful accommodation look like?",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814604684"
+                }
+            },
+            {
+                "name": "Select tips when writing in plain language.",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814604883"
+                }
+            },
+            {
+                "name": "Choices for: Select tips when writing in plain language.",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814604783"
+                }
+            },
+            {
+                "name": "When communication with a blind person or someone with a vision loss it is important to do the following:",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814604990"
+                }
+            },
+            {
+                "name": "Choices for: When communication with a blind person or someone with a vision loss it is important to do the following:",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814604939"
+                }
+            },
+            {
+                "name": "For individuals who are hard of hearing make sure to speak in a loud voice.",
+                "namespace": "course_quiz_question",
+                "video": {
+                    "asl": "https://vimeo.com/814605179"
+                }
+            },
+            {
+                "name": "Choices for: For individuals who are hard of hearing make sure to speak in a loud voice.",
+                "namespace": "course_quiz_question_choices",
+                "video": {
+                    "asl": "https://vimeo.com/814605156"
+                }
+            }
+        ]
+    }
+}

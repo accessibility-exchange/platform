@@ -23,7 +23,7 @@ class InterpretationSeeder extends Seeder
             $environment = config('app.env');
         }
 
-        // if trucate was set via seeder restore command then truncate the table prior to seeding data
+        // if truncate was set via seeder restore command then truncate the table prior to seeding data
         if (config('seeder.truncate')) {
             DB::statement('SET foreign_key_checks=0');
             Interpretation::truncate();
@@ -43,8 +43,25 @@ class InterpretationSeeder extends Seeder
                 ]);
             }
         } else {
-            $environment = config('app.env');
-            printf("%s cannot be run on environment: %s\r\n", self::class, $environment);
+            echo "Seeder file wasn't found, using default values\r\n";
+
+            $contents = file_get_contents('database/seeders/data/Interpretations.json');
+            $data = json_decode($contents, true);
+
+            foreach ($data ?? [] as $routeName => $routeData) {
+                foreach ($routeData['interpretations'] as $interpretation) {
+                    Interpretation::firstOrCreate(
+                        [
+                            'name' => $interpretation['name'],
+                            'namespace' => $interpretation['namespace'] ?? $routeName,
+                        ],
+                        array_merge($interpretation, [
+                            'route' => $routeName,
+                            'route_has_params' => $routeData['route_has_params'] ?? false,
+                        ])
+                    );
+                }
+            }
         }
     }
 }
