@@ -3,11 +3,17 @@
         "interpretations": [
             {
                 "name": "My dashboard",
-                "namespace": "dashboard-administrator"
+                "namespace": "dashboard-administrator",
+                "video": {
+                    "asl": "https://vimeo.com/844999113/9737ef6d16"
+                }
             },
             {
                 "name": "Notifications",
-                "namespace": "dashboard_notifications"
+                "namespace": "dashboard_notifications",
+                "video": {
+                    "asl": "https://vimeo.com/844999113/9737ef6d16"
+                }
             },
             {
                 "name": "A new verification link has been sent to the email address you provided.",
@@ -430,11 +436,17 @@
             },
             {
                 "name": "New estimate approval",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "asl": "https://vimeo.com/844999150/b746f54ff1"
+                }
             },
             {
                 "name": "New estimate request",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "asl": "https://vimeo.com/844999173/bab03a7317"
+                }
             },
             {
                 "name": "Your estimate has been returned",
@@ -644,6 +656,13 @@
     "admin.manage-accounts": {
         "interpretations": [
             {
+                "name": "Manage accounts",
+                "namespace": "manage-accounts",
+                "video": {
+                    "asl": "https://vimeo.com/844999184/d2d3c6f7f9"
+                }
+            },
+            {
                 "name": "Account has been approved.",
                 "namespace": "manage-accounts"
             },
@@ -671,6 +690,13 @@
     },
     "admin.estimates-and-agreements": {
         "interpretations": [
+            {
+                "name": "Estimates and agreements",
+                "namespace": "add-estimates-and-agreements",
+                "video": {
+                    "asl": "https://vimeo.com/844999201/10aa2c2d9b"
+                }
+            },
             {
                 "name": "The estimate has been marked as returned.",
                 "namespace": "add-estimates-and-agreements"
