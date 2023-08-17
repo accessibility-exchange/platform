@@ -5,6 +5,7 @@
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
         </ol>
         <p class="h3">{{ __('Create a new project') }}</p>
+        <x-interpretation name="{{ __('Create a new project', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -16,6 +17,12 @@
             <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :short-label="__('project name')" :model="new App\Models\Project()" />
         </fieldset>
 
+        @if (session()->has('ancestor'))
+            <x-interpretation name="{{ __('Back', [], 'en') . _ . __('Create', [], 'en') }}" namespace="back_create" />
+        @else
+            <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Create', [], 'en') }}"
+                namespace="cancel_create" />
+        @endif
         <p class="repel">
             <a class="cta secondary"
                 href="{{ localized_route('projects.show-language-selection') }}">{{ session()->has('ancestor') ? __('Back') : __('Cancel') }}</a>

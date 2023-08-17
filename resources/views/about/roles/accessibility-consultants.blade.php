@@ -17,6 +17,8 @@
             <h1 class="w-1/2">
                 {{ __('Accessibility Consultants') }}
             </h1>
+            <x-interpretation name="{{ __('Accessibility Consultants', [], 'en') }}"
+                namespace="accessibility_consultants" />
         </div>
     </x-slot>
 
@@ -26,7 +28,8 @@
                 {{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant')]) }}
             </h2>
             <x-interpretation
-                name="{{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}" />
+                name="{{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
+                namespace="accessibility_consultants" />
             <div class="stack flex h-full flex-col items-center justify-center">
                 <p>{{ __('Ideally, an Accessibility Consultant has:') }}
                 <ul class="flex w-1/2 flex-col">
@@ -44,11 +47,15 @@
                 <h2 id="how">
                     {{ __('How does being an :role work?', ['role' => __('Accessibility Consultant')]) }}</h2>
                 <x-interpretation
-                    name="{{ __('How does being an :role work?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}" />
+                    name="{{ __('How does being an :role work?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
+                    namespace="accessibility_consultants" />
             </div>
             <div class="grid">
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and build your Accessibility Consultant profile') }}</h3>
+                    <x-interpretation
+                        name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
+                        namespace="accessibility_consultants" />
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
@@ -62,12 +69,17 @@
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('2. Find projects that are looking for an Accessibility Consultant') }}</h3>
+                    <x-interpretation
+                        name="{{ __('2. Find projects that are looking for an Accessibility Consultant', [], 'en') }}"
+                        namespace="accessibility_consultants" />
                     <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}
                     </p>
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
+                    <x-interpretation name="{{ __('3. Work directly with governments and businesses', [], 'en') }}"
+                        namespace="accessibility_consultants" />
                     <p>{{ __('Coordinate directly with governments and businesses on what they would like you to help with.') }}</a>
                     </p>
                 </div>

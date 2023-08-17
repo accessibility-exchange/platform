@@ -12,6 +12,7 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Contact information') }}
             </h2>
+            <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
             <hr class="divider--thick">
             <div class="field @error('contact_person_name') field-error @enderror">
                 <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
@@ -48,6 +49,8 @@
                 <x-hearth-error for="preferred_contact_method" />
             </div>
             <hr class="divider--thick">
+            <x-interpretation name="{{ __('Save and back', [], 'en') . _ . __('Save', [], 'en') }}"
+                namespace="save_and_back_save" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>

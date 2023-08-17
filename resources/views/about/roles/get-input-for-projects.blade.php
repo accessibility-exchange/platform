@@ -18,12 +18,17 @@
                 {{ __('Get input for your projects') }}
             </h1>
 
-            <p>{{ __('As a :organizationType, you can engage with individuals to get input for your projects.', [
-                'organizationType' => request()->localizedRouteIs('about.regulated-organization-get-input')
-                    ? __('Regulated Organization')
-                    : __('Community Organization'),
-            ]) }}
-            </p>
+            @if (request()->localizedRouteIs('about.regulated-organization-get-input'))
+                <x-interpretation name="{{ __('Get input for your projects', [], 'en') }}"
+                    namespace="get_input_for_projects-regulated_organization" />
+                <p>{{ __('As a :organizationType, you can engage with individuals to get input for your projects.', ['organizationType' => __('Regulated Organization')]) }}
+                </p>
+            @else
+                <x-interpretation name="{{ __('Get input for your projects', [], 'en') }}"
+                    namespace="get_input_for_projects-community_organization" />
+                <p>{{ __('As a :organizationType, you can engage with individuals to get input for your projects.', ['organizationType' => __('Community Organization')]) }}
+                </p>
+            @endif
         </div>
     </x-slot>
 
@@ -31,16 +36,23 @@
         <x-section class="stack:lg" aria-labelledby="how">
             <div class="center text-center">
                 <h2 id="how">{{ __('How does getting input for your projects work?') }}</h2>
+                <x-interpretation name="{{ __('How does getting input for your projects work?', [], 'en') }}"
+                    namespace="get_input_for_projects" />
             </div>
             <div class="grid">
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up and share more about your organization') }}</h3>
+                    <x-interpretation name="{{ __('1. Sign up and share more about your organization', [], 'en') }}"
+                        namespace="get_input_for_projects" />
                     <p>{{ __('This information will help potential Consultation Participants on the website like individuals with disabilities, and individuals who are Deaf learn about your organization.') }}
                     </p>
                 </div>
 
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('2. Share more about your projects and who you are looking to engage') }}</h3>
+                    <x-interpretation
+                        name="{{ __('2. Share more about your projects and who you are looking to engage', [], 'en') }}"
+                        namespace="get_input_for_projects" />
                     <p>{{ __('Organizations can decide which criteria they would like the participants for a project to have. They then have a choice between:') }}
                     <ul>
                         <li>{{ __('creating an open project, where anyone who matches their criteria can sign up. ') }}
@@ -57,6 +69,9 @@
 
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('3. Work directly with people on your accessibility project') }}</h3>
+                    <x-interpretation
+                        name="{{ __('3. Work directly with people on your accessibility project', [], 'en') }}"
+                        namespace="get_input_for_projects" />
                     <p>{{ __('Once individuals agree to work on your project as Consultation Participants, you can reach out to them directly to coordinate how and when to work together.') }}</a>
                     </p>
                 </div>

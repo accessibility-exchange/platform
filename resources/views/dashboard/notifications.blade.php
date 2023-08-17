@@ -13,6 +13,7 @@
             <h1 id="notifications">
                 {{ __('Notifications') }}
             </h1>
+            <x-interpretation name="{{ __('Notifications', [], 'en') }}" namespace="notifications" />
         </div>
     </x-slot>
 

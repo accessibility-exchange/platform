@@ -1,7 +1,7 @@
 @spaceless
     <x-live-region>
         @if (flash()->message)
-            <x-hearth-alert :type="flash()->class" :title="Str::contains(flash()->message, __('You are previewing your')) ? __('Draft') : null">
+            <x-hearth-alert :type="Str::before(flash()->class, '|')" :title="Str::contains(flash()->message, __('You are previewing your')) ? __('Draft') : null">
                 <p>{{ flash()->message }}</p>
                 @if (Str::contains(flash()->class, '|'))
                     <x-interpretation name="{{ __(flash()->class, [], 'en') }}" namespace="flash-messages" />

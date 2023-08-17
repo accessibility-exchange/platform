@@ -4,11 +4,14 @@
     </x-slot>
     <x-slot name="header">
         <h1>{{ __('Tell us your organization’s name') }}</h1>
+        <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}"
+            namespace="create_organization-{{ Str::snake(App\Enums\OrganizationType::from($type)->interpretation()['name']) }}" />
     </x-slot>
 
     <form class="stack" action="{{ localized_route('organizations.store') }}" method="post" novalidate>
         <fieldset class="stack">
             <legend>{{ __('Your organization’s name') }}</legend>
+            <x-interpretation name="{{ __('Your organization’s name', [], 'en') }}" />
             <p class="field__hint">{{ __('Your organization’s name in either English or French is required.') }}</p>
             <div class="field @error('name.en') field--error @enderror">
                 <x-hearth-label for="name-en">{{ __('Name of organization — English') }}</x-hearth-label>
@@ -31,8 +34,7 @@
 
     @foreach (['en', 'fr'] as $locale)
         @error('name.' . $locale)
-            @if ($message ===
-                __('A :type with this name already exists.', ['type' => App\Enums\OrganizationType::labels()[$type]]))
+            @if ($message === __('A :type with this name already exists.', ['type' => App\Enums\OrganizationType::labels()[$type]]))
                 <div class="stack">
                     @php
                         $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first();

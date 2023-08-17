@@ -47,6 +47,7 @@ class OrganizationController extends Controller
             'types' => Options::forEnum(OrganizationType::class)->append(fn (OrganizationType $type) => [
                 'label' => OrganizationType::pluralLabels()[$type->value],
                 'hint' => $type->description(),
+                'interpretation' => $type->interpretation(),
             ])->toArray(),
         ]);
     }

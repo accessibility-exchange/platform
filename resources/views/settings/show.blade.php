@@ -4,9 +4,11 @@
         <h1>
             {{ __('Settings') }}
         </h1>
+        <x-interpretation name="{{ __('Settings', [], 'en') }}" />
     </x-slot>
 
     <h2>{{ __('For consultations') }}</h2>
+    <x-interpretation name="{{ __('For consultations', [], 'en') }}" />
     @if ($user->context === 'individual')
         <p>{{ __('Please provide personal information that will help us find consultations for you to participate in.') }}
         </p>
@@ -49,6 +51,7 @@
         @endif
     </ul>
     <h2>{{ __('For this website') }}</h2>
+    <x-interpretation name="{{ __('For this website', [], 'en') }}" />
     <p>{{ __('Adjust settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
         @if ($user->context !== 'individual')
@@ -59,8 +62,9 @@
         <li><a
                 href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a>
         </li>
-        @if (($user->context === 'organization' && $user->organization) ||
-            ($user->context === 'regulated-organization' && $user->regulatedOrganization))
+        @if (
+            ($user->context === 'organization' && $user->organization) ||
+                ($user->context === 'regulated-organization' && $user->regulatedOrganization))
             <li><a
                     href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a>
             </li>

@@ -12,8 +12,10 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 2]) }}<br />
                 {{ __('Project team') }}
             </h2>
+            <x-interpretation name="{{ __('Project team', [], 'en') }}" />
             <hr class="divider--thick">
             <h3>{{ __('About your team') }}</h3>
+            <x-interpretation name="{{ __('About your team', [], 'en') }}" />
 
             <div class="field @error('team_size') field--error @enderror stack">
                 <x-translatable-input name="team_size" :label="__('Please indicate the number of people on your team.') . ' ' . __('(optional)')" :shortLabel="__('the number of people on your team')" :hint="__('You can provide either an exact number or a range.')"
@@ -24,6 +26,8 @@
                 <legend>
                     {{ __('Please indicate whether any member of your team has lived/living experiences of disability or being Deaf.') . ' ' . __('(optional)') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate whether any member of your team has lived/living experiences of disability or being Deaf.', [], 'en') }}" />
                 <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()"
                     :checked="old(
                         'team_has_disability_or_deaf_lived_experience',
@@ -35,6 +39,7 @@
                 <legend>
                     <h3>{{ __('Training your team has received') . ' ' . __('(optional)') }}</h3>
                 </legend>
+                <x-interpretation name="{{ __('Training your team has received', [], 'en') }}" />
                 <p class="field__hint">
                     {{ __('Please list any training related to accessibility or inclusion that your team members have received.') }}
                 </p>
@@ -45,6 +50,7 @@
                 <legend>
                     <h3>{{ __('Team contact') }}</h3>
                 </legend>
+                <x-interpretation name="{{ __('Team contact', [], 'en') }}" />
                 <p class="field__hint">
                     {{ __('Please provide the details for a member of your team whom potential participants may contact to ask questions.') }}
                 </p>
@@ -77,6 +83,8 @@
                 <div class="field @error('preferred_contact_method') field-error @enderror">
                     <x-hearth-label for="preferred_contact_method">{{ __('Preferred contact method') }}
                     </x-hearth-label>
+                    <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
+                        namespace="preferred_contact_method" />
                     <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                         'email' => __('Email'),
                         'phone' => __('Phone'),
@@ -86,11 +94,14 @@
 
                 <div class="field @error('contact_person_response_time') field-error @enderror">
                     <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time') . ' ' . __('(required)')" :hint="__('For example, three to five business days, within one hour')"
-                        :shortLabel="__('approximate response time')" :model="$project" required />
+                        :shortLabel="__('approximate response time')" :model="$project" interpretationName="Approximate response time"
+                        interpretationNameSpace="approximate_response_time-required" required />
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>
             <hr class="divider--thick">
+            <x-interpretation name="{{ __('Save and back', [], 'en') . _ . __('Save', [], 'en') }}"
+                namespace="save_and_back_save" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button name="save" value="1">{{ __('Save') }}</button>

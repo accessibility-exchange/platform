@@ -5,12 +5,14 @@
             <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
         </ol>
         <h1>{{ __('Create new project') }}</h1>
+        <x-interpretation name="{{ __('Create new project', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
     <h2>{{ __('About your project') }}</h2>
+    <x-interpretation name="{{ __('About your project', [], 'en') }}" />
 
     <form class="stack" id="create-project" action="{{ localized_route('projects.store-context') }}" method="post"
         novalidate x-data="{ context: '{{ old('context', session('context')) ?? '' }}' }">
@@ -32,6 +34,7 @@
             <x-hearth-error for="context" />
         </fieldset>
 
+        <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Next') }}" namespace="cancel_next" />
         <p class="repel">
             <button class="secondary" type="button" x-on:click="history.back()">{{ __('Cancel') }}</button>
             <button>{{ __('Next') }}</button>

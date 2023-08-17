@@ -12,8 +12,10 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('About your organization') }}
             </h2>
+            <x-interpretation name="{{ __('About your organization', [], 'en') }}" />
             <hr class="divider--thick">
             <h3>{{ __('Organization information') }}</h3>
+            <x-interpretation name="{{ __('Organization information', [], 'en') }}" />
 
             <div class="field @error('name') field--error @enderror">
                 <x-translatable-input name="name" :model="$organization" :label="__('Organization name') . ' ' . __('(required)')" :shortLabel="__('organization name')"
@@ -23,11 +25,13 @@
 
             <div class="field @error('about') field--error @enderror">
                 <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization') . ' ' . __('(required)')" :shortLabel="__('about')"
-                    :hint="__('This can include your vision and mission, what your organization offers, etc.')" required />
+                    :hint="__('This can include your vision and mission, what your organization offers, etc.')" interpretationName="About your organization"
+                    interpretationNameSpace="about_your_organization-required" required />
             </div>
 
             <fieldset>
                 <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
+                <x-interpretation name="{{ __('Your headquarters location', [], 'en') }}" />
 
                 <div class="field @error('region') field--error @enderror">
                     <x-hearth-label for="region" :value="__('Province or territory')" />
@@ -45,6 +49,8 @@
 
             <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>{{ __('What provinces or territories does your organization serve?') . ' ' . __('(required)') }}
+                    <x-interpretation
+                        name="{{ __('What provinces or territories does your organization serve?', [], 'en') }}" />
                 </legend>
                 <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $organization->service_areas ?? [])" required />
                 <div class="stack" x-cloak>
@@ -58,6 +64,7 @@
                 <legend>
                     <h3>{{ __('What language(s) does your organization work in?') . ' ' . __('(required)') }}</h3>
                 </legend>
+                <x-interpretation name="{{ __('What language(s) does your organization work in?', [], 'en') }}" />
                 <livewire:language-picker name="working_languages" :languages="$organization->working_languages ?? []" :availableLanguages="$languages" />
             </fieldset>
 
@@ -66,12 +73,16 @@
                     <legend>
                         {{ __('Which of these areas can you help a regulated organization with?') . ' ' . __('(required)') }}
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Which of these areas can you help a regulated organization with?', [], 'en') }}" />
                     <x-hearth-checkboxes name="consulting_services" :options="$consultingServices" :checked="old('consulting_services', $organization->consulting_services ?? [])"
                         hinted="consulting_services-hint" required />
                 </fieldset>
             @endif
 
             <h3>{{ __('Social media and website links') . ' ' . __('(optional)') }}</h3>
+            <x-interpretation name="{{ __('Social media and website links', [], 'en') }}"
+                namespace="social_media_and_website_links-optional" />
 
             <fieldset class="stack">
                 <legend>{{ __('Social media links') }}</legend>
@@ -90,6 +101,7 @@
             </fieldset>
 
             <h4>{{ __('Organization website') }}</h4>
+            <x-interpretation name="{{ __('Organization website', [], 'en') }}" />
 
             <div class="field @error('website_link') field--error @enderror">
                 <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
@@ -99,6 +111,8 @@
                 <x-hearth-error for="website_link" />
             </div>
             <hr class="divider--thick">
+            <x-interpretation name="{{ __('Save', [], 'en') . _ . __('Save and next', [], 'en') }}"
+                namespace="save_save_and_next" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
                 <button name="save_and_next" value="1">{{ __('Save and next') }}</button>

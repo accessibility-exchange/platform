@@ -8,6 +8,7 @@
         <h1>
             {{ __('Project Translations') }}
         </h1>
+        <x-interpretation name="{{ __('Project Translations', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -22,8 +23,14 @@
         <h2>
             {{ __('Selected languages') }}
         </h2>
+        <x-interpretation name="{{ __('Selected languages', [], 'en') }}" />
         <x-translation-picker />
 
+        @if (session()->has('ancestor'))
+            <x-interpretation name="{{ __('Back', [], 'en') . _ . __('Next', [], 'en') }}" namespace="back_next" />
+        @else
+            <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Next', [], 'en') }}" namespace="cancel_next" />
+        @endif
         <p class="repel">
             <a class="cta secondary"
                 href="{{ session()->has('ancestor') ? localized_route('projects.show-context-selection') : localized_route('dashboard') }}">{{ session()->has('ancestor') ? __('Back') : __('Cancel') }}</a>

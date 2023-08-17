@@ -27,6 +27,7 @@
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-administrator" />
         @endif
         @if ($user->individual)
+            <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-individual" />
             <p>
                 <strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}
                 <a class="cta secondary ml-2" href="{{ localized_route('individuals.show-role-edit') }}">
@@ -37,6 +38,7 @@
         @endif
 
         @if ($user->organization)
+            <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-organization" />
             <p>
                 <strong>{{ __('Roles:') }}</strong>
                 {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}

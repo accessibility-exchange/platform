@@ -12,6 +12,8 @@
                 {{ __('Step :current of :total', ['current' => request()->get('step') ?? 1, 'total' => 4]) }}<br />
                 {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
             </h2>
+            <x-interpretation
+                name="{{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents', [], 'en') : __('serves and supports', [], 'en')], 'en') }}" />
             <hr class="divider--thick">
             <p class="h3">
                 {{ __('Please tell us which community or communities your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
@@ -32,6 +34,8 @@
                     <legend>
                         <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <div class="field">
                         <input id="has_indigenous_constituencies-1" name="has_indigenous_constituencies" type="radio"
                             value="1" @checked(old('has_indigenous_constituencies', (int) $organization->hasConstituencies('indigenousConstituencies') ?? '')) x-model="hasIndigenousConstituencies" />
@@ -49,6 +53,8 @@
                     <legend>
                         <x-required>{{ __('Which Indigenous groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Which Indigenous groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="indigenous_constituencies" :options="$indigenousIdentities" :checked="old(
                         'indigenous_constituencies',
@@ -63,6 +69,8 @@
                 <legend>
                     <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                 </legend>
+                <x-interpretation
+                    name="{{ __('Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                 <x-hearth-radio-buttons name="refugees_and_immigrants" :options="$yesNoOptions" :checked="old('refugees_and_immigrants', $organization->hasConstituencies('statusConstituencies')) ??
                     ''" />
                 <x-hearth-error for="refugees_and_immigrants" />
@@ -73,6 +81,8 @@
                     <legend>
                         <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <x-hearth-radio-buttons name="has_gender_and_sexuality_constituencies" :options="$yesNoOptions"
                         :checked="old(
                             'has_gender_and_sexuality_constituencies',
@@ -86,6 +96,8 @@
                     <legend>
                         <x-required>{{ __('Which groups marginalized based on gender or sexual identity does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Which groups marginalized based on gender or sexual identity does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <div class="field">
                         <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
@@ -111,6 +123,8 @@
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <x-hearth-radio-buttons name="has_age_bracket_constituencies" :options="$yesNoOptions" :checked="old(
                         'has_age_bracket_constituencies',
                         $organization->hasConstituencies('ageBracketConstituencies'),
@@ -123,6 +137,8 @@
                     <legend>
                         <x-required>{{ __('Which age groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Which age groups does your organization specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="age_bracket_constituencies" :options="$ageBrackets" :checked="old(
                         'age_bracket_constituencies',
@@ -141,6 +157,8 @@
                     <legend>
                         <x-required>{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <x-hearth-radio-buttons name="has_ethnoracial_identity_constituencies" :options="$yesNoOptions"
                         checked="@js('has_ethnoracial_identity_constituencies', $organization->hasConstituencies('ethnoracialIdentityConstituencies') || !blank($organization->other_ethnoracial_identity_constituency) ?: '')" x-model="hasEthnoracialIdentityConstituencies" />
                     <x-hearth-error for="has_ethnoracial_identity_constituencies" />
@@ -150,6 +168,8 @@
                     <legend>
                         <x-required>{{ __('Which ethnoracial identity or identities are the people your organization specifically :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-required>
                     </legend>
+                    <x-interpretation
+                        name="{{ __('Which ethnoracial identity or identities are the people your organization specifically :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents', [], 'en') : __('serves and supports', [], 'en')], 'en') }}" />
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="ethnoracial_identity_constituencies" :options="$ethnoracialIdentities"
                         :checked="old(
@@ -177,6 +197,8 @@
                 <legend>
                     <x-optional>{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-optional>
                 </legend>
+                <x-interpretation
+                    name="{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents', [], 'en') : __('serves and supports', [], 'en')], 'en') }}" />
                 <livewire:language-picker name="constituent_languages" :languages="$organization->languageConstituencies->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
                 <x-hearth-error for="constituent_languages" />
             </fieldset>
@@ -185,6 +207,8 @@
                 <legend>
                     <x-required>{{ __('Where do the people that you :represent_or_serve_and_support come from?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                 </legend>
+                <x-interpretation
+                    name="{{ __('Where do the people that you :represent_or_serve_and_support come from?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                 <x-hearth-hint for="area_type_constituencies">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="area_type_constituencies" :options="$areaTypes" :checked="old(
                     'area_type_constituencies',
@@ -203,10 +227,15 @@
                 <legend>
                     <x-required>{{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
                 </legend>
+                <x-interpretation
+                    name="{{ __('Do you have staff who have lived experience of the primary constituencies you specifically :represent_or_serve_and_support?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                 <x-hearth-radio-buttons name="staff_lived_experience" :options="$staffHaveLivedExperience" :checked="old('staff_lived_experience', $organization->staff_lived_experience)" />
                 <x-hearth-error for="staff_lived_experience" />
             </fieldset>
             <hr class="divider--thick">
+            <x-interpretation
+                name="{{ __('Save and back', [], 'en') . _ . __('Save', [], 'en') . _ . __('Save and next', [], 'en') }}"
+                namespace="save_and_back_save_save_and_next" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>
