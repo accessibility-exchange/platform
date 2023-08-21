@@ -4,7 +4,7 @@
     @endif
     <h3 class="h4">{{ $title }}</h3>
     <div class="content stack">
-        {!! Str::markdown($body) !!}
+        {{ $body }}
     </div>
 
     {{ $contact ?? '' }}

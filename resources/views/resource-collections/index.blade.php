@@ -12,7 +12,6 @@
     <x-section class="px-0" aria-labelledby="search">
         <h2 class="h4" id="search">{{ __('Search for resources') }}</h2>
         <form class="search" action="{{ localized_route('resources.index') }}" method="get">
-            @csrf
             <label class="visually-hidden" for="search">{{ __('Search') }}</label>
             <input id="search" name="search" type="search" />
             <button type="submit">{{ __('Search') }}</button>

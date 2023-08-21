@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1]
+        php: [8.1, 8.2]
 
     name: tests - PHP ${{ matrix.php }}
 
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v3
         if: steps.git-diff.outputs.diff
         with:
-          node-version: "16"
+          node-version-file: ".nvmrc"
       - name: Cache node modules
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
@@ -80,7 +80,7 @@ jobs:
           php artisan storage:link
           php artisan test --parallel --coverage-clover coverage.xml
       - name: Upload coverage to Codecov
-        if: steps.git-diff.outputs.diff
+        if: steps.git-diff.outputs.diff && matrix.php == '8.1'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

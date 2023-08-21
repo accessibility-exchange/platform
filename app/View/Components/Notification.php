@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\View\Component;
@@ -12,7 +13,7 @@ class Notification extends Component
 
     public string $title = '';
 
-    public string $body = '';
+    public string|Htmlable $body = '';
 
     public function __construct(DatabaseNotification $notification)
     {

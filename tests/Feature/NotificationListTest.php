@@ -133,3 +133,40 @@ test('individual users can add and remove organizations from their notification 
     $nullUser = null;
     expect($organization->isNotifying($nullUser))->toBeFalse();
 });
+
+test('add notificationable validation errors', function ($data, $errors = null) {
+    $user = User::factory()->create();
+    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
+
+    $baseData = [
+        'notificationable_type' => get_class($organization),
+        'notificationable_id' => $organization->id,
+    ];
+
+    $alternateData = [
+        'notificationable_type' => User::class,
+        'notificationable_id' => $user->id,
+    ];
+
+    $response = $this->actingAs($user)->post(localized_route('notification-list.add'), array_merge($baseData, empty($data) ? $alternateData : $data));
+
+    if (isset($errors)) {
+        $response->assertSessionHasErrors($errors);
+    } else {
+        $response->assertForbidden();
+    }
+})->with('addNotificaitonableRequestValidationErrors');
+
+test('remove notificationable validation errors', function ($data, $errors) {
+    $user = User::factory()->create();
+    $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
+
+    $baseData = [
+        'notificationable_type' => get_class($organization),
+        'notificationable_id' => $organization->id,
+    ];
+
+    $response = $this->actingAs($user)->post(localized_route('notification-list.remove'), array_merge($baseData, $data));
+
+    $response->assertSessionHasErrors($errors);
+})->with('removeNotificaitonableRequestValidationErrors');

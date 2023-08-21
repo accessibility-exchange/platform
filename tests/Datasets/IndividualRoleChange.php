@@ -13,7 +13,7 @@ dataset('individualRoleChange', function () {
     ];
     $warning = [
         'class' => 'warning',
-        'message' => fn ($individual) => __('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.').' <a href="'.localized_route('individuals.edit', $individual).'">'.__('Review page').'</a>', 'warning',
+        'message' => fn ($individual) => __('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning',
     ];
 
     return [

@@ -124,38 +124,16 @@
         </nav>
         <div class="stack">
             @if (request()->localizedRouteIs('organizations.show'))
-                <h2 class="repel">{{ __('About') }} @can('update', $organization)
-                        <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', $organization) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('About') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('About')" :model="$organization" :href="localized_route('organizations.edit', $organization)" />
                 @include('organizations.partials.about')
             @elseif(request()->localizedRouteIs('organizations.show-constituencies'))
-                <h2 class="repel">
-                    {{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
-                    @can('update', $organization)
-                        <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', [
-                                'section' =>
-                                    '<span class="visually-hidden">' .
-                                    __('Communities we :represent_or_serve_and_support', [
-                                        'represent_or_serve_and_support' =>
-                                            $organization->type === 'representative' ? __('represent') : __('serve and support'),
-                                    ]) .
-                                    '</span>',
-                            ]) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('Communities we :represent_or_serve_and_support', [
+                    'represent_or_serve_and_support' =>
+                        $organization->type === 'representative' ? __('represent') : __('serve and support'),
+                ])" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
                 @include('organizations.partials.constituencies')
             @elseif(request()->localizedRouteIs('organizations.show-interests'))
-                <h2 class="repel">{{ __('Interests') }} @can('update', $organization)
-                        <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Interests') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('Interests')" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 3])" />
                 @include('organizations.partials.interests')
             @elseif(request()->localizedRouteIs('organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $organization)
@@ -165,12 +143,7 @@
                 </h2>
                 @include('organizations.partials.projects')
             @elseif(request()->localizedRouteIs('organizations.show-contact-information'))
-                <h2 class="repel">{{ __('Contact information') }} @can('update', $organization)
-                        <a class="cta secondary"
-                            href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                            {!! __('Edit :section', ['section' => '<span class="visually-hidden">' . __('Contact information') . '</span>']) !!}</a>
-                    @endcan
-                </h2>
+                <x-section-heading :name="__('Contact information')" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 4])" />
                 @include('organizations.partials.contact-information')
             @endif
         </div>

@@ -12,6 +12,10 @@ class DestroyTranslationRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if (! is_callable($this->input('translatable_type').'::where')) {
+            return false;
+        }
+
         $translatable = $this->input('translatable_type')::where('id', $this->input('translatable_id'))->first();
 
         return $translatable && $this->user()->can('update', $translatable);
@@ -39,7 +43,9 @@ class DestroyTranslationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'language.in' => __(':model was not translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_language_exonym($this->get('language'))]),
+            'language.required' => __('Please select a language to remove.'),
+            'language.string' => __('Please select a language to remove.'),
+            'language.in' => __(':model was not translatable into :language.', ['model' => $this->get('translatable_type')::find($this->get('translatable_id'))->name, 'language' => get_language_exonym($this->get('language') ?? '')]),
         ];
     }
 }

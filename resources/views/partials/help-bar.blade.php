@@ -9,12 +9,12 @@
             <div class="responsive-switcher">
                 <div>
                     @svg('heroicon-o-phone')&nbsp;<span
-                        class="font-semibold">{!! __('Call or :vrs', [
+                        class="font-semibold">{{ safe_inlineMarkdown('Call or :!vrs', [
                             'vrs' =>
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
-                                __('VRS') .
+                                htmlentities(__('VRS')) .
                                 '</a>',
-                        ]) !!}:</span>&nbsp;{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
+                        ]) }}:</span>&nbsp;{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
                     @svg('heroicon-o-mail')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a

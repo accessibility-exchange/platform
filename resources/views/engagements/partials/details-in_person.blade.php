@@ -11,7 +11,7 @@
 
     @if ($meeting->directions)
         <div><span class="font-semibold">{{ __('Further directions') }}:</span>
-            {!! Str::markdown($meeting->directions) !!}
+            {{ $meeting->directions }}
         </div>
     @endif
 @else

@@ -23,3 +23,8 @@ parameters:
 
     scanFiles:
       - vendor/chinleung/laravel-locales/src/helpers.php
+
+    treatPhpDocTypesAsCertain: false
+
+    universalObjectCratesClasses:
+      - Spatie\SchemalessAttributes\Casts\SchemalessAttributes::class

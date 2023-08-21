@@ -7,6 +7,8 @@ use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
+use App\Enums\IdentityType;
+use App\Enums\LocationType;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
@@ -164,23 +166,12 @@ class EngagementController extends Controller
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'ethnoracialIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Ethnoracial))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
-            'locationTypeOptions' => Options::forArray([
-                'regions' => __('Specific provinces or territories'),
-                'localities' => __('Specific cities or towns'),
-            ])->toArray(),
+            'locationTypeOptions' => Options::forEnum(LocationType::class)->toArray(),
             'intersectionalOptions' => Options::forArray([
                 '1' => __('No, give me a group with intersectional experiences and/or identities'),
                 '0' => __('Yes, I’m looking for a group with a specific experience and/or identity (for example: Indigenous, immigrant, 2SLGBTQIA+)'),
             ])->toArray(),
-            'otherIdentityOptions' => Options::forArray([
-                'age-bracket' => __('Age'),
-                'gender-and-sexual-identity' => __('Gender and sexual identity'),
-                'indigenous-identity' => __('Indigenous'),
-                'ethnoracial-identity' => __('Race and ethnicity'),
-                'refugee-or-immigrant' => __('Refugees and/or immigrants'),
-                'first-language' => __('First language'),
-                'area-type' => __('Living in urban, rural, or remote areas'),
-            ])->nullable(__('Select a criteria…'))->toArray(),
+            'otherIdentityOptions' => Options::forEnum(IdentityType::class)->nullable(__('Select a criteria…'))->toArray(),
         ]);
     }
 
@@ -192,11 +183,11 @@ class EngagementController extends Controller
 
         $matchingStrategyData = $request->safe()->except(['ideal_participants', 'minimum_participants']);
 
-        if ($matchingStrategyData['location_type'] === 'regions') {
+        if ($matchingStrategyData['location_type'] === LocationType::Regions->value) {
             $matchingStrategyData['locations'] = [];
         }
 
-        if ($matchingStrategyData['location_type'] === 'localities') {
+        if ($matchingStrategyData['location_type'] === LocationType::Localities->value) {
             $matchingStrategyData['regions'] = [];
         }
 
@@ -215,7 +206,7 @@ class EngagementController extends Controller
 
         if ($matchingStrategyData['intersectional'] == 0) {
             $matchingStrategy->extra_attributes->other_identity_type = $matchingStrategyData['other_identity_type'];
-            if ($matchingStrategyData['other_identity_type'] === 'age-bracket') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::AgeBracket->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
                     IdentityCluster::Age,
@@ -229,7 +220,7 @@ class EngagementController extends Controller
                 );
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'gender-and-sexual-identity') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::GenderAndSexualIdentity->value) {
                 if (isset($matchingStrategyData['nb_gnc_fluid_identity']) && $matchingStrategyData['nb_gnc_fluid_identity'] == 1) {
                     foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->get() as $genderDiverseIdentity) {
                         $matchingStrategyData['gender_and_sexual_identities'][] = $genderDiverseIdentity->id;
@@ -250,7 +241,7 @@ class EngagementController extends Controller
                 );
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'indigenous-identity') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::IndigenousIdentity->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
                     IdentityCluster::Indigenous,
@@ -264,7 +255,7 @@ class EngagementController extends Controller
                 );
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'ethnoracial-identity') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::EthnoracialIdentity->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
                     IdentityCluster::Ethnoracial,
@@ -279,7 +270,7 @@ class EngagementController extends Controller
                 );
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'refugee-or-immigrant') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::RefugeeOrImmigrant->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->detachClusters([
                     IdentityCluster::Age,
@@ -294,7 +285,7 @@ class EngagementController extends Controller
                 );
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'first-language') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::FirstLanguage->value) {
                 $languages = [];
 
                 foreach ($matchingStrategyData['first_languages'] as $code) {
@@ -322,7 +313,7 @@ class EngagementController extends Controller
                 ]);
             }
 
-            if ($matchingStrategyData['other_identity_type'] === 'area-type') {
+            if ($matchingStrategyData['other_identity_type'] === IdentityType::AreaType->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
                     IdentityCluster::Area,
@@ -419,7 +410,7 @@ class EngagementController extends Controller
         if ($request->input('publish')) {
             if ($engagement->fresh()->isPublishable()) {
                 $engagement->update(['published_at' => now()]);
-                flash(__('Your engagement has been published. [Visit engagement](:url)', ['url' => localized_route('engagements.show', $engagement)]), 'success');
+                flash(__('Your engagement has been published.'), 'success');
             }
         } else {
             flash(__('Your engagement has been updated.'), 'success');

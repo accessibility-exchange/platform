@@ -1,5 +1,10 @@
 FROM php:8.1-fpm
 
+ENV PHP_VERSION 8.1
+ENV NODE_VERSION 18
+ENV NVM_VERSION 0.39.3
+ENV NVM_DIR /root/.nvm
+
 ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
 
@@ -47,11 +52,11 @@ RUN pecl install -o -f redis && \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-ENV NODE_VERSION 16
-RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-    && apt install -y nodejs npm
+RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
+RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-COPY $KUBE_DIR/php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
+COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
 COPY $KUBE_DIR/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -61,7 +66,7 @@ COPY . $APP_DIR
 
 RUN composer install
 
-RUN npm install
+RUN . "$NVM_DIR/nvm.sh" && nvm use $NODE_VERSION && npm ci
 
 RUN chown www-data:root $APP_DIR/public/ -R
 

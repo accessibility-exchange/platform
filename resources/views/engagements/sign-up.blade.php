@@ -16,15 +16,15 @@
 
         <h2>{{ __('Location') }}</h2>
 
-        {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
 
         <h2>{{ __('Disability or Deaf group') }}</h2>
 
-        {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->disability_and_deaf_group_summary" />
 
         <h2>{{ __('Other identities') }}</h2>
 
-        {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+        <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
 
         <form class="mt-12" action="{{ localized_route('engagements.join', $engagement) }}" method="post">
             @csrf

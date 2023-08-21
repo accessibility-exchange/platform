@@ -18,11 +18,7 @@
         <p>{{ __('Some of the access needs you’ve chosen need :projectable to directly contact you to arrange and deliver. Are you okay with us putting your name beside this access need?', ['projectable' => $project->projectable->name]) }}
         </p>
 
-        {!! Str::markdown(
-            __(
-                '**If you select no,** our support line will contact you and arrange for a different way to have your access needs met.',
-            ),
-        ) !!}
+        {{ safe_markdown('**If you select no,** our support line will contact you and arrange for a different way to have your access needs met.') }}
 
         <ul class="my-8 space-y-6" role="list">
             @forelse($identifiableAccessSupports as $support)

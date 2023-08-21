@@ -30,6 +30,11 @@ use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\RegulatedOrganization
+ *
+ * @property SchemalessAttributes::class $extra_attributes
+ */
 class RegulatedOrganization extends Model
 {
     use CascadesDeletes;

@@ -59,15 +59,15 @@
                 title="{{ $engagement->who === 'individuals' ? __('Participant selection criteria') : __('Organization selection criteria') }}">
                 <div>
                     <p class="font-bold">{{ __('Location') }}</p>
-                    {!! Str::markdown($engagement->matchingStrategy->location_summary) !!}
+                    <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
                 </div>
                 <div>
                     <p class="font-bold">{{ __('Disability or Deaf group') }}</p>
-                    {!! Str::markdown($engagement->matchingStrategy->disability_and_deaf_group_summary) !!}
+                    <x-array-list-view :data="$engagement->matchingStrategy->disability_and_deaf_group_summary" />
                 </div>
                 <div>
                     <p class="font-bold">{{ __('Other identities') }}</p>
-                    {!! Str::markdown($engagement->matchingStrategy->other_identities_summary) !!}
+                    <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
                 </div>
                 <a class="cta secondary" href="{{ localized_route('engagements.edit-criteria', $engagement) }}">
                     @svg('heroicon-o-pencil') {{ __('Edit') }}
@@ -84,14 +84,12 @@
                                 @if (!$engagement->isPreviewable())
                                     {{ __('Please complete your engagement details so potential participants can know what they are signing up for.') }}
                                 @else
-                                    {!! Str::inlineMarkdown(
-                                        __(
-                                            'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
-                                            [
-                                                'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project),
-                                            ],
-                                        ),
-                                    ) !!}
+                                    {{ safe_inlineMarkdown(
+                                        'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
+                                        [
+                                            'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project),
+                                        ],
+                                    ) }}
                                 @endif
                             </p>
                             <p>
@@ -328,9 +326,11 @@
             @if ($engagement->who === 'individuals')
                 <x-manage-section :title="__('Manage participants')">
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
-                        <p>{!! __(':count participants confirmed', [
-                            'count' => '<span class="h4">' . $engagement->confirmedParticipants->count() . '</span><br />',
-                        ]) !!}</p>
+                        <p>
+                            <span class="h4">{{ $engagement->confirmedParticipants->count() }}</span>
+                            <br>
+                            {{ __('participants confirmed') }}
+                        </p>
                         {{-- TODO: aggregate participant access needs --}}
                         {{-- <p>{{ __(':count access needs listed', ['count' => $engagement->confirmedParticipantAccessNeeds->count()]) }}</p> --}}
                     </div>

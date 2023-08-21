@@ -98,7 +98,7 @@
 
     <x-hearth-alert :title="__('Have trouble meeting the access needs of your participants?')" x-show="true" :dismissable="false">
         <p>{{ __('Please reach out to us and we can try to help.') }}</p>
-        {!! contact_information() !!}
+        @include('partials.contact-information')
     </x-hearth-alert>
 
     <p class="my-12">

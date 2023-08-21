@@ -19,10 +19,8 @@ class AccessNeedsFacilitationRequested extends Notification
         $this->individual = Individual::find($notification->data['individual_id']);
         $this->engagement = Engagement::find($notification->data['engagement_id']);
         $this->title = __(':name requires access needs facilitation', ['name' => $this->individual->name]);
-        $this->body = __(
+        $this->body = safe_markdown(
             'Please contact :name to facilitate their access needs being met on the engagement [:engagement_name](:engagement_url).',
-            // Following array throws errors because it thinks the localized engagement name might be an array
-            // @phpstan-ignore-next-line
             [
                 'name' => $this->individual->name,
                 'engagement_name' => $this->engagement->name,

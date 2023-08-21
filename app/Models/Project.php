@@ -254,15 +254,6 @@ class Project extends Model
         return true;
     }
 
-    public function timeframe(): string
-    {
-        if ($this->start_date->translatedFormat('Y') === $this->end_date->translatedFormat('Y')) {
-            return $this->start_date->translatedFormat('F').'&ndash;'.$this->end_date->translatedFormat('F Y');
-        } else {
-            return $this->start_date->translatedFormat('F Y').'&ndash;'.$this->end_date->translatedFormat('F Y');
-        }
-    }
-
     public function impacts(): BelongsToMany
     {
         return $this->belongsToMany(Impact::class);

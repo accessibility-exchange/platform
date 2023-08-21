@@ -29,6 +29,9 @@ The platform requires the following:
 -   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/9.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
+-   [Node](https://nodejs.org) >= 18
+
+Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
 The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/9.x/deployment#optimization).
 
@@ -124,8 +127,8 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 of how some key tasks can be carried out using Sail:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `sail npm <command>`.
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `sail artisan <command>`.
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `sail npm <command>`.
+- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `sail artisan <command>`.
 
 
 ### Local development setup using Laravel Valet
@@ -179,8 +182,15 @@ of how some key tasks can be carried out using Sail:
 9. Install Composer and NPM dependencies:
 
     ```bash
+    # install composer dependencies
     composer install
-    npm install
+
+    # To use the version of npm specified in .nvmrc.
+    # requires https://github.com/nvm-sh/nvm
+    nvm use
+
+    # install node dependencies
+    npm ci
     ```
 
 10. Generate an application key:
@@ -234,8 +244,9 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 of how some key tasks can be carried out using Valet:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
+- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
+- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `php artisan <command>`.
 
 
 ### Local development setup using docker compose:
@@ -358,6 +369,45 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
     are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `production` branch.
+
+### Working with markdown
+
+In other Laravel applications you may see methods such as [`Str::markdown()`](https://laravel.com/docs/9.x/helpers#method-str-markdown)
+and [`Str::inlineMarkdown()`](https://laravel.com/docs/9.x/helpers#method-str-inline-markdown) used. In general we attempt
+to avoid using these methods and instead favour using the provided `safe_markdown()` and `safe_inlineMarkdown` helpers. These
+methods will escape HTML used in a markdown string, strip unsafe links, and escape replacements. They are also tied into
+the localization system, and will populate their strings into the string packages, just as `__()` would.
+
+The `safe_markdown()` and `safe_inlineMarkdown()` methods should not be called with `{!!  !!}` as their output will safely
+pass through `{{  }}`. This provides an additional layer of protection in cases where you may have mixed types output
+to the template or make a mistake.
+
+```php
+{{ safe_markdown('**hello :location**', ['location' => '**World**']) }}
+{{-- <p><strong>Hello **World**</strong></p> --}}
+```
+
+If you need to unescape a replacement you can use a `!` at the start of the placeholder name (e.g. `:!placeholder`).
+
+```php
+{{ safe_markdown('**hello :!location**', ['location' => '<em>World</em>']) }}
+{{-- <p><strong>Hello <em>World</em></strong></p> --}}
+```
+
+There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
+resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
+`SAFE_MARKDOWN_OPTIONS` argument to escape HTML and remove unsafe links.
+
+```php
+{!! Str::markdown('<em>Hello **World**</em>', SAFE_MARKDOWN_OPTIONS) !!}
+{{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}
+```
+
+#### Mail notification templates
+
+By default Laravel supports a mixture of markdown and HTML in mail notification templates. However, in this application
+we've modified the templates to only support HTML. This aligns the behaviour of the mail templates with that of the site's
+blade templates.
 
 ## Supported application environments
 

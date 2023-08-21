@@ -7,6 +7,20 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
+test('a course can have an author', function () {
+    $course = Course::factory()->create();
+
+    $author = 'test author';
+    $frAuthor = 'auteur des tests';
+
+    $course->author = $author;
+    $course->setTranslation('author', 'fr', $frAuthor);
+    $course->save();
+
+    expect($course->author)->toBe($author);
+    expect($course->getTranslation('author', 'fr'))->toBe($frAuthor);
+});
+
 test('a course can belongs to many users', function () {
     $course = Course::factory()->create();
 
@@ -36,7 +50,7 @@ test('a course has many modules', function () {
     expect($course->modules->contains($moduleTwo))->toBeTrue();
 });
 
-test('a course is belong to an organizations', function () {
+test('a course can belong to an organizations', function () {
     $organization = Organization::factory()->create();
     $course = Course::factory()->for($organization)->create();
 
