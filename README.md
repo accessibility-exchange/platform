@@ -261,7 +261,7 @@ of how some key tasks can be carried out using Valet:
 3. Create a `.env` file from the included example file:
 
     ```bash
-    cp .env.example .env
+    cp .env.local.example .env
     ```
    
     Then, change the `APP_ENV` value to `local`:
