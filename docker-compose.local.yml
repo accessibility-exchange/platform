@@ -28,7 +28,7 @@ services:
     #   - 'host.docker.internal:host-gateway'
     env_file: .env
     environment:
-      USER_ID: 1000 # change to your numerical user id so that you can work on files in real time and have write privileges
+      USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
     entrypoint: /tmp/entrypoint.sh # override entrypoint file
     volumes:
       - './app:/app/app'
