@@ -270,7 +270,7 @@ of how some key tasks can be carried out using Valet:
     APP_ENV=local
     ```
 
-4. Build you applicate container that will be used to generate keys:  
+4. Build you application container that will be used to generate keys:  
 
     ```bash
     docker compose -f docker-compose.local.yml build platform.test
