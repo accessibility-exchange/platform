@@ -58,7 +58,7 @@
         "vite": "^3.2.2",
         "vite-plugin-full-reload": "^1.0.5",
         "vite-plugin-manifest-sri": "^0.1.0",
-        "vite-plugin-static-copy": "^0.12.0"
+        "vite-plugin-static-copy": "^0.17.0"
     },
     "dependencies": {
         "@alpinejs/mask": "^3.12.3",
