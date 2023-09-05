@@ -8500,16 +8500,16 @@
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
-            "version": "v1.5.2",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-merged-relations.git",
-                "reference": "1da69fa8277ad198b22f592bad9db163af446d2a"
+                "reference": "dc186050806f8961fa9dcb1c7d41d4e50d958271"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/1da69fa8277ad198b22f592bad9db163af446d2a",
-                "reference": "1da69fa8277ad198b22f592bad9db163af446d2a",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/dc186050806f8961fa9dcb1c7d41d4e50d958271",
+                "reference": "dc186050806f8961fa9dcb1c7d41d4e50d958271",
                 "shasum": ""
             },
             "require": {
@@ -8518,7 +8518,9 @@
                 "staudenmeir/laravel-migration-views": "^1.6"
             },
             "require-dev": {
-                "orchestra/testbench": "^7.0"
+                "nesbot/carbon": "^2.62.1",
+                "orchestra/testbench": "^7.0",
+                "staudenmeir/eloquent-has-many-deep": "^1.17"
             },
             "type": "library",
             "extra": {
@@ -8546,9 +8548,9 @@
             "description": "Merged Laravel Eloquent relationships",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-merged-relations/issues",
-                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.5.2"
+                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.5.3"
             },
-            "time": "2022-05-17T17:48:11+00:00"
+            "time": "2023-07-01T08:26:54+00:00"
         },
         {
             "name": "staudenmeir/laravel-migration-views",
