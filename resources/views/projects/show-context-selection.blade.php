@@ -34,7 +34,7 @@
             <x-hearth-error for="context" />
         </fieldset>
 
-        <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Next') }}" namespace="cancel_next" />
+        <x-interpretation name="{{ __('Cancel', [], 'en') . '_' . __('Next') }}" namespace="cancel_next" />
         <p class="repel">
             <button class="secondary" type="button" x-on:click="history.back()">{{ __('Cancel') }}</button>
             <button>{{ __('Next') }}</button>

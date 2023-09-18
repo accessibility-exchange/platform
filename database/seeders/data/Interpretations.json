@@ -28,260 +28,348 @@
                 }
             },
             {
+                "name": "Getting started",
+                "namespace": "getting_started"
+            },
+            {
+                "name": "Customize this website’s accessibility",
+                "namespace": "getting_started-customize"
+            },
+            {
+                "name": "Invite others to your organization",
+                "namespace": "getting_started-invite_to_community_org"
+            },
+            {
+                "name": "Invite others to your organization",
+                "namespace": "getting_started-invite_to_regulated_org"
+            },
+            {
+                "name": "Create a public page",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Enter your collaboration preferences",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Sign up and attend an orientation session",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "I’ve gone to orientation, why isn’t this updated?",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Fill out and return your application",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Review and publish your public page",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Create your organization’s page",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "Sign up and attend an orientation session",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "I’ve gone to orientation, why isn’t this updated?",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "Fill out and return your application",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "Review and publish your organization’s public page",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "Create your first project",
+                "namespace": "getting_started-community_org"
+            },
+            {
+                "name": "Create your organization’s page",
+                "namespace": "getting_started-regulated_org"
+            },
+            {
+                "name": "Sign up and attend an orientation session",
+                "namespace": "getting_started-regulated_org"
+            },
+            {
+                "name": "I’ve gone to orientation, why isn’t this updated?",
+                "namespace": "getting_started-regulated_org"
+            },
+            {
+                "name": "Review and publish your organization’s public page",
+                "namespace": "getting_started-regulated_org"
+            },
+            {
+                "name": "Create your first project",
+                "namespace": "getting_started-regulated_org"
+            },
+            {
                 "name": "A new verification link has been sent to the email address you provided.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your password has been changed.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have enabled two-factor authentication.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "New recovery codes have been generated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have disabled two-factor authentication.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your information has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Already on your block list",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Already on your block list",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully blocked.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Could not be blocked because it was not on your block list.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully unblocked.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have joined.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have declined your invitation to work.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have declined an invitation on behalf of your organization.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your engagement has been created.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your engagement has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your engagement has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your participant selection criteria have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your engagement translations have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your engagement has been published.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully added the Community Organization you are consulting with for this engagement.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully removed :organization as the Community Organization for this engagement.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your invitation has been sent.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully signed up for this engagement.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your preference for sharing your access needs has been saved.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully left this engagement.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your roles have been saved.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Please review your page. There is some information for your new role that you will have to fill in.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your individual page has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have joined the team.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have declined your invitation to join the team.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "The invitation has been cancelled.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your meeting has been created.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your meeting has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your meeting has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Already on your notification list.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully added to your list.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Could not be removed because it was not on your notification list.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully removed from your notification list.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your organization has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your project has been created.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your project has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your federally regulated organization has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your federally regulated organization has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your access needs have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your communication and consultation preferences have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your language preferences have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your payment information has been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your areas of interest have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your website accessibility preferences have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your notification preferences have been updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Language added.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Language removed.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your account has been deleted.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your email address has been verified.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully approved your estimate.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully submitted an estimate request.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "The notification has been marked as read.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "Status updated.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
-                "name": "Congratulations! Your have successfully published your page.",
-                "namespace": "flash-messages"
+                "name": "Congratulations! You have successfully published your page.",
+                "namespace": "flash_messages"
             },
             {
                 "name": "Your page has been unpublished.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully saved your draft page.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
             },
             {
                 "name": "You have successfully saved your page.",
-                "namespace": "flash-messages"
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "Your organization page has been unpublished.",
+                "namespace": "flash_messages"
             }
         ]
     },
@@ -782,7 +870,11 @@
             },
             {
                 "name": "Account approved",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "asl": "https://vimeo.com/846664151/0cb5a9efb5",
+                    "lsq": "https://vimeo.com/850172430/3ad1c63780"
+                }
             },
             {
                 "name": "Account suspended",
@@ -1025,34 +1117,34 @@
         "interpretations": [
             {
                 "name": "Manage accounts",
-                "namespace": "manage-accounts",
+                "namespace": "manage_accounts",
                 "video": {
                     "asl": "https://vimeo.com/844999184/d2d3c6f7f9"
                 }
             },
             {
                 "name": "Account has been approved.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             },
             {
                 "name": "Account has been suspended.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             },
             {
                 "name": "The suspension has been lifted.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             },
             {
                 "name": "An organization has been approved.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             },
             {
                 "name": "An organization and its users have been suspended.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             },
             {
                 "name": "The suspension of an organization and its users has been lifted.",
-                "namespace": "manage-accounts"
+                "namespace": "manage_accounts"
             }
         ]
     },
@@ -1060,18 +1152,18 @@
         "interpretations": [
             {
                 "name": "Estimates and agreements",
-                "namespace": "add-estimates-and-agreements",
+                "namespace": "add_estimates_and_agreements",
                 "video": {
                     "asl": "https://vimeo.com/844999201/10aa2c2d9b"
                 }
             },
             {
                 "name": "The estimate has been marked as returned.",
-                "namespace": "add-estimates-and-agreements"
+                "namespace": "add_estimates_and_agreements"
             },
             {
                 "name": "The agreement has been marked as received.",
-                "namespace": "add-estimates-and-agreements"
+                "namespace": "add_estimates_and_agreements"
             }
         ]
     },
@@ -1079,22 +1171,519 @@
         "route_has_params": true,
         "interpretations": [
             {
+                "name": "Community Connector",
+                "namespace": "manage_engagement_connector",
+                "videos": {
+                    "asl": "https://vimeo.com/846665750/670e093181",
+                    "lsq": "https://vimeo.com/850172804/34fe329a7e"
+                }
+            },
+            {
+                "name": "Community Connector",
+                "namespace": "manage_engagement_connector-with_connector",
+                "videos": {
+                    "asl": "https://vimeo.com/846666176/bca2612834",
+                    "lsq": "https://vimeo.com/850172987/e1c93a129d"
+                }
+            },
+            {
+                "name": "Find a Community Connector",
+                "namespace": "manage_engagement_connector"
+            },
+            {
+                "name": "Show that you are looking for a Community Connector",
+                "namespace": "manage_engagement_connector"
+            },
+            {
+                "name": "Manage Community Connector",
+                "namespace": "manage_engagement_connector"
+            },
+            {
                 "name": "Your engagement has been updated.",
-                "namespace": "manage-engagement-connector"
+                "namespace": "manage_engagement_connector"
             },
             {
                 "name": "Your invitation has been cancelled.",
-                "namespace": "manage-engagement-connector"
+                "namespace": "manage_engagement_connector"
             },
             {
                 "name": "Your Community Connector has been removed.",
-                "namespace": "manage-engagement-connector"
+                "namespace": "manage_engagement_connector"
+            }
+        ]
+    },
+    "engagements.add-connector": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Add Community Connector",
+                "namespace": "add_engagement_connector",
+                "videos": {
+                    "asl": "https://vimeo.com/846665773/cc4d50dda2",
+                    "lsq": "https://vimeo.com/850172826/48ecc037ea"
+                }
+            },
+            {
+                "name": "Please indicate whether your Community Connector is an individual or community organization.",
+                "namespace": "add_engagement_connector"
+            },
+            {
+                "name": "Community Connector",
+                "namespace": "add_engagement_connector"
+            }
+        ]
+    },
+    "engagements.manage-participants": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Manage participants",
+                "videos": {
+                    "asl": "https://vimeo.com/846666190/e0e1e8abfb",
+                    "lsq": "https://vimeo.com/850173002/1d0d7ffbfa"
+                }
+            },
+            {
+                "name": "Participants"
+            },
+            {
+                "name": "Pending"
+            },
+            {
+                "name": "Confirmed participants"
+            }
+        ]
+    },
+    "engagements.add-participant": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Add participant",
+                "videos": {
+                    "asl": "https://vimeo.com/846666213/f331ff68ef"
+                }
+            }
+        ]
+    },
+    "engagements.manage-access-needs": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Access needs",
+                "videos": {
+                    "asl": "https://vimeo.com/846666341/a2de8652fa"
+                }
+            },
+            {
+                "name": "Baseline access needs"
+            },
+            {
+                "name": "Participant access needs"
+            },
+            {
+                "name": "Participants who have additional concerns or needs to be discussed"
+            },
+            {
+                "name": "Have trouble meeting the access needs of your participants?"
+            }
+        ]
+    },
+    "engagements.edit": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Edit engagement details",
+                "videos": {
+                    "asl": "https://vimeo.com/846665793/e06a9ec575",
+                    "lsq": "https://vimeo.com/850172839/190953328c"
+                }
+            },
+            {
+                "name": "Name"
+            },
+            {
+                "name": "Description",
+                "videos": {
+                    "asl": "https://vimeo.com/846665808/1aa05688e1",
+                    "lsq": "https://vimeo.com/850172854/07dbd30ea3"
+                }
+            },
+            {
+                "name": "Survey materials"
+            },
+            {
+                "name": "Materials"
+            },
+            {
+                "name": "Date"
+            },
+            {
+                "name": "Languages"
+            },
+            {
+                "name": "Payment",
+                "videos": {
+                    "asl": "https://vimeo.com/846665824/47fa576c16",
+                    "lsq": "https://vimeo.com/850172882/5d9f0767ec"
+                }
+            },
+            {
+                "name": "Sign up deadline",
+                "videos": {
+                    "asl": "https://vimeo.com/846665856/86b908eed0",
+                    "lsq": "https://vimeo.com/850172908/6361e40bd2"
+                }
+            }
+        ]
+    },
+    "engagements.manage": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Engagement",
+                "video": {
+                    "asl": "https://vimeo.com/846665513/1fb62acba6",
+                    "lsq": "https://vimeo.com/850172715/6c14ea016e"
+                }
+            },
+            {
+                "name": "Recruitment method"
+            },
+            {
+                "name": "Participant selection criteria",
+                "video": {
+                    "asl": "https://vimeo.com/846665558/bc58743933"
+                }
+            },
+            {
+                "name": "Organization selection criteria"
+            },
+            {
+                "name": "Edit engagement details",
+                "video": {
+                    "asl": "https://vimeo.com/846665592/c2f6981a25"
+                }
+            },
+            {
+                "name": "Review and publish engagement details",
+                "video": {
+                    "asl": "https://vimeo.com/846665686/1b89474037",
+                    "lsq": "https://vimeo.com/850172740/4db7067f38"
+                }
+            },
+            {
+                "name": "Engagement meetings",
+                "video": {
+                    "asl": "https://vimeo.com/846665616/f704bdd49e"
+                }
+            },
+            {
+                "name": "Estimates and agreements",
+                "video": {
+                    "asl": "https://vimeo.com/846665634/229078dd5d"
+                }
+            },
+            {
+                "name": "Community organization"
+            },
+            {
+                "name": "Community Connector",
+                "video": {
+                    "asl": "https://vimeo.com/846665647/d5a3545765"
+                }
+            },
+            {
+                "name": "Manage participants",
+                "video": {
+                    "asl": "https://vimeo.com/846665668/6533bc7db7"
+                }
+            }
+        ]
+    },
+    "engagements.show-language-selection": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Engagement translations",
+                "video": {
+                    "asl": "https://vimeo.com/846664276/6966d4eeeb",
+                    "lsq": "https://vimeo.com/850172654/0d4e37f949"
+                }
+            },
+            {
+                "name": "Selected translations"
+            }
+        ]
+    },
+    "engagements.create": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Create engagement",
+                "video": {
+                    "asl": "https://vimeo.com/846664297/81b4c58a24"
+                }
+            },
+            {
+                "name": "engagement name",
+                "video": {
+                    "asl": "https://vimeo.com/846664316/03eaf40fa1"
+                }
+            },
+            {
+                "name": "Who do you want to engage? (required)",
+                "video": {
+                    "asl": "https://vimeo.com/846664366/a84ca22299"
+                }
+            }
+        ]
+    },
+    "engagements.show-format-selection": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Format",
+                "video": {
+                    "asl": "https://vimeo.com/846664387/b87ec250da",
+                    "lsq": "https://vimeo.com/850172674/9851bf6964"
+                }
+            },
+            {
+                "name": "What format would you like to use? (required)"
+            }
+        ]
+    },
+    "engagements.show-recruitment-selection": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "How do you want to recruit participants?",
+                "video": {
+                    "asl": "https://vimeo.com/846664408/2a4b639896",
+                    "lsq": "https://vimeo.com/850172695/ee4f88df2a"
+                }
+            },
+            {
+                "name": "Please select a recruitment method (required)"
+            }
+        ]
+    },
+    "engagements.show-criteria-selection": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Confirm your participant selection criteria",
+                "video": {
+                    "asl": "https://vimeo.com/846664461/9bee120dc9"
+                }
+            },
+            {
+                "name": "Participant details",
+                "video": {
+                    "asl": "https://vimeo.com/846664477/0ffe3ed229"
+                }
+            },
+            {
+                "name": "Organization details"
+            },
+            {
+                "name": "Location",
+                "video": {
+                    "asl": "https://vimeo.com/846664502/c239810d59"
+                }
+            },
+            {
+                "name": "Are you looking for individuals in specific provinces or territories or specific cities or towns?",
+                "video": {
+                    "asl": "https://vimeo.com/846664514/2d0970f947"
+                }
+            },
+            {
+                "name": "Specific provinces or territories",
+                "video": {
+                    "asl": "https://vimeo.com/846664536/9d39a4c5d0"
+                }
+            },
+            {
+                "name": "Specific cities or towns",
+                "video": {
+                    "asl": "https://vimeo.com/846664559/1e44081f5c"
+                }
+            },
+            {
+                "name": "Disability or Deaf group",
+                "video": {
+                    "asl": "https://vimeo.com/846664582/5391c237da"
+                }
+            },
+            {
+                "name": "Is there a specific disability or Deaf group you are interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664596/e4a6ca24f5"
+                }
+            },
+            {
+                "name": "What specific disability and Deaf group or groups are you interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664428/c3a9cac885"
+                }
+            },
+            {
+                "name": "Other identities",
+                "video": {
+                    "asl": "https://vimeo.com/846664614/f2ab7801b4"
+                }
+            },
+            {
+                "name": "Is there a group with a specific experience of identity you are interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664628/17c343796f"
+                }
+            },
+            {
+                "name": "Types of experiences or identities",
+                "video": {
+                    "asl": "https://vimeo.com/846664639/986596d401"
+                }
+            },
+            {
+                "name": "What age group are you interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664664/d25c0ccf80"
+                }
+            },
+            {
+                "name": "What group that has been marginalized based on gender or sexual identity are you interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664683/15c9899c98"
+                }
+            },
+            {
+                "name": "What Indigenous group are you interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664708/c19c9fc3fc"
+                }
+            },
+            {
+                "name": "What ethno-racial group are you interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664725/9bfe512747"
+                }
+            },
+            {
+                "name": "What first languages are used by the people you’re interested in engaging?",
+                "video": {
+                    "asl": "https://vimeo.com/846664746/e3a6b58160"
+                }
+            },
+            {
+                "name": "Where do the people you’re interested in engaging live?",
+                "video": {
+                    "asl": "https://vimeo.com/846664756/d2a58b15c4"
+                }
+            },
+            {
+                "name": "Number of participants",
+                "video": {
+                    "asl": "https://vimeo.com/846664771/51f86eebb6"
+                }
+            }
+        ]
+    },
+    "engagements.show": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Engagement",
+                "video": {
+                    "asl": "https://vimeo.com/846665719/0e68c9eaf1",
+                    "lsq": "https://vimeo.com/850172774/d918549f3f"
+                }
+            }
+        ]
+    },
+    "engagements.sign-up": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Sign up for this engagement"
+            },
+            {
+                "name": "Location"
+            },
+            {
+                "name": "Disability or Deaf group"
+            },
+            {
+                "name": "Other identities"
+            }
+        ]
+    },
+    "engagements.confirm-access-needs": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "You have successfully signed up"
+            },
+            {
+                "name": "Confirm your access needs"
+            },
+            {
+                "name": "Confirm your access needs"
+            }
+        ]
+    },
+    "engagements.edit-access-needs-permissions": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Sharing your access needs"
+            }
+        ]
+    },
+    "courses.show": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Course",
+                "video": {
+                    "asl": "https://vimeo.com/846666473/fbc2f38d98",
+                    "lsq": "https://vimeo.com/850173117/069dfec1bc"
+                }
+            },
+            {
+                "name": "About this course"
+            },
+            {
+                "name": "Modules"
+            },
+            {
+                "name": "Quiz",
+                "video": {
+                    "asl": "https://vimeo.com/846666487/a108df4aa4",
+                    "lsq": "https://vimeo.com/850173129/74b6819317"
+                }
             }
         ]
     },
     "quizzes.show": {
         "route_has_params": true,
         "interpretations": [
+            {
+                "name": "Results"
+            },
+            {
+                "name": "Congratulations!"
+            },
+            {
+                "name": "Please try again."
+            },
+            {
+                "name": "Course Quiz",
+                "video": {
+                    "asl": "https: //vimeo.com/846666507/942995f849"
+                }
+            },
             {
                 "name": "Accessible meetings have the following in place:",
                 "namespace": "course_quiz_question",
@@ -1295,6 +1884,128 @@
             },
             {
                 "name": "Your organization’s role"
+            }
+        ]
+    },
+    "organizations.show-constituencies": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Communities we represent",
+                "video": {
+                    "asl": "https://vimeo.com/846666390/9523b179c3"
+                }
+            },
+            {
+                "name": "Communities we serve and support"
+            },
+            {
+                "name": "Groups in the disability and Deaf community"
+            },
+            {
+                "name": "Ethno-racial groups"
+            },
+            {
+                "name": "Other identity groups"
+            },
+            {
+                "name": "Age groups"
+            },
+            {
+                "name": "Language groups"
+            },
+            {
+                "name": "Staff lived experience"
+            }
+        ]
+    },
+    "organizations.show-interests": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Interests",
+                "video": {
+                    "asl": "https://vimeo.com/846666411/e37f1c80a9",
+                    "lsq": "https://vimeo.com/850173046/fb557be24f"
+                }
+            },
+            {
+                "name": "Types of regulated organizations"
+            },
+            {
+                "name": "Areas of accessibility"
+            }
+        ]
+    },
+    "organizations.show-projects": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Projects",
+                "video": {
+                    "asl": "https://vimeo.com/846666429/f2a278fb22",
+                    "lsq": "https://vimeo.com/850173063/84fe5721fd"
+                }
+            },
+            {
+                "name": "Upcoming"
+            },
+            {
+                "name": "In progress"
+            }
+        ]
+    },
+    "organizations.show-contact-information": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Contact information",
+                "video": {
+                    "asl": "https://vimeo.com/846666458/d2725c395e",
+                    "lsq": "https://vimeo.com/850173090/a285343c50"
+                }
+            },
+            {
+                "name": "contact person"
+            }
+        ]
+    },
+    "organizations.show": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Community Organization page",
+                "video": {
+                    "asl": "https://vimeo.com/846666366/53c5a240b1",
+                    "lsq": "https://vimeo.com/850173027/69ed2b879b"
+                }
+            },
+            {
+                "name": "You are previewing your organization’s page."
+            },
+            {
+                "name": "About"
+            },
+            {
+                "name": "About the organization"
+            },
+            {
+                "name": "Type of organization"
+            },
+            {
+                "name": "Where we operate"
+            },
+            {
+                "name": "Regions"
+            },
+            {
+                "name": "Urban, rural, or remote"
+            },
+            {
+                "name": "Working languages"
+            },
+            {
+                "name": "Consulting services"
             }
         ]
     },
@@ -1557,6 +2268,286 @@
             }
         ]
     },
+    "settings.edit-language-preferences": {
+        "interpretations": [
+            {
+                "name": "Language preferences",
+                "video": {
+                    "asl": "https://vimeo.com/846628903/0a7cb2977c",
+                    "lsq": "https://vimeo.com/850172313/9d1109df54"
+                }
+            },
+            {
+                "name": "Website language"
+            }
+        ]
+    },
+    "settings.edit-website-accessibility-preferences": {
+        "interpretations": [
+            {
+                "name": "Website accessibility preferences",
+                "video": {
+                    "asl": "https://vimeo.com/846628920/7dd05a3a8b",
+                    "lsq": "https://vimeo.com/850172335/b9b49e809c"
+                }
+            },
+            {
+                "name": "Contrast adjustment",
+                "video": {
+                    "asl": "https://vimeo.com/846628946/99a25e6f93",
+                    "lsq": "https://vimeo.com/850172358/7a84dfe63a"
+                }
+            },
+            {
+                "name": "Text to speech",
+                "video": {
+                    "asl": "https://vimeo.com/846628964/f25ac74f0e",
+                    "lsq": "https://vimeo.com/850172380/5238cbee7d"
+                }
+            },
+            {
+                "name": "Save changes",
+                "namespace": "save_changes"
+            }
+        ]
+    },
+    "settings.edit-roles-and-permissions": {
+        "interpretations": [
+            {
+                "name": "Roles and permissions",
+                "video": {
+                    "asl": "https://vimeo.com/846628979/813bff5be1"
+                }
+            },
+            {
+                "name": "Pending invitations",
+                "video": {
+                    "asl": "https://vimeo.com/846628988/012f2fbbf4"
+                }
+            },
+            {
+                "name": "Your members",
+                "video": {
+                    "asl": "https://vimeo.com/846628999/76bb522d63"
+                }
+            },
+            {
+                "name": "Leave this organization",
+                "namespace": "remove-member-modal",
+                "video": {
+                    "asl": "https://vimeo.com/846629028/a41c3fd72c"
+                }
+            },
+            {
+                "name": "Remove member from your organization",
+                "namespace": "remove-member-modal"
+            }
+        ]
+    },
+    "settings.edit-access-needs": {
+        "interpretations": [
+            {
+                "name": "Access needs",
+                "video": {
+                    "asl": "https://vimeo.com/846666234/b6e0a7e8f4"
+                }
+            },
+            {
+                "name": "General access needs"
+            },
+            {
+                "name": "For meeting in real time",
+                "video": {
+                    "asl": "https://vimeo.com/846666249/84dc958117"
+                }
+            },
+            {
+                "name": "For in-person meetings",
+                "video": {
+                    "asl": "https://vimeo.com/846666280/e208f87d06"
+                }
+            },
+            {
+                "name": "For engagement documents",
+                "video": {
+                    "asl": "https://vimeo.com/846666302/5906849a8f"
+                }
+            },
+            {
+                "name": "Additional needs or concerns"
+            }
+        ]
+    },
+    "settings.invite-to-invitationable": {
+        "interpretations": [
+            {
+                "name": "Invite new member",
+                "video": {
+                    "asl": "https://vimeo.com/846663860/f5893fcb43",
+                    "lsq": "https://vimeo.com/850172395/c7a8375544"
+                }
+            }
+        ]
+    },
+    "settings.edit-notification-preferences": {
+        "interpretations": [
+            {
+                "name": "Notifications",
+                "video": {
+                    "asl": "https://vimeo.com/846663972/a727c3ec89"
+                }
+            },
+            {
+                "name": "Manage my notifications"
+            },
+            {
+                "name": "Skip to:",
+                "namespace": "notifications_settings-organization",
+                "video": {
+                    "asl": "https://vimeo.com/846663990/36983298d4"
+                }
+            },
+            {
+                "name": "Contacting you with notifications",
+                "namespace": "notifications_settings-organization"
+            },
+            {
+                "name": "Preferred notification method (required)",
+                "namespace": "notifications_settings-organization",
+                "video": {
+                    "asl": "https://vimeo.com/846664028/05a21992db"
+                }
+            },
+            {
+                "name": "Projects and engagements by other organizations",
+                "namespace": "notifications_settings-organization",
+                "video": {
+                    "asl": "https://vimeo.com/846664046/0b523a30ee"
+                }
+            },
+            {
+                "name": "Please indicate how you would like to be notified of new projects.",
+                "namespace": "notifications_settings-organization"
+            },
+            {
+                "name": "Please indicate which type of organizations’ projects you would like to notified about.",
+                "namespace": "notifications_settings-organization",
+                "video": {
+                    "asl": "https://vimeo.com/846664070/0aa425b846"
+                }
+            },
+            {
+                "name": "Please indicate which type of projects or engagements you would like to be notified about.",
+                "namespace": "notifications_settings-organization",
+                "video": {
+                    "asl": "https://vimeo.com/846664092/02fa556d67"
+                }
+            },
+            {
+                "name": "Skip to:",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Contacting you with notifications",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Preferred notification method (required)",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "As a Consultation Participant",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "As an accessibility consultant",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "As a Community Connector",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "New reports uploaded",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Please indicate how you would like to be notified of new projects.",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Please indicate which type of organizations’ projects you would like to notified about.",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Please indicate which type of engagements you would like to be notified about.",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Keeping my information up to date",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Please indicate how you would like to be notified to review and update your information.",
+                "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "Skip to:",
+                "namespace": "notifications_settings-regulated_organization"
+            },
+            {
+                "name": "Contacting you with notifications",
+                "namespace": "notifications_settings-regulated_organization"
+            },
+            {
+                "name": "Your projects and engagements",
+                "namespace": "notifications_settings-regulated_organization"
+            },
+            {
+                "name": "Please indicate how you would like to be notified of a new person or people being added to your engagements.",
+                "namespace": "notifications_settings-regulated_organization"
+            },
+            {
+                "name": "Please indicate how you would like to be notified of a project estimate that has been returned for you to review.",
+                "namespace": "notifications_settings-regulated_organization"
+            }
+        ]
+    },
+    "settings.edit-account-details": {
+        "interpretations": [
+            {
+                "name": "Account Details",
+                "video": {
+                    "asl": "https://vimeo.com/846664110/8fe6b3b527"
+                }
+            },
+            {
+                "name": "Change login email"
+            },
+            {
+                "name": "Change password"
+            },
+            {
+                "name": "Two-factor authentication"
+            }
+        ]
+    },
+    "settings.delete-account": {
+        "interpretations": [
+            {
+                "name": "Delete your account",
+                "video": {
+                    "asl": "https://vimeo.com/846664129/3bfe9c8139"
+                }
+            },
+            {
+                "name": "Are you sure you want to delete your account?"
+            },
+            {
+                "name": "Once you delete your account, you will not be able to recover it."
+            }
+        ]
+    },
     "projects.my-contracted-projects": {
         "interpretations": [
             {
@@ -1651,6 +2642,87 @@
                     "asl": "https://vimeo.com/846625670/c342b8a997",
                     "lsq": "https://vimeo.com/850171921/b8724b60c6"
                 }
+            }
+        ]
+    },
+    "projects.show": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "You are previewing your project page.",
+                "video": {
+                    "asl": "https://vimeo.com/846664177/09ea8cb2b5",
+                    "lsq": "https://vimeo.com/850172454/925c99d82b"
+                }
+            },
+            {
+                "name": "Project overview"
+            },
+            {
+                "name": "Project team"
+            },
+            {
+                "name": "Engagements"
+            },
+            {
+                "name": "Outcomes and reports"
+            },
+            {
+                "name": "Project goals"
+            },
+            {
+                "name": "Project impact"
+            },
+            {
+                "name": "How the disability and Deaf communities will be impacted by the outcomes of this project"
+            },
+            {
+                "name": "Geographical areas this project will impact"
+            },
+            {
+                "name": "Areas of your organization this project will impact"
+            },
+            {
+                "name": "Not in this project"
+            },
+            {
+                "name": "Project timeframe"
+            },
+            {
+                "name": "Project start date"
+            },
+            {
+                "name": "Project end date"
+            },
+            {
+                "name": "Project outcome"
+            },
+            {
+                "name": "Who’s responsible for going through results and producing an outcome"
+            },
+            {
+                "name": "Tangible outcomes of this project"
+            },
+            {
+                "name": "Project reports"
+            },
+            {
+                "name": "Have questions?"
+            },
+            {
+                "name": "About the project team"
+            },
+            {
+                "name": "Number of team members"
+            },
+            {
+                "name": "Lived and living experiences"
+            },
+            {
+                "name": "Accessibility Consultant"
+            },
+            {
+                "name": "Training"
             }
         ]
     },
@@ -1917,6 +2989,51 @@
             }
         ]
     },
+    "projects.manage": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Manage project",
+                "video": {
+                    "asl": "https://vimeo.com/846664222/c1261ca270",
+                    "lsq": "https://vimeo.com/850172508/a5376832e1"
+                }
+            }
+        ]
+    },
+    "projects.manage-estimates-and-agreements": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Estimates and agreements",
+                "video": {
+                    "asl": "https://vimeo.com/846664238/e20d83fe14",
+                    "lsq": "https://vimeo.com/850172536/92cb8e8438"
+                }
+            },
+            {
+                "name": "Estimates"
+            },
+            {
+                "name": "New estimate request"
+            },
+            {
+                "name": "Agreements"
+            }
+        ]
+    },
+    "projects.suggested-steps": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Suggested steps",
+                "video": {
+                    "asl": "https://vimeo.com/846664259/4610d6e15e",
+                    "lsq": "https://vimeo.com/850172625/5cdf2c5392"
+                }
+            }
+        ]
+    },
     "dashboard.trainings": {
         "interpretations": [
             {
@@ -2001,6 +3118,159 @@
                 "video": {
                     "asl": "https://vimeo.com/846628644/6569022fdd",
                     "lsq": "https://vimeo.com/850172276/488acd0cc1"
+                }
+            }
+        ]
+    },
+    "resources.index": {
+        "interpretations": [
+            {
+                "name": "Browse all resources",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628662/957a3798a4"
+                }
+            },
+            {
+                "name": "Resource type",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628683/f5e04b570c"
+                }
+            },
+            {
+                "name": "Topic",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628700/1a861edd67"
+                }
+            },
+            {
+                "name": "Phase of consultation",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628717/d19ac1cdc9"
+                }
+            },
+            {
+                "name": "Sector",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628745/a73be74f0a"
+                }
+            },
+            {
+                "name": "Area of impact",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628769/b057fb9cbe"
+                }
+            },
+            {
+                "name": "Language",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628788/ba37c7ea88"
+                }
+            },
+            {
+                "name": "Select none",
+                "namespace": "all_resources",
+                "video": {
+                    "asl": "https://vimeo.com/846628814/71cf4c6cfb"
+                }
+            }
+        ]
+    },
+    "memberships.edit": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Edit user’s role",
+                "video": {
+                    "asl": "https://vimeo.com/846663915/9932245907",
+                    "lsq": "https://vimeo.com/850172415/f818394647"
+                }
+            }
+        ]
+    },
+    "meetings.create": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Edit meeting"
+            },
+            {
+                "name": "Add new meeting",
+                "videos": {
+                    "asl": "https://vimeo.com/846665873/90170a0b10",
+                    "lsq": "https://vimeo.com/850172930/282694549b"
+                }
+            },
+            {
+                "name": "Time and date"
+            },
+            {
+                "name": "Time",
+                "videos": {
+                    "asl": "https://vimeo.com/846665899/d65bfec7d1"
+                }
+            },
+            {
+                "name": "Time zone",
+                "videos": {
+                    "asl": "https://vimeo.com/846665924/d5fc40c63f"
+                }
+            },
+            {
+                "name": "Ways to attend",
+                "videos": {
+                    "asl": "https://vimeo.com/846665949/435e6ba40b"
+                }
+            },
+            {
+                "name": "Street address",
+                "videos": {
+                    "asl": "https://vimeo.com/846666015/5b2d3987f2"
+                }
+            },
+            {
+                "name": "Unit, suite, or floor"
+            },
+            {
+                "name": "City or town"
+            },
+            {
+                "name": "Province or territory",
+                "videos": {
+                    "asl": "https://vimeo.com/846666030/3d0ea7c4ce"
+                }
+            },
+            {
+                "name": "Postal code"
+            },
+            {
+                "name": "further directions"
+            },
+            {
+                "name": "Software",
+                "videos": {
+                    "asl": "https://vimeo.com/846666052/2432d2070c"
+                }
+            },
+            {
+                "name": "I can use other software if it is more accessible to participants"
+            },
+            {
+                "name": "Link to join"
+            },
+            {
+                "name": "additional information to join"
+            },
+            {
+                "name": "Phone number to join",
+                "videos": {
+                    "asl": "https://vimeo.com/846666084/81b9c20fdd"
                 }
             }
         ]

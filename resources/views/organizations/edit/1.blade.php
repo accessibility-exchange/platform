@@ -111,7 +111,7 @@
                 <x-hearth-error for="website_link" />
             </div>
             <hr class="divider--thick">
-            <x-interpretation name="{{ __('Save', [], 'en') . _ . __('Save and next', [], 'en') }}"
+            <x-interpretation name="{{ __('Save', [], 'en') . '_' . __('Save and next', [], 'en') }}"
                 namespace="save_save_and_next" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save" value="1">{{ __('Save') }}</button>

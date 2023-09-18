@@ -8,6 +8,7 @@
         <h1>
             {{ __('Delete your account') }}
         </h1>
+        <x-interpretation name="{{ __('Delete your account', [], 'en') }}" />
     </x-slot>
 
     @if ($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization())
@@ -18,6 +19,7 @@
         </div>
     @endif
     <h2>{{ __('Are you sure you want to delete your account?') }}</h2>
+    <x-interpretation name="{{ __('Are you sure you want to delete your account?', [], 'en') }}" />
     <p>{{ __('If you delete your account:') }}</p>
     @if ($user->context === 'individual')
         <ul>
@@ -78,6 +80,8 @@
     @if (!($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization()))
         <div role="alert">
             <x-hearth-alert type="warning">
+                <x-interpretation
+                    name="{{ __('Once you delete your account, you will not be able to recover it.', [], 'en') }}" />
                 {{ __('Once you delete your account, you will not be able to recover it.') }}
             </x-hearth-alert>
         </div>

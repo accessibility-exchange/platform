@@ -1,19 +1,23 @@
 <h3>{{ __('About the project team') }}</h3>
+<x-interpretation name="{{ __('About the project team', [], 'en') }}" />
 
 @if ($project->team_size)
     <h4>{{ __('Number of team members') }}</h4>
+    <x-interpretation name="{{ __('Number of team members', [], 'en') }}" />
 
     <p>{{ $project->team_size }}</p>
 @endif
 
 @if ($project->team_has_disability_or_deaf_lived_experience)
     <h4>{{ __('Lived and living experiences') }}</h4>
+    <x-interpretation name="{{ __('Lived and living experiences', [], 'en') }}" />
 
     <p>{{ $project->teamExperience() }}</p>
 @endif
 
 @if ($project->has_consultant)
     <h4>{{ __('Accessibility Consultant') }}</h4>
+    <x-interpretation name="{{ __('Accessibility Consultant', [], 'en') }}" />
 
     @if ($project->consultant)
         <p>
@@ -31,6 +35,7 @@
 
 @if ($project->team_trainings && count($project->team_trainings))
     <h3>{{ __('Training') }}</h3>
+    <x-interpretation name="{{ __('Training', [], 'en') }}" />
 
     <p>{{ __('Members of our team have received the following training:') }}</p>
 

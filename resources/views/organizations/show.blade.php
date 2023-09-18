@@ -2,8 +2,8 @@
     <x-slot name="title">{{ $organization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
-            auth()->user()->isAdministrator() &&
-            $organization->checkStatus('suspended'))
+                auth()->user()->isAdministrator() &&
+                $organization->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -18,8 +18,10 @@
                 <h1 id="organization">
                     {{ $organization->getWrittenTranslation('name', $language) }}
                 </h1>
+                <x-interpretation name="{{ __('Community Organization page', [], 'en') }}" />
                 @if ($organization->checkStatus('draft'))
                     <span class="badge ml-auto">{{ __('Draft mode') }}</span>
+                    <x-interpretation name="{{ __('You are previewing your organization’s page.', [], 'en') }}" />
                 @endif
                 @can('update', $organization)
                     <form action="{{ localized_route('organizations.update-publication-status', $organization) }}"
@@ -125,15 +127,26 @@
         <div class="stack">
             @if (request()->localizedRouteIs('organizations.show'))
                 <x-section-heading :name="__('About')" :model="$organization" :href="localized_route('organizations.edit', $organization)" />
+                <x-interpretation name="{{ __('About', [], 'en') }}" />
                 @include('organizations.partials.about')
             @elseif(request()->localizedRouteIs('organizations.show-constituencies'))
                 <x-section-heading :name="__('Communities we :represent_or_serve_and_support', [
                     'represent_or_serve_and_support' =>
                         $organization->type === 'representative' ? __('represent') : __('serve and support'),
                 ])" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
+                <x-interpretation
+                    name="{{ __(
+                        'Communities we :represent_or_serve_and_support',
+                        [
+                            'represent_or_serve_and_support' =>
+                                $organization->type === 'representative' ? __('represent') : __('serve and support'),
+                        ],
+                        'en',
+                    ) }}" />
                 @include('organizations.partials.constituencies')
             @elseif(request()->localizedRouteIs('organizations.show-interests'))
                 <x-section-heading :name="__('Interests')" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 3])" />
+                <x-interpretation name="{{ __('Interests', [], 'en') }}" />
                 @include('organizations.partials.interests')
             @elseif(request()->localizedRouteIs('organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $organization)
@@ -141,9 +154,11 @@
                             href="{{ $organization->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create a project') }}</a>
                     @endcan
                 </h2>
+                <x-interpretation name="{{ __('Projects', [], 'en') }}" />
                 @include('organizations.partials.projects')
             @elseif(request()->localizedRouteIs('organizations.show-contact-information'))
                 <x-section-heading :name="__('Contact information')" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 4])" />
+                <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
                 @include('organizations.partials.contact-information')
             @endif
         </div>

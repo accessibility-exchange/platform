@@ -10,10 +10,12 @@
 
 @section('content')
     <h2>{{ __('Estimates and agreements') }}</h2>
+    <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" />
 
     <div class="flex flex-col gap-6 md:flex-row">
         <div class="stack w-full md:w-1/2">
             <h3>{{ __('Estimates') }}</h3>
+            <x-interpretation name="{{ __('Estimates', [], 'en') }}" />
             <p><strong>{{ __('Status') }}</strong></p>
             @if ($project->estimate_requested_at)
                 @if ($project->estimate_approved_at)
@@ -41,6 +43,7 @@
                     </span>
                 </p>
                 <h4>{{ __('New estimate request') }}</h4>
+                <x-interpretation name="{{ __('New estimate request', [], 'en') }}" />
                 @if ($project->isPublishable() && $engagements->count())
                     @include('projects.partials.included-engagements')
                     <x-hearth-alert x-show="true" :dismissable="false" :title="__('Missing an engagement?')">
@@ -66,6 +69,7 @@
         </div>
         <div class="stack w-full md:w-1/2">
             <h3>{{ __('Agreements') }}</h3>
+            <x-interpretation name="{{ __('Agreements', [], 'en') }}" />
             {{ safe_markdown(
                 'The agreement will be sent with your estimate. Please sign this agreement and send it to <:email>.',
                 ['email' => settings('email')],

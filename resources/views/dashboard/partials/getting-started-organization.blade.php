@@ -4,6 +4,8 @@
             <a class="counter__item"
                 href="{{ localized_route('organizations.edit', Auth::user()->organization) }}">{{ __('Create your organization’s page') }}</a>
         </h3>
+        <x-interpretation name="{{ __('Create your organization’s page', [], 'en') }}"
+            namespace="getting_started-community_org" />
         <p>
             {{ __('Please create your organization’s page so that other members of this website can find you.') }}
         </p>
@@ -24,6 +26,8 @@
             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
         </a>
     </h3>
+    <x-interpretation name="{{ __('Sign up and attend an orientation session', [], 'en') }}"
+        namespace="getting_started-community_org" />
     <p>
         {{ __('Click the link above to sign up for an orientation session. (This will lead you to an external site, and when you’re done it will bring you back automatically.)') }}
     </p>
@@ -33,6 +37,8 @@
         <span class="badge">{{ __('Not attended yet') }}</span>
         <x-expander type="disclosure" :level="4">
             <x-slot name="summary">{{ __('I’ve gone to orientation, why isn’t this updated?') }}</x-slot>
+            <x-interpretation name="{{ __('I’ve gone to orientation, why isn’t this updated?', [], 'en') }}"
+                namespace="getting_started-community_org" />
             {{ safe_markdown(
                 'We may have not updated this status in our system yet. Please wait a few days before seeing this status update. If you have further questions, please [contact us](:url).',
                 ['url' => '#footer-contact'],
@@ -45,6 +51,8 @@
     @if (Auth::user()->organization->isConnector() || Auth::user()->organization->isConsultant())
         <li class="getting-started__list-item stack">
             <h3 class="counter__item">{{ __('Fill out and return your application') }}</h3>
+            <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
+                namespace="getting_started-community_org" />
             <p>
                 @php
                     $roles = [];
@@ -83,6 +91,8 @@
             <a class="counter__item"
                 href="{{ localized_route('organizations.edit', Auth::user()->organization) }}">{{ __('Review and publish your organization’s public page') }}</a>
         </h3>
+        <x-interpretation name="{{ __('Review and publish your organization’s public page', [], 'en') }}"
+            namespace="getting_started-community_org" />
         <p>
             {{ __('Once your account has been approved, you can review and publish your organization’s page. You must have completed all the previous steps.') }}
         </p>
@@ -99,6 +109,8 @@
             <a class="counter__item"
                 href="{{ localized_route('projects.show-language-selection', Auth::user()->organization) }}">{{ __('Create your first project') }}</a>
         </h3>
+        <x-interpretation name="{{ __('Create your first project', [], 'en') }}"
+            namespace="getting_started-community_org" />
         <p>
             {{ __('Plan and share your project with others on this website.') }}
         </p>

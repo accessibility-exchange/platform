@@ -2,8 +2,8 @@
     <x-slot name="title">{{ $project->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
-            auth()->user()->isAdministrator() &&
-            $project->projectable->checkStatus('suspended'))
+                auth()->user()->isAdministrator() &&
+                $project->projectable->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -22,6 +22,9 @@
             @endcan
         </ol>
         <h1 id="project">{{ $project->name }}</h1>
+        @if ($project->checkStatus('draft'))
+            <x-interpretation name="{{ __('You are previewing your project page.', [], 'en') }}" />
+        @endif
         <div class="stack">
             <p class="h4">
                 {{ safe_inlineMarkdown('Accessibility project by [:projectable](:url)', [
@@ -99,15 +102,19 @@
         <div class="stack">
             @if (request()->localizedRouteIs('projects.show'))
                 <x-section-heading :name="__('Project overview')" :model="$project" :href="localized_route('projects.edit', $project)" />
+                <x-interpretation name="{{ __('Project overview', [], 'en') }}" />
                 @include('projects.partials.overview')
             @elseif(request()->localizedRouteIs('projects.show-team'))
                 <x-section-heading :name="__('Project team')" :model="$project" :href="localized_route('projects.edit', ['project' => $project, 'step' => 2])" />
+                <x-interpretation name="{{ __('Project team', [], 'en') }}" />
                 @include('projects.partials.team')
             @elseif(request()->localizedRouteIs('projects.show-engagements'))
                 <h2>{{ __('Engagements') }}</h2>
+                <x-interpretation name="{{ __('Engagements', [], 'en') }}" />
                 @include('projects.partials.engagements')
             @elseif(request()->localizedRouteIs('projects.show-outcomes'))
                 <h2>{{ __('Outcomes and reports') }}</h2>
+                <x-interpretation name="{{ __('Outcomes and reports', [], 'en') }}" />
                 @include('projects.partials.outcomes')
             @endif
         </div>

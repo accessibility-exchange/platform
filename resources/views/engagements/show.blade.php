@@ -23,6 +23,7 @@
         <h1 id="engagement">
             {{ $engagement->name }}
         </h1>
+        <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
         @if ($engagement->format)
             <p class="h4">{{ $engagement->display_format }}</p>
         @elseif($engagement->who === 'organization')

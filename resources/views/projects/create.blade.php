@@ -18,9 +18,10 @@
         </fieldset>
 
         @if (session()->has('ancestor'))
-            <x-interpretation name="{{ __('Back', [], 'en') . _ . __('Create', [], 'en') }}" namespace="back_create" />
+            <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Create', [], 'en') }}"
+                namespace="back_create" />
         @else
-            <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Create', [], 'en') }}"
+            <x-interpretation name="{{ __('Cancel', [], 'en') . '_' . __('Create', [], 'en') }}"
                 namespace="cancel_create" />
         @endif
         <p class="repel">

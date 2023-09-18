@@ -1,4 +1,5 @@
 <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
+    <x-interpretation name="{{ __('Have questions?', [], 'en') }}" />
     <p>
         <strong>{{ __('Do you have questions about this project?') }}</strong><br />
         {{ __('Contact :person from :projectable by:', [

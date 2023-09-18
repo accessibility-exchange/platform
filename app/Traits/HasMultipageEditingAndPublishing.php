@@ -17,7 +17,7 @@ trait HasMultipageEditingAndPublishing
     {
         $this->published_at = now();
         $this->save();
-        flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success|'.__('Congratulations! Your have successfully published your page.', [], 'en'));
+        flash(__('Congratulations! Your have successfully published your :model page.', ['model' => $this->getSingularName()]), 'success|'.__('Congratulations! You have successfully published your page.', [], 'en'));
     }
 
     public function unpublish($silent = false): void

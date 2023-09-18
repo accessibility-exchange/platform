@@ -151,6 +151,7 @@ class EngagementController extends Controller
             'title' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Create engagement') : __('Manage engagement'),
             'surtitle' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Create engagement') : __('Manage engagement'),
             'heading' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Confirm your participant selection criteria') : __('Edit your participant selection criteria'),
+            'headingInterpretation' => request()->localizedRouteIs('engagements.show-criteria-selection') ? __('Confirm your participant selection criteria', [], 'en') : __('Edit your participant selection criteria', [], 'en'),
             'project' => $engagement->project,
             'engagement' => $engagement,
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),

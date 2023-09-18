@@ -9,7 +9,7 @@
     <h1 id="estimates-and-agreements">
         {{ __('Estimates and agreements') }}
     </h1>
-    <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" namespace="add-estimates-and-agreements" />
+    <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" namespace="add_estimates_and_agreements" />
 </x-slot>
 
 <div class="space-y-12">
@@ -20,7 +20,7 @@
                 <x-hearth-alert type="success">
                     @if (session()->has('message-interpretation'))
                         <x-interpretation name="{{ session('message-interpretation') }}"
-                            namespace="add-estimates-and-agreements" />
+                            namespace="add_estimates_and_agreements" />
                     @endif
                     {{ session('message') }}
                 </x-hearth-alert>

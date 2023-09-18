@@ -9,7 +9,7 @@
     <h1 id="manage-accounts">
         {{ __('Manage accounts') }}
     </h1>
-    <x-interpretation name="{{ __('Manage accounts', [], 'en') }}" namespace="manage-accounts" />
+    <x-interpretation name="{{ __('Manage accounts', [], 'en') }}" namespace="manage_accounts" />
 </x-slot>
 
 <div class="space-y-12">
@@ -19,7 +19,7 @@
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
                     @if (session()->has('message-interpretation'))
-                        <x-interpretation name="{{ session('message-interpretation') }}" namespace="manage-accounts" />
+                        <x-interpretation name="{{ session('message-interpretation') }}" namespace="manage_accounts" />
                     @endif
                     {{ session('message') }}
                 </x-hearth-alert>

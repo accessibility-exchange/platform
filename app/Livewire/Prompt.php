@@ -20,7 +20,11 @@ class Prompt extends Component
 
     public string $actionUrl;
 
-    public function mount(mixed $model, string $modelPath, string $heading, string $description, string $actionLabel, string $actionUrl, int $level = 3)
+    public ?string $interpretationName;
+
+    public ?string $interpretationNameSpace;
+
+    public function mount(mixed $model, string $modelPath, string $heading, string $description, string $actionLabel, string $actionUrl, int $level = 3, ?string $interpretationName = null, ?string $interpretationNameSpace = null)
     {
         $this->model = $model;
         $this->modelPath = $modelPath;
@@ -29,6 +33,8 @@ class Prompt extends Component
         $this->description = $description;
         $this->actionLabel = $actionLabel;
         $this->actionUrl = $actionUrl;
+        $this->interpretationName = $interpretationName;
+        $this->interpretationNameSpace = $interpretationNameSpace;
     }
 
     public function render()

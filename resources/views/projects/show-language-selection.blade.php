@@ -27,9 +27,10 @@
         <x-translation-picker />
 
         @if (session()->has('ancestor'))
-            <x-interpretation name="{{ __('Back', [], 'en') . _ . __('Next', [], 'en') }}" namespace="back_next" />
+            <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Next', [], 'en') }}" namespace="back_next" />
         @else
-            <x-interpretation name="{{ __('Cancel', [], 'en') . _ . __('Next', [], 'en') }}" namespace="cancel_next" />
+            <x-interpretation name="{{ __('Cancel', [], 'en') . '_' . __('Next', [], 'en') }}"
+                namespace="cancel_next" />
         @endif
         <p class="repel">
             <a class="cta secondary"

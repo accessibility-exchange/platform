@@ -8,6 +8,7 @@
         <h1>
             {{ __('Access needs') }}
         </h1>
+        <x-interpretation name="{{ __('Access needs', [], 'en') }}" />
         <p>{{ __('When you sign up to participate in consultations, the access needs you check off below will be shared with the organization you are working with so they can meet them.') }}
         </p>
         <p>{{ __('Most of the time, we will not need to tell them who requested the access need. However, for some of the access needs, we will—and we’ll tell you which ones below.') }}
@@ -24,6 +25,7 @@
             <legend>
                 <h2>{{ __('General access needs') }}</h2>
             </legend>
+            <x-interpretation name="{{ __('General access needs', [], 'en') }}" />
 
             <x-hearth-checkboxes name="general_access_needs" :options="$generalAccessSupports" :checked="old('general_access_needs', $selectedAccessSupports)" />
             <div class="field @error('general_access_needs') field--error @enderror">
@@ -45,6 +47,7 @@
             <legend>
                 <h2>{{ __('For meeting in real time') }}</h2>
             </legend>
+            <x-interpretation name="{{ __('For meeting in real time', [], 'en') }}" />
             <p>{{ __('Access needs for when you agree to attend a meeting in real-time, either in-person or virtually.') }}
             </p>
             @foreach ($meetingAccessSupports as $option)
@@ -124,6 +127,7 @@
             <legend>
                 <h2>{{ __('For in-person meetings') }}</h2>
             </legend>
+            <x-interpretation name="{{ __('For in-person meetings', [], 'en') }}" />
             <p>{{ __('Access needs for when you are attending a meeting in-person.') }}
                 <strong>{{ __('Please note that all organizations have been asked to provide gender neutral and accessible washrooms by default.') }}</strong>
             </p>
@@ -167,6 +171,7 @@
             <legend>
                 <h2>{{ __('For engagement documents') }}</h2>
             </legend>
+            <x-interpretation name="{{ __('For engagement documents', [], 'en') }}" />
             <p>{{ __('Access needs for any materials you may be sent.') }}</p>
             <x-hearth-alert x-show="true" :dismissable="false">
                 <p>
@@ -275,6 +280,7 @@
             <legend>
                 <h2>{{ __('Additional needs or concerns') }}</h2>
             </legend>
+            <x-interpretation name="{{ __('Additional needs or concerns', [], 'en') }}" />
             <x-hearth-checkbox name="additional_needs_or_concerns" :value="$additionalNeedsOrConcerns->id" :checked="old('additional_needs_or_concerns') ||
                 in_array($additionalNeedsOrConcerns->id, $selectedAccessSupports ?? [])" />
             <x-hearth-label for='additional_needs_or_concerns'>{{ $additionalNeedsOrConcerns->name }}</x-hearth-label>
@@ -284,6 +290,7 @@
             <button name="return_to_engagement"
                 value="{{ $returnToEngagement }}">{{ __('Save and back to confirm access needs') }}</button>
         @else
+            <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
             <button>{{ __('Save') }}</button>
         @endif
     </form>

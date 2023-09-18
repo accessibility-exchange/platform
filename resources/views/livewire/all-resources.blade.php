@@ -10,6 +10,7 @@
         <h1 id="browse-all-resources">
             {{ __('Browse all resources') }}
         </h1>
+        <x-interpretation name="{{ __('Browse all resources', [], 'en') }}" namespace="all_resources" />
     </div>
 </x-slot>
 
@@ -49,6 +50,7 @@
             <h2 class="visually-hidden">{{ __('Filters') }}</h2>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Resource type') }}</x-slot>
+                <x-interpretation name="{{ __('Resource type', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Resource type') }}</legend>
                     @foreach ($contentTypesData as $contentType)
@@ -63,6 +65,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Topic') }}</x-slot>
+                <x-interpretation name="{{ __('Topic', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Topic') }}</legend>
                     @foreach ($topicsData as $topic)
@@ -77,6 +80,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Phase of consultation') }}</x-slot>
+                <x-interpretation name="{{ __('Phase of consultation', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Phase of consultation') }}</legend>
                     @foreach ($phasesData as $phase)
@@ -91,6 +95,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Sector') }}</x-slot>
+                <x-interpretation name="{{ __('Sector', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Sector') }}</legend>
                     @foreach ($sectorsData as $sector)
@@ -105,6 +110,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Area of impact') }}</x-slot>
+                <x-interpretation name="{{ __('Area of impact', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Area of impact') }}</legend>
                     @foreach ($impactsData as $impact)
@@ -120,6 +126,7 @@
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Language') }}</x-slot>
                 <fieldset class="filter__options field @error('status') field--error @enderror">
+                    <x-interpretation name="{{ __('Language', [], 'en') }}" namespace="all_resources" />
                     <legend class="visually-hidden">{{ __('Language') }}</legend>
                     @foreach ($languagesData as $language)
                         <div class="field">
@@ -134,6 +141,7 @@
             <div class="mt-6">
                 <button class="secondary" type="button" wire:click="selectNone()">{{ __('Select none') }}</button>
             </div>
+            <x-interpretation name="{{ __('Select none', [], 'en') }}" namespace="all_resources" />
         </div>
         <div class="md:pl-4">
             <section aria-labelledby="browse-all-resources">

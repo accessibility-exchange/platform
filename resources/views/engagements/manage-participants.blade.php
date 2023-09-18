@@ -17,6 +17,7 @@
                 <h1 id="project">
                     {{ __('Manage participants') }}
                 </h1>
+                <x-interpretation name="{{ __('Manage participants', [], 'en') }}" />
             </div>
         </x-slot>
 
@@ -44,6 +45,7 @@
     @section('content')
         <div class="repel">
             <h2>{{ __('Participants') }}</h2>
+            <x-interpretation name="{{ __('Participants', [], 'en') }}" />
             @can('manageParticipants', $engagement)
                 @if ($participants->count() < $engagement->ideal_participants)
                     <a class="cta secondary with-icon"
@@ -59,6 +61,7 @@
 
         @if ($invitations->count())
             <h3 id="pending">{{ __('Pending') }}</h3>
+            <x-interpretation name="{{ __('Pending', [], 'en') }}" />
             <div role="region" aria-labelledby="pending" tabindex="0">
                 <table>
                     <thead>
@@ -79,6 +82,7 @@
         @endif
 
         <h3 id="confirmed">{{ __('Confirmed participants') }}</h3>
+        <x-interpretation name="{{ __('Pending', [], 'en') }}" />
         @if ($participants->count())
             <div role="region" aria-labelledby="pending" tabindex="0">
                 <table>

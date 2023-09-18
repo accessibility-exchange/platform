@@ -12,6 +12,7 @@
         <h1 class="w-full md:w-2/3">
             {{ __('Sharing your access needs') }}
         </h1>
+        <x-interpretation name="{{ __('Sharing your access needs', [], 'en') }}" />
     </x-slot>
 
     <div class="stack mb-12 w-full md:w-2/3">

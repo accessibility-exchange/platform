@@ -7,6 +7,13 @@
     <h1>
         {{ __('Community Connector') }}
     </h1>
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <x-interpretation name="{{ __('Community Connector', [], 'en') }}" namespace="manage_engagement_connector" />
+    @elseif ($engagement->connector || $engagement->organizationalConnector)
+        <x-interpretation name="{{ __('Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector-with_connector" />
+    @endif
+
 </x-slot>
 
 <div class="stack">
@@ -17,7 +24,7 @@
                 <x-hearth-alert type="success">
                     @if (session()->has('message-interpretation'))
                         <x-interpretation name="{{ session('message-interpretation') }}"
-                            namespace="manage-engagement-connector" />
+                            namespace="manage_engagement_connector" />
                     @endif
                     {{ session('message') }}
                 </x-hearth-alert>
@@ -27,11 +34,15 @@
 
     @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
         <h2>{{ __('Find a Community Connector') }}</h2>
+        <x-interpretation name="{{ __('Find a Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector" />
 
         <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
         </p>
 
         <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
+        <x-interpretation name="{{ __('Show that you are looking for a Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector" />
 
         {{ safe_markdown(
             'This will show Community Connectors on the [browse projects](:url) page that you are looking, and that they are welcome to reach out.',
@@ -66,6 +77,8 @@
     @endif
 
     <h2>{{ __('Manage Community Connector') }}</h2>
+    <x-interpretation name="{{ __('Manage Community Connector', [], 'en') }}"
+        namespace="manage_engagement_connector" />
 
     @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
         <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}

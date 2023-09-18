@@ -1,4 +1,5 @@
 <h3>{{ __('Groups in the disability and Deaf community') }}</h3>
+<x-interpretation name="{{ __('Groups in the disability and Deaf community', [], 'en') }}" />
 
 <ul class="tags" role="list">
     @if ($organization->extra_attributes->get('cross_disability_and_deaf_constituencies'))
@@ -15,9 +16,11 @@
     @endforeach
 </ul>
 
-@if ($organization->hasConstituencies('indigenousConstituencies') ||
-    $organization->hasConstituencies('ethnoracialIdentityConstituencies'))
+@if (
+    $organization->hasConstituencies('indigenousConstituencies') ||
+        $organization->hasConstituencies('ethnoracialIdentityConstituencies'))
     <h3>{{ __('Ethno-racial groups') }}</h3>
+    <x-interpretation name="{{ __('Ethno-racial groups', [], 'en') }}" />
 
     <ul class="tags" role="list">
         @foreach ($organization->indigenousConstituencies as $constituency)
@@ -32,9 +35,11 @@
     </ul>
 @endif
 
-@if ($organization->hasConstituencies('genderAndSexualityConstituencies') ||
-    $organization->hasConstituencies('statusConstituencies'))
+@if (
+    $organization->hasConstituencies('genderAndSexualityConstituencies') ||
+        $organization->hasConstituencies('statusConstituencies'))
     <h3>{{ __('Other identity groups') }}</h3>
+    <x-interpretation name="{{ __('Other identity groups', [], 'en') }}" />
 
     <ul class="tags" role="list">
         @foreach ($organization->statusConstituencies as $constituency)
@@ -48,6 +53,7 @@
 
 @if ($organization->hasConstituencies('ageBracketConstituencies'))
     <h3>{{ __('Age groups') }}</h3>
+    <x-interpretation name="{{ __('Age groups', [], 'en') }}" />
 
     <ul class="tags" role="list">
         @foreach ($organization->ageBracketConstituencies as $constituency)
@@ -58,6 +64,7 @@
 
 @if ($organization->languageConstituencies->count() > 0)
     <h3>{{ __('Language groups') }}</h3>
+    <x-interpretation name="{{ __('Language groups', [], 'en') }}" />
 
     <ul class="tags" role="list">
         @foreach ($organization->languageConstituencies as $language)
@@ -68,6 +75,7 @@
 
 @if ($organization->staff_lived_experience === 'yes')
     <h3>{{ __('Staff lived experience') }}</h3>
+    <x-interpretation name="{{ __('Staff lived experience', [], 'en') }}" />
 
     <p>{{ __('This organization has people on staff who have lived experience of the communities they :represent_or_serve_and_support.', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
     </p>

@@ -100,7 +100,7 @@
                 </div>
             </fieldset>
             <hr class="divider--thick">
-            <x-interpretation name="{{ __('Save and back', [], 'en') . _ . __('Save', [], 'en') }}"
+            <x-interpretation name="{{ __('Save and back', [], 'en') . '_' . __('Save', [], 'en') }}"
                 namespace="save_and_back_save" />
             <p class="flex flex-wrap gap-7">
                 <button class="secondary" name="save_and_previous" value="1">{{ __('Save and back') }}</button>

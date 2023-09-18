@@ -8,6 +8,7 @@
         <h1>
             {{ __('Language preferences') }}
         </h1>
+        <x-interpretation name="{{ __('Language preferences', [], 'en') }}" />
     </x-slot>
 
     @include('partials.validation-errors')
@@ -17,6 +18,7 @@
         @method('put')
 
         <h2>{{ __('Website language') }}</h2>
+        <x-interpretation name="{{ __('Website language', [], 'en') }}" />
 
         <p>{{ __('The language you want to use for navigating this website.') }}</p>
 
@@ -52,6 +54,7 @@
             </fieldset>
         @endif
 
+        <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
         <button>{{ __('Save') }}</button>
     </form>
 

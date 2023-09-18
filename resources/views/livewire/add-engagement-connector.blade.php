@@ -11,6 +11,7 @@
     <h1>
         {{ __('Add Community Connector') }}
     </h1>
+    <x-interpretation name="{{ __('Add Community Connector', [], 'en') }}" namespace="add_engagement_connector" />
 </x-slot>
 
 <form class="stack" wire:submit="inviteConnector">
@@ -21,7 +22,7 @@
                 <x-hearth-alert type="success">
                     @if (session()->has('message-interpretation'))
                         <x-interpretation name="{{ session('message-interpretation') }}"
-                            namespace="add-engagement-connector" />
+                            namespace="add_engagement_connector" />
                     @endif
                     {{ session('message') }}
                 </x-hearth-alert>
@@ -35,6 +36,9 @@
         <legend>
             {{ __('Please indicate whether your Community Connector is an individual or community organization.') }}
         </legend>
+        <x-interpretation
+            name="{{ __('Please indicate whether your Community Connector is an individual or community organization.', [], 'en') }}"
+            namespace="add_engagement_connector" />
         <x-hearth-radio-buttons name="who" :options="[
             ['value' => 'individual', 'label' => __('Individual')],
             ['value' => 'organization', 'label' => __('Community organization')],
@@ -46,6 +50,7 @@
 
         <fieldset>
             <legend>{{ __('Community Connector') }}</legend>
+            <x-interpretation name="{{ __('Community Connector', [], 'en') }}" namespace="add_engagement_connector" />
             @if ($who === 'individual')
                 <p>{{ __('Please enter the email address of the individual you have hired as a Community Connector.') }}
                 </p>

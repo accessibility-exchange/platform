@@ -1,6 +1,7 @@
 <div class="with-sidebar">
     <nav class="secondary stack" aria-labelledby="skip-to">
         <h3 id="skip-to">{{ __('Skip to:') }}</h3>
+        <x-interpretation name="{{ __('Skip to:', [], 'en') }}" namespace="notifications_settings-individual" />
         <ul role="list">
             <li>
                 <x-nav-link :href="'#' . Str::slug(__('Participating in engagements'))">{{ __('Participating in engagements') }}</x-nav-link>
@@ -20,6 +21,8 @@
 
         <div class="box stack">
             <h3>{{ __('Contacting you with notifications') }}</h3>
+            <x-interpretation name="{{ __('Contacting you with notifications', [], 'en') }}"
+                namespace="notifications_settings-individual" />
 
             <p>
                 {{ __('Throughout this page, you can chose whether you would like notifications to be sent through the website or by contacting :contact_person directly.', ['contact_person' => $user->support_person_name ? __('your support person, :name', ['name' => $user->support_person_name]) : __('you')]) }}
@@ -51,6 +54,9 @@
             <div class="field @error('preferred_notification_method') field--error @enderror">
                 <x-hearth-label for="preferred_notification_method">
                     {{ __('Preferred notification method') . ' ' . __('(required)') }}</x-hearth-label>
+                <x-interpretation
+                    name="{{ __('Preferred notification method', [], 'en') . ' ' . __('(required)', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 @if (!in_array('phone', $user->contact_methods))
                     <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
                 @elseif(!in_array('email', $user->contact_methods))
@@ -65,6 +71,8 @@
 
         @if ($user->individual->isParticipant())
             <h4>{{ __('As a Consultation Participant') }}</h4>
+            <x-interpretation name="{{ __('As a Consultation Participant', [], 'en') }}"
+                namespace="notifications_settings-individual" />
 
             <p>
                 {{ __('We will notify you about being invited to engagements by directly contacting you or your support person.') }}
@@ -74,6 +82,8 @@
         @if ($user->individual->isConsultant())
             <fieldset>
                 <legend>{{ __('As an accessibility consultant') }}</legend>
+                <x-interpretation name="{{ __('As an accessibility consultant', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 <x-hearth-hint for="consultants-contact">
                     {{ __('Would you like to be notified directly when you are added as an Accessibility Consultant to a project?') }}<br />
                     {{ __('You will always get a notification on the website.') }}
@@ -97,6 +107,8 @@
         @if ($user->individual->isConnector())
             <fieldset>
                 <legend>{{ __('As a Community Connector') }}</legend>
+                <x-interpretation name="{{ __('As a Community Connector', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 <x-hearth-hint for="connectors-contact">
                     {{ __('Would you like to be notified directly when you are added to an engagement as a Community Connector?') }}<br />
                     {{ __('You will always get a notification on the website.') }}
@@ -116,6 +128,8 @@
 
         <fieldset>
             <legend>{{ __('New reports uploaded') }}</legend>
+            <x-interpretation name="{{ __('New reports uploaded', [], 'en') }}"
+                namespace="notifications_settings-individual" />
             <x-hearth-hint for="reports-contact">
                 {{ __('Would you like to be notified directly when a project you have worked on uploads a new report?') }}<br />
                 {{ __('You will always get a notification on the website.') }}
@@ -136,7 +150,10 @@
 
         <div x-data="{ notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->notification_settings->get('projects.channels', []))) }} }">
             <fieldset class="field @error('notification_settings.projects.channels') field--error @enderror">
-                <legend>{{ __('Please indicate how you would like to be notified of new projects. ') }}</legend>
+                <legend>{{ __('Please indicate how you would like to be notified of new projects.') }}</legend>
+                <x-interpretation
+                    name="{{ __('Please indicate how you would like to be notified of new projects.', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 <x-hearth-checkboxes name="notification_settings[projects][channels]" :options="$notificationChannels"
                     :checked="old(
                         'notification_settings.projects.channels',
@@ -149,6 +166,9 @@
                 <legend>
                     {{ __('Please indicate which type of organizations’ projects you would like to notified about.') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate which type of organizations’ projects you would like to notified about.', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 <x-hearth-hint for="project_creators">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="notification_settings[projects][creators]" :options="[
                     [
@@ -170,6 +190,7 @@
             <fieldset class="field @error('notification_settings.projects.types') field--error @enderror"
                 x-show="notifyOfProjects.length > 0" x-cloak>
                 <legend>{{ __('Please indicate which type of projects you would like to notified about.') }}</legend>
+
                 <x-hearth-hint for="project_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="notification_settings[projects][types]" :options="$projectNotificationTypes" :checked="old(
                     'notification_settings.projects.types',
@@ -183,6 +204,9 @@
                 x-show="notifyOfProjects.length > 0" x-cloak>
                 <legend>{{ __('Please indicate which type of engagements you would like to be notified about.') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate which type of engagements you would like to be notified about.', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
                 <x-hearth-hint for="engagements">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="notification_settings[projects][engagements]" :options="$engagementNotificationTypes"
                     :checked="old(
@@ -195,11 +219,16 @@
 
         <h3 id="{{ Str::slug(__('Keeping my information up to date')) }}">
             {{ __('Keeping my information up to date') }}</h3>
+        <x-interpretation name="{{ __('Keeping my information up to date', [], 'en') }}"
+            namespace="notifications_settings-individual" />
 
         <fieldset class="field @error('notification_settings.updates.channels') field--error @enderror">
             <legend>
                 {{ __('Please indicate how you would like to be notified to review and update your information.') }}
             </legend>
+            <x-interpretation
+                name="{{ __('Please indicate how you would like to be notified to review and update your information.', [], 'en') }}"
+                namespace="notifications_settings-individual" />
             @if ($user->individual->isParticipant())
                 <p>{{ __('Information such as your matching information, your communication preferences, and your consultation preferences might be out of date if it has not been updated for over a year.') }}
                 </p>
@@ -214,6 +243,7 @@
                 )" />
         </fieldset>
 
+        <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
         <p>
             <button>{{ __('Save') }}</button>
         </p>

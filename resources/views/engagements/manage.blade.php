@@ -12,6 +12,7 @@
             <h1 class="mt-0">
                 {{ $engagement->name }}
             </h1>
+            <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
             @if ($engagement->format)
                 <p class="h4">{{ $engagement->display_format }}</p>
             @endif
@@ -38,6 +39,7 @@
         <x-manage-columns class="col-start-1 col-end-2">
             @if ($engagement->who === 'individuals')
                 <x-manage-section :title="__('Recruitment method')">
+                    <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" />
                     <p class="with-icon">
                         @switch($engagement->recruitment)
                             @case('connector')
@@ -57,6 +59,11 @@
             @endif
             <x-manage-section
                 title="{{ $engagement->who === 'individuals' ? __('Participant selection criteria') : __('Organization selection criteria') }}">
+                @if ($engagement->who === 'individuals')
+                    <x-interpretation name="{{ __('Participant selection criteria', [], 'en') }}" />
+                @else
+                    <x-interpretation name="{{ __('Organization selection criteria', [], 'en') }}" />
+                @endif
                 <div>
                     <p class="font-bold">{{ __('Location') }}</p>
                     <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
@@ -78,6 +85,11 @@
             @if ($engagement->checkStatus('draft'))
                 <x-manage-section
                     title="{{ !$engagement->isPreviewable() ? __('Edit engagement details') : __('Review and publish engagement details') }}">
+                    @if (!$engagement->isPreviewable())
+                        <x-interpretation name="{{ __('Edit engagement details', [], 'en') }}" />
+                    @else
+                        <x-interpretation name="{{ __('Review and publish engagement details', [], 'en') }}" />
+                    @endif
                     @if ($engagement->who === 'individuals')
                         @if (!$engagement->hasEstimateAndAgreement())
                             <p>
@@ -182,6 +194,7 @@
 
             @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
                 <x-manage-section :title="__('Engagement meetings')">
+                    <x-interpretation name="{{ __('Engagement meetings', [], 'en') }}" />
                     @forelse($engagement->meetings as $meeting)
                         <article class="flex flex-col gap-4 md:flex-row md:justify-between">
                             <div>
@@ -226,6 +239,7 @@
 
             @if ($engagement->who === 'individuals')
                 <x-manage-section :title="__('Estimates and agreements')">
+                    <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                         <div class="space-y-2">
                             <p class="font-bold">{{ __('Estimate status') }}</p>
@@ -268,6 +282,7 @@
 
             @if ($engagement->who === 'organization')
                 <x-manage-section :title="__('Community organization')">
+                    <x-interpretation name="{{ __('Community organization', [], 'en') }}" />
                     @if ($engagement->organization)
                         <x-card.organization level="4" :model="$engagement->organization" />
                         <footer class="-mx-6 border-x-0 border-b-0 border-t border-solid border-grey-3 px-6 pt-5">
@@ -292,6 +307,7 @@
 
             @if ($engagement->recruitment === 'connector')
                 <x-manage-section :title="__('Community Connector')">
+                    <x-interpretation name="{{ __('Community Connector', [], 'en') }}" />
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
                     @if ($engagement->connector)
                         <x-card.individual :model="$engagement->connector" />
@@ -325,6 +341,7 @@
             @endif
             @if ($engagement->who === 'individuals')
                 <x-manage-section :title="__('Manage participants')">
+                    <x-interpretation name="{{ __('Manage participants', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
                         <p>
                             <span class="h4">{{ $engagement->confirmedParticipants->count() }}</span>
