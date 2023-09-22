@@ -30,6 +30,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         with:
           php-version: ${{ matrix.php }}
+          coverage: pcov
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
