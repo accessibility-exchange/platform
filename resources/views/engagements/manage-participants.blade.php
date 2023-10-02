@@ -82,7 +82,7 @@
         @endif
 
         <h3 id="confirmed">{{ __('Confirmed participants') }}</h3>
-        <x-interpretation name="{{ __('Pending', [], 'en') }}" />
+        <x-interpretation name="{{ __('Confirmed participants', [], 'en') }}" />
         @if ($participants->count())
             <div role="region" aria-labelledby="pending" tabindex="0">
                 <table>

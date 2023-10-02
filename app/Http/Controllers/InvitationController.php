@@ -39,7 +39,7 @@ class InvitationController extends Controller
 
         flash(
             __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
-            'success|'.__('invitation.accept_invitation_succeeded', [], 'en')
+            'success|'.__('You have joined the team.', [], 'en')
         );
 
         return redirect(localized_route('dashboard'));

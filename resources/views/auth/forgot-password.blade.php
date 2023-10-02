@@ -16,6 +16,7 @@
             <h4>
                 {{ __('Please reset your password for The Accessibility Exchange') }}
             </h4>
+            <x-interpretation name="{{ __('Please reset your password for The Accessibility Exchange', [], 'en') }}" />
             <p>
                 {{ __('If you have forgotten your password, please enter the email address that you used to sign up for The Accessibility Exchange. We will email you a link that will let you choose a new password.') }}
             </p>

@@ -8,7 +8,12 @@
         <h1>
             {{ __('Language preferences') }}
         </h1>
-        <x-interpretation name="{{ __('Language preferences', [], 'en') }}" />
+        @if ($user->context === 'individual')
+            <x-interpretation name="{{ __('Language preferences', [], 'en') }}"
+                namespace="language_preferences-individual" />
+        @else
+            <x-interpretation name="{{ __('Language preferences', [], 'en') }}" />
+        @endif
     </x-slot>
 
     @include('partials.validation-errors')

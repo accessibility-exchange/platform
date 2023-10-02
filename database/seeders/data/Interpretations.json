@@ -10,7 +10,11 @@
             },
             {
                 "name": "My dashboard",
-                "namespace": "dashboard-individual"
+                "namespace": "dashboard-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845013036/e2c20406bb",
+                    "lsq": "https://vimeo.com/861747324/d428a476ca"
+                }
             },
             {
                 "name": "My dashboard",
@@ -160,7 +164,15 @@
                 "namespace": "flash_messages"
             },
             {
-                "name": "You have joined.",
+                "name": "You have joined as a connector",
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861741465",
+                    "lsq": "https://vimeo.com/861747730/dccb40802e"
+                }
+            },
+            {
+                "name": "You have joined as a participant",
                 "namespace": "flash_messages"
             },
             {
@@ -233,7 +245,11 @@
             },
             {
                 "name": "You have joined the team.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861741239",
+                    "lsq": "https://vimeo.com/861747705/722712ab02"
+                }
             },
             {
                 "name": "You have declined your invitation to join the team.",
@@ -293,19 +309,35 @@
             },
             {
                 "name": "Your access needs have been updated.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861740767",
+                    "lsq": "https://vimeo.com/861747542/1f66a2a9c1"
+                }
             },
             {
                 "name": "Your communication and consultation preferences have been updated.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861741026",
+                    "lsq": "https://vimeo.com/861747586/aebc72a9f2"
+                }
             },
             {
                 "name": "Your language preferences have been updated.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861741061",
+                    "lsq": "https://vimeo.com/861747618/4ed448ae49"
+                }
             },
             {
                 "name": "Your payment information has been updated.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861741115",
+                    "lsq": "https://vimeo.com/861747638/3bba5683b2"
+                }
             },
             {
                 "name": "Your areas of interest have been updated.",
@@ -352,24 +384,109 @@
                 "namespace": "flash_messages"
             },
             {
-                "name": "Congratulations! You have successfully published your page.",
+                "name": "Congratulations! You have successfully published your individual page.",
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861742402",
+                    "lsq": "https://vimeo.com/861747877/b1891fd91c"
+                }
+            },
+            {
+                "name": "Congratulations! You have successfully published your organization.singular_name page.",
                 "namespace": "flash_messages"
             },
             {
-                "name": "Your page has been unpublished.",
+                "name": "Congratulations! You have successfully published your project.singular_name page.",
                 "namespace": "flash_messages"
             },
             {
-                "name": "You have successfully saved your draft page.",
+                "name": "Congratulations! You have successfully published your regulated-organization.singular_name page.",
                 "namespace": "flash_messages"
             },
             {
-                "name": "You have successfully saved your page.",
+                "name": "Your individual page has been unpublished.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "Your organization.singular_name page has been unpublished.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "Your project.singular_name page has been unpublished.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "Your regulated-organization.singular_name page has been unpublished.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your draft individual page.",
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861740442",
+                    "lsq": "https://vimeo.com/861747405/fd036dc49f"
+                }
+            },
+            {
+                "name": "You have successfully saved your draft organization.singular_name page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your draft project.singular_name page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your draft regulated-organization.singular_name page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your individual page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your organization.singular_name page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your project.singular_name page.",
+                "namespace": "flash_messages"
+            },
+            {
+                "name": "You have successfully saved your regulated-organization.singular_name page.",
                 "namespace": "flash_messages"
             },
             {
                 "name": "Your organization page has been unpublished.",
                 "namespace": "flash_messages"
+            },
+            {
+                "name": "Invite new member",
+                "namespace": "invitation",
+                "video": {
+                    "asl": "https://vimeo.com/861741196",
+                    "lsq": "https://vimeo.com/861747688/26287fd747"
+                }
+            }
+        ]
+    },
+    "dashboard.collaboration-preferences": {
+        "interpretations": [
+            {
+                "name": "Enter your collaboration preferences"
+            },
+            {
+                "name": "Enter your collaboration preferences",
+                "namespace": "collaboration_preferences-participant",
+                "video": {
+                    "asl": "https://vimeo.com/861742287",
+                    "lsq": "https://vimeo.com/861747843/3d0a62f8b9"
+                }
+            },
+            {
+                "name": "Required"
+            },
+            {
+                "name": "Recommended"
             }
         ]
     },
@@ -596,6 +713,14 @@
                 }
             },
             {
+                "name": "1. Sign up for the website and build your Accessibility Consultant profile",
+                "namespace": "accessibility_consultants-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845011170/dd88d101c9",
+                    "lsq": "https://vimeo.com/850168290/895725e350"
+                }
+            },
+            {
                 "name": "2. Find projects that are looking for an Accessibility Consultant",
                 "namespace": "accessibility_consultants",
                 "video": {
@@ -639,6 +764,13 @@
             {
                 "name": "1. Sign up for the website and build your Community Connector profile",
                 "video": {
+                    "asl": "https://vimeo.com/845012066/6adbecf60c"
+                }
+            },
+            {
+                "name": "1. Sign up for the website and build your Community Connector profile",
+                "namespace": "community_connectors-individual",
+                "video": {
                     "asl": "https://vimeo.com/845054347/964459543e",
                     "lsq": "https://vimeo.com/850168815/1ea792ddaf"
                 }
@@ -656,6 +788,92 @@
                     "asl": "https://vimeo.com/845054394/18dfc38f7f",
                     "lsq": "https://vimeo.com/850168855/c39f935c71"
                 }
+            }
+        ]
+    },
+    "about.individual-community-connectors-what-we-ask-for": {
+        "interpretations": [
+            {
+                "name": "What information do we ask for?",
+                "video": {
+                    "asl": "https://vimeo.com/845012191/f9c653a7de"
+                }
+            },
+            {
+                "name": "Community Connectors — Individual",
+                "video": {
+                    "asl": "https://vimeo.com/845012236/4d8b7be926"
+                }
+            },
+            {
+                "name": "Basic information about you",
+                "video": {
+                    "asl": "https://vimeo.com/845012260/28505a9a5e"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-basic_information_about_you"
+            },
+            {
+                "name": "Communities you can connect to",
+                "video": {
+                    "asl": "https://vimeo.com/845012303/4b624990ae"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-communities_you_can_connect_to"
+            },
+            {
+                "name": "Experiences",
+                "video": {
+                    "asl": "https://vimeo.com/845012341/f5814e34e8"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-experiences"
+            },
+            {
+                "name": "Communication and consultation preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845012424/4ad9de1ccd"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-communication_and_consultation_preferences"
+            },
+            {
+                "name": "Language preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845012453/d6d1c5bdfe"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-language_preferences"
+            },
+            {
+                "name": "Areas of interest",
+                "video": {
+                    "asl": "https://vimeo.com/845012755/35aa912279"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-areas_of_interest"
+            },
+            {
+                "name": "Sectors of interest",
+                "video": {
+                    "asl": "https://vimeo.com/845012895/9075db16bb"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-sectors_of_interest"
             }
         ]
     },
@@ -681,7 +899,7 @@
                 "name": "How does being a Consultation Participant work?",
                 "namespace": "consultation_participants",
                 "video": {
-                    "asl": "https://vimeo.com/850169036/881493eff3",
+                    "asl": "https://vimeo.com/845054558/c6ca6bc130",
                     "lsq": "https://vimeo.com/850169036/881493eff3"
                 }
             },
@@ -711,18 +929,194 @@
     "about.individual-consultation-participants": {
         "interpretations": [
             {
-                "name": "1. Sign up for the website and share some information about yourself"
+                "name": "1. Sign up for the website and share some information about yourself",
+                "video": {
+                    "asl": "https://vimeo.com/845010838/080ddf4c70",
+                    "lsq": "https://vimeo.com/850167863/eb6d875094"
+                }
             },
             {
-                "name": "2. Find an engagement or get matched to one"
+                "name": "2. Find an engagement or get matched to one",
+                "video": {
+                    "asl": "https://vimeo.com/845010877/b56041bec7",
+                    "lsq": "https://vimeo.com/850167891/e8ce0f9a11"
+                }
             },
             {
-                "name": "3. Work directly with businesses and governments"
+                "name": "3. Work directly with businesses and governments",
+                "video": {
+                    "asl": "https://vimeo.com/845010897/8bfc3a4b86",
+                    "lsq": "https://vimeo.com/850167916/4b5d2d5696"
+                }
+            }
+        ]
+    },
+    "about.individual-consultation-participants-what-we-ask-for": {
+        "interpretations": [
+            {
+                "name": "What information do we ask for?",
+                "video": {
+                    "asl": "https://vimeo.com/845010920/94b566c171",
+                    "lsq": "https://vimeo.com/850167934/d5efbc5168"
+                }
+            },
+            {
+                "name": "Consultation Participants — Individual",
+                "video": {
+                    "asl": "https://vimeo.com/845010934/6c8385e8e2",
+                    "lsq": "https://vimeo.com/850167972/9f12a9ca76"
+                }
+            },
+            {
+                "name": "Lived or living experience",
+                "video": {
+                    "asl": "https://vimeo.com/845010956/1cd229f09c",
+                    "lsq": "https://vimeo.com/850167997/48f8e1a2cf"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-lived_experiences"
+            },
+            {
+                "name": "Access needs",
+                "video": {
+                    "asl": "https://vimeo.com/845010992/37cff18e69",
+                    "lsq": "https://vimeo.com/850168038/73294651ef"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-access_needs"
+            },
+            {
+                "name": "Communication and consultation preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845011019/04bb955fc8",
+                    "lsq": "https://vimeo.com/850168063/aa9dcc61ee"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-communication_and_consultation_preferences"
+            },
+            {
+                "name": "Language preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845011037/be73efa8ea",
+                    "lsq": "https://vimeo.com/850168097/5087b95dd7"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-language_preferences"
+            },
+            {
+                "name": "Payment information",
+                "video": {
+                    "asl": "https://vimeo.com/845011058/6db446e8a0",
+                    "lsq": "https://vimeo.com/850168121/c0c8ade89e"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-payment_information"
+            },
+            {
+                "name": "Areas of interest",
+                "video": {
+                    "asl": "https://vimeo.com/845011084/8ab79fbeff",
+                    "lsq": "https://vimeo.com/850168150/5e05d383f9"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-areas_of_interest"
             }
         ]
     },
     "about.individual-accessibility-consultants-what-we-ask-for": {
         "interpretations": [
+            {
+                "name": "What information do we ask for?",
+                "video": {
+                    "asl": "https://vimeo.com/845011387/57a3c8b1e3",
+                    "lsq": "https://vimeo.com/850168387/d640ed646d"
+                }
+            },
+            {
+                "name": "Accessibility Consultants — Individual",
+                "video": {
+                    "asl": "https://vimeo.com/845011428/a84278e3d0",
+                    "lsq": "https://vimeo.com/850168425/3857667228"
+                }
+            },
+            {
+                "name": "Basic information about you",
+                "video": {
+                    "asl": "https://vimeo.com/845011453/14edb46324",
+                    "lsq": "https://vimeo.com/850168482/7fb6abfbd9"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-basic_information_about_you"
+            },
+            {
+                "name": "Experiences",
+                "video": {
+                    "asl": "https://vimeo.com/845011647/5a7ee6bcf9",
+                    "lsq": "https://vimeo.com/850168624/ea05aa7947"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-experiences"
+            },
+            {
+                "name": "Communication and consultation preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845011757/81d9441e36",
+                    "lsq": "https://vimeo.com/850168662/559ad4d81c"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-communication_and_consultation_preferences"
+            },
+            {
+                "name": "Language preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845011813/02527aa5e3",
+                    "lsq": "https://vimeo.com/850168692/e37fd3ed6b"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-language_preferences"
+            },
+            {
+                "name": "Areas of interest",
+                "video": {
+                    "asl": "https://vimeo.com/845011879/80875cd0f4",
+                    "lsq": "https://vimeo.com/850168722/5c432d772a"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-areas_of_interest"
+            },
+            {
+                "name": "Sectors of interest",
+                "video": {
+                    "asl": "https://vimeo.com/845011913/2e98fef9a4",
+                    "lsq": "https://vimeo.com/850168778/4fbebdbda9"
+                }
+            },
+            {
+                "name": "Why do we ask for this information?",
+                "namespace": "why_do_we_ask-sectors_of_interest"
+            },
             {
                 "name": "Have more questions?",
                 "namespace": "questions"
@@ -732,7 +1126,13 @@
     "password.request": {
         "interpretations": [
             {
-                "name": "Reset your password"
+                "name": "Reset your password",
+                "video": {
+                    "asl": "https://vimeo.com/845014760/abf30638d0"
+                }
+            },
+            {
+                "name": "Please reset your password for The Accessibility Exchanges"
             }
         ]
     },
@@ -907,7 +1307,15 @@
                 "namespace": "notification_message"
             },
             {
-                "name": "You have been invited as a",
+                "name": "You have been invited as a Accessibility Consultant",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "You have been invited as a Community Connector",
+                "namespace": "notification_message"
+            },
+            {
+                "name": "You have been invited as a Consultation Participant",
                 "namespace": "notification_message"
             },
             {
@@ -928,7 +1336,11 @@
             },
             {
                 "name": "1 new person accepted your invitation for an engagement",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "asl": "https://vimeo.com/861742139",
+                    "lsq": "https://vimeo.com/861747811/e7ff05ad99"
+                }
             },
             {
                 "name": "1 person declined their invitation for an engagement",
@@ -936,10 +1348,6 @@
             },
             {
                 "name": "1 person declined your invitation for an engagement",
-                "namespace": "notification_message"
-            },
-            {
-                "name": "You have been invited as a Consultation Participant",
                 "namespace": "notification_message"
             },
             {
@@ -976,7 +1384,10 @@
                 "namespace": "edit_translations"
             },
             {
-                "name": "About you"
+                "name": "About you",
+                "video": {
+                    "asl": "https://vimeo.com/845013064/fbd0f161ee"
+                }
             },
             {
                 "name": "Name",
@@ -1022,7 +1433,10 @@
                 "namespace": "save_next"
             },
             {
-                "name": "Communication and consultation preferences"
+                "name": "Communication and consultation preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845013162/8f2ee947ce"
+                }
             },
             {
                 "name": "Contact person",
@@ -1073,14 +1487,21 @@
                 "namespace": "save_previous"
             },
             {
-                "name": "Experiences"
+                "name": "Experiences",
+                "video": {
+                    "asl": "https://vimeo.com/845013088/c9c6c6c128"
+                }
             },
             {
                 "name": "Relevant experiences (optional)",
                 "namespace": "relevant_experiences-optional"
             },
             {
-                "name": "Interests"
+                "name": "Interests",
+                "video": {
+                    "asl": "https://vimeo.com/861740499",
+                    "lsq": "https://vimeo.com/861747429/1971b97865"
+                }
             },
             {
                 "name": "What types of Regulated Organization are you interested consulting with on accessibility planning and design?",
@@ -1110,6 +1531,31 @@
             {
                 "name": "Sorry, some errors were found in your submission. Please correct these errors and try again.",
                 "namespace": "errors_found_message"
+            },
+            {
+                "name": "Groups you can connect to"
+            },
+            {
+                "name": "Can you connect to people with disabilities and Deaf people, their supporters, or both?"
+            },
+            {
+                "name": "Please select the disability and/or Deaf groups that you can connect to."
+            },
+            {
+                "name": "Please select the specific disability and/or Deaf groups that you can connect to."
+            }
+        ]
+    },
+    "individuals.show-role-selection": {
+        "interpretations": [
+            {
+                "name": "Welcome to The Accessibility Exchange",
+                "videos": {
+                    "asl": "https://vimeo.com/845012978/f344763ea4"
+                }
+            },
+            {
+                "name": "Please tell us what you would like to do on this website."
             }
         ]
     },
@@ -1260,7 +1706,8 @@
             {
                 "name": "Add participant",
                 "videos": {
-                    "asl": "https://vimeo.com/846666213/f331ff68ef"
+                    "asl": "https://vimeo.com/846666213/f331ff68ef",
+                    "lsq": "https://vimeo.com/861747756/0c09aa4106"
                 }
             }
         ]
@@ -1271,7 +1718,8 @@
             {
                 "name": "Access needs",
                 "videos": {
-                    "asl": "https://vimeo.com/846666341/a2de8652fa"
+                    "asl": "https://vimeo.com/861741954",
+                    "lsq": "https://vimeo.com/861747775/603f679af5"
                 }
             },
             {
@@ -2255,9 +2703,17 @@
         "interpretations": [
             {
                 "name": "Settings",
+                "namespace": "settings-organization",
                 "video": {
                     "asl": "https://vimeo.com/845060888/9bc6f704e5",
                     "lsq": "https://vimeo.com/850169552/bb5cb52dab"
+                }
+            },
+            {
+                "name": "Settings",
+                "namespace": "settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845013733/4527df3b3c"
                 }
             },
             {
@@ -2278,7 +2734,62 @@
                 }
             },
             {
+                "name": "Language preferences",
+                "namespace": "language_preferences-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014072/4d8a38bf69",
+                    "lsq": "https://vimeo.com/861747603/df9291538d"
+                }
+            },
+            {
                 "name": "Website language"
+            }
+        ]
+    },
+    "settings.edit-communication-and-consultation-preferences": {
+        "interpretations": [
+            {
+                "name": "Communication and consultation preferences",
+                "video": {
+                    "asl": "https://vimeo.com/845013948/a4638e6879",
+                    "lsq": "https://vimeo.com/861747556/f05c7bb13c"
+                }
+            },
+            {
+                "name": "Communication",
+                "video": {
+                    "asl": "https://vimeo.com/845013967/e740a735a7"
+                }
+            },
+            {
+                "name": "Contact person"
+            },
+            {
+                "name": "Contact information",
+                "namespace": "contact_person-me",
+                "video": {
+                    "asl": "https://vimeo.com/845014018/0c105fa4c4"
+                }
+            },
+            {
+                "name": "Contact information",
+                "namespace": "contact_person-support_person"
+            },
+            {
+                "name": "Consultations",
+                "video": {
+                    "asl": "https://vimeo.com/845014043/44e2b77a53"
+                }
+            }
+        ]
+    },
+    "settings.edit-payment-information": {
+        "interpretations": [
+            {
+                "name": "Payment information"
+            },
+            {
+                "name": "What types of payment are you able to accept?"
             }
         ]
     },
@@ -2349,28 +2860,32 @@
             {
                 "name": "Access needs",
                 "video": {
-                    "asl": "https://vimeo.com/846666234/b6e0a7e8f4"
+                    "asl": "https://vimeo.com/845013785/c59d120431",
+                    "lsq": "https://vimeo.com/861747504/6b118a7eae"
                 }
             },
             {
-                "name": "General access needs"
+                "name": "General access needs",
+                "video": {
+                    "asl": "https://vimeo.com/845013807/1396b8dc60"
+                }
             },
             {
                 "name": "For meeting in real time",
                 "video": {
-                    "asl": "https://vimeo.com/846666249/84dc958117"
+                    "asl": "https://vimeo.com/845013831/1e107fa185"
                 }
             },
             {
                 "name": "For in-person meetings",
                 "video": {
-                    "asl": "https://vimeo.com/846666280/e208f87d06"
+                    "asl": "https://vimeo.com/845013881/24286e7e2f"
                 }
             },
             {
                 "name": "For engagement documents",
                 "video": {
-                    "asl": "https://vimeo.com/846666302/5906849a8f"
+                    "asl": "https://vimeo.com/845013905/6095840154"
                 }
             },
             {
@@ -2394,7 +2909,8 @@
             {
                 "name": "Notifications",
                 "video": {
-                    "asl": "https://vimeo.com/846663972/a727c3ec89"
+                    "asl": "https://vimeo.com/846663972/a727c3ec89",
+                    "lsq": "https://vimeo.com/861747658/af56ea049f"
                 }
             },
             {
@@ -2445,31 +2961,60 @@
             },
             {
                 "name": "Skip to:",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014209/fd8081cfab"
+                }
             },
             {
                 "name": "Contacting you with notifications",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014246/b49b89c317"
+                }
             },
             {
                 "name": "Preferred notification method (required)",
                 "namespace": "notifications_settings-individual"
             },
             {
-                "name": "As a Consultation Participant",
+                "name": "Participating in engagements",
                 "namespace": "notifications_settings-individual"
+            },
+            {
+                "name": "As a Consultation Participant",
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014282/1e4a2934e3"
+                }
             },
             {
                 "name": "As an accessibility consultant",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014370/c9d06aa0d7"
+                }
             },
             {
                 "name": "As a Community Connector",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014447/86340a2fd9"
+                }
             },
             {
                 "name": "New reports uploaded",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014478/dd603917b9"
+                }
+            },
+            {
+                "name": "Finding out about new projects",
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014522/6b16a8a136"
+                }
             },
             {
                 "name": "Please indicate how you would like to be notified of new projects.",
@@ -2477,15 +3022,31 @@
             },
             {
                 "name": "Please indicate which type of organizations’ projects you would like to notified about.",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014564/6add3bd4d5"
+                }
+            },
+            {
+                "name": "Please indicate which type of projects you would like to notified about.",
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014589/77c613a9a8"
+                }
             },
             {
                 "name": "Please indicate which type of engagements you would like to be notified about.",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014621/be1964a5c7"
+                }
             },
             {
                 "name": "Keeping my information up to date",
-                "namespace": "notifications_settings-individual"
+                "namespace": "notifications_settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/845014685/c7af33e8ef"
+                }
             },
             {
                 "name": "Please indicate how you would like to be notified to review and update your information.",
@@ -2559,7 +3120,7 @@
             {
                 "name": "Projects I am contracted for",
                 "video": {
-                    "asl": "https://vimeo.com/845066057/8b3a3c70d1"
+                    "asl": "https://vimeo.com/845066100/625bbcbd99"
                 }
             },
             {
@@ -2580,7 +3141,7 @@
             {
                 "name": "Projects I am participating in",
                 "video": {
-                    "asl": "https://vimeo.com/845066100/625bbcbd99",
+                    "asl": "https://vimeo.com/845066057/8b3a3c70d1",
                     "lsq": "https://vimeo.com/850171798/6e48dc7160"
                 }
             },
@@ -2592,6 +3153,20 @@
             },
             {
                 "name": "Draft"
+            }
+        ]
+    },
+    "projects.my-projects": {
+        "interpretations": [
+            {
+                "name": "Projects",
+                "video": {
+                    "asl": "https://vimeo.com/845013591/03625eb673",
+                    "lsq": "https://vimeo.com/861747485/36f98ae704"
+                }
+            },
+            {
+                "name": "Browse all projects"
             }
         ]
     },
@@ -3272,6 +3847,22 @@
                 "videos": {
                     "asl": "https://vimeo.com/846666084/81b9c20fdd"
                 }
+            }
+        ]
+    },
+    "notification-list.show": {
+        "interpretations": [
+            {
+                "name": "Notification List",
+                "video": {
+                    "asl": "https://vimeo.com/845014731/0fff24b4e4"
+                }
+            },
+            {
+                "name": "Regulated organizations"
+            },
+            {
+                "name": "Community organizations"
             }
         ]
     }

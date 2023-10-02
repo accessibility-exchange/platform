@@ -4,7 +4,13 @@
         <h1>
             {{ __('Settings') }}
         </h1>
-        <x-interpretation name="{{ __('Settings', [], 'en') }}" />
+        @if ($user->context === 'individual')
+            <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-individual" />
+        @elseif ($user->context === 'organization')
+            <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-organization" />
+        @elseif ($user->context === 'regulated-organization')
+            <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-regulated_organization" />
+        @endif
     </x-slot>
 
     <h2>{{ __('For consultations') }}</h2>

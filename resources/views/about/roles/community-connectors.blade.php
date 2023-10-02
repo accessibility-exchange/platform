@@ -47,8 +47,14 @@
             <div class="grid">
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and build your Community Connector profile') }}</h3>
-                    <x-interpretation
-                        name="{{ __('1. Sign up for the website and build your Community Connector profile', [], 'en') }}" />
+                    @if (request()->localizedRouteIs('about.individual-community-connectors'))
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Community Connector profile', [], 'en') }}" />
+                    @else
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Community Connector profile', [], 'en') }}"
+                            namespace="community_connectors-individual" />
+                    @endif
                     <p>{{ __('Share some information about yourself, including which communities you are connected to, so governments and businesses can get to know you and how you may be able to help them.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-community-connectors'))

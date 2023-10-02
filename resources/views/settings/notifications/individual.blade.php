@@ -68,6 +68,8 @@
         </div>
 
         <h3 id="{{ Str::slug(__('Participating in engagements')) }}">{{ __('Participating in engagements') }}</h3>
+        <x-interpretation name="{{ __('Participating in engagements', [], 'en') }}"
+            namespace="notifications_settings-individual" />
 
         @if ($user->individual->isParticipant())
             <h4>{{ __('As a Consultation Participant') }}</h4>
@@ -147,6 +149,8 @@
         </fieldset>
 
         <h3 id="{{ Str::slug(__('Finding out about new projects')) }}">{{ __('Finding out about new projects') }}</h3>
+        <x-interpretation name="{{ __('Finding out about new projects', [], 'en') }}"
+            namespace="notifications_settings-individual" />
 
         <div x-data="{ notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->notification_settings->get('projects.channels', []))) }} }">
             <fieldset class="field @error('notification_settings.projects.channels') field--error @enderror">
@@ -190,6 +194,9 @@
             <fieldset class="field @error('notification_settings.projects.types') field--error @enderror"
                 x-show="notifyOfProjects.length > 0" x-cloak>
                 <legend>{{ __('Please indicate which type of projects you would like to notified about.') }}</legend>
+                <x-interpretation
+                    name="{{ __('Please indicate which type of projects you would like to notified about.', [], 'en') }}"
+                    namespace="notifications_settings-individual" />
 
                 <x-hearth-hint for="project_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="notification_settings[projects][types]" :options="$projectNotificationTypes" :checked="old(

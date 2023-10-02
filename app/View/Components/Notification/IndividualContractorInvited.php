@@ -30,7 +30,7 @@ class IndividualContractorInvited extends Notification
                 'invitationable' => $this->invitationable->getTranslation('name', locale()),
             ]
         );
-        $this->interpretation = __('You have been invited as a', [], 'en');
+        $this->interpretation = __('You have been invited as a :role', ['role' => IndividualRole::labels()[$this->invitation->role]], 'en');
 
         parent::__construct($notification);
     }

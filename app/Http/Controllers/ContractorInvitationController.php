@@ -39,7 +39,7 @@ class ContractorInvitationController extends Controller
 
         flash(
             __('You have joined :invitationable as a :role', ['invitationable' => $invitation->invitationable->name, 'role' => $invitation->role]),
-            'success|'.__('You have joined.', [], 'en')
+            'success|'.__('You have joined as a :role', ['role' => $invitation->role], 'en')
         );
 
         return redirect(localized_route('dashboard'));

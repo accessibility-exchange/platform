@@ -53,9 +53,15 @@
             <div class="grid">
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and build your Accessibility Consultant profile') }}</h3>
-                    <x-interpretation
-                        name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
-                        namespace="accessibility_consultants" />
+                    @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
+                            namespace="accessibility_consultants-individual" />
+                    @else
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
+                            namespace="accessibility_consultants" />
+                    @endif
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))

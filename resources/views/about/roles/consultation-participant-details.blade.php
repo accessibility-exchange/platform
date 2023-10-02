@@ -13,6 +13,7 @@
             <h1 id="what-we-ask-for">
                 {{ __('What information do we ask for?') }}
             </h1>
+            <x-interpretation name="{{ __('What information do we ask for?', [], 'en') }}" />
             <p class="h4">
                 {{ __('Information that we ask Consultation Participants, Accessibility Consultants, and Community Connectors to share.') }}
             </p>
@@ -24,8 +25,10 @@
             @include('about.partials.what-we-ask-for-navigation')
             <div class="stack">
                 <h2>{{ __('Consultation Participants — Individual') }}</h2>
+                <x-interpretation name="{{ __('Consultation Participants — Individual', [], 'en') }}" />
                 <p>{{ __('We ask Consultation Participants for the following information:') }}</p>
                 <x-expander :summary="__('Lived or living experience')" level="3">
+                    <x-interpretation name="{{ __('Lived or living experience', [], 'en') }}" />
                     <p>{{ __('Consultation Participants are required to share their province/territory, their city/town, and whether or not they identify as someone with a disability, Deaf or a supporter. All of the remaining questions are optional. For multiple choice questions, there is an option to select “prefer not to answer”.') }}
                     </p>
                     <ul>
@@ -44,6 +47,8 @@
                         </li>
                     </ul>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-lived_experiences" />
                     <p>{{ __('When Federally Regulated Organizations use the matching service to find a group of Consultation Participants, The Accessibility Exchange will create a diverse group of participants in terms of being disabled, Deaf, and other identities. This diversity can maximize the number of perspectives which can be represented.') }}
                     </p>
                     <p>{{ __('Sometimes, governments and businesses also want to talk to people with specific experiences. For example, people from a certain location. Or, people who speak a certain first language.') }}
@@ -52,24 +57,31 @@
                     </p>
                 </x-expander>
                 <x-expander :summary="__('Access needs')" level="3">
+                    <x-interpretation name="{{ __('Access needs', [], 'en') }}" />
                     <p>{{ __('We will ask you about what your access needs are to participate in either an in-person meeting or virtual meeting. We also ask whether you have a preference for either in-person or virtual meetings.') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-access_needs" />
                     <p>{{ __('Once you confirm your participation for an engagement, we share your access needs with the government or business that you are working with. This will help them seek out the appropriate service providers to meet your access need(s).') }}
                     </p>
                     <p>{{ __('Your preferences for in-person or virtual engagements will determine what projects and engagements you are matched to.') }}
                     </p>
                 </x-expander>
                 <x-expander :summary="__('Communication and consultation preferences')" level="3">
+                    <x-interpretation name="{{ __('Communication and consultation preferences', [], 'en') }}" />
                     <p>{{ __('We will ask you about what is the best way to contact you, and your contact information. We will also ask you about whether you have a preference for either in-person or virtual meetings.') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-communication_and_consultation_preferences" />
                     <p>{{ __('Once you confirm your participation for an engagement, we will share your preferred contact method and your contact information with the government or business. This information enables them to contact you to discuss the details of your participation.') }}
                     </p>
                     <p>{{ __('Your preferences for in-person or virtual engagements will determine what projects and engagements you are matched to.') }}
                     </p>
                 </x-expander>
                 <x-expander :summary="__('Language preferences')" level="3">
+                    <x-interpretation name="{{ __('Language preferences', [], 'en') }}" />
                     <p>{{ __('We will ask you to indicate:') }}
                     <ul>
                         <li>{{ __('your preferred language for using this website') }}</li>
@@ -77,18 +89,26 @@
                     </ul>
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-language_preferences" />
                     <p>{{ __('The language you select for using this website sets the website into that language.') }}
                     <p>{{ __('Your first language will help us match you to a project that may be looking for someone who uses that first language.') }}
                 </x-expander>
                 <x-expander :summary="__('Payment information')" level="3">
+                    <x-interpretation name="{{ __('Payment information', [], 'en') }}" />
                     <p>{{ __('We will ask you for your preferred method of payment.') }}</p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-payment_information" />
                     <p>{{ __('This will help you get paid in the way that you want.') }}</p>
                 </x-expander>
                 <x-expander :summary="__('Areas of interest') . ' ' . __('(optional)')" level="3">
+                    <x-interpretation name="{{ __('Areas of interest', [], 'en') }}" />
                     <p>{{ __('The Accessible Canada Act has outlined seven main areas that governments and businesses have to make accessible. If you would like, you may indicate which areas are of interest to you. You do not have to answer this question as it is optional. ') }}
                     </p>
                     <h4>{{ __('Why do we ask for this information?') }}</h4>
+                    <x-interpretation name="{{ __('Why do we ask for this information?', [], 'en') }}"
+                        namespace="why_do_we_ask-areas_of_interest" />
                     <p>{{ __('Providing this information will help us match you to projects that are working on areas of interest to you.') }}
                     </p>
                 </x-expander>
