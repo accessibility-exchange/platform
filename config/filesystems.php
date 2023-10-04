@@ -36,8 +36,12 @@ return [
         ],
 
         'seeds' => [
-            'driver' => 'local',
-            'root' => storage_path('app/seeds'),
+            'driver' => 's3',
+            'key' => env('MINIO_ACCESS_KEY'),
+            'secret' => env('MINIO_SECRET_KEY'),
+            'region' => env('MINIO_REGION'),
+            'bucket' => env('MINIO_PROJECT_BUCKET'),
+            'endpoint' => env('MINIO_ENDPOINT'),
         ],
 
         'public' => [
