@@ -37,11 +37,13 @@ return [
 
         'seeds' => [
             'driver' => 's3',
+            'path' => 'seeds',
             'key' => env('MINIO_ACCESS_KEY'),
             'secret' => env('MINIO_SECRET_KEY'),
             'region' => env('MINIO_REGION'),
             'bucket' => env('MINIO_PROJECT_BUCKET'),
-            'endpoint' => env('MINIO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'endpoint' => 'https://' . env('MINIO_ENDPOINT'),
         ],
 
         'public' => [

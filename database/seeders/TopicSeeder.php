@@ -23,7 +23,7 @@ class TopicSeeder extends Seeder
             $environment = config('app.env');
         }
 
-        if (Storage::disk('seeds')->exists(sprintf('topics.%s.json', $environment))) {
+        if (Storage::disk('seeds')->exists(sprintf('%s/topics.%s.json', config('filesystems.disks.seeds.path'), $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
                 DB::statement('SET foreign_key_checks=0');
@@ -31,7 +31,7 @@ class TopicSeeder extends Seeder
                 DB::statement('SET foreign_key_checks=1');
             }
 
-            $topics = json_decode(Storage::disk('seeds')->get(sprintf('topics.%s.json', $environment)), true);
+            $topics = json_decode(Storage::disk('seeds')->get(sprintf('%s/topics.%s.json', config('filesystems.disks.seeds.path'), $environment)), true);
 
             foreach ($topics as $topic) {
                 Topic::firstOrCreate([

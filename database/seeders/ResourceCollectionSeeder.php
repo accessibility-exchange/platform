@@ -26,7 +26,7 @@ class ResourceCollectionSeeder extends Seeder
         }
 
         // TODO need to write handling of attachments
-        if (false && Storage::disk('seeds')->exists(sprintf('resource_collections.%s.json', $environment))) {
+        if (false && Storage::disk('seeds')->exists(sprintf('%s/resource_collections.%s.json', config('filesystems.disks.seeds.path'), $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
                 DB::statement('SET foreign_key_checks=0');
@@ -34,7 +34,7 @@ class ResourceCollectionSeeder extends Seeder
                 DB::statement('SET foreign_key_checks=1');
             }
 
-            $resourceCollections = json_decode(Storage::disk('seeds')->get(sprintf('resource_collections.%s.json', $environment)), true);
+            $resourceCollections = json_decode(Storage::disk('seeds')->get(sprintf('%s/resource_collections.%s.json', config('filesystems.disks.seeds.path'), $environment)), true);
 
             foreach ($resourceCollections as $resourceCollection) {
                 ResourceCollection::firstOrCreate([

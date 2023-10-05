@@ -18,7 +18,7 @@ class IdentitySeeder extends Seeder
             $environment = config('app.env');
         }
 
-        if (Storage::disk('seeds')->exists(sprintf('identities.%s.json', $environment))) {
+        if (Storage::disk('seeds')->has(sprintf('%s/identities.%s.json', config('filesystems.disks.seeds.path'), $environment))) {
             // if trucate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
                 DB::statement('SET foreign_key_checks=0');
@@ -26,7 +26,7 @@ class IdentitySeeder extends Seeder
                 DB::statement('SET foreign_key_checks=1');
             }
 
-            $identities = json_decode(Storage::disk('seeds')->get(sprintf('identities.%s.json', $environment)), true);
+            $identities = json_decode(Storage::disk('seeds')->get(sprintf('%s/identities.%s.json', config('filesystems.disks.seeds.path'), $environment)), true);
 
             foreach ($identities as $identity) {
                 Identity::firstOrCreate([

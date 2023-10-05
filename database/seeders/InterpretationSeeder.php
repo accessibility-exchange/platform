@@ -31,8 +31,7 @@ class InterpretationSeeder extends Seeder
         }
 
         if (Storage::disk('seeds')->exists(sprintf('interpretations.%s.json', $environment))) {
-            $interpretations = json_decode(Storage::disk('seeds')->get(sprintf('interpretations.%s.json', $environment)), true);
-
+            $interpretations = json_decode(Storage::disk('seeds')->get(sprintf('%s/interpretations.%s.json', config('filesystems.disks.seeds.path'), $environment)), true);
             foreach ($interpretations as $interpretation) {
                 Interpretation::firstOrCreate([
                     'name' => $interpretation['name'],
