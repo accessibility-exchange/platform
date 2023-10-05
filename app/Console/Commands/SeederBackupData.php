@@ -15,7 +15,7 @@ class SeederBackupData extends Command
      */
     protected $signature = 'db:seed:backup
                             {--a|all : Whether to run through all available backups/restores in config}?
-                            {--env= : Specify an environment configured in backup.filament_seeders.environments}?
+                            {--from= : Specify an environment configured in backup.filament_seeders.environments}?
                             {--remove : Remove backed up files}?
                             {--restore : Restore the filament table}?
                             {--t|table=* : Create/remove specific table file}?
