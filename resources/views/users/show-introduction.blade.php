@@ -12,7 +12,7 @@
     </h2>
 
     <!-- Video -->
-    @if ($user->introduction()[locale()])
+    @if (array_key_exists(locale(), $user->introduction()))
         <div class="frame">
             <div class="stack w-full" x-data="vimeoPlayer({
                 url: '{{ $user->introduction()[locale()] }}',

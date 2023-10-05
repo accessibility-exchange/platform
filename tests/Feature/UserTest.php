@@ -12,10 +12,12 @@ use App\Models\User;
 test('users can view the introduction', function () {
     $user = User::factory()->create();
 
+    $user->update(['context' => 'individual']);
+
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for individuals.');
+    $response->assertSee('https://vimeo.com/850314990/05587fe4df?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -34,7 +36,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for community organizations.');
+    $response->assertSee('https://vimeo.com/850315035/87b6129a8b?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -53,7 +55,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for regulated organizations.');
+    $response->assertSee('https://vimeo.com/850315068/bc26c699cb?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -72,7 +74,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for training participants.');
+    $response->assertSee('Introduction video');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
