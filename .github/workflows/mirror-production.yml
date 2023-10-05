@@ -31,4 +31,5 @@ jobs:
       - name: Push to GitLab
         run: |
           ssh-keyscan git.kube.v1.colab.coop >> ~/.ssh/known_hosts
+          git pull gitlab production
           git push gitlab production:production
