@@ -16,7 +16,7 @@
                     @livewire('email-results', ['quiz' => $course->quiz])
                     <form action="{{ localized_route('courses.show', $course) }}">
                         <button>
-                            @svg('heroicon-o-arrow-left') {{ __('Back to :course', ['course' => $course->title]) }}
+                            @svg('heroicon-o-arrow-left') {{ __('Back to course page') }}
                         </button>
                     </form>
                 </div>

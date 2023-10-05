@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-const { Config } = require("tailwindcss");
+import typography from '@tailwindcss/typography';
 
-/**
- * @type {Config} config
- **/
-module.exports = {
-    content: ["./resources/**/*.blade.php", "./resources/**/*.js", "./vendor/filament/**/*.blade.php"],
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./vendor/filament/**/*.blade.php"
+    ],
     darkMode: 'class',
     theme: {
         extend: {
@@ -96,17 +96,17 @@ module.exports = {
             "fluid-xl": "clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem)",
             "fluid-2xl": "clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem)",
             "fluid-3xl": "clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem)",
-            xs: ["0.75rem", { lineHeight: "1.5" }],
-            sm: ["0.875rem", { lineHeight: "1.5" }],
-            base: ["1rem", { lineHeight: "1.5" }],
-            lg: ["1.1rem", { lineHeight: "1.5" }],
-            xl: ["1.25rem", { lineHeight: "1.5" }],
-            "2xl": ["1.5rem", { lineHeight: "1.4" }],
-            "3xl": ["2rem", { lineHeight: "1.4" }],
-            "4xl": ["2.5rem", { lineHeight: "1.4" }],
-            "5xl": ["3rem", { lineHeight: "1" }],
-            "6xl": ["3.75rem", { lineHeight: "1" }],
-            "7xl": ["4.5rem", { lineHeight: "1" }]
+            xs: ["0.75rem", {lineHeight: "1.5"}],
+            sm: ["0.875rem", {lineHeight: "1.5"}],
+            base: ["1rem", {lineHeight: "1.5"}],
+            lg: ["1.1rem", {lineHeight: "1.5"}],
+            xl: ["1.25rem", {lineHeight: "1.5"}],
+            "2xl": ["1.5rem", {lineHeight: "1.4"}],
+            "3xl": ["2rem", {lineHeight: "1.4"}],
+            "4xl": ["2.5rem", {lineHeight: "1.4"}],
+            "5xl": ["3rem", {lineHeight: "1"}],
+            "6xl": ["3.75rem", {lineHeight: "1"}],
+            "7xl": ["4.5rem", {lineHeight: "1"}]
         },
         fontWeight: {
             thin: "100",
@@ -200,6 +200,7 @@ module.exports = {
             72: "18rem",
             80: "20rem",
             96: "24rem",
+            100: "25rem",
             192: "48rem",
             240: "60rem"
         },
@@ -210,7 +211,5 @@ module.exports = {
     corePlugins: {
         preflight: false,
     },
-    plugins: [
-        require('@tailwindcss/typography')
-    ]
-};
+    plugins: [typography]
+}
