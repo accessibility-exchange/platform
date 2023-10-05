@@ -12,9 +12,25 @@
     </h2>
 
     <!-- Video -->
-    <div class="frame">
-        {{ $user->introduction() }}
-    </div>
+    @if ($user->introduction()[locale()])
+        <div class="frame">
+            <div class="stack w-full" x-data="vimeoPlayer({
+                url: '{{ $user->introduction()[locale()] }}',
+                byline: false,
+                dnt: true,
+                pip: true,
+                portrait: false,
+                responsive: true,
+                speed: true,
+                title: false
+            })" @ended="player().setCurrentTime(0)">
+            </div>
+        </div>
+    @else
+        <div class="frame">
+            {{ __('Introduction video') }}
+        </div>
+    @endif
 
     <div class="center repel">
         <a class="cta secondary" href="{{ $skipTo }}">{{ __('Skip for now') }}</a>
