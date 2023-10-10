@@ -36,7 +36,8 @@ class IdentitySeeder extends Seeder
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info(__(":seeder seed file wasn't found, using default values.", ['seeder' => class_basename($this)]));
+
             $identities = [
                 [
                     'name' => __('Children (under 15)'),
