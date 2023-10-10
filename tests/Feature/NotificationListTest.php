@@ -134,7 +134,7 @@ test('individual users can add and remove organizations from their notification 
     expect($organization->isNotifying($nullUser))->toBeFalse();
 });
 
-test('add notificationable validation errors', function ($data, ?array $errors = null) {
+test('add notificationable validation errors', function ($data, array $errors = null) {
     $user = User::factory()->create();
     $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 

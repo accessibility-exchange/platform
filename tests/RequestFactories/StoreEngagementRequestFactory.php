@@ -3,8 +3,9 @@
 namespace Tests\RequestFactories;
 
 use App\Models\Project;
-use function Pest\Faker\fake;
 use Worksome\RequestFactories\RequestFactory;
+
+use function Pest\Faker\fake;
 
 class StoreEngagementRequestFactory extends RequestFactory
 {

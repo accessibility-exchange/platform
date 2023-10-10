@@ -136,7 +136,7 @@ test('users can view quiz results on finishing it', function () {
         'user_id' => $user->id,
         'course_id' => $course->id,
     ]);
-    $this->assertNotNull(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->received_certificate_at);
+    expect(DB::table('course_user')->where([['course_id', $course->id], ['user_id', $user->id]])->first()->received_certificate_at)->not->toBeNull();
     $this->followRedirects($response)->assertSee(__('You have now completed this course.'));
 });
 

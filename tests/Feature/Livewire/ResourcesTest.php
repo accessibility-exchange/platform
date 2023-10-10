@@ -12,6 +12,7 @@ use Database\Seeders\ContentTypeSeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {

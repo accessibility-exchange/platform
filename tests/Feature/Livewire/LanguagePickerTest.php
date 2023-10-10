@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Livewire\LanguagePicker;
-use function Pest\Livewire\livewire;
 use Spatie\LaravelOptions\Options;
+
+use function Pest\Livewire\livewire;
 
 test('language can be added', function () {
     livewire(LanguagePicker::class, ['languages' => ['en'], 'availableLanguages' => Options::forArray(['en', 'fr', 'es', 'de', 'pt'])->toArray()])

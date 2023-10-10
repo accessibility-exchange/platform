@@ -66,7 +66,8 @@
         "pestphp/pest-plugin-livewire": "^2.1",
         "phpunit/phpunit": "^10.0",
         "plannr/laravel-fast-refresh-database": "^1.1",
-        "spatie/laravel-ray": "^1.29"
+        "spatie/laravel-ray": "^1.29",
+        "spatie/x-ray": "^1.1"
     },
     "config": {
         "optimize-autoloader": true,
@@ -115,7 +116,10 @@
             "@php artisan ide-helper:meta",
             "@php artisan filament:upgrade"
         ],
-        "analyze": "vendor/bin/phpstan analyse",
+        "analyze": [
+            "vendor/bin/phpstan analyse",
+            "vendor/bin/x-ray app --compact --verbose"
+        ],
         "format": "vendor/bin/pint",
         "localize": [
             "@php artisan localize en,fr --remove-missing",

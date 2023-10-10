@@ -4,6 +4,7 @@ use App\Filament\Resources\InterpretationResource;
 use App\Models\Interpretation;
 use App\Models\User;
 use Illuminate\Support\Str;
+
 use function Pest\Livewire\livewire;
 
 test('namespace generated from route', function () {

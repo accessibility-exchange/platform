@@ -5,6 +5,7 @@ use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+
 use function Pest\Livewire\livewire;
 
 test('ModuleContent mounts with status about module for the user', function () {
@@ -12,10 +13,10 @@ test('ModuleContent mounts with status about module for the user', function () {
     $this->actingAs($user);
     $module = Module::factory()->for(Course::factory()->create())->create();
     $moduleContent = livewire(ModuleContent::class, ['module' => $module]);
-    $this->assertEquals($moduleContent->user, $user);
-    $this->assertEquals($moduleContent->module, $module);
-    $this->assertEquals($moduleContent->startedContentAt, null);
-    $this->assertEquals($moduleContent->finishedContentAt, null);
+    expect($user)->toEqual($moduleContent->user);
+    expect($module)->toEqual($moduleContent->module);
+    expect(null)->toEqual($moduleContent->startedContentAt);
+    expect(null)->toEqual($moduleContent->finishedContentAt);
 });
 
 test('On player start, intermediate table values are set', function () {
@@ -33,7 +34,7 @@ test('On player start, intermediate table values are set', function () {
         'user_id' => $user->id,
         'module_id' => $module->id,
     ]);
-    $this->assertNull(DB::table('module_user')->where('user_id', $user->id)->first()->started_content_at ?? null);
+    expect(DB::table('module_user')->where('user_id', $user->id)->first()->started_content_at ?? null)->toBeNull();
     $moduleContent->emit('onPlayerStart');
     $this->assertDatabaseHas('course_user', [
         'user_id' => $user->id,
@@ -55,13 +56,13 @@ test('On player end, intermediate table values are updated', function () {
 
     $this->assertDatabaseCount('course_user', 1);
     $this->assertDatabaseCount('module_user', 1);
-    $this->assertNull(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at);
+    expect(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at)->toBeNull();
 
     $moduleContent->emit('onPlayerEnd');
 
     $this->assertDatabaseCount('course_user', 1);
     $this->assertDatabaseCount('module_user', 1);
-    $this->assertNotNull(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at);
+    expect(DB::table('module_user')->where([['module_id', $module->id], ['user_id', $user->id]])->first()->finished_content_at)->not->toBeNull();
 });
 
 test('Users have to complete all the modules in a course to finish a course', function () {
@@ -77,5 +78,5 @@ test('Users have to complete all the modules in a course to finish a course', fu
     $moduleContent->emit('onPlayerStart');
     $moduleContent->emit('onPlayerEnd');
 
-    $this->assertTrue($course->isFinished($user));
+    expect($course->isFinished($user))->toBeTrue();
 });

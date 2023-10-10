@@ -3,7 +3,7 @@
 </x-slot>
 
 <x-slot name="header">
-    <div class="center center:wide stack pt-4 pb-12">
+    <div class="center center:wide stack pb-12 pt-4">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
         </ol>
@@ -13,7 +13,7 @@
         </h1>
 
         @if ($resourceCollection->description)
-            {!! Str::markdown($resourceCollection->description, SAFE_MARKDOWN_OPTIONS) !!}
+            {!! Str::markdown($resourceCollection->description, config('markdown')) !!}
         @endif
     </div>
 </x-slot>

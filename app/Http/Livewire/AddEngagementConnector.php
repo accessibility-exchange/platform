@@ -34,7 +34,7 @@ class AddEngagementConnector extends Component
 
     public string $organization = '';
 
-    public function __invoke(Container $container, Route $route, ?Engagement $engagement = null)
+    public function __invoke(Container $container, Route $route, Engagement $engagement = null)
     {
         return parent::__invoke($container, $route);
     }

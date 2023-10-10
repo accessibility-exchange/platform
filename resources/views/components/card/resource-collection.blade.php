@@ -8,6 +8,6 @@
     </x-slot>
     <p><strong>{{ __('Collection') }}</strong></p>
     @isset($model->description)
-        {!! Str::markdown($model->description, SAFE_MARKDOWN_OPTIONS) !!}
+        {!! Str::markdown($model->description, config('markdown')) !!}
     @endisset
 </x-card>

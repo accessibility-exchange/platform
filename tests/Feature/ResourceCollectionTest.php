@@ -1,15 +1,14 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Filament\Resources\ResourceCollectionResource;
 use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
-use function Pest\Livewire\livewire;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
+
+use function Pest\Livewire\livewire;
 
 test('resource collections can be translated', function () {
     $resourceCollection = ResourceCollection::factory()->create();
@@ -23,19 +22,19 @@ test('resource collections can be translated', function () {
     $resourceCollection->setTranslation('description', 'en', $descriptionTranslations['en']);
     $resourceCollection->setTranslation('description', 'fr', $descriptionTranslations['fr']);
 
-    $this->assertEquals($titleTranslations['en'], $resourceCollection->title);
-    $this->assertEquals($descriptionTranslations['en'], $resourceCollection->description);
+    expect($resourceCollection->title)->toEqual($titleTranslations['en']);
+    expect($resourceCollection->description)->toEqual($descriptionTranslations['en']);
     App::setLocale('fr');
-    $this->assertEquals($titleTranslations['fr'], $resourceCollection->title);
-    $this->assertEquals($descriptionTranslations['fr'], $resourceCollection->description);
+    expect($resourceCollection->title)->toEqual($titleTranslations['fr']);
+    expect($resourceCollection->description)->toEqual($descriptionTranslations['fr']);
 
-    $this->assertEquals($titleTranslations['en'], $resourceCollection->getTranslation('title', 'en'));
-    $this->assertEquals($descriptionTranslations['en'], $resourceCollection->getTranslation('description', 'en'));
-    $this->assertEquals($titleTranslations['fr'], $resourceCollection->getTranslation('title', 'fr'));
-    $this->assertEquals($descriptionTranslations['fr'], $resourceCollection->getTranslation('description', 'fr'));
+    expect($resourceCollection->getTranslation('title', 'en'))->toEqual($titleTranslations['en']);
+    expect($resourceCollection->getTranslation('description', 'en'))->toEqual($descriptionTranslations['en']);
+    expect($resourceCollection->getTranslation('title', 'fr'))->toEqual($titleTranslations['fr']);
+    expect($resourceCollection->getTranslation('description', 'fr'))->toEqual($descriptionTranslations['fr']);
 
-    $this->assertEquals($titleTranslations, $resourceCollection->getTranslations('title'));
-    $this->assertEquals($descriptionTranslations, $resourceCollection->getTranslations('description'));
+    expect($resourceCollection->getTranslations('title'))->toEqual($titleTranslations);
+    expect($resourceCollection->getTranslations('description'))->toEqual($descriptionTranslations);
 
     $this->expectException(AttributeIsNotTranslatable::class);
     $resourceCollection->setTranslation('user_id', 'en', 'user_id in English');

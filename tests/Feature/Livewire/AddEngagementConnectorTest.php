@@ -10,8 +10,9 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
-use function Pest\Livewire\livewire;
 use Spatie\LaravelOptions\Options;
+
+use function Pest\Livewire\livewire;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);

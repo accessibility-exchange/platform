@@ -13,7 +13,7 @@ class RegulatedOrganizationPolicy
     use HandlesAuthorization;
     use UserCanViewPublishedContent;
 
-    public function before(User $user, string $ability): null|Response
+    public function before(User $user, string $ability): ?Response
     {
         if ($user->checkStatus('suspended') && $ability !== 'view') {
             return Response::deny(__('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.'));

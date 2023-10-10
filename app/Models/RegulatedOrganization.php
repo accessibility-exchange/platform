@@ -41,13 +41,13 @@ class RegulatedOrganization extends Model
     use GeneratesMultilingualSlugs;
     use HasDisplayRegion;
     use HasFactory;
-    use HasMultipageEditingAndPublishing;
-    use HasStatus;
-    use HasTranslations;
-    use HasTranslatableSlug;
     use HasInvitations;
     use HasMembers;
     use HasMultimodalTranslations;
+    use HasMultipageEditingAndPublishing;
+    use HasStatus;
+    use HasTranslatableSlug;
+    use HasTranslations;
     use Notifiable;
 
     protected $attributes = [

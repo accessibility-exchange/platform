@@ -41,12 +41,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasMergedRelationships;
     use HasStatus;
     use Notifiable;
+    use SchemalessAttributesTrait;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
-    use SchemalessAttributesTrait;
-    use HasMergedRelationships;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -172,7 +172,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $this->isAdministrator();
     }
 
-    public function teamInvitation(): Invitation|null
+    public function teamInvitation(): ?Invitation
     {
         return Invitation::where('email', $this->email)->whereIn('invitationable_type', ['App\Models\Organization', 'App\Models\RegulatedOrganization'])->first() ?? null;
     }

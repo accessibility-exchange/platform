@@ -7,6 +7,7 @@ use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+
 use function Pest\Laravel\{actingAs};
 
 test('create invitation', function () {
@@ -84,7 +85,7 @@ test('accept invitation request', function () {
     expect(flash()->class)->toBe('success');
     expect(flash()->message)->toBe(__('invitation.accept_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
 
-    $this->assertTrue($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
     $response->assertRedirect(localized_route('dashboard'));
 });
 

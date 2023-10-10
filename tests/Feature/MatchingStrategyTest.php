@@ -140,7 +140,7 @@ test('matching strategy disability and deaf group summary accessor', function ($
     expect(array_values($matchingStrategy->disability_and_deaf_group_summary))->toEqual($expected);
 })->with('matchingStrategyDisabilityAndDeafGroupSummary');
 
-test('matching strategy other identities summary accessor', function ($data, array $identities, ?array $expected = null) {
+test('matching strategy other identities summary accessor', function ($data, array $identities, array $expected = null) {
     $this->seed(LanguageSeeder::class);
     $matchingStrategy = MatchingStrategy::factory()->create($data);
     $expectedIdentities = [];

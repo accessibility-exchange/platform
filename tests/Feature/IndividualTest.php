@@ -216,7 +216,7 @@ test('users can create individual pages', function () {
 
     $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
-    $this->assertTrue($individual->checkStatus('published'));
+    expect($individual->checkStatus('published'))->toBeTrue();
 
     $response = $this->actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
@@ -242,7 +242,7 @@ test('users can create individual pages', function () {
     ]);
     $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
-    $this->assertFalse($individual->checkStatus('published'));
+    expect($individual->checkStatus('published'))->toBeFalse();
 
     $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
@@ -885,7 +885,7 @@ test('individual pages can be published', function () {
 
     $individual = $individual->fresh();
 
-    $this->assertTrue($individual->checkStatus('published'));
+    expect($individual->checkStatus('published'))->toBeTrue();
 });
 
 test('individual pages can be unpublished', function () {
@@ -900,7 +900,7 @@ test('individual pages can be unpublished', function () {
 
     $individual = $individual->fresh();
 
-    $this->assertTrue($individual->checkStatus('draft'));
+    expect($individual->checkStatus('draft'))->toBeTrue();
 });
 
 test('individual pages cannot be published by other users', function () {
@@ -917,7 +917,7 @@ test('individual pages cannot be published by other users', function () {
     $response->assertForbidden();
 
     $individual = $individual->fresh();
-    $this->assertTrue($individual->checkStatus('draft'));
+    expect($individual->checkStatus('draft'))->toBeTrue();
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {

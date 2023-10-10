@@ -6,8 +6,9 @@ use App\Filament\Resources\IdentityResource\Pages\ListIdentities;
 use App\Models\Identity;
 use App\Models\User;
 use Database\Seeders\IdentitySeeder;
-use function Pest\Livewire\livewire;
 use Spatie\LaravelOptions\Options;
+
+use function Pest\Livewire\livewire;
 
 beforeEach(function () {
     $this->seed(IdentitySeeder::class);

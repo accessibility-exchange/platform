@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\TeamTrainings;
+
 use function Pest\Livewire\livewire;
 
 test('training can be added', function () {

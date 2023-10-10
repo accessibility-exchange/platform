@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Feature\Livewire;
-
 use App\Http\Livewire\Prompt;
 use App\Models\User;
+
 use function Pest\Livewire\livewire;
 
 test('prompt rendered', function () {

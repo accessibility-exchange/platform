@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+
 use function Pest\Livewire\livewire;
 
 test('test searchQuery property change', function () {

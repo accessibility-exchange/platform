@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+
 use function Pest\Livewire\livewire;
 
 test('user can send their succeed test results to themselves', function () {

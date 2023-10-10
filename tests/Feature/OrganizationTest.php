@@ -20,9 +20,10 @@ use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
-use function Pest\Faker\fake;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
+
+use function Pest\Faker\fake;
 
 test('users can create organizations', function () {
     $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
@@ -546,7 +547,7 @@ test('organization pages can be published', function () {
 
     $organization->refresh();
 
-    $this->assertTrue($organization->checkStatus('published'));
+    expect($organization->checkStatus('published'))->toBeTrue();
 });
 
 test('organization pages can be unpublished', function () {
@@ -583,7 +584,7 @@ test('organization pages can be unpublished', function () {
 
     $organization->refresh();
 
-    $this->assertTrue($organization->checkStatus('draft'));
+    expect($organization->checkStatus('draft'))->toBeTrue();
 });
 
 test('organization pages cannot be published by other users', function () {
@@ -616,7 +617,7 @@ test('organization pages cannot be published by other users', function () {
     $response->assertForbidden();
 
     $organization->refresh();
-    $this->assertTrue($organization->checkStatus('draft'));
+    expect($organization->checkStatus('draft'))->toBeTrue();
 });
 
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
@@ -657,16 +658,16 @@ test('organizations can be translated', function () {
     $organization->setTranslation('name', 'en', 'Name in English');
     $organization->setTranslation('name', 'fr', 'Name in French');
 
-    $this->assertEquals('Name in English', $organization->name);
+    expect($organization->name)->toEqual('Name in English');
     App::setLocale('fr');
-    $this->assertEquals('Name in French', $organization->name);
+    expect($organization->name)->toEqual('Name in French');
 
-    $this->assertEquals('Name in English', $organization->getTranslation('name', 'en'));
-    $this->assertEquals('Name in French', $organization->getTranslation('name', 'fr'));
+    expect($organization->getTranslation('name', 'en'))->toEqual('Name in English');
+    expect($organization->getTranslation('name', 'fr'))->toEqual('Name in French');
 
     $translations = ['en' => 'Name in English', 'fr' => 'Name in French'];
 
-    $this->assertEquals($translations, $organization->getTranslations('name'));
+    expect($organization->getTranslations('name'))->toEqual($translations);
 
     $this->expectException(AttributeIsNotTranslatable::class);
     $organization->setTranslation('locality', 'en', 'Locality in English');
@@ -874,7 +875,7 @@ test('invitation can be accepted', function () {
 
     $response = $this->actingAs($user)->get($acceptUrl);
 
-    $this->assertTrue($organization->fresh()->hasUserWithEmail($user->email));
+    expect($organization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
     $response->assertRedirect(localized_route('dashboard'));
 });
 
@@ -894,7 +895,7 @@ test('invitation cannot be accepted by user with existing membership', function 
 
     $response = $this->from(localized_route('dashboard'))->actingAs($user)->get($acceptUrl);
 
-    $this->assertFalse($other_organization->fresh()->hasUserWithEmail($user->email));
+    expect($other_organization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $response->assertSessionHasErrors();
     $response->assertRedirect(localized_route('dashboard'));
 });
@@ -915,7 +916,7 @@ test('invitation cannot be accepted by different user', function () {
 
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
-    $this->assertFalse($organization->fresh()->hasUserWithEmail($user->email));
+    expect($organization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $response->assertForbidden();
 });
 

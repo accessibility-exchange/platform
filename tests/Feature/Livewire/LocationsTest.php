@@ -2,6 +2,7 @@
 
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Livewire\Locations;
+
 use function Pest\Faker\fake;
 use function Pest\Livewire\livewire;
 
