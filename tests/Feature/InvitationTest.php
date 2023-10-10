@@ -6,10 +6,8 @@ use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-
-uses(RefreshDatabase::class);
+use function Pest\Laravel\{actingAs};
 
 test('create invitation', function () {
     Mail::fake();
@@ -38,7 +36,7 @@ test('create invitation', function () {
     $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
-test('create invitation validation errors', function ($data, $errors) {
+test('create invitation validation errors', function ($data, array $errors) {
     Mail::fake();
 
     $user = User::factory()->create([
@@ -63,9 +61,9 @@ test('create invitation validation errors', function ($data, $errors) {
         'invitationable_type' => get_class($regulatedOrganization),
     ], $data);
 
-    $response = $this->actingAs($user)->post(localized_route('invitations.create'), $postData);
-
-    $response->assertSessionHasErrors($errors);
+    actingAs($user)
+        ->post(localized_route('invitations.create'), $postData)
+        ->assertSessionHasErrors($errors);
 
     Mail::assertNothingOutgoing();
 })->with('storeInvitationRequestValidationErrors');

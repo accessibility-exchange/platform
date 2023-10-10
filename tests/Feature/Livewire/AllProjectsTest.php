@@ -14,11 +14,12 @@ use Carbon\Carbon;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+use function Pest\Livewire\livewire;
 
 test('test searchQuery property change', function () {
     $sampleProjectName = 'Sample Project';
     Project::factory()->create(['name->en' => $sampleProjectName]);
-    $allProjects = $this->livewire(AllProjects::class, ['searchQuery' => ''])
+    $allProjects = livewire(AllProjects::class, ['searchQuery' => ''])
         ->assertSee($sampleProjectName)
         ->set('searchQuery', 'Test')
         ->assertDontSee($sampleProjectName)
@@ -48,7 +49,7 @@ test('test statuses property change', function () {
         'end_date' => Carbon::now()->subDays(5),
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['statuses' => []]);
+    $allProjects = livewire(AllProjects::class, ['statuses' => []]);
     $allProjects->assertSee($upComingProjectName);
     $allProjects->assertSee($inProgressProjectName);
     $allProjects->assertSee($completedProjectName);
@@ -107,7 +108,7 @@ test('test seekings property change', function () {
         'project_id' => $projectSeekingOrganizations->id,
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['seekings' => []]);
+    $allProjects = livewire(AllProjects::class, ['seekings' => []]);
     $allProjects->assertSee($projectSeekingParticipantsName);
     $allProjects->assertSee($projectSeekingConnectorsName);
     $allProjects->assertSee($projectSeekingOrganizationsName);
@@ -150,7 +151,7 @@ test('test initiators property change', function () {
         'projectable_type' => 'App\Models\RegulatedOrganization',
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['initiators' => []]);
+    $allProjects = livewire(AllProjects::class, ['initiators' => []]);
     $allProjects->assertSee($communityOrganizationProjectName);
     $allProjects->assertSee($regulatedOrganizationProjectName);
 
@@ -194,7 +195,7 @@ test('test seekingGroups property change', function () {
     ]);
     $matchingStrategySeekingCognitiveDisabilityExperience->identities()->attach($disabilityTypeCognitive->id);
 
-    $allProjects = $this->livewire(AllProjects::class, ['seekingGroups' => []]);
+    $allProjects = livewire(AllProjects::class, ['seekingGroups' => []]);
     $allProjects->assertSee($projectSeekingDeafExperienceName);
     $allProjects->assertSee($projectSeekingCognitiveDisabilityExperienceName);
 
@@ -250,7 +251,7 @@ test('test meetingTypes property change', function () {
         'meeting_types' => 'phone',
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['meetingTypes' => []]);
+    $allProjects = livewire(AllProjects::class, ['meetingTypes' => []]);
     $allProjects->assertSee($inpersonInterviewProjectName);
     $allProjects->assertSee($virtualWorkshopProjectName);
     $allProjects->assertSee($phoneFocusGroupProjectName);
@@ -289,7 +290,7 @@ test('test compensations property change', function () {
     ]);
     $volunteerEngagement = Engagement::factory()->create(['project_id' => $volunteerProject->id, 'paid' => false]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['compensations' => []]);
+    $allProjects = livewire(AllProjects::class, ['compensations' => []]);
     $allProjects->assertSee($paidProjectName);
     $allProjects->assertSee($volunteerProjectName);
 
@@ -326,7 +327,7 @@ test('test sectors property change', function () {
         'projectable_id' => $parliamentaryOrganization->id,
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['sectors' => []]);
+    $allProjects = livewire(AllProjects::class, ['sectors' => []]);
     $allProjects->assertSee($regulatedPrivateProjectName);
     $allProjects->assertSee($parliamentaryProjectName);
 
@@ -359,7 +360,7 @@ test('test impacts property change', function () {
     ]);
     $communicationImpactProject->impacts()->attach($communicationImpact->id);
 
-    $allProjects = $this->livewire(AllProjects::class, ['impacts' => []]);
+    $allProjects = livewire(AllProjects::class, ['impacts' => []]);
     $allProjects->assertSee($employmentImpactProjectName);
     $allProjects->assertSee($communicationImpactProjectName);
 
@@ -389,7 +390,7 @@ test('test recruitmentMethods property change', function () {
     ]);
     $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => 'connector']);
 
-    $allProjects = $this->livewire(AllProjects::class, ['recruitmentMethods' => []]);
+    $allProjects = livewire(AllProjects::class, ['recruitmentMethods' => []]);
     $allProjects->assertSee($openCallProjectName);
     $allProjects->assertSee($connectorProjectName);
 
@@ -430,7 +431,7 @@ test('test locations property change', function () {
         ],
     ]);
 
-    $allProjects = $this->livewire(AllProjects::class, ['locations' => []]);
+    $allProjects = livewire(AllProjects::class, ['locations' => []]);
     $allProjects->assertSee($regionSpecificProjectName);
     $allProjects->assertSee($locationSpecificProjectName);
 
@@ -463,7 +464,7 @@ test('test selectNone', function () {
     ]);
     $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => 'open-call']);
 
-    $allProjects = $this->livewire(AllProjects::class, ['statuses' => ['upcoming'], 'recruitmentMethods' => ['connector']]);
+    $allProjects = livewire(AllProjects::class, ['statuses' => ['upcoming'], 'recruitmentMethods' => ['connector']]);
     $allProjects->assertSee($upComingProjectName);
     $allProjects->assertDontSee($openCallProjectName);
 

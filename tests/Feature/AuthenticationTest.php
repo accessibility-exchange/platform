@@ -1,61 +1,57 @@
 <?php
 
 use App\Models\User;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertAuthenticatedAs;
+use function Pest\Laravel\assertGuest;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+
+beforeEach(function () {
+    $this->user = User::factory()->create();
+    $this->mixedCaseEmailUser = User::factory()->create(['email' => 'John.Smith@example.com']);
+});
 
 test('login screen can be rendered', function () {
-    $response = $this->get(localized_route('login'));
-
-    $response->assertOk();
+    get(localized_route('login'))->assertOk();
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
-
-    $response = $this->post(localized_route('login-store'), [
-        'email' => $user->email,
+    post(localized_route('login-store'), [
+        'email' => $this->user->email,
         'password' => 'password',
-    ]);
+    ])
+        ->assertRedirect(localized_route('dashboard'));
 
-    $this->assertAuthenticatedAs($user);
-    $response->assertRedirect(localized_route('dashboard'));
+    assertAuthenticatedAs($this->user);
 
     Auth::logout();
 
-    $mixedCaseEmailUser = User::factory()->create(['email' => 'John.Smith@example.com']);
-
-    $response = $this->post(localized_route('login-store'), [
-        'email' => 'John.Smith@example.com',
+    post(localized_route('login-store'), [
+        'email' => $this->mixedCaseEmailUser->email,
         'password' => 'password',
-    ]);
+    ])->assertRedirect(localized_route('dashboard'));
 
-    $this->assertAuthenticatedAs($mixedCaseEmailUser);
-    $response->assertRedirect(localized_route('dashboard'));
+    assertAuthenticatedAs($this->mixedCaseEmailUser);
 });
 
 test('users can sign out', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->post(localized_route('logout'));
-
-    $this->assertGuest();
+    actingAs($this->user)->post(localized_route('logout'));
+    assertGuest();
 });
 
 test('users can quickly exit', function () {
-    $user = User::factory()->create();
+    actingAs($this->user)->post(localized_route('exit'))
+        ->assertRedirect('https://weather.com');
 
-    $response = $this->actingAs($user)->post(localized_route('exit'));
-
-    $this->assertGuest();
-    $response->assertRedirect('https://weather.com');
+    assertGuest();
 });
 
 test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
-
-    $this->post(localized_route('login-store'), [
-        'email' => $user->email,
+    post(localized_route('login-store'), [
+        'email' => $this->user->email,
         'password' => 'wrong-password',
     ]);
 
-    $this->assertGuest();
+    assertGuest();
 });

@@ -6,12 +6,13 @@ use App\Models\Course;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use function Pest\Livewire\livewire;
 
 test('user can send their succeed test results to themselves', function () {
     $quiz = Quiz::factory()->for(Course::factory()->create())->create();
     $user = User::factory()->create();
     $this->actingAs($user);
-    $emailResults = $this->livewire(EmailResults::class, ['quiz' => $quiz]);
+    $emailResults = livewire(EmailResults::class, ['quiz' => $quiz]);
     Mail::fake();
     $emailResults->emit('send');
     Mail::assertSent(QuizResults::class);

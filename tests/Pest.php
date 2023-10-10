@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
+use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Tests\CreatesApplication;
 
 /*
@@ -15,7 +15,8 @@ use Tests\CreatesApplication;
 |
 */
 
-uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)->in(__DIR__);
+uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in(__DIR__);
+uses()->compact();
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,6 @@ uses(TestCase::class, CreatesApplication::class, RefreshDatabase::class)->in(__D
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+// expect()->extend('toBeOne', function () {
+//     return $this->toBe(1);
+// });

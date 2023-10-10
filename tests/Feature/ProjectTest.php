@@ -17,7 +17,7 @@ use Carbon\Carbon;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -392,8 +392,8 @@ test('incomplete users cannot view projects page', function ($context, $redirect
 
 test('notifications can be routed for projects', function () {
     $project = Project::factory()->create([
-        'contact_person_name' => faker()->name(),
-        'contact_person_email' => faker()->email(),
+        'contact_person_name' => fake()->name(),
+        'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
         'preferred_contact_method' => 'email',
     ]);

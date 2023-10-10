@@ -4,9 +4,6 @@ use App\Enums\UserContext;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('individual user can access collaboration preferences', function () {
     $user = User::factory()->create([

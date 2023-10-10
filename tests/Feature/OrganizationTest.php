@@ -18,14 +18,11 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Invitation;
 use Hearth\Models\Membership;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
-
-uses(RefreshDatabase::class);
 
 test('users can create organizations', function () {
     $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
@@ -108,7 +105,7 @@ test('users with admin role can edit and publish organizations', function () {
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
-            'contact_person_name' => faker()->name,
+            'contact_person_name' => fake()->name,
             'staff_lived_experience' => 'yes',
             'preferred_contact_method' => 'email',
             'about' => 'test about',
@@ -396,11 +393,11 @@ test('users with admin role can edit organization contact information', function
     $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
     $response->assertOk();
 
-    $name = faker()->name;
+    $name = fake()->name;
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
-        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'preferred_contact_method' => 'email',
         'contact_person_vrs' => true,
         'save' => 1,
@@ -410,7 +407,7 @@ test('users with admin role can edit organization contact information', function
 
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
-        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
@@ -429,7 +426,7 @@ test('users with admin role can edit organization contact information', function
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
     $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
-        'contact_person_email' => Str::slug($name).'@'.faker()->safeEmailDomain,
+        'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
         'save' => 1,

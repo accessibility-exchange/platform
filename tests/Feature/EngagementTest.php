@@ -402,7 +402,7 @@ test('users without regulated organization admin role cannot edit engagements', 
     $response->assertForbidden();
 });
 
-test('update engagement request validation errors', function ($state, $errors, $modifiers = []) {
+test('update engagement request validation errors', function (array $state, array $errors, array $modifiers = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -445,7 +445,7 @@ test('update engagement request validation errors', function ($state, $errors, $
     $response->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
 
-test('update engagement selection criteria request validation errors', function ($state, $errors, $without = []) {
+test('update engagement selection criteria request validation errors', function (array $state, array $errors, array $without = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])

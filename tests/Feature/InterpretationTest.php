@@ -3,11 +3,8 @@
 use App\Filament\Resources\InterpretationResource;
 use App\Models\Interpretation;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use function Pest\Livewire\livewire;
-
-uses(RefreshDatabase::class);
 
 test('namespace generated from route', function () {
     $interpretation = Interpretation::factory()->create([

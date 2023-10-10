@@ -122,7 +122,7 @@ test('matching strategy location type accessor', function ($data, $expected) {
     expect($matchingStrategy->location_type)->toBe($expected);
 })->with('matchingStrategyLocationType');
 
-test('matching strategy location summary accessor', function ($data, $expected) {
+test('matching strategy location summary accessor', function ($data, array $expected) {
     $matchingStrategy = MatchingStrategy::factory()->create($data);
     // location_summary is sorted, but not re-indexed. array_values used to re-index
     // because the toEqual check compares keys and values, and wouldn't consider the sort
@@ -130,7 +130,7 @@ test('matching strategy location summary accessor', function ($data, $expected) 
     expect(array_values($matchingStrategy->location_summary))->toEqual($expected);
 })->with('matchingStrategyLocationSummary');
 
-test('matching strategy disability and deaf group summary accessor', function ($data, $attachIdentity, $expected = []) {
+test('matching strategy disability and deaf group summary accessor', function ($data, $attachIdentity, array $expected = []) {
     $matchingStrategy = MatchingStrategy::factory()->create($data);
     if ($attachIdentity) {
         $identity = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
@@ -140,7 +140,7 @@ test('matching strategy disability and deaf group summary accessor', function ($
     expect(array_values($matchingStrategy->disability_and_deaf_group_summary))->toEqual($expected);
 })->with('matchingStrategyDisabilityAndDeafGroupSummary');
 
-test('matching strategy other identities summary accessor', function ($data, $identities, $expected = null) {
+test('matching strategy other identities summary accessor', function ($data, array $identities, ?array $expected = null) {
     $this->seed(LanguageSeeder::class);
     $matchingStrategy = MatchingStrategy::factory()->create($data);
     $expectedIdentities = [];

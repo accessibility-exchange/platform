@@ -10,6 +10,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
+use function Pest\Livewire\livewire;
 use Spatie\LaravelOptions\Options;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
@@ -29,7 +30,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => 'connector@example.com',
@@ -72,7 +73,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => $individualUser->email,
@@ -84,7 +85,7 @@ test('registered individual can be invited to be an engagement’s community con
     $individual->update(['roles' => ['connector']]);
     $individual = $individual->fresh();
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => $individualUser->email,
@@ -148,7 +149,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
     ])
@@ -168,7 +169,7 @@ test('registered organization can be invited to be an engagement’s community c
         'email' => $organization->contact_person_email,
     ]);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
@@ -181,7 +182,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $consultantInvitation->delete();
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
@@ -288,7 +289,7 @@ test('only publishable orgs are available to choose as a community connector', f
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
 
     $this->actingAs($fro->users->first());
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
     ])

@@ -5,12 +5,13 @@ use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use function Pest\Livewire\livewire;
 
 test('ModuleContent mounts with status about module for the user', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
     $module = Module::factory()->for(Course::factory()->create())->create();
-    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $module]);
+    $moduleContent = livewire(ModuleContent::class, ['module' => $module]);
     $this->assertEquals($moduleContent->user, $user);
     $this->assertEquals($moduleContent->module, $module);
     $this->assertEquals($moduleContent->startedContentAt, null);
@@ -22,7 +23,7 @@ test('On player start, intermediate table values are set', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
     $module = Module::factory()->for($course)->create();
-    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $module]);
+    $moduleContent = livewire(ModuleContent::class, ['module' => $module]);
 
     $this->assertDatabaseMissing('course_user', [
         'user_id' => $user->id,
@@ -49,7 +50,7 @@ test('On player end, intermediate table values are updated', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
     $module = Module::factory()->for($course)->create();
-    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $module]);
+    $moduleContent = livewire(ModuleContent::class, ['module' => $module]);
     $moduleContent->emit('onPlayerStart');
 
     $this->assertDatabaseCount('course_user', 1);
@@ -69,10 +70,10 @@ test('Users have to complete all the modules in a course to finish a course', fu
     $this->actingAs($user);
     $firstModule = Module::factory()->for($course)->create();
     $secondModule = Module::factory()->for($course)->create();
-    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $firstModule]);
+    $moduleContent = livewire(ModuleContent::class, ['module' => $firstModule]);
     $moduleContent->emit('onPlayerStart');
     $moduleContent->emit('onPlayerEnd');
-    $moduleContent = $this->livewire(ModuleContent::class, ['module' => $secondModule]);
+    $moduleContent = livewire(ModuleContent::class, ['module' => $secondModule]);
     $moduleContent->emit('onPlayerStart');
     $moduleContent->emit('onPlayerEnd');
 

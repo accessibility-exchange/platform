@@ -782,10 +782,12 @@ test('individual can edit their access needs when signing up to an open call eng
     $response->assertOk();
     $response->assertSeeText('Save and back to confirm access needs', false);
 
+    $audioDescriptions = AccessSupport::where('name->en', 'Audio description for visuals')->first();
+
     // update access needs settings
     $response = $this->actingAs($this->participantUser)
         ->from(localized_route('settings.edit-access-needs'))
-        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [7]]); // 7 corresponds to "Audio descriptions for visuals"
+        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [$audioDescriptions->id]]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 

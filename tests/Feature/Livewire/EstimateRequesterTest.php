@@ -4,6 +4,7 @@ use App\Http\Livewire\EstimateRequester;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\EstimateRequested;
+use function Pest\Livewire\livewire;
 
 test('unauthorized user cannot request an estimate', function () {
     $project = Project::factory()->create();
@@ -11,7 +12,7 @@ test('unauthorized user cannot request an estimate', function () {
 
     $this->actingAs($user);
 
-    $this->livewire(EstimateRequester::class, ['model' => $project])
+    livewire(EstimateRequester::class, ['model' => $project])
         ->call('updateStatus')
         ->assertForbidden();
 
@@ -31,7 +32,7 @@ test('authorized user can request an estimate', function () {
 
     $this->actingAs($user);
 
-    $this->livewire(EstimateRequester::class, ['model' => $project])
+    livewire(EstimateRequester::class, ['model' => $project])
         ->call('updateStatus');
 
     expect($project->fresh()->estimate_requested_at)->toBeTruthy();

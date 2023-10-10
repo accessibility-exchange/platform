@@ -4,10 +4,7 @@ namespace Tests\Feature\Livewire;
 
 use App\Http\Livewire\Prompt;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
-
-uses(RefreshDatabase::class);
+use function Pest\Livewire\livewire;
 
 test('prompt rendered', function () {
     $modelPath = 'dismissed_customize_prompt_at';
@@ -17,7 +14,7 @@ test('prompt rendered', function () {
     $actionLabel = 'Complete action';
     $actionUrl = 'http://example.com';
 
-    $component = Livewire::test(Prompt::class, [
+    $component = livewire(Prompt::class, [
         'model' => $user,
         'modelPath' => $modelPath,
         'heading' => $heading,
@@ -52,7 +49,7 @@ test('prompt rendered with custom heading level', function () {
     $actionUrl = 'http://example.com';
     $level = 4;
 
-    $component = Livewire::test(Prompt::class, [
+    $component = livewire(Prompt::class, [
         'model' => $user,
         'modelPath' => $modelPath,
         'level' => $level,
@@ -76,7 +73,7 @@ test('prompt calls dismiss', function () {
     $actionLabel = 'Complete action';
     $actionUrl = 'http://example.com';
 
-    $component = Livewire::test(Prompt::class, [
+    $component = livewire(Prompt::class, [
         'model' => $user,
         'modelPath' => $modelPath,
         'heading' => $heading,

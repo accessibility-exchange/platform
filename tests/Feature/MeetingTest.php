@@ -136,7 +136,7 @@ test('meetings can be edited', function () {
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });
 
-test('Meeting request validation errors', function ($state, $errors, $modifiers = []) {
+test('Meeting request validation errors', function ($state, array $errors, $modifiers = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])

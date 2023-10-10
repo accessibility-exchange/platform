@@ -129,7 +129,7 @@ test('flash message after individual role change', function ($initialRoles, $new
     expect(flash()->message)->toBe($expected['message']($individual));
 })->with('individualRoleChange');
 
-test('save roles request validation errors', function ($data, $errors) {
+test('save roles request validation errors', function (array $data, array $errors) {
     $individual = Individual::factory()
         ->for(User::factory())
         ->create(['roles' => null]);
@@ -706,7 +706,7 @@ test('users can not edit others individual pages', function () {
     $response->assertForbidden();
 });
 
-test('update individual request validation errors', function ($state, $errors, $without = []) {
+test('update individual request validation errors', function ($state, array $errors, $without = []) {
     $roles = [
         IndividualRole::CommunityConnector,
         IndividualRole::ConsultationParticipant,

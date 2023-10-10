@@ -2,10 +2,11 @@
 
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Livewire\Locations;
-use function Pest\Faker\faker;
+use function Pest\Faker\fake;
+use function Pest\Livewire\livewire;
 
 test('locations can be added', function () {
-    $this->livewire(Locations::class, ['locations' => []])
+    livewire(Locations::class, ['locations' => []])
         ->call('addLocation')
         ->assertSet('locations', [['region' => '', 'locality' => '']]);
 });
@@ -15,18 +16,18 @@ test('no more than 10 locations can be added', function () {
 
     for ($i = 0; $i < 10; $i++) {
         $locations[] = [
-            'region' => faker()->randomElement(array_column(ProvinceOrTerritory::cases(), 'value')),
-            'locality' => faker()->city,
+            'region' => fake()->randomElement(array_column(ProvinceOrTerritory::cases(), 'value')),
+            'locality' => fake()->city,
         ];
     }
 
-    $this->livewire(Locations::class, ['locations' => $locations])
+    livewire(Locations::class, ['locations' => $locations])
         ->call('addLocation')
         ->assertCount('locations', 10);
 });
 
 test('location can be removed', function () {
-    $this->livewire(Locations::class, ['locations' => [['region' => 'NS', 'locality' => 'Halifax']]])
+    livewire(Locations::class, ['locations' => [['region' => 'NS', 'locality' => 'Halifax']]])
         ->call('removeLocation', 0)
         ->assertSet('locations', []);
 });

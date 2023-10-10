@@ -3,9 +3,6 @@
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 test('individual user can access dashboard', function () {
     $user = User::factory()->create([
