@@ -17,7 +17,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('https://vimeo.com/850314990/05587fe4df?share=copy');
+    $response->assertSee('https://vimeo.com/850308866/22cf4718fc?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -36,7 +36,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('https://vimeo.com/850315035/87b6129a8b?share=copy');
+    $response->assertSee('https://vimeo.com/850308900/39c5bb60a7?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -55,7 +55,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('https://vimeo.com/850315068/bc26c699cb?share=copy');
+    $response->assertSee('https://vimeo.com/850308924/cab1e34418?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))

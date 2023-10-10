@@ -189,19 +189,19 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         return match ($this->context) {
             'individual' => [
-                'en' => 'https://vimeo.com/850314990/05587fe4df?share=copy',
+                'en' => 'https://vimeo.com/850308866/22cf4718fc?share=copy',
                 'fr' => 'https://vimeo.com/850319076/4d973fc4ee?share=copy',
                 'asl' => 'https://vimeo.com/850314990/05587fe4df?share=copy',
                 'lsq' => 'https://vimeo.com/850322469/cd5616567a?share=copy',
             ],
             'organization' => [
-                'en' => 'https://vimeo.com/850315035/87b6129a8b?share=copy',
+                'en' => 'https://vimeo.com/850308900/39c5bb60a7?share=copy',
                 'fr' => 'https://vimeo.com/850319102/c118d69046?share=copy',
                 'asl' => 'https://vimeo.com/850315035/87b6129a8b?share=copy',
                 'lsq' => 'https://vimeo.com/850322511/2aad27699a?share=copy',
             ],
             'regulated-organization' => [
-                'en' => 'https://vimeo.com/850315068/bc26c699cb?share=copy',
+                'en' => 'https://vimeo.com/850308924/cab1e34418?share=copy',
                 'fr' => 'https://vimeo.com/850319118/fd87b58ddc?share=copy',
                 'asl' => 'https://vimeo.com/850315068/bc26c699cb?share=copy',
                 'lsq' => 'https://vimeo.com/850322540/3ee66a159c?share=copy',
