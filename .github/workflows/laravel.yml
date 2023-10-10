@@ -74,6 +74,7 @@ jobs:
       - name: Run tests with Pest
         if: steps.git-diff.outputs.diff
         env:
+          DB_DATABASE: test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
