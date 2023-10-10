@@ -61,7 +61,7 @@ jobs:
           mysqladmin create test --user="root" --password="root"
       - name: Copy .env
         if: steps.git-diff.outputs.diff
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
       - name: Generate keys
         if: steps.git-diff.outputs.diff
         run: |
@@ -73,7 +73,6 @@ jobs:
       - name: Run tests
         if: steps.git-diff.outputs.diff && matrix.php == '8.2'
         env:
-          DB_DATABASE: test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
