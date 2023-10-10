@@ -207,7 +207,7 @@ if (! function_exists('get_language_exonym')) {
      * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true, bool $acronym = false): null|string
+    function get_language_exonym(string $code, string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
     {
         $locale ??= locale();
 
@@ -236,7 +236,7 @@ if (! function_exists('normalize_url')) {
     /**
      * Normalize a URL by adding a scheme if one isn't already present.
      */
-    function normalize_url(string|null $url, string $scheme = 'https://'): string|null
+    function normalize_url(?string $url, string $scheme = 'https://'): ?string
     {
         if (! blank($url)) {
             $result = is_null(parse_url($url, PHP_URL_SCHEME)) ? $scheme.$url : $url;
@@ -256,13 +256,6 @@ if (! function_exists('context_from_model')) {
     {
         return Str::kebab(class_basename($model));
     }
-}
-
-if (! defined('SAFE_MARKDOWN_OPTIONS')) {
-    define('SAFE_MARKDOWN_OPTIONS', [
-        'html_input' => 'escape',
-        'allow_unsafe_links' => false,
-    ]);
 }
 
 if (! function_exists('safe_link_replacement')) {
@@ -315,19 +308,19 @@ if (! function_exists('html_replacements')) {
 }
 
 if (! function_exists('safe_markdown')) {
-    function safe_markdown(string $string, array $replacements = [], ?string $locale = null, bool $inline = false): HtmlString
+    function safe_markdown(string $string, array $replacements = [], string $locale = null, bool $inline = false): HtmlString
     {
         $markdownFuncName = $inline ? 'inlineMarkdown' : 'markdown';
 
         $localized = __($string, [], $locale);
-        $html = Str::$markdownFuncName($localized, SAFE_MARKDOWN_OPTIONS);
+        $html = Str::$markdownFuncName($localized, config('markdown'));
 
         return new HtmlString(html_replacements($html, $replacements));
     }
 }
 
 if (! function_exists('safe_inlineMarkdown')) {
-    function safe_inlineMarkdown(string $string, array $replacements = [], ?string $locale = null): HtmlString
+    function safe_inlineMarkdown(string $string, array $replacements = [], string $locale = null): HtmlString
     {
         return safe_markdown($string, $replacements, $locale, true);
     }

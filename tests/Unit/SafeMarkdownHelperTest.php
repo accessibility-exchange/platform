@@ -2,17 +2,6 @@
 
 use Illuminate\Support\HtmlString;
 
-test('settings are defined', function () {
-    expect(defined('SAFE_MARKDOWN_OPTIONS'))
-        ->toBeTrue();
-
-    expect(SAFE_MARKDOWN_OPTIONS)
-        ->toMatchArray([
-            'html_input' => 'escape',
-            'allow_unsafe_links' => false,
-        ]);
-});
-
 test('html encode link replacements', function ($string, $expected) {
     expect(safe_link_replacement($string))->toEqual($expected);
 })->with([

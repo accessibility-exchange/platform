@@ -294,10 +294,10 @@ If you need to unescape a replacement you can use a `!` at the start of the plac
 
 There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
 resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
-`SAFE_MARKDOWN_OPTIONS` argument to escape HTML and remove unsafe links.
+`config('markdown')` argument to escape HTML and remove unsafe links.
 
 ```php
-{!! Str::markdown('<em>Hello **World**</em>', SAFE_MARKDOWN_OPTIONS) !!}
+{!! Str::markdown('<em>Hello **World**</em>', config('markdown')) !!}
 {{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}
 ```
 
