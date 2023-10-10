@@ -258,10 +258,12 @@ if (! function_exists('context_from_model')) {
     }
 }
 
-define('SAFE_MARKDOWN_OPTIONS', [
-    'html_input' => 'escape',
-    'allow_unsafe_links' => false,
-]);
+if (! defined('SAFE_MARKDOWN_OPTIONS')) {
+    define('SAFE_MARKDOWN_OPTIONS', [
+        'html_input' => 'escape',
+        'allow_unsafe_links' => false,
+    ]);
+}
 
 if (! function_exists('safe_link_replacement')) {
     function safe_link_replacement(string $string): string
