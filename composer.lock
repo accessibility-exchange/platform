@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e140dddfaa5d218d3153ff2d968c0707",
+    "content-hash": "546ffd1dc13db6b2848111fb2f87a3d6",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -12674,27 +12674,27 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v2.6.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "7823bc1fdbd8e72fd1e9cd8d746e7e104bccf02c"
+                "reference": "4d38097f14cad5549990c139e1409141b94b6201"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/7823bc1fdbd8e72fd1e9cd8d746e7e104bccf02c",
-                "reference": "7823bc1fdbd8e72fd1e9cd8d746e7e104bccf02c",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/4d38097f14cad5549990c139e1409141b94b6201",
+                "reference": "4d38097f14cad5549990c139e1409141b94b6201",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/console": "^9.47.0 || ^10.0.0",
-                "illuminate/container": "^9.47.0 || ^10.0.0",
-                "illuminate/contracts": "^9.47.0 || ^10.0.0",
-                "illuminate/database": "^9.47.0 || ^10.0.0",
-                "illuminate/http": "^9.47.0 || ^10.0.0",
-                "illuminate/pipeline": "^9.47.0 || ^10.0.0",
-                "illuminate/support": "^9.47.0 || ^10.0.0",
+                "illuminate/console": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/container": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/contracts": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/database": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/http": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/pipeline": "^9.47.0 || ^10.0.0 || ^11.0.0",
+                "illuminate/support": "^9.47.0 || ^10.0.0 || ^11.0.0",
                 "php": "^8.0.2",
                 "phpmyadmin/sql-parser": "^5.6.0",
                 "phpstan/phpstan": "~1.10.6"
@@ -12707,6 +12707,7 @@
             "suggest": {
                 "orchestra/testbench": "Using Larastan for analysing a package needs Testbench"
             },
+            "default-branch": true,
             "type": "phpstan-extension",
             "extra": {
                 "branch-alias": {
@@ -12746,7 +12747,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/v2.6.1"
+                "source": "https://github.com/nunomaduro/larastan/tree/master"
             },
             "funding": [
                 {
@@ -12766,7 +12767,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-06-04T20:55:57+00:00"
+            "time": "2023-10-05T17:12:51+00:00"
         },
         {
             "name": "pestphp/pest",
@@ -15772,7 +15773,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "amirami/localizator": 15
+        "amirami/localizator": 15,
+        "nunomaduro/larastan": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
