@@ -1550,7 +1550,7 @@
         "interpretations": [
             {
                 "name": "Welcome to The Accessibility Exchange",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/845012978/f344763ea4"
                 }
             },
@@ -1619,7 +1619,7 @@
             {
                 "name": "Community Connector",
                 "namespace": "manage_engagement_connector",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665750/670e093181",
                     "lsq": "https://vimeo.com/850172804/34fe329a7e"
                 }
@@ -1627,7 +1627,7 @@
             {
                 "name": "Community Connector",
                 "namespace": "manage_engagement_connector-with_connector",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666176/bca2612834",
                     "lsq": "https://vimeo.com/850172987/e1c93a129d"
                 }
@@ -1664,7 +1664,7 @@
             {
                 "name": "Add Community Connector",
                 "namespace": "add_engagement_connector",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665773/cc4d50dda2",
                     "lsq": "https://vimeo.com/850172826/48ecc037ea"
                 }
@@ -1684,7 +1684,7 @@
         "interpretations": [
             {
                 "name": "Manage participants",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666190/e0e1e8abfb",
                     "lsq": "https://vimeo.com/850173002/1d0d7ffbfa"
                 }
@@ -1705,7 +1705,7 @@
         "interpretations": [
             {
                 "name": "Add participant",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666213/f331ff68ef",
                     "lsq": "https://vimeo.com/861747756/0c09aa4106"
                 }
@@ -1717,7 +1717,7 @@
         "interpretations": [
             {
                 "name": "Access needs",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/861741954",
                     "lsq": "https://vimeo.com/861747775/603f679af5"
                 }
@@ -1741,7 +1741,7 @@
         "interpretations": [
             {
                 "name": "Edit engagement details",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665793/e06a9ec575",
                     "lsq": "https://vimeo.com/850172839/190953328c"
                 }
@@ -1751,7 +1751,7 @@
             },
             {
                 "name": "Description",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665808/1aa05688e1",
                     "lsq": "https://vimeo.com/850172854/07dbd30ea3"
                 }
@@ -1770,14 +1770,14 @@
             },
             {
                 "name": "Payment",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665824/47fa576c16",
                     "lsq": "https://vimeo.com/850172882/5d9f0767ec"
                 }
             },
             {
                 "name": "Sign up deadline",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665856/86b908eed0",
                     "lsq": "https://vimeo.com/850172908/6361e40bd2"
                 }
@@ -3777,7 +3777,7 @@
             },
             {
                 "name": "Add new meeting",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665873/90170a0b10",
                     "lsq": "https://vimeo.com/850172930/282694549b"
                 }
@@ -3787,25 +3787,25 @@
             },
             {
                 "name": "Time",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665899/d65bfec7d1"
                 }
             },
             {
                 "name": "Time zone",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665924/d5fc40c63f"
                 }
             },
             {
                 "name": "Ways to attend",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846665949/435e6ba40b"
                 }
             },
             {
                 "name": "Street address",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666015/5b2d3987f2"
                 }
             },
@@ -3817,7 +3817,7 @@
             },
             {
                 "name": "Province or territory",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666030/3d0ea7c4ce"
                 }
             },
@@ -3829,7 +3829,7 @@
             },
             {
                 "name": "Software",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666052/2432d2070c"
                 }
             },
@@ -3844,7 +3844,7 @@
             },
             {
                 "name": "Phone number to join",
-                "videos": {
+                "video": {
                     "asl": "https://vimeo.com/846666084/81b9c20fdd"
                 }
             }
