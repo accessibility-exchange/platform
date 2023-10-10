@@ -74,7 +74,6 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Introduction video');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))

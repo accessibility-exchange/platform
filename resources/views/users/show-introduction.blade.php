@@ -26,9 +26,19 @@
             })" @ended="player().setCurrentTime(0)">
             </div>
         </div>
-    @else
+    @elseif (array_key_exists('en', $user->introduction()))
         <div class="frame">
-            {{ __('Introduction video') }}
+            <div class="stack w-full" x-data="vimeoPlayer({
+                url: '{{ $user->introduction()['en'] }}',
+                byline: false,
+                dnt: true,
+                pip: true,
+                portrait: false,
+                responsive: true,
+                speed: true,
+                title: false
+            })" @ended="player().setCurrentTime(0)">
+            </div>
         </div>
     @endif
 
