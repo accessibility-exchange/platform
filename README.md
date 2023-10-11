@@ -270,28 +270,28 @@ of how some key tasks can be carried out using Valet:
     APP_ENV=local
     ```
 
-4. Build you application container that will be used to generate keys:  
+4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
     ```bash
-    docker compose -f docker-compose.local.yml build platform.test
-    ```
-
-5. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
-
-    ```bash
-    docker run --rm --entrypoint '' platform-platform.test openssl rand -hex 32
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
     ```
 
     Add it to your `.env` file:
     
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
+
+5. Build you application container that will be used to generate keys:  
+
+    ```bash
+    docker compose -f docker-compose.local.yml build platform.test
+    ```
     ```
 
 6.  Generate an application key:
 
     ```bash
-    docker run --rm --entrypoint '' platform-platform.test php artisan key:generate --show
+    docker run --rm --entrypoint '' platform.test php artisan key:generate --show
     ```
 
     Add it to your `.env` file:
@@ -303,7 +303,7 @@ of how some key tasks can be carried out using Valet:
 7. Generate your database password:
 
     ```bash
-    docker run --rm --entrypoint '' platform-platform.test openssl rand -hex 32
+    docker run --rm --entrypoint '' platform.test openssl rand -hex 32
     ```
     
     Add it to your `.env` file:
@@ -342,12 +342,13 @@ of how some key tasks can be carried out using Valet:
    docker compose -f docker-compose.local.yml up -d
    ```
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
-of how some key tasks can be carried out using Valet:
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview of how some key tasks can be carried out using your containers:
 
-- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `php artisan <command>`.
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `docker exec platform.test php artisan <command>`.  
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec platform.test npm <command>`.  
+- [Composer](https://getcomposer.org) commands may be executed by using `docker exec platform.test composer <command>`.
+- If you want to enter the container to run commands within prefixing with `docker exec platform.test` you enter the container command line with `docker exec -it platform.test sh`.  
 
 ### Running tests
 
