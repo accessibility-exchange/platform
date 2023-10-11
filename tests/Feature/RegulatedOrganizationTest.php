@@ -45,7 +45,7 @@ test('users can create regulated organizations', function () {
     $regulatedOrganization = RegulatedOrganization::where('name->en', 'Government Agency')->first();
 
     expect($user->isMemberOf($regulatedOrganization))->toBeTrue();
-    expect(count($user->memberships))->toEqual(1);
+    expect($user->memberships)->toHaveCount(1);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization));
 

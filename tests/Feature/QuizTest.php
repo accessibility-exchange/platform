@@ -52,7 +52,7 @@ test('a quiz can have questions in order specified', function () {
     $quiz->questions()->attach($thirdQuestionWithoutOrder);
 
     $orderedQuestions = $quiz->getQuestionsInOrder();
-    expect(count($orderedQuestions))->toBe(3);
+    expect($orderedQuestions)->toHaveCount(3);
     expect($orderedQuestions[0]->id)->toBe($firstQuestionWithOrder->id);
     expect($orderedQuestions[1]->id)->toBe($secondQuestionWithOrder->id);
     expect($orderedQuestions[2]->id)->toBe($thirdQuestionWithoutOrder->id);

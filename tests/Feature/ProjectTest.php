@@ -676,10 +676,10 @@ test('projects have timeframes', function () {
     expect($org_future_project->status)->toEqual('Upcoming');
     expect($indeterminate_project)->started->toBeFalse();
 
-    expect(count($organization->projects))->toEqual(5);
-    expect(count($organization->completedProjects))->toEqual(2);
-    expect(count($organization->inProgressProjects))->toEqual(1);
-    expect(count($organization->upcomingProjects))->toEqual(1);
+    expect($organization->projects)->toHaveCount(5);
+    expect($organization->completedProjects)->toHaveCount(2);
+    expect($organization->inProgressProjects)->toHaveCount(1);
+    expect($organization->upcomingProjects)->toHaveCount(1);
 
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $regulated_org_past_project = Project::factory()->create([
@@ -701,10 +701,10 @@ test('projects have timeframes', function () {
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
     ]);
 
-    expect(count($regulatedOrganization->projects))->toEqual(4);
-    expect(count($regulatedOrganization->completedProjects))->toEqual(2);
-    expect(count($regulatedOrganization->inProgressProjects))->toEqual(1);
-    expect(count($regulatedOrganization->upcomingProjects))->toEqual(1);
+    expect($regulatedOrganization->projects)->toHaveCount(4);
+    expect($regulatedOrganization->completedProjects)->toHaveCount(2);
+    expect($regulatedOrganization->inProgressProjects)->toHaveCount(1);
+    expect($regulatedOrganization->upcomingProjects)->toHaveCount(1);
 });
 
 test('projects reflect consultant origin', function () {
