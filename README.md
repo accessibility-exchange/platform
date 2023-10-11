@@ -350,6 +350,12 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 - [Composer](https://getcomposer.org) commands may be executed by using `docker exec platform.test composer <command>`.
 - If you want to enter the container to run commands within prefixing with `docker exec platform.test` you enter the container command line with `docker exec -it platform.test sh`.  
 
+#### Troubleshooting
+
+**Changes are missing in the container**  
+
+- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.  
+
 ### Running tests
 
 The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
