@@ -17,8 +17,7 @@ jobs:
     name: tests - PHP ${{ matrix.php }}
 
     steps:
-
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: technote-space/get-diff-action@v6
         id: git-diff
         with:
@@ -30,6 +29,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         with:
           php-version: ${{ matrix.php }}
+          coverage: pcov
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
@@ -70,8 +70,8 @@ jobs:
       - name: Directory Permissions
         if: steps.git-diff.outputs.diff
         run: chmod -R 777 storage bootstrap/cache
-      - name: Run tests with Pest
-        if: steps.git-diff.outputs.diff
+      - name: Run tests
+        if: steps.git-diff.outputs.diff && matrix.php == '8.2'
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
@@ -79,8 +79,34 @@ jobs:
           php artisan migrate
           php artisan storage:link
           php artisan test --parallel --coverage-clover coverage.xml
-      - name: Upload coverage to Codecov
+      - name: Run tests with coverage
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
+        env:
+          DB_PASSWORD: root
+          DB_HOST: localhost
+        run: |
+          php artisan migrate
+          php artisan storage:link
+          php artisan test --parallel --coverage-clover coverage.xml
+      - name: Save code coverage to artifact
+        uses: actions/upload-artifact@v3
+        if: steps.git-diff.outputs.diff && matrix.php == '8.1'
+        with:
+          name: code-coverage
+          path: "coverage.xml"
+          retention-days: 5
+
+  upload-coverage:
+    runs-on: ubuntu-latest
+    needs:
+      - laravel-tests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch code coverage artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

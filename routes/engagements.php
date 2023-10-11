@@ -27,124 +27,123 @@ Route::controller(EngagementController::class)
     });
 
 Route::controller(EngagementController::class)
-    ->prefix('engagements')
     ->name('engagements.')
     ->group(function () {
-        Route::multilingual('/{engagement}', 'show')
+        Route::multilingual('/engagements/{engagement}', 'show')
             ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');
 
-        Route::multilingual('/{engagement}/format/select', 'showFormatSelection')
+        Route::multilingual('/engagements/{engagement}/format/select', 'showFormatSelection')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('show-format-selection');
 
-        Route::multilingual('/{engagement}/format/store', 'storeFormat')
+        Route::multilingual('/engagements/{engagement}/format/store', 'storeFormat')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('store-format');
 
-        Route::multilingual('/{engagement}/recruitment/select', 'showRecruitmentSelection')
+        Route::multilingual('/engagements/{engagement}/recruitment/select', 'showRecruitmentSelection')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('show-recruitment-selection');
 
-        Route::multilingual('/{engagement}/recruitment/store', 'storeRecruitment')
+        Route::multilingual('/engagements/{engagement}/recruitment/store', 'storeRecruitment')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('store-recruitment');
 
-        Route::multilingual('/{engagement}/criteria/select', 'criteriaSelection')
+        Route::multilingual('/engagements/{engagement}/criteria/select', 'criteriaSelection')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('show-criteria-selection');
 
-        Route::multilingual('/{engagement}/edit', 'edit')
+        Route::multilingual('/engagements/{engagement}/edit', 'edit')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('edit');
 
-        Route::multilingual('/{engagement}/update', 'update')
+        Route::multilingual('/engagements/{engagement}/update', 'update')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('update');
 
-        Route::multilingual('/{engagement}/languages/edit', 'editLanguages')
+        Route::multilingual('/engagements/{engagement}/languages/edit', 'editLanguages')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('edit-languages');
 
-        Route::multilingual('/{engagement}/languages/update', 'updateLanguages')
+        Route::multilingual('/engagements/{engagement}/languages/update', 'updateLanguages')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('update-languages');
 
-        Route::multilingual('/{engagement}/criteria/edit', 'criteriaSelection')
+        Route::multilingual('/engagements/{engagement}/criteria/edit', 'criteriaSelection')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('edit-criteria');
 
-        Route::multilingual('/{engagement}/criteria/update', 'updateCriteria')
+        Route::multilingual('/engagements/{engagement}/criteria/update', 'updateCriteria')
             ->middleware(['auth', 'can:update,engagement'])
             ->method('put')
             ->name('update-criteria');
 
-        Route::multilingual('/{engagement}/manage', 'manage')
+        Route::multilingual('/engagements/{engagement}/manage', 'manage')
             ->middleware(['auth', 'can:update,engagement'])
             ->name('manage');
 
-        Route::multilingual('/{engagement}/manage/organization', 'manageOrganization')
+        Route::multilingual('/engagements/{engagement}/manage/organization', 'manageOrganization')
             ->middleware(['auth', 'can:manageOrganization,engagement'])
             ->name('manage-organization');
 
-        Route::multilingual('/{engagement}/manage/organization/add', 'addOrganization')
+        Route::multilingual('/engagements/{engagement}/manage/organization/add', 'addOrganization')
             ->method('post')
             ->middleware(['auth', 'can:addOrganization,engagement'])
             ->name('add-organization');
 
-        Route::multilingual('/{engagement}/manage/organization/remove', 'removeOrganization')
+        Route::multilingual('/engagements/{engagement}/manage/organization/remove', 'removeOrganization')
             ->method('post')
             ->middleware(['auth', 'can:removeOrganization,engagement'])
             ->name('remove-organization');
 
-        Route::multilingual('/{engagement}/manage/participants', 'manageParticipants')
+        Route::multilingual('/engagements/{engagement}/manage/participants', 'manageParticipants')
             ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-participants');
 
-        Route::multilingual('/{engagement}/manage/access-needs', 'manageAccessNeeds')
+        Route::multilingual('/engagements/{engagement}/manage/access-needs', 'manageAccessNeeds')
             ->middleware(['auth', 'can:viewParticipants,engagement'])
             ->name('manage-access-needs');
 
-        Route::multilingual('/{engagement}/manage/add-participant', 'addParticipant')
+        Route::multilingual('/engagements/{engagement}/manage/add-participant', 'addParticipant')
             ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('add-participant');
 
-        Route::multilingual('/{engagement}/manage/invite-participant', 'inviteParticipant')
+        Route::multilingual('/engagements/{engagement}/manage/invite-participant', 'inviteParticipant')
             ->method('post')
             ->middleware(['auth', 'can:addParticipants,engagement'])
             ->name('invite-participant');
 
-        Route::multilingual('/{engagement}/sign-up', 'signUp')
+        Route::multilingual('/engagements/{engagement}/sign-up', 'signUp')
             ->middleware(['auth', 'can:join,engagement'])
             ->name('sign-up');
 
-        Route::multilingual('/{engagement}/join', 'join')
+        Route::multilingual('/engagements/{engagement}/join', 'join')
             ->method('post')
             ->middleware(['auth', 'can:join,engagement'])
             ->name('join');
 
-        Route::multilingual('/{engagement}/confirm-access-needs', 'confirmAccessNeeds')
+        Route::multilingual('/engagements/{engagement}/confirm-access-needs', 'confirmAccessNeeds')
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('confirm-access-needs');
 
-        Route::multilingual('/{engagement}/access-needs-permissions', 'editAccessNeedsPermissions')
+        Route::multilingual('/engagements/{engagement}/access-needs-permissions', 'editAccessNeedsPermissions')
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('edit-access-needs-permissions');
 
-        Route::multilingual('/{engagement}/store-access-needs-permissions', 'storeAccessNeedsPermissions')
+        Route::multilingual('/engagements/{engagement}/store-access-needs-permissions', 'storeAccessNeedsPermissions')
             ->method('post')
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('store-access-needs-permissions');
 
-        Route::multilingual('/{engagement}/leave', 'confirmLeave')
+        Route::multilingual('/engagements/{engagement}/leave', 'confirmLeave')
             ->middleware(['auth', 'can:participate,engagement'])
             ->name('confirm-leave');
 
-        Route::multilingual('/{engagement}/exit', 'leave')
+        Route::multilingual('/engagements/{engagement}/exit', 'leave')
             ->method('post')
             ->middleware(['auth', 'can:leave,engagement'])
             ->name('leave');

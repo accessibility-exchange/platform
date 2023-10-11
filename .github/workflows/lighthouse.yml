@@ -9,9 +9,12 @@ on:
 jobs:
   lighthouse-ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [8.1]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }} # https://github.com/GoogleChrome/lighthouse-ci/issues/172
       - uses: technote-space/get-diff-action@v6
@@ -29,7 +32,8 @@ jobs:
         if: steps.git-diff.outputs.diff
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: ${{ matrix.php }}
+          coverage: none
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
         uses: actions/cache@v3
