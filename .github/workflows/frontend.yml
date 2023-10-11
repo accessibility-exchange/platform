@@ -87,7 +87,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         env:
           APP_URL: "http://127.0.0.1:8000"
-        run: php artisan dusk
+        run: php artisan pest:dusk
       - name: Upload Screenshots
         if: failure()
         uses: actions/upload-artifact@v3

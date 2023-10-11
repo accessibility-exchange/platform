@@ -1,6 +1,5 @@
 <?php
 
-uses(\Tests\DuskTestCase::class);
 use Laravel\Dusk\Browser;
 
 test('basic example', function () {

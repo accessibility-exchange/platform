@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\TestCase;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Tests\CreatesApplication;
+use Tests\DuskTestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ use Tests\CreatesApplication;
 |
 */
 
-uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in(__DIR__);
+uses(DuskTestCase::class)->in('Browser');
+uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Feature');
+uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Unit');
+
 uses()->compact();
 
 /*
