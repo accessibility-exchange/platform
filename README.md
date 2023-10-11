@@ -139,7 +139,7 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
 
     ```bash
     brew install mailpit
-    brew services start mailhog
+    brew services start mailpit
     ```
 
     Then, make sure that your `.env` file contains the following values:
