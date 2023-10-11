@@ -126,7 +126,13 @@
             "cp -r resources/lang/fr/* resources/lang/lsq",
             "cp resources/lang/fr.json resources/lang/lsq.json"
         ],
-        "test": "php artisan test",
-        "test-coverage": "php artisan test --coverage"
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan test"
+        ],
+        "test-coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan test --coverage"
+        ]
     }
 }

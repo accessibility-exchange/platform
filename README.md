@@ -172,7 +172,7 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
     that have been prototyped and gone through one or more co-design sessions.
 - Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
     must be named according to the format `feat/<feature>`.
-- Before opening a pull request, developers should run `composer format && composer analyze && composer test-coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
+- Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
 - Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 - The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined
   features that are considered production-ready.

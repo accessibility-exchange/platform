@@ -79,7 +79,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          php artisan test --parallel --coverage-clover coverage.xml
+          php artisan test
       - name: Run tests with coverage
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
         env:
@@ -89,7 +89,7 @@ jobs:
         run: |
           php artisan migrate
           php artisan storage:link
-          php artisan test --parallel --coverage-clover coverage.xml
+          php artisan test --coverage-clover coverage.xml
       - name: Save code coverage to artifact
         uses: actions/upload-artifact@v3
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
