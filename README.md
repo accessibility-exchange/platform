@@ -18,22 +18,22 @@ at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
 
-The platform is built as a progressive web application using the [Laravel 9](https://laravel.com/docs/9.x) framework.
+The platform is built as a progressive web application using the [Laravel 10](https://laravel.com/docs/10.x) framework.
 
 ## Installation
 
-For general deployment information, please see the Laravel 9.x [deployment documentation](https://laravel.com/docs/9.x/deployment).
+For general deployment information, please see the Laravel 10.x [deployment documentation](https://laravel.com/docs/10.x/deployment).
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/9.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
 -   [Node](https://nodejs.org) >= 18
 
 Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
-The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/9.x/deployment#optimization).
+The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/10.x/deployment#optimization).
 
 ## Development environments
 
@@ -55,12 +55,12 @@ php artisan migrate
 
 ## Development
 
-Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sail) Docker environment or [Laravel Valet](https://laravel.com/docs/9.x/valet).
+Local development uses either the [Laravel Sail](https://laravel.com/docs/10.x/sail) Docker environment or [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
 
 ### Local development setup using Laravel Sail
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-2. Add an alias to your shell [as described here](https://laravel.com/docs/9.x/sail#configuring-a-bash-alias).
+2. Add an alias to your shell [as described here](https://laravel.com/docs/10.x/sail#configuring-a-bash-alias).
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
@@ -123,38 +123,24 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/9.x/sa
     sail artisan google-fonts:fetch
     ```
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
 of how some key tasks can be carried out using Sail:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `sail npm <command>`.
-- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `sail artisan <command>`.
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `sail artisan <command>`.
 
-### Local development setup using Laravel Valet
+### Local development setup using Laravel Herd
 
-1. Install [Homebrew](https://brew.sh).
-2. Install PHP 8.1 via Homebrew:
-
-   ```bash
-   brew install php@8.1
-   ```
-
-3. Install [Composer](https://getcomposer.org/).
-4. Install Valet:
-
-   ```bash
-   composer global require laravel/valet
-   valet install
-   ```
-
-5. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
+1. Install [Herd](https://herd.laravel.com).
+2. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
     gh repo fork accessibility-exchange/platform --clone
     cd platform
     ```
 
-6. Create a `.env` file from the included example file:
+3. Create a `.env` file from the included example file:
 
     ```bash
     cp .env.example .env
@@ -166,7 +152,7 @@ of how some key tasks can be carried out using Sail:
     APP_ENV=local
     ```
 
-8. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
 
     ```bash
     openssl rand -hex 32
@@ -178,7 +164,7 @@ of how some key tasks can be carried out using Sail:
     CIPHERSWEET_KEY="<your key>"
     ```
 
-9. Install Composer and NPM dependencies:
+5. Install Composer and NPM dependencies:
 
     ```bash
     # install composer dependencies
@@ -192,40 +178,40 @@ of how some key tasks can be carried out using Sail:
     npm ci
     ```
 
-10. Generate an application key:
+6. Generate an application key:
 
      ```bash
      php artisan key:generate
      ```
 
-11. Create a database:
+7. Create a database:
 
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     ```
 
-12. Run the required database migrations:
+8. Run the required database migrations:
 
      ```bash
      php artisan migrate
      ```
 
-13. Download the application fonts:
+9. Download the application fonts:
 
     ```bash
     php artisan google-fonts:fetch
     ```
 
-14. Tell Valet to serve the application:
+10. Tell Herd to serve the application:
 
       ```bash
-      valet link
+      herd link
       ```
 
-15. Install [Mailhog](https://github.com/mailhog/MailHog) so that you can access transactional email from the platform:
+11. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
 
     ```bash
-    brew install mailhog
+    brew install mailpit
     brew services start mailhog
     ```
 
@@ -237,19 +223,19 @@ of how some key tasks can be carried out using Sail:
     MAIL_PORT=1025
     ```
 
-    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read this blog post](https://ryangjchandler.co.uk/posts/setup-mailhog-with-laravel-valet).
+    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
 of how some key tasks can be carried out using Valet:
 
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `php artisan <command>`.
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
 
 ### Running tests
 
-The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/9.x/testing).
+The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/10.x/testing).
 
 ### Development workflow
 
@@ -270,8 +256,8 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
 
 ### Working with markdown
 
-In other Laravel applications you may see methods such as [`Str::markdown()`](https://laravel.com/docs/9.x/helpers#method-str-markdown)
-and [`Str::inlineMarkdown()`](https://laravel.com/docs/9.x/helpers#method-str-inline-markdown) used. In general we attempt
+In other Laravel applications you may see methods such as [`Str::markdown()`](https://laravel.com/docs/10.x/helpers#method-str-markdown)
+and [`Str::inlineMarkdown()`](https://laravel.com/docs/10.x/helpers#method-str-inline-markdown) used. In general we attempt
 to avoid using these methods and instead favour using the provided `safe_markdown()` and `safe_inlineMarkdown` helpers. These
 methods will escape HTML used in a markdown string, strip unsafe links, and escape replacements. They are also tied into
 the localization system, and will populate their strings into the string packages, just as `__()` would.
@@ -309,7 +295,7 @@ blade templates.
 
 ## Supported application environments
 
-The application environment is set by specifying the `APP_ENV` environment variable. See [Environment Configuration](https://laravel.com/docs/9.x/configuration#environment-configuration) docs for more information.
+The application environment is set by specifying the `APP_ENV` environment variable. See [Environment Configuration](https://laravel.com/docs/10.x/configuration#environment-configuration) docs for more information.
 
 | `APP_ENV` | Description |
 | --- | ---- |
@@ -318,7 +304,7 @@ The application environment is set by specifying the `APP_ENV` environment varia
 | staging | For deploys from the "staging" branch. Used to test changes in a production like environment before going live. |
 | production | For deploys from the "production" branch. The live production released code. |
 
-Amongst other things, the application environment can be used to prevent tasks from running or requiring confirmation before running, e.g. in production running `php artisan migrate:fresh` requires confirmation. It can also be used to limit output in blade templates using the `@env()` or `@production` directives (See: [Environment Directives](https://laravel.com/docs/9.x/blade#environment-directives) docs)
+Amongst other things, the application environment can be used to prevent tasks from running or requiring confirmation before running, e.g. in production running `php artisan migrate:fresh` requires confirmation. It can also be used to limit output in blade templates using the `@env()` or `@production` directives (See: [Environment Directives](https://laravel.com/docs/10.x/blade#environment-directives) docs)
 
 ## Custom Artisan Commands
 
