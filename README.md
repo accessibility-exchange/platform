@@ -55,12 +55,10 @@ php artisan migrate
 
 ## Development
 
-Local development uses either the [Laravel Sail](https://laravel.com/docs/10.x/sail) Docker environment or [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
+Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
 
-### Local development setup using Laravel Sail
-
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
-2. Add an alias to your shell [as described here](https://laravel.com/docs/10.x/sail#configuring-a-bash-alias).
+1. Install [Herd](https://herd.laravel.com).
+2. Install [Xdebug](https://herd.laravel.com/docs/1/advanced-usage/xdebug) or [PCOV](https://herd.laravel.com/docs/1/advanced-usage/additional-extensions) for code coverage.
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
@@ -74,7 +72,7 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/10.x/s
     cp .env.example .env
     ```
 
-   Then, change the `APP_ENV` value to `local`:
+    Then, change the `APP_ENV` value to `local`:
 
     ```dotenv
     APP_ENV=local
@@ -86,85 +84,13 @@ Local development uses either the [Laravel Sail](https://laravel.com/docs/10.x/s
     openssl rand -hex 32
     ```
 
-   Add it to your `.env` file:
-
-    ```dotenv
-    CIPHERSWEET_KEY="<your key>"
-    ```
-
-6. Start the development environment by running the following command from within the project directory:
-
-    ```bash
-    sail up -d
-    ```
-
-7. Install Composer and NPM dependencies:
-
-    ```bash
-    sail composer install
-    sail npm install
-    ```
-
-8. Generate an application key:
-
-    ```bash
-    sail artisan key:generate
-    ```
-
-9. Run the required database migrations:
-
-    ```bash
-    sail artisan migrate
-    ```
-
-10. Download the application fonts:
-
-    ```bash
-    sail artisan google-fonts:fetch
-    ```
-
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
-of how some key tasks can be carried out using Sail:
-
-- [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
-- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `sail npm <command>`.
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `sail artisan <command>`.
-
-### Local development setup using Laravel Herd
-
-1. Install [Herd](https://herd.laravel.com).
-2. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
-
-    ```bash
-    gh repo fork accessibility-exchange/platform --clone
-    cd platform
-    ```
-
-3. Create a `.env` file from the included example file:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Then, change the `APP_ENV` value to `local`:
-
-    ```dotenv
-    APP_ENV=local
-    ```
-
-4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
-
-    ```bash
-    openssl rand -hex 32
-    ```
-
     Add it to your `.env` file:
 
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
     ```
 
-5. Install Composer and NPM dependencies:
+6. Install Composer and NPM dependencies:
 
     ```bash
     # install composer dependencies
@@ -178,37 +104,38 @@ of how some key tasks can be carried out using Sail:
     npm ci
     ```
 
-6. Generate an application key:
+7. Generate an application key:
 
      ```bash
      php artisan key:generate
      ```
 
-7. Create a database:
+8. Create a database for development and one for running tests:
 
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
+    mysql -uroot -e "create database tae-test;"
     ```
 
-8. Run the required database migrations:
+9. Run the required database migrations:
 
      ```bash
      php artisan migrate
      ```
 
-9. Download the application fonts:
+10. Download the application fonts:
 
     ```bash
     php artisan google-fonts:fetch
     ```
 
-10. Tell Herd to serve the application:
+11. Tell Herd to serve the application:
 
       ```bash
       herd link
       ```
 
-11. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
+12. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
 
     ```bash
     brew install mailpit
@@ -246,11 +173,9 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
 - Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
     must be named according to the format `feat/<feature>`.
 - Before opening a pull request, developers should run `composer format && composer analyze && composer test-coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
-  - May need to enabled the XDEBUG coverage mode before running tests, for example `XDEBUG_MODE=coverage composer test-coverage`.
-  - May also want to run the tests in parallel to improve speed, for example `php artisan test --parallel` or `XDEBUG_MODE=coverage php artisan test --coverage --parallel`
 - Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
-- The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined features that
-    are considered production-ready.
+- The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined
+  features that are considered production-ready.
 - Prereleases must be tagged from the `dev` branch.
 - Releases must be tagged from the `production` branch.
 

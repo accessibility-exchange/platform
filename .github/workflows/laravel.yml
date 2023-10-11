@@ -58,7 +58,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         run: |
           sudo systemctl start mysql.service
-          mysqladmin create test --user="root" --password="root"
+          mysqladmin create tae-test --user="root" --password="root"
       - name: Copy .env
         if: steps.git-diff.outputs.diff
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -83,7 +83,7 @@ jobs:
       - name: Run tests with coverage
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
         env:
-          DB_DATABASE: test
+          DB_DATABASE: tae-test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
