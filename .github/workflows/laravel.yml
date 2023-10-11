@@ -73,7 +73,7 @@ jobs:
       - name: Run tests
         if: steps.git-diff.outputs.diff && matrix.php == '8.2'
         env:
-          DB_DATABASE: test
+          DB_DATABASE: tae-test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
