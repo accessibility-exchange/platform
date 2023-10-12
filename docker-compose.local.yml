@@ -37,6 +37,7 @@ services:
       - './routes:/app/routes'
       - './tests:/app/tests'
       - './public:/app/public'
+      - './resources:/app/resources'
       - 'volume.platform.test:/opt/data'
       - './.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh' # create different entrypoint file
       - './.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes' # add include for http & https blocks
