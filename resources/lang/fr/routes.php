@@ -19,7 +19,7 @@ return [
     'about/for-regulated-organizations/get-input' => 'about/for-regulated-organizations/get-input',
     'about/glossary' => 'about/glossary',
     'about/pricing' => 'about/pricing',
-    'about/privacy-policy' => 'about/privacy-policy',
+    'about/privacy-policy' => 'a-propos/politique-de-confidentialite',
     'about/terms-of-service' => 'about/terms-of-service',
     'account/delete' => 'account/delete',
     'account/update' => 'account/update',
