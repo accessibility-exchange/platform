@@ -6,6 +6,8 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
 
+use function Pest\Livewire\livewire;
+
 test('engagement consultant management page can be rendered and connector can be sought', function () {
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
 
@@ -21,7 +23,7 @@ test('engagement consultant management page can be rendered and connector can be
     $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
     $response->assertOk();
 
-    $this->livewire(ManageEngagementConnector::class, ['engagement' => $engagement])
+    livewire(ManageEngagementConnector::class, ['engagement' => $engagement])
         ->assertSet('project', $engagement->project)
         ->assertSet('seeking_community_connector', false)
         ->set('seeking_community_connector', true)
@@ -58,7 +60,7 @@ test('connector invitations can be cancelled', function () {
 
     $this->actingAs($regulatedOrganizationUser);
 
-    $this->livewire(ManageEngagementConnector::class, [
+    livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])
         ->assertSee($individual->name)
@@ -86,7 +88,7 @@ test('individual connector can be removed', function () {
 
     $engagement->connector()->associate($individual);
 
-    $this->livewire(ManageEngagementConnector::class, [
+    livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])
         ->assertSee($individual->name)
@@ -112,7 +114,7 @@ test('organizational connector can be removed', function () {
 
     $engagement->organizationalConnector()->associate($organization);
 
-    $this->livewire(ManageEngagementConnector::class, [
+    livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])
         ->assertSee($organization->name)

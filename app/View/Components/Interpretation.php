@@ -30,7 +30,7 @@ class Interpretation extends Component
      *
      * @return void
      */
-    public function __construct(string $name, ?string $namespace = null)
+    public function __construct(string $name, string $namespace = null)
     {
         $this->name = $name;
         $this->namespace = $namespace;

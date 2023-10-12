@@ -67,7 +67,7 @@ class ResourceSeeder extends Seeder
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info("Seeder file wasn't found, using default values.");
             $resources = [
                 [
                     'title' => ['en' => 'The Accessible Canada Act, Accessibility Regulations and Standards'],

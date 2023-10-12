@@ -37,7 +37,7 @@ class CollectionResources extends Component
 
     protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
 
-    public function __invoke(Container $container, Route $route, ?ResourceCollection $resourceCollection = null)
+    public function __invoke(Container $container, Route $route, ResourceCollection $resourceCollection = null)
     {
         return parent::__invoke($container, $route);
     }

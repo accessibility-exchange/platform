@@ -34,8 +34,8 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Engagement extends Model
 {
     use HasFactory;
-    use HasSchemalessAttributes;
     use HasRelationships;
+    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslations;
 

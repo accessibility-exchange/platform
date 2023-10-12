@@ -247,7 +247,8 @@ test('administrative user can be retrieved via query scope', function () {
     $adminUser = User::factory()->create(['context' => 'administrator']);
 
     $users = User::all()->pluck('id')->toArray();
-    $administrators = User::whereAdministrator()->pluck('id')->toArray();
+    /** @see https://github.com/spatie/laravel-ciphersweet/discussions/51 */
+    $administrators = User::whereAdministrator()->get()->pluck('id')->toArray();
 
     foreach ([$user->id, $adminUser->id] as $id) {
         expect($users)->toContain($id);

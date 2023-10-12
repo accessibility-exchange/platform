@@ -10,7 +10,7 @@ class ResourcePolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user): null|bool
+    public function before(User $user): ?bool
     {
         return $user->isAdministrator() ? true : null;
     }

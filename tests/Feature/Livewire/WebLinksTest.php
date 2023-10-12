@@ -2,8 +2,10 @@
 
 use App\Http\Livewire\WebLinks;
 
+use function Pest\Livewire\livewire;
+
 test('link can be added', function () {
-    $this->livewire(WebLinks::class, ['links' => []])
+    livewire(WebLinks::class, ['links' => []])
         ->assertSee(__('Add link'))
         ->assertDontSee(__('Add another link'))
         ->call('addLink')
@@ -13,7 +15,7 @@ test('link can be added', function () {
 });
 
 test('no more than five links can be added', function () {
-    $this->livewire(WebLinks::class, ['links' => [
+    livewire(WebLinks::class, ['links' => [
         ['title' => 'My blog 1', 'url' => 'https://my1st.blog'],
         ['title' => 'My blog 2', 'url' => 'https://my2nd.blog'],
         ['title' => 'My blog 3', 'url' => 'https://my3rd.blog'],
@@ -26,7 +28,7 @@ test('no more than five links can be added', function () {
 });
 
 test('link can be removed', function () {
-    $this->livewire(WebLinks::class, ['links' => [['title' => 'My blog', 'url' => 'https://my.blog']]])
+    livewire(WebLinks::class, ['links' => [['title' => 'My blog', 'url' => 'https://my.blog']]])
         ->call('removeLink', 0)
         ->assertSet('links', []);
 });

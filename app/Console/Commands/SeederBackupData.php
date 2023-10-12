@@ -72,7 +72,7 @@ class SeederBackupData extends Command
 
             return 0;
 
-        // restores backups
+            // restores backups
         } elseif ($options['restore']) {
             if (in_array(config('app.env'), ['testing', 'production']) === true) {
                 printf("This command cannot run on environment %s\r\n", config('app.env'));
@@ -111,7 +111,7 @@ class SeederBackupData extends Command
                 return 0;
             }
 
-        // default --all is to backup all tables
+            // default --all is to backup all tables
         } elseif ($options['all']) {
             foreach ($available_tables as $table) {
                 printf("Backing up table seeder: %s for environment: %s\r\n", $table, $environment);
@@ -120,7 +120,7 @@ class SeederBackupData extends Command
 
             return 0;
 
-        // if table is set the default will be to backup the table
+            // if table is set the default will be to backup the table
         } elseif (count($options['table']) > 0) {
             foreach ($options['table'] as $table) {
                 if (in_array($table, $available_tables)) {

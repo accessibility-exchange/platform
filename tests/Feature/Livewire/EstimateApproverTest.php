@@ -5,13 +5,15 @@ use App\Models\Project;
 use App\Models\User;
 use App\Notifications\EstimateApproved;
 
+use function Pest\Livewire\livewire;
+
 test('unauthorized user cannot approve an estimate', function () {
     $project = Project::factory()->create();
     $user = User::factory()->create();
 
     $this->actingAs($user);
 
-    $this->livewire(EstimateApprover::class, ['model' => $project])
+    livewire(EstimateApprover::class, ['model' => $project])
         ->call('updateStatus')
         ->assertForbidden();
 
@@ -31,7 +33,7 @@ test('authorized user can approve an estimate', function () {
 
     $this->actingAs($user);
 
-    $this->livewire(EstimateApprover::class, ['model' => $project])
+    livewire(EstimateApprover::class, ['model' => $project])
         ->call('updateStatus');
 
     expect($project->fresh()->estimate_approved_at)->toBeTruthy();

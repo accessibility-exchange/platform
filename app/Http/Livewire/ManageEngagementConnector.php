@@ -32,7 +32,7 @@ class ManageEngagementConnector extends Component
         'seeking_community_connector' => 'nullable|boolean',
     ];
 
-    public function __invoke(Container $container, Route $route, ?Engagement $engagement = null)
+    public function __invoke(Container $container, Route $route, Engagement $engagement = null)
     {
         return parent::__invoke($container, $route);
     }

@@ -51,15 +51,15 @@ class Organization extends Model
     use GeneratesMultilingualSlugs;
     use HasDisplayRegion;
     use HasFactory;
-    use HasSchemalessAttributes;
     use HasMembers;
     use HasMergedRelationships;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasRelationships;
+    use HasSchemalessAttributes;
     use HasStatus;
-    use HasTranslations;
     use HasTranslatableSlug;
+    use HasTranslations;
     use Notifiable;
     use QueryKit;
 

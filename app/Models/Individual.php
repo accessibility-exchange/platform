@@ -47,18 +47,18 @@ use TheIconic\NameParser\Parser as NameParser;
  */
 class Individual extends Model implements CipherSweetEncrypted
 {
-    use UsesCipherSweet;
     use HasDisplayRegion;
     use HasFactory;
+    use HasMergedRelationships;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
+    use HasRelationships;
     use HasSchemalessAttributes;
-    use HasMergedRelationships;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
     use Notifiable;
-    use HasRelationships;
+    use UsesCipherSweet;
 
     protected $fillable = [
         'published_at',

@@ -15,8 +15,8 @@ class Module extends Model
 {
     use GeneratesMultilingualSlugs;
     use HasFactory;
-    use HasTranslations;
     use HasTranslatableSlug;
+    use HasTranslations;
 
     protected $fillable = [
         'title',

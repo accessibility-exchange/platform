@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\AccountApproved;
 use App\Notifications\AccountSuspended;
 use App\Notifications\AccountUnsuspended;
+
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {

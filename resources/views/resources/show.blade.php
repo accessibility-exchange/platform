@@ -67,7 +67,7 @@
         @if ($resource->summary)
             <h2>{{ __('Summary') }}</h2>
 
-            {!! Str::markdown($resource->summary, SAFE_MARKDOWN_OPTIONS) !!}
+            {!! Str::markdown($resource->summary, config('markdown')) !!}
         @endif
 
         <h2>{{ __('Links to resource') }}</h2>
@@ -87,7 +87,7 @@
         @endcan
     </div>
     @if ($resource->resourceCollections->count())
-        <div class="full accent -mb-8 pt-12 pb-8">
+        <div class="full accent -mb-8 pb-8 pt-12">
             <div class="center center:wide stack">
                 <h2>{{ __('Collections this resource appears in') }}</h2>
                 <div class="grid gap-6 md:grid-cols-2">

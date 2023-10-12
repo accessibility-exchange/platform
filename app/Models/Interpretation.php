@@ -54,7 +54,7 @@ class Interpretation extends Model
         });
     }
 
-    public function getContextURL(?string $locale = null): ?string
+    public function getContextURL(string $locale = null): ?string
     {
         if ($this->route_has_params) {
             return null;

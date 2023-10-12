@@ -8,12 +8,10 @@ use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Membership;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
-use function Pest\Faker\faker;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
-uses(RefreshDatabase::class);
+use function Pest\Faker\fake;
 
 test('users can create regulated organizations', function () {
     $individualUser = User::factory()->create();
@@ -46,8 +44,8 @@ test('users can create regulated organizations', function () {
 
     $regulatedOrganization = RegulatedOrganization::where('name->en', 'Government Agency')->first();
 
-    $this->assertTrue($user->isMemberOf($regulatedOrganization));
-    $this->assertEquals(1, count($user->memberships));
+    expect($user->isMemberOf($regulatedOrganization))->toBeTrue();
+    expect($user->memberships)->toHaveCount(1);
 
     $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization));
 
@@ -70,7 +68,7 @@ test('users primary entity can be retrieved', function () {
 
     $user = $user->fresh();
 
-    $this->assertEquals($user->regulatedOrganization->id, $regulatedOrganization->id);
+    expect($regulatedOrganization->id)->toEqual($user->regulatedOrganization->id);
 });
 
 test('users with admin role can edit regulated organizations', function () {
@@ -225,7 +223,7 @@ test('regulated organizations can be published', function () {
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $this->assertTrue($regulatedOrganization->checkStatus('published'));
+    expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
 });
 
 test('regulated organizations can be unpublished', function () {
@@ -251,7 +249,7 @@ test('regulated organizations can be unpublished', function () {
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $this->assertTrue($regulatedOrganization->checkStatus('draft'));
+    expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
 });
 
 test('regulated organization isPublishable()', function ($expected, $data, $connections = []) {
@@ -472,7 +470,7 @@ test('invitation can be accepted', function () {
 
     $response = $this->actingAs($user)->get($acceptUrl);
 
-    $this->assertTrue($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
     $response->assertRedirect(localized_route('dashboard'));
 });
 
@@ -511,7 +509,7 @@ test('invitation cannot be accepted by different user', function () {
 
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
-    $this->assertFalse($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $response->assertForbidden();
 });
 
@@ -521,7 +519,7 @@ test('invitation can not be declined by a different user', function () {
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
         'invitationable_type' => get_class($regulatedOrganization),
-        'email' => faker()->email,
+        'email' => fake()->email,
     ]);
 
     $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
@@ -824,8 +822,8 @@ test('regulated organizations have slugs in both languages even if only one is p
 
 test('notifications can be routed for regulated organizations', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create([
-        'contact_person_name' => faker()->name(),
-        'contact_person_email' => faker()->email(),
+        'contact_person_name' => fake()->name(),
+        'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
         'preferred_contact_method' => 'email',
     ]);

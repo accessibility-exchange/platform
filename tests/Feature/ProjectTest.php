@@ -17,7 +17,8 @@ use Carbon\Carbon;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
-use function Pest\Faker\faker;
+
+use function Pest\Faker\fake;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -56,7 +57,7 @@ test('users with organization or regulated organization admin role can create pr
 
     $response->assertSessionHasNoErrors();
 
-    $this->assertEquals('Test Project', $project->name);
+    expect($project->name)->toEqual('Test Project');
 
     $response->assertRedirect($url);
 
@@ -111,7 +112,7 @@ test('users with organization or regulated organization admin role can create pr
 
     $response->assertSessionHasNoErrors();
 
-    $this->assertEquals('Test Project 2', $project->name);
+    expect($project->name)->toEqual('Test Project 2');
 
     $response->assertRedirect($url);
 
@@ -183,7 +184,7 @@ test('projects can be published and unpublished', function () {
 
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('projects.show', $project));
-    $this->assertTrue($project->checkStatus('published'));
+    expect($project->checkStatus('published'))->toBeTrue();
 
     $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'unpublish' => true,
@@ -200,7 +201,7 @@ test('projects can be published and unpublished', function () {
 
     $project = $project->fresh();
 
-    $this->assertTrue($project->checkStatus('draft'));
+    expect($project->checkStatus('draft'))->toBeTrue();
 
     $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertSee('Draft');
@@ -392,8 +393,8 @@ test('incomplete users cannot view projects page', function ($context, $redirect
 
 test('notifications can be routed for projects', function () {
     $project = Project::factory()->create([
-        'contact_person_name' => faker()->name(),
-        'contact_person_email' => faker()->email(),
+        'contact_person_name' => fake()->name(),
+        'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
         'preferred_contact_method' => 'email',
     ]);
@@ -447,7 +448,7 @@ test('users with regulated organization admin role can edit projects', function 
     $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
 
     $project = $project->fresh();
-    $this->assertEquals(count($project->impacts), 1);
+    expect(1)->toEqual(count($project->impacts));
 
     $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
         'name' => ['en' => $project->name],
@@ -675,10 +676,10 @@ test('projects have timeframes', function () {
     expect($org_future_project->status)->toEqual('Upcoming');
     expect($indeterminate_project)->started->toBeFalse();
 
-    $this->assertEquals(5, count($organization->projects));
-    $this->assertEquals(2, count($organization->completedProjects));
-    $this->assertEquals(1, count($organization->inProgressProjects));
-    $this->assertEquals(1, count($organization->upcomingProjects));
+    expect($organization->projects)->toHaveCount(5);
+    expect($organization->completedProjects)->toHaveCount(2);
+    expect($organization->inProgressProjects)->toHaveCount(1);
+    expect($organization->upcomingProjects)->toHaveCount(1);
 
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $regulated_org_past_project = Project::factory()->create([
@@ -700,10 +701,10 @@ test('projects have timeframes', function () {
         'start_date' => Carbon::now()->addMonths(1)->format('Y-m-d'),
     ]);
 
-    $this->assertEquals(4, count($regulatedOrganization->projects));
-    $this->assertEquals(2, count($regulatedOrganization->completedProjects));
-    $this->assertEquals(1, count($regulatedOrganization->inProgressProjects));
-    $this->assertEquals(1, count($regulatedOrganization->upcomingProjects));
+    expect($regulatedOrganization->projects)->toHaveCount(4);
+    expect($regulatedOrganization->completedProjects)->toHaveCount(2);
+    expect($regulatedOrganization->inProgressProjects)->toHaveCount(1);
+    expect($regulatedOrganization->upcomingProjects)->toHaveCount(1);
 });
 
 test('projects reflect consultant origin', function () {
@@ -717,9 +718,9 @@ test('projects reflect consultant origin', function () {
         'individual_consultant_id' => $individual->id,
     ]);
 
-    $this->assertEquals('external', $project_with_external_consultant->consultant_origin);
-    $this->assertEquals('platform', $project_with_platform_consultant->consultant_origin);
-    $this->assertEquals($individual->id, $project_with_platform_consultant->consultant->id);
+    expect($project_with_external_consultant->consultant_origin)->toEqual('external');
+    expect($project_with_platform_consultant->consultant_origin)->toEqual('platform');
+    expect($project_with_platform_consultant->consultant->id)->toEqual($individual->id);
 });
 
 test('projects reflect team experience', function () {
@@ -727,7 +728,7 @@ test('projects reflect team experience', function () {
         'team_has_disability_or_deaf_lived_experience' => true,
     ]);
 
-    $this->assertEquals('Our team has people with lived and living experiences of disability or being Deaf.', $project->teamExperience());
+    expect($project->teamExperience())->toEqual('Our team has people with lived and living experiences of disability or being Deaf.');
 
     $project->update([
         'team_has_disability_or_deaf_lived_experience' => false,
@@ -735,7 +736,7 @@ test('projects reflect team experience', function () {
 
     $project = $project->fresh();
 
-    $this->assertEquals('Our team does not have people with lived and living experiences of disability or being Deaf.', $project->teamExperience());
+    expect($project->teamExperience())->toEqual('Our team does not have people with lived and living experiences of disability or being Deaf.');
 });
 
 test('project retrieves team trainings properly', function () {

@@ -13,8 +13,8 @@ class UniqueUserEmail implements InvokableRule
     public $idColumn;
 
     // Can use the $id and $idColumn to define a model to ignore. Similar to how Laravel's unique validation rule works
-    // see: https://laravel.com/docs/9.x/validation#rule-unique
-    public function __construct(mixed $id = null, ?string $idColumn = null)
+    // see: https://laravel.com/docs/10.x/validation#rule-unique
+    public function __construct(mixed $id = null, string $idColumn = null)
     {
         $this->id = $id;
         $this->idColumn = $idColumn ?? 'id';

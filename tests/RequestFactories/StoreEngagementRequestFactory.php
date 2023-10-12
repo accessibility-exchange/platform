@@ -3,8 +3,9 @@
 namespace Tests\RequestFactories;
 
 use App\Models\Project;
-use function Pest\Faker\faker;
 use Worksome\RequestFactories\RequestFactory;
+
+use function Pest\Faker\fake;
 
 class StoreEngagementRequestFactory extends RequestFactory
 {
@@ -12,7 +13,7 @@ class StoreEngagementRequestFactory extends RequestFactory
     {
         return [
             'project_id' => Project::factory(),
-            'name' => ['en' => 'Workshop '.faker()->randomNumber(5)],
+            'name' => ['en' => 'Workshop '.fake()->randomNumber(5)],
             'who' => 'individuals',
             'ideal_participants' => 25,
             'minimum_participants' => 15,
