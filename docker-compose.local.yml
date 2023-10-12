@@ -14,7 +14,7 @@ services:
     networks:
       - network.platform.proxy
     ports:
-      - 80:80
+      - '${APP_PORT:-80}:80'
       - 443:443
 
   platform.test:
@@ -40,6 +40,7 @@ services:
       - './.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh' # create different entrypoint file
       - './.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes' # add include for http & https blocks
       - './.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf' # replace primary nginx config
+      - './.local-deploy/accessibility-app/php.ini-development:/usr/local/etc/php/php.ini-development' # Deploy development php settings
     networks:
       - network.platform.mail
       - network.platform.mysql
@@ -63,7 +64,7 @@ services:
     container_name: platform.mysql
     image: docker.io/bitnami/mysql:8.0
     ports:
-      - '3306:3306'
+      - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
