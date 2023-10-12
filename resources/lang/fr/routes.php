@@ -31,7 +31,7 @@ return [
     'courses/{course}/{module}' => 'courses/{course}/{module}',
     'dashboard' => 'tableau-de-bord',
     'dashboard/collaboration-preferences' => 'dashboard/collaboration-preferences',
-    'dashboard/notifications' => 'dashboard/notifications',
+    'dashboard/notifications' => 'tableau-de-bord/notifications',
     'dashboard/notifications/all' => 'dashboard/notifications/all',
     'dashboard/trainings' => 'dashboard/trainings',
     'engagements/{engagement}' => 'engagements/{engagement}',
