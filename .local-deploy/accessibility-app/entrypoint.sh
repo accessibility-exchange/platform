@@ -4,7 +4,8 @@ set -e
 
 # TODO permanent remove cache lines once testing on per/pod caching is tested
 if [ -f /usr/local/etc/php/php.ini-development ]; then
-    mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/conf.d/php.ini
+    rm -f /usr/local/etc/php/conf.d/php.ini
+    ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/conf.d/php.ini
 fi
 
 # mirror developers user id so that they can edit live files in the docker
