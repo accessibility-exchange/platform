@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
             ->onOneServer(); // run only on a single server at once
 
         $schedule->command('db:seed:backup --all --restore --from=production') // restore production backups to staging, dev & local
-            ->dailyAt('00:15') // Run daily at 1 am
+            ->dailyAt('00:30') // Run daily at 12:30 am
             ->environments(['staging', 'dev', 'local']) // only run for APP_ENV tagged staging, dev, or local
             ->onOneServer(); // run only on a single server at once
     }
