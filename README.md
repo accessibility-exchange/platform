@@ -348,7 +348,7 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 - [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `docker exec platform.test php artisan <command>`.  
 - [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec platform.test npm <command>`.  
 - [Composer](https://getcomposer.org) commands may be executed by using `docker exec platform.test composer <command>`.
-- If you want to enter the container to run commands within prefixing with `docker exec platform.test` you enter the container command line with `docker exec -it platform.test sh`.  
+- !(preferred way) If you want to enter the container to run commands within prefixing with `docker exec platform.test` you enter the container command line with `docker exec -it platform.test bash`.  
 
 #### Troubleshooting
 
