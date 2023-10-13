@@ -6,11 +6,11 @@ use App\Enums\ConsultationPhase;
 use App\Filament\Resources\ResourceResource\Pages;
 use App\Models\Resource as ResourceModel;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class ResourceResource extends Resource

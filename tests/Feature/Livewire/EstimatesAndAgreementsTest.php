@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\AdminEstimatesAndAgreements;
+use App\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;

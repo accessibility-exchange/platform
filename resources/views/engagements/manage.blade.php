@@ -45,11 +45,11 @@
                             @break
 
                             @case('open-call')
-                                @svg('heroicon-o-speakerphone', 'mr-2')
+                                @svg('heroicon-o-megaphone', 'mr-2')
                             @break
 
                             @default
-                                @svg('heroicon-o-puzzle', 'mr-2')
+                                @svg('heroicon-o-puzzle-piece', 'mr-2')
                         @endswitch
                         {{ $engagement->display_recruitment }}
                     </p>
@@ -237,7 +237,7 @@
                                     </span>
                                 @elseif ($project->checkStatus('estimateRequested'))
                                     <span class="badge badge--progress">
-                                        @svg('heroicon-o-refresh', 'mr-2')
+                                        @svg('heroicon-o-arrow-path', 'mr-2')
                                         {{ __('Estimate requested') }}
                                     </span>
                                 @else
@@ -270,7 +270,7 @@
                 <x-manage-section :title="__('Community organization')">
                     @if ($engagement->organization)
                         <x-card.organization level="4" :model="$engagement->organization" />
-                        <footer class="-mx-6 border-x-0 border-t border-b-0 border-solid border-grey-3 px-6 pt-5">
+                        <footer class="-mx-6 border-x-0 border-b-0 border-t border-solid border-grey-3 px-6 pt-5">
                             <a class="cta secondary"
                                 href="{{ localized_route('engagements.manage-organization', $engagement) }}">
                                 @svg('heroicon-o-cog') {{ __('Manage') }}

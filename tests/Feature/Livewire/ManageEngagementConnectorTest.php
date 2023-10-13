@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Livewire\ManageEngagementConnector;
+use App\Livewire\ManageEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
@@ -88,6 +89,7 @@ test('individual connector can be removed', function () {
 
     $engagement->connector()->associate($individual);
 
+    actingAs($regulatedOrganizationUser)->
     livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])
@@ -114,6 +116,7 @@ test('organizational connector can be removed', function () {
 
     $engagement->organizationalConnector()->associate($organization);
 
+    actingAs($regulatedOrganizationUser)->
     livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])

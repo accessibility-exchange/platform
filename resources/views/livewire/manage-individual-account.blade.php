@@ -23,7 +23,7 @@
     <td class="">
         @if ($user->checkStatus('suspended'))
             <span class="text-error flex items-center gap-2">
-                @svg('heroicon-o-ban') <span class="font-semibold">{{ __('Suspended') }}</span>
+                @svg('heroicon-o-no-symbol') <span class="font-semibold">{{ __('Suspended') }}</span>
             </span>
         @else
             @if ($user->checkStatus('pending'))
@@ -35,19 +35,19 @@
     </td>
     <td>
         @if ($user->checkStatus('pending'))
-            <form wire:submit.prevent="approve">
+            <form wire:submit="approve">
                 <button class="secondary">{{ __('Approve') }}</button>
             </form>
         @else
             @if (!$user->checkStatus('suspended'))
-                <form wire:submit.prevent="suspend">
+                <form wire:submit="suspend">
                     <button class="secondary destructive">
-                        @svg('heroicon-o-ban')
+                        @svg('heroicon-o-no-symbol')
                         {{ __('Suspend') }}
                     </button>
                 </form>
             @else
-                <form wire:submit.prevent="unsuspend">
+                <form wire:submit="unsuspend">
                     <button class="secondary">{{ __('Unsuspend') }}</button>
                 </form>
             @endif

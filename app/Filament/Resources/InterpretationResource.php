@@ -5,10 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\InterpretationResource\Pages;
 use App\Models\Interpretation;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
 class InterpretationResource extends Resource
@@ -56,9 +56,9 @@ class InterpretationResource extends Resource
                     ->label(__('Show context'))
                     ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').' '.$record->name.'</span>')
                     ->html()
-                    ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
+                    ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.admin.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
                     ->openUrlInNewTab()
-                    ->icon('heroicon-s-external-link')
+                    ->icon('heroicon-m-arrow-top-right-on-square')
                     ->iconPosition('after'),
                 Tables\Columns\BadgeColumn::make('asl')
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'asl', false) !== '' ? __('Yes') : __('No'))
@@ -71,7 +71,7 @@ class InterpretationResource extends Resource
                             return 'heroicon-o-check';
                         }
 
-                        return 'heroicon-o-x';
+                        return 'heroicon-o-x-mark';
                     })
                     ->label('ASL Video')
                     ->disableClick(),
@@ -86,7 +86,7 @@ class InterpretationResource extends Resource
                             return 'heroicon-o-check';
                         }
 
-                        return 'heroicon-o-x';
+                        return 'heroicon-o-x-mark';
                     })
                     ->label('LSQ Video')
                     ->disableClick(),

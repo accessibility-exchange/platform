@@ -21,7 +21,7 @@
     <h3>
         <a href="{{ orientation_link(Auth::user()->context) }}" @can('update', $memberable)class="counter__item"@endcan>
             {{ __('Sign up and attend an orientation session') }}
-            @svg('heroicon-o-external-link', 'ml-1')
+            @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
         </a>
     </h3>
     <p>

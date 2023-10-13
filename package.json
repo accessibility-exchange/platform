@@ -61,9 +61,7 @@
         "vite-plugin-static-copy": "^0.17.0"
     },
     "dependencies": {
-        "@alpinejs/mask": "^3.12.3",
         "@vimeo/player": "^2.20.1",
-        "alpinejs": "^3.12.3",
         "axios": "^1.5.1",
         "infusion": "^4.6.0",
         "luxon": "^3.4.3",

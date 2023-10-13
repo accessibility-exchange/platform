@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ResourceController;
-use App\Http\Livewire\AllResources;
+use App\Livewire\AllResources;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(ResourceController::class)

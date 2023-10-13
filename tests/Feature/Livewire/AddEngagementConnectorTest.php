@@ -1,17 +1,17 @@
 <?php
 
 use App\Enums\IdentityCluster;
-use App\Http\Livewire\AddEngagementConnector;
+use App\Livewire\AddEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Invitation;
 use App\Models\Organization;
-use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
 use Spatie\LaravelOptions\Options;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
@@ -225,13 +225,15 @@ test('registered organization can be invited to be an engagement’s community c
 
 test('only publishable orgs are available to choose as a community connector', function () {
     $this->seed(IdentitySeeder::class);
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
     $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
-    $fro = RegulatedOrganization::factory()
-        ->hasAttached(
-            User::factory()->state(['context' => 'regulated-organization']),
-            ['role' => 'admin']
-        )
-        ->create();
+    $fro = $engagement->project->projectable;
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $fro->users()->attach(
+        $user,
+        ['role' => 'admin']
+    );
 
     $orgNotOriented = Organization::factory()
         ->hasAttached(
@@ -287,15 +289,14 @@ test('only publishable orgs are available to choose as a community connector', f
         ]);
     $organization->constituentIdentities()->attach($areaIdentity);
 
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-
-    $this->actingAs($fro->users->first());
-    livewire(AddEngagementConnector::class, [
-        'engagement' => $engagement,
-        'who' => 'organization',
-    ])
-        ->assertDontSee($orgNotOriented->name)
-        ->assertDontSee($orgNotPublishable->name)
-        ->assertDontSee($orgSuspended->name)
-        ->assertSee($organization->name);
+    actingAs($fro->users->first())->
+        livewire(AddEngagementConnector::class, [
+            'engagement' => $engagement,
+            'who' => 'organization',
+        ])
+            ->assertOk()
+            ->assertDontSee($orgNotOriented->name)
+            ->assertDontSee($orgNotPublishable->name)
+            ->assertDontSee($orgSuspended->name)
+            ->assertSee($organization->name);
 });
