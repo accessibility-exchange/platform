@@ -68,7 +68,7 @@ test('Interpretation instance using namespace', function () {
     $response->assertStatus(200);
 
     $toSee = [
-        '<h2 id="join">',
+        '<h2 class="text-center" id="join">',
         'Join our accessibility community',
         '</h2>',
         'id="'.Str::slug('Join our accessibility community'),

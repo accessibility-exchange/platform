@@ -3,9 +3,7 @@
         <div class="center center:wide stack stack:xl">
             <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
             <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
-                @if ($withPricing ?? false) namespace="join-with_pricing"
-                @else
-                    namespace="join" @endif />
+                namespace="{{ isset($withPricing) ? 'join-with_pricing' : 'join' }}" />
             <div class="grid">
                 <div class="stack">
                     <h3>{{ __('Sign up online') }}</h3>
@@ -19,7 +17,8 @@
                 @if ($withPricing ?? false)
                     <div class="stack">
                         <h3 class="h4">{{ __('Learn about our pricing') }}</h3>
-                        <p><a class="cta" href="{{ localized_route('about.pricing') }}">{{ __('Go to pricing') }}</a></p>
+                        <p><a class="cta" href="{{ localized_route('about.pricing') }}">{{ __('Go to pricing') }}</a>
+                        </p>
                     </div>
                 @endif
             </div>

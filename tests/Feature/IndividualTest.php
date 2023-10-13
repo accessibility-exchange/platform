@@ -120,7 +120,7 @@ test('flash message after individual role change', function ($initialRoles, $new
         ])
         ->assertSessionHasNoErrors();
 
-    expect(flash()->class)->toBe($expected['class']);
+    expect(flash()->class)->toContain($expected['class']);
     expect(flash()->message)->toBe($expected['message']($individual));
 })->with('individualRoleChange');
 

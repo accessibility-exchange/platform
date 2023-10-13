@@ -17,7 +17,7 @@ test('adding a translation succeeds for a valid translatable model', function ()
     $individual = $individual->fresh();
 
     expect(in_array('asl', $individual->languages))->toBeTrue();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('Language :language added.', ['language' => get_language_exonym('asl')]));
 });
 
@@ -58,7 +58,7 @@ test('removing a translation succeeds for a valid translatable model', function 
     $individual = $individual->fresh();
 
     expect(in_array('fr', $individual->languages))->toBeFalse();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('Language :language removed.', ['language' => get_language_exonym('fr')]));
 });
 

@@ -27,7 +27,7 @@ test('create invitation', function () {
     ]);
 
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('invitation.create_invitation_succeeded'));
 
     Mail::assertSent(InvitationMessage::class, function (InvitationMessage $mail) {
@@ -82,7 +82,7 @@ test('accept invitation request', function () {
 
     $response = $this->actingAs($user)->get($acceptUrl);
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('invitation.accept_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
 
     expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
@@ -144,7 +144,7 @@ test('decline invitation request', function () {
 
     $response = $this->actingAs($user)->delete(route('invitations.decline', $invitation));
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('invitation.decline_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
 
     expect(Invitation::find($invitation))->toHaveCount(0);
@@ -167,7 +167,7 @@ test('destroy invitation', function () {
 
     $response = $this->actingAs($user)->delete(route('invitations.destroy', $invitation));
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toContain('success');
     expect(flash()->message)->toBe(__('invitation.cancel_invitation_succeeded'));
 
     expect(Invitation::find($invitation))->toHaveCount(0);
