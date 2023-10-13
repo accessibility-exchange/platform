@@ -42,6 +42,8 @@ test('resources can be translated', function () {
 });
 
 test('users can view resources', function () {
+    $this->seed(ContentTypeSeeder::class);
+
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
     $resource = Resource::factory()->create();
