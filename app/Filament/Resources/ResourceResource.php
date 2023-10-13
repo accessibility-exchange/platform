@@ -69,6 +69,7 @@ class ResourceResource extends Resource
                     ->columnSpan(2),
                 Forms\Components\Select::make('content_type_id')
                     ->relationship('contentType', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('phases')
                     ->label(__('Phases of consultation'))
@@ -77,14 +78,17 @@ class ResourceResource extends Resource
                 Forms\Components\CheckboxList::make('topics')
                     ->label(__('Topics'))
                     ->relationship('topics', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('sectors')
                     ->label(__('Sectors'))
                     ->relationship('sectors', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('impacts')
                     ->label(__('Areas of impact'))
                     ->relationship('impacts', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
             ]);
     }
