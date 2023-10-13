@@ -1,5 +1,8 @@
-@import "../../node_modules/tailwindcss/src/css/preflight.css";
-@import "../../vendor/filament/filament/resources/css/app.css";
+/* stylelint-disable-next-line import-notation */
+@import "../../../../vendor/filament/filament/resources/css/theme.css";
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@config './tailwind.config.js';
 
 [type="text"],
 [type="email"],
@@ -201,7 +204,7 @@ a.filament-button:focus {
 .dark .filament-sidebar-collapse-button,
 .dark .filament-sidebar-close-button,
 .dark .icon,
-.dark a {
+.dark a * {
     color: white !important;
 }
 
