@@ -103,6 +103,7 @@ test('only administrative users can access interpretation admin pages', function
     $this->actingAs($user)->get(InterpretationResource::getUrl('edit', [
         'record' => Interpretation::factory()->create(),
     ]))->assertForbidden();
+
     $this->actingAs($administrator)->get(InterpretationResource::getUrl('edit', [
         'record' => Interpretation::factory()->create(),
     ]))->assertSuccessful();
