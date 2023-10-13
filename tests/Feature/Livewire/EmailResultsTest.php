@@ -28,5 +28,5 @@ test('content of the mail should contain course title and user name', function (
     $this->actingAs($user);
     $mail = new QuizResults($quiz, $user->name);
     $mail->assertSeeInHtml($quiz->course->title);
-    $mail->assertSeeInHtml($user->name);
+    $mail->assertSeeInHtml($user->name, false);
 });
