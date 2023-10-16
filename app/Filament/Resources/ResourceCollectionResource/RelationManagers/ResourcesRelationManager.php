@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ResourceCollectionResource\RelationManagers;
 
+use App\Models\Resource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -27,6 +28,7 @@ class ResourcesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->recordTitle(fn (Resource $record): string => $record->title)
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
             ])

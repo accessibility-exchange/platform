@@ -106,13 +106,13 @@ class ResourceResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name'),
-                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name'),
+                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
+                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
                 SelectFilter::make('phases')
                     ->multiple()
                     ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('phases', $data['values'])->orWhereNull('phases'))
                     ->options(self::getPhases()),
-                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name'),
+                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
