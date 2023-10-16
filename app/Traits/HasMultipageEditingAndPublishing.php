@@ -37,7 +37,7 @@ trait HasMultipageEditingAndPublishing
 
         if (is_null($request->input('preview')) && is_null($request->input('publish')) && is_null($request->input('unpublish'))) {
             if ($this->checkStatus('draft')) {
-                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success|'.__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'en');
+                flash(__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()]), 'success|'.__('You have successfully saved your draft :model page.', ['model' => $this->getSingularName()], 'en'));
             } else {
                 flash(__('You have successfully saved your :model page.', ['model' => $this->getSingularName()]), 'success|'.__('You have successfully saved your :model page.', ['model' => $this->getSingularName()], 'en'));
             }
