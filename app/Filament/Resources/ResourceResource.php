@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Enums\ConsultationPhase;
 use App\Filament\Resources\ResourceResource\Pages;
+use App\Models\ContentType;
+use App\Models\Impact;
 use App\Models\Resource as ResourceModel;
+use App\Models\Sector;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -106,13 +109,13 @@ class ResourceResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
-                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
+                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
+                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (Impact $record) => $record->name),
                 SelectFilter::make('phases')
                     ->multiple()
                     ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('phases', $data['values'])->orWhereNull('phases'))
                     ->options(self::getPhases()),
-                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name),
+                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (Sector $record) => $record->name),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

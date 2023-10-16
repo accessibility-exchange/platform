@@ -28,7 +28,7 @@ class ResourcesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitle(fn (Resource $record): string => $record->title)
+            ->recordTitle(fn (Resource $record): string => $record->getTranslation('title', locale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
             ])
