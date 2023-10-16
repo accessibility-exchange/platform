@@ -42,7 +42,8 @@ class TopicResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->paginated([10, 25, 50]);
     }
 
     public static function getPages(): array

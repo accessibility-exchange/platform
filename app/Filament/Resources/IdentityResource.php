@@ -65,7 +65,8 @@ class IdentityResource extends Resource
             )
             ->actions([])
             ->bulkActions([])
-            ->defaultSort('clusters');
+            ->defaultSort('clusters')
+            ->paginated([10, 25, 50]);
     }
 
     public static function getRelations(): array
