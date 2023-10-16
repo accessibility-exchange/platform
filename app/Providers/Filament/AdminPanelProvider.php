@@ -7,6 +7,7 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -38,42 +39,9 @@ class AdminPanelProvider extends PanelProvider
                     800 => '8, 11, 76',
                     900 => '0, 1, 66',
                 ],
-                'danger' => [
-                    50 => '255, 241, 242',
-                    100 => '255, 228, 230',
-                    200 => '254, 205, 211',
-                    300 => '253, 164, 175',
-                    400 => '251, 113, 133',
-                    500 => '244, 63, 94',
-                    600 => '225, 29, 72',
-                    700 => '190, 18, 60',
-                    800 => '159, 18, 57',
-                    900 => '136, 19, 55',
-                ],
-                'success' => [
-                    50 => '240, 253, 244',
-                    100 => '220, 252, 231',
-                    200 => '187, 247, 208',
-                    300 => '134, 239, 172',
-                    400 => '74, 222, 128',
-                    500 => '34, 197, 94',
-                    600 => '22, 163, 74',
-                    700 => '21, 128, 61',
-                    800 => '22, 101, 52',
-                    900 => '20, 83, 45',
-                ],
-                'warning' => [
-                    50 => '254, 252, 232',
-                    100 => '254, 249, 195',
-                    200 => '254, 240, 138',
-                    300 => '253, 224, 71',
-                    400 => '250, 204, 21',
-                    500 => '234, 179, 8',
-                    600 => '202, 138, 4',
-                    700 => '161, 98, 7',
-                    800 => '133, 77, 14',
-                    900 => '113, 63, 18',
-                ],
+                'danger' => Color::Rose,
+                'success' => Color::Green,
+                'warning' => Color::Yellow,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
