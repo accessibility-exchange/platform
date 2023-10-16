@@ -52,6 +52,7 @@ class IdentityResource extends Resource
                     ->sortable(),
                 Tables\Columns\TagsColumn::make('clusters')
                     ->getStateUsing(fn (Identity $record): array => $record->clusters ? Arr::map($record->clusters, fn ($cluster) => IdentityCluster::labels()[$cluster]) : [])
+                    ->color('primary')
                     ->sortable(),
             ])
             ->filters(
