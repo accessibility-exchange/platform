@@ -7,7 +7,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -27,22 +26,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => [
-                    50 => '238, 243, 255',
-                    100 => '224, 233, 255',
-                    200 => '199, 214, 254',
-                    300 => '165, 187, 252',
-                    400 => '129, 150, 248',
-                    500 => '99, 113, 241',
-                    600 => '70, 74, 229',
-                    700 => '56, 57, 202',
-                    800 => '48, 50, 163',
-                    900 => '38, 41, 106',
-                    950 => '27, 28, 75',
-                ],
-                'danger' => Color::Rose,
-                'success' => Color::Green,
-                'warning' => Color::Yellow,
+                'primary' => '#545dbb',
+                'danger' => '#e11d48',
+                'success' => '#16a34a',
+                'warning' => '#ca8a04',
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
