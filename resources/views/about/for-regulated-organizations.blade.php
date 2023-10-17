@@ -8,6 +8,7 @@
             <span class="font-medium">{{ __('How this works for') }}</span><br />
             {{ __('federally regulated organizations') }}
         </h1>
+        <x-interpretation name="{{ __('How this works for federally regulated organizations', [], 'en') }}" />
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
@@ -38,6 +39,7 @@
             <div class="grid">
                 <div class="stack border--turquoise border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Get input on your accessibility projects') }}</h3>
+                    <x-interpretation name="{{ __('Get input on your accessibility projects', [], 'en') }}" />
                     <p>{{ __('You can work on any projects related to accessibility on this website. This can be your organization’s Accessibility Plan or Report (as required under the Accessible Canada Act), or getting feedback on your customer service or accessibility in your workplace.') }}
                     </p>
                     <p><a
@@ -47,18 +49,21 @@
 
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Find Consultation Participants') }}</h3>
+                    <x-interpretation name="{{ __('Find Consultation Participants', [], 'en') }}" />
                     <p>{{ __('Find people with disabilities, Deaf people and community organizations (for example, disability or other relevant civil society organizations, like Indigenous groups), to consult with on your accessibility project.') }}
                     </p>
                 </div>
 
                 <div class="stack border-x-0 border-b-0 border-t-[6px] border-solid border-t-green-5 pt-8">
                     <h3>{{ __('Access resources and trainings') }}</h3>
+                    <x-interpretation name="{{ __('Access resources and trainings', [], 'en') }}" />
                     <p>{{ __('We have a hub of resources and trainings. The materials can help you and your team deepen your understanding of disability and inclusion.') }}
                     </p>
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('Tap into our support network') }}</h3>
+                    <x-interpretation name="{{ __('Tap into our support network', [], 'en') }}" />
                     <p>{{ __('Accessibility Consultants could help you design consultations that are inclusive and accessible.') }}
                     </p>
                     <p>{{ __('Community Connectors could help you connect with groups that may be hard to reach otherwise.') }}

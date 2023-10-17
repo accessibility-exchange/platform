@@ -57,6 +57,7 @@
 
             <div class="stack">
                 <h2>{{ __('Organization information') }}</h2>
+                <x-interpretation name="{{ __('Organization information', [], 'en') }}" />
 
                 <hr class="divider--thick">
 
@@ -67,6 +68,7 @@
 
                 <fieldset>
                     <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
+                    <x-interpretation name="{{ __('Your headquarters location', [], 'en') }}" />
 
                     <div class="field @error('locality') field--error @enderror">
                         <x-hearth-label for="locality" :value="__('forms.label_locality')" />
@@ -82,6 +84,7 @@
 
                 <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
                     <legend>{{ __('Where are your organization’s service areas?') . ' ' . __('(required)') }}</legend>
+                    <x-interpretation name="{{ __('Where are your organization’s service areas?', [], 'en') }}" />
                     <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
                     <div class="stack" x-cloak>
                         <button class="secondary" type="button"
@@ -94,6 +97,7 @@
 
                 <fieldset class="field @error('sectors') field--error @enderror">
                     <legend>{{ __('What type of regulated organization are you?') . ' ' . __('(required)') }}</legend>
+                    <x-interpretation name="{{ __('What type of regulated organization are you?', [], 'en') }}" />
 
                     <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $regulatedOrganization->sectors->pluck('id')->toArray() ?? [])" />
                     <x-hearth-error for="sectors" />
@@ -101,13 +105,14 @@
 
                 <div class="field @error('about') field--error @enderror">
                     <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
-                        :shortLabel="__('about')" required />
+                        :shortLabel="__('about')" interpretationName="About your organization" required />
                 </div>
 
                 <fieldset class="stack">
                     <legend>
                         <h2>{{ __('Accessibility and inclusion links') . ' ' . __('(optional)') }}</h2>
                     </legend>
+                    <x-interpretation name="{{ __('Accessibility and inclusion links', [], 'en') }}" />
                     <p class="field__hint">
                         {{ __('Please include any links that describes the accessibility and inclusion initiatives your regulated entity has. This can include reports, case studies, and more.') }}
                     </p>
@@ -118,6 +123,7 @@
 
                 <fieldset class="stack">
                     <legend>{{ __('Social media links') }}</legend>
+                    <x-interpretation name="{{ __('Social media links', [], 'en') }}" />
                     <x-hearth-hint for="social_links">
                         {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                     </x-hearth-hint>
@@ -137,6 +143,7 @@
                 </fieldset>
 
                 <h3>{{ __('Organization website') }}</h3>
+                <x-interpretation name="{{ __('Organization website', [], 'en') }}" />
 
                 <div class="field @error('website_link') field--error @enderror">
                     <x-hearth-label for="website_link" :value="__('Website link') . ' ' . __('(optional)')" />
@@ -147,6 +154,7 @@
                 </div>
 
                 <h3>{{ __('Contact information') }}</h3>
+                <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
 
                 <div class="field @error('contact_person_name') field-error @enderror">
                     <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />

@@ -12,7 +12,7 @@ class AccountApproved extends Notification
     {
         $this->title = $notification->data['title'];
         $this->body = $notification->data['body'];
-        $this->interpretation = __('Account approved', [], 'en');
+        $this->interpretation = __('Your account has been approved', [], 'en');
 
         parent::__construct($notification);
     }

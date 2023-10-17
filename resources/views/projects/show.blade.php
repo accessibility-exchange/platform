@@ -24,6 +24,8 @@
         <h1 id="project">{{ $project->name }}</h1>
         @if ($project->checkStatus('draft'))
             <x-interpretation name="{{ __('You are previewing your project page.', [], 'en') }}" />
+        @else
+            <x-interpretation name="{{ __('Projects', [], 'en') }}" />
         @endif
         <div class="stack">
             <p class="h4">

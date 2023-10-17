@@ -12,7 +12,7 @@ class AccountSuspended extends Notification
     {
         $this->title = $notification->data['title'];
         $this->body = $notification->data['body'];
-        $this->interpretation = __('Account suspended', [], 'en');
+        $this->interpretation = __('Your account has been suspended', [], 'en');
 
         parent::__construct($notification);
     }

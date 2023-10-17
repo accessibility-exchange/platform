@@ -15,13 +15,14 @@
     <div class="flex flex-col gap-6 md:flex-row">
         <div class="stack w-full md:w-1/2">
             <h3>{{ __('Estimates') }}</h3>
-            <x-interpretation name="{{ __('Estimates', [], 'en') }}" />
             <p><strong>{{ __('Status') }}</strong></p>
             @if ($project->estimate_requested_at)
                 @if ($project->estimate_approved_at)
                     <p><span class="badge">{{ __('Approved') }}</span></p>
+                    <x-interpretation name="{{ __('Estimates', [], 'en') }}" namespace="estimates-approved" />
                 @elseif($project->estimate_returned_at)
                     <p><span class="badge">{{ __('Returned') }}</span></p>
+                    <x-interpretation name="{{ __('Estimates', [], 'en') }}" namespace="estimates-returned" />
                     <p>{{ __('This estimate was sent to :contact on :date.', ['contact' => $project->contact_person_email, 'date' => $project->estimate_requested_at->translatedFormat('F j, Y')]) }}
                         @include('projects.partials.included-engagements')
                     <div class="flex items-center gap-6">

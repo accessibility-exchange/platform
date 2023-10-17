@@ -25,6 +25,14 @@
                 }
             },
             {
+                "name": "My dashboard",
+                "namespace": "dashboard-regulated_organization",
+                "video": {
+                    "asl": "https://vimeo.com/845047955/500f654bf4",
+                    "lsq": "https://vimeo.com/850175047/81ef6b4ddb"
+                }
+            },
+            {
                 "name": "Notifications",
                 "namespace": "dashboard_notifications",
                 "video": {
@@ -205,7 +213,11 @@
             },
             {
                 "name": "Your engagement has been published.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/861669128",
+                    "lsq": "https://vimeo.com/871137399/70a317711a"
+                }
             },
             {
                 "name": "You have successfully added the Community Organization you are consulting with for this engagement.",
@@ -622,7 +634,46 @@
     "about.for-regulated-organizations": {
         "interpretations": [
             {
-                "name": "What you can do on this website"
+                "name": "How this works for federally regulated organizations",
+                "video": {
+                    "asl": "https://vimeo.com/844983553/af3d432468",
+                    "lsq": "https://vimeo.com/850174670/073b03ead7"
+                }
+            },
+            {
+                "name": "What you can do on this website",
+                "video": {
+                    "asl": "https://vimeo.com/844989749/618e31439a",
+                    "lsq": "https://vimeo.com/850174741/1ae05cad53"
+                }
+            },
+            {
+                "name": "Get input on your accessibility projects",
+                "video": {
+                    "asl": "https://vimeo.com/844992621/3ec4ef205f",
+                    "lsq": "https://vimeo.com/850174788/ab803967b6"
+                }
+            },
+            {
+                "name": "Find Consultation Participants",
+                "video": {
+                    "asl": "https://vimeo.com/844996751/45f1a1ebd0",
+                    "lsq": "https://vimeo.com/850174816/c2755cae39"
+                }
+            },
+            {
+                "name": "Access resources and trainings",
+                "video": {
+                    "asl": "https://vimeo.com/845000439/9c8aa8d65d",
+                    "lsq": "https://vimeo.com/850174841/3d749d9af8"
+                }
+            },
+            {
+                "name": "Tap into our support network",
+                "video": {
+                    "asl": "https://vimeo.com/845007684/0a5ea8d165",
+                    "lsq": "https://vimeo.com/850174858/ceb3c40bf6"
+                }
             }
         ]
     },
@@ -630,7 +681,7 @@
         "interpretations": [
             {
                 "name": "Get input for your projects",
-                "namespace": "get_input_for_projects-regulated_organization",
+                "namespace": "get_input_for_projects-community_organization",
                 "video": {
                     "asl": "https://vimeo.com/845054415/81899849ee",
                     "lsq": "https://vimeo.com/850168881/1b43d1cf36"
@@ -674,7 +725,11 @@
         "interpretations": [
             {
                 "name": "Get input for your projects",
-                "namespace": "get_input_for_projects-community_organization"
+                "namespace": "get_input_for_projects-regulated_organization",
+                "video": {
+                    "asl": "https://vimeo.com/845008982/0707a519fa",
+                    "lsq": "https://vimeo.com/850174884/549806ec55"
+                }
             }
         ]
     },
@@ -1269,15 +1324,15 @@
                 "namespace": "notification_message"
             },
             {
-                "name": "Account approved",
+                "name": "Your account has been approved",
                 "namespace": "notification_message",
                 "video": {
-                    "asl": "https://vimeo.com/846664151/0cb5a9efb5",
-                    "lsq": "https://vimeo.com/850172430/3ad1c63780"
+                    "asl": "https://vimeo.com/845049896/fa756e5039",
+                    "lsq": "https://vimeo.com/850175956/53881faa3c"
                 }
             },
             {
-                "name": "Account suspended",
+                "name": "Your account has been suspended",
                 "namespace": "notification_message"
             },
             {
@@ -1286,7 +1341,10 @@
             },
             {
                 "name": "Your agreement has been received",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "lsq": "https://vimeo.com/850176147/a4656f355b"
+                }
             },
             {
                 "name": "New estimate approval",
@@ -1304,7 +1362,10 @@
             },
             {
                 "name": "Your estimate has been returned",
-                "namespace": "notification_message"
+                "namespace": "notification_message",
+                "video": {
+                    "lsq": "https://vimeo.com/850176184/57b6fadba7"
+                }
             },
             {
                 "name": "You have been invited as a Accessibility Consultant",
@@ -1526,7 +1587,15 @@
             },
             {
                 "name": "Publish page",
-                "namespace": "publish_page"
+                "namespace": "publish_page",
+                "video": {
+                    "asl": "https://vimeo.com/861668734",
+                    "lsq": "https://vimeo.com/871137352/170e3753f7"
+                }
+            },
+            {
+                "name": "Preview page",
+                "namespace": "preview_page"
             },
             {
                 "name": "Sorry, some errors were found in your submission. Please correct these errors and try again.",
@@ -2717,6 +2786,14 @@
                 }
             },
             {
+                "name": "Settings",
+                "namespace": "settings-regulated_organization",
+                "video": {
+                    "asl": "https://vimeo.com/845049874/e5ad287951",
+                    "lsq": "https://vimeo.com/850175831/11ff562833"
+                }
+            },
+            {
                 "name": "For consultations"
             },
             {
@@ -3175,6 +3252,7 @@
             {
                 "name": "Create new project",
                 "video": {
+                    "asl": "https://vimeo.com/861668432",
                     "lsq": "https://vimeo.com/850171839/3dfeda85d8"
                 }
             },
@@ -3234,15 +3312,6 @@
                 "name": "Project overview"
             },
             {
-                "name": "Project team"
-            },
-            {
-                "name": "Engagements"
-            },
-            {
-                "name": "Outcomes and reports"
-            },
-            {
                 "name": "Project goals"
             },
             {
@@ -3282,7 +3351,20 @@
                 "name": "Project reports"
             },
             {
-                "name": "Have questions?"
+                "name": "Have questions?",
+                "namespace": "have_questions-projects"
+            }
+        ]
+    },
+    "projects.show-team": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Project team",
+                "video": {
+                    "asl": "https://vimeo.com/845049991/639fb0f409",
+                    "lsq": "https://vimeo.com/850176108/da94eb38e2"
+                }
             },
             {
                 "name": "About the project team"
@@ -3301,12 +3383,33 @@
             }
         ]
     },
+    "projects.show-engagements": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Engagements",
+                "video": {
+                    "asl": "https://vimeo.com/861668792",
+                    "lsq": "https://vimeo.com/871137366/834a562dd3"
+                }
+            }
+        ]
+    },
+    "projects.show-outcomes": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Outcomes and reports"
+            }
+        ]
+    },
     "projects.create": {
         "interpretations": [
             {
                 "name": "Create a new project",
                 "video": {
-                    "asl": "https://vimeo.com/846625697/be8593a595"
+                    "asl": "https://vimeo.com/846625697/be8593a595",
+                    "lsq": "https://vimeo.com/850175118/45016b3541"
                 }
             },
             {
@@ -3324,7 +3427,8 @@
             {
                 "name": "Project overview",
                 "video": {
-                    "asl": "https://vimeo.com/846625714/0e7f83ca4a"
+                    "asl": "https://vimeo.com/871084227/5040aa71bb",
+                    "lsq": "https://vimeo.com/871137041/bb9dab915f"
                 }
             },
             {
@@ -3343,89 +3447,106 @@
             {
                 "name": "Project goals",
                 "video": {
-                    "asl": "https://vimeo.com/846625784/f6100ebf28"
+                    "asl": "https://vimeo.com/871084272/d9c99119e6",
+                    "lsq": "https://vimeo.com/871137062/8a5c362913"
                 }
             },
             {
                 "name": "Project scope",
                 "video": {
-                    "asl": "https://vimeo.com/846625808/535a7c47b4"
+                    "asl": "https://vimeo.com/871084294/3d2f307eac",
+                    "lsq": "https://vimeo.com/871137078/28961b303b"
                 }
             },
             {
                 "name": "Please indicate the geographical areas this project will impact.",
                 "video": {
-                    "asl": "https://vimeo.com/846625827/0b8fea5162"
+                    "asl": "https://vimeo.com/871084326/f2167f3bc4",
+                    "lsq": "https://vimeo.com/871137089/d198d4e964"
                 }
             },
             {
-                "name": "Please indicate which areas of your organization this project will impact."
+                "name": "Please indicate which areas of your organization this project will impact.",
+                "video": {
+                    "asl": "https://vimeo.com/871084349/1faa691c44",
+                    "lsq": "https://vimeo.com/871137107/2641e08f1b"
+                }
             },
             {
                 "name": "Please indicate what is out of scope for this project.",
                 "namespace": "indicate_out_of_scope-optional",
                 "video": {
-                    "asl": "https://vimeo.com/846625855/ace5e7b57d"
+                    "asl": "https://vimeo.com/871084375/6675791776",
+                    "lsq": "https://vimeo.com/871137130/b19dc45d81"
                 }
             },
             {
                 "name": "Project timeframe",
                 "video": {
-                    "asl": "https://vimeo.com/846625879/ff315ccbda"
+                    "asl": "https://vimeo.com/871084393/467c478b05",
+                    "lsq": "https://vimeo.com/871137150/4b15dd3ab6"
                 }
             },
             {
+                "name": "Project start date",
+                "namespace": "project_start_date-required"
+            },
+            {
                 "name": "Project end date",
-                "namespace": "project_end_date-required",
-                "video": {
-                    "asl": "https://vimeo.com/846625906/5884b4f28d"
-                }
+                "namespace": "project_end_date-required"
             },
             {
                 "name": "Project outcome",
                 "video": {
-                    "asl": "https://vimeo.com/846625929/1f17f3838c"
+                    "asl": "https://vimeo.com/846625929/1f17f3838c",
+                    "lsq": "https://vimeo.com/871137169/35bcd679dc"
+                }
+            },
+            {
+                "name": "Please indicate who will be going through the results",
+                "namespace": "indicate_who_reviews_results-required",
+                "video": {
+                    "asl": "https://vimeo.com/871084433/45dece5066",
+                    "lsq": "https://vimeo.com/871137188/ab31244229"
                 }
             },
             {
                 "name": "Please indicate the tangible outcomes of this project.",
                 "namespace": "indicate_tangible_outcomes-required",
                 "video": {
-                    "asl": "https://vimeo.com/846625950/b9668275c9"
+                    "asl": "https://vimeo.com/871084457/a7d5127fa0",
+                    "lsq": "https://vimeo.com/871137210/360e4ae48a"
                 }
             },
             {
-                "name": "Please indicate if the reports will be publicly available.",
-                "video": {
-                    "asl": "https://vimeo.com/846625965/6e546787ec"
-                }
+                "name": "Please indicate if the reports will be publicly available."
             },
             {
                 "name": "Project team",
                 "video": {
-                    "asl": "https://vimeo.com/846625980/eaafdb1884",
-                    "lsq": "https://vimeo.com/850171944/fdc7bf0553"
+                    "asl": "https://vimeo.com/845048112/1707a58a88",
+                    "lsq": "https://vimeo.com/850175176/cac5be07e8"
                 }
             },
             {
                 "name": "About your team",
                 "video": {
-                    "asl": "https://vimeo.com/846626005/d60e5394ce",
+                    "asl": "https://vimeo.com/845048127/acda33b7b8",
                     "lsq": "https://vimeo.com/850171961/dac5dd922d"
                 }
             },
             {
                 "name": "Please indicate whether any member of your team has lived/living experiences of disability or being Deaf.",
                 "video": {
-                    "asl": "https://vimeo.com/846626024/310fc98c98",
-                    "lsq": "https://vimeo.com/850171986/dae34c6c71"
+                    "asl": "https://vimeo.com/845048148/6e3426ec15",
+                    "lsq": "https://vimeo.com/850175293/d7753f858a"
                 }
             },
             {
                 "name": "Training your team has received",
                 "video": {
-                    "asl": "https://vimeo.com/846626046/1e6cba3c1d",
-                    "lsq": "https://vimeo.com/850172010/478da91587"
+                    "asl": "https://vimeo.com/845048169/fb3890d382",
+                    "lsq": "https://vimeo.com/850175359/a77879663a"
                 }
             },
             {
@@ -3440,38 +3561,35 @@
                 "name": "Training organization or trainer",
                 "namespace": "team_trainings",
                 "video": {
-                    "asl": "https://vimeo.com/846626092/0e7b0e917e",
-                    "lsq": "https://vimeo.com/850172045/922d6ff98b"
+                    "asl": "https://vimeo.com/845048216/9bb43be9bb",
+                    "lsq": "https://vimeo.com/850175738/47f657c029"
                 }
             },
             {
                 "name": "Website",
-                "namespace": "team_trainings",
-                "video": {
-                    "lsq": "https://vimeo.com/850172057/bd3cf84809"
-                }
+                "namespace": "team_trainings"
             },
             {
                 "name": "Team contact",
                 "video": {
-                    "asl": "https://vimeo.com/846626159/0cead9f4a8",
-                    "lsq": "https://vimeo.com/850172074/2a78ab4241"
+                    "asl": "https://vimeo.com/845048228/0429285763",
+                    "lsq": "https://vimeo.com/850180190/388419f740"
                 }
             },
             {
                 "name": "Preferred contact method",
                 "namespace": "preferred_contact_method",
                 "video": {
-                    "asl": "https://vimeo.com/846626174/9d6950cbb7",
-                    "lsq": "https://vimeo.com/850172092/a6ac22e3a0"
+                    "asl": "https://vimeo.com/845048250/d1a656b23a",
+                    "lsq": "https://vimeo.com/871137230/2497330084"
                 }
             },
             {
                 "name": "Approximate response time",
                 "namespace": "approximate_response_time-required",
                 "video": {
-                    "asl": "https://vimeo.com/846626194/95722b603d",
-                    "lsq": "https://vimeo.com/850172116/9ea1c9cc08"
+                    "asl": "https://vimeo.com/845048269/aa50741094",
+                    "lsq": "https://vimeo.com/871137256/b276bbb818"
                 }
             }
         ]
@@ -3580,17 +3698,26 @@
         "route_has_params": true,
         "interpretations": [
             {
-                "name": "Estimates and agreements",
+                "name": "Estimates and agreements"
+            },
+            {
+                "name": "Estimates",
+                "namespace": "estimates-approved"
+            },
+            {
+                "name": "Estimates",
+                "namespace": "estimates-returned",
+                "video": {
+                    "asl": "https://vimeo.com/861668971",
+                    "lsq": "https://vimeo.com/871137387/8f3dadc48b"
+                }
+            },
+            {
+                "name": "New estimate request",
                 "video": {
                     "asl": "https://vimeo.com/846664238/e20d83fe14",
                     "lsq": "https://vimeo.com/850172536/92cb8e8438"
                 }
-            },
-            {
-                "name": "Estimates"
-            },
-            {
-                "name": "New estimate request"
             },
             {
                 "name": "Agreements"
@@ -3605,6 +3732,17 @@
                 "video": {
                     "asl": "https://vimeo.com/846664259/4610d6e15e",
                     "lsq": "https://vimeo.com/850172625/5cdf2c5392"
+                }
+            }
+        ]
+    },
+    "projects.my-running-projects": {
+        "interpretations": [
+            {
+                "name": "Projects I am running",
+                "video": {
+                    "asl": "https://vimeo.com/845048016/00df4ffbcd",
+                    "lsq": "https://vimeo.com/850175074/96fee0a5d0"
                 }
             }
         ]
@@ -3863,6 +4001,144 @@
             },
             {
                 "name": "Community organizations"
+            }
+        ]
+    },
+    "regulated-organizations.show": {
+        "interpretations": [
+            {
+                "name": "Regulated Organization page",
+                "video": {
+                    "asl": "https://vimeo.com/845049934/8b25e5444f",
+                    "lsq": "https://vimeo.com/850175982/e0ad2988b2"
+                }
+            },
+            {
+                "name": "You are previewing your organization’s page.",
+                "video": {
+                    "asl": "https://vimeo.com/845049912/2baed11817",
+                    "lsq": "https://vimeo.com/871137322/b78435aef9"
+                }
+            }
+        ]
+    },
+    "regulated-organizations.show-projects": {
+        "interpretations": [
+            {
+                "name": "Regulated Organization page",
+                "video": {
+                    "asl": "https://vimeo.com/845049953/a83136dada",
+                    "lsq": "https://vimeo.com/850176016/d00dbf674f"
+                }
+            }
+        ]
+    },
+    "regulated-organizations.show-type-selection": {
+        "interpretations": [
+            {
+                "name": "Welcome to The Accessibility Exchange",
+                "video": {
+                    "asl": "https://vimeo.com/845042650/1d880da5a3",
+                    "lsq": "https://vimeo.com/850180053/d1e09d21fc"
+                }
+            },
+            {
+                "name": "Please identify the type of Regulated Organization yours is:",
+                "video": {
+                    "asl": "https://vimeo.com/845042668/c56b937fcc",
+                    "lsq": "https://vimeo.com/850180080/932cc7ccf4"
+                }
+            }
+        ]
+    },
+    "regulated-organizations.create": {
+        "interpretations": [
+            {
+                "name": "Tell us your organization’s name",
+                "video": {
+                    "asl": "https://vimeo.com/845047891/edc0ba30bb",
+                    "lsq": "https://vimeo.com/850175025/ca3d7db352"
+                }
+            },
+            {
+                "name": "Tell us your business name",
+                "video": {
+                    "asl": "https://vimeo.com/845047931/a3a7e68e10"
+                }
+            },
+            {
+                "name": "Create new business"
+            },
+            {
+                "name": "Create new government organization"
+            },
+            {
+                "name": "Create new public sector organization"
+            },
+            {
+                "name": "Your organization’s name"
+            }
+        ]
+    },
+    "regulated-organizations.edit": {
+        "route_has_params": true,
+        "interpretations": [
+            {
+                "name": "Organization information",
+                "video": {
+                    "asl": "https://vimeo.com/861667153/a34235144d",
+                    "lsq": "https://vimeo.com/861710476/2b65a06d23"
+                }
+            },
+            {
+                "name": "Your headquarters location",
+                "video": {
+                    "asl": "https://vimeo.com/861667241/2eb993113b",
+                    "lsq": "https://vimeo.com/861710506/213618a0fd"
+                }
+            },
+            {
+                "name": "Where are your organization’s service areas?"
+            },
+            {
+                "name": "What type of regulated organization are you?",
+                "video": {
+                    "asl": "https://vimeo.com/861667418"
+                }
+            },
+            {
+                "name": "About your organization",
+                "video": {
+                    "asl": "https://vimeo.com/861667521",
+                    "lsq": "https://vimeo.com/861710561/3484d835ba"
+                }
+            },
+            {
+                "name": "Accessibility and inclusion links",
+                "video": {
+                    "lsq": "https://vimeo.com/861710574/99e7143f44"
+                }
+            },
+            {
+                "name": "Social media links",
+                "video": {
+                    "asl": "https://vimeo.com/861667674",
+                    "lsq": "https://vimeo.com/861710589/5b21200356"
+                }
+            },
+            {
+                "name": "Organization website",
+                "video": {
+                    "asl": "https://vimeo.com/861667772",
+                    "lsq": "https://vimeo.com/861710608/54a7f6e369"
+                }
+            },
+            {
+                "name": "Contact information",
+                "video": {
+                    "asl": "https://vimeo.com/861667833",
+                    "lsq": "https://vimeo.com/861710628"
+                }
             }
         ]
     }

@@ -5,16 +5,21 @@
     <x-slot name="header">
         @if ($type === 'government' || $type === 'public-sector')
             <h1> {{ __('Tell us your organization’s name') }} </h1>
+            <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}" />
         @elseif ($type === 'business')
             <h1> {{ __('Tell us your business name') }} </h1>
+            <x-interpretation name="{{ __('Tell us your business name', [], 'en') }}" />
         @else
             <h1>{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}</h1>
+            <x-interpretation
+                name="{{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)], 'en') }}" />
         @endif
     </x-slot>
 
     <form class="stack" action="{{ localized_route('regulated-organizations.store') }}" method="post" novalidate>
         <fieldset class="stack">
             <legend>{{ __('Your organization’s name') }}</legend>
+            <x-interpretation name="{{ __('Your organization’s name', [], 'en') }}" />
             <div class="field @error('name.en') field--error @enderror">
                 <x-hearth-label for="name-en">{{ __('Name of organization — English') }}</x-hearth-label>
                 <x-hearth-input id="name-en" name="name[en]" :value="old('name.en', '')" />
@@ -36,8 +41,7 @@
 
     @foreach (['en', 'fr'] as $locale)
         @error('name.' . $locale)
-            @if ($message ===
-                __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
+            @if ($message === __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
                 <div class="stack">
                     @php
                         $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first();

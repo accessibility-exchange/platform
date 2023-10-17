@@ -64,6 +64,8 @@
             <h3>{{ __('Project timeframe') }}</h3>
             <x-interpretation name="{{ __('Project timeframe', [], 'en') }}" />
 
+            <x-interpretation name="{{ __('Project start date', [], 'en') }}"
+                namespace="project_start_date-required" />
             <x-date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? '')" />
             <x-hearth-error for="start_date" />
 
@@ -88,7 +90,9 @@
                 </div>
                 <div class="field__subfield stack">
                     <x-translatable-input name="outcome_analysis_other" :label="__('Please indicate who will be going through the results')" :short-label="__('who is going through the results')"
-                        :model="$project" x-show="otherOutcomeAnalysis" />
+                        :model="$project" x-show="otherOutcomeAnalysis"
+                        interpretationName="Please indicate who will be going through the results"
+                        interpretationNameSpace="indicate_who_reviews_results-required" />
                 </div>
                 <x-hearth-error for="outcome_analysis" />
             </fieldset>

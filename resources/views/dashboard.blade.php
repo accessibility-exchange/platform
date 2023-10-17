@@ -37,6 +37,10 @@
             </p>
         @endif
 
+        @if ($user->regulatedOrganization)
+            <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-regulated_organization" />
+        @endif
+
         @if ($user->organization)
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-organization" />
             <p>

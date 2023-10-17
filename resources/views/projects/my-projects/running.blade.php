@@ -1,6 +1,7 @@
 <div class="flex flex-wrap items-center justify-between gap-4">
     <h2>{{ __('Projects I am running') }}</h2>
     <x-interpretation name="{{ __('Projects I am running', [], 'en') }}" />
+
     @if (
         $projectable &&
             (!$projectable->draftProjects->isEmpty() ||
